@@ -66,4 +66,10 @@ public class TabSpecialWorkerController {
         return ReturnUtil.buildReturn(retVal);
     }
 
+
+    @ApiOperation(value = "详情查询根据id", notes = "详情查询根据id", httpMethod = "GET")
+    @GetMapping("/selectOne")
+    public TabSpecialWorkerResultDto selectOne(@RequestParam @ApiParam(value = "专干主键" ,name = "specialWorkerId")Long specialWorkerId) {
+        return tabSpecialWorkerService.selectOneById(specialWorkerId);
+    }
 }

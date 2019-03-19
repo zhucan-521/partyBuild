@@ -37,4 +37,12 @@ public interface TabSpecialWorkerService {
     int updateBySpecialWorkerId(TabSpecialWorkerResultDto dto);
 
 
+    /**
+     * 详情查询
+     * @param specialWorkerId
+     * @return
+     */
+    TabSpecialWorkerResultDto selectOneById(Long specialWorkerId);
+
+
 }

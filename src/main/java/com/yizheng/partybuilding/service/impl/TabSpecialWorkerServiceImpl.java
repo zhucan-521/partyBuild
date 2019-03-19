@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.yizheng.commons.config.PaddingBaseField;
 import com.yizheng.commons.domain.Page;
 
+import com.yizheng.commons.exception.BusinessDataCheckFailException;
 import com.yizheng.partybuilding.dto.TabSpecialWorkerResultDto;
 import com.yizheng.partybuilding.entity.TabPbSpcialWorker;
 
@@ -52,8 +53,16 @@ public class TabSpecialWorkerServiceImpl implements TabSpecialWorkerService {
             sysUserRole.setRoleId(44);
             sysUserRoleMapper.insert(sysUserRole);
         }
-        //插入专干表
-        return  tabPbSpcialWorkerMapper.insertSelective(tabSpecialWorkerResultDto);
+        int flag=0;
+        if(null!=tabPbSpcialWorkerMapper.checkSpecialWorkerOndeptId(tabSpecialWorkerResultDto)){
+            //如果已存在专干表 修改专干表
+            tabSpecialWorkerResultDto.setSpecialWorkerId(tabPbSpcialWorkerMapper.selectSpecialWorkerIdByIdcard(tabSpecialWorkerResultDto));
+            flag=tabPbSpcialWorkerMapper.updateByPrimaryKeySelective(tabSpecialWorkerResultDto);
+        }else{
+            //插入专干表
+            flag=tabPbSpcialWorkerMapper.insertSelective(tabSpecialWorkerResultDto);
+        }
+        return  flag;
     }
 
     /**
@@ -97,7 +106,21 @@ public class TabSpecialWorkerServiceImpl implements TabSpecialWorkerService {
     @PaddingBaseField(updateOnly = true)
     @Override
     public int updateBySpecialWorkerId(TabSpecialWorkerResultDto dto) {
-        return tabPbSpcialWorkerMapper.updateTabSpecialWorkerResultDto(dto);
+        if(dto.getSpecialWorkerId()==null){
+            throw new BusinessDataCheckFailException("缺少专干主键");
+        }
+        return tabPbSpcialWorkerMapper.updateByPrimaryKeySelective(dto);
+    }
+
+
+    /**
+     * 详情查询
+     * @param specialWorkerId
+     * @return
+     */
+    @Override
+    public TabSpecialWorkerResultDto selectOneById(Long specialWorkerId) {
+        return tabPbSpcialWorkerMapper.selectOneById(specialWorkerId);
     }
 
 
