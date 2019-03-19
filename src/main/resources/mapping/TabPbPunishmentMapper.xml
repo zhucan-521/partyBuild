@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbPunishmentMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbPunishment">
+        <id column="punishment_id" jdbcType="BIGINT" property="punishmentId"/>
+        <result column="punish_date" jdbcType="TIMESTAMP" property="punishDate"/>
+        <result column="punish_org" jdbcType="VARCHAR" property="punishOrg"/>
+        <result column="punish_org_id" jdbcType="BIGINT" property="punishOrgId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="approved_level" jdbcType="BIGINT" property="approvedLevel"/>
+        <result column="punish_reason" jdbcType="BIGINT" property="punishReason"/>
+        <result column="punish_result" jdbcType="BIGINT" property="punishResult"/>
+        <result column="revoke_date" jdbcType="TIMESTAMP" property="revokeDate"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="punish_name" jdbcType="VARCHAR" property="punishName"/>
+        <result column="judiciary_flag" jdbcType="VARCHAR" property="judiciaryFlag"/>
+        <result column="punish_type" jdbcType="BIGINT" property="punishType"/>
+
+        <result column="img_tool" jdbcType="BIGINT" property="imgTool"/>
+        <result column="file_tool" jdbcType="BIGINT" property="fileTool"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbPunishment">
+        <result column="base_status" jdbcType="LONGVARCHAR" property="baseStatus"/>
+        <result column="mistake" jdbcType="LONGVARCHAR" property="mistake"/>
+        <result column="follow_up" jdbcType="LONGVARCHAR" property="followUp"/>
+        <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    punishment_id, punish_date, punish_org, punish_org_id, user_id, approved_level, punish_reason, 
+    punish_result, revoke_date, ebl_flag, del_flag, order_num, description, create_time,
+        create_userid, create_username, update_time, update_userid, update_username, version,punish_name,
+        judiciary_flag,punish_type
+  </sql>
+    <sql id="Blob_Column_List">
+    base_status, mistake, follow_up, comment
+  </sql>
+<sql id="atta_result">
+    img_tool, file_tool
+  </sql>
+<sql id="attachment">
+        SELECT
+	a.host_id,
+	max( a.attachment_type ) AS attachment_type,
+	MAX( CASE a.attachment_file_type WHEN ${@com.yizheng.commons.util.AttachmentType@PHOTO} THEN a.co ELSE 0 END ) AS img_tool,
+	MAX( CASE a.attachment_file_type WHEN ${@com.yizheng.commons.util.AttachmentType@DOC} THEN a.co ELSE 0 END ) AS file_tool
+FROM
+	( SELECT COUNT( 1 ) AS co, host_id, attachment_file_type, attachment_type FROM tab_pb_attachment WHERE del_flag = 0 GROUP BY host_id, attachment_type, attachment_file_type ) a
+GROUP BY
+	a.host_id,
+	attachment_type
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tab_pb_punishment
+        where punishment_id = #{punishmentId,jdbcType=BIGINT}
+    </select>
+    <select id="selectList" parameterType="com.yizheng.partybuilding.entity.TabPbPunishment" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        <if test="attachmentType != null">
+            ,
+            <include refid="atta_result"/>
+        </if>
+        from tab_pb_punishment
+        <if test="attachmentType != null">
+            left join (<include refid="attachment"/>) atta on atta.host_id =  punishment_id and atta.attachment_type = #{attachmentType}
+        </if>
+        where del_flag = 0
+        <if test="userId != null">
+            and user_id = #{userId}
+        </if>
+        <if test="punishOrg != null">
+            and punish_org = #{punishOrg}
+        </if>
+        <if test="punishOrgId != null">
+            and punish_org_id = #{punishOrgId}
+        </if>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_punishment
+    where punishment_id = #{punishmentId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbPunishment">
+    insert into tab_pb_punishment (punishment_id, punish_date, punish_org, 
+      punish_org_id, user_id, approved_level, 
+      punish_reason, punish_result, revoke_date, 
+      ebl_flag, del_flag, order_num, 
+      description, create_time, create_userid, 
+      create_username, update_time, update_userid, 
+      update_username, version, base_status,
+        mistake, follow_up, comment,punish_name,
+        judiciary_flag,punish_type
+      )
+    values (#{punishmentId,jdbcType=BIGINT}, #{punishDate,jdbcType=TIMESTAMP}, #{punishOrg,jdbcType=VARCHAR}, 
+      #{punishOrgId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{approvedLevel,jdbcType=BIGINT}, 
+      #{punishReason,jdbcType=BIGINT}, #{punishResult,jdbcType=BIGINT}, #{revokeDate,jdbcType=TIMESTAMP}, 
+      #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, 
+      #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, 
+      #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, 
+      #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{baseStatus,jdbcType=LONGVARCHAR},
+        #{mistake,jdbcType=LONGVARCHAR}, #{followUp,jdbcType=LONGVARCHAR}, #{comment,jdbcType=LONGVARCHAR},
+        #{punishName,jdbcType=VARCHAR},#{judiciaryFlag,jdbcType=VARCHAR}, #{punishType,jdbcType=BIGINT}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbPunishment" useGeneratedKeys="true" keyProperty="punishmentId">
+        insert into tab_pb_punishment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="punishmentId != null">
+                punishment_id,
+            </if>
+            <if test="punishName != null">
+                punish_name,
+            </if>
+            <if test="judiciaryFlag != null">
+                judiciary_flag,
+            </if>
+            <if test="punishType != null">
+                punish_type,
+            </if>
+            <if test="punishDate != null">
+                punish_date,
+            </if>
+            <if test="punishOrg != null">
+                punish_org,
+            </if>
+            <if test="punishOrgId != null">
+                punish_org_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="approvedLevel != null">
+                approved_level,
+            </if>
+            <if test="punishReason != null">
+                punish_reason,
+            </if>
+            <if test="punishResult != null">
+                punish_result,
+            </if>
+            <if test="revokeDate != null">
+                revoke_date,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="baseStatus != null">
+                base_status,
+            </if>
+            <if test="mistake != null">
+                mistake,
+            </if>
+            <if test="followUp != null">
+                follow_up,
+            </if>
+            <if test="comment != null">
+                comment,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="punishmentId != null">
+                #{punishmentId,jdbcType=BIGINT},
+            </if>
+            <if test="punishName != null">
+                #{punishName,jdbcType=VARCHAR},
+            </if>
+            <if test="judiciaryFlag != null">
+                #{judiciaryFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="punishType != null">
+                #{punishType,jdbcType=BIGINT},
+            </if>
+            <if test="punishDate != null">
+                #{punishDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="punishOrg != null">
+                #{punishOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="punishOrgId != null">
+                #{punishOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="approvedLevel != null">
+                #{approvedLevel,jdbcType=BIGINT},
+            </if>
+            <if test="punishReason != null">
+                #{punishReason,jdbcType=BIGINT},
+            </if>
+            <if test="punishResult != null">
+                #{punishResult,jdbcType=BIGINT},
+            </if>
+            <if test="revokeDate != null">
+                #{revokeDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="baseStatus != null">
+                #{baseStatus,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="mistake != null">
+                #{mistake,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="followUp != null">
+                #{followUp,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="comment != null">
+                #{comment,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbPunishment">
+        update tab_pb_punishment
+        <set>
+            <if test="punishDate != null">
+                punish_date = #{punishDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="punishOrg != null">
+                punish_org = #{punishOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="punishName != null">
+                punish_name = #{punishName,jdbcType=VARCHAR},
+            </if>
+            <if test="judiciaryFlag != null">
+                judiciary_flag = #{judiciaryFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="punishType != null">
+                punish_type = #{punishType,jdbcType=BIGINT},
+            </if>
+            <if test="punishOrgId != null">
+                punish_org_id = #{punishOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="approvedLevel != null">
+                approved_level = #{approvedLevel,jdbcType=BIGINT},
+            </if>
+            <if test="punishReason != null">
+                punish_reason = #{punishReason,jdbcType=BIGINT},
+            </if>
+            <if test="punishResult != null">
+                punish_result = #{punishResult,jdbcType=BIGINT},
+            </if>
+            <if test="revokeDate != null">
+                revoke_date = #{revokeDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="baseStatus != null">
+                base_status = #{baseStatus,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="mistake != null">
+                mistake = #{mistake,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="followUp != null">
+                follow_up = #{followUp,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="comment != null">
+                comment = #{comment,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where punishment_id = #{punishmentId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbPunishment">
+    update tab_pb_punishment
+    set punish_date = #{punishDate,jdbcType=TIMESTAMP},
+      punish_org = #{punishOrg,jdbcType=VARCHAR},
+        punish_name = #{punishName,jdbcType=VARCHAR},
+        judiciary_flag = #{judiciaryFlag,jdbcType=VARCHAR},
+        punish_type = #{punishType,jdbcType=BIGINT},
+      punish_org_id = #{punishOrgId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      approved_level = #{approvedLevel,jdbcType=BIGINT},
+      punish_reason = #{punishReason,jdbcType=BIGINT},
+      punish_result = #{punishResult,jdbcType=BIGINT},
+      revoke_date = #{revokeDate,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      base_status = #{baseStatus,jdbcType=LONGVARCHAR},
+      mistake = #{mistake,jdbcType=LONGVARCHAR},
+      follow_up = #{followUp,jdbcType=LONGVARCHAR},
+      comment = #{comment,jdbcType=LONGVARCHAR}
+    where punishment_id = #{punishmentId,jdbcType=BIGINT}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbPunishment">
+    update tab_pb_punishment
+    set punish_date = #{punishDate,jdbcType=TIMESTAMP},
+      punish_org = #{punishOrg,jdbcType=VARCHAR},
+        punish_name = #{punishName,jdbcType=VARCHAR},
+        judiciary_flag = #{judiciaryFlag,jdbcType=VARCHAR},
+        punish_type = #{punishType,jdbcType=BIGINT},
+      punish_org_id = #{punishOrgId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      approved_level = #{approvedLevel,jdbcType=BIGINT},
+      punish_reason = #{punishReason,jdbcType=BIGINT},
+      punish_result = #{punishResult,jdbcType=BIGINT},
+      revoke_date = #{revokeDate,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+    where punishment_id = #{punishmentId,jdbcType=BIGINT}
+  </update>
+</mapper>

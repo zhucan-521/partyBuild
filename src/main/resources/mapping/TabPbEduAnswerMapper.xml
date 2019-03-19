@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduAnswerMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduAnswer">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="test_id" jdbcType="INTEGER" property="testId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="arrange_id" jdbcType="BIGINT" property="arrangeId"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="score" jdbcType="REAL" property="score"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, test_id, user_id, arrange_id,state, score, create_time
+  </sql>
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_edu_answer
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectNumsByArranageId" resultType="java.lang.Integer">
+        select count(*) from tab_pb_edu_answer where arrange_id=#{arrangeId,jdbcType=BIGINT} and user_id=#{userId,jdbcType=BIGINT}
+    </select>
+
+    <!-- 获取用户最高-最低得分信息 -->
+    <select id="getUserTestScore" resultMap="UserTestScoreMap">
+        select AVG(score) avg_score, MAX(score) max_score, MIN(score) min_score from tab_pb_edu_answer
+        where user_id=#{userId,jdbcType=BIGINT}
+    </select>
+    <resultMap id="UserTestScoreMap" type="com.yizheng.partybuilding.dto.TabPbEduUserTestScoreDto">
+        <result column="avg_score" jdbcType="REAL" property="avgScore"/>
+        <result column="max_score" jdbcType="REAL" property="maxScore"/>
+        <result column="min_score" jdbcType="REAL" property="minScore"/>
+    </resultMap>
+
+    <!-- 获取用户考试信息 -->
+    <select id="getUserTestInfo" resultMap="UserTestInfoMap">
+        select answer.id ,answer.test_id, answer.user_id
+        ,answer.score,answer.state,testarrange.begin_time,testarrange.end_time,etest.category,etest.difficulty,etest.title,etest.total_score,etest.duration
+        from tab_pb_edu_answer answer
+        inner join tab_pb_edu_testarrange testarrange on answer.arrange_id=testarrange.id
+        inner join tab_pb_edu_test etest on answer.test_id=etest.id
+        where answer.user_id=#{userId,jdbcType=BIGINT}
+        <if test="category != null and category > 0">
+            AND etest.category = #{category,jdbcType=INTEGER}
+        </if>
+        <if test="title != null">
+            AND etest.title like CONCAT('%',#{title,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+    <resultMap id="UserTestInfoMap" type="com.yizheng.partybuilding.dto.TabPbEduUserTestInfoDto">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="test_id" jdbcType="INTEGER" property="testId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="score" jdbcType="REAL" property="score"/>
+        <result column="begin_time" jdbcType="TIMESTAMP" property="beginTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="category" jdbcType="INTEGER" property="category"/>
+        <result column="difficulty" jdbcType="INTEGER" property="difficulty"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="total_score" jdbcType="INTEGER" property="totalScore"/>
+        <result column="duration" jdbcType="INTEGER" property="duration"/>
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tab_pb_edu_answer
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduAnswer" useGeneratedKeys="true"
+            keyProperty="id" keyColumn="id">
+        insert into tab_pb_edu_answer (id, test_id, user_id, arrange_id,
+      state, score, create_time
+      )
+        values (#{id,jdbcType=INTEGER}, #{testId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT},
+        #{arrangeId,jdbcType=BIGINT},
+      #{state,jdbcType=INTEGER}, #{score,jdbcType=REAL}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduAnswer" useGeneratedKeys="true"
+            keyProperty="id" keyColumn="id">
+        <!--<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>-->
+        insert into tab_pb_edu_answer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="testId != null">
+                test_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userId != null">
+                arrange_id,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="score != null">
+                score,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="testId != null">
+                #{testId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="arrangeId != null">
+                #{arrangeId,jdbcType=BIGINT},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
+            <if test="score != null">
+                #{score,jdbcType=REAL},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByIdSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduAnswer">
+        update tab_pb_edu_answer
+        <set>
+            <if test="testId != null">
+                test_id = #{testId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="arrangeId != null">
+                arrange_id = #{arrangeId,jdbcType=BIGINT},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=INTEGER},
+            </if>
+            <if test="score != null">
+                score = #{score,jdbcType=REAL},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduAnswer">
+    update tab_pb_edu_answer
+    set test_id = #{testId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=BIGINT},
+        arrange_id = #{arrangeId,jdbcType=BIGINT},
+      state = #{state,jdbcType=INTEGER},
+      score = #{score,jdbcType=REAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

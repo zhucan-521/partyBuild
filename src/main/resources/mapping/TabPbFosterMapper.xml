@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbFosterMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbFoster">
+        <id column="foster_id" jdbcType="BIGINT" property="fosterId"/>
+        <result column="fosteror_id" jdbcType="BIGINT" property="fosterorId"/>
+        <result column="fosteror" jdbcType="VARCHAR" property="fosteror"/>
+        <result column="audit_stage" jdbcType="BIGINT" property="auditStage"/>
+        <result column="foster_date" jdbcType="TIMESTAMP" property="fosterDate"/>
+        <result column="report_date" jdbcType="TIMESTAMP" property="reportDate"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbFoster">
+        <result column="fosteror_report" jdbcType="LONGVARCHAR" property="fosterorReport"/>
+        <result column="report" jdbcType="LONGVARCHAR" property="report"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    foster_id, fosteror_id, fosteror, audit_stage, foster_date, report_date, ebl_flag, 
+    del_flag, order_num, description, create_time, create_userid, create_username, update_time, 
+    update_userid, update_username, version
+  </sql>
+    <sql id="Blob_Column_List">
+    fosteror_report, report
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tab_pb_foster
+        where foster_id = #{fosterId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_foster
+    where foster_id = #{fosterId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbFoster">
+    insert into tab_pb_foster (foster_id, fosteror_id, fosteror, 
+      audit_stage, foster_date, report_date, 
+      ebl_flag, del_flag, order_num, 
+      description, create_time, create_userid, 
+      create_username, update_time, update_userid, 
+      update_username, version, fosteror_report, 
+      report)
+    values (#{fosterId,jdbcType=BIGINT}, #{fosterorId,jdbcType=BIGINT}, #{fosteror,jdbcType=VARCHAR}, 
+      #{auditStage,jdbcType=BIGINT}, #{fosterDate,jdbcType=TIMESTAMP}, #{reportDate,jdbcType=TIMESTAMP}, 
+      #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, 
+      #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, 
+      #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, 
+      #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{fosterorReport,jdbcType=LONGVARCHAR}, 
+      #{report,jdbcType=LONGVARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbFoster">
+        insert into tab_pb_foster
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fosterId != null">
+                foster_id,
+            </if>
+            <if test="fosterorId != null">
+                fosteror_id,
+            </if>
+            <if test="fosteror != null">
+                fosteror,
+            </if>
+            <if test="auditStage != null">
+                audit_stage,
+            </if>
+            <if test="fosterDate != null">
+                foster_date,
+            </if>
+            <if test="reportDate != null">
+                report_date,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="fosterorReport != null">
+                fosteror_report,
+            </if>
+            <if test="report != null">
+                report,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fosterId != null">
+                #{fosterId,jdbcType=BIGINT},
+            </if>
+            <if test="fosterorId != null">
+                #{fosterorId,jdbcType=BIGINT},
+            </if>
+            <if test="fosteror != null">
+                #{fosteror,jdbcType=VARCHAR},
+            </if>
+            <if test="auditStage != null">
+                #{auditStage,jdbcType=BIGINT},
+            </if>
+            <if test="fosterDate != null">
+                #{fosterDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="reportDate != null">
+                #{reportDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="fosterorReport != null">
+                #{fosterorReport,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="report != null">
+                #{report,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbFoster">
+        update tab_pb_foster
+        <set>
+            <if test="fosterorId != null">
+                fosteror_id = #{fosterorId,jdbcType=BIGINT},
+            </if>
+            <if test="fosteror != null">
+                fosteror = #{fosteror,jdbcType=VARCHAR},
+            </if>
+            <if test="auditStage != null">
+                audit_stage = #{auditStage,jdbcType=BIGINT},
+            </if>
+            <if test="fosterDate != null">
+                foster_date = #{fosterDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="reportDate != null">
+                report_date = #{reportDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="fosterorReport != null">
+                fosteror_report = #{fosterorReport,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="report != null">
+                report = #{report,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where foster_id = #{fosterId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbFoster">
+    update tab_pb_foster
+    set fosteror_id = #{fosterorId,jdbcType=BIGINT},
+      fosteror = #{fosteror,jdbcType=VARCHAR},
+      audit_stage = #{auditStage,jdbcType=BIGINT},
+      foster_date = #{fosterDate,jdbcType=TIMESTAMP},
+      report_date = #{reportDate,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      fosteror_report = #{fosterorReport,jdbcType=LONGVARCHAR},
+      report = #{report,jdbcType=LONGVARCHAR}
+    where foster_id = #{fosterId,jdbcType=BIGINT}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbFoster">
+    update tab_pb_foster
+    set fosteror_id = #{fosterorId,jdbcType=BIGINT},
+      fosteror = #{fosteror,jdbcType=VARCHAR},
+      audit_stage = #{auditStage,jdbcType=BIGINT},
+      foster_date = #{fosterDate,jdbcType=TIMESTAMP},
+      report_date = #{reportDate,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+    where foster_id = #{fosterId,jdbcType=BIGINT}
+  </update>
+</mapper>

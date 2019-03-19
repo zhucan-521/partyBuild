@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbDevStageAuditMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbDevStageAudit">
+        <id column="audit_id" jdbcType="BIGINT" property="auditId"/>
+        <result column="cultivator" jdbcType="VARCHAR" property="cultivator"/>
+        <result column="audit_stage" jdbcType="BIGINT" property="auditStage"/>
+        <result column="passed" jdbcType="TINYINT" property="passed"/>
+        <result column="cultivate_date" jdbcType="TIMESTAMP" property="cultivateDate"/>
+        <result column="report_date" jdbcType="TIMESTAMP" property="reportDate"/>
+        <result column="branch_meeting_count" jdbcType="BIGINT" property="branchMeetingCount"/>
+        <result column="branch_meeting_date" jdbcType="TIMESTAMP" property="branchMeetingDate"/>
+        <result column="talker" jdbcType="VARCHAR" property="talker"/>
+        <result column="prediction_date" jdbcType="TIMESTAMP" property="predictionDate"/>
+        <result column="dev_date" jdbcType="TIMESTAMP" property="devDate"/>
+        <result column="introducer" jdbcType="VARCHAR" property="introducer"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.yizheng.partybuilding.entity.TabPbDevStageAudit">
+        <result column="cultivator_opinion" jdbcType="LONGVARCHAR" property="cultivatorOpinion"/>
+        <result column="thought_report" jdbcType="LONGVARCHAR" property="thoughtReport"/>
+        <result column="talk_content" jdbcType="LONGVARCHAR" property="talkContent"/>
+        <result column="branch_opinion" jdbcType="LONGVARCHAR" property="branchOpinion"/>
+        <result column="branch_dicuss" jdbcType="LONGVARCHAR" property="branchDicuss"/>
+        <result column="higherleve_audit" jdbcType="LONGVARCHAR" property="higherleveAudit"/>
+        <result column="rward_punish" jdbcType="LONGVARCHAR" property="rwardPunish"/>
+        <result column="group_opinion" jdbcType="LONGVARCHAR" property="groupOpinion"/>
+        <result column="masses_opinion" jdbcType="LONGVARCHAR" property="massesOpinion"/>
+        <result column="introduce" jdbcType="LONGVARCHAR" property="introduce"/>
+        <result column="declaring" jdbcType="LONGVARCHAR" property="declaring"/>
+        <result column="committeer_opinion" jdbcType="LONGVARCHAR" property="committeerOpinion"/>
+        <result column="committee_audit" jdbcType="LONGVARCHAR" property="committeeAudit"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    audit_id, cultivator, audit_stage, passed, cultivate_date, report_date, branch_meeting_count, 
+    branch_meeting_date, talker, prediction_date, dev_date, introducer, ebl_flag, del_flag, 
+    order_num, description, create_time, create_userid, create_username, update_time, 
+    update_userid, update_username, version
+  </sql>
+    <sql id="Blob_Column_List">
+    cultivator_opinion, thought_report, talk_content, branch_opinion, branch_dicuss, 
+    higherleve_audit, rward_punish, group_opinion, masses_opinion, introduce, declaring, 
+    committeer_opinion, committee_audit
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tab_pb_dev_stage_audit
+        where audit_id = #{auditId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_dev_stage_audit
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbDevStageAudit">
+    insert into tab_pb_dev_stage_audit (audit_id, cultivator, audit_stage, 
+      passed, cultivate_date, report_date, 
+      branch_meeting_count, branch_meeting_date, 
+      talker, prediction_date, dev_date, 
+      introducer, ebl_flag, del_flag, 
+      order_num, description, create_time, 
+      create_userid, create_username, update_time, 
+      update_userid, update_username, version, 
+      cultivator_opinion, thought_report, 
+      talk_content, branch_opinion, branch_dicuss, 
+      higherleve_audit, rward_punish, group_opinion, 
+      masses_opinion, introduce, declaring, 
+      committeer_opinion, committee_audit
+      )
+    values (#{auditId,jdbcType=BIGINT}, #{cultivator,jdbcType=VARCHAR}, #{auditStage,jdbcType=BIGINT}, 
+      #{passed,jdbcType=TINYINT}, #{cultivateDate,jdbcType=TIMESTAMP}, #{reportDate,jdbcType=TIMESTAMP}, 
+      #{branchMeetingCount,jdbcType=BIGINT}, #{branchMeetingDate,jdbcType=TIMESTAMP}, 
+      #{talker,jdbcType=VARCHAR}, #{predictionDate,jdbcType=TIMESTAMP}, #{devDate,jdbcType=TIMESTAMP}, 
+      #{introducer,jdbcType=VARCHAR}, #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, 
+      #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, 
+      #{cultivatorOpinion,jdbcType=LONGVARCHAR}, #{thoughtReport,jdbcType=LONGVARCHAR}, 
+      #{talkContent,jdbcType=LONGVARCHAR}, #{branchOpinion,jdbcType=LONGVARCHAR}, #{branchDicuss,jdbcType=LONGVARCHAR}, 
+      #{higherleveAudit,jdbcType=LONGVARCHAR}, #{rwardPunish,jdbcType=LONGVARCHAR}, #{groupOpinion,jdbcType=LONGVARCHAR}, 
+      #{massesOpinion,jdbcType=LONGVARCHAR}, #{introduce,jdbcType=LONGVARCHAR}, #{declaring,jdbcType=LONGVARCHAR}, 
+      #{committeerOpinion,jdbcType=LONGVARCHAR}, #{committeeAudit,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbDevStageAudit">
+        insert into tab_pb_dev_stage_audit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="auditId != null">
+                audit_id,
+            </if>
+            <if test="cultivator != null">
+                cultivator,
+            </if>
+            <if test="auditStage != null">
+                audit_stage,
+            </if>
+            <if test="passed != null">
+                passed,
+            </if>
+            <if test="cultivateDate != null">
+                cultivate_date,
+            </if>
+            <if test="reportDate != null">
+                report_date,
+            </if>
+            <if test="branchMeetingCount != null">
+                branch_meeting_count,
+            </if>
+            <if test="branchMeetingDate != null">
+                branch_meeting_date,
+            </if>
+            <if test="talker != null">
+                talker,
+            </if>
+            <if test="predictionDate != null">
+                prediction_date,
+            </if>
+            <if test="devDate != null">
+                dev_date,
+            </if>
+            <if test="introducer != null">
+                introducer,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="cultivatorOpinion != null">
+                cultivator_opinion,
+            </if>
+            <if test="thoughtReport != null">
+                thought_report,
+            </if>
+            <if test="talkContent != null">
+                talk_content,
+            </if>
+            <if test="branchOpinion != null">
+                branch_opinion,
+            </if>
+            <if test="branchDicuss != null">
+                branch_dicuss,
+            </if>
+            <if test="higherleveAudit != null">
+                higherleve_audit,
+            </if>
+            <if test="rwardPunish != null">
+                rward_punish,
+            </if>
+            <if test="groupOpinion != null">
+                group_opinion,
+            </if>
+            <if test="massesOpinion != null">
+                masses_opinion,
+            </if>
+            <if test="introduce != null">
+                introduce,
+            </if>
+            <if test="declaring != null">
+                declaring,
+            </if>
+            <if test="committeerOpinion != null">
+                committeer_opinion,
+            </if>
+            <if test="committeeAudit != null">
+                committee_audit,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="auditId != null">
+                #{auditId,jdbcType=BIGINT},
+            </if>
+            <if test="cultivator != null">
+                #{cultivator,jdbcType=VARCHAR},
+            </if>
+            <if test="auditStage != null">
+                #{auditStage,jdbcType=BIGINT},
+            </if>
+            <if test="passed != null">
+                #{passed,jdbcType=TINYINT},
+            </if>
+            <if test="cultivateDate != null">
+                #{cultivateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="reportDate != null">
+                #{reportDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="branchMeetingCount != null">
+                #{branchMeetingCount,jdbcType=BIGINT},
+            </if>
+            <if test="branchMeetingDate != null">
+                #{branchMeetingDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="talker != null">
+                #{talker,jdbcType=VARCHAR},
+            </if>
+            <if test="predictionDate != null">
+                #{predictionDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="devDate != null">
+                #{devDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="introducer != null">
+                #{introducer,jdbcType=VARCHAR},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="cultivatorOpinion != null">
+                #{cultivatorOpinion,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="thoughtReport != null">
+                #{thoughtReport,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="talkContent != null">
+                #{talkContent,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="branchOpinion != null">
+                #{branchOpinion,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="branchDicuss != null">
+                #{branchDicuss,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="higherleveAudit != null">
+                #{higherleveAudit,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="rwardPunish != null">
+                #{rwardPunish,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="groupOpinion != null">
+                #{groupOpinion,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="massesOpinion != null">
+                #{massesOpinion,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="introduce != null">
+                #{introduce,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="declaring != null">
+                #{declaring,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="committeerOpinion != null">
+                #{committeerOpinion,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="committeeAudit != null">
+                #{committeeAudit,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbDevStageAudit">
+        update tab_pb_dev_stage_audit
+        <set>
+            <if test="cultivator != null">
+                cultivator = #{cultivator,jdbcType=VARCHAR},
+            </if>
+            <if test="auditStage != null">
+                audit_stage = #{auditStage,jdbcType=BIGINT},
+            </if>
+            <if test="passed != null">
+                passed = #{passed,jdbcType=TINYINT},
+            </if>
+            <if test="cultivateDate != null">
+                cultivate_date = #{cultivateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="reportDate != null">
+                report_date = #{reportDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="branchMeetingCount != null">
+                branch_meeting_count = #{branchMeetingCount,jdbcType=BIGINT},
+            </if>
+            <if test="branchMeetingDate != null">
+                branch_meeting_date = #{branchMeetingDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="talker != null">
+                talker = #{talker,jdbcType=VARCHAR},
+            </if>
+            <if test="predictionDate != null">
+                prediction_date = #{predictionDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="devDate != null">
+                dev_date = #{devDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="introducer != null">
+                introducer = #{introducer,jdbcType=VARCHAR},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="cultivatorOpinion != null">
+                cultivator_opinion = #{cultivatorOpinion,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="thoughtReport != null">
+                thought_report = #{thoughtReport,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="talkContent != null">
+                talk_content = #{talkContent,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="branchOpinion != null">
+                branch_opinion = #{branchOpinion,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="branchDicuss != null">
+                branch_dicuss = #{branchDicuss,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="higherleveAudit != null">
+                higherleve_audit = #{higherleveAudit,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="rwardPunish != null">
+                rward_punish = #{rwardPunish,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="groupOpinion != null">
+                group_opinion = #{groupOpinion,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="massesOpinion != null">
+                masses_opinion = #{massesOpinion,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="introduce != null">
+                introduce = #{introduce,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="declaring != null">
+                declaring = #{declaring,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="committeerOpinion != null">
+                committeer_opinion = #{committeerOpinion,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="committeeAudit != null">
+                committee_audit = #{committeeAudit,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where audit_id = #{auditId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbDevStageAudit">
+    update tab_pb_dev_stage_audit
+    set cultivator = #{cultivator,jdbcType=VARCHAR},
+      audit_stage = #{auditStage,jdbcType=BIGINT},
+      passed = #{passed,jdbcType=TINYINT},
+      cultivate_date = #{cultivateDate,jdbcType=TIMESTAMP},
+      report_date = #{reportDate,jdbcType=TIMESTAMP},
+      branch_meeting_count = #{branchMeetingCount,jdbcType=BIGINT},
+      branch_meeting_date = #{branchMeetingDate,jdbcType=TIMESTAMP},
+      talker = #{talker,jdbcType=VARCHAR},
+      prediction_date = #{predictionDate,jdbcType=TIMESTAMP},
+      dev_date = #{devDate,jdbcType=TIMESTAMP},
+      introducer = #{introducer,jdbcType=VARCHAR},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      cultivator_opinion = #{cultivatorOpinion,jdbcType=LONGVARCHAR},
+      thought_report = #{thoughtReport,jdbcType=LONGVARCHAR},
+      talk_content = #{talkContent,jdbcType=LONGVARCHAR},
+      branch_opinion = #{branchOpinion,jdbcType=LONGVARCHAR},
+      branch_dicuss = #{branchDicuss,jdbcType=LONGVARCHAR},
+      higherleve_audit = #{higherleveAudit,jdbcType=LONGVARCHAR},
+      rward_punish = #{rwardPunish,jdbcType=LONGVARCHAR},
+      group_opinion = #{groupOpinion,jdbcType=LONGVARCHAR},
+      masses_opinion = #{massesOpinion,jdbcType=LONGVARCHAR},
+      introduce = #{introduce,jdbcType=LONGVARCHAR},
+      declaring = #{declaring,jdbcType=LONGVARCHAR},
+      committeer_opinion = #{committeerOpinion,jdbcType=LONGVARCHAR},
+      committee_audit = #{committeeAudit,jdbcType=LONGVARCHAR}
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbDevStageAudit">
+    update tab_pb_dev_stage_audit
+    set cultivator = #{cultivator,jdbcType=VARCHAR},
+      audit_stage = #{auditStage,jdbcType=BIGINT},
+      passed = #{passed,jdbcType=TINYINT},
+      cultivate_date = #{cultivateDate,jdbcType=TIMESTAMP},
+      report_date = #{reportDate,jdbcType=TIMESTAMP},
+      branch_meeting_count = #{branchMeetingCount,jdbcType=BIGINT},
+      branch_meeting_date = #{branchMeetingDate,jdbcType=TIMESTAMP},
+      talker = #{talker,jdbcType=VARCHAR},
+      prediction_date = #{predictionDate,jdbcType=TIMESTAMP},
+      dev_date = #{devDate,jdbcType=TIMESTAMP},
+      introducer = #{introducer,jdbcType=VARCHAR},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+    where audit_id = #{auditId,jdbcType=BIGINT}
+  </update>
+</mapper>

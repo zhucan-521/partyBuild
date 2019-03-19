@@ -1,0 +1,974 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabSysDeptMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.system.entity.SysDept">
+        <id column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="org_short_name" jdbcType="VARCHAR" property="orgShortName"/>
+        <result column="org_code" jdbcType="VARCHAR" property="orgCode"/>
+        <result column="org_inner_code" jdbcType="VARCHAR" property="orgInnerCode"/>
+        <result column="full_path" jdbcType="VARCHAR" property="fullPath"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="is_team" jdbcType="TINYINT" property="isTeam"/>
+        <result column="org_level" jdbcType="BIGINT" property="orgLevel"/>
+        <result column="level_date" jdbcType="TIMESTAMP" property="levelDate"/>
+        <result column="org_status" jdbcType="BIGINT" property="orgStatus"/>
+        <result column="is_city" jdbcType="TINYINT" property="isCity"/>
+        <result column="orgnize_property" jdbcType="BIGINT" property="orgnizeProperty"/>
+        <result column="dependency_relation" jdbcType="VARCHAR" property="dependencyRelation"/>
+        <result column="orgnize_master_id" jdbcType="BIGINT" property="orgnizeMasterId"/>
+        <result column="orgnize_master" jdbcType="VARCHAR" property="orgnizeMaster"/>
+        <result column="contactor_id" jdbcType="BIGINT" property="contactorId"/>
+        <result column="contactor" jdbcType="VARCHAR" property="contactor"/>
+        <result column="office_size" jdbcType="BIGINT" property="officeSize"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
+        <result column="unit_id" jdbcType="BIGINT" property="unitId"/>
+        <result column="unit_state" jdbcType="BIGINT" property="unitState"/>
+        <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
+        <result column="community_addr" jdbcType="BIGINT" property="communityAddr"/>
+        <result column="founded_date" jdbcType="TIMESTAMP" property="foundedDate"/>
+        <result column="founded_file_number" jdbcType="VARCHAR" property="foundedFileNumber"/>
+        <result column="contact_number" jdbcType="VARCHAR" property="contactNumber"/>
+        <result column="fax_number" jdbcType="VARCHAR" property="faxNumber"/>
+        <result column="post_code" jdbcType="VARCHAR" property="postCode"/>
+        <result column="system_uuid" jdbcType="VARCHAR" property="systemUuid"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="is_parent" jdbcType="TINYINT" property="isParent"/>
+        <result column="is_branch" jdbcType="TINYINT" property="isBranch"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.system.entity.SysDept">
+        <result column="position" jdbcType="LONGVARCHAR" property="position"/>
+        <result column="position_range" jdbcType="LONGVARCHAR" property="positionRange"/>
+        <result column="founded_reason" jdbcType="LONGVARCHAR" property="foundedReason"/>
+    </resultMap>
+    <!--包含组织关联信息的ResultMap-->
+    <resultMap extends="ResultMapWithBLOBs" id="ResultMapWithAboutInfo" type="com.yizheng.partybuilding.dto.SysDeptDto">
+        <result column="parent_name" jdbcType="VARCHAR" property="parentName"/>
+        <collection property="tabPbUnitInfos"
+                    select="com.yizheng.partybuilding.repository.TabPbUnitInfoMapper.selectByOrgId" column="dept_id"/>
+    </resultMap>
+    <!--组织阵地BaseResultMap-->
+    <resultMap id="BasePositionResultMap" type="com.yizheng.partybuilding.dto.TabDeptPositionDto">
+        <id column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="office_size" jdbcType="BIGINT" property="officeSize"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="position" jdbcType="VARCHAR" property="position"/>
+        <result column="founded_date" jdbcType="TIMESTAMP" property="foundedDate"/>
+        <result column="img_annex_num" jdbcType="INTEGER" property="imgAnnexNum"/>
+    </resultMap>
+    <!--包含附件的组织阵地BaseResultMap-->
+    <resultMap extends="BasePositionResultMap" id="WithAttachmentsPositionResultMap"
+               type="com.yizheng.partybuilding.dto.TabDeptPositionDto">
+        <collection property="arrangePhotos"
+                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=dept_id,attachmentType=attachment_type}"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        d.dept_id, d.name, d.org_short_name, d.org_code, d.org_inner_code,d.full_path, d.parent_id, d.is_team,
+        d.org_level,
+    d.level_date, d.org_status, d.is_city, d.orgnize_property, d.dependency_relation, d.orgnize_master_id,
+    d.orgnize_master, d.contactor_id, d.contactor, d.office_size, d.address, d.unit_name, d.unit_id, d.unit_state,
+    d.community_addr, d.founded_date, d.founded_file_number, d.contact_number, d.fax_number, d.post_code,
+    d.system_uuid, d.ebl_flag, d.del_flag, d.order_num, d.description, d.create_time, d.create_userid,
+    d.create_username, d.update_time, d.update_userid, d.update_username, d.version, d.is_parent
+  </sql>
+    <sql id="Blob_Column_List">
+    d.position, d.position_range, d.founded_reason
+  </sql>
+    <sql id="Base_WhereCase_List">
+        <if test="deptId != null and deptId != ''">
+            AND d.dept_id = #{deptId}
+        </if>
+        <if test="name != null and name != ''">
+            AND d.`name` like concat('%',#{name},'%')
+        </if>
+        <if test="orgShortName != null and orgShortName != ''">
+            AND d.org_short_name like concat('%',#{name},'%')
+        </if>
+        <if test="orgCode != null and orgCode != ''">
+            AND d.org_code = #{orgCode}
+        </if>
+        <if test="orgInnerCode != null and orgInnerCode != ''">
+            AND d.org_inner_code = #{orgInnerCode}
+        </if>
+        <if test="parentId != null and parentId != ''">
+            AND d.parent_id = #{parentId}
+        </if>
+        <if test="isTeam != null and isTeam != ''">
+            AND d.is_team = #{isTeam}
+        </if>
+        <if test="orgLevel != null and orgLevel != ''">
+            AND d.org_level = #{orgLevel}
+        </if>
+        <if test="levelDate != null and levelDate != ''">
+            AND d.level_date = #{levelDate}
+        </if>
+        <if test="orgStatus != null and orgStatus != ''">
+            AND d.org_status = #{orgStatus}
+        </if>
+        <if test="isCity != null and isCity != ''">
+            AND d.is_city = #{isCity}
+        </if>
+        <if test="orgnizeProperty != null and orgnizeProperty != ''">
+            AND find_in_set(d.orgnize_property,#{orgnizeProperty})
+        </if>
+        <if test="dependencyRelation != null and dependencyRelation != ''">
+            AND find_in_set(d.dependency_relation,#{dependencyRelation})
+        </if>
+        <if test="orgnizeMasterId != null and orgnizeMasterId != ''">
+            AND d.orgnize_master_id = #{orgnizeMasterId}
+        </if>
+        <if test="orgnizeMaster != null and orgnizeMaster != ''">
+            AND d.orgnize_master like concat('%',#{orgnizeMaster},'%')
+        </if>
+        <if test="contactorId != null and contactorId != ''">
+            AND d.contactor_id = #{contactorId}
+        </if>
+        <if test="contactor != null and contactor != ''">
+            AND d.contactor = #{contactor}
+        </if>
+        <if test="officeSize != null and officeSize != ''">
+            AND d.office_size = #{officeSize}
+        </if>
+        <if test="address != null and address != ''">
+            AND d.address = #{address}
+        </if>
+        <!--<if test="unitName != null and unitName != ''">-->
+        <!--AND d.unit_name = #{unitName}-->
+        <!--</if>-->
+        <if test="unitId != null and unitId != ''">
+            AND d.unit_id = #{unitId}
+        </if>
+        <if test="unitState != null and unitState != ''">
+            AND d.unit_state = #{unitState}
+        </if>
+        <if test="communityAddr != null and communityAddr != ''">
+            AND d.community_addr = #{communityAddr}
+        </if>
+        <if test="foundedDate != null and foundedDate != ''">
+            AND d.founded_date = #{foundedDate}
+        </if>
+        <if test="foundedFileNumber != null and foundedFileNumber != ''">
+            AND d.founded_file_number = #{foundedFileNumber}
+        </if>
+        <if test="contactNumber != null and contactNumber != ''">
+            AND d.contact_number = #{contactNumber}
+        </if>
+        <if test="faxNumber != null and faxNumber != ''">
+            AND d.fax_number = #{faxNumber}
+        </if>
+        <if test="postCode != null and postCode != ''">
+            AND d.post_code = #{postCode}
+        </if>
+        <if test="systemUuid != null and systemUuid != ''">
+            AND d.system_uuid = #{systemUuid}
+        </if>
+        <if test="eblFlag != null and eblFlag != ''">
+            AND d.ebl_flag = #{eblFlag}
+        </if>
+        <if test="delFlag != null and delFlag != ''">
+            AND d.del_flag = #{delFlag}
+        </if>
+        <if test="orderNum != null and orderNum != ''">
+            AND d.order_num = #{orderNum}
+        </if>
+        <if test="description != null and description != ''">
+            AND d.description = #{description}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            AND d.create_time = #{createTime}
+        </if>
+        <if test="createUserid != null and createUserid != ''">
+            AND d.create_userid = #{createUserid}
+        </if>
+        <if test="createUsername != null and createUsername != ''">
+            AND d.create_username = #{createUsername}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+            AND d.update_time = #{updateTime}
+        </if>
+        <if test="updateUserid != null and updateUserid != ''">
+            AND d.update_userid = #{updateUserid}
+        </if>
+        <if test="updateUsername != null and updateUsername != ''">
+            AND d.update_username = #{updateUsername}
+        </if>
+        <if test="version != null and version != ''">
+            AND d.version = #{version}
+        </if>
+        <if test="isParent != null and isParent != ''">
+            AND d.is_parent = #{isParent}
+        </if>
+        <if test="position != null and position != ''">
+            AND d.position = #{position}
+        </if>
+        <if test="positionRange != null and positionRange != ''">
+            AND d.position_range = #{positionRange}
+        </if>
+        <if test="foundedReason != null and foundedReason != ''">
+            AND d.founded_reason = #{foundedReason}
+        </if>
+        <if test="deptIds != null and deptIds != ''">
+            AND d.dept_id in
+            <foreach collection="deptIds" item="item" open="(" separator="," close=")">
+                ${item}
+            </foreach>
+        </if>
+        <!--组织范围  0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <if test="orgRange != null and orgRange != ''">
+            <choose>
+                <when test="orgRange == 1">
+                    AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{rangeDeptId}, d.full_path)
+                </when>
+            </choose>
+        </if>
+        <if test="orgRange == null or orgRange.toString() == ''">
+            AND d.dept_id = #{rangeDeptId}
+        </if>
+
+        <!-- 单位表字段 -->
+        <if test="unitProperty != null and unitProperty != ''">
+            AND find_in_set(u.unit_property,#{unitProperty})
+        </if>
+        <if test="unitName != null and unitName != ''">
+            AND u.unit_name like concat('%',#{unitName},'%')
+        </if>
+        <if test="unitCode != null and unitCode != ''">
+            AND u.unit_code = #{unitCode}
+        </if>
+    </sql>
+    <sql id="Selective_Column_List">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">
+                dept_id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="orgShortName != null">
+                org_short_name,
+            </if>
+            <if test="orgCode != null">
+                org_code,
+            </if>
+            <if test="orgInnerCode != null">
+                org_inner_code,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="isTeam != null">
+                is_team,
+            </if>
+            <if test="orgLevel != null">
+                org_level,
+            </if>
+            <if test="levelDate != null">
+                level_date,
+            </if>
+            <if test="orgStatus != null">
+                org_status,
+            </if>
+            <if test="isCity != null">
+                is_city,
+            </if>
+            <if test="orgnizeProperty != null">
+                orgnize_property,
+            </if>
+            <if test="dependencyRelation != null">
+                dependency_relation,
+            </if>
+            <if test="orgnizeMasterId != null">
+                orgnize_master_id,
+            </if>
+            <if test="orgnizeMaster != null">
+                orgnize_master,
+            </if>
+            <if test="contactorId != null">
+                contactor_id,
+            </if>
+            <if test="contactor != null">
+                contactor,
+            </if>
+            <if test="officeSize != null">
+                office_size,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="unitName != null">
+                unit_name,
+            </if>
+            <if test="unitId != null">
+                unit_id,
+            </if>
+            <if test="unitState != null">
+                unit_state,
+            </if>
+            <if test="communityAddr != null">
+                community_addr,
+            </if>
+            <if test="foundedDate != null">
+                founded_date,
+            </if>
+            <if test="foundedFileNumber != null">
+                founded_file_number,
+            </if>
+            <if test="contactNumber != null">
+                contact_number,
+            </if>
+            <if test="faxNumber != null">
+                fax_number,
+            </if>
+            <if test="postCode != null">
+                post_code,
+            </if>
+            <if test="systemUuid != null">
+                system_uuid,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="isParent != null">
+                is_parent,
+            </if>
+            <if test="position != null">
+                position,
+            </if>
+            <if test="positionRange != null">
+                position_range,
+            </if>
+            <if test="foundedReason != null">
+                founded_reason,
+            </if>
+        </trim>
+    </sql>
+    <sql id="Selective_Values_List">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">
+                #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="orgShortName != null">
+                #{orgShortName,jdbcType=VARCHAR},
+            </if>
+            <if test="orgCode != null">
+                #{orgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="orgInnerCode != null">
+                #{orgInnerCode,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=BIGINT},
+            </if>
+            <if test="isTeam != null">
+                #{isTeam,jdbcType=TINYINT},
+            </if>
+            <if test="orgLevel != null">
+                #{orgLevel,jdbcType=BIGINT},
+            </if>
+            <if test="levelDate != null">
+                #{levelDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orgStatus != null">
+                #{orgStatus,jdbcType=BIGINT},
+            </if>
+            <if test="isCity != null">
+                #{isCity,jdbcType=TINYINT},
+            </if>
+            <if test="orgnizeProperty != null">
+                #{orgnizeProperty,jdbcType=BIGINT},
+            </if>
+            <if test="dependencyRelation != null">
+                #{dependencyRelation,jdbcType=VARCHAR},
+            </if>
+            <if test="orgnizeMasterId != null">
+                #{orgnizeMasterId,jdbcType=BIGINT},
+            </if>
+            <if test="orgnizeMaster != null">
+                #{orgnizeMaster,jdbcType=VARCHAR},
+            </if>
+            <if test="contactorId != null">
+                #{contactorId,jdbcType=BIGINT},
+            </if>
+            <if test="contactor != null">
+                #{contactor,jdbcType=VARCHAR},
+            </if>
+            <if test="officeSize != null">
+                #{officeSize,jdbcType=BIGINT},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="unitName != null">
+                #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitId != null">
+                #{unitId,jdbcType=BIGINT},
+            </if>
+            <if test="unitState != null">
+                #{unitState,jdbcType=BIGINT},
+            </if>
+            <if test="communityAddr != null">
+                #{communityAddr,jdbcType=BIGINT},
+            </if>
+            <if test="foundedDate != null">
+                #{foundedDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="foundedFileNumber != null">
+                #{foundedFileNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="contactNumber != null">
+                #{contactNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="faxNumber != null">
+                #{faxNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="postCode != null">
+                #{postCode,jdbcType=VARCHAR},
+            </if>
+            <if test="systemUuid != null">
+                #{systemUuid,jdbcType=VARCHAR},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="isParent != null">
+                #{isParent,jdbcType=TINYINT},
+            </if>
+            <if test="position != null">
+                #{position,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="positionRange != null">
+                #{positionRange,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="foundedReason != null">
+                #{foundedReason,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </sql>
+    <sql id="Base_Set_Column_List">
+        <if test="name != null">
+            d.name = #{name,jdbcType=VARCHAR},
+        </if>
+        <if test="orgShortName != null">
+            d.org_short_name = #{orgShortName,jdbcType=VARCHAR},
+        </if>
+        <if test="orgCode != null">
+            d.org_code = #{orgCode,jdbcType=VARCHAR},
+        </if>
+        <if test="orgInnerCode != null">
+            d.org_inner_code = #{orgInnerCode,jdbcType=VARCHAR},
+        </if>
+        <if test="fullPath != null">
+            d.full_path = #{fullPath,jdbcType=VARCHAR},
+        </if>
+        <if test="fullPath == null and parentId != null">
+            d.full_path = concat( (select t.full_path from ( SELECT full_path FROM sys_dept WHERE dept_id = #{parentId}
+            ) t), '-', d.dept_id ),
+        </if>
+        <if test="parentId != null">
+            d.parent_id = #{parentId,jdbcType=BIGINT},
+        </if>
+        <if test="isTeam != null">
+            d.is_team = #{isTeam,jdbcType=TINYINT},
+        </if>
+        <if test="orgLevel != null">
+            d.org_level = #{orgLevel,jdbcType=BIGINT},
+        </if>
+        <if test="levelDate != null">
+            d.level_date = #{levelDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="orgStatus != null">
+            d.org_status = #{orgStatus,jdbcType=BIGINT},
+        </if>
+        <if test="isCity != null">
+            d.is_city = #{isCity,jdbcType=TINYINT},
+        </if>
+        <if test="orgnizeProperty != null">
+            d.orgnize_property = #{orgnizeProperty,jdbcType=BIGINT},
+        </if>
+        <if test="dependencyRelation != null">
+            d.dependency_relation = #{dependencyRelation,jdbcType=VARCHAR},
+        </if>
+        <if test="orgnizeMasterId != null">
+            d.orgnize_master_id = #{orgnizeMasterId,jdbcType=BIGINT},
+        </if>
+        <if test="orgnizeMaster != null">
+            d.orgnize_master = #{orgnizeMaster,jdbcType=VARCHAR},
+        </if>
+        <if test="contactorId != null">
+            d.contactor_id = #{contactorId,jdbcType=BIGINT},
+        </if>
+        <if test="contactor != null">
+            d.contactor = #{contactor,jdbcType=VARCHAR},
+        </if>
+        <if test="officeSize != null">
+            d.office_size = #{officeSize,jdbcType=BIGINT},
+        </if>
+        <if test="address != null">
+            d.address = #{address,jdbcType=VARCHAR},
+        </if>
+        <if test="unitName != null">
+            d.unit_name = #{unitName,jdbcType=VARCHAR},
+        </if>
+        <if test="unitId != null">
+            d.unit_id = #{unitId,jdbcType=BIGINT},
+        </if>
+        <if test="unitState != null">
+            d.unit_state = #{unitState,jdbcType=BIGINT},
+        </if>
+        <if test="communityAddr != null">
+            d.community_addr = #{communityAddr,jdbcType=BIGINT},
+        </if>
+        <if test="foundedDate != null">
+            d.founded_date = #{foundedDate,jdbcType=TIMESTAMP},
+        </if>
+        <if test="foundedFileNumber != null">
+            d.founded_file_number = #{foundedFileNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="contactNumber != null">
+            d.contact_number = #{contactNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="faxNumber != null">
+            d.fax_number = #{faxNumber,jdbcType=VARCHAR},
+        </if>
+        <if test="postCode != null">
+            d.post_code = #{postCode,jdbcType=VARCHAR},
+        </if>
+        <if test="systemUuid != null">
+            d.system_uuid = #{systemUuid,jdbcType=VARCHAR},
+        </if>
+        <if test="eblFlag != null">
+            d.ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+        </if>
+        <if test="delFlag != null">
+            d.del_flag = #{delFlag,jdbcType=VARCHAR},
+        </if>
+        <if test="orderNum != null">
+            d.order_num = #{orderNum,jdbcType=BIGINT},
+        </if>
+        <if test="description != null">
+            d.description = #{description,jdbcType=VARCHAR},
+        </if>
+        <if test="deptId == null and createTime != null">
+            d.create_time = #{createTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="deptId == null and createUserid != null">
+            d.create_userid = #{createUserid,jdbcType=BIGINT},
+        </if>
+        <if test="deptId == null and createUsername != null">
+            d.create_username = #{createUsername,jdbcType=VARCHAR},
+        </if>
+        <if test="updateTime != null">
+            d.update_time = #{updateTime,jdbcType=TIMESTAMP},
+        </if>
+        <if test="updateUserid != null">
+            d.update_userid = #{updateUserid,jdbcType=BIGINT},
+        </if>
+        <if test="updateUsername != null">
+            d.update_username = #{updateUsername,jdbcType=VARCHAR},
+        </if>
+        <if test="version != null">
+            d.version = #{version,jdbcType=BIGINT},
+        </if>
+        <if test="isParent != null">
+            d.is_parent = #{isParent,jdbcType=TINYINT},
+        </if>
+        <if test="position != null">
+            d.position = #{position,jdbcType=LONGVARCHAR},
+        </if>
+        <if test="positionRange != null">
+            d.position_range = #{positionRange,jdbcType=LONGVARCHAR},
+        </if>
+        <if test="foundedReason != null">
+            d.founded_reason = #{foundedReason,jdbcType=LONGVARCHAR},
+        </if>
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from sys_dept d
+        where d.dept_id = #{deptId,jdbcType=BIGINT} and del_flag=0
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_dept d
+    where d.dept_id = #{deptId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="deptId"
+            parameterType="com.yizheng.partybuilding.system.entity.SysDept">
+    insert into sys_dept (name, org_short_name,
+      org_code, org_inner_code, parent_id,
+      is_team, org_level, level_date,
+      org_status, is_city, orgnize_property,
+      dependency_relation, orgnize_master_id, orgnize_master,
+      contactor_id, contactor, office_size,
+      address, unit_name, unit_id, unit_state,
+      community_addr, founded_date, founded_file_number,
+      contact_number, fax_number, post_code,
+      system_uuid, ebl_flag, del_flag,
+      order_num, description, create_time,
+      create_userid, create_username, update_time,
+      update_userid, update_username, version, is_parent,
+      position, position_range, founded_reason
+      )
+    values (#{name,jdbcType=VARCHAR}, #{orgShortName,jdbcType=VARCHAR},
+      #{orgCode,jdbcType=VARCHAR}, #{orgInnerCode,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT},
+      #{isTeam,jdbcType=TINYINT}, #{orgLevel,jdbcType=BIGINT}, #{levelDate,jdbcType=TIMESTAMP},
+      #{orgStatus,jdbcType=BIGINT}, #{isCity,jdbcType=TINYINT}, #{orgnizeProperty,jdbcType=BIGINT},
+      #{dependencyRelation,jdbcType=VARCHAR}, #{orgnizeMasterId,jdbcType=BIGINT}, #{orgnizeMaster,jdbcType=VARCHAR},
+      #{contactorId,jdbcType=BIGINT}, #{contactor,jdbcType=VARCHAR}, #{officeSize,jdbcType=BIGINT},
+      #{address,jdbcType=VARCHAR}, #{unitName,jdbcType=VARCHAR}, #{unitId,jdbcType=BIGINT}, #{unitState,jdbcType=BIGINT},
+      #{communityAddr,jdbcType=BIGINT}, #{foundedDate,jdbcType=TIMESTAMP}, #{foundedFileNumber,jdbcType=VARCHAR},
+      #{contactNumber,jdbcType=VARCHAR}, #{faxNumber,jdbcType=VARCHAR}, #{postCode,jdbcType=VARCHAR},
+      #{systemUuid,jdbcType=VARCHAR}, #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR},
+      #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+      #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{isParent,jdbcType=TINYINT},
+      #{position,jdbcType=LONGVARCHAR}, #{positionRange,jdbcType=LONGVARCHAR}, #{foundedReason,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="deptId"
+            parameterType="com.yizheng.partybuilding.system.entity.SysDept">
+        insert into sys_dept
+        <include refid="Selective_Column_List"/>
+        values
+        <include refid="Selective_Values_List"/>
+    </insert>
+    <!--根据主键修改选择的字段-->
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.system.entity.SysDept">
+        update sys_dept d
+        <set>
+            <include refid="Base_Set_Column_List"/>
+        </set>
+        where d.dept_id = #{deptId,jdbcType=BIGINT}
+    </update>
+    <!--根据主键修改-->
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.system.entity.SysDept">
+    update sys_dept
+    set name = #{name,jdbcType=VARCHAR},
+      org_short_name = #{orgShortName,jdbcType=VARCHAR},
+      org_code = #{orgCode,jdbcType=VARCHAR},
+      org_inner_code = #{orgInnerCode,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=BIGINT},
+      is_team = #{isTeam,jdbcType=TINYINT},
+      org_level = #{orgLevel,jdbcType=BIGINT},
+      level_date = #{levelDate,jdbcType=TIMESTAMP},
+      org_status = #{orgStatus,jdbcType=BIGINT},
+      is_city = #{isCity,jdbcType=TINYINT},
+      orgnize_property = #{orgnizeProperty,jdbcType=BIGINT},
+      dependency_relation = #{dependencyRelation,jdbcType=VARCHAR},
+      orgnize_master_id = #{orgnizeMasterId,jdbcType=BIGINT},
+      orgnize_master = #{orgnizeMaster,jdbcType=VARCHAR},
+      contactor_id = #{contactorId,jdbcType=BIGINT},
+      contactor = #{contactor,jdbcType=VARCHAR},
+      office_size = #{officeSize,jdbcType=BIGINT},
+      address = #{address,jdbcType=VARCHAR},
+      unit_name = #{unitName,jdbcType=VARCHAR},
+      unit_id = #{unitId,jdbcType=BIGINT},
+      unit_state = #{unitState,jdbcType=BIGINT},
+      community_addr = #{communityAddr,jdbcType=BIGINT},
+      founded_date = #{foundedDate,jdbcType=TIMESTAMP},
+      founded_file_number = #{foundedFileNumber,jdbcType=VARCHAR},
+      contact_number = #{contactNumber,jdbcType=VARCHAR},
+      fax_number = #{faxNumber,jdbcType=VARCHAR},
+      post_code = #{postCode,jdbcType=VARCHAR},
+      system_uuid = #{systemUuid,jdbcType=VARCHAR},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      is_parent = #{isParent,jdbcType=TINYINT}
+    where dept_id = #{deptId,jdbcType=BIGINT}
+  </update>
+
+    <!--判断组织机构名称合法性-->
+    <select id="checkOrgNameAvailability" resultType="com.yizheng.partybuilding.system.entity.SysDept">
+    SELECT dept_id as deptId, `name` FROM sys_dept WHERE `name` = #{deptName}
+  </select>
+
+    <!--根据条件查询-->
+    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        , u.unit_property,
+        case when d.orgnize_property in ( 989, 992, 995, 1002, 1003, 1007, 1008) then 1 else 0 end AS is_branch
+        from sys_dept d
+        left join tab_pb_unit_info u on d.unit_id = u.unit_id
+        <where>
+            <include refid="Base_WhereCase_List"/>
+        </where>
+        order by d.order_num
+    </select>
+
+    <!--简单列表-map-->
+    <select id="selectToMapWithConditions" parameterType="java.util.Map" resultType="java.util.HashMap">
+        select
+          d.dept_id,
+          d.name
+        from sys_dept d
+        where d.name like concat('%',#{name},'%')
+    </select>
+
+    <!--批量插入-->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into sys_dept
+        <include refid="Selective_Column_List"/>
+        values
+        <foreach collection="list" item="item" separator=",">
+            <include refid="Selective_Values_List"/>
+        </foreach>
+    </insert>
+
+    <!--批量插入关系表-->
+    <insert id="batchInsertRelation" parameterType="java.util.List">
+        insert into sys_dept_relation
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.parentId}, #{item.deptId})
+        </foreach>
+    </insert>
+
+    <!--根据ID查询组织信息并关联相关的实体信息-->
+    <select id="selectWithAboutInfoByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithAboutInfo">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        , d2.name as parent_name, u.unit_property,
+        case when d.orgnize_property in ( 989, 992, 995, 1002, 1003, 1007, 1008) then 1 else 0 end AS is_branch
+        from sys_dept d
+        left join sys_dept d2 on d.parent_id = d2.dept_id
+        left join tab_pb_unit_info u on d.unit_id = u.unit_id
+        where d.dept_id = #{deptId,jdbcType=BIGINT}
+    </select>
+
+    <!--新增关系表-->
+    <insert id="insertToDeptRelationTable">
+        insert into sys_dept_relation values(#{parentId}, #{deptId})
+    </insert>
+
+    <!--逻辑删除-->
+    <update id="logicDeleteById">
+        update sys_dept set del_flag = 1 where dept_id = #{deptId}
+    </update>
+
+    <!--根据条件查询组织阵地-->
+    <select id="selectPositionWithConditions" parameterType="java.util.Map" resultMap="BasePositionResultMap">
+        select
+        d.dept_id, d.name, d.office_size, d.address, d.position, d.founded_date,
+        ifnull(t.img_annex_num, 0) as img_annex_num,
+        '3' as attachment_type
+        from sys_dept d
+        LEFT JOIN (
+        SELECT host_id, count( 1 ) img_annex_num
+        FROM tab_pb_attachment
+        WHERE attachment_type = 3  <!--3 组织阵地-->
+          AND del_flag = 0
+        GROUP BY host_id
+        ) t ON d.dept_id = t.host_id
+        <where>
+            <include refid="Base_WhereCase_List"/>
+        </where>
+        order by d.create_time
+    </select>
+
+    <!--根据ID查询组织阵地信息并关联相关的实体信息-->
+    <select id="selectPositionWithAboutInfoByPrimaryKey" parameterType="java.lang.Long"
+            resultMap="WithAttachmentsPositionResultMap">
+        select
+          d.dept_id,
+          d.name,
+          d.office_size,
+          d.address,
+          d.position,
+          d.founded_date,
+          d.del_flag,
+          '3' as attachment_type
+        from sys_dept d
+        where d.dept_id = #{deptId,jdbcType=BIGINT}
+    </select>
+
+    <!--根据主键修改leader_user_id联点领导-->
+    <update id="updateLeaderUserIdByDeptId" parameterType="java.lang.Long">
+        update sys_dept
+        set leader_user_id = #{leaderUserId,jdbcType=BIGINT}
+        where dept_id = #{deptId,jdbcType=BIGINT}
+  </update>
+
+    <!--根据 ID 查询组织信息（不查关联数据）-->
+    <select id="selectAloneByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select * from sys_dept where dept_id = #{deptId}
+    </select>
+
+    <!--修改组织信息的同时修改 relation 表-->
+    <update id="updateWithRelationByPrimaryKeySelective"
+            parameterType="com.yizheng.partybuilding.system.entity.SysDept">
+        update sys_dept d
+        inner join sys_dept_relation dr on d.dept_id = dr.descendant
+        <set>
+            <include refid="Base_Set_Column_List"/>
+            dr.ancestor = #{parentId}
+        </set>
+        where d.dept_id = #{deptId,jdbcType=BIGINT}
+    </update>
+
+    <!--修改所有下级组织的 full_path 字段-->
+    <update id="updateFullPathForSubs">
+        update sys_dept
+        set full_path = concat(#{newFullPath},',', dept_id)
+        <!--,order_num = length(concat(#{newFullPath},',', dept_id)) - length(replace(concat(#{newFullPath},',', dept_id), ',', ''))-->
+        where full_path like concat(#{oldFullPath},'%') and dept_id != #{nowDeptId}
+    </update>
+
+    <!--检查名称或名称简称是否存在-->
+    <select id="checkNameOrShortName" resultType="java.lang.Integer">
+        SELECT count(*) FROM sys_dept WHERE del_flag = '0' AND (`name` =#{name}  OR org_short_name= #{name})
+    </select>
+
+    <!--修改指定组织的结对组织-->
+    <update id="pushPairOrgIdToDeptTable">
+        UPDATE sys_dept SET partner_org_id = #{pairOrgId} WHERE dept_id = #{orgId}
+    </update>
+
+    <!--统计组织和党员信息-->
+    <select id="countOrgWithPartyManInfo" parameterType="java.lang.Integer" resultType="SysDeptDtoWithCountInfo">
+        SELECT
+          *
+        FROM
+        (
+            SELECT
+                count( CASE WHEN u.identity_type = 223 THEN 1 ELSE NULL END ) formal,
+                count( CASE WHEN u.identity_type = 224 THEN 1 ELSE NULL END ) prep,
+                count( CASE WHEN u.nation != 868 THEN 1 ELSE NULL END ) minority,
+                count( CASE WHEN u.education >= 71 AND u.education &lt;= 85 THEN 1 ELSE NULL END ) collegeAndAbove,
+                count( CASE WHEN u.gender = 95 THEN 1 ELSE NULL END ) man,
+                count( CASE WHEN u.gender = 96 THEN 1 ELSE NULL END ) woman,
+                count( CASE WHEN dpm.host_id2_1 > 0 AND dpm.host_id3_1 IS NULL THEN 1 ELSE NULL END ) activity,
+                count( CASE WHEN dpm.host_id3_1 > 0 AND dpm.host_id4_1 IS NULL THEN 1 ELSE NULL END ) growing,
+                count( ut.usertag_id ) decommissioning,
+                count( CASE WHEN ui.unit_property IN ( 388, 391 ) THEN 1 ELSE NULL END ) twoNew
+            FROM
+            <choose>
+                <when test="orgId != 14307">
+                    ( SELECT dept_id AS org_id FROM sys_dept dept WHERE dept.del_flag = 0 AND find_in_set( #{orgId}, dept.full_path ) ) d
+                    INNER JOIN sys_user u ON u.dept_id = d.org_id
+                </when>
+                <otherwise>
+                    sys_user u
+                </otherwise>
+            </choose>
+            LEFT JOIN tab_pb_dev_party_member dpm ON u.user_id = dpm.user_id AND dpm.del_flag = 0
+            LEFT JOIN tab_pb_user_tag ut ON u.user_id = ut.user_id AND ut.tag_type = 59386
+            LEFT JOIN tab_pb_unit_info ui ON u.dept_id = ui.org_id AND ui.del_flag = 0
+            WHERE u.del_flag = 0
+        ) t1,
+        (
+            SELECT
+                count( CASE WHEN d.orgnize_property IN ( 986, 987, 990, 993, 997, 998, 1000, 1005 ) THEN 1 ELSE NULL END ) partyWei,
+                count( CASE WHEN d.orgnize_property IN ( 988, 991, 994, 1001, 1006 ) THEN 1 ELSE NULL END ) partyZBranch,
+                count( CASE WHEN d.orgnize_property IN ( 989, 992, 995, 1002, 1003, 1007, 1008 ) THEN 1 ELSE NULL END ) partyBranch,
+                count( CASE WHEN ui.unit_property IN ( 379, 380 ) THEN 1 ELSE NULL END ) streetOrg,
+                count( CASE WHEN ui.unit_property IN ( 381, 383 ) THEN 1 ELSE NULL END ) communityOrg,
+                count( CASE WHEN ui.unit_property = 382 THEN 1 ELSE NULL END ) townshipOrg,
+                count( CASE WHEN ui.unit_property = 384 THEN 1 ELSE NULL END ) villageOrg,
+                count( CASE WHEN ui.unit_property IN ( 386, 387 ) THEN 1 ELSE NULL END ) commonEconomyOrg,
+                count( CASE WHEN ui.unit_property = 388 THEN 1 ELSE NULL END ) unCommonEconomyOrg,
+                count( CASE WHEN ui.unit_property = 389 THEN 1 ELSE NULL END ) causeLegalEntityOrg,
+                0 AS privateNonPublicOrg,
+                count( CASE WHEN ui.unit_property = 390 THEN 1 ELSE NULL END ) organLegalEntityOrg,
+                count( CASE WHEN ui.unit_property = 391 THEN 1 ELSE NULL END ) societyOrg,
+                0 AS societyNonEntityOrg
+            FROM
+            sys_dept d
+            LEFT JOIN tab_pb_unit_info ui ON d.dept_id = ui.org_id AND ui.del_flag = 0
+            WHERE d.del_flag = 0 AND find_in_set( #{orgId}, d.full_path )
+        ) t2
+    </select>
+
+</mapper>

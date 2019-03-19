@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbHardshipMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbHardship">
+        <id column="hardship_id" jdbcType="BIGINT" property="hardshipId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="hardship_type" jdbcType="VARCHAR" property="hardshipType"/>
+        <result column="if_allowances" jdbcType="BIGINT" property="ifAllowances"/>
+        <result column="if_pension" jdbcType="BIGINT" property="ifPension"/>
+        <result column="if_old_member" jdbcType="TINYINT" property="ifOldMember"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="difficulty_level" jdbcType="BIGINT" property="difficultyLevel"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="health" jdbcType="BIGINT" property="health"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbHardship">
+        <result column="implementation" jdbcType="LONGVARCHAR" property="implementation"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    h.hardship_id, h.org_id, h.user_id, h.hardship_type, h.if_allowances, h.if_pension, h.if_old_member,
+    h.ebl_flag, h.del_flag, h.order_num, h.description, h.create_time, h.create_userid, h.create_username, h.
+    update_time, h.update_userid, h.update_username, h.version, h.health
+  </sql>
+    <sql id="Blob_Column_List">
+    h.implementation
+  </sql>
+    <sql id="Base_WhereCase_List">
+        <if test="hardshipId != null">
+            AND h.hardship_id = #{hardshipId}
+        </if>
+        <if test="orgId != null">
+            AND h.org_id = #{orgId}
+        </if>
+        <if test="userId != null">
+            AND  h.user_id = #{userId}
+        </if>
+        <if test="hardshipType != null">
+            AND h.hardship_type = #{hardshipType}
+        </if>
+        <if test="ifAllowances != null">
+            AND h,if_allowances = #{ifAllowances}
+        </if>
+        <if test="ifPension != null">
+            AND h.if_pension = #{ifPesion}
+        </if>
+        <if test="ifOldMember != null">
+            AND h.if_old_member = #{ifOldMember}
+        </if>
+        <if test="eblFlag != null">
+            AND h.ebl_flag = #{eblFlag}
+        </if>
+        <if test="delFlag != null">
+            AND h.del_flag = #{delFlag}
+        </if>
+        <if test="orderNum != null">
+            AND  h.order_num = #{orderNum}
+        </if>
+        <if test="description != null">
+            AND  h.description = #{description}
+        </if>
+        <if test="createTime != null">
+            AND h.create_time = #{createTime}
+        </if>
+        <if test="createUserid != null">
+            AND h.create_userid = #{createUserid}
+        </if>
+        <if test="createUsername != null">
+            AND h.create_username = #{createUsername}
+        </if>
+        <if test="updateTime != null">
+            AND h.update_time = #{updateTime}
+        </if>
+        <if test="updateUserid != null">
+            AND h.update_userid = #{updateUserid}
+        </if>
+        <if test="updateUsername != null">
+            AND h.update_username = #{updateUsername}
+        </if>
+        <if test="version != null">
+            AND h.version = #{version}
+        </if>
+        <if test="implementation != null">
+            AND h.implementation = #{implementation}
+        </if>
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        , u.realname as username,
+        d.name as org_name
+        from tab_pb_hardship h
+        left join sys_user u on h.user_id = u.user_id
+        left join sys_dept d on h.org_id = d.dept_id
+        where h.hardship_id = #{hardshipId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_hardship
+    where hardship_id = #{hardshipId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbHardship">
+    insert into tab_pb_hardship (hardship_id, org_id, user_id, 
+      hardship_type, if_allowances, if_pension, 
+      if_old_member, ebl_flag, del_flag, 
+      order_num, description, create_time, 
+      create_userid, create_username, update_time, 
+      update_userid, update_username, version, 
+      implementation)
+    values (#{hardshipId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{hardshipType,jdbcType=VARCHAR}, #{ifAllowances,jdbcType=BIGINT}, #{ifPension,jdbcType=BIGINT},
+      #{ifOldMember,jdbcType=TINYINT}, #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, 
+      #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, 
+      #{implementation,jdbcType=LONGVARCHAR})
+  </insert>
+    <insert id="insertSelective"  useGeneratedKeys="true" keyProperty="hardshipId"  parameterType="com.yizheng.partybuilding.entity.TabPbHardship">
+        insert into tab_pb_hardship
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="hardshipId != null">
+                hardship_id,
+            </if>
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="hardshipType != null">
+                hardship_type,
+            </if>
+            <if test="ifAllowances != null">
+                if_allowances,
+            </if>
+            <if test="ifPension != null">
+                if_pension,
+            </if>
+            <if test="ifOldMember != null">
+                if_old_member,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="implementation != null">
+                implementation,
+            </if>
+            <if test="difficultyLevel !=null">
+                difficulty_level,
+            </if>
+            <if test="health != null " >
+                health
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="hardshipId != null">
+                #{hardshipId,jdbcType=BIGINT},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="hardshipType != null">
+                #{hardshipType,jdbcType=VARCHAR},
+            </if>
+            <if test="ifAllowances != null">
+                #{ifAllowances,jdbcType=BIGINT},
+            </if>
+            <if test="ifPension != null">
+                #{ifPension,jdbcType=BIGINT},
+            </if>
+            <if test="ifOldMember != null">
+                #{ifOldMember,jdbcType=TINYINT},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="implementation != null">
+                #{implementation,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="difficultyLevel != null">
+                 #{difficultyLevel,jdbcType=BIGINT},
+            </if>
+            <if test="health != null " >
+               #{health,jdbcType=BIGINT}
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbHardship">
+        update tab_pb_hardship
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="hardshipType != null">
+                hardship_type = #{hardshipType,jdbcType=VARCHAR},
+            </if>
+            <if test="ifAllowances != null">
+                if_allowances = #{ifAllowances,jdbcType=BIGINT},
+            </if>
+            <if test="ifPension != null">
+                if_pension = #{ifPension,jdbcType=BIGINT},
+            </if>
+            <if test="ifOldMember != null">
+                if_old_member = #{ifOldMember,jdbcType=TINYINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="implementation != null">
+                implementation = #{implementation,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="difficultyLevel !=null">
+                difficulty_level=#{difficultyLevel,jdbcType=BIGINT},
+            </if>
+            <if test="health != null " >
+                health=#{health,jdbcType=BIGINT}
+            </if>
+        </set>
+        where hardship_id = #{hardshipId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbHardship">
+    update tab_pb_hardship
+    set org_id = #{orgId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      hardship_type = #{hardshipType,jdbcType=VARCHAR},
+      if_allowances = #{ifAllowances,jdbcType=BIGINT},
+      if_pension = #{ifPension,jdbcType=BIGINT},
+      if_old_member = #{ifOldMember,jdbcType=TINYINT},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      implementation = #{implementation,jdbcType=LONGVARCHAR}
+      health =#{health}
+    where hardship_id = #{hardshipId,jdbcType=BIGINT}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbHardship">
+    update tab_pb_hardship
+    set org_id = #{orgId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      hardship_type = #{hardshipType,jdbcType=VARCHAR},
+      if_allowances = #{ifAllowances,jdbcType=BIGINT},
+      if_pension = #{ifPension,jdbcType=BIGINT},
+      if_old_member = #{ifOldMember,jdbcType=TINYINT},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+    where hardship_id = #{hardshipId,jdbcType=BIGINT}
+  </update>
+    <!--根据条件查询-->
+    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        , u.realname AS username
+        ,u.user_id
+        ,d.name as org_name
+        ,h.difficulty_level
+        from tab_pb_hardship h left join sys_user u on h.user_id = u.user_id
+               left join sys_dept d on h.org_id =d.dept_id
+       <where>
+              h.del_flag=0
+           <if test="username != null and username != ''">
+             and u.realname LIKE CONCAT('%',#{username},'%')
+           </if>
+           <if test="hardshipType !=null and hardshipType !=''">
+               and hardship_type  like CONCAT('%',#{hardshipType},'%')
+           </if>
+           <!--组织范围  0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+           <if test="orgRange != null and orgRange != ''">
+               <choose>
+                   <when test="orgRange == 1">
+                       AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                   </when>
+                   <when test="orgRange == 2">
+                       AND find_in_set(#{rangeDeptId}, d.full_path)
+                   </when>
+               </choose>
+           </if>
+           <if test="orgRange == null or orgRange.toString() == ''">
+               AND d.dept_id = #{rangeDeptId}
+           </if>
+       </where>
+    </select>
+    
+    <select id="selectAndDeleteId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+     select
+      h.* ,
+      u.realname AS username,
+      d.name as org_name
+      from tab_pb_hardship h
+      left join sys_user u on h.user_id = u.user_id
+      left join sys_dept d on h.org_id = d.dept_id
+      where h.hardship_Id = #{hardshipId} AND h.del_flag=0
+    </select>
+
+    <!--修改用户表的用户名-->
+    <update id="updateUsernameById" parameterType="com.yizheng.partybuilding.entity.TabPbHardship">
+        update sys_user set username = #{username} where user_id = #{userId}
+    </update>
+
+
+    <update id="deleteId" parameterType="com.yizheng.partybuilding.entity.TabPbHardship" >
+        update tab_pb_hardship set del_flag=1 where hardship_id = #{hardshipId,jdbcType=BIGINT}
+    </update>
+
+
+    <!--根据userid查询用户是否存在-->
+    <select id="selectByUserId"  parameterType="java.lang.Long" resultMap="BaseResultMap">
+         select *from tab_pb_hardship where user_id= #{userId,jdbcType=BIGINT} and  del_flag =0
+    </select>
+</mapper>

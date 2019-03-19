@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbTransferMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbTransfer">
+        <id column="transfer_id" jdbcType="BIGINT" property="transferId"/>
+        <result column="flow_out_type" jdbcType="BIGINT" property="flowOutType"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="gender" jdbcType="BIGINT" property="gender"/>
+        <result column="age" jdbcType="INTEGER" property="age"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
+        <result column="nation" jdbcType="BIGINT" property="nation"/>
+        <result column="pb_type" jdbcType="BIGINT" property="pbType"/>
+        <result column="flow_out_mode" jdbcType="VARCHAR" property="flowOutMode"/>
+        <result column="flow_out_dept_id" jdbcType="BIGINT" property="flowOutDeptId"/>
+        <result column="flow_out_dept_name" jdbcType="VARCHAR" property="flowOutDeptName"/>
+        <result column="flow_out_date" jdbcType="TIMESTAMP" property="flowOutDate"/>
+        <result column="flow_in_dept_id" jdbcType="BIGINT" property="flowInDeptId"/>
+        <result column="flow_in_dept_name" jdbcType="VARCHAR" property="flowInDeptName"/>
+        <result column="flow_in_situation" jdbcType="VARCHAR" property="flowInSituation"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_user_id" jdbcType="BIGINT" property="createUserId"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="membership_time" jdbcType="TIMESTAMP" property="membershipTime"/>
+        <result column="term_validity" jdbcType="INTEGER" property="termValidity"/>
+        <result column="register_time" jdbcType="TIMESTAMP" property="registerTime"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="phone2" jdbcType="VARCHAR" property="phone2"/>
+        <result column="fax" jdbcType="VARCHAR" property="fax"/>
+        <result column="zip_code" jdbcType="VARCHAR" property="zipCode"/>
+        <result column="transfer_reason" jdbcType="VARCHAR" property="transferReason"/>
+        <result column="receive_flag" jdbcType="VARCHAR" property="receiveFlag"/>
+        <result column="revoke_flag" jdbcType="VARCHAR" property="revokeFlag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        transfer_id, flow_out_type, code, user_id, username, gender, age, phone, id_card_no,
+        nation, pb_type, flow_out_mode, flow_out_dept_id, flow_out_dept_name, flow_out_date,
+        flow_in_dept_id, flow_in_dept_name, flow_in_situation, create_user_id, create_username,create_time,
+        membership_time, term_validity, register_time, address, phone2, fax, zip_code, transfer_reason,
+        receive_flag,revoke_flag
+    </sql>
+
+    <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_transfer
+        where transfer_id = #{transferId,jdbcType=BIGINT}
+    </select>
+
+    <!-- 组织关系列表 -->
+    <select id="getPageList" resultMap="BaseResultMap">
+        select * from tab_pb_transfer
+    </select>
+
+    <!-- 获取组织关系转出列表，状态为未撤销 -->
+    <select id="getFlowOutPageList" parameterType="com.yizheng.partybuilding.entity.TabPbTransfer"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_transfer
+        where flow_out_dept_id = #{flowOutDeptId,jdbcType=BIGINT} and revoke_flag='0'
+        <if test="username != null">
+            AND username like CONCAT('%',#{username,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+
+    <!-- 获取组织关系接收列表，状态为已接收 -->
+    <select id="getFlowInPageList" parameterType="com.yizheng.partybuilding.entity.TabPbTransfer"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_transfer
+        where flow_in_dept_id = #{flowInDeptId,jdbcType=BIGINT} and receive_flag='1' and revoke_flag='0'
+        <if test="username != null">
+            AND username like CONCAT('%',#{username,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+
+    <!-- 获取组织关系 - 待办列表 -->
+    <select id="getWaitingPageList" resultMap="ResultMapByWaiting">
+        select
+        item.transfer_id,transfer.username,transfer.id_card_no,transfer.flow_out_dept_id,transfer.flow_out_dept_name,transfer.flow_in_dept_id,transfer.flow_in_dept_name,
+        datediff(now(),transfer.create_time) total_time_consuming, ifnull(datediff(now(),item.update_time),0) as
+        current_time_consuming , item.item_id
+        from tab_pb_transfer_item item INNER JOIN tab_pb_transfer transfer on item.transfer_id = transfer.transfer_id
+        and transfer.receive_flag='0' and item.revoke_flag='0' and item.is_sp_flag = '1'
+        where item.dept_id=#{deptId,jdbcType=BIGINT}
+        <if test="idCardNo != null">
+            AND transfer.id_card_no=#{idCardNo,jdbcType=VARCHAR}
+        </if>
+        <if test="username != null">
+            AND transfer.username like CONCAT('%',#{username,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+    <resultMap id="ResultMapByWaiting" type="com.yizheng.partybuilding.dto.TransferListWaitingDto">
+        <id column="item_id" jdbcType="BIGINT" property="itemId"/>
+        <result column="transfer_id" jdbcType="BIGINT" property="transferId"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
+        <result column="flow_out_dept_id" jdbcType="BIGINT" property="flowOutDeptId"/>
+        <result column="flow_out_dept_name" jdbcType="VARCHAR" property="flowOutDeptName"/>
+        <result column="flow_in_dept_id" jdbcType="BIGINT" property="flowInDeptId"/>
+        <result column="flow_in_dept_name" jdbcType="VARCHAR" property="flowInDeptName"/>
+        <result column="current_dept_name" jdbcType="VARCHAR" property="currentDeptName"/>
+        <result column="total_time_consuming" jdbcType="BIGINT" property="totalTimeConsuming"/>
+        <result column="current_time_consuming" jdbcType="BIGINT" property="currentTimeConsuming"/>
+    </resultMap>
+
+    <!-- 获取组织关系，未办结工作列表 -->
+    <select id="getNotFinshedPageList" parameterType="com.yizheng.partybuilding.entity.TabPbTransfer"
+            resultMap="ResultMapByWaiting">
+        select
+        item.transfer_id,transfer.username,transfer.id_card_no,transfer.flow_out_dept_id,transfer.flow_out_dept_name,transfer.flow_in_dept_id,transfer.flow_in_dept_name,
+        datediff(now(),transfer.create_time) total_time_consuming, ifnull(datediff(now(),item.update_time),0) as
+        current_time_consuming , item.item_id ,
+        item1.dept_name current_dept_name
+        from tab_pb_transfer_item item INNER JOIN tab_pb_transfer transfer on item.transfer_id = transfer.transfer_id
+        and transfer.receive_flag='0'
+        inner join tab_pb_transfer_item item1 on item1.transfer_id=transfer.transfer_id and item1.is_sp_flag='1'
+        where item.dept_id=#{deptId,jdbcType=BIGINT} and item.revoke_flag='0'
+        <if test="idCardNo != null">
+            AND transfer.id_card_no=#{idCardNo,jdbcType=VARCHAR}
+        </if>
+        <if test="username != null">
+            AND transfer.username like CONCAT('%',#{username,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+
+    <!-- 获取组织关系，即将办理工作列表 -->
+    <select id="getHandlePageList" parameterType="com.yizheng.partybuilding.dto.TransferListSpDto"
+            resultMap="ResultMapBySpRecord">
+        select
+        item.transfer_id,transfer.username,transfer.id_card_no,transfer.flow_out_dept_id,transfer.flow_out_dept_name,transfer.flow_in_dept_id,transfer.flow_in_dept_name,
+        datediff(now(),transfer.create_time) total_time_consuming, ifnull(datediff(now(),item.update_time),0) as
+        current_time_consuming , item.item_id ,
+        pitem.dept_name current_dept_name
+        from tab_pb_transfer_item item
+        inner join tab_pb_transfer transfer on transfer.transfer_id = item.transfer_id
+        inner join tab_pb_transfer_item pitem on item.transfer_id = pitem.transfer_id and item.sh_index-1=pitem.sh_index
+        and pitem.is_sp_flag='1'
+        where item.dept_id=#{deptId,jdbcType=BIGINT} and item.is_sp_flag='0'
+        <if test="idCardNo != null">
+            AND transfer.id_card_no=#{idCardNo,jdbcType=VARCHAR}
+        </if>
+        <if test="username != null">
+            AND transfer.username like CONCAT('%',#{username,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+
+    <!-- 获取组织关系审批记录查询列表 -->
+    <select id="getSpRecordPageList" parameterType="com.yizheng.partybuilding.dto.TransferListSpDto"
+            resultMap="ResultMapBySpRecord">
+        select
+        item.item_id,item.opt_time,item.`status`,item.opt_result,item.dept_id,transfer.transfer_id,transfer.username,transfer.phone,transfer.gender,
+        transfer.id_card_no,transfer.flow_out_type,dict.label as
+        flow_out_type_name,transfer.flow_out_dept_name,transfer.flow_in_dept_name
+        from tab_pb_transfer_item item inner join tab_pb_transfer transfer on transfer.transfer_id = item.transfer_id
+        inner join sys_dict dict on dict.id = transfer.flow_out_type
+        where item.dept_id=#{deptId,jdbcType=BIGINT}
+        <if test="username != null">
+            AND transfer.username like CONCAT('%',#{username,jdbcType=VARCHAR},'%')
+        </if>
+        <if test="idCardNo != null">
+            AND transfer.id_card_no=#{idCardNo,jdbcType=VARCHAR}
+        </if>
+        order by item.item_id desc
+    </select>
+    <resultMap id="ResultMapBySpRecord" type="com.yizheng.partybuilding.dto.TransferListSpDto">
+        <id column="item_id" jdbcType="BIGINT" property="itemId"/>
+        <result column="opt_time" jdbcType="TIMESTAMP" property="optTime"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="opt_result" jdbcType="VARCHAR" property="optResult"/>
+        <result column="transfer_id" jdbcType="BIGINT" property="transferId"/>
+        <result column="flow_out_type" jdbcType="BIGINT" property="flowOutType"/>
+        <result column="flow_out_type" jdbcType="VARCHAR" property="flowOutTypeName"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="gender" jdbcType="BIGINT" property="gender"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
+        <result column="flow_out_dept_name" jdbcType="VARCHAR" property="flowOutDeptName"/>
+        <result column="flow_in_dept_name" jdbcType="VARCHAR" property="flowInDeptName"/>
+    </resultMap>
+
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbTransfer" useGeneratedKeys="true"
+            keyProperty="transferId" keyColumn="transfer_id">
+        insert into tab_pb_transfer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="transferId != null">
+                transfer_id,
+            </if>
+            <if test="flowOutType != null">
+                flow_out_type,
+            </if>
+            <if test="code != null">
+                code,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="age != null">
+                age,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="idCardNo != null">
+                id_card_no,
+            </if>
+            <if test="nation != null">
+                nation,
+            </if>
+            <if test="pbType != null">
+                pb_type,
+            </if>
+            <if test="flowOutMode != null">
+                flow_out_mode,
+            </if>
+            <if test="flowOutDeptId != null">
+                flow_out_dept_id,
+            </if>
+            <if test="flowOutDeptName != null">
+                flow_out_dept_name,
+            </if>
+            <if test="flowOutDate != null">
+                flow_out_date,
+            </if>
+            <if test="flowInDeptId != null">
+                flow_in_dept_id,
+            </if>
+            <if test="flowInDeptName != null">
+                flow_in_dept_name,
+            </if>
+            <if test="flowInSituation != null">
+                flow_in_situation,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserId != null">
+                create_user_id,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="membershipTime != null">
+                membership_time,
+            </if>
+            <if test="termValidity != null">
+                term_validity,
+            </if>
+            <if test="registerTime != null">
+                register_time,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="phone2 != null">
+                phone2,
+            </if>
+            <if test="fax != null">
+                fax,
+            </if>
+            <if test="zipCode != null">
+                zip_code,
+            </if>
+            <if test="transferReason != null">
+                transfer_reason,
+            </if>
+            <if test="receiveFlag != null">
+                receive_flag,
+            </if>
+            <if test="revokeFlag != null">
+                revoke_flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="transferId != null">
+                #{transferId,jdbcType=BIGINT},
+            </if>
+            <if test="flowOutType != null">
+                #{flowOutType,jdbcType=BIGINT},
+            </if>
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=BIGINT},
+            </if>
+            <if test="age != null">
+                #{age,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="idCardNo != null">
+                #{idCardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="nation != null">
+                #{nation,jdbcType=BIGINT},
+            </if>
+            <if test="pbType != null">
+                #{pbType,jdbcType=BIGINT},
+            </if>
+            <if test="flowOutMode != null">
+                #{flowOutMode,jdbcType=VARCHAR},
+            </if>
+            <if test="flowOutDeptId != null">
+                #{flowOutDeptId,jdbcType=BIGINT},
+            </if>
+            <if test="flowOutDeptName != null">
+                #{flowOutDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="flowOutDate != null">
+                #{flowOutDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flowInDeptId != null">
+                #{flowInDeptId,jdbcType=BIGINT},
+            </if>
+            <if test="flowInDeptName != null">
+                #{flowInDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="flowInSituation != null">
+                #{flowInSituation,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="membershipTime != null">
+                #{membershipTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="termValidity != null">
+                #{termValidity,jdbcType=INTEGER},
+            </if>
+            <if test="registerTime != null">
+                #{registerTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="phone2 != null">
+                #{phone2,jdbcType=VARCHAR},
+            </if>
+            <if test="fax != null">
+                #{fax,jdbcType=VARCHAR},
+            </if>
+            <if test="zipCode != null">
+                #{zipCode,jdbcType=VARCHAR},
+            </if>
+            <if test="transferReason != null">
+                #{transferReason,jdbcType=VARCHAR},
+            </if>
+            <if test="receiveFlag != null">
+                #{receiveFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="revokeFlag != null">
+                #{revokeFlag,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.yizheng.partybuilding.entity.TabPbTransfer">
+        update tab_pb_transfer
+        <set>
+            <if test="flowOutType != null">
+                flow_out_type = #{flowOutType,jdbcType=BIGINT},
+            </if>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=BIGINT},
+            </if>
+            <if test="age != null">
+                age = #{age,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="idCardNo != null">
+                id_card_no = #{idCardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="nation != null">
+                nation = #{nation,jdbcType=BIGINT},
+            </if>
+            <if test="pbType != null">
+                pb_type = #{pbType,jdbcType=BIGINT},
+            </if>
+            <if test="flowOutMode != null">
+                flow_out_mode = #{flowOutMode,jdbcType=VARCHAR},
+            </if>
+            <if test="flowOutDeptId != null">
+                flow_out_dept_id = #{flowOutDeptId,jdbcType=BIGINT},
+            </if>
+            <if test="flowOutDeptName != null">
+                flow_out_dept_name = #{flowOutDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="flowOutDate != null">
+                flow_out_date = #{flowOutDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flowInDeptId != null">
+                flow_in_dept_id = #{flowInDeptId,jdbcType=BIGINT},
+            </if>
+            <if test="flowInDeptName != null">
+                flow_in_dept_name = #{flowInDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="flowInSituation != null">
+                flow_in_situation = #{flowInSituation,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserId != null">
+                create_user_id = #{createUserId,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="membershipTime != null">
+                membership_time = #{membershipTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="termValidity != null">
+                term_validity = #{termValidity,jdbcType=INTEGER},
+            </if>
+            <if test="registerTime != null">
+                register_time = #{registerTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="phone2 != null">
+                phone2 = #{phone2,jdbcType=VARCHAR},
+            </if>
+            <if test="fax != null">
+                fax = #{fax,jdbcType=VARCHAR},
+            </if>
+            <if test="zipCode != null">
+                zip_code = #{zipCode,jdbcType=VARCHAR},
+            </if>
+            <if test="transferReason != null">
+                transfer_reason = #{transferReason,jdbcType=VARCHAR},
+            </if>
+            <if test="receiveFlag != null">
+                receive_flag = #{receiveFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="revokeFlag != null">
+                revoke_flag = #{revokeFlag,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where transfer_id = #{transferId,jdbcType=BIGINT}
+    </update>
+
+    <!-- 组织关系转接-接收 -->
+    <update id="updateReceiveFlagById">
+        update tab_pb_transfer set receive_flag = #{receiveFlag,jdbcType=VARCHAR}
+        where transfer_id = #{transferId,jdbcType=BIGINT}
+    </update>
+
+    <!-- 组织关系转接-撤销 -->
+    <update id="updateRevokeFlagById">
+        update tab_pb_transfer set revoke_flag = #{revokeFlag,jdbcType=VARCHAR}
+        where transfer_id = #{transferId,jdbcType=BIGINT};
+        update tab_pb_transfer_item set revoke_flag=#{revokeFlag,jdbcType=VARCHAR}
+        where transfer_id = #{transferId,jdbcType=BIGINT};
+    </update>
+</mapper>

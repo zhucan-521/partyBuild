@@ -1,0 +1,225 @@
+package com.yizheng.partybuilding.service.impl;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.yizheng.commons.config.PaddingBaseField;
+import com.yizheng.commons.util.AttachmentType;
+import com.yizheng.commons.util.CollectionUtil;
+import com.yizheng.commons.util.UserContextHolder;
+import com.yizheng.commons.domain.Page;
+import com.yizheng.partybuilding.dto.TabPbMsgUpInfoDto;
+import com.yizheng.commons.domain.TabPbAttachment;
+import com.yizheng.partybuilding.entity.TabPbMsgUpInfo;
+import com.yizheng.partybuilding.repository.TabPbMsgUpInfoMapper;
+import com.yizheng.partybuilding.repository.TabSysDeptMapper;
+import com.yizheng.partybuilding.repository.TabSysUserMapper;
+import com.yizheng.partybuilding.service.inf.ITabPbAttachmentService;
+import com.yizheng.partybuilding.service.inf.TabPbMsgUpInfoSerivce;
+import com.yizheng.partybuilding.system.entity.SysDept;
+import com.yizheng.partybuilding.system.entity.SysUser;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+@Service
+public class TabPbMsgUpInfoSerivceImpl implements TabPbMsgUpInfoSerivce {
+
+    @Autowired
+    TabPbMsgUpInfoMapper tabPbMsgUpInfoMapper;
+
+    @Autowired
+    ITabPbAttachmentService iTabPbAttachmentService;
+
+    @Autowired
+    TabSysUserMapper tabSysUserMapper;
+
+    @Autowired
+    TabSysDeptMapper tabSysDeptMapper;
+
+    /**
+     * 信息实体添加
+     *
+     * @param tabPbMsgUpInfo
+     * @return
+     */
+    @Override
+    public int insert(TabPbMsgUpInfoDto tabPbMsgUpInfo) {
+        int retVal = tabPbMsgUpInfoMapper.insertSelective(tabPbMsgUpInfo);
+        if (retVal > 0) {
+            retVal += modifyAttachment(tabPbMsgUpInfo);
+        }
+        return retVal;
+    }
+
+    /**
+     * 维护附件
+     *
+     * @param tabPbMsgUpInfo
+     * @return
+     */
+    private int modifyAttachment(TabPbMsgUpInfoDto tabPbMsgUpInfo) {
+        List<TabPbAttachment> docAttachments = tabPbMsgUpInfo.getDocAttachments();
+        List<TabPbAttachment> imgAttachments = tabPbMsgUpInfo.getImgAttachments();
+        List<TabPbAttachment> videoAttachments = tabPbMsgUpInfo.getVideoAttachments();
+        List<TabPbAttachment> attachmentList = new ArrayList<>();
+        if (CollectionUtil.isNotEmpty(docAttachments)) {
+            attachmentList.addAll(docAttachments);
+        }
+        if (CollectionUtil.isNotEmpty(imgAttachments)) {
+            attachmentList.addAll(imgAttachments);
+        }
+        if (CollectionUtil.isNotEmpty(videoAttachments)) {
+            attachmentList.addAll(videoAttachments);
+        }
+        if (CollectionUtil.isNotEmpty(attachmentList)) {
+            return iTabPbAttachmentService.intelligentOperation(attachmentList,
+                    tabPbMsgUpInfo.getId(), AttachmentType.msgUpInfoType);
+        }
+        return 0;
+    }
+
+
+    /**
+     * 返回登录人的姓名，组织名称，上级组织名称，上级组织专干人姓名,党组织名称，党组织id
+     *
+     * @return TabPbMsgUpInfoDto
+     */
+    @Override
+    public TabPbMsgUpInfo selectAffter(Long realDeptId) {
+        if(null == realDeptId ){
+            realDeptId= UserContextHolder.getOrgId();
+        }
+        TabPbMsgUpInfo tabPbMsgUpInfo = new TabPbMsgUpInfo();
+        //党组织
+        tabPbMsgUpInfo.setRealDeptId(realDeptId);
+        SysDept RealsysDept=tabSysDeptMapper.selectAloneByPrimaryKey(realDeptId);
+        tabPbMsgUpInfo.setRealDeptName( RealsysDept.getName());
+        //上报时间
+        tabPbMsgUpInfo.setUpTime(new Date());
+        //上报人姓名
+        tabPbMsgUpInfo.setUpUserId(UserContextHolder.getUserIdLong());
+        tabPbMsgUpInfo.setUpUsername(UserContextHolder.getUserName());
+        //上报人组织名称
+        Long upDeptId=UserContextHolder.getOrgId();
+        SysDept upDept = tabSysDeptMapper.selectAloneByPrimaryKey(upDeptId);
+        tabPbMsgUpInfo.setUpDeptId(upDeptId);
+        tabPbMsgUpInfo.setUpDeptName(upDept.getName());
+        //接受组织名称
+        if(null==RealsysDept.getParentId()){
+           return tabPbMsgUpInfo;
+        }
+        SysDept recDept = tabSysDeptMapper.selectAloneByPrimaryKey(RealsysDept.getParentId().longValue());
+        if (null == recDept) {
+            return tabPbMsgUpInfo;
+        }
+        tabPbMsgUpInfo.setRecevieDeptId(recDept.getDeptId().longValue());
+        tabPbMsgUpInfo.setRecevieDeptName(recDept.getName());
+        //接受人姓名
+        SysUser recSysUser = tabPbMsgUpInfoMapper.selectBydeptId(recDept.getDeptId().longValue());
+        if (null == recSysUser) {
+            return tabPbMsgUpInfo;
+        }
+        tabPbMsgUpInfo.setRecevieUserId(recSysUser.getUserId().longValue());
+        tabPbMsgUpInfo.setRecevieUsername(recSysUser.getUsername());
+        return tabPbMsgUpInfo;
+    }
+
+
+    /**
+     * 条件查询信息报送列表
+     *
+     * @param dto
+     * @return
+     */
+    @Override
+    public PageInfo<TabPbMsgUpInfoDto> selectActive(TabPbMsgUpInfoDto dto, Page page) {
+        PageHelper.startPage(page);
+        List<TabPbMsgUpInfoDto> list = tabPbMsgUpInfoMapper.selectActive(dto);
+        PageInfo<TabPbMsgUpInfoDto> pageInfo = new PageInfo(list);
+        return pageInfo;
+    }
+
+    /**
+     * 条件查询接受信息列表
+     *
+     * @param dto
+     * @param page
+     * @return
+     */
+    @Override
+    public PageInfo<TabPbMsgUpInfoDto> selectActiveRec(TabPbMsgUpInfoDto dto, Page page) {
+        PageHelper.startPage(page);
+        List<TabPbMsgUpInfoDto> list = tabPbMsgUpInfoMapper.selectActiveRec(dto);
+        PageInfo<TabPbMsgUpInfoDto> pageInfo = new PageInfo(list);
+        return pageInfo;
+    }
+
+
+    /**
+     * 修改
+     *
+     * @param tabPbMsgUpInfoDto
+     * @return
+     */
+    @Override
+    @PaddingBaseField(updateOnly = true)
+    public int update(TabPbMsgUpInfoDto tabPbMsgUpInfoDto) {
+        int retVal = tabPbMsgUpInfoMapper.updateByPrimaryKeySelective(tabPbMsgUpInfoDto);
+        if (retVal > 0) {
+            retVal += modifyAttachment(tabPbMsgUpInfoDto);
+        }
+        return retVal;
+    }
+
+
+    /**
+     * 删除
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    @PaddingBaseField
+    public int delete(Long id) {
+        TabPbMsgUpInfo tabPbMsgUpInfo = new TabPbMsgUpInfo();
+        tabPbMsgUpInfo.setId(id);
+        tabPbMsgUpInfo.setDelFlag("1");
+        return tabPbMsgUpInfoMapper.updateByPrimaryKeySelective(tabPbMsgUpInfo);
+    }
+
+    /**
+     * 单个查询
+     * @param id
+     * @return
+     */
+    @Override
+    public TabPbMsgUpInfoDto selectActiveOne(Long id) {
+        return tabPbMsgUpInfoMapper.selectWithAboutById(id);
+    }
+
+
+    /**
+     * 审核
+     * @param
+     * @return
+     */
+    @Override
+    public int auditResult(TabPbMsgUpInfoDto tabPbMsgUpInfoDto) {
+        //审核人组织
+        tabPbMsgUpInfoDto.setAuditDeptId(UserContextHolder.getOrgId());
+        SysDept AuditSysDept=tabSysDeptMapper.selectAloneByPrimaryKey(UserContextHolder.getOrgId());
+        tabPbMsgUpInfoDto.setAuditDeptName(AuditSysDept.getName());
+        //审核人姓名
+        tabPbMsgUpInfoDto.setAuditUserId(UserContextHolder.getUserIdLong());
+        tabPbMsgUpInfoDto.setAuditUsername(UserContextHolder.getUserName());
+        //审核时间
+        tabPbMsgUpInfoDto.setAuditTime(new Date());
+        return tabPbMsgUpInfoMapper.updateByPrimaryKeySelective(tabPbMsgUpInfoDto);
+    }
+
+
+}

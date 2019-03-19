@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbAttachmentMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.commons.domain.TabPbAttachment">
+        <id column="attachment_id" jdbcType="BIGINT" property="attachmentId"/>
+        <result column="host_id" jdbcType="BIGINT" property="hostId"/>
+        <result column="attachment_instance" jdbcType="VARCHAR" property="attachmentInstance"/>
+        <result column="attachment_type" jdbcType="BIGINT" property="attachmentType"/>
+        <result column="attachment_file_type" jdbcType="BIGINT" property="attachmentFileType"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.commons.domain.TabPbAttachment">
+        <result column="attachment_description" jdbcType="LONGVARCHAR" property="attachmentDescription"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    attachment_id, host_id, attachment_instance, attachment_type, attachment_file_type, 
+    ebl_flag, del_flag, order_num, description, create_time, create_userid, create_username, 
+    update_time, update_userid, update_username, version
+  </sql>
+    <sql id="Blob_Column_List">
+    attachment_description
+  </sql>
+    <select id="selectById" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tab_pb_attachment
+        where attachment_id = #{attachmentId,jdbcType=BIGINT}
+    </select>
+
+    <!-- 只查询未删除的附件信息 -->
+    <select id="listByHostId" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tab_pb_attachment
+        where host_id = #{hostId,jdbcType=BIGINT} and attachment_type = #{attachmentType,jdbcType=BIGINT} and del_flag=0
+    </select>
+
+    <insert id="insert" parameterType="com.yizheng.commons.domain.TabPbAttachment">
+    insert into tab_pb_attachment (attachment_id, host_id, attachment_instance, 
+      attachment_type, attachment_file_type, ebl_flag, 
+      del_flag, order_num, description, 
+      create_time, create_userid, create_username, 
+      update_time, update_userid, update_username, 
+      version, attachment_description)
+    values (#{attachmentId,jdbcType=BIGINT}, #{hostId,jdbcType=BIGINT}, #{attachmentInstance,jdbcType=VARCHAR}, 
+      #{attachmentType,jdbcType=BIGINT}, #{attachmentFileType,jdbcType=BIGINT}, #{eblFlag,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
+      #{version,jdbcType=BIGINT}, #{attachmentDescription,jdbcType=LONGVARCHAR})
+  </insert>
+
+    <insert id="insertSelective" parameterType="com.yizheng.commons.domain.TabPbAttachment"
+            useGeneratedKeys="true"
+            keyProperty="attachmentId">
+        insert into tab_pb_attachment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="attachmentId != null">
+                attachment_id,
+            </if>
+            <if test="hostId != null">
+                host_id,
+            </if>
+            <if test="attachmentInstance != null">
+                attachment_instance,
+            </if>
+            <if test="attachmentType != null">
+                attachment_type,
+            </if>
+            <if test="attachmentFileType != null">
+                attachment_file_type,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="attachmentDescription != null">
+                attachment_description,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="attachmentId != null">
+                #{attachmentId,jdbcType=BIGINT},
+            </if>
+            <if test="hostId != null">
+                #{hostId,jdbcType=BIGINT},
+            </if>
+            <if test="attachmentInstance != null">
+                #{attachmentInstance,jdbcType=VARCHAR},
+            </if>
+            <if test="attachmentType != null">
+                #{attachmentType,jdbcType=BIGINT},
+            </if>
+            <if test="attachmentFileType != null">
+                #{attachmentFileType,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="attachmentDescription != null">
+                #{attachmentDescription,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.commons.domain.TabPbAttachment">
+        update tab_pb_attachment
+        <set>
+            <if test="hostId != null">
+                host_id = #{hostId,jdbcType=BIGINT},
+            </if>
+            <if test="attachmentInstance != null">
+                attachment_instance = #{attachmentInstance,jdbcType=VARCHAR},
+            </if>
+            <if test="attachmentType != null">
+                attachment_type = #{attachmentType,jdbcType=BIGINT},
+            </if>
+            <if test="attachmentFileType != null">
+                attachment_file_type = #{attachmentFileType,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="attachmentDescription != null">
+                attachment_description = #{attachmentDescription,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where attachment_id = #{attachmentId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.commons.domain.TabPbAttachment">
+    update tab_pb_attachment
+    set host_id = #{hostId,jdbcType=BIGINT},
+      attachment_instance = #{attachmentInstance,jdbcType=VARCHAR},
+      attachment_type = #{attachmentType,jdbcType=BIGINT},
+      attachment_file_type = #{attachmentFileType,jdbcType=BIGINT},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      attachment_description = #{attachmentDescription,jdbcType=LONGVARCHAR}
+    where attachment_id = #{attachmentId,jdbcType=BIGINT}
+  </update>
+    <update id="updateById" parameterType="com.yizheng.commons.domain.TabPbAttachment">
+    update tab_pb_attachment
+    set host_id = #{hostId,jdbcType=BIGINT},
+      attachment_instance = #{attachmentInstance,jdbcType=VARCHAR},
+      attachment_type = #{attachmentType,jdbcType=BIGINT},
+      attachment_file_type = #{attachmentFileType,jdbcType=BIGINT},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+    where attachment_id = #{attachmentId,jdbcType=BIGINT}
+  </update>
+
+    <!-- 根据id删除附件，改变删除标识 -->
+    <update id="deleteById" parameterType="com.yizheng.commons.domain.TabPbAttachment">
+        update tab_pb_attachment
+        set del_flag = 1
+        where attachment_id = #{attachmentId,jdbcType=BIGINT}
+    </update>
+
+    <update id="deleteByHostId" parameterType="com.yizheng.commons.domain.TabPbAttachment">
+        update tab_pb_attachment
+        set del_flag = 1
+        where host_id = #{hostId,jdbcType=BIGINT}
+    </update>
+
+    <!--批量新增-->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into tab_pb_attachment(host_id, attachment_instance, attachment_description, attachment_type, attachment_file_type,
+        description, create_time, create_userid, create_username, update_time, update_userid, update_username)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.hostId}, #{item.attachmentInstance}, #{item.attachmentDescription}, #{item.attachmentType}, #{item.attachmentFileType},
+            #{item.description}, #{item.createTime}, #{item.createUserid}, #{item.createUsername}, #{item.updateTime}, #{item.updateUserid},
+            #{item.updateUsername})
+        </foreach>
+    </insert>
+
+    <!--批量逻辑删除-->
+    <update id="batchLogicDelete" parameterType="java.util.List">
+        update tab_pb_attachment set del_flag = 1 where attachment_id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            ${item}
+        </foreach>
+    </update>
+
+    <!--根据条件查询 PS:请不要再mapper里定义这个方法-->
+    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="ResultMapWithBLOBs">
+        select * from view_attachment_facade
+        <where>
+            <if test="hostId != null">
+                AND host_id = #{hostId}
+            </if>
+            <if test="attachmentType != null">
+                AND attachment_type = #{attachmentType}
+            </if>
+            <if test="fileTypeLabel != null and fileTypeLabel != ''">
+                AND file_type_label = #{fileTypeLabel}
+            </if>
+            <if test="attachmentFileType != null">
+                AND attachment_file_type = #{attachmentFileType}
+            </if>
+        </where>
+    </select>
+
+
+    <!--根据一些条件查询, 模糊查询等-->
+    <select id="selectBySomeCondition" parameterType="com.yizheng.commons.domain.TabPbAttachment"
+            resultMap="ResultMapWithBLOBs">
+        select * from tab_pb_attachment where
+        del_flag = '0'
+        <if test="attachmentType != null">
+            AND attachment_type = #{attachmentType}
+        </if>
+
+        <if test="attachmentDescription">
+            AND attachment_description like concat('%',#{attachmentDescription},'%')
+        </if>
+
+        <if test="attachmentFileType != null">
+            AND attachment_file_type = #{attachmentFileType}
+        </if>
+        <if test="attachmentFileType == null">
+            AND attachment_file_type IN (13, 14, 15, 16, 17)
+        </if>
+    </select>
+
+    <!--逻辑删除根据HostId和AttType-->
+    <update id="batchLogicDeleteByHostIdAndAttType">
+        update tab_pb_attachment set del_flag = 1
+        where host_id = #{hostId} and attachment_type = #{attType}
+    </update>
+</mapper>

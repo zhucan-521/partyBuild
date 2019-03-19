@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.SysUserCountDtoMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.dto.SysUserCountDto">
+
+    </resultMap>
+    
+    <sql id="countAll">
+        from sys_user where del_flag = 0
+    </sql>
+
+    <sql id="find_in_set_dept_id">
+        in (select dept_id from sys_dept where find_in_set(#{deptId}, full_path)
+                and del_flag = 0
+        ) and del_flag = 0
+    </sql>
+
+    <select id="selectCountUser" resultType="com.yizheng.partybuilding.dto.BaseDataAnalysisDto" parameterType="java.lang.Long">
+        <choose>
+            <when test="deptId == 14307 ">
+                SELECT
+                #统计有效直管党员
+                '直管党员' AS label,
+                count(user_id) AS `datas`
+                <include refid="countAll"/>
+                UNION
+                SELECT
+                #统计有效流动党员
+                '流动党员' AS label,
+                COUNT(flow_status) AS `datas`
+                <include refid="countAll"/>
+                AND flow_status = 41207
+                UNION
+                SELECT
+                #统计有效报到党员
+                '报到党员' AS label,
+                count(report_org_id) AS `datas`
+                <include refid="countAll"/>
+                AND report_org_id IS NOT NULL
+                UNION
+                SELECT
+                #统计有效班子成员
+                '班子成员' AS label,
+                COUNT(IF(del_flag = 0, TRUE, NULL)) AS `datas`
+                FROM
+                tab_pb_lead_team_member
+                WHERE
+                org_id = 14307
+                UNION
+                SELECT
+                '困难党员' AS label,
+                COUNT(is_poor) AS `datas`
+                <include refid="countAll"/>
+                AND is_poor = 1
+                UNION
+                SELECT
+                '退休党员' AS label,
+                COUNT(1) AS `datas`
+                FROM
+                tab_pb_user_tag tag
+                JOIN sys_user USER ON tag.user_id = USER .user_id
+                WHERE
+                tag_type = 59385
+                AND USER .del_flag = 0
+            </when>
+            <otherwise>
+                SELECT
+                #统计有效直管党员
+                '直管党员' AS label,
+                count(user_id) AS datas
+                FROM
+                sys_user
+                WHERE
+                dept_id <include refid="find_in_set_dept_id"/>
+                UNION
+                SELECT
+                #统计有效流动党员
+                '流动党员' AS label,
+                COUNT(flow_status) AS datas
+                FROM
+                sys_user
+                WHERE
+                dept_id <include refid="find_in_set_dept_id"/>
+                AND flow_status = 41207
+                UNION
+                SELECT
+                #统计有效报到党员
+                '报到党员' AS label,
+                count(report_org_id) AS datas
+                FROM
+                sys_user
+                WHERE
+                dept_id <include refid="find_in_set_dept_id"/>
+                OR report_org_id <include refid="find_in_set_dept_id"/>
+                UNION
+                SELECT
+                #统计有效班子成员
+                '班子成员' AS label,
+                COUNT(1) AS datas
+                FROM
+                tab_pb_lead_team_member
+                WHERE
+                org_id <include refid="find_in_set_dept_id"/>
+                UNION
+                SELECT
+                '困难党员' AS label,
+                COUNT(is_poor) AS datas
+                FROM
+                sys_user
+                WHERE
+                dept_id <include refid="find_in_set_dept_id"/>
+                AND is_poor = 1
+                UNION
+                SELECT
+                '退休党员' AS label,
+                COUNT(1) AS datas
+                FROM
+                tab_pb_user_tag tag
+                JOIN sys_user USER ON tag.user_id = USER .user_id
+                WHERE
+                tag_type = 59385
+                AND USER .del_flag = 0
+                AND USER .dept_id <include refid="find_in_set_dept_id"/>
+            </otherwise>
+        </choose>
+    </select>
+
+    <!--统计有效直管党员-->
+    <select id="selectCountDirectPartyUser" resultType="java.lang.Long" parameterType="java.lang.Long">
+        <choose>
+            <when test="deptId == 14307 ">
+                select count(user_id) as directPartyUser  <include refid="countAll"/>
+            </when>
+            <otherwise>
+                select count(user_id) AS directPartyUser from sys_user WHERE dept_id <include refid="find_in_set_dept_id"/>
+            </otherwise>
+        </choose>
+        
+    </select>
+
+    <!--统计有效流动党员-->
+    <select id="selectCountFlowUser" resultType="java.lang.Long" parameterType="java.lang.Long">
+        <choose>
+            <when test="deptId == 14307 ">
+                select COUNT(flow_status) AS flowUser  <include refid="countAll"/>
+                AND flow_status = 41207
+            </when>
+            <otherwise>
+                select COUNT(flow_status) AS flowUser from sys_user WHERE dept_id <include refid="find_in_set_dept_id"/>
+                AND flow_status = 41207
+            </otherwise>
+        </choose>
+    </select>
+
+    <!--统计有效报到党员-->
+    <select id="selectCountPositiveUser" resultType="java.lang.Long" parameterType="java.lang.Long">
+        <choose>
+            <when test="deptId == 14307 ">
+                select count(report_org_id) AS positiveUser  <include refid="countAll"/>
+                AND report_org_id IS NOT NULL
+            </when>
+            <otherwise>
+                select count(report_org_id) AS positiveUser from sys_user WHERE dept_id <include refid="find_in_set_dept_id"/>
+                or report_org_id <include refid="find_in_set_dept_id"/>
+            </otherwise>
+        </choose>
+    </select>
+
+    <!--统计有效班子成员-->
+    <select id="selectCountLeadTeamMemberUser" resultType="java.lang.Long" parameterType="java.lang.Long">
+        <choose>
+            <when test="deptId == 14307 ">
+                SELECT COUNT(IF(del_flag = 0,TRUE,NULL)) AS leadTeamMemberUser FROM tab_pb_lead_team_member
+                WHERE org_id = #{deptId}
+            </when>
+            <otherwise>
+                SELECT COUNT(IF(del_flag = 0,TRUE,NULL)) AS leadTeamMemberUser FROM tab_pb_lead_team_member WHERE org_id <include refid="find_in_set_dept_id"/>
+            </otherwise>
+        </choose>
+    </select>
+
+    <!--统计有效困难党员-->
+    <select id="selectCountHardshipUser" resultType="java.lang.Long" parameterType="java.lang.Long">
+        <choose>
+            <when test="deptId == 14307 ">
+                SELECT COUNT(is_poor) AS hardshipUser  <include refid="countAll"/>
+                and is_poor = 1
+            </when>
+            <otherwise>
+                SELECT COUNT(is_poor) AS hardshipUser from sys_user WHERE dept_id <include refid="find_in_set_dept_id"/>
+                and is_poor = 1
+            </otherwise>
+        </choose>
+    </select>
+
+    <!--统计退休党员-->
+    <select id="selectCountRetiredUser" resultType="java.lang.Long" parameterType="java.lang.Long">
+        <choose>
+            <when test="deptId == 14307 ">
+                SELECT COUNT(1) as retiredUser FROM tab_pb_user_tag tag
+                JOIN sys_user user ON tag.user_id = user.user_id
+                WHERE tag_type = ${@com.yizheng.partybuilding.system.util.UserTagType@RETIRED} AND user.del_flag = 0
+            </when>
+            <otherwise>
+                SELECT COUNT(1) as retiredUser FROM tab_pb_user_tag tag
+                JOIN sys_user user ON tag.user_id = user.user_id
+                WHERE tag_type = ${@com.yizheng.partybuilding.system.util.UserTagType@RETIRED} AND user.del_flag = 0 AND user.dept_id <include refid="find_in_set_dept_id"/>
+            </otherwise>
+        </choose>
+    </select>
+
+    <!--统计指定组织下各类型党员人数-->
+    <select id="selectPeopleCountingByOrgId" parameterType="java.lang.Long" resultType="com.yizheng.partybuilding.entity.OrganizationPeopleStatistics">
+        SELECT
+            d.dept_id AS orgId,
+            d.NAME AS orgName,
+            d.orgnize_property AS orgnizeProperty,
+            d.contactor,
+            d.contact_number AS contactNumber,
+            count( t.formal ) AS formalNum,
+            count( t.prep ) AS prepNum,
+            count( t.minority ) AS minorityNum,
+            count( t.collegeOrAbove ) AS collegeOrAboveNum,
+            count( t.man ) AS manNum,
+            count( t.woman ) AS womanNum
+        FROM
+          sys_dept d
+        INNER JOIN (
+            SELECT
+              CASE WHEN u.identity_type = 223 THEN 1 ELSE NULL END formal,
+              CASE WHEN u.identity_type = 224 THEN 1 ELSE NULL END prep,
+              CASE WHEN u.nation != 868 THEN 1 ELSE NULL END minority,
+              CASE WHEN u.education >= 71 AND u.education &lt;= 85 THEN 1 ELSE NULL END collegeOrAbove,
+              CASE WHEN u.gender = 95 THEN 1 ELSE NULL END man,
+              CASE WHEN gender = 96 THEN 1 ELSE NULL END woman,
+              #{orgId} AS dept_id
+            <choose>
+                <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
+                <when test="orgId != 14307">
+                    from (select dept_id as org_id from sys_dept dept
+                        where dept.del_flag = 0
+                            and find_in_set(#{orgId}, dept.full_path)
+                    ) d
+                    inner join sys_user u on u.dept_id = d.org_id
+                </when>
+                <otherwise>
+                    from sys_user u
+                </otherwise>
+            </choose>
+            where u.del_flag = 0
+        ) t USING ( dept_id )
+        GROUP BY
+        t.dept_id
+    </select>
+
+
+</mapper>

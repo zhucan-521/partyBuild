@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbDoubleCommentaryMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+        <id column="commentary_id" jdbcType="BIGINT" property="commentaryId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="plan_year" jdbcType="BIGINT" property="planYear"/>
+        <result column="report_date" jdbcType="TIMESTAMP" property="reportDate"/>
+        <result column="check_date" jdbcType="TIMESTAMP" property="checkDate"/>
+        <result column="check_result" jdbcType="BIGINT" property="checkResult"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="check_org" jdbcType="BIGINT" property="checkOrg"/>
+        <result column="check_org_name" jdbcType="VARCHAR" property="checkOrgName"/>
+        <result column="check_user" jdbcType="BIGINT" property="checkUser"/>
+        <result column="check_user_name" jdbcType="VARCHAR" property="checkUserName"/>
+        <result column="check_desc" jdbcType="VARCHAR" property="checkDesc"/>
+
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+        <result column="commentary_content" jdbcType="LONGVARCHAR" property="commentaryContent"/>
+    </resultMap>
+    <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithAttachments" type="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+        <collection property="tabPbAttachments" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions" column="{hostId=commentary_id,attachmentType=attachment_type}"/>
+    </resultMap>
+    <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithCount"
+               type="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+        <result column="video_num" jdbcType="INTEGER" property="videoNum"/>
+        <result column="img_num" jdbcType="BIGINT" property="imgNum"/>
+        <result column="doc_num" jdbcType="BIGINT" property="docNum"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    dc.commentary_id, dc.org_id, dc.plan_year, dc.report_date, dc.check_date, dc.check_result, dc.ebl_flag, dc.del_flag, dc.order_num,
+    dc.description, dc.create_time, dc.create_userid, dc.create_username, dc.update_time, dc.update_userid,
+    dc.update_username, dc.version, dc.check_org, dc.check_user, dc.check_desc
+  </sql>
+    <sql id="Blob_Column_List">
+    dc.commentary_content
+  </sql>
+    <sql id="Base_WhereCase_List">
+        <if test="orgId != null">
+            AND dc.org_id = #{orgId}
+        </if>
+        <if test="planYear != null and planYear != ''">
+            AND dc.plan_year = #{planYear}
+        </if>
+        <!--上报日期-->
+        <if test="reportStartDate != null and reportStartDate != ''">
+            AND date_format(dc.report_date, '%Y-%m-%d') >= #{reportStartDate}
+        </if>
+        <if test="reportEndDate != null and reportEndDate != ''">
+            AND date_format(dc.report_date, '%Y-%m-%d') &lt;= #{reportEndDate}
+        </if>
+        <!--审核日期-->
+        <if test="checkStartDate != null and checkStartDate != ''">
+            AND date_format(dc.check_date, '%Y-%m-%d') >= #{checkStartDate}
+        </if>
+        <if test="checkEndDate != null and checkEndDate != ''">
+            AND date_format(dc.check_date, '%Y-%m-%d') &lt;= #{checkEndDate}
+        </if>
+        <if test="eblFlag != null and eblFlag != ''">
+            AND dc.ebl_flag = #{eblFlag}
+        </if>
+        <if test="delFlag != null and delFlag != ''">
+            AND dc.del_flag = #{delFlag}
+        </if>
+        <if test="orderNum != null and orderNum != ''">
+            AND dc.order_num = #{orderNum}
+        </if>
+        <if test="description != null and description != ''">
+            AND dc.description = #{description}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            AND dc.create_time = #{createTime}
+        </if>
+        <if test="createUserid != null and createUserid != ''">
+            AND dc.create_userid = #{createUserid}
+        </if>
+        <if test="createUsername != null and createUsername != ''">
+            AND dc.create_username = #{createUsername}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+            AND dc.update_time = #{updateTime}
+        </if>
+        <if test="updateUserid != null and updateUserid != ''">
+            AND dc.update_userid = #{updateUserid}
+        </if>
+        <if test="updateUsername != null and updateUsername != ''">
+            AND dc.update_username = #{updateUsername}
+        </if>
+        <if test="version != null and version != ''">
+            AND dc.version = #{version}
+        </if>
+        <if test="commentaryContent != null and commentaryContent != ''">
+            AND dc.commentary_content = #{commentaryContent}
+        </if>
+        <if test="checkResult != null and checkResult != ''">
+            AND dc.check_result = #{checkResult}
+        </if>
+        <if test="checkOrg != null and checkOrg != ''">
+            AND dc.check_org = #{chekOrg}
+        </if>
+        <if test="checkUser != null and checkUser != ''">
+            AND dc.check_user = #{checkUser}
+        </if>
+        <if test="checkDesc != null and checkDesc != ''">
+            AND dc.check_desc = #{checkDesc}
+        </if>
+        <!--组织范围  0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <if test="orgRange != null and orgRange != ''">
+            <choose>
+                <when test="orgRange == 1">
+                    AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{rangeDeptId}, d.full_path)
+                </when>
+            </choose>
+        </if>
+        <if test="orgRange == null or orgRange.toString() == ''">
+            AND d.dept_id = #{rangeDeptId}
+        </if>
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMapWithAttachments">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        , '5' as attachment_type,
+        d.name as org_name,
+        d2.name as check_org_name,
+        u.realname as check_user_name
+        from tab_pb_double_commentary dc
+        left join sys_dept d on dc.org_id = d.dept_id
+        left join sys_dept d2 on dc.check_org = d2.dept_id
+        left join sys_user u on dc.check_user = u.user_id
+        where dc.commentary_id = #{commentaryId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_double_commentary
+    where commentary_id = #{commentaryId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="commentaryId"
+            parameterType="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+    insert into tab_pb_double_commentary (commentary_id, org_id, plan_year, 
+      report_date, check_date, ebl_flag,
+      del_flag, order_num, description,
+      create_time, create_userid, create_username, 
+      update_time, update_userid, update_username, 
+      version, commentary_content, check_result, check_org, check_user,
+      check_desc
+      )
+    values (#{commentaryId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{planYear,jdbcType=BIGINT}, 
+      #{reportDate,jdbcType=TIMESTAMP}, #{checkDate,jdbcType=TIMESTAMP}, #{eblFlag,jdbcType=VARCHAR},
+      #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
+      #{version,jdbcType=BIGINT}, #{commentaryContent,jdbcType=LONGVARCHAR}, #{checkResult,jdbcType=BIGINT},
+      #{checkOrg,jdbcType=BIGINT}, #{checkUser,jdbcType=BIGINT}, #{checkDesc,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="commentaryId"
+            parameterType="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+        insert into tab_pb_double_commentary
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="commentaryId != null">
+                commentary_id,
+            </if>
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="planYear != null">
+                plan_year,
+            </if>
+            <if test="reportDate != null">
+                report_date,
+            </if>
+            <if test="checkDate != null">
+                check_date,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="commentaryContent != null">
+                commentary_content,
+            </if>
+            <if test="checkResult != null">
+                check_result,
+            </if>
+            <if test="checkOrg != null">
+                check_org,
+            </if>
+            <if test="checkUser != null">
+                check_user,
+            </if>
+            <if test="checkDesc != null">
+                check_desc,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="commentaryId != null">
+                #{commentaryId,jdbcType=BIGINT},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="planYear != null">
+                #{planYear,jdbcType=BIGINT},
+            </if>
+            <if test="reportDate != null">
+                #{reportDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="checkDate != null">
+                #{checkDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="commentaryContent != null">
+                #{commentaryContent,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="checkResult != null">
+                #{check_result,jdbcType=BIGINT},
+            </if>
+            <if test="checkOrg != null">
+                #{check_org,jdbcType=BIGINT},
+            </if>
+            <if test="checkUser != null">
+                #{check_user,jdbcType=BIGINT},
+            </if>
+            <if test="checkDesc != null">
+                #{check_desc,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+        update tab_pb_double_commentary
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="planYear != null">
+                plan_year = #{planYear,jdbcType=BIGINT},
+            </if>
+            <if test="reportDate != null">
+                report_date = #{reportDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="checkDate != null">
+                check_date = #{checkDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="commentaryContent != null">
+                commentary_content = #{commentaryContent,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="checkResult != null">
+                check_result = #{checkResult,jdbcType=BIGINT},
+            </if>
+            <if test="checkOrg != null">
+                check_org = #{checkOrg,jdbcType=BIGINT},
+            </if>
+            <if test="checkUser != null">
+                check_user = #{checkUser,jdbcType=BIGINT},
+            </if>
+            <if test="checkDesc != null">
+                check_desc = #{checkDesc,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where commentary_id = #{commentaryId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+    update tab_pb_double_commentary
+    set org_id = #{orgId,jdbcType=BIGINT},
+      plan_year = #{planYear,jdbcType=BIGINT},
+      report_date = #{reportDate,jdbcType=TIMESTAMP},
+      check_date = #{checkDate,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      commentary_content = #{commentaryContent,jdbcType=LONGVARCHAR},
+      check_result = #{checkResult,jdbcType=BIGINT},
+      check_org = #{checkOrg,jdbcType=BIGINT},
+      check_user = #{checkUser,jdbcType=BIGINT},
+      check_desc = #{checkDesc,jdbcType=VARCHAR}
+    where commentary_id = #{commentaryId,jdbcType=BIGINT}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+    update tab_pb_double_commentary
+    set org_id = #{orgId,jdbcType=BIGINT},
+      plan_year = #{planYear,jdbcType=BIGINT},
+      report_date = #{reportDate,jdbcType=TIMESTAMP},
+      check_date = #{checkDate,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      commentary_content = #{commentaryContent,jdbcType=LONGVARCHAR},
+      check_result = #{checkResult,jdbcType=BIGINT},
+      check_org = #{checkOrg,jdbcType=BIGINT},
+      check_user = #{checkUser,jdbcType=BIGINT},
+      check_desc = #{checkDesc,jdbcType=VARCHAR}
+    where commentary_id = #{commentaryId,jdbcType=BIGINT}
+  </update>
+
+    <!--根据条件查询-->
+    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="BaseResultMapWithCount">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        , d.name as org_name,
+        ifnull(t.video_num, 0) video_num,
+        ifnull(t.img_num, 0) img_num,
+        ifnull(t.doc_num, 0) doc_num
+        from tab_pb_double_commentary dc
+        left join sys_dept d on dc.org_id = d.dept_id
+        left join view_attachment_count t on dc.commentary_id = t.host_id and t.attachment_type = 5
+        <where>
+            <include refid="Base_WhereCase_List"/>
+        </where>
+    </select>
+
+    <!--逻辑删除-->
+    <update id="logicDeleteById">
+        update tab_pb_double_commentary set del_flag = 1 where commentary_id = #{commentaryId}
+    </update>
+</mapper>

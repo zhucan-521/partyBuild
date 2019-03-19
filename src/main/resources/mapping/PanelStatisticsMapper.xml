@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.PanelStatisticsMapper">
+
+    <!--统计-支部活动相关工作情况-->
+    <select id="calculateBranchWorkInfoForActivity" parameterType="java.util.Map" resultType="com.yizheng.partybuilding.entity.PanelStatistics">
+        SELECT
+            t.task_id AS taskId,
+            t.remarks AS anchor,
+            t.expected,
+            t.actual,
+            t.actual / t.expected * 100 AS rate
+        FROM
+            (
+            SELECT
+                tc.*,
+                d.label,
+                d.remarks,
+                ifnull( count( a.activities_id ), 0 ) AS actual
+            FROM
+                `sys_task_configurer` tc
+                INNER JOIN sys_dict d ON tc.task_id = d.id
+                LEFT JOIN tab_pb_activities a ON ( a.activities_type = tc.task_id OR FIND_IN_SET( tc.task_id, a.activities_type_ids ) )
+                    AND a.org_id = tc.fulfill_id
+                    <if test="cycle == 59418"> <!--年度-->
+                        AND YEAR ( a.create_time ) = YEAR ( now( ) )
+                    </if>
+                    <if test="cycle == 59419"> <!--季度-->
+                        AND QUARTER ( a.create_time ) = #{value}
+                    </if>
+                    <if test="cycle == 59420"> <!--月度-->
+                        AND MONTH ( a.create_time ) = #{value}
+                    </if>
+                    AND a.del_flag = 0
+            WHERE
+                tc.del_flag = 0
+                AND tc.YEAR = YEAR ( now( ) )
+                AND tc.cycle = #{cycle}
+                AND tc.fulfill_id = #{orgId}
+            GROUP BY
+                tc.task_id
+            ) t
+    </select>
+
+    <!--统计-非支部活动相关工作情况-->
+    <select id="calculateUnBranchWorkInfoForActivity" parameterType="java.util.Map" resultType="com.yizheng.partybuilding.entity.PanelStatistics">
+
+          SELECT
+                stc.task_id AS taskId,
+                ifnull( count( 1 ), 0 ) AS expected,
+                ifnull( t.actual, 0 ) AS actual,
+                ifnull( t.actual / count( 1 ) * 100, 0 ) AS rate
+            FROM
+                sys_task_configurer stc
+                INNER JOIN sys_dept o ON stc.fulfill_id = o.dept_id
+                LEFT JOIN (
+                    SELECT
+                        tt.task_id,
+                        count( 1 ) AS actual
+                    FROM (
+                        SELECT
+                            tc.task_id,
+                            tc.fulfill_id,
+                            tc.expected,
+                            ifnull( count( a.activities_id ), 0 ) AS actual
+                        FROM
+                            `sys_task_configurer` tc
+                            INNER JOIN sys_dept o ON tc.fulfill_id = o.dept_id
+                            LEFT JOIN tab_pb_activities a ON ( a.activities_type = tc.task_id OR FIND_IN_SET( tc.task_id, a.activities_type_ids ) )
+                            AND a.org_id = tc.fulfill_id
+                        <where>
+                            <if test="cycle == 59418"> <!--年度-->
+                                YEAR ( a.create_time ) = YEAR ( now( ) )
+                            </if>
+                            <if test="cycle == 59419"> <!--季度-->
+                                QUARTER ( a.create_time ) = #{value}
+                            </if>
+                            <if test="cycle == 59420"> <!--月度-->
+                                MONTH ( a.create_time ) = #{value}
+                            </if>
+                            AND o.del_flag = 0
+                            AND a.del_flag = 0
+                            AND tc.del_flag = 0
+                            AND tc.YEAR = YEAR ( now( ) )
+                            AND tc.cycle = #{cycle}
+                            AND find_in_set( #{orgId}, o.full_path )
+                        </where>
+                        GROUP BY
+                            tc.task_id,
+                            tc.fulfill_id
+                        ) tt
+                    WHERE
+                        tt.actual >= tt.expected
+                    GROUP BY
+                        tt.task_id
+                ) t ON stc.task_id = t.task_id
+            WHERE
+                find_in_set( #{orgId}, o.full_path )
+                AND o.del_flag = 0
+                AND stc.del_flag = 0
+                AND stc.YEAR = YEAR ( now( ) )
+                AND stc.cycle = #{cycle}
+            GROUP BY
+                stc.task_id
+    </select>
+
+    <!--活动照片墙-->
+    <select id="selectActivityPhotos" resultType="java.util.HashMap">
+        SELECT
+            a.`subject`,
+            att.attachment_instance
+        FROM
+            tab_pb_activities a
+            LEFT JOIN tab_pb_attachment att ON a.activities_id = att.host_id
+            AND att.attachment_type IN ( 30, 31, 32, 33, 34, 35, 37, 41 )  <!--活动hostId-->
+            AND att.attachment_file_type = 58992 <!--文件-->
+        WHERE
+            att.attachment_instance IS NOT NULL
+            AND a.org_id = #{orgId}
+            AND a.del_flag = 0
+            AND att.del_flag = 0
+        ORDER BY
+            a.create_time DESC
+            LIMIT #{limit}
+    </select>
+
+    <!--查询活动相关工作详情列表-->
+    <select id="selectDetailWorkInfoForActivityWithConditions" parameterType="java.util.Map"
+            resultType="com.yizheng.partybuilding.entity.PanelStatisticsDetail">
+        SELECT
+            t.parentOrgName,
+            t.orgName,
+            t.actual
+        FROM
+            (
+            SELECT
+                o2.NAME AS parentOrgName,
+                o.NAME AS orgName,
+                tc.expected,
+                ifnull( count( a.activities_id ), 0 ) AS actual
+            FROM
+                `sys_task_configurer` tc
+                INNER JOIN sys_dept o ON tc.fulfill_id = o.dept_id
+                LEFT JOIN sys_dept o2 ON o2.dept_id = o.parent_id
+                LEFT JOIN tab_pb_activities a ON ( a.activities_type = tc.task_id OR FIND_IN_SET( tc.task_id, a.activities_type_ids ) )
+                    AND a.org_id = tc.fulfill_id
+                    <if test="cycle == 59418"> <!--年度-->
+                        AND YEAR ( a.create_time ) = #{value}
+                    </if>
+                    <if test="cycle == 59419"> <!--季度-->
+                        AND QUARTER ( a.create_time ) = #{value}
+                    </if>
+                    <if test="cycle == 59420"> <!--月度-->
+                        AND MONTH ( a.create_time ) = #{value}
+                    </if>
+                    AND a.del_flag = 0
+            <where>
+                o.del_flag = 0
+                AND tc.del_flag = 0
+                AND tc.YEAR = #{year}
+                AND tc.cycle = #{cycle}
+                AND tc.task_id = #{taskId}
+                <if test="orgRange != null and orgRange != ''">
+                    <choose>
+                        <when test="orgRange == 1">
+                            AND (o.dept_id = #{orgId} OR o.parent_id = #{orgId})
+                        </when>
+                        <when test="orgRange == 2">
+                            AND find_in_set( #{orgId}, o.full_path )
+                        </when>
+                    </choose>
+                </if>
+            </where>
+            GROUP BY
+                tc.fulfill_id
+            ) t
+        <where>
+            <if test="status != null and status != ''">
+                <choose>
+                    <when test="status == 1">
+                        AND t.actual >= t.expected
+                    </when>
+                    <when test="status == 2">
+                        AND t.actual &lt; t.expected
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </select>
+
+</mapper>

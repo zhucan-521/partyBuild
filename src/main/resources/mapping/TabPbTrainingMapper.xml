@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbTrainingMapper">
+  <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbTraining">
+    <id column="traning_id" jdbcType="BIGINT" property="traningId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
+    <result column="training_start_date" jdbcType="TIMESTAMP" property="trainingStartDate" />
+    <result column="training_finished_date" jdbcType="TIMESTAMP" property="trainingFinishedDate" />
+    <result column="training_place" jdbcType="VARCHAR" property="trainingPlace" />
+    <result column="training_hours" jdbcType="BIGINT" property="trainingHours" />
+    <result column="training_type" jdbcType="BIGINT" property="trainingType" />
+    <result column="training_org" jdbcType="VARCHAR" property="trainingOrg" />
+    <result column="training_score" jdbcType="BIGINT" property="trainingScore" />
+    <result column="view_date" jdbcType="TIMESTAMP" property="viewDate" />
+    <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag" />
+    <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
+    <result column="order_num" jdbcType="BIGINT" property="orderNum" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_userid" jdbcType="BIGINT" property="createUserid" />
+    <result column="create_username" jdbcType="VARCHAR" property="createUsername" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_userid" jdbcType="BIGINT" property="updateUserid" />
+    <result column="update_username" jdbcType="VARCHAR" property="updateUsername" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbTraining">
+    <result column="training_content" jdbcType="LONGVARCHAR" property="trainingContent" />
+    <result column="training_gain" jdbcType="LONGVARCHAR" property="trainingGain" />
+    <result column="training_view" jdbcType="LONGVARCHAR" property="trainingView" />
+  </resultMap>
+    <resultMap id="TabPbTrainingDtoMap" extends="ResultMapWithBLOBs" type="com.yizheng.partybuilding.dto.TabPbTrainingDto">
+    </resultMap>
+  <sql id="Base_Column_List">
+    traning_id, user_id, dept_id, training_start_date, training_finished_date, training_place,
+    training_hours, training_type, training_org, training_score, view_date, ebl_flag,
+    del_flag, order_num, description, create_time, create_userid, create_username, update_time,
+    update_userid, update_username, version
+  </sql>
+  <sql id="Blob_Column_List">
+    training_content, training_gain, training_view
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tab_pb_training
+    where traning_id = #{traningId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_training
+    where traning_id = #{traningId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbTraining">
+    insert into tab_pb_training (traning_id, user_id, dept_id,
+      training_start_date, training_finished_date,
+      training_place, training_hours, training_type,
+      training_org, training_score, view_date,
+      ebl_flag, del_flag, order_num,
+      description, create_time, create_userid,
+      create_username, update_time, update_userid,
+      update_username, version, training_content,
+      training_gain, training_view)
+    values (#{traningId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{deptId,jdbcType=BIGINT},
+      #{trainingStartDate,jdbcType=TIMESTAMP}, #{trainingFinishedDate,jdbcType=TIMESTAMP},
+      #{trainingPlace,jdbcType=VARCHAR}, #{trainingHours,jdbcType=BIGINT}, #{trainingType,jdbcType=BIGINT},
+      #{trainingOrg,jdbcType=VARCHAR}, #{trainingScore,jdbcType=BIGINT}, #{viewDate,jdbcType=TIMESTAMP},
+      #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT},
+      #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT},
+      #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT},
+      #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{trainingContent,jdbcType=LONGVARCHAR},
+      #{trainingGain,jdbcType=LONGVARCHAR}, #{trainingView,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="traningId" parameterType="com.yizheng.partybuilding.entity.TabPbTraining">
+    insert into tab_pb_training
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="traningId != null">
+        traning_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="deptId != null">
+        dept_id,
+      </if>
+      <if test="trainingStartDate != null">
+        training_start_date,
+      </if>
+      <if test="trainingFinishedDate != null">
+        training_finished_date,
+      </if>
+      <if test="trainingPlace != null">
+        training_place,
+      </if>
+      <if test="trainingHours != null">
+        training_hours,
+      </if>
+      <if test="trainingType != null">
+        training_type,
+      </if>
+      <if test="trainingOrg != null">
+        training_org,
+      </if>
+      <if test="trainingScore != null">
+        training_score,
+      </if>
+      <if test="viewDate != null">
+        view_date,
+      </if>
+      <if test="eblFlag != null">
+        ebl_flag,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="orderNum != null">
+        order_num,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUserid != null">
+        create_userid,
+      </if>
+      <if test="createUsername != null">
+        create_username,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateUserid != null">
+        update_userid,
+      </if>
+      <if test="updateUsername != null">
+        update_username,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+      <if test="trainingContent != null">
+        training_content,
+      </if>
+      <if test="trainingGain != null">
+        training_gain,
+      </if>
+      <if test="trainingView != null">
+        training_view,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="traningId != null">
+        #{traningId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="deptId != null">
+        #{deptId,jdbcType=BIGINT},
+      </if>
+      <if test="trainingStartDate != null">
+        #{trainingStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="trainingFinishedDate != null">
+        #{trainingFinishedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="trainingPlace != null">
+        #{trainingPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="trainingHours != null">
+        #{trainingHours,jdbcType=BIGINT},
+      </if>
+      <if test="trainingType != null">
+        #{trainingType,jdbcType=BIGINT},
+      </if>
+      <if test="trainingOrg != null">
+        #{trainingOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="trainingScore != null">
+        #{trainingScore,jdbcType=BIGINT},
+      </if>
+      <if test="viewDate != null">
+        #{viewDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eblFlag != null">
+        #{eblFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=BIGINT},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserid != null">
+        #{createUserid,jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null">
+        #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        #{updateUserid,jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        #{updateUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=BIGINT},
+      </if>
+      <if test="trainingContent != null">
+        #{trainingContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="trainingGain != null">
+        #{trainingGain,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="trainingView != null">
+        #{trainingView,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbTraining">
+    update tab_pb_training
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="deptId != null">
+        dept_id = #{deptId,jdbcType=BIGINT},
+      </if>
+      <if test="trainingStartDate != null">
+        training_start_date = #{trainingStartDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="trainingFinishedDate != null">
+        training_finished_date = #{trainingFinishedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="trainingPlace != null">
+        training_place = #{trainingPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="trainingHours != null">
+        training_hours = #{trainingHours,jdbcType=BIGINT},
+      </if>
+      <if test="trainingType != null">
+        training_type = #{trainingType,jdbcType=BIGINT},
+      </if>
+      <if test="trainingOrg != null">
+        training_org = #{trainingOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="trainingScore != null">
+        training_score = #{trainingScore,jdbcType=BIGINT},
+      </if>
+      <if test="viewDate != null">
+        view_date = #{viewDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="eblFlag != null">
+        ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null">
+        order_num = #{orderNum,jdbcType=BIGINT},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserid != null">
+        create_userid = #{createUserid,jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null">
+        create_username = #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        update_userid = #{updateUserid,jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        update_username = #{updateUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=BIGINT},
+      </if>
+      <if test="trainingContent != null">
+        training_content = #{trainingContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="trainingGain != null">
+        training_gain = #{trainingGain,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="trainingView != null">
+        training_view = #{trainingView,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where traning_id = #{traningId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbTraining">
+    update tab_pb_training
+    set user_id = #{userId,jdbcType=BIGINT},
+      dept_id = #{deptId,jdbcType=BIGINT},
+      training_start_date = #{trainingStartDate,jdbcType=TIMESTAMP},
+      training_finished_date = #{trainingFinishedDate,jdbcType=TIMESTAMP},
+      training_place = #{trainingPlace,jdbcType=VARCHAR},
+      training_hours = #{trainingHours,jdbcType=BIGINT},
+      training_type = #{trainingType,jdbcType=BIGINT},
+      training_org = #{trainingOrg,jdbcType=VARCHAR},
+      training_score = #{trainingScore,jdbcType=BIGINT},
+      view_date = #{viewDate,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      training_content = #{trainingContent,jdbcType=LONGVARCHAR},
+      training_gain = #{trainingGain,jdbcType=LONGVARCHAR},
+      training_view = #{trainingView,jdbcType=LONGVARCHAR}
+    where traning_id = #{traningId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbTraining">
+    update tab_pb_training
+    set user_id = #{userId,jdbcType=BIGINT},
+      dept_id = #{deptId,jdbcType=BIGINT},
+      training_start_date = #{trainingStartDate,jdbcType=TIMESTAMP},
+      training_finished_date = #{trainingFinishedDate,jdbcType=TIMESTAMP},
+      training_place = #{trainingPlace,jdbcType=VARCHAR},
+      training_hours = #{trainingHours,jdbcType=BIGINT},
+      training_type = #{trainingType,jdbcType=BIGINT},
+      training_org = #{trainingOrg,jdbcType=VARCHAR},
+      training_score = #{trainingScore,jdbcType=BIGINT},
+      view_date = #{viewDate,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+    where traning_id = #{traningId,jdbcType=BIGINT}
+  </update>
+
+  <!--条件选择党员培训情况列表-->
+  <select id="selectiveTabPbTrainingDto" parameterType="com.yizheng.partybuilding.dto.TabPbTrainingDto" resultMap="TabPbTrainingDtoMap">
+      select
+      *
+      from
+      tab_pb_training
+      <where>
+          del_flag = 0
+          <if test="userId!=null and userId!=''">
+              and user_id = #{userId}
+          </if>
+      </where>
+      order by
+      traning_id
+      desc
+  </select>
+
+  <!--单个党员培训情况详情查询-->
+  <select id="selectOneById" resultType="Long" resultMap="TabPbTrainingDtoMap">
+    select
+    *
+    from
+    tab_pb_training
+    <where>
+      traning_id=#{trainId}
+    </where>
+  </select>
+
+</mapper>

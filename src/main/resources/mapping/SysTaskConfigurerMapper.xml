@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.SysTaskConfigurerMapper">
+  <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.SysTaskConfigurer">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="task_id" jdbcType="VARCHAR" property="taskId" />
+    <result column="fulfill_id" jdbcType="BIGINT" property="fulfillId" />
+    <result column="fulfill_name" jdbcType="VARCHAR" property="fulfillName"/>
+    <result column="expected" jdbcType="BIGINT" property="expected" />
+    <result column="cycle" jdbcType="BIGINT" property="cycle" />
+    <result column="year" jdbcType="VARCHAR" property="year" />
+    <result column="create_userid" jdbcType="BIGINT" property="createUserid" />
+    <result column="create_username" jdbcType="VARCHAR" property="createUsername" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_userid" jdbcType="BIGINT" property="updateUserid" />
+    <result column="update_username" jdbcType="VARCHAR" property="updateUsername" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="del_flag" jdbcType="TINYINT" property="delFlag"/>
+  </resultMap>
+  
+  <sql id="Base_WhereCase_List">
+    <if test="taskId != null and taskId != ''">
+      AND stc.task_id = #{taskId}
+    </if>
+    <if test="fulfillId != null and fulfillId != ''">
+      AND find_in_set(#{fulfillId}, d.full_path)
+    </if>
+    <if test="expected != null and expected != ''">
+      AND stc.expected = #{expected}
+    </if>
+    <if test="cycle != null and cycle != ''">
+      AND stc.cycle = #{cycle}
+    </if>
+    <if test="year != null and year != ''">
+      AND stc.year = #{year}
+    </if>
+    <if test="createUserid != null and createUserid != ''">
+      AND stc.create_userid = #{createUserid}
+    </if>
+    <if test="createUsername != null and createUsername != ''">
+      AND stc.create_username = #{createUsername}
+    </if>
+    <if test="createTime != null and createTime != ''">
+      AND stc.create_time = #{createTime}
+    </if>
+    <if test="updateUserid != null and updateUserid != ''">
+      AND stc.update_userid = #{updateUserid}
+    </if>
+    <if test="updateUsername != null and updateUsername != ''">
+      AND stc.update_username = #{updateUsername}
+    </if>
+    <if test="updateTime != null and updateTime != ''">
+      AND stc.update_time = #{updateTime}
+    </if>
+    <if test="delFlag != null and delFlag != ''">
+      AND stc.del_flag = #{delFlag}
+    </if>
+
+    <!--组织表字段-->
+    <if test="orgName != null and orgName != ''">
+      AND d.name like concat('%', #{orgName}, '%')
+    </if>
+    <if test="orgRange != null and orgRange != ''">
+      <choose>
+        <when test="orgRange == 1">
+          AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+        </when>
+        <when test="orgRange == 2">
+          AND find_in_set(#{rangeDeptId}, d.full_path)
+        </when>
+      </choose>
+    </if>
+    <if test="orgRange == null or orgRange.toString() == ''">
+      AND d.dept_id = #{rangeDeptId}
+    </if>
+  </sql>
+  
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+          parameterType="com.yizheng.partybuilding.entity.SysTaskConfigurer">
+    insert into sys_task_configurer (id, task_id, fulfill_id, 
+      expected, cycle, year, 
+      create_userid, create_username, create_time,
+      update_userid, update_username, update_time, del_flag
+      )
+    values (#{id,jdbcType=BIGINT}, #{taskId,jdbcType=VARCHAR}, #{fulfillId,jdbcType=BIGINT},
+      #{expected,jdbcType=BIGINT}, #{cycle,jdbcType=BIGINT}, #{year,jdbcType=VARCHAR},
+      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+      #{delFlag,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+          parameterType="com.yizheng.partybuilding.entity.SysTaskConfigurer">
+    insert into sys_task_configurer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="taskId != null">
+        task_id,
+      </if>
+      <if test="fulfillId != null">
+        fulfill_id,
+      </if>
+      <if test="expected != null">
+        expected,
+      </if>
+      <if test="cycle != null">
+        cycle,
+      </if>
+      <if test="year != null">
+        year,
+      </if>
+      <if test="createUserid != null">
+        create_userid,
+      </if>
+      <if test="createUsername != null">
+        create_username,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateUserid != null">
+        update_userid,
+      </if>
+      <if test="updateUsername != null">
+        update_username,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="taskId != null">
+        #{taskId,jdbcType=BIGINT},
+      </if>
+      <if test="fulfillId != null">
+        #{fulfillId,jdbcType=BIGINT},
+      </if>
+      <if test="expected != null">
+        #{expected,jdbcType=BIGINT},
+      </if>
+      <if test="cycle != null">
+        #{cycle,jdbcType=BIGINT},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserid != null">
+        #{createUserid,jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null">
+        #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        #{updateUserid,jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        #{updateUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.SysTaskConfigurer">
+    update sys_task_configurer
+    <set>
+      <if test="taskId != null">
+        task_id = #{taskId,jdbcType=VARCHAR},
+      </if>
+      <if test="fulfillId != null">
+        fulfill_id = #{fulfillId,jdbcType=BIGINT},
+      </if>
+      <if test="expected != null">
+        expected = #{expected,jdbcType=BIGINT},
+      </if>
+      <if test="cycle != null">
+        cycle = #{cycle,jdbcType=BIGINT},
+      </if>
+      <if test="year != null">
+        year = #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserid != null">
+        update_userid = #{updateUserid,jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        update_username = #{updateUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!--根据条件查询-->
+  <select id="selectWithConditions" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT
+      stc.*,
+      d.`name` AS fulfill_name
+    FROM sys_task_configurer stc
+    INNER JOIN sys_dept d ON stc.fulfill_id = d.dept_id
+    <where>
+      d.del_flag = 0
+      <include refid="Base_WhereCase_List"/>
+    </where>
+    ORDER BY
+      d.order_num,
+      stc.YEAR DESC,
+      stc.expected DESC
+  </select>
+
+  <!--根据固定条件查询-->
+  <select id="selectByTaskIdAndFulfillIdAndYear" resultMap="BaseResultMap">
+    SELECT *
+    FROM sys_task_configurer
+    WHERE del_flag = 0
+      AND  task_id = #{taskId}
+      AND fulfill_id = #{fulfillId}
+      AND year = #{year}
+  </select>
+
+  <!--获取候选履行人id-->
+  <select id="selectCandidateFulfillIds" resultType="java.lang.Long">
+    SELECT d.dept_id
+    FROM sys_dept d
+    WHERE
+      find_in_set(#{orgId}, d.full_path)
+      AND d.is_parent = 0
+      AND NOT EXISTS (
+        SELECT 1 FROM sys_task_configurer stc WHERE stc.del_flag = 0 AND stc.year = #{year} AND stc.task_id = #{taskId} AND stc.fulfill_id = d.dept_id
+      )
+  </select>
+  
+  <!--批量新增-->
+  <insert id="batchInsert" useGeneratedKeys="true" keyProperty="id"
+          parameterType="java.util.List">
+    insert into sys_task_configurer (task_id, fulfill_id, 
+      expected, cycle, year, 
+      create_userid, create_username, create_time,
+      update_userid, update_username, update_time)
+    values 
+    <foreach collection="list" item="item" separator=",">
+      (#{item.taskId}, #{item.fulfillId}, #{item.expected}, #{item.cycle}, #{item.year},
+        #{item.createUserid}, #{item.createUsername}, #{item.createTime},
+        #{item.updateUserid}, #{item.updateUsername}, #{item.updateTime})
+    </foreach>
+  </insert>
+
+  <!--逻辑删除-->
+  <update id="logicDeleteById">
+      UPDATE sys_task_configurer SET del_flag = 1 WHERE id = #{id}
+  </update>
+
+  <!--先删除-->
+  <update id="aheadDelete" parameterType="com.yizheng.partybuilding.entity.SysTaskConfigurer">
+      UPDATE sys_task_configurer
+      SET del_flag = 1, update_time = #{updateTime},
+      update_userid = #{updateUserid}, update_username = #{updateUsername}
+      WHERE del_flag = 0 AND fulfill_id IN (#{fulfillId})  <!--可能同时操作多个任务和履行组织，所以用in-->
+        AND cycle = #{cycle} AND task_id IN (#{taskId})
+        AND year = #{year}
+  </update>
+</mapper>

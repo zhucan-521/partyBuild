@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbPositivesMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbPositives">
+        <id column="positive_id" jdbcType="INTEGER" property="positiveId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="positive_type" jdbcType="INTEGER" property="positiveType"/>
+        <result column="left_type" jdbcType="INTEGER" property="leftType"/>
+        <result column="positive_org_id" jdbcType="INTEGER" property="positiveOrgId"/>
+        <result column="positive_org" jdbcType="VARCHAR" property="positiveOrg"/>
+        <result column="positive_name_dict" jdbcType="VARCHAR" property="positiveNameDict"/>
+        <result column="positive_name" jdbcType="INTEGER" property="positiveName"/>
+        <result column="positive_level" jdbcType="INTEGER" property="positiveLevel"/>
+        <result column="positive_start" jdbcType="TIMESTAMP" property="positiveStart"/>
+        <result column="positive_finished" jdbcType="TIMESTAMP" property="positiveFinished"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbPositives">
+        <result column="left_reason" jdbcType="BIGINT" property="leftReason"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    positive_id, user_id, positive_type, positive_org_id, positive_org, positive_name, 
+    positive_level, positive_start, positive_finished, ebl_flag, del_flag, order_num, 
+    description, create_time, create_userid, create_username, update_time, update_userid,
+        update_username, version,left_type
+  </sql>
+    <sql id="P_Base_Column_List">
+    p.positive_id, p.user_id, p.positive_type, p.positive_org_id, p.positive_org, p.positive_name,
+    p.positive_level, p.positive_start, p.positive_finished, p.ebl_flag, p.del_flag, p.order_num,
+    p.description, p.create_time, p.create_userid, p.create_username, p.update_time, p.update_userid,
+        p.update_username, p.version,p.left_type,p.left_reason
+  </sql>
+    <sql id="Blob_Column_List">
+    left_reason
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="P_Base_Column_List"/>
+        ,d.label as positive_name_dict
+        from tab_pb_positives p left join sys_dict d on d.id = p.positive_name
+        where p.positive_id = #{positiveId,jdbcType=INTEGER}
+    </select>
+    <select id="selectList" parameterType="com.yizheng.partybuilding.entity.TabPbPositives" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="P_Base_Column_List"/>
+        ,d.label as positive_name_dict
+        from tab_pb_positives p
+        left join sys_dict d on d.id = p.positive_name
+        where p.del_flag = 0
+        <if test="positiveType != null">
+           and p.positive_type = #{positiveType}
+        </if>
+        <if test="userId != null">
+           and p.user_id = #{userId}
+        </if>
+    </select>
+    <select id="verifyDuplicateDuties" parameterType="com.yizheng.partybuilding.entity.TabPbPositives" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="P_Base_Column_List"/>
+        ,d.label as positive_name_dict
+        from tab_pb_positives p
+        left join sys_dict d on d.id = p.positive_name
+        where p.del_flag = 0
+        <if test="positiveName != null">
+            and p.positive_name = #{positiveName}
+        </if>
+        <if test="userId != null">
+            and p.user_id = #{userId}
+        </if>
+        <if test="positiveOrgId != null">
+            and p.positive_org_id = #{positiveOrgId}
+        </if>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tab_pb_positives
+    where positive_id = #{positiveId,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbPositives">
+    insert into tab_pb_positives (positive_id, user_id, positive_type, 
+      positive_org_id, positive_org, positive_name, 
+      positive_level, positive_start, positive_finished, 
+      ebl_flag, del_flag, order_num, 
+      description, create_time, create_userid, 
+      create_username, update_time, update_userid,
+        update_username, version, left_reason,left_type
+      )
+    values (#{positiveId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{positiveType,jdbcType=INTEGER}, 
+      #{positiveOrgId,jdbcType=INTEGER}, #{positiveOrg,jdbcType=VARCHAR}, #{positiveName,jdbcType=INTEGER}, 
+      #{positiveLevel,jdbcType=INTEGER}, #{positiveStart,jdbcType=TIMESTAMP}, #{positiveFinished,jdbcType=TIMESTAMP}, 
+      #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, 
+      #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, 
+      #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT},
+        #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT},
+        #{leftReason,jdbcType=BIGINT},#{leftType,jdbcType=INTEGER}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbPositives">
+        insert into tab_pb_positives
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="positiveId != null">
+                positive_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="positiveType != null">
+                positive_type,
+            </if>
+            <if test="leftType != null">
+                left_type,
+            </if>
+            <if test="positiveOrgId != null">
+                positive_org_id,
+            </if>
+            <if test="positiveOrg != null">
+                positive_org,
+            </if>
+            <if test="positiveName != null">
+                positive_name,
+            </if>
+            <if test="positiveLevel != null">
+                positive_level,
+            </if>
+            <if test="positiveStart != null">
+                positive_start,
+            </if>
+            <if test="positiveFinished != null">
+                positive_finished,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="leftReason != null">
+                left_reason,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="positiveId != null">
+                #{positiveId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="positiveType != null">
+                #{positiveType,jdbcType=INTEGER},
+            </if>
+            <if test="leftType != null">
+                #{leftType,jdbcType=INTEGER},
+            </if>
+            <if test="positiveOrgId != null">
+                #{positiveOrgId,jdbcType=INTEGER},
+            </if>
+            <if test="positiveOrg != null">
+                #{positiveOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="positiveName != null">
+                #{positiveName,jdbcType=INTEGER},
+            </if>
+            <if test="positiveLevel != null">
+                #{positiveLevel,jdbcType=INTEGER},
+            </if>
+            <if test="positiveStart != null">
+                #{positiveStart,jdbcType=TIMESTAMP},
+            </if>
+            <if test="positiveFinished != null">
+                #{positiveFinished,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="leftReason != null">
+                #{leftReason,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbPositives">
+        update tab_pb_positives
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="positiveType != null">
+                positive_type = #{positiveType,jdbcType=INTEGER},
+            </if>
+            <if test="leftType != null">
+                left_type = #{leftType,jdbcType=INTEGER},
+            </if>
+            <if test="positiveOrgId != null">
+                positive_org_id = #{positiveOrgId,jdbcType=INTEGER},
+            </if>
+            <if test="positiveOrg != null">
+                positive_org = #{positiveOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="positiveName != null">
+                positive_name = #{positiveName,jdbcType=INTEGER},
+            </if>
+            <if test="positiveLevel != null">
+                positive_level = #{positiveLevel,jdbcType=INTEGER},
+            </if>
+            <if test="positiveStart != null">
+                positive_start = #{positiveStart,jdbcType=TIMESTAMP},
+            </if>
+            <if test="positiveFinished != null">
+                positive_finished = #{positiveFinished,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="leftReason != null">
+                left_reason = #{leftReason,jdbcType=BIGINT},
+            </if>
+        </set>
+        where positive_id = #{positiveId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbPositives">
+    update tab_pb_positives
+    set user_id = #{userId,jdbcType=BIGINT},
+      positive_type = #{positiveType,jdbcType=INTEGER},
+        left_type = #{leftType,jdbcType=INTEGER},
+      positive_org_id = #{positiveOrgId,jdbcType=INTEGER},
+      positive_org = #{positiveOrg,jdbcType=VARCHAR},
+      positive_name = #{positiveName,jdbcType=INTEGER},
+      positive_level = #{positiveLevel,jdbcType=INTEGER},
+      positive_start = #{positiveStart,jdbcType=TIMESTAMP},
+      positive_finished = #{positiveFinished,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      left_reason = #{leftReason,jdbcType=BIGINT}
+    where positive_id = #{positiveId,jdbcType=INTEGER}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbPositives">
+    update tab_pb_positives
+    set user_id = #{userId,jdbcType=BIGINT},
+        left_type = #{leftType,jdbcType=INTEGER},
+      positive_type = #{positiveType,jdbcType=INTEGER},
+      positive_org_id = #{positiveOrgId,jdbcType=INTEGER},
+      positive_org = #{positiveOrg,jdbcType=VARCHAR},
+      positive_name = #{positiveName,jdbcType=INTEGER},
+      positive_level = #{positiveLevel,jdbcType=INTEGER},
+      positive_start = #{positiveStart,jdbcType=TIMESTAMP},
+      positive_finished = #{positiveFinished,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+    where positive_id = #{positiveId,jdbcType=INTEGER}
+  </update>
+</mapper>

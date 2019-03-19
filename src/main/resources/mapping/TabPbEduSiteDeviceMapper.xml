@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduSiteDeviceMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduSiteDevice">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="site_id" jdbcType="BIGINT" property="siteId"/>
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName"/>
+        <result column="device_address" jdbcType="VARCHAR" property="deviceAddress"/>
+        <result column="device_model" jdbcType="VARCHAR" property="deviceModel"/>
+        <result column="device_time" jdbcType="TIMESTAMP" property="deviceTime"/>
+        <result column="device_status" jdbcType="BIGINT" property="deviceStatus"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="WithAboutInfoResultMap"
+               type="com.yizheng.partybuilding.entity.TabPbEduSiteDevice">
+        <collection property="attachments"
+                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=id,attachmentType=attachment_type}"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, site_id, device_name, device_address, device_model, device_time, device_status, 
+    del_flag, order_num, create_time, create_userid, create_username, update_time, update_userid, 
+    update_username
+  </sql>
+    <sql id="Base_WhereCase_List">
+        <if test="siteId != null and siteId != ''">
+            AND esd.site_id = #{siteId}
+        </if>
+        <if test="deviceName != null and deviceName != ''">
+            AND esd.device_name = #{deviceName}
+        </if>
+        <if test="deviceAddress != null and deviceAddress != ''">
+            AND esd.device_address = #{deviceAddress}
+        </if>
+        <if test="deviceModel != null and deviceModel != ''">
+            AND esd.device_model = #{deviceModel}
+        </if>
+        <if test="deviceTime != null and deviceTime != ''">
+            AND esd.device_time = #{deviceTime}
+        </if>
+        <if test="deviceStatus != null and deviceStatus != ''">
+            AND esd.device_status = #{deviceStatus}
+        </if>
+        <if test="delFlag != null and delFlag != ''">
+            AND esd.del_flag = #{delFlag}
+        </if>
+        <if test="orderNum != null and orderNum != ''">
+            AND esd.order_num = #{orderNum}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            AND esd.create_time = #{createTime}
+        </if>
+        <if test="createUserid != null and createUserid != ''">
+            AND esd.create_userid = #{createUserid}
+        </if>
+        <if test="createUsername != null and createUsername != ''">
+            AND esd.create_username = #{createUsername}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+            AND esd.update_time = #{updateTime}
+        </if>
+        <if test="updateUserid != null and updateUserid != ''">
+            AND esd.update_userid = #{updateUserid}
+        </if>
+        <if test="updateUsername != null and updateUsername != ''">
+            AND esd.update_username = #{updateUsername}
+        </if>
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_edu_site_device
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_edu_site_device
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.yizheng.partybuilding.entity.TabPbEduSiteDevice">
+    insert into tab_pb_edu_site_device (id, site_id, device_name, 
+      device_address, device_model, device_time, 
+      device_status, del_flag, order_num, 
+      create_time, create_userid, create_username, 
+      update_time, update_userid, update_username
+      )
+    values (#{id,jdbcType=BIGINT}, #{siteId,jdbcType=BIGINT}, #{deviceName,jdbcType=VARCHAR}, 
+      #{deviceAddress,jdbcType=VARCHAR}, #{deviceModel,jdbcType=VARCHAR}, #{deviceTime,jdbcType=TIMESTAMP}, 
+      #{deviceStatus,jdbcType=BIGINT}, #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.yizheng.partybuilding.entity.TabPbEduSiteDevice">
+        insert into tab_pb_edu_site_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="siteId != null">
+                site_id,
+            </if>
+            <if test="deviceName != null">
+                device_name,
+            </if>
+            <if test="deviceAddress != null">
+                device_address,
+            </if>
+            <if test="deviceModel != null">
+                device_model,
+            </if>
+            <if test="deviceTime != null">
+                device_time,
+            </if>
+            <if test="deviceStatus != null">
+                device_status,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="siteId != null">
+                #{siteId,jdbcType=BIGINT},
+            </if>
+            <if test="deviceName != null">
+                #{deviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceAddress != null">
+                #{deviceAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceModel != null">
+                #{deviceModel,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceTime != null">
+                #{deviceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deviceStatus != null">
+                #{deviceStatus,jdbcType=BIGINT},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSiteDevice">
+        update tab_pb_edu_site_device
+        <set>
+            <if test="siteId != null">
+                site_id = #{siteId,jdbcType=BIGINT},
+            </if>
+            <if test="deviceName != null">
+                device_name = #{deviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceAddress != null">
+                device_address = #{deviceAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceModel != null">
+                device_model = #{deviceModel,jdbcType=VARCHAR},
+            </if>
+            <if test="deviceTime != null">
+                device_time = #{deviceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deviceStatus != null">
+                device_status = #{deviceStatus,jdbcType=BIGINT},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduSiteDevice">
+    update tab_pb_edu_site_device
+    set site_id = #{siteId,jdbcType=BIGINT},
+      device_name = #{deviceName,jdbcType=VARCHAR},
+      device_address = #{deviceAddress,jdbcType=VARCHAR},
+      device_model = #{deviceModel,jdbcType=VARCHAR},
+      device_time = #{deviceTime,jdbcType=TIMESTAMP},
+      device_status = #{deviceStatus,jdbcType=BIGINT},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <!--根据条件查询-->
+    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="WithAboutInfoResultMap">
+        select esd.*,
+        '44' AS attachment_type
+        from tab_pb_edu_site_device esd
+        <where>
+            <include refid="Base_WhereCase_List"/>
+        </where>
+    </select>
+
+    <!--根据站点id获取关联站点活动信息-->
+    <select id="selectAllBySiteId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select esd.*
+        from tab_pb_edu_site_device esd
+        where esd.site_id = #{siteId}
+    </select>
+
+    <!--根据数据ID批量逻辑删除-->
+    <update id="batchLogicDeleteById" parameterType="java.util.List">
+        update tab_pb_edu_site_device esd
+        left join tab_pb_attachment a on esd.id = a.host_id and a.attachment_type = 44
+        set esd.del_flag = 1, a.del_flag = 1
+        where id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            ${item}
+        </foreach>
+    </update>
+
+    <!--根据站点id批量逻辑删除-->
+    <update id="batchLogicDeleteBySiteId" parameterType="java.lang.Long">
+        update tab_pb_edu_site_device esd
+        left join tab_pb_attachment a on esd.id = a.host_id and a.attachment_type = 44
+        set esd.del_flag = 1, a.del_flag = 1
+        where esd.site_id = #{siteId}
+    </update>
+</mapper>

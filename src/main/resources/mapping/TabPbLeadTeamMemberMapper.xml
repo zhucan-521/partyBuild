@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbLeadTeamMemberMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbLeadTeamMember">
+        <id column="member_id" jdbcType="BIGINT" property="memberId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="lead_team_id" jdbcType="BIGINT" property="leadTeamId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="person_name" jdbcType="VARCHAR" property="personName"/>
+        <result column="positive_id" jdbcType="BIGINT" property="positiveId"/>
+        <result column="positive_name" jdbcType="VARCHAR" property="positiveName"/>
+        <result column="tenure_mode" jdbcType="BIGINT" property="tenureMode"/>
+        <result column="tenure_begin" jdbcType="TIMESTAMP" property="tenureBegin"/>
+        <result column="tenure_duration" jdbcType="BIGINT" property="tenureDuration"/>
+        <result column="tenure_leave" jdbcType="TIMESTAMP" property="tenureLeave"/>
+        <result column="as_committee_member" jdbcType="TINYINT" property="asCommitteeMember"/>
+        <result column="as_committee_director" jdbcType="TINYINT" property="asCommitteeDirector"/>
+        <result column="lead_member_order" jdbcType="BIGINT" property="leadMemberOrder"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="approval_number" jdbcType="VARCHAR" property="approvalNumber"/>
+        <result column="rank" jdbcType="VARCHAR" property="rank"/>
+    </resultMap>
+
+    <resultMap id="TabPbLeadTeamMemberDtoResultMap" extends="BaseResultMap"
+               type="com.yizheng.partybuilding.dto.TabPbLeadTeamMemberDto">
+        <result column="idCardNo" jdbcType="VARCHAR" property="idCardNo"/>
+        <result column="deptName" jdbcType="VARCHAR" property="deptName"/>
+        <result property="pictures" jdbcType="VARCHAR" column="pictures"/>
+        <result property="gender" jdbcType="BIGINT" column="gender"/>
+
+
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+    member_id, org_id, lead_team_id, user_id, person_name, positive_id, positive_name, 
+    tenure_mode, tenure_begin, tenure_duration, tenure_leave, as_committee_member, as_committee_director, 
+    lead_member_order, ebl_flag, del_flag, order_num, description, create_time, create_userid, 
+    create_username, update_time, update_userid, update_username, version,rank,approval_number
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_lead_team_member
+        where member_id = #{memberId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_lead_team_member
+    where member_id = #{memberId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeamMember">
+    insert into tab_pb_lead_team_member (member_id, org_id, lead_team_id, 
+      user_id, person_name, positive_id, 
+      positive_name, tenure_mode, tenure_begin, 
+      tenure_duration, tenure_leave, as_committee_member, 
+      as_committee_director, lead_member_order, ebl_flag, 
+      del_flag, order_num, description, 
+      create_time, create_userid, create_username, 
+      update_time, update_userid, update_username,
+      version,approval_number,rank)
+    values (#{memberId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{leadTeamId,jdbcType=BIGINT}, 
+      #{userId,jdbcType=BIGINT}, #{personName,jdbcType=VARCHAR}, #{positiveId,jdbcType=BIGINT}, 
+      #{positiveName,jdbcType=VARCHAR}, #{tenureMode,jdbcType=BIGINT}, #{tenureBegin,jdbcType=TIMESTAMP}, 
+      #{tenureDuration,jdbcType=BIGINT}, #{tenureLeave,jdbcType=TIMESTAMP}, #{asCommitteeMember,jdbcType=TINYINT}, 
+      #{asCommitteeDirector,jdbcType=TINYINT}, #{leadMemberOrder,jdbcType=BIGINT}, #{eblFlag,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
+      #{version,jdbcType=BIGINT}), #{approval_number,jdbcType=BIGINT}), #{rank,jdbcType=BIGINT})
+  </insert>
+    <insert id="insertSelective"  useGeneratedKeys="true" keyProperty="memberId" parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeamMember">
+        insert into tab_pb_lead_team_member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="leadTeamId != null">
+                lead_team_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="personName != null">
+                person_name,
+            </if>
+            <if test="positiveId != null">
+                positive_id,
+            </if>
+            <if test="positiveName != null">
+                positive_name,
+            </if>
+            <if test="tenureMode != null">
+                tenure_mode,
+            </if>
+            <if test="tenureBegin != null">
+                tenure_begin,
+            </if>
+            <if test="tenureDuration != null">
+                tenure_duration,
+            </if>
+            <if test="tenureLeave != null">
+                tenure_leave,
+            </if>
+            <if test="asCommitteeMember != null">
+                as_committee_member,
+            </if>
+            <if test="asCommitteeDirector != null">
+                as_committee_director,
+            </if>
+            <if test="leadMemberOrder != null">
+                lead_member_order,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="approvalNumber != null">
+                approval_number,
+            </if>
+            <if test="rank != null">
+                rank,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">
+                #{memberId,jdbcType=BIGINT},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="leadTeamId != null">
+                #{leadTeamId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="personName != null">
+                #{personName,jdbcType=VARCHAR},
+            </if>
+            <if test="positiveId != null">
+                #{positiveId,jdbcType=BIGINT},
+            </if>
+            <if test="positiveName != null">
+                #{positiveName,jdbcType=VARCHAR},
+            </if>
+            <if test="tenureMode != null">
+                #{tenureMode,jdbcType=BIGINT},
+            </if>
+            <if test="tenureBegin != null">
+                #{tenureBegin,jdbcType=TIMESTAMP},
+            </if>
+            <if test="tenureDuration != null">
+                #{tenureDuration,jdbcType=BIGINT},
+            </if>
+            <if test="tenureLeave != null">
+                #{tenureLeave,jdbcType=TIMESTAMP},
+            </if>
+            <if test="asCommitteeMember != null">
+                #{asCommitteeMember,jdbcType=TINYINT},
+            </if>
+            <if test="asCommitteeDirector != null">
+                #{asCommitteeDirector,jdbcType=TINYINT},
+            </if>
+            <if test="leadMemberOrder != null">
+                #{leadMemberOrder,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="approvalNumber != null">
+                #{approvalNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="rank != null">
+                #{rank,jdbcType=VARCHAR},
+            </if>
+
+
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"  parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeamMember">
+        update tab_pb_lead_team_member
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="leadTeamId != null">
+                lead_team_id = #{leadTeamId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="personName != null">
+                person_name = #{personName,jdbcType=VARCHAR},
+            </if>
+            <if test="positiveId != null">
+                positive_id = #{positiveId,jdbcType=BIGINT},
+            </if>
+            <if test="positiveName != null">
+                positive_name = #{positiveName,jdbcType=VARCHAR},
+            </if>
+            <if test="tenureMode != null">
+                tenure_mode = #{tenureMode,jdbcType=BIGINT},
+            </if>
+            <if test="tenureBegin != null">
+                tenure_begin = #{tenureBegin,jdbcType=TIMESTAMP},
+            </if>
+            <if test="tenureDuration != null">
+                tenure_duration = #{tenureDuration,jdbcType=BIGINT},
+            </if>
+            <if test="tenureLeave != null">
+                tenure_leave = #{tenureLeave,jdbcType=TIMESTAMP},
+            </if>
+            <if test="asCommitteeMember != null">
+                as_committee_member = #{asCommitteeMember,jdbcType=TINYINT},
+            </if>
+            <if test="asCommitteeDirector != null">
+                as_committee_director = #{asCommitteeDirector,jdbcType=TINYINT},
+            </if>
+            <if test="leadMemberOrder != null">
+                lead_member_order = #{leadMemberOrder,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="approvalNumber != null">
+                approval_number= #{approvalNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="rank != null">
+                rank = #{rank,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where member_id = #{memberId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey"  useGeneratedKeys="true" keyProperty="memberId" parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeamMember">
+    update tab_pb_lead_team_member
+    set org_id = #{orgId,jdbcType=BIGINT},
+      lead_team_id = #{leadTeamId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      person_name = #{personName,jdbcType=VARCHAR},
+      positive_id = #{positiveId,jdbcType=BIGINT},
+      positive_name = #{positiveName,jdbcType=VARCHAR},
+      tenure_mode = #{tenureMode,jdbcType=BIGINT},
+      tenure_begin = #{tenureBegin,jdbcType=TIMESTAMP},
+      tenure_duration = #{tenureDuration,jdbcType=BIGINT},
+      tenure_leave = #{tenureLeave,jdbcType=TIMESTAMP},
+      as_committee_member = #{asCommitteeMember,jdbcType=TINYINT},
+      as_committee_director = #{asCommitteeDirector,jdbcType=TINYINT},
+      lead_member_order = #{leadMemberOrder,jdbcType=BIGINT},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+
+    where member_id = #{memberId,jdbcType=BIGINT}
+  </update>
+
+
+    <!--查询userid是否匹配-->
+    <select id="selectId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+       SELECT u.user_id FROM sys_user u where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <!--逻辑删除-->
+    <update id="deleteId" parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeamMember">
+        update tab_pb_lead_team_member set del_flag=1 where member_id = #{memberId,jdbcType=BIGINT}
+    </update>
+
+    <!--MemberId逻辑删除-->
+    <update id="deleteMemberByMemberId" parameterType="java.lang.Long">
+        update tab_pb_lead_team_member set del_flag=1 where member_id = #{memberId,jdbcType=BIGINT}
+    </update>
+
+    <!--根据领导班子ID查询班子成员-->
+    <select id="selectTeamMemberListByTeamId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+            t.*,
+            a.attachment_instance as pictures
+        FROM tab_pb_lead_team_member t
+        LEFT JOIN tab_pb_attachment a ON t.member_id = a.host_id AND a.del_flag = 0
+        LEFT JOIN sys_dept d ON t.org_id = d.dept_id
+        WHERE lead_team_id = #{leadTeamId}
+        AND  t.del_flag =  0
+        AND a.attachment_type = 38
+	    ORDER BY t.member_id
+    </select>
+
+    <!--查询组织上级组织领导班子成员-->
+    <select id="queryTheLeaderOfTheSuperiorOrganization" resultMap="TabPbLeadTeamMemberDtoResultMap">
+        SELECT
+        l.*,
+        d.`name` AS deptName
+        FROM
+        `tab_pb_lead_team_member` AS l
+        LEFT JOIN tab_pb_lead_team t2 ON l.lead_team_id = t2.lead_team_id
+        AND t2.current = 1
+        LEFT JOIN sys_dept AS d ON d.dept_id = t2.org_id
+        AND d.del_flag = 0
+        WHERE
+        l.del_flag = 0
+        <if test="deptId !=null and deptId != ''" >
+          AND d.dept_id = (SELECT parent_id FROM sys_dept WHERE dept_id = #{deptId})
+        </if>
+        <if test="personName !=null and personName!=''">
+            AND l.person_name like concat(concat("%",#{personName,jdbcType=VARCHAR}),"%")
+        </if>
+
+    </select>
+
+
+    <select id="queryTeamMembers" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select * from tab_pb_lead_team_member
+        WHERE lead_team_id=#{leadTeamId,jdbcType=BIGINT} and del_flag = '0'
+    </select>
+
+    <select id="selectById" resultMap="TabPbLeadTeamMemberDtoResultMap" parameterType="java.lang.Long">
+    SELECT
+	l.*,
+	d.name as deptName,
+	a.attachment_instance as pictures,
+	u.realname as deptName,
+	u.id_card_no as idCardNo
+FROM
+	tab_pb_lead_team_member l
+LEFT JOIN sys_dept d ON l.org_id = d.dept_id
+left join  tab_pb_attachment a  on host_id =l.member_id
+LEFT JOIN  sys_user u ON l.user_id= u.user_id
+WHERE
+	l.member_id =#{memberId,jdbcType=BIGINT} and  a.attachment_type='38' and a.del_flag=0
+</select>
+
+
+    <!--通过姓名,职务查询社区兼职委员列表-->
+    <select id="selectLeadTeamMemberByUser" parameterType="java.util.Map" resultMap="TabPbLeadTeamMemberDtoResultMap">
+        SELECT lead.*,d.name as deptName,u.gender,u.phone
+        FROM `tab_pb_lead_team_member` as lead
+        LEFT JOIN sys_dept as d on lead.org_id=d.dept_id and d.del_flag = 0
+        LEFT JOIN sys_user AS u on lead.user_id = u.user_id and u.del_flag = 0
+        WHERE ( lead.as_committee_member = 1 OR lead.as_committee_director = 1 )
+        AND lead.del_flag = 0
+        <if test="personName != null">
+            AND lead.person_name like concat(concat("%",#{personName,jdbcType=VARCHAR}),"%")
+        </if>
+        <if test="positiveId != null">
+            AND lead.positive_id = #{positiveId,jdbcType=BIGINT}
+        </if>
+        <!--组织范围  0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <if test="orgRange != null and orgRange != ''">
+            <choose>
+            <when test="orgRange == 1">
+                AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+            </when>
+            <when test="orgRange == 2">
+                AND find_in_set(#{rangeDeptId}, d.full_path)
+            </when>
+            </choose>
+        </if>
+        <if test="orgRange == null or orgRange.toString() == ''">
+            AND d.dept_id = #{rangeDeptId}
+        </if>
+    </select>
+
+    <select id="selectByTabPbLeadTeamDto" parameterType="com.yizheng.partybuilding.dto.TabPbLeadTeamMemberDto"
+            resultMap="TabPbLeadTeamMemberDtoResultMap">
+        SELECT
+        lt.*,
+        a.attachment_instance as pictures,
+        u.id_card_no as idCardNo,
+        u.user_id,
+        u.gender,
+        u.phone,
+        d.name as deptName
+        FROM
+        tab_pb_lead_team_member lt
+        LEFT JOIN sys_user u ON lt.user_id = u.user_id
+        LEFT JOIN tab_pb_lead_team t on lt.lead_team_id =t.lead_team_id
+        left join  tab_pb_attachment a  on host_id =lt.member_id AND a.attachment_type ='38' AND a.del_flag ='0'
+        LEFT JOIN sys_dept d on t.org_id=d.dept_id
+        where lt.del_flag=0
+        <if test="personName != null and personName !=''">
+            AND lt.person_name like concat(concat("%",#{personName,jdbcType=VARCHAR}),"%")
+        </if>
+        <if test="idCardNo != null and idCardNo  !=''">
+            AND u.id_card_no like concat(concat("%",#{idCardNo,jdbcType=VARCHAR}),"%")
+        </if>
+        <if test="rank != null and rank !=''">
+            AND lt.rank =#{rank}
+        </if>
+        <if test="positiveId != null and positiveId !=''">
+            and lt.positive_id =#{positiveId}
+        </if>
+        <!--组织范围  0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <if test="orgRange != null and orgRange != ''">
+            <choose>
+                <when test="orgRange == 1">
+                    AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{rangeDeptId}, d.full_path)
+                </when>
+            </choose>
+        </if>
+        <if test="orgRange == null or orgRange.toString() == ''">
+            AND d.dept_id = #{rangeDeptId}
+        </if>
+    </select>
+
+     <update id="updateByTabPbLeadTeam" parameterType="java.lang.Long">
+             UPDATE tab_pb_lead_team_member SET del_flag =1 where lead_team_id=#{leadTeamId,jdbcType=BIGINT}
+     </update>
+
+      <select id="selectBycount" resultType="java.lang.Long" parameterType="java.lang.Long" >
+       select COUNT(l.as_committee_member)  from tab_pb_lead_team_member l
+      LEFT JOIN tab_pb_lead_team lt ON l.lead_team_id =lt.lead_team_id
+      WHERE l.lead_team_id =#{leadTeamId,jdbcType=BIGINT} AND lt.del_flag =0 and  l.del_flag=0
+      </select>
+
+     <select id="selectByLeadTeamId" resultType="java.lang.Long" parameterType="java.lang.Long">
+             SELECT m.lead_team_id from tab_pb_lead_team_member m WHERE m.member_id =#{memberId,jdbcType=BIGINT} and del_flag =1 LIMIT 1
+     </select>
+
+    <select id="selectByUserId" resultMap="TabPbLeadTeamMemberDtoResultMap" >
+                SELECT
+                    l.*
+                FROM
+                    tab_pb_lead_team_member l
+                    LEFT JOIN tab_pb_lead_team m ON l.lead_team_id = m.lead_team_id
+                WHERE
+                    l.user_id =#{userId,jdbcType=BIGINT}
+                    AND m.lead_team_id =#{leadTeamId,jdbcType=BIGINT}
+                    AND l.del_flag = 0
+                    AND m.del_flag =0
+    </select>
+</mapper>

@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbSurveyRegisterMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbSurveyRegister">
+        <id column="survey_rgister_id" jdbcType="BIGINT" property="surveyRgisterId"/>
+        <result column="group_man" jdbcType="VARCHAR" property="groupMan"/>
+        <result column="group_view_date" jdbcType="TIMESTAMP" property="groupViewDate"/>
+        <result column="branch_man" jdbcType="BIGINT" property="branchMan"/>
+        <result column="branch_view_date" jdbcType="TIMESTAMP" property="branchViewDate"/>
+        <result column="comm_man" jdbcType="VARCHAR" property="commMan"/>
+        <result column="comm_view_date" jdbcType="TIMESTAMP" property="commViewDate"/>
+        <result column="audit_man" jdbcType="VARCHAR" property="auditMan"/>
+        <result column="audit_date" jdbcType="TIMESTAMP" property="auditDate"/>
+        <result column="survey_man" jdbcType="VARCHAR" property="surveyMan"/>
+        <result column="survey_date" jdbcType="TIMESTAMP" property="surveyDate"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.yizheng.partybuilding.entity.TabPbSurveyRegister">
+        <result column="train_status" jdbcType="LONGVARCHAR" property="trainStatus"/>
+        <result column="enco_tatus" jdbcType="LONGVARCHAR" property="encoTatus"/>
+        <result column="reward_status" jdbcType="LONGVARCHAR" property="rewardStatus"/>
+        <result column="policy_status" jdbcType="LONGVARCHAR" property="policyStatus"/>
+        <result column="group_view" jdbcType="LONGVARCHAR" property="groupView"/>
+        <result column="branch_view" jdbcType="LONGVARCHAR" property="branchView"/>
+        <result column="comm_view" jdbcType="LONGVARCHAR" property="commView"/>
+        <result column="audit_result" jdbcType="LONGVARCHAR" property="auditResult"/>
+        <result column="survey_view" jdbcType="LONGVARCHAR" property="surveyView"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    survey_rgister_id, group_man, group_view_date, branch_man, branch_view_date, comm_man, 
+    comm_view_date, audit_man, audit_date, survey_man, survey_date, ebl_flag, del_flag, 
+    order_num, description, create_time, create_userid, create_username, update_time, 
+    update_userid, update_username, version
+  </sql>
+    <sql id="Blob_Column_List">
+    train_status, enco_tatus, reward_status, policy_status, group_view, branch_view, 
+    comm_view, audit_result, survey_view
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tab_pb_survey_register
+        where survey_rgister_id = #{surveyRgisterId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_survey_register
+    where survey_rgister_id = #{surveyRgisterId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbSurveyRegister">
+    insert into tab_pb_survey_register (survey_rgister_id, group_man, group_view_date, 
+      branch_man, branch_view_date, comm_man, 
+      comm_view_date, audit_man, audit_date, 
+      survey_man, survey_date, ebl_flag, 
+      del_flag, order_num, description, 
+      create_time, create_userid, create_username, 
+      update_time, update_userid, update_username, 
+      version, train_status, enco_tatus, 
+      reward_status, policy_status, group_view, 
+      branch_view, comm_view, audit_result, 
+      survey_view)
+    values (#{surveyRgisterId,jdbcType=BIGINT}, #{groupMan,jdbcType=VARCHAR}, #{groupViewDate,jdbcType=TIMESTAMP}, 
+      #{branchMan,jdbcType=BIGINT}, #{branchViewDate,jdbcType=TIMESTAMP}, #{commMan,jdbcType=VARCHAR}, 
+      #{commViewDate,jdbcType=TIMESTAMP}, #{auditMan,jdbcType=VARCHAR}, #{auditDate,jdbcType=TIMESTAMP}, 
+      #{surveyMan,jdbcType=VARCHAR}, #{surveyDate,jdbcType=TIMESTAMP}, #{eblFlag,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
+      #{version,jdbcType=BIGINT}, #{trainStatus,jdbcType=LONGVARCHAR}, #{encoTatus,jdbcType=LONGVARCHAR}, 
+      #{rewardStatus,jdbcType=LONGVARCHAR}, #{policyStatus,jdbcType=LONGVARCHAR}, #{groupView,jdbcType=LONGVARCHAR}, 
+      #{branchView,jdbcType=LONGVARCHAR}, #{commView,jdbcType=LONGVARCHAR}, #{auditResult,jdbcType=LONGVARCHAR}, 
+      #{surveyView,jdbcType=LONGVARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbSurveyRegister">
+        insert into tab_pb_survey_register
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="surveyRgisterId != null">
+                survey_rgister_id,
+            </if>
+            <if test="groupMan != null">
+                group_man,
+            </if>
+            <if test="groupViewDate != null">
+                group_view_date,
+            </if>
+            <if test="branchMan != null">
+                branch_man,
+            </if>
+            <if test="branchViewDate != null">
+                branch_view_date,
+            </if>
+            <if test="commMan != null">
+                comm_man,
+            </if>
+            <if test="commViewDate != null">
+                comm_view_date,
+            </if>
+            <if test="auditMan != null">
+                audit_man,
+            </if>
+            <if test="auditDate != null">
+                audit_date,
+            </if>
+            <if test="surveyMan != null">
+                survey_man,
+            </if>
+            <if test="surveyDate != null">
+                survey_date,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="trainStatus != null">
+                train_status,
+            </if>
+            <if test="encoTatus != null">
+                enco_tatus,
+            </if>
+            <if test="rewardStatus != null">
+                reward_status,
+            </if>
+            <if test="policyStatus != null">
+                policy_status,
+            </if>
+            <if test="groupView != null">
+                group_view,
+            </if>
+            <if test="branchView != null">
+                branch_view,
+            </if>
+            <if test="commView != null">
+                comm_view,
+            </if>
+            <if test="auditResult != null">
+                audit_result,
+            </if>
+            <if test="surveyView != null">
+                survey_view,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="surveyRgisterId != null">
+                #{surveyRgisterId,jdbcType=BIGINT},
+            </if>
+            <if test="groupMan != null">
+                #{groupMan,jdbcType=VARCHAR},
+            </if>
+            <if test="groupViewDate != null">
+                #{groupViewDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="branchMan != null">
+                #{branchMan,jdbcType=BIGINT},
+            </if>
+            <if test="branchViewDate != null">
+                #{branchViewDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="commMan != null">
+                #{commMan,jdbcType=VARCHAR},
+            </if>
+            <if test="commViewDate != null">
+                #{commViewDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auditMan != null">
+                #{auditMan,jdbcType=VARCHAR},
+            </if>
+            <if test="auditDate != null">
+                #{auditDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="surveyMan != null">
+                #{surveyMan,jdbcType=VARCHAR},
+            </if>
+            <if test="surveyDate != null">
+                #{surveyDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="trainStatus != null">
+                #{trainStatus,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="encoTatus != null">
+                #{encoTatus,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="rewardStatus != null">
+                #{rewardStatus,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="policyStatus != null">
+                #{policyStatus,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="groupView != null">
+                #{groupView,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="branchView != null">
+                #{branchView,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="commView != null">
+                #{commView,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="auditResult != null">
+                #{auditResult,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="surveyView != null">
+                #{surveyView,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbSurveyRegister">
+        update tab_pb_survey_register
+        <set>
+            <if test="groupMan != null">
+                group_man = #{groupMan,jdbcType=VARCHAR},
+            </if>
+            <if test="groupViewDate != null">
+                group_view_date = #{groupViewDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="branchMan != null">
+                branch_man = #{branchMan,jdbcType=BIGINT},
+            </if>
+            <if test="branchViewDate != null">
+                branch_view_date = #{branchViewDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="commMan != null">
+                comm_man = #{commMan,jdbcType=VARCHAR},
+            </if>
+            <if test="commViewDate != null">
+                comm_view_date = #{commViewDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auditMan != null">
+                audit_man = #{auditMan,jdbcType=VARCHAR},
+            </if>
+            <if test="auditDate != null">
+                audit_date = #{auditDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="surveyMan != null">
+                survey_man = #{surveyMan,jdbcType=VARCHAR},
+            </if>
+            <if test="surveyDate != null">
+                survey_date = #{surveyDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="trainStatus != null">
+                train_status = #{trainStatus,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="encoTatus != null">
+                enco_tatus = #{encoTatus,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="rewardStatus != null">
+                reward_status = #{rewardStatus,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="policyStatus != null">
+                policy_status = #{policyStatus,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="groupView != null">
+                group_view = #{groupView,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="branchView != null">
+                branch_view = #{branchView,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="commView != null">
+                comm_view = #{commView,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="auditResult != null">
+                audit_result = #{auditResult,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="surveyView != null">
+                survey_view = #{surveyView,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where survey_rgister_id = #{surveyRgisterId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbSurveyRegister">
+    update tab_pb_survey_register
+    set group_man = #{groupMan,jdbcType=VARCHAR},
+      group_view_date = #{groupViewDate,jdbcType=TIMESTAMP},
+      branch_man = #{branchMan,jdbcType=BIGINT},
+      branch_view_date = #{branchViewDate,jdbcType=TIMESTAMP},
+      comm_man = #{commMan,jdbcType=VARCHAR},
+      comm_view_date = #{commViewDate,jdbcType=TIMESTAMP},
+      audit_man = #{auditMan,jdbcType=VARCHAR},
+      audit_date = #{auditDate,jdbcType=TIMESTAMP},
+      survey_man = #{surveyMan,jdbcType=VARCHAR},
+      survey_date = #{surveyDate,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      train_status = #{trainStatus,jdbcType=LONGVARCHAR},
+      enco_tatus = #{encoTatus,jdbcType=LONGVARCHAR},
+      reward_status = #{rewardStatus,jdbcType=LONGVARCHAR},
+      policy_status = #{policyStatus,jdbcType=LONGVARCHAR},
+      group_view = #{groupView,jdbcType=LONGVARCHAR},
+      branch_view = #{branchView,jdbcType=LONGVARCHAR},
+      comm_view = #{commView,jdbcType=LONGVARCHAR},
+      audit_result = #{auditResult,jdbcType=LONGVARCHAR},
+      survey_view = #{surveyView,jdbcType=LONGVARCHAR}
+    where survey_rgister_id = #{surveyRgisterId,jdbcType=BIGINT}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbSurveyRegister">
+    update tab_pb_survey_register
+    set group_man = #{groupMan,jdbcType=VARCHAR},
+      group_view_date = #{groupViewDate,jdbcType=TIMESTAMP},
+      branch_man = #{branchMan,jdbcType=BIGINT},
+      branch_view_date = #{branchViewDate,jdbcType=TIMESTAMP},
+      comm_man = #{commMan,jdbcType=VARCHAR},
+      comm_view_date = #{commViewDate,jdbcType=TIMESTAMP},
+      audit_man = #{auditMan,jdbcType=VARCHAR},
+      audit_date = #{auditDate,jdbcType=TIMESTAMP},
+      survey_man = #{surveyMan,jdbcType=VARCHAR},
+      survey_date = #{surveyDate,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+    where survey_rgister_id = #{surveyRgisterId,jdbcType=BIGINT}
+  </update>
+</mapper>

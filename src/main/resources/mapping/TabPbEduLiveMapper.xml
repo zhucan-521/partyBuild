@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduLiveMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduLive">
+        <id column="live_id" jdbcType="BIGINT" property="liveId"/>
+        <id column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="region" jdbcType="BIGINT" property="region"/>
+        <result column="plan" jdbcType="BIGINT" property="plan"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="cover" jdbcType="VARCHAR" property="cover"/>
+        <result column="state" jdbcType="BIGINT" property="state"/>
+        <result column="res_address" jdbcType="VARCHAR" property="resAddress"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="teacher_id" jdbcType="VARCHAR" property="teacherId"/>
+        <result column="type" jdbcType="VARCHAR" property="type"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="is_top" jdbcType="TINYINT" property="isTop"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="record_id" jdbcType="BIGINT" property="recordId"/>
+    </resultMap>
+
+    <resultMap extends="BaseResultMap" id="TabPbEduLiveDtoResultMap" type="com.yizheng.partybuilding.dto.TabPbEduLiveDto">
+        <result column="sumClick" jdbcType="BIGINT" property="sumClick"/>
+        <result column="sumSubscribe" jdbcType="BIGINT" property="sumSubscribe"/>
+        <result column="sumMsg" jdbcType="BIGINT" property="sumMsg"/>
+        <result column="teacherName" jdbcType="VARCHAR" property="teacherName"/>
+        <!--关联附件数据-->
+        <association property="listCourseware" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                     column="{hostId=live_id,attachmentType=attachment_type}" />
+        <association property="recordList" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                     column="{hostId=record_id,attachmentType=attachment_type}" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    live_id, description, region, plan, name, cover, state, res_address, start_time, 
+    end_time, address, teacher_id, type, del_flag, is_top, order_num, create_time, create_userid, 
+    create_username, update_time, update_userid, update_username, record_id
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_edu_live
+        where live_id = #{liveId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="map">
+    delete from tab_pb_edu_live
+    where live_id = #{liveId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduLive">
+    insert into tab_pb_edu_live (live_id, description, region, 
+      plan, name, cover, state, 
+      res_address, start_time, end_time, 
+      address, teacher_id, type, 
+      del_flag, is_top, order_num, 
+      create_time, create_userid, create_username, 
+      update_time, update_userid, update_username, 
+      record_id)
+    values (#{liveId,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{region,jdbcType=BIGINT}, 
+      #{plan,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{cover,jdbcType=VARCHAR}, #{state,jdbcType=BIGINT}, 
+      #{resAddress,jdbcType=VARCHAR}, #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, 
+      #{address,jdbcType=VARCHAR}, #{teacherId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+      #{delFlag,jdbcType=VARCHAR}, #{isTop,jdbcType=TINYINT}, #{orderNum,jdbcType=BIGINT},
+      #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
+      #{recordId,jdbcType=BIGINT})
+  </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="liveId" parameterType="com.yizheng.partybuilding.entity.TabPbEduLive">
+        insert into tab_pb_edu_live
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="liveId != null">
+                live_id,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="region != null">
+                region,
+            </if>
+            <if test="plan != null">
+                plan,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="cover != null">
+                cover,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="resAddress != null">
+                res_address,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="teacherId != null">
+                teacher_id,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="isTop != null">
+                is_top,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="recordId != null">
+                record_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="liveId != null">
+                #{liveId,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="region != null">
+                #{region,jdbcType=BIGINT},
+            </if>
+            <if test="plan != null">
+                #{plan,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="cover != null">
+                #{cover,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=BIGINT},
+            </if>
+            <if test="resAddress != null">
+                #{resAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="teacherId != null">
+                #{teacherId,jdbcType=BIGINT},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="isTop != null">
+                #{isTop,jdbcType=TINYINT},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="recordId != null">
+                #{recordId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduLive">
+        update tab_pb_edu_live
+        <set>
+            <if test="region != null">
+                region = #{region,jdbcType=BIGINT},
+            </if>
+            <if test="plan != null">
+                plan = #{plan,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="cover != null">
+                cover = #{cover,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=BIGINT},
+            </if>
+            <if test="resAddress != null">
+                res_address = #{resAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="teacherId != null">
+                teacher_id = #{teacherId,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="isTop != null">
+                is_top = #{isTop,jdbcType=TINYINT},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="recordId != null">
+                record_id = #{recordId,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where live_id = #{liveId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduLive">
+    update tab_pb_edu_live
+    set region = #{region,jdbcType=BIGINT},
+      plan = #{plan,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      cover = #{cover,jdbcType=VARCHAR},
+      state = #{state,jdbcType=BIGINT},
+      res_address = #{resAddress,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      end_time = #{endTime,jdbcType=TIMESTAMP},
+      address = #{address,jdbcType=VARCHAR},
+      teacher_id = #{teacherId,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      is_top = #{isTop,jdbcType=TINYINT},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      record_id = #{recordId,jdbcType=BIGINT}
+    where live_id = #{liveId,jdbcType=BIGINT}
+  </update>
+    <!-- 查询直播列表 -->
+    <select id="selectLiveByTabPbEduLive" parameterType="com.yizheng.partybuilding.entity.TabPbEduLive"
+            resultMap="TabPbEduLiveDtoResultMap">
+        select
+        '14' as attachment_type,
+        l.live_id, l.region, l.plan, l.name, l.description, l.cover, l.res_address, l.start_time,
+        l.end_time, l.address, l.teacher_id, l.type, l.del_flag, l.order_num, l.create_time, l.create_userid,
+        l.create_username, l.update_time, l.update_userid, l.update_username, l.record_id,l.is_top,
+        (SELECT COUNT(*) FROM tab_pb_edu_like as click WHERE click.like_type = 2
+        AND click.del_flag = 0 AND click.bus_id = l.live_id) AS sumClick,
+        ( SELECT COUNT(*) FROM tab_pb_edu_msg_board as msg WHERE msg.msg_type = 2
+        AND msg.bus_id = l.live_id) AS sumMsg,
+        (SELECT COUNT(*) FROM tab_pb_edu_subscribe as subs WHERE subs.like_type = 2
+        AND subs.del_flag = 0 AND subs.bus_id = l.live_id) AS sumSubscribe,
+
+        CASE
+
+        WHEN NOW() >= end_time THEN '59102'
+        WHEN NOW() >= start_time AND NOW() &lt; end_time THEN '59101'
+        WHEN date_add(start_time,interval -30 minute) &lt; now() AND now() &lt; start_time THEN '59100'
+        WHEN NOW() &lt; date_add(start_time,interval -30 minute) THEN '59099' ELSE '0'
+
+        END as state,
+
+        (select `name` from tab_pb_edu_teachers as teacher where teacher.teacher_id = l.teacher_id) as teacherName
+        from
+        tab_pb_edu_live as l
+        where
+        1=1
+        <if test="liveId != null and liveId != ''">
+            AND l.live_id = #{liveId}
+        </if>
+        <if test="name != null and name != ''">
+            AND l.name like concat(concat("%",#{name,jdbcType=VARCHAR}),"%")
+        </if>
+        <if test="plan != null and plan != ''">
+            AND l.plan = #{plan}
+        </if>
+        <if test="region != null and region != ''">
+            AND l.region = #{region}
+        </if>
+        <if test="teacherId != null and teacherId != '' ">
+            AND l.teacher_id = #{teacherId}
+        </if>
+        AND l.del_flag = 0
+        GROUP BY l.live_id
+        order by l.is_top desc ,l.start_time desc
+    </select>
+    <!-- 根据liveId查询直播 -->
+    <select id="selectByLiveId" parameterType="java.lang.Long" resultMap="TabPbEduLiveDtoResultMap">
+        select
+        *
+        from tab_pb_edu_live as l    LEFT JOIN tab_pb_attachment as a
+        ON l.live_id = a.host_id
+        AND a.del_flag = 0
+        AND a.attachment_type = 14
+        where
+        l.live_id = #{liveId,jdbcType=BIGINT}
+        AND l.del_flag = 0
+
+    </select>
+</mapper>

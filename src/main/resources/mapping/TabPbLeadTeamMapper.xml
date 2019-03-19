@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbLeadTeamMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbLeadTeam">
+        <id column="lead_team_id" jdbcType="BIGINT" property="leadTeamId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="session_year" jdbcType="BIGINT" property="sessionYear"/>
+        <result column="change_date" jdbcType="TIMESTAMP" property="changeDate"/>
+        <result column="during_year" jdbcType="BIGINT" property="duringYear"/>
+        <result column="vote_type" jdbcType="BIGINT" property="voteType"/>
+        <result column="due_count" jdbcType="BIGINT" property="dueCount"/>
+        <result column="fact_count" jdbcType="BIGINT" property="factCount"/>
+        <result column="vote_count" jdbcType="BIGINT" property="voteCount"/>
+        <result column="valid_vote_count" jdbcType="BIGINT" property="validVoteCount"/>
+        <result column="current" jdbcType="TINYINT" property="current"/>
+        <result column="elected_type" jdbcType="BIGINT" property="electedType"/>
+        <result column="elected_time" jdbcType="TIMESTAMP" property="electedTime"/>
+        <result column="comm_mem_num" jdbcType="BIGINT" property="commMemNum"/>
+        <result column="comm_num_parttime" jdbcType="BIGINT" property="commNumParttime"/>
+        <result column="parttime_comm_num" jdbcType="BIGINT" property="parttimeCommNum"/>
+        <result column="standing_mem_num" jdbcType="BIGINT" property="standingMemNum"/>
+        <result column="back_mem_num" jdbcType="BIGINT" property="backMemNum"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.dto.TabPbLeadTeamDto">
+        <result column="vote_status" jdbcType="LONGVARCHAR" property="voteStatus"/>
+        <result column="vote_result" jdbcType="LONGVARCHAR" property="voteResult"/>
+        <result column="orgnize_master" jdbcType="VARCHAR" property="orgNiZeMaster"/>
+        <result column="class_num" jdbcType="INTEGER" property="classNum"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="img_num" jdbcType="INTEGER" property="imgNum"/>
+        <result column="doc_num" jdbcType="INTEGER" property="docNum"/>
+    </resultMap>
+    <resultMap extends="ResultMapWithBLOBs" id="ResultMapWithFiles"
+               type="com.yizheng.partybuilding.dto.TabPbLeadTeamDto">
+        <collection property="documents"
+                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=lead_team_id,attachmentType=attachment_type,fileTypeLabel=file_type_doc}"/>
+
+        <collection property="pictures"
+                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=lead_team_id,attachmentType=attachment_type,fileTypeLabel=file_type_img}"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    l.lead_team_id, l.org_id, l.session_year, l.change_date, l.during_year, l.vote_type, l.due_count,
+    l.fact_count, l.vote_count, l.valid_vote_count, l.current, l.elected_type, l.elected_time, l.comm_mem_num,
+    l.comm_num_parttime, l.parttime_comm_num, l.standing_mem_num, l.back_mem_num, l.ebl_flag, l.del_flag,
+    l.order_num, l.description, l.create_time, l.create_userid, l.create_username, l.update_time,
+    l.update_userid, l.update_username, l.vote_result
+  </sql>
+    <sql id="Blob_Column_List">
+    l.vote_status
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithFiles">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        , '2' as attachment_type,
+        'IMAGE' as file_type_img,
+        'DOCUMENT' as file_type_doc,
+        d.NAME AS org_name
+        from tab_pb_lead_team l  LEFT JOIN  sys_dept d on l.org_id=d.dept_id
+        where lead_team_id = #{leadTeamId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_lead_team
+    where lead_team_id = #{leadTeamId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="leadTeamId"
+            parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeam">
+    insert into tab_pb_lead_team (lead_team_id, org_id, session_year, 
+      change_date, during_year, vote_type, 
+      due_count, fact_count, vote_count, 
+      valid_vote_count, current, elected_type, 
+      elected_time, comm_mem_num, comm_num_parttime, 
+      parttime_comm_num, standing_mem_num, back_mem_num, 
+      ebl_flag, del_flag, order_num, 
+      description, create_time, create_userid, 
+      create_username, update_time, update_userid, 
+      update_username, version, vote_status ,vote_result
+      )
+    values (#{leadTeamId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{sessionYear,jdbcType=BIGINT}, 
+      #{changeDate,jdbcType=TIMESTAMP}, #{duringYear,jdbcType=BIGINT}, #{voteType,jdbcType=BIGINT}, 
+      #{dueCount,jdbcType=BIGINT}, #{factCount,jdbcType=BIGINT}, #{voteCount,jdbcType=BIGINT}, 
+      #{validVoteCount,jdbcType=BIGINT}, #{current,jdbcType=TINYINT}, #{electedType,jdbcType=BIGINT}, 
+      #{electedTime,jdbcType=TIMESTAMP}, #{commMemNum,jdbcType=BIGINT}, #{commNumParttime,jdbcType=BIGINT}, 
+      #{parttimeCommNum,jdbcType=BIGINT}, #{standingMemNum,jdbcType=BIGINT}, #{backMemNum,jdbcType=BIGINT}, 
+      #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, 
+      #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, 
+      #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, 
+      #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{voteStatus,jdbcType=LONGVARCHAR},
+      #{voteResult,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" keyProperty="leadTeamId" useGeneratedKeys="true" parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeam">
+        insert into tab_pb_lead_team
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="leadTeamId != null">
+                lead_team_id,
+            </if>
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="sessionYear != null">
+                session_year,
+            </if>
+            <if test="changeDate != null">
+                change_date,
+            </if>
+            <if test="duringYear != null">
+                during_year,
+            </if>
+            <if test="voteType != null">
+                vote_type,
+            </if>
+            <if test="dueCount != null">
+                due_count,
+            </if>
+            <if test="factCount != null">
+                fact_count,
+            </if>
+            <if test="voteCount != null">
+                vote_count,
+            </if>
+            <if test="validVoteCount != null">
+                valid_vote_count,
+            </if>
+            <if test="current != null">
+                current,
+            </if>
+            <if test="electedType != null">
+                elected_type,
+            </if>
+            <if test="electedTime != null">
+                elected_time,
+            </if>
+            <if test="commMemNum != null">
+                comm_mem_num,
+            </if>
+            <if test="commNumParttime != null">
+                comm_num_parttime,
+            </if>
+            <if test="parttimeCommNum != null">
+                parttime_comm_num,
+            </if>
+            <if test="standingMemNum != null">
+                standing_mem_num,
+            </if>
+            <if test="backMemNum != null">
+                back_mem_num,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="voteStatus != null">
+                vote_status,
+            </if>
+            <if test="voteResult != null">
+                vote_result,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="leadTeamId != null">
+                #{leadTeamId,jdbcType=BIGINT},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="sessionYear != null">
+                #{sessionYear,jdbcType=BIGINT},
+            </if>
+            <if test="changeDate != null">
+                #{changeDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="duringYear != null">
+                #{duringYear,jdbcType=BIGINT},
+            </if>
+            <if test="voteType != null">
+                #{voteType,jdbcType=BIGINT},
+            </if>
+            <if test="dueCount != null">
+                #{dueCount,jdbcType=BIGINT},
+            </if>
+            <if test="factCount != null">
+                #{factCount,jdbcType=BIGINT},
+            </if>
+            <if test="voteCount != null">
+                #{voteCount,jdbcType=BIGINT},
+            </if>
+            <if test="validVoteCount != null">
+                #{validVoteCount,jdbcType=BIGINT},
+            </if>
+            <if test="current != null">
+                #{current,jdbcType=TINYINT},
+            </if>
+            <if test="electedType != null">
+                #{electedType,jdbcType=BIGINT},
+            </if>
+            <if test="electedTime != null">
+                #{electedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="commMemNum != null">
+                #{commMemNum,jdbcType=BIGINT},
+            </if>
+            <if test="commNumParttime != null">
+                #{commNumParttime,jdbcType=BIGINT},
+            </if>
+            <if test="parttimeCommNum != null">
+                #{parttimeCommNum,jdbcType=BIGINT},
+            </if>
+            <if test="standingMemNum != null">
+                #{standingMemNum,jdbcType=BIGINT},
+            </if>
+            <if test="backMemNum != null">
+                #{backMemNum,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="voteStatus != null">
+                #{voteStatus,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="voteResult != null">
+                #{voteResult,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeam">
+        update tab_pb_lead_team
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="sessionYear != null">
+                session_year = #{sessionYear,jdbcType=BIGINT},
+            </if>
+            <if test="changeDate != null">
+                change_date = #{changeDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="duringYear != null">
+                during_year = #{duringYear,jdbcType=BIGINT},
+            </if>
+            <if test="voteType != null">
+                vote_type = #{voteType,jdbcType=BIGINT},
+            </if>
+            <if test="dueCount != null">
+                due_count = #{dueCount,jdbcType=BIGINT},
+            </if>
+            <if test="factCount != null">
+                fact_count = #{factCount,jdbcType=BIGINT},
+            </if>
+            <if test="voteCount != null">
+                vote_count = #{voteCount,jdbcType=BIGINT},
+            </if>
+            <if test="validVoteCount != null">
+                valid_vote_count = #{validVoteCount,jdbcType=BIGINT},
+            </if>
+            <if test="current != null">
+                current = #{current,jdbcType=TINYINT},
+            </if>
+            <if test="electedType != null">
+                elected_type = #{electedType,jdbcType=BIGINT},
+            </if>
+            <if test="electedTime != null">
+                elected_time = #{electedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="commMemNum != null">
+                comm_mem_num = #{commMemNum,jdbcType=BIGINT},
+            </if>
+            <if test="commNumParttime != null">
+                comm_num_parttime = #{commNumParttime,jdbcType=BIGINT},
+            </if>
+            <if test="parttimeCommNum != null">
+                parttime_comm_num = #{parttimeCommNum,jdbcType=BIGINT},
+            </if>
+            <if test="standingMemNum != null">
+                standing_mem_num = #{standingMemNum,jdbcType=BIGINT},
+            </if>
+            <if test="backMemNum != null">
+                back_mem_num = #{backMemNum,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="voteStatus != null">
+                vote_status = #{voteStatus,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="voteResult != null">
+                vote_result =#{voteResult,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where lead_team_id = #{leadTeamId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeam">
+    update tab_pb_lead_team
+    set org_id = #{orgId,jdbcType=BIGINT},
+      session_year = #{sessionYear,jdbcType=BIGINT},
+      change_date = #{changeDate,jdbcType=TIMESTAMP},
+      during_year = #{duringYear,jdbcType=BIGINT},
+      vote_type = #{voteType,jdbcType=BIGINT},
+      due_count = #{dueCount,jdbcType=BIGINT},
+      fact_count = #{factCount,jdbcType=BIGINT},
+      vote_count = #{voteCount,jdbcType=BIGINT},
+      valid_vote_count = #{validVoteCount,jdbcType=BIGINT},
+      current = #{current,jdbcType=TINYINT},
+      elected_type = #{electedType,jdbcType=BIGINT},
+      elected_time = #{electedTime,jdbcType=TIMESTAMP},
+      comm_mem_num = #{commMemNum,jdbcType=BIGINT},
+      comm_num_parttime = #{commNumParttime,jdbcType=BIGINT},
+      parttime_comm_num = #{parttimeCommNum,jdbcType=BIGINT},
+      standing_mem_num = #{standingMemNum,jdbcType=BIGINT},
+      back_mem_num = #{backMemNum,jdbcType=BIGINT},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      vote_status = #{voteStatus,jdbcType=LONGVARCHAR}
+       vote_result = #{voteResult,jdbcType=LONGVARCHAR}
+    where lead_team_id = #{leadTeamId,jdbcType=BIGINT}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeam">
+    update tab_pb_lead_team
+    set org_id = #{orgId,jdbcType=BIGINT},
+      session_year = #{sessionYear,jdbcType=BIGINT},
+      change_date = #{changeDate,jdbcType=TIMESTAMP},
+      during_year = #{duringYear,jdbcType=BIGINT},
+      vote_type = #{voteType,jdbcType=BIGINT},
+      due_count = #{dueCount,jdbcType=BIGINT},
+      fact_count = #{factCount,jdbcType=BIGINT},
+      vote_count = #{voteCount,jdbcType=BIGINT},
+      valid_vote_count = #{validVoteCount,jdbcType=BIGINT},
+      current = #{current,jdbcType=TINYINT},
+      elected_type = #{electedType,jdbcType=BIGINT},
+      elected_time = #{electedTime,jdbcType=TIMESTAMP},
+      comm_mem_num = #{commMemNum,jdbcType=BIGINT},
+      comm_num_parttime = #{commNumParttime,jdbcType=BIGINT},
+      parttime_comm_num = #{parttimeCommNum,jdbcType=BIGINT},
+      standing_mem_num = #{standingMemNum,jdbcType=BIGINT},
+      back_mem_num = #{backMemNum,jdbcType=BIGINT},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+      vote_result=#{voteResult,jdbcType=BIGINT}
+    where lead_team_id = #{leadTeamId,jdbcType=BIGINT}
+  </update>
+    <select id="select" parameterType="java.util.HashMap" resultMap="ResultMapWithBLOBs">
+        SELECT
+            l.*,
+            d.NAME AS org_name,
+            d.orgnize_master AS person_name,
+            d.orgnize_master,
+            <!--DATE_ADD( l.change_date, INTERVAL l.vote_type YEAR ) AS change_date,-->
+            ifnull( lt.class_num, 0 ) AS class_num,
+            ifnull( t.img_num, 0 ) AS img_num,
+            ifnull( t.doc_num, 0 ) AS doc_num
+        FROM
+        tab_pb_lead_team l
+        LEFT JOIN sys_dept d ON l.org_id = d.dept_id
+        LEFT JOIN ( SELECT user_id, lead_team_id, count( 1 ) AS class_num FROM tab_pb_lead_team_member  WHERE del_flag=0 GROUP BY lead_team_id ) lt USING ( lead_team_id )
+        LEFT JOIN (
+            SELECT
+            host_id,
+            sum( CASE attachment_file_type WHEN 58992 THEN 1 ELSE 0 END ) AS img_num,
+            sum( CASE attachment_file_type WHEN 58993 THEN 1 ELSE 0 END ) AS doc_num
+            FROM
+            tab_pb_attachment a
+            WHERE
+            a.del_flag = 0 AND attachment_type = 2
+            GROUP BY
+            a.host_id
+        ) t ON t.host_id = l.lead_team_id
+        WHERE l.del_flag = 0
+        <if test="orgName != null and orgName != ''">
+            AND d.name like CONCAT('%',#{orgName},'%')
+        </if>
+        <if test="personName !=null and personName !=''">
+              and ll.leadname like  CONCAT('%',#{personName},'%') or (d.orgnize_master like CONCAT('%',#{personName},'%'))
+        </if>
+        <if test="idCardNo != null and idCardNo !=''">
+            AND ll.idcard like CONCAT('%',#{idCardNo},'%')
+        </if>
+        <!--组织范围  0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <if test="orgRange != null and orgRange != ''">
+            <choose>
+                <when test="orgRange == 1">
+                    AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{rangeDeptId}, d.full_path)
+                </when>
+            </choose>
+        </if>
+        <if test="orgRange == null or orgRange.toString() == ''">
+            AND d.dept_id = #{rangeDeptId}
+        </if>
+    </select>
+
+    <update id="deleteId" parameterType="java.lang.Long">
+        update tab_pb_lead_team set del_flag=1 where lead_team_id = #{leadTeamId,jdbcType=BIGINT}
+    </update>
+
+    <!--更改委员人数-->
+    <update id="updateNum" parameterType="java.lang.Long">
+         update tab_pb_lead_team set comm_num_parttime =comm_num_parttime + 1 where lead_team_id = #{leadTeamId,jdbcType=BIGINT}
+    </update>
+
+    <!--删除委员人数-->
+    <update id="updateById" parameterType="java.lang.Long">
+         update tab_pb_lead_team set comm_num_parttime = #{count} where lead_team_id = #{leadTeamId,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByNum" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select comm_mem_num from tab_pb_lead_team where lead_team_id = #{leadTeamId,jdbcType=BIGINT}
+    </select>
+</mapper>

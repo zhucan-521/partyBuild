@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbWorkPlanMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbWorkPlan">
+        <id column="plan_id" jdbcType="BIGINT" property="planId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="plan_year" jdbcType="BIGINT" property="planYear"/>
+        <result column="report_date" jdbcType="TIMESTAMP" property="reportDate"/>
+        <result column="summary_date" jdbcType="TIMESTAMP" property="summaryDate"/>
+        <result column="plan_check_date" jdbcType="TIMESTAMP" property="planCheckDate"/>
+        <result column="summary_check_date" jdbcType="TIMESTAMP" property="summaryCheckDate"/>
+        <result column="check_org" jdbcType="BIGINT" property="checkOrg"/>
+        <result column="check_result" jdbcType="BIGINT" property="checkResult"/>
+        <result column="check_user" jdbcType="BIGINT" property="checkUser"/>
+        <result column="summary_check_org" jdbcType="BIGINT" property="summaryCheckOrg"/>
+        <result column="summary_check_result" jdbcType="BIGINT" property="summaryCheckResult"/>
+        <result column="summary_check_user" jdbcType="BIGINT" property="summaryCheckUser"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbWorkPlan">
+        <result column="plan_content" jdbcType="LONGVARCHAR" property="planContent"/>
+        <result column="plan_summary" jdbcType="LONGVARCHAR" property="planSummary"/>
+        <result column="plan_check" jdbcType="LONGVARCHAR" property="planCheck"/>
+        <result column="summary_check" jdbcType="LONGVARCHAR" property="summaryCheck"/>
+    </resultMap>
+    <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithAttachments" type="com.yizheng.partybuilding.entity.TabPbWorkPlan">
+        <result column="check_org_name" jdbcType="VARCHAR" property="checkOrgName"/>
+        <result column="check_user_name" jdbcType="VARCHAR" property="checkUserName"/>
+        <result column="summary_check_org_name" jdbcType="VARCHAR" property="summaryCheckOrgName"/>
+        <result column="summary_check_user_name" jdbcType="VARCHAR" property="summaryCheckUserName"/>
+        <collection property="planAttachments" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=plan_id,attachmentType=attachment_type_plan}"/>
+        <collection property="summaryAttachments" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=plan_id,attachmentType=attachment_type_summary}"/>
+    </resultMap>
+    <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithCount" type="com.yizheng.partybuilding.entity.TabPbWorkPlan">
+        <result column="video_num" jdbcType="INTEGER" property="videoNum"/>
+        <result column="img_num" jdbcType="BIGINT" property="imgNum"/>
+        <result column="doc_num" jdbcType="BIGINT" property="docNum"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    p.plan_id, p.org_id, p.plan_year, p.report_date, p.summary_date, p.plan_check_date, p.summary_check_date,
+    p.check_org, p.check_result, p.check_user, p.summary_check_org, p.summary_check_result, p.summary_check_user,
+    p.ebl_flag, p.del_flag, p.order_num, p.description, p.create_time, p.create_userid, p.create_username,
+    p.update_time, p.update_userid, p.update_username, p.version
+  </sql>
+    <sql id="Blob_Column_List">
+    p.plan_content, p.plan_summary, p.plan_check, p.summary_check
+  </sql>
+    <sql id="Base_WhereCase_List">
+        <if test="planId != null and planId != ''">
+            AND p.plan_id = #{planId}
+        </if>
+        <if test="orgId != null and orgId != ''">
+            AND p.org_id = #{orgId}
+        </if>
+        <if test="planYear != null and planYear != ''">
+            AND p.plan_year = #{planYear}
+        </if>
+        <!--上报日期-->
+        <if test="reportStartDate != null and reportStartDate != ''">
+            AND date_format(p.report_date, '%Y-%m-%d') >= #{reportStartDate}
+        </if>
+        <if test="reportEndDate != null and reportEndDate != ''">
+            AND date_format(p.report_date, '%Y-%m-%d') &lt;= #{reportEndDate}
+        </if>
+        <!--总结日期-->
+        <if test="summaryStartDate != null and summaryStartDate != ''">
+            AND date_format(p.summary_date, '%Y-%m-%d') >= #{summaryStartDate}
+        </if>
+        <if test="summaryEndDate != null and summaryEndDate != ''">
+            AND date_format(p.summary_date, '%Y-%m-%d') &lt;= #{summaryEndDate}
+        </if>
+        <!--计划审核日期-->
+        <if test="planCheckStartDate != null and planCheckStartDate != ''">
+            AND date_format(p.plan_check_date, '%Y-%m-%d') >= #{planCheckStartDate}
+        </if>
+        <if test="planCheckEndDate != null and planCheckEndDate != ''">
+            AND date_format(p.plan_check_date, '%Y-%m-%d') &lt; #{planCheckEndDate}
+        </if>
+        <!--总结审核日期-->
+        <if test="summaryStartDate != null and summaryStartDate != ''">
+            AND date_format(p.summary_check_date, '%Y-%m-%d') >= #{summaryStartDate}
+        </if>
+        <if test="summaryEndDate != null and summaryEndDate != ''">
+            AND date_format(p.summary_check_date, '%Y-%m-%d') &lt;= #{summaryEndDate}
+        </if>
+        <if test="checkOrg != null and checkOrg != ''">
+            AND p.check_org = #{checkOrg}
+        </if>
+        <if test="checkResult != null and checkResult != ''">
+            AND p.check_result = #{checkResult}
+        </if>
+        <if test="checkUser != null and checkUser != ''">
+            AND p.check_user = #{checkUser}
+        </if>
+        <if test="summaryCheckOrg != null and summaryCheckOrg != ''">
+            AND p.summary_check_org = #{summaryCheckOrg}
+        </if>
+        <if test="summaryCheckResult != null and summaryCheckResult != ''">
+            AND p.summary_check_result = #{summaryCheckResult}
+        </if>
+        <if test="summaryCheckUser != null and summaryCheckUser != ''">
+            AND p.summary_check_user = #{summaryCheckUser}
+        </if>
+        <if test="eblFlag != null and eblFlag != ''">
+            AND p.ebl_flag = eblFlag
+        </if>
+        <if test="delFlag != null and delFlag != ''">
+            AND p.del_flag = #{delFlag}
+        </if>
+        <if test="orderNum != null and orderNum != ''">
+            AND p.order_num = #{orderNum}
+        </if>
+        <if test="description != null and description != ''">
+            AND p.description = #{description}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            AND p.create_time = #{createTime}
+        </if>
+        <if test="createUserid != null and createUserid != ''">
+            AND p.create_userid = #{createUserid}
+        </if>
+        <if test="createUsername != null and createUsername != ''">
+            AND p.create_username = #{createUsername}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+            AND p.update_time = #{updateTime}
+        </if>
+        <if test="updateUserid != null and updateUserid != ''">
+            AND p.update_userid = #{updateUserid}
+        </if>
+        <if test="updateUsername != null and updateUsername != ''">
+            AND p.update_username = #{updateUsername}
+        </if>
+        <if test="version != null and version != ''">
+            AND p.version = #{version}
+        </if>
+        <if test="planContent != null and planContent != ''">
+            AND p.plan_content = #{planContent}
+        </if>
+        <if test="planSummary != null and planSummary != ''">
+            AND p.plan_summary = #{planSummary}
+        </if>
+        <if test="planCheck != null and planCheck != ''">
+            AND p.plan_check = #{planCheck}
+        </if>
+        <if test="summaryCheck != null and summaryCheck != ''">
+            AND p.summary_check = #{summaryCheck}
+        </if>
+        <!--组织范围  0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <if test="orgRange != null and orgRange != ''">
+            <choose>
+                <when test="orgRange == 1">
+                    AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{rangeDeptId}, d.full_path)
+                </when>
+            </choose>
+        </if>
+        <if test="orgRange == null or orgRange.toString() == ''">
+            AND d.dept_id = #{rangeDeptId}
+        </if>
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMapWithAttachments">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        , t.name as org_name,
+        t2.name as check_org_name,
+        u.realname as check_user_name,
+        t3.name as summary_check_org_name,
+        u2.realname as summary_check_user_name,
+        '1' as attachment_type_plan,
+        '4' as attachment_type_summary
+        from tab_pb_work_plan p
+        left join sys_dept t on p.org_id = t.dept_id
+        left join sys_dept t2 on p.check_org = t2.dept_id
+        left join sys_user u on p.check_user = u.user_id
+        left join sys_dept t3 on p.summary_check_org = t3.dept_id
+        left join sys_user u2 on p.summary_check_user = u2.user_id
+        where p.plan_id = #{planId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_work_plan
+    where plan_id = #{planId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="planId" 
+            parameterType="com.yizheng.partybuilding.entity.TabPbWorkPlan">
+    insert into tab_pb_work_plan (org_id, plan_year,
+      report_date, summary_date, plan_check_date,
+      summary_check_date, check_org, check_result, check_user,
+      summary_check_org, summary_check_result, summary_check_user, ebl_flag, del_flag,
+      order_num, description, create_time,
+      create_userid, create_username, update_time,
+      update_userid, update_username, version,
+      plan_content, plan_summary, plan_check,
+      summary_check)
+    values (#{orgId,jdbcType=BIGINT}, #{planYear,jdbcType=BIGINT},
+      #{reportDate,jdbcType=TIMESTAMP}, #{summaryDate,jdbcType=TIMESTAMP}, #{planCheckDate,jdbcType=TIMESTAMP},
+      #{summaryCheckDate,jdbcType=TIMESTAMP}, #{checkOrg,jdbcType=BIGINT}, #{checkResult,jdbcType=BIGINT}, #{checkUser,jdbcType=BIGINT},
+      #{summaryCheckOrg,jdbcType=BIGINT}, #{summaryCheckResult,jdbcType=BIGINT}, #{summaryCheckUser,jdbcType=BIGINT}, #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR},
+      #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+      #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT},
+      #{planContent,jdbcType=LONGVARCHAR}, #{planSummary,jdbcType=LONGVARCHAR}, #{planCheck,jdbcType=LONGVARCHAR},
+      #{summaryCheck,jdbcType=LONGVARCHAR})
+  </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="planId"
+            parameterType="com.yizheng.partybuilding.entity.TabPbWorkPlan">
+        insert into tab_pb_work_plan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="planId != null">
+                plan_id,
+            </if>
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="planYear != null">
+                plan_year,
+            </if>
+            <if test="reportDate != null">
+                report_date,
+            </if>
+            <if test="summaryDate != null">
+                summary_date,
+            </if>
+            <if test="planCheckDate != null">
+                plan_check_date,
+            </if>
+            <if test="summaryCheckDate != null">
+                summary_check_date,
+            </if>
+            <if test="checkOrg != null">
+                check_org,
+            </if>
+            <if test="checkResult != null">
+                check_result,
+            </if>
+            <if test="checkUser != null">
+                check_user,
+            </if>
+            <if test="summaryCheckOrg != null">
+                summary_check_org,
+            </if>
+            <if test="summaryCheckResult != null">
+                summary_check_result,
+            </if>
+            <if test="summaryCheckUser != null">
+                summary_check_user,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="planContent != null">
+                plan_content,
+            </if>
+            <if test="planSummary != null">
+                plan_summary,
+            </if>
+            <if test="planCheck != null">
+                plan_check,
+            </if>
+            <if test="summaryCheck != null">
+                summary_check,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="planId != null">
+                #{planId,jdbcType=BIGINT},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="planYear != null">
+                #{planYear,jdbcType=BIGINT},
+            </if>
+            <if test="reportDate != null">
+                #{reportDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="summaryDate != null">
+                #{summaryDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="planCheckDate != null">
+                #{planCheckDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="summaryCheckDate != null">
+                #{summaryCheckDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="checkOrg != null">
+                #{checkOrg,jdbcType=BIGINT},
+            </if>
+            <if test="checkResult != null">
+                #{check_result,jdbcType=BIGINT},
+            </if>
+            <if test="checkUser != null">
+                #{checkUser,jdbcType=BIGINT},
+            </if>
+            <if test="summaryCheckOrg != null">
+                #{summaryCheckOrg,jdbcType=BIGINT},
+            </if>
+            <if test="summaryCheckResult != null">
+                #{summaryCheckResult,jdbcType=BIGINT},
+            </if>
+            <if test="summaryCheckUser != null">
+                #{summaryCheckUser,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="planContent != null">
+                #{planContent,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="planSummary != null">
+                #{planSummary,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="planCheck != null">
+                #{planCheck,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="summaryCheck != null">
+                #{summaryCheck,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbWorkPlan">
+        update tab_pb_work_plan
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="planYear != null">
+                plan_year = #{planYear,jdbcType=BIGINT},
+            </if>
+            <if test="reportDate != null">
+                report_date = #{reportDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="summaryDate != null">
+                summary_date = #{summaryDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="planCheckDate != null">
+                plan_check_date = #{planCheckDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="summaryCheckDate != null">
+                summary_check_date = #{summaryCheckDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="checkOrg != null">
+                check_org = #{checkOrg,jdbcType=BIGINT},
+            </if>
+            <if test="checkResult != null">
+                check_result = #{checkResult,jdbcType=BIGINT},
+            </if>
+            <if test="checkUser != null">
+                check_user = #{checkUser,jdbcType=BIGINT},
+            </if>
+            <if test="summaryCheckOrg != null">
+                summary_check_org = #{summaryCheckOrg,jdbcType=BIGINT},
+            </if>
+            <if test="summaryCheckResult != null">
+                summary_check_result = #{summaryCheckResult,jdbcType=BIGINT},
+            </if>
+            <if test="summaryCheckUser != null">
+                summary_check_user = #{summaryCheckUser,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="planContent != null">
+                plan_content = #{planContent,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="planSummary != null">
+                plan_summary = #{planSummary,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="planCheck != null">
+                plan_check = #{planCheck,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="summaryCheck != null">
+                summary_check = #{summaryCheck,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where plan_id = #{planId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbWorkPlan">
+    update tab_pb_work_plan
+    set org_id = #{orgId,jdbcType=BIGINT},
+      plan_year = #{planYear,jdbcType=BIGINT},
+      report_date = #{reportDate,jdbcType=TIMESTAMP},
+      summary_date = #{summaryDate,jdbcType=TIMESTAMP},
+      plan_check_date = #{planCheckDate,jdbcType=TIMESTAMP},
+      summary_check_date = #{summaryCheckDate,jdbcType=TIMESTAMP},
+      check_org  = #{checkOrg,jdbcType=BIGINT},
+      check_result = #{checkResult,jdbcType=BIGINT},
+      check_user = #{checkUser,jdbcType=BIGINT},
+      summary_check_org = #{summaryCheckOrg,jdbcType=BIGINT},
+      summary_check_result = #{summaryCheckResult,jdbcType=BIGINT},
+      summary_check_user = #{summaryCheckUser,jdbcType=BIGINT},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+    where plan_id = #{planId,jdbcType=BIGINT}
+  </update>
+
+    <!--根据条件查询-->
+    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="BaseResultMapWithCount">
+        select
+        <include refid="Base_Column_List" />
+        ,
+        <include refid="Blob_Column_List" />
+        , d.name as org_name,
+        ifnull(t.video_num, 0) video_num,
+        ifnull(t.img_num, 0) img_num,
+        ifnull(t.doc_num, 0) doc_num
+        from tab_pb_work_plan p
+        left join sys_dept d on p.org_id = d.dept_id
+        left join view_attachment_count t on p.plan_id = t.host_id and t.attachment_type = #{attachmentType}
+        <where>
+            <include refid="Base_WhereCase_List"/>
+        </where>
+    </select>
+
+    <!--逻辑删除-->
+    <update id="logicDeleteById">
+        update tab_pb_work_plan set del_flag = 1 where plan_id = #{planId}
+    </update>
+
+    <!--根据年度和组织id查询计划-->
+    <select id="selectByPlanYearAndOrgId" resultMap="BaseResultMap">
+        select * from tab_pb_work_plan where del_flag = 0 and plan_year = #{planYear} and org_id = #{orgId}
+    </select>
+</mapper>

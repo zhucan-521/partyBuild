@@ -1,0 +1,1982 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabSysUserMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.system.entity.SysUser">
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="identity_type" jdbcType="BIGINT" property="identityType"/>
+        <!-- <result column="password" jdbcType="VARCHAR" property="password"/>-->
+        <result column="salt" jdbcType="VARCHAR" property="salt"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
+        <result column="used_name" jdbcType="VARCHAR" property="usedName"/>
+        <result column="gender" jdbcType="BIGINT" property="gender"/>
+        <result column="nation" jdbcType="BIGINT" property="nation"/>
+        <result column="registeredresidence" jdbcType="VARCHAR" property="registeredresidence"/>
+        <result column="ancestor_place" jdbcType="BIGINT" property="ancestorPlace"/>
+        <result column="born_place" jdbcType="VARCHAR" property="bornPlace"/>
+        <result column="health" jdbcType="BIGINT" property="health"/>
+        <result column="familyorigin" jdbcType="BIGINT" property="familyorigin"/>
+        <result column="birthday" jdbcType="TIMESTAMP" property="birthday"/>
+        <result column="marital_status" jdbcType="BIGINT" property="maritalStatus"/>
+        <result column="unit_id" jdbcType="BIGINT" property="unitId"/>
+        <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
+        <result column="work_date" jdbcType="TIMESTAMP" property="workDate"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="fix_phone" jdbcType="VARCHAR" property="fixPhone"/>
+        <result column="education" jdbcType="BIGINT" property="education"/>
+        <result column="degree" jdbcType="BIGINT" property="degree"/>
+        <result column="family_address" jdbcType="VARCHAR" property="familyAddress"/>
+        <result column="community_addr" jdbcType="BIGINT" property="communityAddr"/>
+        <result column="profession" jdbcType="BIGINT" property="profession"/>
+        <result column="positive" jdbcType="BIGINT" property="positive"/>
+        <result column="democratic_party" jdbcType="BIGINT" property="democraticParty"/>
+        <result column="technician" jdbcType="BIGINT" property="technician"/>
+        <result column="migrant" jdbcType="VARCHAR" property="migrant"/>
+        <result column="graduated_from" jdbcType="VARCHAR" property="graduatedFrom"/>
+        <result column="contact" jdbcType="BIGINT" property="contact"/>
+        <result column="joinelsetime" jdbcType="TIMESTAMP" property="joinelsetime"/>
+        <result column="police_office" jdbcType="VARCHAR" property="policeOffice"/>
+        <result column="retired_time" jdbcType="TIMESTAMP" property="retiredTime"/>
+        <result column="post_time" jdbcType="TIMESTAMP" property="postTime"/>
+        <result column="portrait" jdbcType="VARCHAR" property="portrait"/>
+        <result column="person_identity" jdbcType="BIGINT" property="personIdentity"/>
+        <result column="stratum" jdbcType="BIGINT" property="stratum"/>
+        <result column="front_line" jdbcType="BIGINT" property="frontLine"/>
+        <result column="qq_number" jdbcType="VARCHAR" property="qqNumber"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="wx_openid" jdbcType="VARCHAR" property="wxOpenid"/>
+        <result column="qq_openid" jdbcType="VARCHAR" property="qqOpenid"/>
+        <result column="pm_code" jdbcType="VARCHAR" property="pmCode"/>
+        <result column="join_time" jdbcType="TIMESTAMP" property="joinTime"/>
+        <result column="regular_time" jdbcType="TIMESTAMP" property="regularTime"/>
+        <result column="regular_status" jdbcType="BIGINT" property="regularStatus"/>
+        <result column="develop_type" jdbcType="BIGINT" property="developType"/>
+        <result column="reference" jdbcType="VARCHAR" property="reference"/>
+        <result column="fee_ratio" jdbcType="DECIMAL" property="feeRatio"/>
+        <result column="join_after_august" jdbcType="TINYINT" property="joinAfterAugust"/>
+        <result column="is_poor" jdbcType="TINYINT" property="isPoor"/>
+        <result column="is_llost" jdbcType="TINYINT" property="isLlost"/>
+        <result column="flow_status" jdbcType="BIGINT" property="flowStatus"/>
+        <result column="flow_from_org_id" jdbcType="BIGINT" property="flowFromOrgId"/>
+        <result column="flow_from_org_name" jdbcType="VARCHAR" property="flowFromOrgName"/>
+        <result column="flow_from_org_contactor" jdbcType="VARCHAR" property="flowFromOrgContactor"/>
+        <result column="flow_from_org_phone" jdbcType="VARCHAR" property="flowFromOrgPhone"/>
+        <result column="flow_to_org_id" jdbcType="BIGINT" property="flowToOrgId"/>
+        <result column="flow_to_org_name" jdbcType="VARCHAR" property="flowToOrgName"/>
+        <result column="flow_to_org_contactor" jdbcType="VARCHAR" property="flowToOrgContactor"/>
+        <result column="flow_to_org_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
+        <result column="policy_face" jdbcType="BIGINT" property="policyFace"/>
+        <result column="join_time2" jdbcType="TIMESTAMP" property="joinTime2"/>
+        <result column="positived" jdbcType="VARCHAR" property="positived"/>
+        <result column="join_contact_id" jdbcType="BIGINT" property="joinContactId"/>
+        <result column="contactor" jdbcType="VARCHAR" property="contactor"/>
+        <result column="app_date" jdbcType="TIMESTAMP" property="appDate"/>
+        <result column="exp_activist_date" jdbcType="TIMESTAMP" property="expActivistDate"/>
+        <result column="activist_date" jdbcType="TIMESTAMP" property="activistDate"/>
+        <result column="exp_dev_date" jdbcType="TIMESTAMP" property="expDevDate"/>
+        <result column="dev_date" jdbcType="TIMESTAMP" property="devDate"/>
+        <result column="dev_stage" jdbcType="BIGINT" property="devStage"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="post_reason" jdbcType="LONGVARCHAR" property="postReason"/>
+        <result column="work_resumes" jdbcType="LONGVARCHAR" property="workResumes"/>
+        <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="rewards" jdbcType="LONGVARCHAR" property="rewards"/>
+        <result column="present_perform" jdbcType="LONGVARCHAR" property="presentPerform"/>
+        <result column="flow_out_date" jdbcType="TIMESTAMP" property="flowOutDate"/>
+        <result column="flow_out_type" jdbcType="BIGINT" property="flowOutType"/>
+        <result column="flow_out_range" jdbcType="BIGINT" property="flowOutRange"/>
+        <result column="flow_out_reason" jdbcType="BIGINT" property="flowOutReason"/>
+        <result column="flow_out_place" jdbcType="BIGINT" property="flowOutPlace"/>
+        <result column="flow_to_unit_name" jdbcType="VARCHAR" property="flowToUnitName"/>
+        <result column="flow_to_orgnize_name" jdbcType="VARCHAR" property="flowToOrgnizeName"/>
+        <result column="flow_to_orgnize_code" jdbcType="VARCHAR" property="flowToOrgnizeCode"/>
+        <result column="flow_to_orgnize_id" jdbcType="BIGINT" property="flowToOrgnizeId"/>
+        <result column="registry_status" jdbcType="BIGINT" property="registryStatus"/>
+        <result column="join_org_id" jdbcType="BIGINT" property="joinOrgId"/>
+        <result column="join_org_name" jdbcType="VARCHAR" property="joinOrgName"/>
+        <result column="join_org_type" jdbcType="BIGINT" property="joinOrgType"/>
+        <result column="join_org_contactor" jdbcType="VARCHAR" property="joinOrgContactor"/>
+        <result column="join_org_phone" jdbcType="VARCHAR" property="joinOrgPhone"/>
+        <result column="is_self_dev" jdbcType="TINYINT" property="isSelfDev"/>
+        <result column="is_taiwaner" jdbcType="TINYINT" property="isTaiwaner"/>
+        <result column="job_position" jdbcType="VARCHAR" property="jobPosition"/>
+        <result column="report_org_name" jdbcType="VARCHAR" property="reportOrgName"/>
+        <result column="report_org_contactor" jdbcType="VARCHAR" property="reportOrgContactor"/>
+        <result column="report_org_phone" jdbcType="VARCHAR" property="reportOrgPhone"/>
+        <result column="report_org_id" jdbcType="BIGINT" property="reportOrgId"/>
+
+        <!--实体字段，无数据库字段-->
+        <result column="old_place" jdbcType="VARCHAR" property="oldPlace"/>
+        <result column="registry_status_name" jdbcType="VARCHAR" property="registryStatusName"/>
+        <result column="in_where_dept_name" jdbcType="VARCHAR" property="inWhereDeptName"/>
+        <result column="subordinate_dept_name" jdbcType="VARCHAR" property="subordinateDeptName"/>
+        <result column="files_manage_unit_id" jdbcType="BIGINT" property="filesManageUnitId"/>
+        <result column="files_manage_unit" jdbcType="VARCHAR" property="filesManageUnit"/>
+    </resultMap>
+
+    <!-- UserDeptPositiveDto结果集 -->
+    <resultMap id="userDeptPositiveDtoResultMap" type="com.yizheng.partybuilding.dto.UserDeptPositiveDto">
+        <result column="user_id" property="userId"/>
+        <result column="username" property="userName"/>
+        <result column="dept_id" property="deptId"/>
+        <result column="name" property="name"/>
+        <result column="link_ledaer_id" property="linkLedaerId"/>
+        <collection property="positiveList" ofType="com.yizheng.partybuilding.entity.TabPbPositives">
+            <id column="positive_id" property="positiveId"/>
+            <result column="positive_name" property="positiveName"/>
+            <result column="positive_name_dict" property="positiveNameDict"/>
+        </collection>
+    </resultMap>
+    <!-- 带标记的结果集 -->
+    <resultMap extends="BaseResultMap" id="BaseResultMapExtendsTags" type="com.yizheng.partybuilding.system.entity.SysUser">
+        <collection property="tabPbUserTags" select="com.yizheng.partybuilding.repository.TabPbUserTagMapper.selectAllListSelective"
+                    column="{userId=user_id}"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.system.entity.SysUser">
+        <result column="post_reason" jdbcType="LONGVARCHAR" property="postReason"/>
+        <result column="work_resumes" jdbcType="LONGVARCHAR" property="workResumes"/>
+        <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="rewards" jdbcType="LONGVARCHAR" property="rewards"/>
+        <result column="present_perform" jdbcType="LONGVARCHAR" property="presentPerform"/>
+        <result column="flow_out_date" jdbcType="TIMESTAMP" property="flowOutDate"/>
+        <result column="flow_out_type" jdbcType="BIGINT" property="flowOutType"/>
+        <result column="flow_out_range" jdbcType="BIGINT" property="flowOutRange"/>
+        <result column="flow_out_reason" jdbcType="BIGINT" property="flowOutReason"/>
+        <result column="flow_out_place" jdbcType="BIGINT" property="flowOutPlace"/>
+        <result column="flow_to_unit_name" jdbcType="VARCHAR" property="flowToUnitName"/>
+        <result column="flow_to_orgnize_name" jdbcType="VARCHAR" property="flowToOrgnizeName"/>
+        <result column="flow_to_orgnize_code" jdbcType="VARCHAR" property="flowToOrgnizeCode"/>
+        <result column="flow_to_orgnize_id" jdbcType="BIGINT" property="flowToOrgnizeId"/>
+        <result column="old_place" jdbcType="VARCHAR" property="oldPlace"/>
+        <result column="registry_status" jdbcType="BIGINT" property="registryStatus"/>
+    </resultMap>
+    <resultMap id="PersonnelResultMap" type="com.yizheng.partybuilding.dto.Personnel">
+        <result column="user_id" property="userId"/>
+        <result column="username" property="username"/>
+        <result column="org_id" property="orgId"/>
+        <result column="id_card_no" property="idCardNo"/>
+        <result column="gender" property="gender"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        user_id, dept_id,realname as username , realname, identity_type, salt, avatar, id_card_no, used_name,
+    gender, nation, registeredresidence, ancestor_place, born_place, health, familyorigin,
+    birthday , marital_status, unit_id, unit_name, work_date, phone, fix_phone, education,
+    degree, family_address, community_addr, profession, positive, democratic_party, technician,
+    migrant, graduated_from, contact, joinelsetime, police_office, retired_time, post_time,
+    portrait, person_identity, stratum, front_line, qq_number, email, wx_openid, qq_openid,
+    pm_code, join_time, regular_time, regular_status, develop_type, reference, fee_ratio,
+    join_after_august, is_poor, is_llost, flow_status, flow_from_org_id, flow_from_org_name,
+    flow_from_org_contactor, flow_from_org_phone, flow_to_org_id, flow_to_org_name, flow_to_org_contactor,
+    flow_to_org_phone, policy_face, join_time2, positived, join_contact_id, contactor,
+    app_date, exp_activist_date, activist_date, exp_dev_date, dev_date, dev_stage, ebl_flag,
+    del_flag, order_num, description, create_time, create_userid, create_username, update_time,
+    update_userid, update_username, version ,files_manage_unit_id,join_org_id,join_org_name,
+    join_org_type,join_org_contactor,join_org_phone,is_self_dev,registry_status,files_manage_unit,is_taiwaner,job_position,
+    report_org_id,report_org_name,report_org_contactor,report_org_phone
+    </sql>
+    <sql id="Blob_Column_List">
+    post_reason, work_resumes, comment, content, rewards, present_perform
+    </sql>
+    <sql id="dept_name_result">
+    subordinate_dept_name,in_where_dept_name
+    </sql>
+    <sql id="registry_status_name">
+    CASE registry_status
+    WHEN 1 THEN '预备党员'
+    WHEN 2 THEN '正式党员'
+    WHEN 3 THEN '出党'
+    WHEN 4 THEN '停止党籍'
+    WHEN 5 THEN '死亡'
+    WHEN 6 THEN '其他'ELSE '其他'
+    END AS registry_status_name
+	</sql>
+
+    <!--根据条件查询列表WhereCaseList-->
+    <sql id="selectPageByMapWhereCaseList">
+        <if test="username != null">
+            AND realname like concat('%', #{username}, '%')
+        </if>
+        <!--组织范围  0 全组织 3 或不传查本级 -->
+        <if test="orgRange != null">
+            <choose>
+                <when test="orgRange == 0">
+                    AND u.dept_id is not null
+                </when>
+                <when test="orgRange == 3">
+                    AND u.dept_id = #{deptId}
+                </when>
+            </choose>
+        </if>
+        <if test="orgRange == null and deptId != null">
+            AND u.dept_id = #{deptId}
+        </if>
+        <if test="delFlag != null">
+            AND del_flag = #{delFlag}
+        </if>
+        <if test="idCardNo != null and idCardNo != ''">
+            AND id_card_no = #{idCardNo}
+        </if>
+        <if test="status != null">
+            and identity_type in
+            <foreach item="item" index="index" collection="status" open="(" separator="," close=")">
+                ${item}
+            </foreach>
+        </if>
+        <if test="education != null">
+            and education in
+            <foreach item="item" index="index" collection="education" open="(" separator="," close=")">
+                ${item}
+            </foreach>
+        </if>
+        <if test="maritalStatus != null">
+            and marital_status in
+            <foreach item="item" index="index" collection="maritalStatus" open="(" separator="," close=")">
+                ${item}
+            </foreach>
+        </if>
+        <if test="nation != null">
+            and nation in
+            <foreach item="item" index="index" collection="nation" open="(" separator="," close=")">
+                ${item}
+            </foreach>
+        </if>
+        <if test="unitType != null">
+            AND EXISTS(select 1 from tab_pb_unit_info ui WHERE u.unit_id=ui.unit_id and ui.unit_property in
+            <foreach item="item" index="index" collection="unitType" open="(" separator="," close=")">
+                ${item}
+            </foreach>
+            )
+        </if>
+        <if test="ageBegin != null">
+            and birthday &lt; #{ageBegin}
+        </if>
+        <if test="ageEnd != null">
+            and birthday > #{ageEnd}
+        </if>
+        <if test="joinTimeBegin != null">
+            and join_time &lt; #{joinTimeBegin}
+        </if>
+        <if test="joinTimeEnd != null">
+            and join_time > #{joinTimeEnd}
+        </if>
+        <if test="flowStatus != null and flowStatus == 0">
+            and flow_status = 0
+        </if>
+        <if test="flowStatus != null and flowStatus == 1">
+            and flow_status > 0
+        </if>
+        <if test="gender != null">
+            and gender = #{gender}
+        </if>
+        <if test="isPoor != null">
+            and is_poor = #{isPoor}
+        </if>
+        <if test="isLlost != null">
+            and is_llost = #{isLlost}
+        </if>
+        <if test="isTaiwaner != null">
+            and is_taiwaner = #{isTaiwaner}
+        </if>
+    </sql>
+
+    <!--查询列表WhereCaseList-->
+    <sql id="selectPageWhereCaseList">
+        <if test="username != null">
+            AND realname like concat('%', #{username}, '%')
+        </if>
+        <!--<if test="deptId != null and deptId != 12733">
+            AND exists(select dept_id from sys_dept dept where u.dept_id = dept.dept_id and
+            FIND_IN_SET(#{deptId},full_path))
+        </if>
+        <if test="deptId == null">
+            AND dept_id is not null
+        </if>-->
+        <!--组织范围  0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）不传查本级 -->
+        <if test="orgRange != null">
+            <choose>
+                <when test="orgRange == 0">
+                    AND u.dept_id is not null
+                </when>
+                <when test="orgRange == 3">
+                    AND u.dept_id = #{deptId}
+                </when>
+            </choose>
+        </if>
+        <if test="orgRange == null and deptId != null">
+            AND d.dept_id = #{deptId}
+        </if>
+        <if test="delFlag != null">
+            AND del_flag = #{delFlag}
+        </if>
+        <if test="identityType != null">
+            AND identity_type = #{identityType}
+        </if>
+        <if test="idCardNo != null and idCardNo != ''">
+            AND id_card_no = #{idCardNo}
+        </if>
+        <if test="status != null">
+            and registry_status in
+            <foreach item="item" index="index" collection="status" open="(" separator="," close=")">
+                #{item, jdbcType=BIGINT}
+            </foreach>
+        </if>
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMapExtendsTags">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from sys_user
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectPage" parameterType="com.yizheng.partybuilding.system.entity.SysUser" resultMap="BaseResultMapExtendsTags">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        ,
+        <include refid="dept_name_result"/>
+        ,
+        <include refid="registry_status_name"/>
+        <choose>
+            <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
+            <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
+                from (select dept_id as org_id from sys_dept dept
+                where dept.del_flag = 0
+                <if test="orgRange == 1">
+                    and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
+                </if>
+                <if test="orgRange == 2">
+                    and find_in_set(#{deptId}, dept.full_path)
+                </if>
+                ) d
+                inner join sys_user u on u.dept_id = d.org_id
+            </when>
+            <otherwise>
+                from sys_user u
+            </otherwise>
+        </choose>
+        LEFT JOIN ( SELECT dept_id AS subordinate_dept_id, NAME AS subordinate_dept_name FROM sys_dept ) d1
+        ON d1.subordinate_dept_id = u.dept_id
+        <where>
+            <include refid="selectPageWhereCaseList"/>
+        </where>
+    </select>
+
+    <select id="selectPage_COUNT" parameterType="Map" resultType="java.lang.Long">
+        SELECT
+        count( u.user_id )
+        <choose>
+            <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
+            <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
+                from (select dept_id as org_id from sys_dept dept
+                where dept.del_flag = 0
+                <if test="orgRange == 1">
+                    and (dept.dept_id = #{deptId} or dept.parent_dept_id = #{deptId})
+                </if>
+                <if test="orgRange == 2">
+                    and find_in_set(#{deptId}, dept.full_path)
+                </if>
+                ) d
+                inner join sys_user u on u.dept_id = d.org_id
+            </when>
+            <otherwise>
+                from sys_user u
+            </otherwise>
+        </choose>
+        <where>
+            <include refid="selectPageByMapWhereCaseList"/>
+        </where>
+    </select>
+
+    <select id="selectPageByMap" parameterType="Map" resultMap="BaseResultMapExtendsTags">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        ,
+        <include refid="dept_name_result"/>
+        ,
+        <include refid="registry_status_name"/>
+        ,TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age
+        <choose>
+            <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
+            <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
+                from (select dept_id as org_id from sys_dept dept
+                  where dept.del_flag = 0
+                <if test="orgRange == 1">
+                    and (dept.dept_id = #{deptId} or dept.parent_dept_id = #{deptId})
+                </if>
+                <if test="orgRange == 2">
+                    and find_in_set(#{deptId}, dept.full_path)
+                </if>
+                ) d
+                inner join sys_user u on u.dept_id = d.org_id
+            </when>
+            <otherwise>
+                from sys_user u
+            </otherwise>
+        </choose>
+        LEFT JOIN ( SELECT dept_id AS in_where_dept_id, NAME AS in_where_dept_name FROM sys_dept ) fd
+        ON fd.in_where_dept_id = u.flow_to_org_id
+        LEFT JOIN ( SELECT dept_id AS subordinate_dept_id, NAME AS subordinate_dept_name FROM sys_dept ) sd
+        ON sd.subordinate_dept_id = u.dept_id
+        <where>
+            <include refid="selectPageByMapWhereCaseList"/>
+        </where>
+        ORDER BY u.user_id
+    </select>
+
+    <select id="selectPageByMap_COUNT" parameterType="Map" resultType="java.lang.Long">
+        SELECT
+            count( u.user_id )
+        <choose>
+            <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
+            <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
+                from (select dept_id as org_id from sys_dept dept
+                where dept.del_flag = 0
+                <if test="orgRange == 1">
+                    and (dept.dept_id = #{deptId} or dept.parent_dept_id = #{deptId})
+                </if>
+                <if test="orgRange == 2">
+                    and find_in_set(#{deptId}, dept.full_path)
+                </if>
+                ) d
+                inner join sys_user u on u.dept_id = d.org_id
+            </when>
+            <otherwise>
+                from sys_user u
+            </otherwise>
+        </choose>
+        <where>
+            <include refid="selectPageByMapWhereCaseList"/>
+        </where>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_user
+    where user_id = #{userId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+    insert into sys_user (user_id, dept_id, username,
+      identity_type, password, salt,
+      avatar, id_card_no, used_name,
+      gender, nation, registeredresidence,
+      ancestor_place, born_place, health,
+      familyorigin, birthday, marital_status,
+      unit_id, unit_name, work_date,
+      phone, fix_phone, education,
+      degree, family_address, community_addr,
+      profession, positive, democratic_party,
+      technician, migrant, graduated_from,
+      contact, joinelsetime, police_office,
+      retired_time, post_time, portrait,
+      person_identity, stratum, front_line,
+      qq_number, email, wx_openid,
+      qq_openid, pm_code, join_time,
+      regular_time, regular_status, develop_type,
+      reference, fee_ratio, join_after_august,
+      is_poor, is_llost, flow_status,
+      flow_from_org_id, flow_from_org_name, flow_from_org_contactor,
+      flow_from_org_phone, flow_to_org_id, flow_to_org_name,
+      flow_to_org_contactor, flow_to_org_phone, policy_face,
+      join_time2, positived, join_contact_id,
+      contactor, app_date, exp_activist_date,
+      activist_date, exp_dev_date, dev_date,
+      dev_stage, ebl_flag, del_flag,
+      order_num, description, create_time,
+      create_userid, create_username, update_time,
+      update_userid, update_username, version,
+      post_reason, work_resumes, comment,
+      content, rewards, present_perform,is_taiwaner,job_position
+      )
+    values (#{userId,jdbcType=BIGINT}, #{deptId,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR},
+      #{identityType,jdbcType=BIGINT}, #{password,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR},
+      #{avatar,jdbcType=VARCHAR}, #{idCardNo,jdbcType=VARCHAR}, #{usedName,jdbcType=VARCHAR},
+      #{gender,jdbcType=BIGINT}, #{nation,jdbcType=BIGINT}, #{registeredresidence,jdbcType=VARCHAR},
+      #{ancestorPlace,jdbcType=BIGINT}, #{bornPlace,jdbcType=VARCHAR}, #{health,jdbcType=BIGINT},
+      #{familyorigin,jdbcType=BIGINT}, #{birthday,jdbcType=TIMESTAMP}, #{maritalStatus,jdbcType=BIGINT},
+      #{unitId,jdbcType=BIGINT}, #{unitName,jdbcType=VARCHAR}, #{workDate,jdbcType=TIMESTAMP},
+      #{phone,jdbcType=VARCHAR}, #{fixPhone,jdbcType=VARCHAR}, #{education,jdbcType=BIGINT},
+      #{degree,jdbcType=BIGINT}, #{familyAddress,jdbcType=VARCHAR}, #{communityAddr,jdbcType=BIGINT},
+      #{profession,jdbcType=BIGINT}, #{positive,jdbcType=BIGINT}, #{democraticParty,jdbcType=BIGINT},
+      #{technician,jdbcType=BIGINT}, #{migrant,jdbcType=VARCHAR}, #{graduatedFrom,jdbcType=VARCHAR},
+      #{contact,jdbcType=BIGINT}, #{joinelsetime,jdbcType=TIMESTAMP}, #{policeOffice,jdbcType=VARCHAR},
+      #{retiredTime,jdbcType=TIMESTAMP}, #{postTime,jdbcType=TIMESTAMP}, #{portrait,jdbcType=VARCHAR},
+      #{personIdentity,jdbcType=BIGINT}, #{stratum,jdbcType=BIGINT}, #{frontLine,jdbcType=BIGINT},
+      #{qqNumber,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{wxOpenid,jdbcType=VARCHAR},
+      #{qqOpenid,jdbcType=VARCHAR}, #{pmCode,jdbcType=VARCHAR}, #{joinTime,jdbcType=TIMESTAMP},
+      #{regularTime,jdbcType=TIMESTAMP}, #{regularStatus,jdbcType=BIGINT}, #{developType,jdbcType=BIGINT},
+      #{reference,jdbcType=VARCHAR}, #{feeRatio,jdbcType=DECIMAL}, #{joinAfterAugust,jdbcType=TINYINT},
+      #{isPoor,jdbcType=TINYINT}, #{isLlost,jdbcType=TINYINT}, #{flowStatus,jdbcType=BIGINT},
+      #{flowFromOrgId,jdbcType=BIGINT}, #{flowFromOrgName,jdbcType=VARCHAR}, #{flowFromOrgContactor,jdbcType=VARCHAR},
+      #{flowFromOrgPhone,jdbcType=VARCHAR}, #{flowToOrgId,jdbcType=BIGINT}, #{flowToOrgName,jdbcType=VARCHAR},
+      #{flowToOrgContactor,jdbcType=VARCHAR}, #{flowToOrgPhone,jdbcType=VARCHAR}, #{policyFace,jdbcType=BIGINT},
+      #{joinTime2,jdbcType=TIMESTAMP}, #{positived,jdbcType=VARCHAR}, #{joinContactId,jdbcType=BIGINT},
+      #{contactor,jdbcType=VARCHAR}, #{appDate,jdbcType=TIMESTAMP}, #{expActivistDate,jdbcType=TIMESTAMP},
+      #{activistDate,jdbcType=TIMESTAMP}, #{expDevDate,jdbcType=TIMESTAMP}, #{devDate,jdbcType=TIMESTAMP},
+      #{devStage,jdbcType=BIGINT}, #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR},
+      #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+      #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT},
+      #{postReason,jdbcType=LONGVARCHAR}, #{workResumes,jdbcType=LONGVARCHAR}, #{comment,jdbcType=LONGVARCHAR},
+      #{content,jdbcType=LONGVARCHAR}, #{rewards,jdbcType=LONGVARCHAR}, #{presentPerform,jdbcType=LONGVARCHAR},
+       #{isTaiwaner,jdbcType=TINYINT},#{jobPosition,jdbcType=VARCHAR}
+      )
+    </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="userId"
+            parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+        insert into sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="deptId != null">
+                dept_id,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="realname != null">
+                realname,
+            </if>
+            <if test="identityType != null">
+                identity_type,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="salt != null">
+                salt,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="idCardNo != null">
+                id_card_no,
+            </if>
+            <if test="usedName != null">
+                used_name,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="nation != null">
+                nation,
+            </if>
+            <if test="registeredresidence != null">
+                registeredresidence,
+            </if>
+            <if test="ancestorPlace != null">
+                ancestor_place,
+            </if>
+            <if test="bornPlace != null">
+                born_place,
+            </if>
+            <if test="health != null">
+                health,
+            </if>
+            <if test="familyorigin != null">
+                familyorigin,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="maritalStatus != null">
+                marital_status,
+            </if>
+            <if test="unitId != null">
+                unit_id,
+            </if>
+            <if test="unitName != null">
+                unit_name,
+            </if>
+            <if test="workDate != null">
+                work_date,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="fixPhone != null">
+                fix_phone,
+            </if>
+            <if test="education != null">
+                education,
+            </if>
+            <if test="degree != null">
+                degree,
+            </if>
+            <if test="familyAddress != null">
+                family_address,
+            </if>
+            <if test="communityAddr != null">
+                community_addr,
+            </if>
+            <if test="profession != null">
+                profession,
+            </if>
+            <if test="positive != null">
+                positive,
+            </if>
+            <if test="democraticParty != null">
+                democratic_party,
+            </if>
+            <if test="technician != null">
+                technician,
+            </if>
+            <if test="migrant != null">
+                migrant,
+            </if>
+            <if test="graduatedFrom != null">
+                graduated_from,
+            </if>
+            <if test="contact != null">
+                contact,
+            </if>
+            <if test="joinelsetime != null">
+                joinelsetime,
+            </if>
+            <if test="policeOffice != null">
+                police_office,
+            </if>
+            <if test="retiredTime != null">
+                retired_time,
+            </if>
+            <if test="postTime != null">
+                post_time,
+            </if>
+            <if test="portrait != null">
+                portrait,
+            </if>
+            <if test="personIdentity != null">
+                person_identity,
+            </if>
+            <if test="stratum != null">
+                stratum,
+            </if>
+            <if test="frontLine != null">
+                front_line,
+            </if>
+            <if test="qqNumber != null">
+                qq_number,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="wxOpenid != null">
+                wx_openid,
+            </if>
+            <if test="qqOpenid != null">
+                qq_openid,
+            </if>
+            <if test="pmCode != null">
+                pm_code,
+            </if>
+            <if test="joinTime != null">
+                join_time,
+            </if>
+            <if test="regularTime != null">
+                regular_time,
+            </if>
+            <if test="regularStatus != null">
+                regular_status,
+            </if>
+            <if test="developType != null">
+                develop_type,
+            </if>
+            <if test="reference != null">
+                reference,
+            </if>
+            <if test="feeRatio != null">
+                fee_ratio,
+            </if>
+            <if test="joinAfterAugust != null">
+                join_after_august,
+            </if>
+            <if test="isPoor != null">
+                is_poor,
+            </if>
+            <if test="isLlost != null">
+                is_llost,
+            </if>
+            <if test="flowStatus != null">
+                flow_status,
+            </if>
+            <if test="flowFromOrgId != null">
+                flow_from_org_id,
+            </if>
+            <if test="flowFromOrgName != null">
+                flow_from_org_name,
+            </if>
+            <if test="flowFromOrgContactor != null">
+                flow_from_org_contactor,
+            </if>
+            <if test="flowFromOrgPhone != null">
+                flow_from_org_phone,
+            </if>
+            <if test="flowToOrgId != null">
+                flow_to_org_id,
+            </if>
+            <if test="flowToOrgName != null">
+                flow_to_org_name,
+            </if>
+            <if test="flowToOrgContactor != null">
+                flow_to_org_contactor,
+            </if>
+            <if test="flowToOrgPhone != null">
+                flow_to_org_phone,
+            </if>
+            <if test="policyFace != null">
+                policy_face,
+            </if>
+            <if test="joinTime2 != null">
+                join_time2,
+            </if>
+            <if test="positived != null">
+                positived,
+            </if>
+            <if test="joinContactId != null">
+                join_contact_id,
+            </if>
+            <if test="contactor != null">
+                contactor,
+            </if>
+            <if test="appDate != null">
+                app_date,
+            </if>
+            <if test="expActivistDate != null">
+                exp_activist_date,
+            </if>
+            <if test="activistDate != null">
+                activist_date,
+            </if>
+            <if test="expDevDate != null">
+                exp_dev_date,
+            </if>
+            <if test="devDate != null">
+                dev_date,
+            </if>
+            <if test="devStage != null">
+                dev_stage,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="postReason != null">
+                post_reason,
+            </if>
+            <if test="workResumes != null">
+                work_resumes,
+            </if>
+            <if test="comment != null">
+                comment,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="rewards != null">
+                rewards,
+            </if>
+            <if test="registryStatus != null">
+                registry_status,
+            </if>
+            <if test="presentPerform != null">
+                present_perform,
+            </if>
+            <if test="isTaiwaner != null">
+                is_taiwaner,
+            </if>
+            <if test="jobPosition != null">
+                job_position,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="deptId != null">
+                #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="realname != null">
+                #{realname,jdbcType=VARCHAR},
+            </if>
+            <if test="identityType != null">
+                #{identityType,jdbcType=BIGINT},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="avatar != null">
+                #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="idCardNo != null">
+                #{idCardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="usedName != null">
+                #{usedName,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=BIGINT},
+            </if>
+            <if test="nation != null">
+                #{nation,jdbcType=BIGINT},
+            </if>
+            <if test="registeredresidence != null">
+                #{registeredresidence,jdbcType=VARCHAR},
+            </if>
+            <if test="ancestorPlace != null">
+                #{ancestorPlace,jdbcType=BIGINT},
+            </if>
+            <if test="bornPlace != null">
+                #{bornPlace,jdbcType=VARCHAR},
+            </if>
+            <if test="health != null">
+                #{health,jdbcType=BIGINT},
+            </if>
+            <if test="familyorigin != null">
+                #{familyorigin,jdbcType=BIGINT},
+            </if>
+            <if test="birthday != null">
+                #{birthday,jdbcType=TIMESTAMP},
+            </if>
+            <if test="maritalStatus != null">
+                #{maritalStatus,jdbcType=BIGINT},
+            </if>
+            <if test="unitId != null">
+                #{unitId,jdbcType=BIGINT},
+            </if>
+            <if test="unitName != null">
+                #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="workDate != null">
+                #{workDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="fixPhone != null">
+                #{fixPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="education != null">
+                #{education,jdbcType=BIGINT},
+            </if>
+            <if test="degree != null">
+                #{degree,jdbcType=BIGINT},
+            </if>
+            <if test="familyAddress != null">
+                #{familyAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="communityAddr != null">
+                #{communityAddr,jdbcType=BIGINT},
+            </if>
+            <if test="profession != null">
+                #{profession,jdbcType=BIGINT},
+            </if>
+            <if test="positive != null">
+                #{positive,jdbcType=BIGINT},
+            </if>
+            <if test="democraticParty != null">
+                #{democraticParty,jdbcType=BIGINT},
+            </if>
+            <if test="technician != null">
+                #{technician,jdbcType=BIGINT},
+            </if>
+            <if test="migrant != null">
+                #{migrant,jdbcType=VARCHAR},
+            </if>
+            <if test="graduatedFrom != null">
+                #{graduatedFrom,jdbcType=VARCHAR},
+            </if>
+            <if test="contact != null">
+                #{contact,jdbcType=BIGINT},
+            </if>
+            <if test="joinelsetime != null">
+                #{joinelsetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="policeOffice != null">
+                #{policeOffice,jdbcType=VARCHAR},
+            </if>
+            <if test="retiredTime != null">
+                #{retiredTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="postTime != null">
+                #{postTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="portrait != null">
+                #{portrait,jdbcType=VARCHAR},
+            </if>
+            <if test="personIdentity != null">
+                #{personIdentity,jdbcType=BIGINT},
+            </if>
+            <if test="stratum != null">
+                #{stratum,jdbcType=BIGINT},
+            </if>
+            <if test="frontLine != null">
+                #{frontLine,jdbcType=BIGINT},
+            </if>
+            <if test="qqNumber != null">
+                #{qqNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="wxOpenid != null">
+                #{wxOpenid,jdbcType=VARCHAR},
+            </if>
+            <if test="qqOpenid != null">
+                #{qqOpenid,jdbcType=VARCHAR},
+            </if>
+            <if test="pmCode != null">
+                #{pmCode,jdbcType=VARCHAR},
+            </if>
+            <if test="joinTime != null">
+                #{joinTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="regularTime != null">
+                #{regularTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="regularStatus != null">
+                #{regularStatus,jdbcType=BIGINT},
+            </if>
+            <if test="developType != null">
+                #{developType,jdbcType=BIGINT},
+            </if>
+            <if test="reference != null">
+                #{reference,jdbcType=VARCHAR},
+            </if>
+            <if test="feeRatio != null">
+                #{feeRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="joinAfterAugust != null">
+                #{joinAfterAugust,jdbcType=TINYINT},
+            </if>
+            <if test="isPoor != null">
+                #{isPoor,jdbcType=TINYINT},
+            </if>
+            <if test="isLlost != null">
+                #{isLlost,jdbcType=TINYINT},
+            </if>
+            <if test="flowStatus != null">
+                #{flowStatus,jdbcType=BIGINT},
+            </if>
+            <if test="flowFromOrgId != null">
+                #{flowFromOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="flowFromOrgName != null">
+                #{flowFromOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="flowFromOrgContactor != null">
+                #{flowFromOrgContactor,jdbcType=VARCHAR},
+            </if>
+            <if test="flowFromOrgPhone != null">
+                #{flowFromOrgPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="flowToOrgId != null">
+                #{flowToOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="flowToOrgName != null">
+                #{flowToOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="flowToOrgContactor != null">
+                #{flowToOrgContactor,jdbcType=VARCHAR},
+            </if>
+            <if test="flowToOrgPhone != null">
+                #{flowToOrgPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="policyFace != null">
+                #{policyFace,jdbcType=BIGINT},
+            </if>
+            <if test="joinTime2 != null">
+                #{joinTime2,jdbcType=TIMESTAMP},
+            </if>
+            <if test="positived != null">
+                #{positived,jdbcType=VARCHAR},
+            </if>
+            <if test="joinContactId != null">
+                #{joinContactId,jdbcType=BIGINT},
+            </if>
+            <if test="contactor != null">
+                #{contactor,jdbcType=VARCHAR},
+            </if>
+            <if test="appDate != null">
+                #{appDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expActivistDate != null">
+                #{expActivistDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="activistDate != null">
+                #{activistDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expDevDate != null">
+                #{expDevDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="devDate != null">
+                #{devDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="devStage != null">
+                #{devStage,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="postReason != null">
+                #{postReason,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="workResumes != null">
+                #{workResumes,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="comment != null">
+                #{comment,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="rewards != null">
+                #{rewards,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="registryStatus != null">
+                #{registryStatus,jdbcType=BIGINT},
+            </if>
+            <if test="presentPerform != null">
+                #{presentPerform,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="isTaiwaner != null">
+                #{isTaiwaner,jdbcType=TINYINT},
+            </if>
+            <if test="jobPosition != null">
+                #{jobPosition,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+        update sys_user
+        <set>
+            <if test="deptId != null">
+                dept_id = #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="likes != null">
+                likes= #{likes,jdbcType=BIGINT},
+            </if>
+            <if test="registryStatus != null">
+                registry_status = #{registryStatus,jdbcType=BIGINT},
+            </if>
+            <if test="lostTime != null">
+                lost_time = #{lostTime},
+            </if>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="realname != null">
+                realname = #{realname,jdbcType=VARCHAR},
+            </if>
+            <if test="identityType != null">
+                identity_type = #{identityType,jdbcType=BIGINT},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                salt = #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="idCardNo != null">
+                id_card_no = #{idCardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="usedName != null">
+                used_name = #{usedName,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=BIGINT},
+            </if>
+            <if test="nation != null">
+                nation = #{nation,jdbcType=BIGINT},
+            </if>
+            <if test="registeredresidence != null">
+                registeredresidence = #{registeredresidence,jdbcType=VARCHAR},
+            </if>
+            <if test="ancestorPlace != null">
+                ancestor_place = #{ancestorPlace,jdbcType=BIGINT},
+            </if>
+            <if test="bornPlace != null">
+                born_place = #{bornPlace,jdbcType=VARCHAR},
+            </if>
+            <if test="health != null">
+                health = #{health,jdbcType=BIGINT},
+            </if>
+            <if test="familyorigin != null">
+                familyorigin = #{familyorigin,jdbcType=BIGINT},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday,jdbcType=TIMESTAMP},
+            </if>
+            <if test="maritalStatus != null">
+                marital_status = #{maritalStatus,jdbcType=BIGINT},
+            </if>
+            <if test="unitId != null">
+                unit_id = #{unitId,jdbcType=BIGINT},
+            </if>
+            <if test="unitName != null">
+                unit_name = #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="workDate != null">
+                work_date = #{workDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="fixPhone != null">
+                fix_phone = #{fixPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="education != null">
+                education = #{education,jdbcType=BIGINT},
+            </if>
+            <if test="degree != null">
+                degree = #{degree,jdbcType=BIGINT},
+            </if>
+            <if test="familyAddress != null">
+                family_address = #{familyAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="communityAddr != null">
+                community_addr = #{communityAddr,jdbcType=BIGINT},
+            </if>
+            <if test="profession != null">
+                profession = #{profession,jdbcType=BIGINT},
+            </if>
+            <if test="positive != null">
+                positive = #{positive,jdbcType=BIGINT},
+            </if>
+            <if test="democraticParty != null">
+                democratic_party = #{democraticParty,jdbcType=BIGINT},
+            </if>
+            <if test="technician != null">
+                technician = #{technician,jdbcType=BIGINT},
+            </if>
+            <if test="migrant != null">
+                migrant = #{migrant,jdbcType=VARCHAR},
+            </if>
+            <if test="graduatedFrom != null">
+                graduated_from = #{graduatedFrom,jdbcType=VARCHAR},
+            </if>
+            <if test="contact != null">
+                contact = #{contact,jdbcType=BIGINT},
+            </if>
+            <if test="joinelsetime != null">
+                joinelsetime = #{joinelsetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="policeOffice != null">
+                police_office = #{policeOffice,jdbcType=VARCHAR},
+            </if>
+            <if test="retiredTime != null">
+                retired_time = #{retiredTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="postTime != null">
+                post_time = #{postTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="portrait != null">
+                portrait = #{portrait,jdbcType=VARCHAR},
+            </if>
+            <if test="personIdentity != null">
+                person_identity = #{personIdentity,jdbcType=BIGINT},
+            </if>
+            <if test="stratum != null">
+                stratum = #{stratum,jdbcType=BIGINT},
+            </if>
+            <if test="frontLine != null">
+                front_line = #{frontLine,jdbcType=BIGINT},
+            </if>
+            <if test="qqNumber != null">
+                qq_number = #{qqNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="wxOpenid != null">
+                wx_openid = #{wxOpenid,jdbcType=VARCHAR},
+            </if>
+            <if test="qqOpenid != null">
+                qq_openid = #{qqOpenid,jdbcType=VARCHAR},
+            </if>
+            <if test="pmCode != null">
+                pm_code = #{pmCode,jdbcType=VARCHAR},
+            </if>
+            <if test="joinTime != null">
+                join_time = #{joinTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="regularTime != null">
+                regular_time = #{regularTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="regularStatus != null">
+                regular_status = #{regularStatus,jdbcType=BIGINT},
+            </if>
+            <if test="developType != null">
+                develop_type = #{developType,jdbcType=BIGINT},
+            </if>
+            <if test="reference != null">
+                reference = #{reference,jdbcType=VARCHAR},
+            </if>
+            <if test="feeRatio != null">
+                fee_ratio = #{feeRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="joinAfterAugust != null">
+                join_after_august = #{joinAfterAugust,jdbcType=TINYINT},
+            </if>
+            <if test="isPoor != null">
+                is_poor = #{isPoor,jdbcType=TINYINT},
+            </if>
+            <if test="isLlost != null">
+                is_llost = #{isLlost,jdbcType=TINYINT},
+            </if>
+            <if test="flowStatus != null">
+                flow_status = #{flowStatus,jdbcType=BIGINT},
+            </if>
+            <if test="flowFromOrgId != null">
+                flow_from_org_id = #{flowFromOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="flowFromOrgName != null">
+                flow_from_org_name = #{flowFromOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="flowFromOrgContactor != null">
+                flow_from_org_contactor = #{flowFromOrgContactor,jdbcType=VARCHAR},
+            </if>
+            <if test="flowFromOrgPhone != null">
+                flow_from_org_phone = #{flowFromOrgPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="flowToOrgId != null">
+                flow_to_org_id = #{flowToOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="flowToOrgName != null">
+                flow_to_org_name = #{flowToOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="flowToOrgContactor != null">
+                flow_to_org_contactor = #{flowToOrgContactor,jdbcType=VARCHAR},
+            </if>
+            <if test="flowToOrgPhone != null">
+                flow_to_org_phone = #{flowToOrgPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="policyFace != null">
+                policy_face = #{policyFace,jdbcType=BIGINT},
+            </if>
+            <if test="joinTime2 != null">
+                join_time2 = #{joinTime2,jdbcType=TIMESTAMP},
+            </if>
+            <if test="positived != null">
+                positived = #{positived,jdbcType=VARCHAR},
+            </if>
+            <if test="joinContactId != null">
+                join_contact_id = #{joinContactId,jdbcType=BIGINT},
+            </if>
+            <if test="contactor != null">
+                contactor = #{contactor,jdbcType=VARCHAR},
+            </if>
+            <if test="appDate != null">
+                app_date = #{appDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expActivistDate != null">
+                exp_activist_date = #{expActivistDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="activistDate != null">
+                activist_date = #{activistDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expDevDate != null">
+                exp_dev_date = #{expDevDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="devDate != null">
+                dev_date = #{devDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="devStage != null">
+                dev_stage = #{devStage,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="postReason != null">
+                post_reason = #{postReason,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="workResumes != null">
+                work_resumes = #{workResumes,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="comment != null">
+                comment = #{comment,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="rewards != null">
+                rewards = #{rewards,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="presentPerform != null">
+                present_perform = #{presentPerform,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="joinOrgId != null">
+                join_org_id = #{joinOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="joinOrgName != null">
+                join_org_name = #{joinOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="joinOrgType != null">
+                join_org_type = #{joinOrgType,jdbcType=BIGINT},
+            </if>
+            <if test="joinOrgContactor != null">
+                join_org_contactor = #{joinOrgContactor,jdbcType=VARCHAR},
+            </if>
+            <if test="joinOrgPhone != null">
+                join_org_phone = #{joinOrgPhone,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="isSelfDev != null">
+                is_self_dev = #{isSelfDev,jdbcType=TINYINT},
+            </if>
+            <if test="filesManageUnitId != null">
+                files_manage_unit_id = #{filesManageUnitId,jdbcType=BIGINT},
+            </if>
+            <if test="filesManageUnit != null">
+                files_manage_unit = #{filesManageUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="isTaiwaner != null">
+                is_taiwaner = #{isTaiwaner,jdbcType=TINYINT},
+            </if>
+            <if test="jobPosition != null">
+                job_position = #{jobPosition,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+    update sys_user
+    set dept_id = #{deptId,jdbcType=BIGINT},
+      username = #{username,jdbcType=VARCHAR},
+      identity_type = #{identityType,jdbcType=BIGINT},
+      password = #{password,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      id_card_no = #{idCardNo,jdbcType=VARCHAR},
+      used_name = #{usedName,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=BIGINT},
+      nation = #{nation,jdbcType=BIGINT},
+      registeredresidence = #{registeredresidence,jdbcType=VARCHAR},
+      ancestor_place = #{ancestorPlace,jdbcType=BIGINT},
+      born_place = #{bornPlace,jdbcType=VARCHAR},
+      health = #{health,jdbcType=BIGINT},
+      familyorigin = #{familyorigin,jdbcType=BIGINT},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      marital_status = #{maritalStatus,jdbcType=BIGINT},
+      unit_id = #{unitId,jdbcType=BIGINT},
+      unit_name = #{unitName,jdbcType=VARCHAR},
+      work_date = #{workDate,jdbcType=TIMESTAMP},
+      phone = #{phone,jdbcType=VARCHAR},
+      fix_phone = #{fixPhone,jdbcType=VARCHAR},
+      education = #{education,jdbcType=BIGINT},
+      degree = #{degree,jdbcType=BIGINT},
+      family_address = #{familyAddress,jdbcType=VARCHAR},
+      community_addr = #{communityAddr,jdbcType=BIGINT},
+      profession = #{profession,jdbcType=BIGINT},
+      positive = #{positive,jdbcType=BIGINT},
+      democratic_party = #{democraticParty,jdbcType=BIGINT},
+      technician = #{technician,jdbcType=BIGINT},
+      migrant = #{migrant,jdbcType=VARCHAR},
+      graduated_from = #{graduatedFrom,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=BIGINT},
+      joinelsetime = #{joinelsetime,jdbcType=TIMESTAMP},
+      police_office = #{policeOffice,jdbcType=VARCHAR},
+      retired_time = #{retiredTime,jdbcType=TIMESTAMP},
+      post_time = #{postTime,jdbcType=TIMESTAMP},
+      portrait = #{portrait,jdbcType=VARCHAR},
+      person_identity = #{personIdentity,jdbcType=BIGINT},
+      stratum = #{stratum,jdbcType=BIGINT},
+      front_line = #{frontLine,jdbcType=BIGINT},
+      qq_number = #{qqNumber,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      wx_openid = #{wxOpenid,jdbcType=VARCHAR},
+      qq_openid = #{qqOpenid,jdbcType=VARCHAR},
+      pm_code = #{pmCode,jdbcType=VARCHAR},
+      join_time = #{joinTime,jdbcType=TIMESTAMP},
+      regular_time = #{regularTime,jdbcType=TIMESTAMP},
+      regular_status = #{regularStatus,jdbcType=BIGINT},
+      develop_type = #{developType,jdbcType=BIGINT},
+      reference = #{reference,jdbcType=VARCHAR},
+      fee_ratio = #{feeRatio,jdbcType=DECIMAL},
+      join_after_august = #{joinAfterAugust,jdbcType=TINYINT},
+      is_poor = #{isPoor,jdbcType=TINYINT},
+      is_llost = #{isLlost,jdbcType=TINYINT},
+      flow_status = #{flowStatus,jdbcType=BIGINT},
+      flow_from_org_id = #{flowFromOrgId,jdbcType=BIGINT},
+      flow_from_org_name = #{flowFromOrgName,jdbcType=VARCHAR},
+      flow_from_org_contactor = #{flowFromOrgContactor,jdbcType=VARCHAR},
+      flow_from_org_phone = #{flowFromOrgPhone,jdbcType=VARCHAR},
+      flow_to_org_id = #{flowToOrgId,jdbcType=BIGINT},
+      flow_to_org_name = #{flowToOrgName,jdbcType=VARCHAR},
+      flow_to_org_contactor = #{flowToOrgContactor,jdbcType=VARCHAR},
+      flow_to_org_phone = #{flowToOrgPhone,jdbcType=VARCHAR},
+      policy_face = #{policyFace,jdbcType=BIGINT},
+      join_time2 = #{joinTime2,jdbcType=TIMESTAMP},
+      positived = #{positived,jdbcType=VARCHAR},
+      join_contact_id = #{joinContactId,jdbcType=BIGINT},
+      contactor = #{contactor,jdbcType=VARCHAR},
+      app_date = #{appDate,jdbcType=TIMESTAMP},
+      exp_activist_date = #{expActivistDate,jdbcType=TIMESTAMP},
+      activist_date = #{activistDate,jdbcType=TIMESTAMP},
+      exp_dev_date = #{expDevDate,jdbcType=TIMESTAMP},
+      dev_date = #{devDate,jdbcType=TIMESTAMP},
+      dev_stage = #{devStage,jdbcType=BIGINT},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      post_reason = #{postReason,jdbcType=LONGVARCHAR},
+      work_resumes = #{workResumes,jdbcType=LONGVARCHAR},
+      comment = #{comment,jdbcType=LONGVARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR},
+      rewards = #{rewards,jdbcType=LONGVARCHAR},
+      is_taiwaner = #{isTaiwaner,jdbcType=TINYINT},
+      present_perform = #{presentPerform,jdbcType=LONGVARCHAR},
+      job_position = #{jobPosition,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+    update sys_user
+    set dept_id = #{deptId,jdbcType=BIGINT},
+      username = #{username,jdbcType=VARCHAR},
+      identity_type = #{identityType,jdbcType=BIGINT},
+      password = #{password,jdbcType=VARCHAR},
+      salt = #{salt,jdbcType=VARCHAR},
+      avatar = #{avatar,jdbcType=VARCHAR},
+      id_card_no = #{idCardNo,jdbcType=VARCHAR},
+      used_name = #{usedName,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=BIGINT},
+      nation = #{nation,jdbcType=BIGINT},
+      registeredresidence = #{registeredresidence,jdbcType=VARCHAR},
+      ancestor_place = #{ancestorPlace,jdbcType=BIGINT},
+      born_place = #{bornPlace,jdbcType=VARCHAR},
+      health = #{health,jdbcType=BIGINT},
+      familyorigin = #{familyorigin,jdbcType=BIGINT},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      marital_status = #{maritalStatus,jdbcType=BIGINT},
+      unit_id = #{unitId,jdbcType=BIGINT},
+      unit_name = #{unitName,jdbcType=VARCHAR},
+      work_date = #{workDate,jdbcType=TIMESTAMP},
+      phone = #{phone,jdbcType=VARCHAR},
+      fix_phone = #{fixPhone,jdbcType=VARCHAR},
+      education = #{education,jdbcType=BIGINT},
+      degree = #{degree,jdbcType=BIGINT},
+      family_address = #{familyAddress,jdbcType=VARCHAR},
+      community_addr = #{communityAddr,jdbcType=BIGINT},
+      profession = #{profession,jdbcType=BIGINT},
+      positive = #{positive,jdbcType=BIGINT},
+      democratic_party = #{democraticParty,jdbcType=BIGINT},
+      technician = #{technician,jdbcType=BIGINT},
+      migrant = #{migrant,jdbcType=VARCHAR},
+      graduated_from = #{graduatedFrom,jdbcType=VARCHAR},
+      contact = #{contact,jdbcType=BIGINT},
+      joinelsetime = #{joinelsetime,jdbcType=TIMESTAMP},
+      police_office = #{policeOffice,jdbcType=VARCHAR},
+      retired_time = #{retiredTime,jdbcType=TIMESTAMP},
+      post_time = #{postTime,jdbcType=TIMESTAMP},
+      portrait = #{portrait,jdbcType=VARCHAR},
+      person_identity = #{personIdentity,jdbcType=BIGINT},
+      stratum = #{stratum,jdbcType=BIGINT},
+      front_line = #{frontLine,jdbcType=BIGINT},
+      qq_number = #{qqNumber,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      wx_openid = #{wxOpenid,jdbcType=VARCHAR},
+      qq_openid = #{qqOpenid,jdbcType=VARCHAR},
+      pm_code = #{pmCode,jdbcType=VARCHAR},
+      join_time = #{joinTime,jdbcType=TIMESTAMP},
+      regular_time = #{regularTime,jdbcType=TIMESTAMP},
+      regular_status = #{regularStatus,jdbcType=BIGINT},
+      develop_type = #{developType,jdbcType=BIGINT},
+      reference = #{reference,jdbcType=VARCHAR},
+      fee_ratio = #{feeRatio,jdbcType=DECIMAL},
+      join_after_august = #{joinAfterAugust,jdbcType=TINYINT},
+      is_poor = #{isPoor,jdbcType=TINYINT},
+      is_llost = #{isLlost,jdbcType=TINYINT},
+      flow_status = #{flowStatus,jdbcType=BIGINT},
+      flow_from_org_id = #{flowFromOrgId,jdbcType=BIGINT},
+      flow_from_org_name = #{flowFromOrgName,jdbcType=VARCHAR},
+      flow_from_org_contactor = #{flowFromOrgContactor,jdbcType=VARCHAR},
+      flow_from_org_phone = #{flowFromOrgPhone,jdbcType=VARCHAR},
+      flow_to_org_id = #{flowToOrgId,jdbcType=BIGINT},
+      flow_to_org_name = #{flowToOrgName,jdbcType=VARCHAR},
+      flow_to_org_contactor = #{flowToOrgContactor,jdbcType=VARCHAR},
+      flow_to_org_phone = #{flowToOrgPhone,jdbcType=VARCHAR},
+      policy_face = #{policyFace,jdbcType=BIGINT},
+      join_time2 = #{joinTime2,jdbcType=TIMESTAMP},
+      positived = #{positived,jdbcType=VARCHAR},
+      join_contact_id = #{joinContactId,jdbcType=BIGINT},
+      contactor = #{contactor,jdbcType=VARCHAR},
+      app_date = #{appDate,jdbcType=TIMESTAMP},
+      exp_activist_date = #{expActivistDate,jdbcType=TIMESTAMP},
+      activist_date = #{activistDate,jdbcType=TIMESTAMP},
+      exp_dev_date = #{expDevDate,jdbcType=TIMESTAMP},
+      dev_date = #{devDate,jdbcType=TIMESTAMP},
+      dev_stage = #{devStage,jdbcType=BIGINT},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      is_taiwaner = #{isTaiwaner,jdbcType=TINYINT},
+      job_position = #{jobPosition,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+    where user_id = #{userId}
+    </update>
+    <update id="updateByPrimaryKeyId" parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+    update sys_user
+    set ancestor_place = #{ancestorPlace,jdbcType=BIGINT},
+    front_line = #{frontLine,jdbcType=BIGINT},
+    marital_status = #{maritalStatus,jdbcType=BIGINT},
+    migrant = #{migrant,jdbcType=VARCHAR},
+    portrait = #{portrait,jdbcType=VARCHAR},
+    stratum = #{stratum,jdbcType=BIGINT},
+    technician = #{technician,jdbcType=BIGINT},
+    unit_name = #{unitName,jdbcType=VARCHAR},
+    work_date = #{workDate,jdbcType=TIMESTAMP},
+    is_taiwaner = #{isTaiwaner},
+    files_manage_unit = #{filesManageUnit}
+    where user_id = #{userId}
+    </update>
+    <update id="updateByUserId" parameterType="java.lang.Long">
+    update sys_user
+    set del_flag = 1
+    where user_id = #{userId}
+   </update>
+
+    <!--根据身份政查找userId-->
+    <select id="SelectUserIdByIDcard" resultType="Long">
+        select user_id from sys_user where id_card_no =#{idCardNo}
+    </select>
+
+    <!--根据身份証查找user信息-->
+    <select id="selectUserByIdCardNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from sys_user where id_card_no =#{idCardNo} limit 1
+    </select>
+
+
+    <select id="selectPertyByIdCardNoOnUserName" parameterType="com.yizheng.partybuilding.system.entity.SysUser"
+            resultMap="BaseResultMap">
+        select
+        *
+        from sys_user
+        where
+        1=1
+        <if test="username != null and username != ''">
+            AND realname like concat(concat("%",#{username,jdbcType=VARCHAR}),"%")
+        </if>
+        <if test="idCardNo != null and idCardNo != ''">
+            AND id_card_no = #{idCardNo}
+        </if>
+    </select>
+
+
+    <!-- 根据组织Id 获取角色为党务工作者的用户与组织信息 -->
+    <select id="getDWRoleUserInfoByDeptId" resultMap="dwRoleUserInfo">
+        select users.manage_dept_id , dept.name as dept_name , users.user_id,users.username,users.phone
+        from sys_user users inner join sys_user_role ur on users.user_id = ur.user_id
+        INNER JOIN sys_role srl on srl.role_id = ur.role_id and srl.role_code='ROLE_DWGZZ'
+        INNER JOIN sys_dept dept on users.manage_dept_id = dept.dept_id
+        where users.manage_dept_id =#{deptId}
+    </select>
+    <!-- 根据组织Id 获取角色为党务工作者的用户与组织信息 -->
+    <select id="getDWRoleUserInfoByDeptIds" parameterType="java.lang.String" resultMap="dwRoleUserInfo">
+        select users.manage_dept_id , dept.name as dept_name , users.user_id,users.username,users.phone
+        from sys_user users inner join sys_user_role ur on users.user_id = ur.user_id
+        INNER JOIN sys_role srl on srl.role_id = ur.role_id and srl.role_code='ROLE_DWGZZ'
+        INNER JOIN sys_dept dept on users.manage_dept_id = dept.dept_id
+        where users.manage_dept_id in
+        <foreach collection="list" item="manageDeptId" index="index" open="(" close=")" separator=",">
+            #{manageDeptId}
+        </foreach>
+    </select>
+
+    <update id="updateDeptIdByUserId">
+        update sys_user set dept_id=#{deptId}
+        where user_id=#{userId}
+    </update>
+
+    <!-- 根据userId 获取组织信息，职务信息 -->
+    <select id="selectUserDeptPositiveByUserId" parameterType="java.lang.Long" resultMap="userDeptPositiveDtoResultMap">
+        SELECT DISTINCT
+        users.user_id,
+        users.username,
+        d.dept_id,
+        d.NAME,
+        p.positive_name,
+        p.label AS positive_name_dict
+        FROM
+        sys_user users
+        LEFT JOIN (
+        SELECT DISTINCT
+            p.user_id,
+            p.positive_name,
+            p.org_id,
+            di.label
+        FROM
+            (
+            SELECT
+                user_id,
+                positive_name,
+                positive_org_id AS org_id
+            FROM
+                tab_pb_positives
+            WHERE
+                del_flag = 0 UNION ALL
+            SELECT
+                user_id,
+                positive_id,
+                org_id
+            FROM
+                tab_pb_lead_team_member
+            WHERE
+                del_flag = 0
+            ) AS p
+            LEFT JOIN sys_dict AS di ON p.positive_name = di.id
+            AND di.del_flag = 0
+        ) AS p ON users.user_id = p.user_id
+        LEFT JOIN ( SELECT d.dept_id, d.NAME FROM sys_dept AS d WHERE d.del_flag = 0 ) d ON d.dept_id = users.dept_id
+        WHERE
+        users.user_id = #{userId}
+        AND users.del_flag = 0
+        AND p.label IS NOT NULL
+    </select>
+
+    <resultMap id="dwRoleUserInfo" type="com.yizheng.partybuilding.dto.TransferUserDeptInfo">
+        <result column="manage_dept_id" jdbcType="BIGINT" property="manageDeptId"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+    </resultMap>
+
+    <!--根据组织id 获得该组织连接领导列表 -->
+    <select id="selectUserDeptByDeptId" parameterType="java.lang.Long" resultMap="userDeptPositiveDtoResultMap">
+       SELECT
+        l.link_ledaer_id,
+        users.user_id,
+        users.username,
+        d.dept_id,
+        d.NAME
+        FROM
+        sys_user users
+        INNER JOIN tab_pb_link_leader l on users.user_id = l.user_id
+        INNER JOIN sys_dept d ON d.dept_id = users.dept_id
+        WHERE
+         l.dept_id = #{deptId}
+        AND users.del_flag = 0
+        AND d.del_flag = 0
+        AND  l.del_flag = 0
+    </select>
+
+    <!--* 判断党员兴趣爱好是否选择 * 已经选择返回他的兴趣，未选择返回0-->
+    <select id="checkedSysUserLikes" parameterType="Long" resultType="String">
+       select  IFNULL(s.likes,'0') from sys_user s where user_id = #{userId}
+    </select>
+
+    <update id="updateByisPoor" parameterType="com.yizheng.partybuilding.entity.TabPbHardship">
+           update sys_user set is_poor =1 where user_id=#{userId,jdbcType=BIGINT}
+
+    </update>
+
+    <update id="updateNoPoor" parameterType="com.yizheng.partybuilding.entity.TabPbHardship">
+          update sys_user set is_poor =0 where user_id=#{userId,jdbcType=BIGINT}
+    </update>
+    <!--批量修改党员所在组织-->
+    <update id="batchDeptIdByUserId">
+        update sys_user
+        set dept_id = #{deptId}
+        where user_id in
+        <foreach collection="userIdList" item="item" open="(" separator="," close=")">
+            ${item}
+        </foreach>
+    </update>
+
+    <!--查询组织下的直属党员-->
+    <select id="getAllUserByDeptId" resultMap="PersonnelResultMap">
+        select
+        user_id, gender, id_card_no, dept_id AS org_id,realname as username
+        from sys_user
+        where del_flag = 0
+        and dept_id = #{deptId}
+    </select>
+
+    <!--党员信息核查-->
+    <select id="partyIdentityVerification" resultType="com.yizheng.partybuilding.dto.Personnel">
+        SELECT
+            u.user_id AS userId,
+            u.realname AS username,
+            u.gender,
+            ROUND( DATEDIFF( CURDATE( ), u.birthday ) / 365.2422 ) AS age,
+            u.id_card_no AS idCardNo,
+            d.NAME AS orgName,
+            d.contactor,
+            d.contact_number AS contactNumber
+        FROM
+            sys_user u
+            INNER JOIN sys_dept d USING ( dept_id )
+        <where>
+            u.del_flag = 0
+            AND u.identity_type = 223
+            <if test="username != null and username != ''">
+                AND u.realname LIKE concat( '%', #{username}, '%' )
+            </if>
+            <if test="idCardNo != null and idCardNo != ''">
+                AND u.id_card_no = #{idCardNo}
+            </if>
+            <if test="phone != null and phone != ''">
+                AND u.phone = #{phone}
+            </if>
+        </where>
+    </select>
+    <insert id="saveEntity" useGeneratedKeys="true" keyProperty="userId" parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+        insert into sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                username,
+            </if>
+            <if test="realname != null">
+                realname,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="idCardNo != null">
+                id_card_no,
+            </if>
+            <if test="nation != null">
+                nation,
+            </if>
+            <if test="policyFace != null">
+                policy_face,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="positive != null">
+                positive,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="username != null">
+                #{username},
+            </if>
+            <if test="realname != null">
+                #{realname},
+            </if>
+            <if test="gender != null">
+                #{gender},
+            </if>
+            <if test="idCardNo != null">
+                #{idCardNo},
+            </if>
+            <if test="nation != null">
+                #{nation},
+            </if>
+            <if test="policyFace != null">
+                #{policyFace},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+            <if test="positive != null">
+                #{positive},
+            </if>
+            <if test="birthday != null">
+                #{birthday}
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername},
+            </if>
+        </trim>
+    </insert>
+    <update id="flagDelete" parameterType="java.lang.Long">
+        update sys_user
+        <set>
+            ebl_flag = 0,
+            del_flag = 1,
+
+        </set>
+        where user_id = #{userId}
+    </update>
+    <update id="editUserRegister" parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+        update sys_user
+        <set>
+            report_org_id = #{reportOrgId},
+            report_org_name = #{reportOrgName},
+            report_org_contactor = #{reportOrgContactor},
+            report_org_phone = #{reportOrgPhone},
+        </set>
+        where user_id = #{userId}
+    </update>
+    <select id="selectAllRegister" parameterType="com.yizheng.partybuilding.system.entity.SysUser" resultMap="BaseResultMap">
+        SELECT user.*,hard.hardship_type FROM sys_user user
+        LEFT JOIN tab_pb_hardship hard ON `user`.user_id = hard.user_id AND hard.del_flag = '0'
+        WHERE `user`.del_flag = '0'
+        <choose>
+            <when test="deptId != null and deptId != '' ">
+                and dept_id =#{deptId}
+            </when>
+            <otherwise>
+                and report_org_id = #{reportOrgId}
+            </otherwise>
+        </choose>
+    </select>
+</mapper>

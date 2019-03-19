@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbJointMeetOrgMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbJointMeetOrg">
+        <id column="member_org_id" jdbcType="BIGINT" property="memberOrgId"/>
+        <result column="joint_meet_id" jdbcType="BIGINT" property="jointMeetId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="unit_id" jdbcType="BIGINT" property="unitId"/>
+        <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
+
+        <result column="join_date" jdbcType="TIMESTAMP" property="joinDate"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    member_org_id, joint_meet_id, org_id, join_date, ebl_flag, del_flag, order_num, description, 
+    create_time, create_userid, create_username, update_time, update_userid, update_username, 
+    version
+  </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_joint_meet_org
+        where member_org_id = #{memberOrgId,jdbcType=BIGINT}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbJointMeetOrg">
+        insert into tab_pb_joint_meet_org
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberOrgId != null">
+                member_org_id,
+            </if>
+            <if test="jointMeetId != null">
+                joint_meet_id,
+            </if>
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="joinDate != null">
+                join_date,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberOrgId != null">
+                #{memberOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="jointMeetId != null">
+                #{jointMeetId,jdbcType=BIGINT},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="joinDate != null">
+                #{joinDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbJointMeetOrg">
+        update tab_pb_joint_meet_org
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="joinDate != null">
+                join_date = #{joinDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+        </set>
+        where member_org_id = #{memberOrgId,jdbcType=BIGINT}
+    </update>
+
+
+    <update id="update" parameterType="com.yizheng.partybuilding.entity.TabPbJointMeetOrg">
+        update tab_pb_joint_meet_org
+        <set>
+
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="joinDate != null">
+                join_date = #{joinDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+        </set>
+        where 1=1
+        <if test="jointMeetId != null">
+            and joint_meet_id = #{jointMeetId,jdbcType=BIGINT}
+        </if>
+    </update>
+
+
+    <select id="select" resultMap="BaseResultMap">
+        SELECT
+        B.*,
+        d.unit_id,
+        d.unit_name,
+        d.`name` AS org_name
+        FROM
+        tab_pb_joint_meet A
+        INNER JOIN tab_pb_joint_meet_org B ON A.joint_meet_id = B.joint_meet_id
+        LEFT JOIN sys_dept d ON B.org_id = d.dept_id
+        WHERE
+        B.del_flag = '0' AND A.org_id = #{orgId}
+        <if test="unitName != null and unitName != ''">
+            AND d.unit_name LIKE concat('%',#{unitName},'%')
+        </if>
+
+        <if test="jointMeetId != null">
+            AND B.joint_meet_id = #{jointMeetId}
+        </if>
+
+    </select>
+
+    <select id="selectCheck" parameterType="java.util.Map" resultType="java.lang.Long">
+        select
+        COUNT(B.member_org_id)
+        from tab_pb_joint_meet A LEFT JOIN tab_pb_joint_meet_org B ON A.joint_meet_id=B.joint_meet_id
+        where A.org_id = #{orgId} AND B.org_id=#{orgOrgId} AND B.del_flag=0
+    </select>
+</mapper>

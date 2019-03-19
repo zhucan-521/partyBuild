@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbAbroadMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbAbroad">
+        <id column="abroad_id" jdbcType="BIGINT" property="abroadId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+
+        <result column="username" jdbcType="VARCHAR" property="userName"/>
+        <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
+
+        <result column="abroad_date" jdbcType="TIMESTAMP" property="abroadDate"/>
+        <result column="plan_return" jdbcType="TIMESTAMP" property="planReturn"/>
+        <result column="return_date" jdbcType="TIMESTAMP" property="returnDate"/>
+        <result column="go_country" jdbcType="BIGINT" property="goCountry"/>
+        <result column="base_status" jdbcType="VARCHAR" property="baseStatus"/>
+        <result column="abroad_reason" jdbcType="BIGINT" property="abroadReason"/>
+        <result column="return_status" jdbcType="BIGINT" property="returnStatus"/>
+        <result column="settle_time" jdbcType="TIMESTAMP" property="settleTime"/>
+        <result column="registry_mode" jdbcType="BIGINT" property="registryMode"/>
+        <result column="link_status" jdbcType="BIGINT" property="linkStatus"/>
+        <result column="return_activities_status" jdbcType="BIGINT" property="returnActivitiesStatus"/>
+        <result column="apply_activities_date" jdbcType="TIMESTAMP" property="applyActivitiesDate"/>
+        <result column="allow_activities_date" jdbcType="TIMESTAMP" property="allowActivitiesDate"/>
+        <result column="registry_reverse_date" jdbcType="TIMESTAMP" property="registryReverseDate"/>
+        <result column="is_trans_out" jdbcType="TINYINT" property="isTransOut"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbAbroad">
+        <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+     abroad_id, org_id, user_id, abroad_date, plan_return, return_date, go_country, base_status,
+    abroad_reason, return_status, settle_time, registry_mode, link_status, return_activities_status,
+    apply_activities_date, allow_activities_date, registry_reverse_date, is_trans_out,
+    ebl_flag, del_flag, order_num, description, create_time, create_userid, create_username,
+    update_time, update_userid, update_username, version
+  </sql>
+    <sql id="Blob_Column_List">
+    comment
+  </sql>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tab_pb_abroad
+        where abroad_id = #{abroadId,jdbcType=BIGINT}
+    </select>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbAbroad">
+        insert into tab_pb_abroad
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="abroadDate != null">
+                abroad_date,
+            </if>
+            <if test="planReturn != null">
+                plan_return,
+            </if>
+            <if test="returnDate != null">
+                return_date,
+            </if>
+            <if test="goCountry != null">
+                go_country,
+            </if>
+            <if test="baseStatus != null">
+                base_status,
+            </if>
+            <if test="abroadReason != null">
+                abroad_reason,
+            </if>
+            <if test="returnStatus != null">
+                return_status,
+            </if>
+            <if test="settleTime != null">
+                settle_time,
+            </if>
+            <if test="registryMode != null">
+                registry_mode,
+            </if>
+            <if test="linkStatus != null">
+                link_status,
+            </if>
+            <if test="returnActivitiesStatus != null">
+                return_activities_status,
+            </if>
+            <if test="applyActivitiesDate != null">
+                apply_activities_date,
+            </if>
+            <if test="allowActivitiesDate != null">
+                allow_activities_date,
+            </if>
+            <if test="registryReverseDate != null">
+                registry_reverse_date,
+            </if>
+            <if test="isTransOut != null">
+                is_trans_out,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="comment != null">
+                `comment`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">
+                #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="abroadDate != null">
+                #{abroadDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="planReturn != null">
+                #{planReturn,jdbcType=TIMESTAMP},
+            </if>
+            <if test="returnDate != null">
+                #{returnDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="goCountry != null">
+                #{goCountry,jdbcType=BIGINT},
+            </if>
+            <if test="baseStatus != null">
+                #{baseStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="abroadReason != null">
+                #{abroadReason,jdbcType=VARCHAR},
+            </if>
+            <if test="returnStatus != null">
+                #{returnStatus,jdbcType=BIGINT},
+            </if>
+            <if test="settleTime != null">
+                #{settleTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="registryMode != null">
+                #{registryMode,jdbcType=BIGINT},
+            </if>
+            <if test="linkStatus != null">
+                #{linkStatus,jdbcType=BIGINT},
+            </if>
+            <if test="returnActivitiesStatus != null">
+                #{returnActivitiesStatus,jdbcType=BIGINT},
+            </if>
+            <if test="applyActivitiesDate != null">
+                #{applyActivitiesDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="allowActivitiesDate != null">
+                #{allowActivitiesDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="registryReverseDate != null">
+                #{registryReverseDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isTransOut != null">
+                #{isTransOut,jdbcType=TINYINT},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="comment != null">
+                #{comment,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbAbroad">
+        update tab_pb_abroad
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="abroadDate != null">
+                abroad_date = #{abroadDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="planReturn != null">
+                plan_return = #{planReturn,jdbcType=TIMESTAMP},
+            </if>
+            <if test="returnDate != null">
+                return_date = #{returnDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="goCountry != null">
+                go_country = #{goCountry,jdbcType=BIGINT},
+            </if>
+            <if test="baseStatus != null">
+                base_status = #{baseStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="abroadReason != null">
+                abroad_reason = #{abroadReason,jdbcType=VARCHAR},
+            </if>
+            <if test="returnStatus != null">
+                return_status = #{returnStatus,jdbcType=BIGINT},
+            </if>
+            <if test="settleTime != null">
+                settle_time = #{settleTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="registryMode != null">
+                registry_mode = #{registryMode,jdbcType=BIGINT},
+            </if>
+            <if test="linkStatus != null">
+                link_status = #{linkStatus,jdbcType=BIGINT},
+            </if>
+            <if test="returnActivitiesStatus != null">
+                return_activities_status = #{returnActivitiesStatus,jdbcType=BIGINT},
+            </if>
+            <if test="applyActivitiesDate != null">
+                apply_activities_date = #{applyActivitiesDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="allowActivitiesDate != null">
+                allow_activities_date = #{allowActivitiesDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="registryReverseDate != null">
+                registry_reverse_date = #{registryReverseDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isTransOut != null">
+                is_trans_out = #{isTransOut,jdbcType=TINYINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="comment != null">
+                `comment` = #{comment,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where abroad_id = #{abroadId,jdbcType=BIGINT}
+    </update>
+    <select id="selectBySomeInfo" parameterType="com.yizheng.partybuilding.entity.TabPbAbroad"
+            resultMap="BaseResultMap">
+        SELECT
+        A.* , B.realname AS username,
+        B.id_card_no
+        FROM
+        tab_pb_abroad A
+        INNER JOIN sys_user B ON A.user_id = B.user_id
+        inner join sys_dept d on A.org_id=d.dept_id
+        WHERE
+        A.del_flag = '0'
+        AND B.del_flag = '0'
+        AND d.del_flag = '0'
+
+        <!--组织范围  0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <if test="orgRange != null and orgRange != ''">
+            <choose>
+                <when test="orgRange == 1">
+                    AND (d.dept_id = #{orgId} OR d.parent_id = #{orgId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{orgId}, d.full_path)
+                </when>
+            </choose>
+        </if>
+        <if test="orgRange == null and orgId != null">
+            AND d.dept_id = #{orgId}
+        </if>
+
+        <if test="userId != null and userId != '' ">
+            AND A.user_id = #{userId}
+        </if>
+
+        <if test="userName != null and userName != '' ">
+            AND B.realname like concat('%',#{userName},'%')
+        </if>
+
+        <if test="idCardNo != null and idCardNo != '' ">
+            AND B.id_card_no LIKE concat('%',#{idCardNo},'%')
+        </if>
+
+        <if test="abroadId != null and abroadId != ''">
+            AND B.abroad_id = #{abroadId,jdbcType=BIGINT}
+        </if>
+        order by A.order_num
+    </select>
+
+</mapper>

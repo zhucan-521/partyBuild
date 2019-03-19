@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduSubjectMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduSubject">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="category" jdbcType="INTEGER" property="category"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="difficulty" jdbcType="INTEGER" property="difficulty"/>
+        <result column="selects" jdbcType="VARCHAR" property="selects"/>
+        <result column="answer" jdbcType="VARCHAR" property="answer"/>
+        <result column="answer_analysis" jdbcType="VARCHAR" property="answerAnalysis"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, category, title, type, difficulty, selects, answer, answer_analysis, del_flag,
+        create_time, create_userid, create_username, update_time, update_userid, update_username
+  </sql>
+
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_edu_subject
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="getSubjects" resultMap="SubjectsResultMap">
+        select endSubject.id, endSubject.category,dict.label category_name, endSubject.title, endSubject.type,
+        endSubject.difficulty, endSubject.selects, endSubject.answer,
+        endSubject.answer_analysis, endSubject.del_flag,endSubject.create_time, endSubject.create_userid,
+        endSubject.create_username
+        from tab_pb_edu_subject endSubject
+        left join sys_dict dict on endSubject.category=dict.id
+        where TRUE
+        <if test="category != null">
+            AND endSubject.category = #{category,jdbcType=INTEGER}
+        </if>
+        <if test="type != null">
+            AND endSubject.type = #{type,jdbcType=INTEGER}
+        </if>
+        <if test="difficulty != null">
+            AND endSubject.difficulty = #{difficulty,jdbcType=INTEGER}
+        </if>
+        <if test="title != null">
+            AND endSubject.title like CONCAT('%',#{title,jdbcType=VARCHAR},'%')
+        </if>
+        and endSubject.del_flag='0'
+        order by endSubject.id desc
+    </select>
+    <resultMap id="SubjectsResultMap" extends="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduSubject">
+        <result column="category_name" jdbcType="VARCHAR" property="categoryName"/>
+    </resultMap>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from tab_pb_edu_subject
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubject">
+    insert into tab_pb_edu_subject (id, category, title, 
+      type, difficulty, selects, 
+      answer, answer_analysis, del_flag,
+        create_time, create_userid,
+      create_username, update_time, update_userid, 
+      update_username)
+    values (#{id,jdbcType=INTEGER}, #{category,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{type,jdbcType=INTEGER}, #{difficulty,jdbcType=INTEGER}, #{selects,jdbcType=VARCHAR}, 
+      #{answer,jdbcType=VARCHAR}, #{answerAnalysis,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT},
+      #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, 
+      #{updateUsername,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubject">
+        insert into tab_pb_edu_subject
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="category != null">
+                category,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="difficulty != null">
+                difficulty,
+            </if>
+            <if test="selects != null">
+                selects,
+            </if>
+            <if test="answer != null">
+                answer,
+            </if>
+            <if test="answerAnalysis != null">
+                answer_analysis,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="category != null">
+                #{category,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="difficulty != null">
+                #{difficulty,jdbcType=INTEGER},
+            </if>
+            <if test="selects != null">
+                #{selects,jdbcType=VARCHAR},
+            </if>
+            <if test="answer != null">
+                #{answer,jdbcType=VARCHAR},
+            </if>
+            <if test="answerAnalysis != null">
+                #{answerAnalysis,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByIdSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubject">
+        update tab_pb_edu_subject
+        <set>
+            <if test="category != null">
+                category = #{category,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="difficulty != null">
+                difficulty = #{difficulty,jdbcType=INTEGER},
+            </if>
+            <if test="selects != null">
+                selects = #{selects,jdbcType=VARCHAR},
+            </if>
+            <if test="answer != null">
+                answer = #{answer,jdbcType=VARCHAR},
+            </if>
+            <if test="answerAnalysis != null">
+                answer_analysis = #{answerAnalysis,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubject">
+    update tab_pb_edu_subject
+    set category = #{category,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      difficulty = #{difficulty,jdbcType=INTEGER},
+      selects = #{selects,jdbcType=VARCHAR},
+      answer = #{answer,jdbcType=VARCHAR},
+      answer_analysis = #{answerAnalysis,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduSiteMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduSite">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="region" jdbcType="BIGINT" property="region"/>
+        <result column="site_name" jdbcType="VARCHAR" property="siteName"/>
+        <result column="if_position" jdbcType="TINYINT" property="ifPosition"/>
+        <result column="site_type" jdbcType="BIGINT" property="siteType"/>
+        <result column="site_time" jdbcType="TIMESTAMP" property="siteTime"/>
+        <result column="site_net_play" jdbcType="BIGINT" property="siteNetPlay"/>
+        <result column="site_address" jdbcType="VARCHAR" property="siteAddress"/>
+        <result column="site_grid" jdbcType="VARCHAR" property="siteGrid"/>
+        <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
+        <result column="manage_name" jdbcType="VARCHAR" property="manageName"/>
+        <result column="manage_cover" jdbcType="VARCHAR" property="manageCover"/>
+        <result column="manage_sex" jdbcType="BIGINT" property="manageSex"/>
+        <result column="manage_face" jdbcType="VARCHAR" property="manageFace"/>
+        <result column="manage_mount_guard" jdbcType="TIMESTAMP" property="manageMountGuard"/>
+        <result column="manage_education" jdbcType="BIGINT" property="manageEducation"/>
+        <result column="manage_phone" jdbcType="VARCHAR" property="managePhone"/>
+        <result column="manage_birth_date" jdbcType="TIMESTAMP" property="manageBirthDate"/>
+        <result column="manage_age" jdbcType="INTEGER" property="manageAge"/>
+        <result column="manage_type" jdbcType="BIGINT" property="manageType"/>
+        <result column="manage_training" jdbcType="VARCHAR" property="manageTraining"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+    </resultMap>
+    <!--包含关联数据的ResultMap-->
+    <resultMap extends="BaseResultMap" id="WithAboutInfoResultMap"
+               type="com.yizheng.partybuilding.dto.TabPbEduSiteDto">
+        <collection property="activitys"
+                    select="com.yizheng.partybuilding.repository.TabPbEduSiteActivityMapper.selectWithConditions"
+                    column="delFlag=del_flag,siteId=id"/>
+        <collection property="devices"
+                    select="com.yizheng.partybuilding.repository.TabPbEduSiteDeviceMapper.selectWithConditions"
+                    column="delFlag=del_flag,siteId=id"/>
+        <collection property="attachments"
+                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=id,attachmentType=attachment_type}"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    es.id, es.region, es.site_name, es.if_position, es.site_type, es.site_time, es.site_net_play, es.site_address,
+    es.site_grid, es.introduction, es.manage_name, es.manage_cover, es.manage_sex, es.manage_face, es.manage_mount_guard,
+    es.manage_education, es.manage_phone, es.manage_birth_date, TIMESTAMPDIFF(YEAR, DATE_FORMAT(es.manage_birth_date, '%Y-%m-%d'), CURDATE()) AS manage_age, es.manage_type, es.manage_training,
+    es.del_flag, es.order_num, es.create_time, es.create_userid, es.create_username, es.update_time, es.update_userid,
+    es.update_username
+  </sql>
+    <sql id="Base_WhereCase_List">
+        <if test="region != null and region != ''">
+            AND es.region = #{region}
+        </if>
+        <if test="siteName != null and siteName != ''">
+            AND es.site_name like concat('%', #{siteName}, '%')
+        </if>
+        <if test="ifPosition != null and ifPosition != ''">
+            AND es.if_position = #{ifPosition}
+        </if>
+        <if test="siteType != null and siteType != ''">
+            AND es.site_type = #{siteType}
+        </if>
+        <if test="siteTime != null and siteTime != ''">
+            AND es.site_time = #{siteTime}
+        </if>
+        <if test="siteNetPlay != null and siteNetPlay != ''">
+            AND es.site_net_play = #{siteNetPlay}
+        </if>
+        <if test="siteAddress != null and siteAddress != ''">
+            AND es.site_address like concat('%', #{siteAddress}, '%')
+        </if>
+        <if test="siteGrid != null and siteGrid != ''">
+            AND es.site_grid = #{siteGrid}
+        </if>
+        <if test="introduction != null and introduction != ''">
+            AND es.introduction = #{introduction}
+        </if>
+        <if test="manageName != null and manageName != ''">
+            AND es.manage_name like concat('%', #{manageName}, '%')
+        </if>
+        <if test="manageCover != null and manageCover != ''">
+            AND es.manage_cover = #{manageCover}
+        </if>
+        <if test="manageSex != null and manageSex != ''">
+            AND es.manage_sex = #{manageSex}
+        </if>
+        <if test="manageFace != null and manageFace != ''">
+            AND es.manage_face = #{manageFace}
+        </if>
+        <if test="manageMountGuard != null and manageMountGuard != ''">
+            AND es.manage_mount_guard = #{manageMountGuard}
+        </if>
+        <if test="manageEducation != null and manageEducation != ''">
+            AND es.manage_education = #{manageEducation}
+        </if>
+        <if test="managePhone != null and managePhone != ''">
+            AND es.manage_phone = #{managePhone}
+        </if>
+        <if test="manageBirthDate != null and manageBirthDate != ''">
+            AND es.manage_birth_date = #{manageBirthDate}
+        </if>
+        <if test="manageType != null and manageType != ''">
+            AND es.manage_type = #{manageType}
+        </if>
+        <if test="manageTraining != null and manageTraining != ''">
+            AND es.manage_training = #{manageTraining}
+        </if>
+        <if test="delFlag != null and delFlag != ''">
+            AND es.del_flag = #{delFlag}
+        </if>
+        <if test="orderNum != null and orderNum != ''">
+            AND es.order_num = #{orderNum}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            AND es.create_time = #{createTime}
+        </if>
+        <if test="createUserid != null and createUserid != ''">
+            AND es.create_userid = #{createUserid}
+        </if>
+        <if test="createUsername != null and createUsername != ''">
+            AND es.create_username = #{createUsername}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+            AND es.update_time = #{updateTime}
+        </if>
+        <if test="updateUserid != null and updateUserid != ''">
+            AND es.update_userid = #{updateUserid}
+        </if>
+        <if test="updateUsername != null and updateUsername != ''">
+            AND es.update_username = #{updateUsername}
+        </if>
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_edu_site
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_edu_site
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.yizheng.partybuilding.entity.TabPbEduSite">
+    insert into tab_pb_edu_site (id, region, site_name, 
+      if_position, site_type, site_time, 
+      site_net_play, site_address, site_grid,
+      introduction, manage_name, manage_cover, manage_sex,
+      manage_face, manage_mount_guard, manage_education, 
+      manage_phone, manage_birth_date, manage_type, 
+      manage_training, del_flag, order_num, 
+      create_time, create_userid, create_username, 
+      update_time, update_userid, update_username
+      )
+    values (#{id,jdbcType=BIGINT}, #{region,jdbcType=BIGINT}, #{siteName,jdbcType=VARCHAR}, 
+      #{ifPosition,jdbcType=TINYINT}, #{siteType,jdbcType=BIGINT}, #{siteTime,jdbcType=TIMESTAMP}, 
+      #{siteNetPlay,jdbcType=BIGINT}, #{siteAddress,jdbcType=VARCHAR}, #{siteGrid,jdbcType=VARCHAR},
+      #{introduction,jdbcType=VARCHAR}, #{manageName,jdbcType=VARCHAR}, #{manageCover,jdbcType=VARCHAR},
+      #{manageSex,jdbcType=BIGINT}, #{manageFace,jdbcType=VARCHAR}, #{manageMountGuard,jdbcType=TIMESTAMP},
+      #{manageEducation,jdbcType=BIGINT}, #{managePhone,jdbcType=VARCHAR}, #{manageBirthDate,jdbcType=TIMESTAMP},
+      #{manageType,jdbcType=BIGINT}, #{manageTraining,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR},
+      #{orderNum,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT},
+      #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT},
+      #{updateUsername,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.yizheng.partybuilding.entity.TabPbEduSite">
+        insert into tab_pb_edu_site
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="region != null">
+                region,
+            </if>
+            <if test="siteName != null">
+                site_name,
+            </if>
+            <if test="ifPosition != null">
+                if_position,
+            </if>
+            <if test="siteType != null">
+                site_type,
+            </if>
+            <if test="siteTime != null">
+                site_time,
+            </if>
+            <if test="siteNetPlay != null">
+                site_net_play,
+            </if>
+            <if test="siteAddress != null">
+                site_address,
+            </if>
+            <if test="siteGrid != null">
+                site_grid,
+            </if>
+            <if test="introduction != null">
+                introduction,
+            </if>
+            <if test="manageName != null">
+                manage_name,
+            </if>
+            <if test="manageCover != null">
+                manage_cover,
+            </if>
+            <if test="manageSex != null">
+                manage_sex,
+            </if>
+            <if test="manageFace != null">
+                manage_face,
+            </if>
+            <if test="manageMountGuard != null">
+                manage_mount_guard,
+            </if>
+            <if test="manageEducation != null">
+                manage_education,
+            </if>
+            <if test="managePhone != null">
+                manage_phone,
+            </if>
+            <if test="manageBirthDate != null">
+                manage_birth_date,
+            </if>
+            <if test="manageType != null">
+                manage_type,
+            </if>
+            <if test="manageTraining != null">
+                manage_training,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="region != null">
+                #{region,jdbcType=BIGINT},
+            </if>
+            <if test="siteName != null">
+                #{siteName,jdbcType=VARCHAR},
+            </if>
+            <if test="ifPosition != null">
+                #{ifPosition,jdbcType=TINYINT},
+            </if>
+            <if test="siteType != null">
+                #{siteType,jdbcType=BIGINT},
+            </if>
+            <if test="siteTime != null">
+                #{siteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="siteNetPlay != null">
+                #{siteNetPlay,jdbcType=BIGINT},
+            </if>
+            <if test="siteAddress != null">
+                #{siteAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="siteGrid != null">
+                #{siteGrid,jdbcType=VARCHAR},
+            </if>
+            <if test="introduction != null">
+                #{introduction,jdbcType=VARCHAR},
+            </if>
+            <if test="manageName != null">
+                #{manageName,jdbcType=VARCHAR},
+            </if>
+            <if test="manageCover != null">
+                #{manageCover,jdbcType=VARCHAR},
+            </if>
+            <if test="manageSex != null">
+                #{manageSex,jdbcType=BIGINT},
+            </if>
+            <if test="manageFace != null">
+                #{manageFace,jdbcType=VARCHAR},
+            </if>
+            <if test="manageMountGuard != null">
+                #{manageMountGuard,jdbcType=TIMESTAMP},
+            </if>
+            <if test="manageEducation != null">
+                #{manageEducation,jdbcType=BIGINT},
+            </if>
+            <if test="managePhone != null">
+                #{managePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="manageBirthDate != null">
+                #{manageBirthDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="manageType != null">
+                #{manageType,jdbcType=BIGINT},
+            </if>
+            <if test="manageTraining != null">
+                #{manageTraining,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSite">
+        update tab_pb_edu_site
+        <set>
+            <if test="region != null">
+                region = #{region,jdbcType=BIGINT},
+            </if>
+            <if test="siteName != null">
+                site_name = #{siteName,jdbcType=VARCHAR},
+            </if>
+            <if test="ifPosition != null">
+                if_position = #{ifPosition,jdbcType=TINYINT},
+            </if>
+            <if test="siteType != null">
+                site_type = #{siteType,jdbcType=BIGINT},
+            </if>
+            <if test="siteTime != null">
+                site_time = #{siteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="siteNetPlay != null">
+                site_net_play = #{siteNetPlay,jdbcType=BIGINT},
+            </if>
+            <if test="siteAddress != null">
+                site_address = #{siteAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="siteGrid != null">
+                site_grid = #{siteGrid,jdbcType=VARCHAR},
+            </if>
+            <if test="introduction != null">
+                introduction = #{introduction,jdbcType=VARCHAR},
+            </if>
+            <if test="manageName != null">
+                manage_name = #{manageName,jdbcType=VARCHAR},
+            </if>
+            <if test="manageCover != null">
+                manage_cover = #{manageCover,jdbcType=VARCHAR},
+            </if>
+            <if test="manageSex != null">
+                manage_sex = #{manageSex,jdbcType=BIGINT},
+            </if>
+            <if test="manageFace != null">
+                manage_face = #{manageFace,jdbcType=VARCHAR},
+            </if>
+            <if test="manageMountGuard != null">
+                manage_mount_guard = #{manageMountGuard,jdbcType=TIMESTAMP},
+            </if>
+            <if test="manageEducation != null">
+                manage_education = #{manageEducation,jdbcType=BIGINT},
+            </if>
+            <if test="managePhone != null">
+                manage_phone = #{managePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="manageBirthDate != null">
+                manage_birth_date = #{manageBirthDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="manageType != null">
+                manage_type = #{manageType,jdbcType=BIGINT},
+            </if>
+            <if test="manageTraining != null">
+                manage_training = #{manageTraining,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduSite">
+    update tab_pb_edu_site
+    set region = #{region,jdbcType=BIGINT},
+      site_name = #{siteName,jdbcType=VARCHAR},
+      if_position = #{ifPosition,jdbcType=TINYINT},
+      site_type = #{siteType,jdbcType=BIGINT},
+      site_time = #{siteTime,jdbcType=TIMESTAMP},
+      site_net_play = #{siteNetPlay,jdbcType=BIGINT},
+      site_address = #{siteAddress,jdbcType=VARCHAR},
+      site_grid = #{siteGrid,jdbcType=VARCHAR},
+      introduction = #{introduction,jdbcType=VARCHAR},
+      manage_name = #{manageName,jdbcType=VARCHAR},
+      manage_cover = #{manageCover,jdbcType=VARCHAR},
+      manage_sex = #{manageSex,jdbcType=BIGINT},
+      manage_face = #{manageFace,jdbcType=VARCHAR},
+      manage_mount_guard = #{manageMountGuard,jdbcType=TIMESTAMP},
+      manage_education = #{manageEducation,jdbcType=BIGINT},
+      manage_phone = #{managePhone,jdbcType=VARCHAR},
+      manage_birth_date = #{manageBirthDate,jdbcType=TIMESTAMP},
+      manage_type = #{manageType,jdbcType=BIGINT},
+      manage_training = #{manageTraining,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <!--根据条件查询-->
+    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+          <include refid="Base_Column_List"/>
+        from tab_pb_edu_site es
+        <where>
+            <include refid="Base_WhereCase_List"/>
+        </where>
+    </select>
+
+    <!--逻辑删除-->
+    <update id="logicDeleteById">
+        UPDATE tab_pb_edu_site es
+        LEFT JOIN tab_pb_edu_site_activity esa ON es.id = esa.site_id
+        LEFT JOIN tab_pb_edu_site_device esd ON es.id = esd.site_id
+        SET es.del_flag = 1, esa.del_flag = 1, esd.del_flag = 1
+        WHERE es.id = #{id}
+    </update>
+
+    <!--根据ID查看详情 包括关联数据-->
+    <select id="selectWithAboutInfoById" parameterType="java.lang.Long" resultMap="WithAboutInfoResultMap">
+        select
+            <include refid="Base_Column_List"/>
+            ,'42' as attachment_type
+        from tab_pb_edu_site es
+        where es.id = #{id} and es.del_flag = 0
+    </select>
+</mapper>

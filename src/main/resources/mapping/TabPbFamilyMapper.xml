@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbFamilyMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbFamily">
+        <id column="relation_id" jdbcType="BIGINT" property="relationId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="relation" jdbcType="BIGINT" property="relation"/>
+        <result column="whether_abroad" property="whetherAbroad"/>
+        <result column="abroad" property="abroad"/>
+        <result column="relation_user_id" jdbcType="BIGINT" property="relationUserId"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="username" property="username"/>
+        <result column="phone" property="phone"/>
+        <result column="gender" property="gender"/>
+        <result column="id_card_no" property="idCardNo"/>
+        <result column="nation" property="nation"/>
+        <result column="policy_face" property="policyFace"/>
+        <result column="positive" property="positive"/>
+        <result column="birthday" property="birthday"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    relation_id, user_id, relation, ebl_flag, del_flag, order_num, description, create_time,
+    create_userid, create_username, update_time, update_userid, update_username, version,whether_abroad,abroad
+    </sql>
+
+    <sql id="Base_Column_user">
+        username,gender,id_card_no,nation,policy_face,phone,positive,birthday
+    </sql>
+    <!--查询list数据-->
+    <select id="selectListPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long" flushCache="true">
+        SELECT
+	family.relation,
+	(
+		CASE family.whether_abroad
+		WHEN 1 THEN
+			'否'
+		ELSE
+			'是'
+		END
+	) AS `whether_abroad`,
+	family.abroad,
+	family.relation_id,
+	family.relation_user_id,
+	users.realname AS username,
+	users.gender,
+	users.id_card_no,
+	users.nation,
+	users.policy_face,
+	users.phone,
+	users.positive,
+	users.birthday
+FROM
+	tab_pb_family family
+JOIN sys_user users ON family.relation_user_id = users.user_id AND users.del_flag = 0
+WHERE
+	family.user_id = #{userId,jdbcType=BIGINT} AND family.del_flag = 0
+;
+    </select>
+
+    <!--查询根据主键查询单条数据-->
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select family.relation,
+	(
+		CASE family.whether_abroad
+		WHEN 1 THEN
+			'否'
+		ELSE
+			'是'
+		END
+	) AS `whether_abroad`,
+	family.abroad,
+	family.relation_id,
+	family.relation_user_id,
+	users.realname as username ,users.gender,users.id_card_no,users.nation,
+        users.policy_face,users.phone,users.positive,users.birthday from tab_pb_family family
+        join sys_user users on family.relation_user_id = users.user_id
+        where family.relation_id = #{relationId,jdbcType=BIGINT};
+    </select>
+
+    <insert id="insertSelective"  parameterType="com.yizheng.partybuilding.entity.TabPbFamily">
+        insert into tab_pb_family
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="relationId != null">
+                relation_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="relation != null">
+                relation,
+            </if>
+            <if test="whetherAbroad != null ">
+                whether_abroad,
+            </if>
+            <if test="abroad != null ">
+                abroad,
+            </if>
+            <if test="relationUserId != null">
+                relation_user_id,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="relationId != null">
+                #{relationId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="relation != null">
+                #{relation,jdbcType=BIGINT},
+            </if>
+            <if test="whetherAbroad != null">
+                #{whetherAbroad},
+            </if>
+            <if test="abroad != null">
+                #{abroad},
+            </if>
+            <if test="relationUserId != null">
+                #{relationUserId,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbFamily">
+        update tab_pb_family
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="relation != null">
+                relation = #{relation,jdbcType=BIGINT},
+            </if>
+            <if test="whetherAbroad != null">
+                whether_abroad = #{whetherAbroad},
+            </if>
+            <if test="abroad != null">
+                abroad = #{abroad},
+            </if>
+            <if test="relationUserId != null">
+                relation_user_id = #{relationUserId,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+        </set>
+        where relation_id = #{relationId,jdbcType=BIGINT}
+    </update>
+
+    <update id="deleteByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbFamily">
+        update tab_pb_family
+        <set>
+            ebl_flag = 0,
+            del_flag = 1,
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where relation_id = #{relationId,jdbcType=BIGINT}
+    </update>
+
+</mapper>

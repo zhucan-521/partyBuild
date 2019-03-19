@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbSurveyMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbSurvey">
+        <id column="survey_id" jdbcType="BIGINT" property="surveyId"/>
+        <result column="survey_type" jdbcType="BIGINT" property="surveyType"/>
+        <result column="audit_stage" jdbcType="BIGINT" property="auditStage"/>
+        <result column="meeting_man_numbers" jdbcType="BIGINT" property="meetingManNumbers"/>
+        <result column="meeting_date" jdbcType="TIMESTAMP" property="meetingDate"/>
+        <result column="talker" jdbcType="VARCHAR" property="talker"/>
+        <result column="talk_date" jdbcType="TIMESTAMP" property="talkDate"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbSurvey">
+        <result column="discuss_content" jdbcType="LONGVARCHAR" property="discussContent"/>
+        <result column="thought_report" jdbcType="LONGVARCHAR" property="thoughtReport"/>
+        <result column="talk_content" jdbcType="LONGVARCHAR" property="talkContent"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    survey_id, survey_type, audit_stage, meeting_man_numbers, meeting_date, talker, talk_date, 
+    ebl_flag, del_flag, order_num, description, create_time, create_userid, create_username, 
+    update_time, update_userid, update_username, version
+  </sql>
+    <sql id="Blob_Column_List">
+    discuss_content, thought_report, talk_content
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tab_pb_survey
+        where survey_id = #{surveyId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_survey
+    where survey_id = #{surveyId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbSurvey">
+    insert into tab_pb_survey (survey_id, survey_type, audit_stage, 
+      meeting_man_numbers, meeting_date, talker, 
+      talk_date, ebl_flag, del_flag, 
+      order_num, description, create_time, 
+      create_userid, create_username, update_time, 
+      update_userid, update_username, version, 
+      discuss_content, thought_report, 
+      talk_content)
+    values (#{surveyId,jdbcType=BIGINT}, #{surveyType,jdbcType=BIGINT}, #{auditStage,jdbcType=BIGINT}, 
+      #{meetingManNumbers,jdbcType=BIGINT}, #{meetingDate,jdbcType=TIMESTAMP}, #{talker,jdbcType=VARCHAR}, 
+      #{talkDate,jdbcType=TIMESTAMP}, #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, 
+      #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, 
+      #{discussContent,jdbcType=LONGVARCHAR}, #{thoughtReport,jdbcType=LONGVARCHAR}, 
+      #{talkContent,jdbcType=LONGVARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbSurvey">
+        insert into tab_pb_survey
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="surveyId != null">
+                survey_id,
+            </if>
+            <if test="surveyType != null">
+                survey_type,
+            </if>
+            <if test="auditStage != null">
+                audit_stage,
+            </if>
+            <if test="meetingManNumbers != null">
+                meeting_man_numbers,
+            </if>
+            <if test="meetingDate != null">
+                meeting_date,
+            </if>
+            <if test="talker != null">
+                talker,
+            </if>
+            <if test="talkDate != null">
+                talk_date,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="discussContent != null">
+                discuss_content,
+            </if>
+            <if test="thoughtReport != null">
+                thought_report,
+            </if>
+            <if test="talkContent != null">
+                talk_content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="surveyId != null">
+                #{surveyId,jdbcType=BIGINT},
+            </if>
+            <if test="surveyType != null">
+                #{surveyType,jdbcType=BIGINT},
+            </if>
+            <if test="auditStage != null">
+                #{auditStage,jdbcType=BIGINT},
+            </if>
+            <if test="meetingManNumbers != null">
+                #{meetingManNumbers,jdbcType=BIGINT},
+            </if>
+            <if test="meetingDate != null">
+                #{meetingDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="talker != null">
+                #{talker,jdbcType=VARCHAR},
+            </if>
+            <if test="talkDate != null">
+                #{talkDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="discussContent != null">
+                #{discussContent,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="thoughtReport != null">
+                #{thoughtReport,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="talkContent != null">
+                #{talkContent,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbSurvey">
+        update tab_pb_survey
+        <set>
+            <if test="surveyType != null">
+                survey_type = #{surveyType,jdbcType=BIGINT},
+            </if>
+            <if test="auditStage != null">
+                audit_stage = #{auditStage,jdbcType=BIGINT},
+            </if>
+            <if test="meetingManNumbers != null">
+                meeting_man_numbers = #{meetingManNumbers,jdbcType=BIGINT},
+            </if>
+            <if test="meetingDate != null">
+                meeting_date = #{meetingDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="talker != null">
+                talker = #{talker,jdbcType=VARCHAR},
+            </if>
+            <if test="talkDate != null">
+                talk_date = #{talkDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="discussContent != null">
+                discuss_content = #{discussContent,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="thoughtReport != null">
+                thought_report = #{thoughtReport,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="talkContent != null">
+                talk_content = #{talkContent,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where survey_id = #{surveyId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbSurvey">
+    update tab_pb_survey
+    set survey_type = #{surveyType,jdbcType=BIGINT},
+      audit_stage = #{auditStage,jdbcType=BIGINT},
+      meeting_man_numbers = #{meetingManNumbers,jdbcType=BIGINT},
+      meeting_date = #{meetingDate,jdbcType=TIMESTAMP},
+      talker = #{talker,jdbcType=VARCHAR},
+      talk_date = #{talkDate,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      discuss_content = #{discussContent,jdbcType=LONGVARCHAR},
+      thought_report = #{thoughtReport,jdbcType=LONGVARCHAR},
+      talk_content = #{talkContent,jdbcType=LONGVARCHAR}
+    where survey_id = #{surveyId,jdbcType=BIGINT}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbSurvey">
+    update tab_pb_survey
+    set survey_type = #{surveyType,jdbcType=BIGINT},
+      audit_stage = #{auditStage,jdbcType=BIGINT},
+      meeting_man_numbers = #{meetingManNumbers,jdbcType=BIGINT},
+      meeting_date = #{meetingDate,jdbcType=TIMESTAMP},
+      talker = #{talker,jdbcType=VARCHAR},
+      talk_date = #{talkDate,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+    where survey_id = #{surveyId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbDevPartyMemberMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbDevPartyMember">
+        <id column="dp_id" jdbcType="BIGINT" property="dpId"/>
+        <result column="status" jdbcType="BIGINT" property="status"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="host_id1_1" jdbcType="BIGINT" property="hostId11"/>
+        <result column="host_id1_2" jdbcType="BIGINT" property="hostId12"/>
+        <result column="host_id2_1" jdbcType="BIGINT" property="hostId21"/>
+        <result column="host_id2_2" jdbcType="BIGINT" property="hostId22"/>
+        <result column="host_id2_3" jdbcType="BIGINT" property="hostId23"/>
+        <result column="host_id2_4" jdbcType="BIGINT" property="hostId24"/>
+        <result column="host_id3_1" jdbcType="BIGINT" property="hostId31"/>
+        <result column="host_id3_2" jdbcType="BIGINT" property="hostId32"/>
+        <result column="host_id3_3" jdbcType="BIGINT" property="hostId33"/>
+        <result column="host_id3_4" jdbcType="BIGINT" property="hostId34"/>
+        <result column="host_id3_5" jdbcType="BIGINT" property="hostId35"/>
+        <result column="host_id4_1" jdbcType="BIGINT" property="hostId41"/>
+        <result column="host_id4_2" jdbcType="BIGINT" property="hostId42"/>
+        <result column="host_id4_3" jdbcType="BIGINT" property="hostId43"/>
+        <result column="host_id4_4" jdbcType="BIGINT" property="hostId44"/>
+        <result column="host_id4_5" jdbcType="BIGINT" property="hostId45"/>
+        <result column="host_id4_6" jdbcType="BIGINT" property="hostId46"/>
+        <result column="host_id4_7" jdbcType="BIGINT" property="hostId47"/>
+        <result column="host_id5_1" jdbcType="BIGINT" property="hostId51"/>
+        <result column="host_id5_2" jdbcType="BIGINT" property="hostId52"/>
+        <result column="host_id5_3" jdbcType="BIGINT" property="hostId53"/>
+        <result column="host_id5_4" jdbcType="BIGINT" property="hostId54"/>
+        <result column="host_id5_5" jdbcType="BIGINT" property="hostId55"/>
+        <result column="host_id5_6" jdbcType="BIGINT" property="hostId56"/>
+        <result column="host_id5_7" jdbcType="BIGINT" property="hostId57"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="dept_id" property="deptId"/>
+    </resultMap>
+
+    <resultMap id="UserIdMap" type="com.yizheng.partybuilding.entity.TabPbDevPartyMember">
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+    </resultMap>
+
+    <!--发展党员信息-->
+    <resultMap id="PartyUserMap" type="com.yizheng.partybuilding.dto.DevPartyUserDto">
+        <result column="dp_id" jdbcType="BIGINT" property="dpId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="username" jdbcType="VARCHAR" property="userName"/>
+        <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
+        <result column="gender" jdbcType="BIGINT" property="gender"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="fix_phone" jdbcType="VARCHAR" property="fixPhone"/>
+        <result column="unit_id" jdbcType="BIGINT" property="unitId"/>
+        <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
+        <result column="technician" jdbcType="BIGINT" property="technician"/>
+        <result column="status" jdbcType="BIGINT" property="status"/>
+        <result column="name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="job_position" jdbcType="VARCHAR" property="jobPosition"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    dp_id, `status`, user_id, host_id1_1, host_id1_2, host_id2_1, host_id2_2, host_id2_3,
+    host_id2_4, host_id3_1, host_id3_2, host_id3_3, host_id3_4, host_id3_5, host_id4_1,
+    host_id4_2, host_id4_3, host_id4_4, host_id4_5, host_id4_6, host_id4_7, host_id5_1,
+    host_id5_2, host_id5_3, host_id5_4, host_id5_5, host_id5_6, host_id5_7, create_time,
+    create_userid, create_username, del_flag
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_dev_party_member
+        where del_flag='0' and dp_id = #{dpId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+                SELECT
+            m.*,IFNULL(u.dept_id,u.manage_dept_id) AS dept_id
+            FROM
+                tab_pb_dev_party_member m
+            INNER JOIN sys_user u ON m.user_id = u.user_id
+            AND u.del_flag = 0
+            WHERE
+            m.del_flag = 0 and m.user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_dev_party_member
+    where dp_id = #{dpId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="dpId"
+            parameterType="com.yizheng.partybuilding.entity.TabPbDevPartyMember">
+        insert into tab_pb_dev_party_member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            status, user_id,
+            <if test="hostId11 != null">
+                host_id1_1,
+            </if>
+            <if test="hostId12 != null">
+                host_id1_2,
+            </if>
+            <if test="hostId21 != null">
+                host_id2_1,
+            </if>
+            <if test="hostId22 != null">
+                host_id2_2,
+            </if>
+            <if test="hostId23 != null">
+                host_id2_3,
+            </if>
+            <if test="hostId24 != null">
+                host_id2_4,
+            </if>
+            <if test="hostId31 != null">
+                host_id3_1,
+            </if>
+            <if test="hostId32 != null">
+                host_id3_2,
+            </if>
+            <if test="hostId33 != null">
+                host_id3_3,
+            </if>
+            <if test="hostId34 != null">
+                host_id3_4,
+            </if>
+            <if test="hostId35 != null">
+                host_id3_5,
+            </if>
+            <if test="hostId41 != null">
+                host_id4_1,
+            </if>
+            <if test="hostId42 != null">
+                host_id4_2,
+            </if>
+            <if test="hostId43 != null">
+                host_id4_3,
+            </if>
+            <if test="hostId44 != null">
+                host_id4_4,
+            </if>
+            <if test="hostId45 != null">
+                host_id4_5,
+            </if>
+            <if test="hostId46 != null">
+                host_id4_6,
+            </if>
+            <if test="hostId47 != null">
+                host_id4_7,
+            </if>
+            <if test="hostId51 != null">
+                host_id5_1,
+            </if>
+            <if test="hostId52 != null">
+                host_id5_2,
+            </if>
+            <if test="hostId53 != null">
+                host_id5_3,
+            </if>
+            <if test="hostId54 != null">
+                host_id5_4,
+            </if>
+            <if test="hostId55 != null">
+                host_id5_5,
+            </if>
+            <if test="hostId56 != null">
+                host_id5_6,
+            </if>
+            <if test="hostId57 != null">
+                host_id5_7,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+            #{status,jdbcType=BIGINT},
+            #{userId,jdbcType=BIGINT},
+
+            <if test="hostId11 != null">
+                #{hostId11,jdbcType=BIGINT},
+            </if>
+            <if test="hostId12 != null">
+                #{hostId12,jdbcType=BIGINT},
+            </if>
+            <if test="hostId21 != null">
+                #{hostId21,jdbcType=BIGINT},
+            </if>
+            <if test="hostId22 != null">
+                #{hostId22,jdbcType=BIGINT},
+            </if>
+            <if test="hostId23 != null">
+                #{hostId23,jdbcType=BIGINT},
+            </if>
+            <if test="hostId24 != null">
+                #{hostId24,jdbcType=BIGINT},
+            </if>
+            <if test="hostId31 != null">
+                #{hostId31,jdbcType=BIGINT},
+            </if>
+            <if test="hostId32 != null">
+                #{hostId32,jdbcType=BIGINT},
+            </if>
+            <if test="hostId33 != null">
+                #{hostId33,jdbcType=BIGINT},
+            </if>
+            <if test="hostId34 != null">
+                #{hostId34,jdbcType=BIGINT},
+            </if>
+            <if test="hostId35 != null">
+                #{hostId35,jdbcType=BIGINT},
+            </if>
+            <if test="hostId41 != null">
+                #{hostId41,jdbcType=BIGINT},
+            </if>
+            <if test="hostId42 != null">
+                #{hostId42,jdbcType=BIGINT},
+            </if>
+            <if test="hostId43 != null">
+                #{hostId43,jdbcType=BIGINT},
+            </if>
+            <if test="hostId44 != null">
+                #{hostId44,jdbcType=BIGINT},
+            </if>
+            <if test="hostId45 != null">
+                #{hostId45,jdbcType=BIGINT},
+            </if>
+            <if test="hostId46 != null">
+                #{hostId46,jdbcType=BIGINT},
+            </if>
+            <if test="hostId47 != null">
+                #{hostId47,jdbcType=BIGINT},
+            </if>
+            <if test="hostId51 != null">
+                #{hostId51,jdbcType=BIGINT},
+            </if>
+            <if test="hostId52 != null">
+                #{hostId52,jdbcType=BIGINT},
+            </if>
+            <if test="hostId53 != null">
+                #{hostId53,jdbcType=BIGINT},
+            </if>
+            <if test="hostId54 != null">
+                #{hostId54,jdbcType=BIGINT},
+            </if>
+            <if test="hostId55 != null">
+                #{hostId55,jdbcType=BIGINT},
+            </if>
+            <if test="hostId56 != null">
+                #{hostId56,jdbcType=BIGINT},
+            </if>
+            <if test="hostId57 != null">
+                #{hostId57,jdbcType=BIGINT},
+            </if>
+
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbDevPartyMember">
+        update tab_pb_dev_party_member
+        <set>
+            <if test="delFlag != null">
+                del_flag = #{delFlag},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=BIGINT},
+            </if>
+        </set>
+        where dp_id = #{dpId,jdbcType=BIGINT}
+    </update>
+    <select id="checkUser" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select user_id from tab_pb_dev_party_member where del_flag= '0' and user_id=#{userId}
+    </select>
+
+    <select id="list" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_dev_party_member where del_flag='0'
+        <if test="dpId != null">
+            and dp_id=#{dpId}
+        </if>
+        <if test="userId != null">
+            and user_id=#{userId}
+        </if>
+        <if test="status != null">
+            and status=#{status}
+        </if>
+    </select>
+
+    <select id="selectByUserAndStatus" resultMap="UserIdMap" >
+        SELECT
+        M.user_id
+        FROM
+        tab_pb_dev_party_member M INNER JOIN sys_user U ON M.user_id=U.user_id
+        WHERE
+        M.del_flag = '0' AND
+        U.registry_status = 7
+        AND U.id_card_no=#{idCardNo}
+        AND U.realname=#{userName}
+        <if test="isLost != null">
+            AND U.is_llost=#{isLost}
+        </if>
+        AND (M.status IN
+        <foreach item="i" collection="status" separator="," open="(" close=")">
+            #{i, jdbcType=BIGINT}
+        </foreach>
+        OR M.status > 57)
+    </select>
+
+    <select id="selectDevParty" resultMap="PartyUserMap">
+        SELECT
+        M.dp_id,
+        M.status,
+        U.realname as username,
+        U.id_card_no,
+        U.gender,
+        U.phone,
+        U.fix_phone,
+        U.unit_id,
+        U.user_id,
+        U.unit_name,
+        U.technician,
+        U.job_position,
+        d.`name`
+        FROM
+        tab_pb_dev_party_member M
+        INNER JOIN sys_user U ON M.user_id = U.user_id
+        INNER JOIN sys_dept d ON U.dept_id = d.dept_id
+        WHERE
+        M.del_flag = '0'
+        <if test="dpId != null">
+            and M.dp_id=#{dpId}
+        </if>
+
+        <if test="userId != null">
+            and M.user_id=#{userId}
+        </if>
+
+        <if test="userName != null and userName != ''">
+            and U.realname=#{userName}
+        </if>
+
+        <if test="idCardNo != null and idCardNo != ''">
+            and U.id_card_no=#{idCardNo}
+        </if>
+
+        <!--组织范围  0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <if test="orgRange != null and orgRange != ''">
+            <choose>
+                <when test="orgRange == 1">
+                    AND (d.dept_id = #{orgId} OR d.parent_id = #{orgId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{orgId}, d.full_path)
+                </when>
+            </choose>
+        </if>
+
+        <if test="orgRange == null and orgId != null">
+            AND d.dept_id = #{orgId}
+        </if>
+
+        <if test="status != null">
+            AND M.status=#{status}
+        </if>
+        ORDER BY
+        M.status DESC,
+        M.dp_id DESC
+    </select>
+</mapper>

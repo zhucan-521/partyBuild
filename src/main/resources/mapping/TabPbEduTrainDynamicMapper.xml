@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduTrainDynamicMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduTrainDynamic">
+        <id column="dynamic_id" jdbcType="BIGINT" property="dynamicId"/>
+        <result column="train_id" jdbcType="BIGINT" property="trainId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="verify_time" jdbcType="TIMESTAMP" property="verifyTime"/>
+        <result column="verify_userid" jdbcType="BIGINT" property="verifyUserid"/>
+        <result column="tool_num" jdbcType="BIGINT" property="toolNum"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="train_name" jdbcType="VARCHAR" property="trainName"/>
+        <collection property="attachments" ofType="com.yizheng.commons.domain.TabPbAttachment">
+            <id column="attachment_id" jdbcType="BIGINT" property="attachmentId"/>
+            <result column="attachment_instance" jdbcType="VARCHAR" property="attachmentInstance"/>
+            <result column="attachment_description" jdbcType="LONGVARCHAR" property="attachmentDescription"/>
+            <result column="atta_description" jdbcType="VARCHAR" property="description"/>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+        dynamic_id, train_id , user_id, username, title, content, create_time, state, verify_time, verify_userid,
+    create_username
+  </sql>
+    <sql id="dynamic_Column_List">
+        dynamic.dynamic_id, dynamic.train_id , dynamic.user_id, dynamic.username, dynamic.title, dynamic.content, dynamic.create_time,
+        dynamic.state, dynamic.verify_time, dynamic.verify_userid, dynamic.create_username
+  </sql>
+    <sql id="attachment_Column_List">
+    attachment.description as atta_description, attachment_description, attachment_instance, attachment_id
+  </sql>
+    <select id="selectiveList" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainDynamic" resultMap="BaseResultMap">
+        select
+        <include refid="dynamic_Column_List"/>,train.name as train_name,atta.tool_num
+        from tab_pb_edu_train_dynamic dynamic
+        left join tab_pb_edu_train train on train.train_id = dynamic.train_id
+        left join
+        (SELECT count(0) tool_num,host_id FROM tab_pb_attachment
+        WHERE  attachment_type = ${@com.yizheng.commons.util.AttachmentType@TRAINDYNAMIC} and del_flag = 0
+        GROUP BY host_id)
+        atta on atta.host_id = dynamic.dynamic_id
+        where 1 = 1
+        <if test="state != null">
+            and dynamic.state = #{state}
+        </if>
+        <if test="trainId != null">
+            and dynamic.train_id = #{trainId}
+        </if>
+        <if test="userId != null">
+            and dynamic.user_id = #{userId}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="dynamic_Column_List"/>,<include refid="attachment_Column_List"/>,train.name as train_name
+        from tab_pb_edu_train_dynamic dynamic
+        left join tab_pb_edu_train train on train.train_id = dynamic.train_id
+        left join tab_pb_attachment attachment on dynamic.dynamic_id = attachment.host_id and attachment.attachment_type = ${@com.yizheng.commons.util.AttachmentType@TRAINDYNAMIC}
+        and attachment.del_flag = 0
+        where  dynamic.dynamic_id = #{dynamicId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_edu_train_dynamic
+    where dynamic_id = #{dynamicId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainDynamic">
+        insert into tab_pb_edu_train_dynamic (dynamic_id, train_id,user_id, username,
+      title, content, create_time, 
+      state, verify_time, verify_userid, 
+      create_username)
+        values (#{dynamicId,jdbcType=BIGINT}, #{trainId,jdbcType=BIGINT},#{userId,jdbcType=BIGINT},
+        #{username,jdbcType=VARCHAR},
+      #{title,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{state,jdbcType=VARCHAR}, #{verifyTime,jdbcType=TIMESTAMP}, #{verifyUserid,jdbcType=BIGINT}, 
+      #{createUsername,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainDynamic" useGeneratedKeys="true"
+            keyProperty="dynamicId">
+        insert into tab_pb_edu_train_dynamic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dynamicId != null">
+                dynamic_id,
+            </if>
+            <if test="trainId != null">
+                train_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="verifyTime != null">
+                verify_time,
+            </if>
+            <if test="verifyUserid != null">
+                verify_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dynamicId != null">
+                #{dynamicId,jdbcType=BIGINT},
+            </if>
+            <if test="trainId != null">
+                #{trainId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="verifyTime != null">
+                #{verifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="verifyUserid != null">
+                #{verifyUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainDynamic">
+        update tab_pb_edu_train_dynamic
+        <set>
+            <if test="trainId != null">
+                #{trainId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="verifyTime != null">
+                verify_time = #{verifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="verifyUserid != null">
+                verify_userid = #{verifyUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where dynamic_id = #{dynamicId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainDynamic">
+    update tab_pb_edu_train_dynamic
+        set train_id = #{trainId,jdbcType=BIGINT},
+        user_id = #{userId,jdbcType=BIGINT},
+      username = #{username,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      verify_time = #{verifyTime,jdbcType=TIMESTAMP},
+      verify_userid = #{verifyUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR}
+    where dynamic_id = #{dynamicId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,944 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbUnitInfoMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbUnitInfo">
+        <id column="unit_id" jdbcType="BIGINT" property="unitId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
+        <result column="unit_code" jdbcType="VARCHAR" property="unitCode"/>
+        <result column="belong_relation" jdbcType="BIGINT" property="belongRelation"/>
+        <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
+        <result column="industry" jdbcType="BIGINT" property="industry"/>
+        <result column="economic_type" jdbcType="BIGINT" property="economicType"/>
+        <result column="ent_scale" jdbcType="BIGINT" property="entScale"/>
+        <result column="ent_type" jdbcType="BIGINT" property="entType"/>
+        <result column="unit_address" jdbcType="VARCHAR" property="unitAddress"/>
+        <result column="if_create_service" jdbcType="TINYINT" property="ifCreateService"/>
+        <result column="if_create_volunt_team" jdbcType="TINYINT" property="ifCreateVoluntTeam"/>
+        <result column="if_instruction_contact" jdbcType="TINYINT" property="ifInstructionContact"/>
+        <result column="instructor_count" jdbcType="BIGINT" property="instructorCount"/>
+        <result column="if_reorganization" jdbcType="TINYINT" property="ifReorganization"/>
+        <result column="corp_is_party_member" jdbcType="TINYINT" property="corpIsPartyMember"/>
+        <result column="corp_as_group_secretary" jdbcType="TINYINT" property="corpAsGroupSecretary"/>
+        <result column="corp_orgnize_status" jdbcType="BIGINT" property="corpOrgnizeStatus"/>
+        <result column="gover_orgnize_status" jdbcType="BIGINT" property="goverOrgnizeStatus"/>
+        <result column="city_street_type" jdbcType="BIGINT" property="cityStreetType"/>
+        <result column="intermediary_type" jdbcType="BIGINT" property="intermediaryType"/>
+        <result column="positive_count" jdbcType="BIGINT" property="positiveCount"/>
+        <result column="positive_count_35" jdbcType="BIGINT" property="positiveCount35"/>
+        <result column="work_positive_count" jdbcType="BIGINT" property="workPositiveCount"/>
+        <result column="tech_positive_count" jdbcType="BIGINT" property="techPositiveCount"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="contact_number" jdbcType="VARCHAR" property="contactNumber"/>
+        <result column="number_of_household" jdbcType="BIGINT" property="numberOfHousehold"/>
+        <result column="household_population" jdbcType="BIGINT" property="householdPopulation"/>
+        <result column="permanent_population" jdbcType="BIGINT" property="permanentPopulation"/>
+        <result column="first_master_name" jdbcType="VARCHAR" property="firstMasterName"/>
+        <result column="first_master_id_card" jdbcType="VARCHAR" property="firstMasterIdCard"/>
+        <result column="first_master_hold_start_time" jdbcType="TIMESTAMP" property="firstMasterHoldStartTime"/>
+        <result column="first_master_term_of_office" jdbcType="BIGINT" property="firstMasterTermOfOffice"/>
+        <result column="if_superior_connection" jdbcType="TINYINT" property="ifSuperiorConnection"/>
+        <result column="if_frontier_ethnic_area" jdbcType="TINYINT" property="ifFrontierEthnicArea"/>
+        <result column="work_count" jdbcType="BIGINT" property="workCount"/>
+        <result column="if_has_two_db_one_wy" jdbcType="TINYINT" property="ifHasTwoDbOneWy"/>
+        <result column="if_builded_union" jdbcType="TINYINT" property="ifBuildedUnion"/>
+        <result column="union_principal_is_party_member" jdbcType="TINYINT" property="unionPrincipalIsPartyMember"/>
+        <result column="if_builded_gqt" jdbcType="TINYINT" property="ifBuildedGqt"/>
+        <result column="gqt_principal_is_party_member" jdbcType="TINYINT" property="gqtPrincipalIsPartyMember"/>
+        <result column="if_builded_women_group" jdbcType="TINYINT" property="ifBuildedWomenGroup"/>
+        <result column="women_group_principal_is_party_member" jdbcType="TINYINT"
+                property="womenGroupPrincipalIsPartyMember"/>
+        <result column="natural_village_count" jdbcType="BIGINT" property="naturalVillageCount"/>
+        <result column="group_annual_income" jdbcType="BIGINT" property="groupAnnualIncome"/>
+        <result column="if_build_card_poor_village" jdbcType="TINYINT" property="ifBuildCardPoorVillage"/>
+        <result column="if_builded_village_committee" jdbcType="TINYINT" property="ifBuildedVillageCommittee"/>
+        <result column="structure_village_count" jdbcType="BIGINT" property="structureVillageCount"/>
+        <result column="community_village_count" jdbcType="BIGINT" property="communityVillageCount"/>
+        <result column="last_year_village_per_capita_income" jdbcType="BIGINT"
+                property="lastYearVillagePerCapitaIncome"/>
+        <result column="last_year_avg_social_wage" jdbcType="BIGINT" property="lastYearAvgSocialWage"/>
+        <result column="unit_party_count" jdbcType="BIGINT" property="unitPartyCount"/>
+        <result column="legal_person_is_party_member" jdbcType="TINYINT" property="legalPersonIsPartyMember"/>
+        <result column="unit_legal_person" jdbcType="BIGINT" property="unitLegalPerson"/>
+        <result column="unit_phone" jdbcType="VARCHAR" property="unitPhone"/>
+        <result column="if_legal_unit" jdbcType="TINYINT" property="ifLegalUnit"/>
+        <result column="unit_register_type" jdbcType="BIGINT" property="unitRegisterType"/>
+        <result column="social_org_type" jdbcType="BIGINT" property="socialOrgType"/>
+        <result column="cause_unit_type" jdbcType="BIGINT" property="causeUnitType"/>
+        <result column="organ_unit_type" jdbcType="BIGINT" property="organUnitType"/>
+        <result column="party_buiding_status" jdbcType="BIGINT" property="partyBuidingStatus"/>
+        <result column="party_member_count" jdbcType="BIGINT" property="partyMemberCount"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        unit_id, org_id, unit_name, unit_code, belong_relation, unit_property, industry,
+        economic_type, ent_scale, ent_type, unit_address, if_create_service, if_create_volunt_team,
+        if_instruction_contact, instructor_count, if_reorganization, corp_is_party_member,
+        corp_as_group_secretary, corp_orgnize_status, gover_orgnize_status, city_street_type,
+        intermediary_type, positive_count, positive_count_35, work_positive_count, tech_positive_count,
+        ebl_flag, del_flag, order_num, description, create_time, create_userid, create_username,
+        update_time, update_userid, update_username, version, contact_number, number_of_household,
+        household_population, permanent_population, first_master_name, first_master_id_card,
+        first_master_hold_start_time, first_master_term_of_office, if_superior_connection,
+        if_frontier_ethnic_area, work_count, if_has_two_db_one_wy, if_builded_union, union_principal_is_party_member,
+        if_builded_gqt, gqt_principal_is_party_member, if_builded_women_group, women_group_principal_is_party_member,
+        natural_village_count, group_annual_income, if_build_card_poor_village, if_builded_village_committee,
+        structure_village_count, community_village_count, last_year_village_per_capita_income,
+        last_year_avg_social_wage, unit_party_count, legal_person_is_party_member, unit_legal_person,
+        unit_phone, if_legal_unit, unit_register_type, social_org_type, cause_unit_type, organ_unit_type,
+        party_buiding_status,party_member_count
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_unit_info
+        where unit_id = #{unitId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_unit_info
+    where unit_id = #{unitId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="unitId"
+            parameterType="com.yizheng.partybuilding.entity.TabPbUnitInfo">
+        insert into tab_pb_unit_info (unit_id, org_id, unit_name,
+        unit_code, belong_relation, unit_property,
+        industry, economic_type, ent_scale,
+        ent_type, unit_address, if_create_service,
+        if_create_volunt_team, if_instruction_contact,
+      instructor_count, if_reorganization, corp_is_party_member, 
+      corp_as_group_secretary, corp_orgnize_status, 
+      gover_orgnize_status, city_street_type, intermediary_type, 
+      positive_count, positive_count_35, work_positive_count, 
+      tech_positive_count, ebl_flag, del_flag, 
+      order_num, description, create_time, 
+      create_userid, create_username, update_time,
+        update_userid, update_username, version,
+        contact_number, number_of_household, household_population,
+        permanent_population, first_master_name, first_master_id_card,
+        first_master_hold_start_time, first_master_term_of_office,
+        if_superior_connection, if_frontier_ethnic_area,
+        work_count, if_has_two_db_one_wy, if_builded_union,
+        union_principal_is_party_member, if_builded_gqt,
+        gqt_principal_is_party_member, if_builded_women_group,
+        women_group_principal_is_party_member, natural_village_count,
+        group_annual_income, if_build_card_poor_village,
+        if_builded_village_committee, structure_village_count,
+        community_village_count, last_year_village_per_capita_income,
+        last_year_avg_social_wage,unit_party_count, legal_person_is_party_member, unit_legal_person,
+        unit_phone, if_legal_unit, unit_register_type, social_org_type, cause_unit_type, organ_unit_type,
+        party_buiding_status,party_member_count)
+        values (#{unitId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{unitName,jdbcType=VARCHAR},
+        #{unitCode,jdbcType=VARCHAR}, #{belongRelation,jdbcType=BIGINT}, #{unitProperty,jdbcType=BIGINT},
+        #{industry,jdbcType=BIGINT}, #{economicType,jdbcType=BIGINT}, #{entScale,jdbcType=BIGINT},
+        #{entType,jdbcType=BIGINT}, #{unitAddress,jdbcType=VARCHAR}, #{ifCreateService,jdbcType=TINYINT},
+        #{ifCreateVoluntTeam,jdbcType=TINYINT}, #{ifInstructionContact,jdbcType=TINYINT},
+      #{instructorCount,jdbcType=BIGINT}, #{ifReorganization,jdbcType=TINYINT}, #{corpIsPartyMember,jdbcType=TINYINT}, 
+      #{corpAsGroupSecretary,jdbcType=TINYINT}, #{corpOrgnizeStatus,jdbcType=BIGINT}, 
+      #{goverOrgnizeStatus,jdbcType=BIGINT}, #{cityStreetType,jdbcType=BIGINT}, #{intermediaryType,jdbcType=BIGINT}, 
+      #{positiveCount,jdbcType=BIGINT}, #{positiveCount35,jdbcType=BIGINT}, #{workPositiveCount,jdbcType=BIGINT}, 
+      #{techPositiveCount,jdbcType=BIGINT}, #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, 
+      #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+        #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT},
+        #{contactNumber,jdbcType=VARCHAR}, #{numberOfHousehold,jdbcType=BIGINT}, #{householdPopulation,jdbcType=BIGINT},
+        #{permanentPopulation,jdbcType=BIGINT}, #{firstMasterName,jdbcType=VARCHAR},
+        #{firstMasterIdCard,jdbcType=VARCHAR},
+        #{firstMasterHoldStartTime,jdbcType=TIMESTAMP}, #{firstMasterTermOfOffice,jdbcType=BIGINT},
+        #{ifSuperiorConnection,jdbcType=TINYINT}, #{ifFrontierEthnicArea,jdbcType=TINYINT},
+        #{workCount,jdbcType=BIGINT}, #{ifHasTwoDbOneWy,jdbcType=TINYINT}, #{ifBuildedUnion,jdbcType=TINYINT},
+        #{unionPrincipalIsPartyMember,jdbcType=TINYINT}, #{ifBuildedGqt,jdbcType=TINYINT},
+        #{gqtPrincipalIsPartyMember,jdbcType=TINYINT}, #{ifBuildedWomenGroup,jdbcType=TINYINT},
+        #{womenGroupPrincipalIsPartyMember,jdbcType=TINYINT}, #{naturalVillageCount,jdbcType=BIGINT},
+        #{groupAnnualIncome,jdbcType=BIGINT}, #{ifBuildCardPoorVillage,jdbcType=TINYINT},
+        #{ifBuildedVillageCommittee,jdbcType=TINYINT}, #{structureVillageCount,jdbcType=BIGINT},
+        #{communityVillageCount,jdbcType=BIGINT}, #{lastYearVillagePerCapitaIncome,jdbcType=BIGINT},
+        #{lastYearAvgSocialWage,jdbcType=BIGINT}, #{unitPartyCount,jdbcType=BIGINT}, #{legalPersonIsPartyMember,jdbcType=TINYINT},
+        #{unitLegalPerson,jdbcType=BIGINT}, #{unitPhone,jdbcType=VARCHAR}, #{ifLegalUnit,jdbcType=TINYINT},
+        #{unitRegisterType,jdbcType=BIGINT}, #{socialOrgType,jdbcType=BIGINT}, #{causeUnitType,jdbcType=BIGINT},
+        #{organUnitType,jdbcType=BIGINT},#{partyBuidingStatus,jdbcType=BIGINT},#{partyMemberCount,jdbcType=BIGINT})
+  </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="unitId"
+            parameterType="com.yizheng.partybuilding.entity.TabPbUnitInfo">
+        insert into tab_pb_unit_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="unitId != null">
+                unit_id,
+            </if>
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="unitName != null">
+                unit_name,
+            </if>
+            <if test="unitCode != null">
+                unit_code,
+            </if>
+            <if test="belongRelation != null">
+                belong_relation,
+            </if>
+            <if test="unitProperty != null">
+                unit_property,
+            </if>
+            <if test="industry != null">
+                industry,
+            </if>
+            <if test="economicType != null">
+                economic_type,
+            </if>
+            <if test="entScale != null">
+                ent_scale,
+            </if>
+            <if test="entType != null">
+                ent_type,
+            </if>
+            <if test="unitAddress != null">
+                unit_address,
+            </if>
+            <if test="ifCreateService != null">
+                if_create_service,
+            </if>
+            <if test="ifCreateVoluntTeam != null">
+                if_create_volunt_team,
+            </if>
+            <if test="ifInstructionContact != null">
+                if_instruction_contact,
+            </if>
+            <if test="instructorCount != null">
+                instructor_count,
+            </if>
+            <if test="ifReorganization != null">
+                if_reorganization,
+            </if>
+            <if test="corpIsPartyMember != null">
+                corp_is_party_member,
+            </if>
+            <if test="corpAsGroupSecretary != null">
+                corp_as_group_secretary,
+            </if>
+            <if test="corpOrgnizeStatus != null">
+                corp_orgnize_status,
+            </if>
+            <if test="goverOrgnizeStatus != null">
+                gover_orgnize_status,
+            </if>
+            <if test="cityStreetType != null">
+                city_street_type,
+            </if>
+            <if test="intermediaryType != null">
+                intermediary_type,
+            </if>
+            <if test="positiveCount != null">
+                positive_count,
+            </if>
+            <if test="positiveCount35 != null">
+                positive_count_35,
+            </if>
+            <if test="workPositiveCount != null">
+                work_positive_count,
+            </if>
+            <if test="techPositiveCount != null">
+                tech_positive_count,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="contactNumber != null">
+                contact_number,
+            </if>
+            <if test="numberOfHousehold != null">
+                number_of_household,
+            </if>
+            <if test="householdPopulation != null">
+                household_population,
+            </if>
+            <if test="permanentPopulation != null">
+                permanent_population,
+            </if>
+            <if test="firstMasterName != null">
+                first_master_name,
+            </if>
+            <if test="firstMasterIdCard != null">
+                first_master_id_card,
+            </if>
+            <if test="firstMasterHoldStartTime != null">
+                first_master_hold_start_time,
+            </if>
+            <if test="firstMasterTermOfOffice != null">
+                first_master_term_of_office,
+            </if>
+            <if test="ifSuperiorConnection != null">
+                if_superior_connection,
+            </if>
+            <if test="ifFrontierEthnicArea != null">
+                if_frontier_ethnic_area,
+            </if>
+            <if test="workCount != null">
+                work_count,
+            </if>
+            <if test="ifHasTwoDbOneWy != null">
+                if_has_two_db_one_wy,
+            </if>
+            <if test="ifBuildedUnion != null">
+                if_builded_union,
+            </if>
+            <if test="unionPrincipalIsPartyMember != null">
+                union_principal_is_party_member,
+            </if>
+            <if test="ifBuildedGqt != null">
+                if_builded_gqt,
+            </if>
+            <if test="gqtPrincipalIsPartyMember != null">
+                gqt_principal_is_party_member,
+            </if>
+            <if test="ifBuildedWomenGroup != null">
+                if_builded_women_group,
+            </if>
+            <if test="womenGroupPrincipalIsPartyMember != null">
+                women_group_principal_is_party_member,
+            </if>
+            <if test="naturalVillageCount != null">
+                natural_village_count,
+            </if>
+            <if test="groupAnnualIncome != null">
+                group_annual_income,
+            </if>
+            <if test="ifBuildCardPoorVillage != null">
+                if_build_card_poor_village,
+            </if>
+            <if test="ifBuildedVillageCommittee != null">
+                if_builded_village_committee,
+            </if>
+            <if test="structureVillageCount != null">
+                structure_village_count,
+            </if>
+            <if test="communityVillageCount != null">
+                community_village_count,
+            </if>
+            <if test="lastYearVillagePerCapitaIncome != null">
+                last_year_village_per_capita_income,
+            </if>
+            <if test="lastYearAvgSocialWage != null">
+                last_year_avg_social_wage,
+            </if>
+            <if test="unitPartyCount != null">
+                unit_party_count,
+            </if>
+            <if test="legalPersonIsPartyMember != null">
+                legal_person_is_party_member,
+            </if>
+            <if test="unitLegalPerson != null">
+                unit_legal_person,
+            </if>
+            <if test="unitPhone != null">
+                unit_phone,
+            </if>
+            <if test="ifLegalUnit != null">
+                if_legal_unit,
+            </if>
+            <if test="unitRegisterType != null">
+                unit_register_type,
+            </if>
+            <if test="socialOrgType != null">
+                social_org_type,
+            </if>
+            <if test="causeUnitType != null">
+                cause_unit_type,
+            </if>
+            <if test="organUnitType != null">
+                organ_unit_type,
+            </if>
+            <if test="partyBuidingStatus != null">
+                party_buiding_status,
+            </if>
+            <if test="partyMemberCount != null">
+                party_member_count,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="unitId != null">
+                #{unitId,jdbcType=BIGINT},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="unitName != null">
+                #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitCode != null">
+                #{unitCode,jdbcType=VARCHAR},
+            </if>
+            <if test="belongRelation != null">
+                #{belongRelation,jdbcType=BIGINT},
+            </if>
+            <if test="unitProperty != null">
+                #{unitProperty,jdbcType=BIGINT},
+            </if>
+            <if test="industry != null">
+                #{industry,jdbcType=BIGINT},
+            </if>
+            <if test="economicType != null">
+                #{economicType,jdbcType=BIGINT},
+            </if>
+            <if test="entScale != null">
+                #{entScale,jdbcType=BIGINT},
+            </if>
+            <if test="entType != null">
+                #{entType,jdbcType=BIGINT},
+            </if>
+            <if test="unitAddress != null">
+                #{unitAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="ifCreateService != null">
+                #{ifCreateService,jdbcType=TINYINT},
+            </if>
+            <if test="ifCreateVoluntTeam != null">
+                #{ifCreateVoluntTeam,jdbcType=TINYINT},
+            </if>
+            <if test="ifInstructionContact != null">
+                #{ifInstructionContact,jdbcType=TINYINT},
+            </if>
+            <if test="instructorCount != null">
+                #{instructorCount,jdbcType=BIGINT},
+            </if>
+            <if test="ifReorganization != null">
+                #{ifReorganization,jdbcType=TINYINT},
+            </if>
+            <if test="corpIsPartyMember != null">
+                #{corpIsPartyMember,jdbcType=TINYINT},
+            </if>
+            <if test="corpAsGroupSecretary != null">
+                #{corpAsGroupSecretary,jdbcType=TINYINT},
+            </if>
+            <if test="corpOrgnizeStatus != null">
+                #{corpOrgnizeStatus,jdbcType=BIGINT},
+            </if>
+            <if test="goverOrgnizeStatus != null">
+                #{goverOrgnizeStatus,jdbcType=BIGINT},
+            </if>
+            <if test="cityStreetType != null">
+                #{cityStreetType,jdbcType=BIGINT},
+            </if>
+            <if test="intermediaryType != null">
+                #{intermediaryType,jdbcType=BIGINT},
+            </if>
+            <if test="positiveCount != null">
+                #{positiveCount,jdbcType=BIGINT},
+            </if>
+            <if test="positiveCount35 != null">
+                #{positiveCount35,jdbcType=BIGINT},
+            </if>
+            <if test="workPositiveCount != null">
+                #{workPositiveCount,jdbcType=BIGINT},
+            </if>
+            <if test="techPositiveCount != null">
+                #{techPositiveCount,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="contactNumber != null">
+                #{contactNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="numberOfHousehold != null">
+                #{numberOfHousehold,jdbcType=BIGINT},
+            </if>
+            <if test="householdPopulation != null">
+                #{householdPopulation,jdbcType=BIGINT},
+            </if>
+            <if test="permanentPopulation != null">
+                #{permanentPopulation,jdbcType=BIGINT},
+            </if>
+            <if test="firstMasterName != null">
+                #{firstMasterName,jdbcType=VARCHAR},
+            </if>
+            <if test="firstMasterIdCard != null">
+                #{firstMasterIdCard,jdbcType=VARCHAR},
+            </if>
+            <if test="firstMasterHoldStartTime != null">
+                #{firstMasterHoldStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="firstMasterTermOfOffice != null">
+                #{firstMasterTermOfOffice,jdbcType=BIGINT},
+            </if>
+            <if test="ifSuperiorConnection != null">
+                #{ifSuperiorConnection,jdbcType=TINYINT},
+            </if>
+            <if test="ifFrontierEthnicArea != null">
+                #{ifFrontierEthnicArea,jdbcType=TINYINT},
+            </if>
+            <if test="workCount != null">
+                #{workCount,jdbcType=BIGINT},
+            </if>
+            <if test="ifHasTwoDbOneWy != null">
+                #{ifHasTwoDbOneWy,jdbcType=TINYINT},
+            </if>
+            <if test="ifBuildedUnion != null">
+                #{ifBuildedUnion,jdbcType=TINYINT},
+            </if>
+            <if test="unionPrincipalIsPartyMember != null">
+                #{unionPrincipalIsPartyMember,jdbcType=TINYINT},
+            </if>
+            <if test="ifBuildedGqt != null">
+                #{ifBuildedGqt,jdbcType=TINYINT},
+            </if>
+            <if test="gqtPrincipalIsPartyMember != null">
+                #{gqtPrincipalIsPartyMember,jdbcType=TINYINT},
+            </if>
+            <if test="ifBuildedWomenGroup != null">
+                #{ifBuildedWomenGroup,jdbcType=TINYINT},
+            </if>
+            <if test="womenGroupPrincipalIsPartyMember != null">
+                #{womenGroupPrincipalIsPartyMember,jdbcType=TINYINT},
+            </if>
+            <if test="naturalVillageCount != null">
+                #{naturalVillageCount,jdbcType=BIGINT},
+            </if>
+            <if test="groupAnnualIncome != null">
+                #{groupAnnualIncome,jdbcType=BIGINT},
+            </if>
+            <if test="ifBuildCardPoorVillage != null">
+                #{ifBuildCardPoorVillage,jdbcType=TINYINT},
+            </if>
+            <if test="ifBuildedVillageCommittee != null">
+                #{ifBuildedVillageCommittee,jdbcType=TINYINT},
+            </if>
+            <if test="structureVillageCount != null">
+                #{structureVillageCount,jdbcType=BIGINT},
+            </if>
+            <if test="communityVillageCount != null">
+                #{communityVillageCount,jdbcType=BIGINT},
+            </if>
+            <if test="lastYearVillagePerCapitaIncome != null">
+                #{lastYearVillagePerCapitaIncome,jdbcType=BIGINT},
+            </if>
+            <if test="lastYearAvgSocialWage != null">
+                #{lastYearAvgSocialWage,jdbcType=BIGINT},
+            </if>
+            <if test="unitPartyCount != null">
+                #{unitPartyCount,jdbcType=BIGINT},
+            </if>
+            <if test="legalPersonIsPartyMember != null">
+                #{legalPersonIsPartyMember,jdbcType=TINYINT},
+            </if>
+            <if test="unitLegalPerson != null">
+                #{unitLegalPerson,jdbcType=BIGINT},
+            </if>
+            <if test="unitPhone != null">
+                #{unitPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="ifLegalUnit != null">
+                #{ifLegalUnit,jdbcType=TINYINT},
+            </if>
+            <if test="unitRegisterType != null">
+                #{unitRegisterType,jdbcType=BIGINT},
+            </if>
+            <if test="socialOrgType != null">
+                #{socialOrgType,jdbcType=BIGINT},
+            </if>
+            <if test="causeUnitType != null">
+                #{causeUnitType,jdbcType=BIGINT},
+            </if>
+            <if test="organUnitType != null">
+                #{organUnitType,jdbcType=BIGINT},
+            </if>
+            <if test="partyBuidingStatus != null">
+                #{partyBuidingStatus,jdbcTyp=BIGINT},
+            </if>
+            <if test="partyMemberCount != null">
+                #{partyMemberCount,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbUnitInfo">
+        update tab_pb_unit_info
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="unitName != null">
+                unit_name = #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="unitCode != null">
+                unit_code = #{unitCode,jdbcType=VARCHAR},
+            </if>
+            <if test="belongRelation != null">
+                belong_relation = #{belongRelation,jdbcType=BIGINT},
+            </if>
+            <if test="unitProperty != null">
+                unit_property = #{unitProperty,jdbcType=BIGINT},
+            </if>
+            <if test="industry != null">
+                industry = #{industry,jdbcType=BIGINT},
+            </if>
+            <if test="economicType != null">
+                economic_type = #{economicType,jdbcType=BIGINT},
+            </if>
+            <if test="entScale != null">
+                ent_scale = #{entScale,jdbcType=BIGINT},
+            </if>
+            <if test="entType != null">
+                ent_type = #{entType,jdbcType=BIGINT},
+            </if>
+            <if test="unitAddress != null">
+                unit_address = #{unitAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="ifCreateService != null">
+                if_create_service = #{ifCreateService,jdbcType=TINYINT},
+            </if>
+            <if test="ifCreateVoluntTeam != null">
+                if_create_volunt_team = #{ifCreateVoluntTeam,jdbcType=TINYINT},
+            </if>
+            <if test="ifInstructionContact != null">
+                if_instruction_contact = #{ifInstructionContact,jdbcType=TINYINT},
+            </if>
+            <if test="instructorCount != null">
+                instructor_count = #{instructorCount,jdbcType=BIGINT},
+            </if>
+            <if test="ifReorganization != null">
+                if_reorganization = #{ifReorganization,jdbcType=TINYINT},
+            </if>
+            <if test="corpIsPartyMember != null">
+                corp_is_party_member = #{corpIsPartyMember,jdbcType=TINYINT},
+            </if>
+            <if test="corpAsGroupSecretary != null">
+                corp_as_group_secretary = #{corpAsGroupSecretary,jdbcType=TINYINT},
+            </if>
+            <if test="corpOrgnizeStatus != null">
+                corp_orgnize_status = #{corpOrgnizeStatus,jdbcType=BIGINT},
+            </if>
+            <if test="goverOrgnizeStatus != null">
+                gover_orgnize_status = #{goverOrgnizeStatus,jdbcType=BIGINT},
+            </if>
+            <if test="cityStreetType != null">
+                city_street_type = #{cityStreetType,jdbcType=BIGINT},
+            </if>
+            <if test="intermediaryType != null">
+                intermediary_type = #{intermediaryType,jdbcType=BIGINT},
+            </if>
+            <if test="positiveCount != null">
+                positive_count = #{positiveCount,jdbcType=BIGINT},
+            </if>
+            <if test="positiveCount35 != null">
+                positive_count_35 = #{positiveCount35,jdbcType=BIGINT},
+            </if>
+            <if test="workPositiveCount != null">
+                work_positive_count = #{workPositiveCount,jdbcType=BIGINT},
+            </if>
+            <if test="techPositiveCount != null">
+                tech_positive_count = #{techPositiveCount,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="contactNumber != null">
+                contact_number = #{contactNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="numberOfHousehold != null">
+                number_of_household = #{numberOfHousehold,jdbcType=BIGINT},
+            </if>
+            <if test="householdPopulation != null">
+                household_population = #{householdPopulation,jdbcType=BIGINT},
+            </if>
+            <if test="permanentPopulation != null">
+                permanent_population = #{permanentPopulation,jdbcType=BIGINT},
+            </if>
+            <if test="firstMasterName != null">
+                first_master_name = #{firstMasterName,jdbcType=VARCHAR},
+            </if>
+            <if test="firstMasterIdCard != null">
+                first_master_id_card = #{firstMasterIdCard,jdbcType=VARCHAR},
+            </if>
+            <if test="firstMasterHoldStartTime != null">
+                first_master_hold_start_time = #{firstMasterHoldStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="firstMasterTermOfOffice != null">
+                first_master_term_of_office = #{firstMasterTermOfOffice,jdbcType=BIGINT},
+            </if>
+            <if test="ifSuperiorConnection != null">
+                if_superior_connection = #{ifSuperiorConnection,jdbcType=TINYINT},
+            </if>
+            <if test="ifFrontierEthnicArea != null">
+                if_frontier_ethnic_area = #{ifFrontierEthnicArea,jdbcType=TINYINT},
+            </if>
+            <if test="workCount != null">
+                work_count = #{workCount,jdbcType=BIGINT},
+            </if>
+            <if test="ifHasTwoDbOneWy != null">
+                if_has_two_db_one_wy = #{ifHasTwoDbOneWy,jdbcType=TINYINT},
+            </if>
+            <if test="ifBuildedUnion != null">
+                if_builded_union = #{ifBuildedUnion,jdbcType=TINYINT},
+            </if>
+            <if test="unionPrincipalIsPartyMember != null">
+                union_principal_is_party_member = #{unionPrincipalIsPartyMember,jdbcType=TINYINT},
+            </if>
+            <if test="ifBuildedGqt != null">
+                if_builded_gqt = #{ifBuildedGqt,jdbcType=TINYINT},
+            </if>
+            <if test="gqtPrincipalIsPartyMember != null">
+                gqt_principal_is_party_member = #{gqtPrincipalIsPartyMember,jdbcType=TINYINT},
+            </if>
+            <if test="ifBuildedWomenGroup != null">
+                if_builded_women_group = #{ifBuildedWomenGroup,jdbcType=TINYINT},
+            </if>
+            <if test="womenGroupPrincipalIsPartyMember != null">
+                women_group_principal_is_party_member = #{womenGroupPrincipalIsPartyMember,jdbcType=TINYINT},
+            </if>
+            <if test="naturalVillageCount != null">
+                natural_village_count = #{naturalVillageCount,jdbcType=BIGINT},
+            </if>
+            <if test="groupAnnualIncome != null">
+                group_annual_income = #{groupAnnualIncome,jdbcType=BIGINT},
+            </if>
+            <if test="ifBuildCardPoorVillage != null">
+                if_build_card_poor_village = #{ifBuildCardPoorVillage,jdbcType=TINYINT},
+            </if>
+            <if test="ifBuildedVillageCommittee != null">
+                if_builded_village_committee = #{ifBuildedVillageCommittee,jdbcType=TINYINT},
+            </if>
+            <if test="structureVillageCount != null">
+                structure_village_count = #{structureVillageCount,jdbcType=BIGINT},
+            </if>
+            <if test="communityVillageCount != null">
+                community_village_count = #{communityVillageCount,jdbcType=BIGINT},
+            </if>
+            <if test="lastYearVillagePerCapitaIncome != null">
+                last_year_village_per_capita_income = #{lastYearVillagePerCapitaIncome,jdbcType=BIGINT},
+            </if>
+            <if test="lastYearAvgSocialWage != null">
+                last_year_avg_social_wage = #{lastYearAvgSocialWage,jdbcType=BIGINT},
+            </if>
+            <if test="unitPartyCount != null">
+                unit_party_count = #{unitPartyCount,jdbcType=BIGINT},
+            </if>
+            <if test="legalPersonIsPartyMember != null">
+                legal_person_is_party_member = #{legalPersonIsPartyMember,jdbcType=TINYINT},
+            </if>
+            <if test="unitLegalPerson != null">
+                unit_legal_person = #{unitLegalPerson,jdbcType=BIGINT},
+            </if>
+            <if test="unitPhone != null">
+                unit_phone = #{unitPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="ifLegalUnit != null">
+                if_legal_unit = #{ifLegalUnit,jdbcType=TINYINT},
+            </if>
+            <if test="unitRegisterType != null">
+                unit_register_type = #{unitRegisterType,jdbcType=BIGINT},
+            </if>
+            <if test="socialOrgType != null">
+                social_org_type = #{socialOrgType,jdbcType=BIGINT},
+            </if>
+            <if test="causeUnitType != null">
+                cause_unit_type = #{causeUnitType,jdbcType=BIGINT},
+            </if>
+            <if test="organUnitType != null">
+                organ_unit_type = #{organUnitType,jdbcType=BIGINT},
+            </if>
+            <if test="partyBuidingStatus != null">
+                party_buiding_status = #{partyBuidingStatus,jdbcType=BIGINT},
+            </if>
+            <if test="partyMemberCount != null">
+                party_member_count = #{partyMemberCount,jdbcType=BIGINT},
+            </if>
+        </set>
+        where unit_id = #{unitId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbUnitInfo">
+    update tab_pb_unit_info
+    set org_id = #{orgId,jdbcType=BIGINT},
+        unit_name = #{unitName,jdbcType=VARCHAR},
+        unit_code = #{unitCode,jdbcType=VARCHAR},
+        belong_relation = #{belongRelation,jdbcType=BIGINT},
+        unit_property = #{unitProperty,jdbcType=BIGINT},
+        industry = #{industry,jdbcType=BIGINT},
+        economic_type = #{economicType,jdbcType=BIGINT},
+        ent_scale = #{entScale,jdbcType=BIGINT},
+        ent_type = #{entType,jdbcType=BIGINT},
+        unit_address = #{unitAddress,jdbcType=VARCHAR},
+        if_create_service = #{ifCreateService,jdbcType=TINYINT},
+        if_create_volunt_team = #{ifCreateVoluntTeam,jdbcType=TINYINT},
+        if_instruction_contact = #{ifInstructionContact,jdbcType=TINYINT},
+        instructor_count = #{instructorCount,jdbcType=BIGINT},
+        if_reorganization = #{ifReorganization,jdbcType=TINYINT},
+        corp_is_party_member = #{corpIsPartyMember,jdbcType=TINYINT},
+        corp_as_group_secretary = #{corpAsGroupSecretary,jdbcType=TINYINT},
+        corp_orgnize_status = #{corpOrgnizeStatus,jdbcType=BIGINT},
+        gover_orgnize_status = #{goverOrgnizeStatus,jdbcType=BIGINT},
+        city_street_type = #{cityStreetType,jdbcType=BIGINT},
+        intermediary_type = #{intermediaryType,jdbcType=BIGINT},
+        positive_count = #{positiveCount,jdbcType=BIGINT},
+        positive_count_35 = #{positiveCount35,jdbcType=BIGINT},
+        work_positive_count = #{workPositiveCount,jdbcType=BIGINT},
+        tech_positive_count = #{techPositiveCount,jdbcType=BIGINT},
+        ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+        order_num = #{orderNum,jdbcType=BIGINT},
+        description = #{description,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_userid = #{createUserid,jdbcType=BIGINT},
+        create_username = #{createUsername,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+        update_userid = #{updateUserid,jdbcType=BIGINT},
+        update_username = #{updateUsername,jdbcType=VARCHAR},
+        version = #{version,jdbcType=BIGINT},
+        contact_number = #{contactNumber,jdbcType=VARCHAR},
+        number_of_household = #{numberOfHousehold,jdbcType=BIGINT},
+        household_population = #{householdPopulation,jdbcType=BIGINT},
+        permanent_population = #{permanentPopulation,jdbcType=BIGINT},
+        first_master_name = #{firstMasterName,jdbcType=VARCHAR},
+        first_master_id_card = #{firstMasterIdCard,jdbcType=VARCHAR},
+        first_master_hold_start_time = #{firstMasterHoldStartTime,jdbcType=TIMESTAMP},
+        first_master_term_of_office = #{firstMasterTermOfOffice,jdbcType=BIGINT},
+        if_superior_connection = #{ifSuperiorConnection,jdbcType=TINYINT},
+        if_frontier_ethnic_area = #{ifFrontierEthnicArea,jdbcType=TINYINT},
+        work_count = #{workCount,jdbcType=BIGINT},
+        if_has_two_db_one_wy = #{ifHasTwoDbOneWy,jdbcType=TINYINT},
+        if_builded_union = #{ifBuildedUnion,jdbcType=TINYINT},
+        union_principal_is_party_member = #{unionPrincipalIsPartyMember,jdbcType=TINYINT},
+        if_builded_gqt = #{ifBuildedGqt,jdbcType=TINYINT},
+        gqt_principal_is_party_member = #{gqtPrincipalIsPartyMember,jdbcType=TINYINT},
+        if_builded_women_group = #{ifBuildedWomenGroup,jdbcType=TINYINT},
+        women_group_principal_is_party_member = #{womenGroupPrincipalIsPartyMember,jdbcType=TINYINT},
+        natural_village_count = #{naturalVillageCount,jdbcType=BIGINT},
+        group_annual_income = #{groupAnnualIncome,jdbcType=BIGINT},
+        if_build_card_poor_village = #{ifBuildCardPoorVillage,jdbcType=TINYINT},
+        if_builded_village_committee = #{ifBuildedVillageCommittee,jdbcType=TINYINT},
+        structure_village_count = #{structureVillageCount,jdbcType=BIGINT},
+        community_village_count = #{communityVillageCount,jdbcType=BIGINT},
+        last_year_village_per_capita_income = #{lastYearVillagePerCapitaIncome,jdbcType=BIGINT},
+        last_year_avg_social_wage = #{lastYearAvgSocialWage,jdbcType=BIGINT},
+        unit_party_count = #{unitPartyCount,jdbcType=BIGINT},
+        legal_person_is_party_member = #{legalPersonIsPartyMember,jdbcType=TINYINT},
+        unit_legal_person = #{unitLegalPerson,jdbcType=BIGINT},
+        unit_phone = #{unitPhone,jdbcType=VARCHAR},
+        if_legal_unit = #{ifLegalUnit,jdbcType=TINYINT},
+        unit_register_type = #{unitRegisterType,jdbcType=BIGINT},
+        social_org_type = #{socialOrgType,jdbcType=BIGINT},
+        cause_unit_type = #{causeUnitType,jdbcType=BIGINT},
+        organ_unit_type = #{organUnitType,jdbcType=BIGINT},
+        party_buiding_status = #{partyBuidingStatus,jdbcType=BIGINT},
+        party_member_count = #{partyMemberCount,jdbcType=BIGINT}
+    where unit_id = #{unitId,jdbcType=BIGINT}
+  </update>
+
+    <!--根据组织ID查询-->
+    <select id="selectByOrgId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select * from tab_pb_unit_info where org_id = #{orgId} and del_flag = 0
+    </select>
+
+    <!--批量逻辑删除-->
+    <update id="batchLogicDeleteById" parameterType="java.util.List">
+        update tab_pb_unit_info set del_flag = 1 where unit_id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            ${item}
+        </foreach>
+    </update>
+
+    <select id="selectByUnitName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from tab_pb_unit_info
+        where del_flag = 0
+        <if test="unitName != null and unitName != ''">
+            AND unit_name like concat(concat('%',#{unitName,jdbcType=VARCHAR}),'%')
+        </if>
+    </select>
+</mapper>

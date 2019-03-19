@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbMemberAddListMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbMemberAddList">
+        <id column="member_add_id" jdbcType="BIGINT" property="memberAddId"/>
+        <result column="person_id" jdbcType="BIGINT" property="personId"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="in_type" jdbcType="BIGINT" property="inType"/>
+        <result column="from_org_id" jdbcType="BIGINT" property="fromOrgId"/>
+        <result column="from_org_code" jdbcType="VARCHAR" property="fromOrgCode"/>
+        <result column="from_org_name" jdbcType="VARCHAR" property="fromOrgName"/>
+        <result column="from_org_place" jdbcType="VARCHAR" property="fromOrgPlace"/>
+        <result column="add_reason" jdbcType="BIGINT" property="addReason"/>
+        <result column="old_identity" jdbcType="BIGINT" property="oldIdentity"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.yizheng.partybuilding.entity.TabPbMemberAddList">
+        <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    member_add_id, person_id, dept_id, real_name, add_time, in_type, from_org_id, from_org_code, 
+    from_org_name, from_org_place, add_reason, old_identity, ebl_flag, del_flag, order_num, 
+    description, create_time, create_userid, create_username, update_time, update_userid, 
+    update_username, version
+  </sql>
+    <sql id="Blob_Column_List">
+    comment
+  </sql>
+    <select id="selectByUserId" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        SELECT
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        FROM tab_pb_member_add_list WHERE person_id = #{userId,jdbcType=BIGINT} ORDER BY add_time DESC LIMIT 1
+    </select>
+    <select id="selectListByUserId" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        SELECT
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        FROM tab_pb_member_add_list WHERE person_id = #{userId,jdbcType=BIGINT} ORDER BY add_time DESC
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tab_pb_member_add_list
+        where member_add_id = #{memberAddId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_member_add_list
+    where member_add_id = #{memberAddId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbMemberAddList">
+    insert into tab_pb_member_add_list (member_add_id, person_id, dept_id, 
+      real_name, add_time, in_type, 
+      from_org_id, from_org_code, from_org_name, 
+      from_org_place, add_reason, old_identity, 
+      ebl_flag, del_flag, order_num, 
+      description, create_time, create_userid, 
+      create_username, update_time, update_userid, 
+      update_username, version, comment
+      )
+    values (#{memberAddId,jdbcType=BIGINT}, #{personId,jdbcType=BIGINT}, #{deptId,jdbcType=BIGINT}, 
+      #{realName,jdbcType=VARCHAR}, #{addTime,jdbcType=TIMESTAMP}, #{inType,jdbcType=BIGINT}, 
+      #{fromOrgId,jdbcType=BIGINT}, #{fromOrgCode,jdbcType=VARCHAR}, #{fromOrgName,jdbcType=VARCHAR}, 
+      #{fromOrgPlace,jdbcType=VARCHAR}, #{addReason,jdbcType=BIGINT}, #{oldIdentity,jdbcType=BIGINT}, 
+      #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, 
+      #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, 
+      #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, 
+      #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{comment,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbMemberAddList">
+        insert into tab_pb_member_add_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberAddId != null">
+                member_add_id,
+            </if>
+            <if test="personId != null">
+                person_id,
+            </if>
+            <if test="deptId != null">
+                dept_id,
+            </if>
+            <if test="realName != null">
+                real_name,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+            <if test="inType != null">
+                in_type,
+            </if>
+            <if test="fromOrgId != null">
+                from_org_id,
+            </if>
+            <if test="fromOrgCode != null">
+                from_org_code,
+            </if>
+            <if test="fromOrgName != null">
+                from_org_name,
+            </if>
+            <if test="fromOrgPlace != null">
+                from_org_place,
+            </if>
+            <if test="addReason != null">
+                add_reason,
+            </if>
+            <if test="oldIdentity != null">
+                old_identity,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="comment != null">
+                comment,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberAddId != null">
+                #{memberAddId,jdbcType=BIGINT},
+            </if>
+            <if test="personId != null">
+                #{personId,jdbcType=BIGINT},
+            </if>
+            <if test="deptId != null">
+                #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="realName != null">
+                #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="addTime != null">
+                #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="inType != null">
+                #{inType,jdbcType=BIGINT},
+            </if>
+            <if test="fromOrgId != null">
+                #{fromOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="fromOrgCode != null">
+                #{fromOrgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="fromOrgName != null">
+                #{fromOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="fromOrgPlace != null">
+                #{fromOrgPlace,jdbcType=VARCHAR},
+            </if>
+            <if test="addReason != null">
+                #{addReason,jdbcType=BIGINT},
+            </if>
+            <if test="oldIdentity != null">
+                #{oldIdentity,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="comment != null">
+                #{comment,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbMemberAddList">
+        update tab_pb_member_add_list
+        <set>
+            <if test="personId != null">
+                person_id = #{personId,jdbcType=BIGINT},
+            </if>
+            <if test="deptId != null">
+                dept_id = #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="realName != null">
+                real_name = #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="addTime != null">
+                add_time = #{addTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="inType != null">
+                in_type = #{inType,jdbcType=BIGINT},
+            </if>
+            <if test="fromOrgId != null">
+                from_org_id = #{fromOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="fromOrgCode != null">
+                from_org_code = #{fromOrgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="fromOrgName != null">
+                from_org_name = #{fromOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="fromOrgPlace != null">
+                from_org_place = #{fromOrgPlace,jdbcType=VARCHAR},
+            </if>
+            <if test="addReason != null">
+                add_reason = #{addReason,jdbcType=BIGINT},
+            </if>
+            <if test="oldIdentity != null">
+                old_identity = #{oldIdentity,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="comment != null">
+                comment = #{comment,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where member_add_id = #{memberAddId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbMemberAddList">
+    update tab_pb_member_add_list
+    set person_id = #{personId,jdbcType=BIGINT},
+      dept_id = #{deptId,jdbcType=BIGINT},
+      real_name = #{realName,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      in_type = #{inType,jdbcType=BIGINT},
+      from_org_id = #{fromOrgId,jdbcType=BIGINT},
+      from_org_code = #{fromOrgCode,jdbcType=VARCHAR},
+      from_org_name = #{fromOrgName,jdbcType=VARCHAR},
+      from_org_place = #{fromOrgPlace,jdbcType=VARCHAR},
+      add_reason = #{addReason,jdbcType=BIGINT},
+      old_identity = #{oldIdentity,jdbcType=BIGINT},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      comment = #{comment,jdbcType=LONGVARCHAR}
+    where member_add_id = #{memberAddId,jdbcType=BIGINT}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbMemberAddList">
+    update tab_pb_member_add_list
+    set person_id = #{personId,jdbcType=BIGINT},
+      dept_id = #{deptId,jdbcType=BIGINT},
+      real_name = #{realName,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      in_type = #{inType,jdbcType=BIGINT},
+      from_org_id = #{fromOrgId,jdbcType=BIGINT},
+      from_org_code = #{fromOrgCode,jdbcType=VARCHAR},
+      from_org_name = #{fromOrgName,jdbcType=VARCHAR},
+      from_org_place = #{fromOrgPlace,jdbcType=VARCHAR},
+      add_reason = #{addReason,jdbcType=BIGINT},
+      old_identity = #{oldIdentity,jdbcType=BIGINT},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+    where member_add_id = #{memberAddId,jdbcType=BIGINT}
+  </update>
+</mapper>

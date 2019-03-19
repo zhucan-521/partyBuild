@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbGrantCommitteeMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbGrantCommittee">
+        <id column="grant_committee_id" jdbcType="BIGINT" property="grantCommitteeId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="current" jdbcType="TINYINT" property="current"/>
+        <result column="session_year" jdbcType="BIGINT" property="sessionYear"/>
+        <result column="change_date" jdbcType="TIMESTAMP" property="changeDate"/>
+        <result column="during_year" jdbcType="BIGINT" property="duringYear"/>
+        <result column="vote_type" jdbcType="BIGINT" property="voteType"/>
+        <result column="due_count" jdbcType="BIGINT" property="dueCount"/>
+        <result column="fact_count" jdbcType="BIGINT" property="factCount"/>
+        <result column="vote_count" jdbcType="BIGINT" property="voteCount"/>
+        <result column="valid_vote_count" jdbcType="BIGINT" property="validVoteCount"/>
+        <result column="elected_type" jdbcType="BIGINT" property="electedType"/>
+        <result column="elected_time" jdbcType="TIMESTAMP" property="electedTime"/>
+        <result column="comm_mem_num" jdbcType="BIGINT" property="commMemNum"/>
+        <result column="comm_num_parttime" jdbcType="BIGINT" property="commNumParttime"/>
+        <result column="parttime_comm_num" jdbcType="BIGINT" property="parttimeCommNum"/>
+        <result column="standing_mem_num" jdbcType="BIGINT" property="standingMemNum"/>
+        <result column="back_mem_num" jdbcType="BIGINT" property="backMemNum"/>
+        <result column="founded_date" jdbcType="TIMESTAMP" property="foundedDate"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.yizheng.partybuilding.entity.TabPbGrantCommittee">
+        <result column="vote_status" jdbcType="VARCHAR" property="voteStatus"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    grant_committee_id, org_id, current, session_year, change_date, during_year, vote_type,
+    due_count, fact_count, vote_count, valid_vote_count, elected_type, elected_time, 
+    comm_mem_num, comm_num_parttime, parttime_comm_num, standing_mem_num, back_mem_num, 
+    founded_date, ebl_flag, del_flag, order_num, description, create_time, create_userid, 
+    create_username, update_time, update_userid, update_username, version
+  </sql>
+
+    <sql id="Blob_Column_List">
+    vote_status
+  </sql>
+
+
+    <sql id="column_dept">
+        <!--组织范围  0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <if test="orgRange != null and orgRange != ''">
+            <choose>
+                <when test="orgRange == 1">
+                    AND (d.dept_id = #{orgId} OR d.parent_id = #{orgId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{orgId}, d.full_path)
+                </when>
+            </choose>
+        </if>
+        <if test="orgRange == null and orgId != null">
+            AND d.dept_id = #{orgId}
+        </if>
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        SELECT
+        A.*,
+        d.name AS org_name
+        FROM
+            tab_pb_grant_committee A INNER JOIN sys_dept d ON A.org_id=d.dept_id
+        WHERE
+            A.del_flag = '0'
+            AND A.grant_committee_id = #{grantCommitteeId,jdbcType=BIGINT}
+    </select>
+
+    <insert id="insertSelectiveAndReturnPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbGrantCommittee"
+            useGeneratedKeys="true" keyProperty="grantCommitteeId">
+        insert into tab_pb_grant_committee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="current != null">
+                current,
+            </if>
+            <if test="sessionYear != null">
+                session_year,
+            </if>
+            <if test="changeDate != null">
+                change_date,
+            </if>
+            <if test="duringYear != null">
+                during_year,
+            </if>
+            <if test="voteType != null">
+                vote_type,
+            </if>
+            <if test="dueCount != null">
+                due_count,
+            </if>
+            <if test="factCount != null">
+                fact_count,
+            </if>
+            <if test="voteCount != null">
+                vote_count,
+            </if>
+            <if test="validVoteCount != null">
+                valid_vote_count,
+            </if>
+            <if test="electedType != null">
+                elected_type,
+            </if>
+            <if test="electedTime != null">
+                elected_time,
+            </if>
+            <if test="commMemNum != null">
+                comm_mem_num,
+            </if>
+            <if test="commNumParttime != null">
+                comm_num_parttime,
+            </if>
+            <if test="parttimeCommNum != null">
+                parttime_comm_num,
+            </if>
+            <if test="standingMemNum != null">
+                standing_mem_num,
+            </if>
+            <if test="backMemNum != null">
+                back_mem_num,
+            </if>
+            <if test="foundedDate != null">
+                founded_date,
+            </if>
+
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="voteStatus != null">
+                vote_status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orgId != null">
+                #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="current != null">
+                #{current,jdbcType=TINYINT},
+            </if>
+            <if test="sessionYear != null">
+                #{sessionYear,jdbcType=BIGINT},
+            </if>
+            <if test="changeDate != null">
+                #{changeDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="duringYear != null">
+                #{duringYear,jdbcType=BIGINT},
+            </if>
+            <if test="voteType != null">
+                #{voteType,jdbcType=BIGINT},
+            </if>
+            <if test="dueCount != null">
+                #{dueCount,jdbcType=BIGINT},
+            </if>
+            <if test="factCount != null">
+                #{factCount,jdbcType=BIGINT},
+            </if>
+            <if test="voteCount != null">
+                #{voteCount,jdbcType=BIGINT},
+            </if>
+            <if test="validVoteCount != null">
+                #{validVoteCount,jdbcType=BIGINT},
+            </if>
+            <if test="electedType != null">
+                #{electedType,jdbcType=BIGINT},
+            </if>
+            <if test="electedTime != null">
+                #{electedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="commMemNum != null">
+                #{commMemNum,jdbcType=BIGINT},
+            </if>
+            <if test="commNumParttime != null">
+                #{commNumParttime,jdbcType=BIGINT},
+            </if>
+            <if test="parttimeCommNum != null">
+                #{parttimeCommNum,jdbcType=BIGINT},
+            </if>
+            <if test="standingMemNum != null">
+                #{standingMemNum,jdbcType=BIGINT},
+            </if>
+            <if test="backMemNum != null">
+                #{backMemNum,jdbcType=BIGINT},
+            </if>
+            <if test="foundedDate != null">
+                #{foundedDate,jdbcType=TIMESTAMP},
+            </if>
+
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="voteStatus != null">
+                #{voteStatus,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbGrantCommittee">
+        update tab_pb_grant_committee
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="current != null">
+                current = #{current,jdbcType=TINYINT},
+            </if>
+            <if test="sessionYear != null">
+                session_year = #{sessionYear,jdbcType=BIGINT},
+            </if>
+            <if test="changeDate != null">
+                change_date = #{changeDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="duringYear != null">
+                during_year = #{duringYear,jdbcType=BIGINT},
+            </if>
+            <if test="voteType != null">
+                vote_type = #{voteType,jdbcType=BIGINT},
+            </if>
+            <if test="dueCount != null">
+                due_count = #{dueCount,jdbcType=BIGINT},
+            </if>
+            <if test="factCount != null">
+                fact_count = #{factCount,jdbcType=BIGINT},
+            </if>
+            <if test="voteCount != null">
+                vote_count = #{voteCount,jdbcType=BIGINT},
+            </if>
+            <if test="validVoteCount != null">
+                valid_vote_count = #{validVoteCount,jdbcType=BIGINT},
+            </if>
+            <if test="electedType != null">
+                elected_type = #{electedType,jdbcType=BIGINT},
+            </if>
+            <if test="electedTime != null">
+                elected_time = #{electedTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="commMemNum != null">
+                comm_mem_num = #{commMemNum,jdbcType=BIGINT},
+            </if>
+            <if test="commNumParttime != null">
+                comm_num_parttime = #{commNumParttime,jdbcType=BIGINT},
+            </if>
+            <if test="parttimeCommNum != null">
+                parttime_comm_num = #{parttimeCommNum,jdbcType=BIGINT},
+            </if>
+            <if test="standingMemNum != null">
+                standing_mem_num = #{standingMemNum,jdbcType=BIGINT},
+            </if>
+            <if test="backMemNum != null">
+                back_mem_num = #{backMemNum,jdbcType=BIGINT},
+            </if>
+            <if test="foundedDate != null">
+                founded_date = #{foundedDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="voteStatus != null">
+                vote_status = #{voteStatus,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where grant_committee_id = #{grantCommitteeId,jdbcType=BIGINT}
+    </update>
+
+
+    <select id="selectByOrgId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT * FROM tab_pb_grant_committee WHERE del_flag='0' and org_id= #{orgId,jdbcType=BIGINT}
+    </select>
+
+
+    <select id="select" resultMap="ResultMapWithBLOBs">
+        SELECT
+        A.*,
+        d.name as  org_name
+        FROM
+        tab_pb_grant_committee A
+        LEFT JOIN tab_pb_grant_committe_member B ON A.grant_committee_id = B.grant_committee_id
+        INNER JOIN sys_dept d ON A.org_id = d.dept_id
+
+        WHERE
+        A.del_flag = '0'
+        <if test="(name != null and name != '') or (positiveName != null and positiveName !='')">
+            AND B.del_flag = '0'
+        </if>
+
+        <include refid="column_dept"/>
+
+        <if test="name != null and name != ''">
+            AND B.user_id IN (SELECT user_id FROM sys_user WHERE realname LIKE CONCAT('%',#{name},'%'))
+        </if>
+
+        <if test="positiveName != null and positiveName !=''  ">
+            AND B.positive_name = #{positiveName}
+        </if>
+        GROUP BY
+        B.grant_committee_id
+    </select>
+
+</mapper>

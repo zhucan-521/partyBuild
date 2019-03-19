@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbMsgUpInfoMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbMsgUpInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="up_type" jdbcType="VARCHAR" property="upType"/>
+        <result column="up_dept_id" jdbcType="BIGINT" property="upDeptId"/>
+        <result column="up_dept_name" jdbcType="VARCHAR" property="upDeptName"/>
+        <result column="up_user_id" jdbcType="BIGINT" property="upUserId"/>
+        <result column="up_username" jdbcType="VARCHAR" property="upUsername"/>
+        <result column="recevie_dept_id" jdbcType="BIGINT" property="recevieDeptId"/>
+        <result column="recevie_dept_name" jdbcType="VARCHAR" property="recevieDeptName"/>
+        <result column="recevie_user_id" jdbcType="BIGINT" property="recevieUserId"/>
+        <result column="recevie_username" jdbcType="VARCHAR" property="recevieUsername"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="up_time" jdbcType="TIMESTAMP" property="upTime"/>
+        <result column="title_label" jdbcType="VARCHAR" property="titleLabel"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="upTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="audit_dept_id" jdbcType="BIGINT" property="auditDeptId"/>
+        <result column="audit_dept_name" jdbcType="VARCHAR" property="auditDeptName"/>
+        <result column="audit_username" jdbcType="VARCHAR" property="auditUsername"/>
+        <result column="audit_user_id" jdbcType="BIGINT" property="auditUserId"/>
+        <result column="audit_time" jdbcType="TIMESTAMP" property="auditTime"/>
+        <result column="audit_comment" jdbcType="VARCHAR" property="auditComment"/>
+        <result column="audit_assess" jdbcType="BIGINT" property="auditAssess"/>
+        <result column="real_dept_name" jdbcType="VARCHAR" property="realDeptName"/>
+        <result column="real_dept_id" jdbcType="BIGINT" property="realDeptId"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbMsgUpInfo">
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+    <resultMap extends="ResultMapWithBLOBs" id="MsgUpInfoDtoResultMap" type="com.yizheng.partybuilding.dto.TabPbMsgUpInfoDto">
+    </resultMap>
+   <resultMap id="MsgUpInfoDtoResultMapWithAbout" extends="MsgUpInfoDtoResultMap" type="com.yizheng.partybuilding.dto.TabPbMsgUpInfoDto">
+       <!--关联附件数据-->
+       <association property="docAttachments" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=id,fileTypeLabel=file_type_doc, attachmentType=attachment_type}" />
+       <association property="imgAttachments" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=id,fileTypeLabel=file_type_img, attachmentType=attachment_type}" />
+       <association property="videoAttachments" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=id,fileTypeLabel=file_type_video, attachmentType=attachment_type}" />
+   </resultMap>
+    <resultMap id="selectBydeptIdMap" type="com.yizheng.partybuilding.system.entity.SysUser">
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, up_type, up_dept_id, up_dept_name, up_user_id, up_username, recevie_dept_id, 
+    recevie_dept_name, recevie_user_id, recevie_username, title, up_time, title_label, 
+    del_flag, create_time, create_userid, create_username, update_time, update_userid, 
+    update_username
+  </sql>
+    <sql id="Blob_Column_List">
+    content
+   </sql>
+
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tab_pb_msg_up_info
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_msg_up_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbMsgUpInfo">
+    insert into tab_pb_msg_up_info (id, up_type, up_dept_id, 
+      up_dept_name, up_user_id, up_username, 
+      recevie_dept_id, recevie_dept_name, recevie_user_id, 
+      recevie_username, title, up_time, 
+      title_label, del_flag, create_time, 
+      create_userid, create_username, update_time, 
+      update_userid, update_username, content
+      )
+    values (#{id,jdbcType=BIGINT}, #{upType,jdbcType=VARCHAR}, #{upDeptId,jdbcType=BIGINT}, 
+      #{upDeptName,jdbcType=VARCHAR}, #{upUserId,jdbcType=BIGINT}, #{upUsername,jdbcType=VARCHAR}, 
+      #{recevieDeptId,jdbcType=BIGINT}, #{recevieDeptName,jdbcType=VARCHAR}, #{recevieUserId,jdbcType=BIGINT}, 
+      #{recevieUsername,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{upTime,jdbcType=TIMESTAMP}, 
+      #{titleLabel,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective"   useGeneratedKeys="true" keyProperty="id" parameterType="com.yizheng.partybuilding.entity.TabPbMsgUpInfo">
+        insert into tab_pb_msg_up_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="upType != null">
+                up_type,
+            </if>
+            <if test="upDeptId != null">
+                up_dept_id,
+            </if>
+            <if test="upDeptName != null">
+                up_dept_name,
+            </if>
+            <if test="upUserId != null">
+                up_user_id,
+            </if>
+            <if test="upUsername != null">
+                up_username,
+            </if>
+            <if test="recevieDeptId != null">
+                recevie_dept_id,
+            </if>
+            <if test="recevieDeptName != null">
+                recevie_dept_name,
+            </if>
+            <if test="recevieUserId != null">
+                recevie_user_id,
+            </if>
+            <if test="recevieUsername != null">
+                recevie_username,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="upTime != null">
+                up_time,
+            </if>
+            <if test="titleLabel != null">
+                title_label,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="auditDeptId != null">
+                audit_dept_id,
+            </if>
+            <if test="auditDeptName != null">
+                audit_dept_name,
+            </if>
+            <if test="auditUserId != null">
+                audit_user_id,
+            </if>
+            <if test="auditUsername != null">
+                audit_username,
+            </if>
+            <if test="auditTime  != null">
+                audit_time,
+            </if>
+            <if test="auditComment != null">
+                audit_comment,
+            </if>
+            <if test="auditAssess != null">
+                audit_assess,
+            </if>
+            <if test="realDeptName != null">
+                real_dept_name,
+            </if>
+            <if test="realDeptId != null">
+                real_dept_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="upType != null">
+                #{upType,jdbcType=VARCHAR},
+            </if>
+            <if test="upDeptId != null">
+                #{upDeptId,jdbcType=BIGINT},
+            </if>
+            <if test="upDeptName != null">
+                #{upDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="upUserId != null">
+                #{upUserId,jdbcType=BIGINT},
+            </if>
+            <if test="upUsername != null">
+                #{upUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="recevieDeptId != null">
+                #{recevieDeptId,jdbcType=BIGINT},
+            </if>
+            <if test="recevieDeptName != null">
+                #{recevieDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="recevieUserId != null">
+                #{recevieUserId,jdbcType=BIGINT},
+            </if>
+            <if test="recevieUsername != null">
+                #{recevieUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="upTime != null">
+                #{upTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="titleLabel != null">
+                #{titleLabel,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="auditDeptId != null">
+                #{auditDeptId,jdbcType=BIGINT},
+            </if>
+            <if test="auditDeptName != null">
+                #{auditDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditUserId != null">
+                #{auditUserId,jdbcType=BIGINT},
+            </if>
+            <if test="auditUsername != null">
+                #{auditUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="auditTime  != null">
+                #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auditComment != null">
+                #{auditComment,jdbcType=VARCHAR},
+            </if>
+            <if test="auditAssess != null">
+                #{auditAssess,jdbcType=BIGINT},
+            </if>
+            <if test="realDeptName != null">
+                #{realDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="realDeptId != null">
+                #{realDeptId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbMsgUpInfo">
+        update tab_pb_msg_up_info
+        <set>
+            <if test="upType != null">
+                up_type = #{upType,jdbcType=VARCHAR},
+            </if>
+            <if test="upDeptId != null">
+                up_dept_id = #{upDeptId,jdbcType=BIGINT},
+            </if>
+            <if test="upDeptName != null">
+                up_dept_name = #{upDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="upUserId != null">
+                up_user_id = #{upUserId,jdbcType=BIGINT},
+            </if>
+            <if test="upUsername != null">
+                up_username = #{upUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="recevieDeptId != null">
+                recevie_dept_id = #{recevieDeptId,jdbcType=BIGINT},
+            </if>
+            <if test="recevieDeptName != null">
+                recevie_dept_name = #{recevieDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="recevieUserId != null">
+                recevie_user_id = #{recevieUserId,jdbcType=BIGINT},
+            </if>
+            <if test="recevieUsername != null">
+                recevie_username = #{recevieUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="upTime != null">
+                up_time = #{upTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="titleLabel != null">
+                title_label = #{titleLabel,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="auditDeptId != null">
+                audit_dept_id = #{auditDeptId,jdbcType=BIGINT},
+            </if>
+            <if test="auditDeptName != null">
+                audit_dept_name = #{auditDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="auditUserId != null">
+                audit_user_id = #{auditUserId,jdbcType=BIGINT},
+            </if>
+            <if test="auditUsername != null">
+                audit_username =  #{auditUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="auditTime  != null">
+                audit_time =  #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auditComment != null">
+                audit_comment =  #{auditComment,jdbcType=VARCHAR},
+            </if>
+            <if test="auditAssess != null">
+                audit_assess = #{auditAssess,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbMsgUpInfo">
+    update tab_pb_msg_up_info
+    set up_type = #{upType,jdbcType=VARCHAR},
+      up_dept_id = #{upDeptId,jdbcType=BIGINT},
+      up_dept_name = #{upDeptName,jdbcType=VARCHAR},
+      up_user_id = #{upUserId,jdbcType=BIGINT},
+      up_username = #{upUsername,jdbcType=VARCHAR},
+      recevie_dept_id = #{recevieDeptId,jdbcType=BIGINT},
+      recevie_dept_name = #{recevieDeptName,jdbcType=VARCHAR},
+      recevie_user_id = #{recevieUserId,jdbcType=BIGINT},
+      recevie_username = #{recevieUsername,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},3
+      up_time = #{upTime,jdbcType=TIMESTAMP},
+      title_label = #{titleLabel,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbMsgUpInfo">
+    update tab_pb_msg_up_info
+    set up_type = #{upType,jdbcType=VARCHAR},
+      up_dept_id = #{upDeptId,jdbcType=BIGINT},
+      up_dept_name = #{upDeptName,jdbcType=VARCHAR},
+      up_user_id = #{upUserId,jdbcType=BIGINT},
+      up_username = #{upUsername,jdbcType=VARCHAR},
+      recevie_dept_id = #{recevieDeptId,jdbcType=BIGINT},
+      recevie_dept_name = #{recevieDeptName,jdbcType=VARCHAR},
+      recevie_user_id = #{recevieUserId,jdbcType=BIGINT},
+      recevie_username = #{recevieUsername,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      up_time = #{upTime,jdbcType=TIMESTAMP},
+      title_label = #{titleLabel,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <!--根据组织Id获取专干党员-->
+    <select id="selectBydeptId"  parameterType="Long" resultMap="selectBydeptIdMap">
+        select
+        u.user_id,
+        u.realname as username,
+        u.dept_id,
+        t.left_time,
+        t.arrive_time
+        from
+          (select
+            *
+            from
+            tab_pb_spcial_worker
+            where
+            manage_org_id =#{deptId}
+            ORDER BY
+            tab_pb_spcial_worker.arrive_time
+            DESC
+            limit 1)t
+        LEFT JOIN
+        sys_user u on u.user_id=t.user_id
+        where
+        t.del_flag = 0
+        and
+        u.del_flag=0
+        and
+        (IFNULL(left_time,0) &lt;= arrive_time)
+        and
+        t.del_flag = 0
+        and
+        u.del_flag=0
+    </select>
+
+    <!--条件查询上报信息报送列表-->
+    <select id="selectActive" parameterType="com.yizheng.partybuilding.dto.TabPbMsgUpInfoDto" resultMap="MsgUpInfoDtoResultMap">
+        SELECT
+        mup.*,
+        ifnull(t.video_num, 0) videoNum,
+        ifnull(t.img_num, 0) imgNum,
+        ifnull(t.doc_num, 0) docNum
+        FROM
+        tab_pb_msg_up_info mup
+        LEFT JOIN sys_dept d on d.dept_id=mup.real_dept_id
+        LEFT JOIN view_attachment_count t on mup.id = t.host_id and t.attachment_type = 40
+        <where>
+            mup.del_flag = 0
+            <if test="id !=null and  ''!=id">
+                and mup.id=#{id}
+            </if>
+            <if test="upTime !=null">
+                and  mup.up_time  between #{upTime} and #{upTimeOver}
+            </if>
+            <if test="titleLabel !=null and  ''!=titleLabel">
+                and mup.title_label=#{titleLabel}
+            </if>
+            <if test="recevieDeptId !=null and  ''!=recevieDeptId">
+                and mup.recevie_dept_id=#{recevieDeptId}
+            </if>
+            <if test="upDeptId !=null and  ''!=upDeptId">
+                and mup.up_dept_name=#{upDeptId}
+            </if>
+            <if test="orgRange != null and orgRange != '' ">
+                <choose>
+                    <when test="orgRange == 1">
+                        AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                    </when>
+                    <when test="orgRange == 2">
+                        AND find_in_set(#{rangeDeptId}, d.full_path)
+                    </when>
+                </choose>
+            </if>
+            <if test="orgRange == null or orgRange.toString() == ''">
+                AND d.dept_id = #{rangeDeptId}
+            </if>
+        </where>
+        order by
+        mup.id
+        desc
+    </select>
+
+    <!--条件查询接收信息报送列表-->
+    <select id="selectActiveRec" parameterType="com.yizheng.partybuilding.dto.TabPbMsgUpInfoDto" resultMap="MsgUpInfoDtoResultMap">
+        SELECT
+        mup.*,
+        ifnull(t.video_num, 0) videoNum,
+        ifnull(t.img_num, 0) imgNum,
+        ifnull(t.doc_num, 0) docNum
+        FROM
+        tab_pb_msg_up_info mup
+        LEFT JOIN sys_dept d  on d.dept_id=mup.recevie_dept_id
+        LEFT JOIN view_attachment_count t on mup.id = t.host_id and t.attachment_type = 40
+        <where>
+            mup.del_flag = 0 
+            <if test="id !=null and  ''!=id">
+                and mup.id=#{id}
+            </if>
+            <if test="upTime !=null">
+                and  mup.up_time  between #{upTime} and #{upTimeOver}
+            </if>
+            <if test="titleLabel !=null and  ''!=titleLabel">
+                and mup.title_label=#{titleLabel}
+            </if>
+            <if test="recevieDeptId !=null and  ''!=recevieDeptId">
+                and mup.recevie_dept_id=#{recevieDeptId}
+            </if>
+            <if test="upDeptId !=null and  ''!=upDeptId">
+                and mup.up_dept_name=#{upDeptId}
+            </if>
+            <if test="orgRange != null and orgRange != '' ">
+                <choose>
+                    <when test="orgRange == 1">
+                        AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                    </when>
+                    <when test="orgRange == 2">
+                        AND find_in_set(#{rangeDeptId}, d.full_path)
+                    </when>
+                </choose>
+            </if>
+            <if test="orgRange == null or orgRange.toString() == ''">
+                AND d.dept_id = #{rangeDeptId}
+            </if>
+            order by
+            mup.id
+            desc
+        </where>
+    </select>
+
+    <!--根据id查询详情包含相关信息-->
+    <select id="selectWithAboutById" parameterType="java.lang.Long" resultMap="MsgUpInfoDtoResultMapWithAbout">
+        SELECT
+        '40' as attachment_type,
+        'DOCUMENT' as file_type_doc,
+        'IMAGE' as file_type_img,
+        'VIDEO' as file_type_video,
+        mup.*
+        FROM tab_pb_msg_up_info mup
+        WHERE mup.id = #{id} AND mup.del_flag = 0
+    </select>
+
+</mapper>

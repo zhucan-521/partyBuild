@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.SysDeptUpgradeTempMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.SysDeptUpgradeTemp">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="upgrade_dept_name" jdbcType="VARCHAR" property="upgradeDeptName"/>
+        <result column="upgrade_short_name" jdbcType="VARCHAR" property="upgradeShortName"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="approve_org_name" jdbcType="VARCHAR" property="approveOrgName"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.yizheng.partybuilding.entity.SysDeptUpgradeTemp">
+        <result column="dept_branchs" jdbcType="LONGVARCHAR" property="deptBranchs"/>
+    </resultMap>
+    <resultMap extends="ResultMapWithBLOBs" id="orgUpgradeResultMap" type="com.yizheng.partybuilding.dto.OrganizationUpgradeAndChangeDto">
+        <result column="change_type" jdbcType="BIGINT" property="changeType"/>
+        <result column="change_date" jdbcType="TIMESTAMP" property="changeDate"/>
+        <result column="file_number" jdbcType="VARCHAR" property="fileNumber"/>
+        <result column="change_reason" jdbcType="LONGVARCHAR" property="changeReason"/>
+        <!--关联附件数据-->
+        <association property="tabPbAttachmentList" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                     column="{hostId=id,attachmentType=attachment_type}" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, dept_id, dept_name, upgrade_dept_name, upgrade_short_name, del_flag, create_time, 
+    create_userid, create_username, update_time, update_userid, update_username,approve_org_name
+  </sql>
+    <sql id="Blob_Column_List">
+    dept_branchs
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from sys_dept_upgrade_temp
+        where id = #{id,jdbcType=BIGINT}
+        AND del_flag = 0
+    </select>
+
+    <select id="selectByDeptId" parameterType="java.lang.Long" resultMap="orgUpgradeResultMap">
+        select
+        '51' as attachment_type,
+        up.*,
+        ch.change_type,
+        ch.change_date,
+        ch.file_number,
+        ch.change_reason
+        from sys_dept_upgrade_temp up
+        LEFT JOIN tab_pb_orgnize_change ch ON up.dept_id = ch.dept_id AND ch.change_type = 59424 AND ch.del_flag = 0
+        where up.dept_id = #{deptId,jdbcType=BIGINT}
+        AND up.del_flag = 0
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_dept_upgrade_temp
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.SysDeptUpgradeTemp">
+    insert into sys_dept_upgrade_temp (id, dept_id, dept_name, 
+      upgrade_dept_name, upgrade_short_name, del_flag, 
+      create_time, create_userid, create_username, 
+      update_time, update_userid, update_username,approve_org_name,
+      dept_branchs)
+    values (#{id,jdbcType=BIGINT}, #{deptId,jdbcType=BIGINT}, #{deptName,jdbcType=VARCHAR}, 
+      #{upgradeDeptName,jdbcType=VARCHAR}, #{upgradeShortName,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
+      #{approveOrgName,jdbcType=VARCHAR},#{deptBranchs,jdbcType=LONGVARCHAR})
+  </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.yizheng.partybuilding.entity.SysDeptUpgradeTemp">
+        insert into sys_dept_upgrade_temp
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="deptId != null">
+                dept_id,
+            </if>
+            <if test="deptName != null">
+                dept_name,
+            </if>
+            <if test="upgradeDeptName != null">
+                upgrade_dept_name,
+            </if>
+            <if test="upgradeShortName != null">
+                upgrade_short_name,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="deptBranchs != null">
+                dept_branchs,
+            </if>
+            <if test="approveOrgName != null">
+                approve_org_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="deptId != null">
+                #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="deptName != null">
+                #{deptName,jdbcType=VARCHAR},
+            </if>
+            <if test="upgradeDeptName != null">
+                #{upgradeDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="upgradeShortName != null">
+                #{upgradeShortName,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="deptBranchs != null">
+                #{deptBranchs,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="approveOrgName != null">
+                #{approveOrgName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.SysDeptUpgradeTemp">
+        update sys_dept_upgrade_temp
+        <set>
+            <if test="deptId != null">
+                dept_id = #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="deptName != null">
+                dept_name = #{deptName,jdbcType=VARCHAR},
+            </if>
+            <if test="upgradeDeptName != null">
+                upgrade_dept_name = #{upgradeDeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="upgradeShortName != null">
+                upgrade_short_name = #{upgradeShortName,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="deptBranchs != null">
+                dept_branchs = #{deptBranchs,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="approveOrgName != null">
+                approve_org_name = #{approveOrgName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.SysDeptUpgradeTemp">
+    update sys_dept_upgrade_temp
+    set dept_id = #{deptId,jdbcType=BIGINT},
+      dept_name = #{deptName,jdbcType=VARCHAR},
+      upgrade_dept_name = #{upgradeDeptName,jdbcType=VARCHAR},
+      upgrade_short_name = #{upgradeShortName,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      approveOrgName = #{approveOrgName,jdbcType=VARCHAR},
+      dept_branchs = #{deptBranchs,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.SysDeptUpgradeTemp">
+    update sys_dept_upgrade_temp
+    set dept_id = #{deptId,jdbcType=BIGINT},
+      dept_name = #{deptName,jdbcType=VARCHAR},
+      upgrade_dept_name = #{upgradeDeptName,jdbcType=VARCHAR},
+      upgrade_short_name = #{upgradeShortName,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      approveOrgName = #{approveOrgName,jdbcType=VARCHAR},
+      update_username = #{updateUsername,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

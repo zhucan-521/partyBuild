@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.DataAnalysisMapper">
+
+    <!--基础统计分析ResultMap-->
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.dto.BaseDataAnalysisDto">
+        <result column="label" jdbcType="VARCHAR" property="label"/>
+        <result column="datas" jdbcType="BIGINT" property="datas"/>
+    </resultMap>
+
+    <!--两个值的统计分析ResultMap-->
+    <resultMap id="TwoValueResultMap" type="com.yizheng.partybuilding.dto.TwoValueDataAnalysisDto">
+        <result column="label" jdbcType="VARCHAR" property="label"/>
+        <result column="leftValue" jdbcType="BIGINT" property="leftValue"/>
+        <result column="rightValue" jdbcType="BIGINT" property="rightValue"/>
+    </resultMap>
+
+    <!--党员数量及发展趋势ResultMap-->
+    <resultMap id="PartyMemberNumResultMap" type="com.yizheng.partybuilding.dto.PartyMemberNumDataAnalysisDto">
+        <result column="count" jdbcType="BIGINT" property="count"/>
+        <result column="rate" jdbcType="DOUBLE" property="rate"/>
+        <collection property="datas"
+                    select="com.yizheng.partybuilding.repository.DataAnalysisMapper.countPartyMemberNumByAreaCodeAndMonthSubSelect"
+                    column="areaCode=area_code"/>
+    </resultMap>
+
+    <!--根据年龄统计领导班子成员-->
+    <select id="countLeadTeamMemberNumByAge" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+            ageRange.label,
+            ifnull( tt.datas, 0 ) AS datas
+        FROM
+            view_birth_ageRange ageRange
+            LEFT JOIN (
+                SELECT
+                CASE WHEN age BETWEEN 30 AND 35 THEN 1
+                     WHEN age BETWEEN 36 AND 40 THEN 2
+                     WHEN age BETWEEN 41 AND 45 THEN 3
+                     WHEN age BETWEEN 46 AND 50 THEN 4
+                     WHEN age BETWEEN 51 AND 55 THEN 5 ELSE 6 END AS ageRange,
+                     count( age ) AS datas
+                FROM
+                    (
+                    SELECT
+                        ROUND( DATEDIFF( CURDATE( ), u.birthday ) / 365.2422 ) AS age
+                    FROM
+                        tab_pb_lead_team lt
+                        LEFT JOIN tab_pb_lead_team_member ltm ON lt.lead_team_id = ltm.lead_team_id
+                        INNER JOIN sys_user u ON ltm.user_id = u.user_id
+                        INNER JOIN sys_dept d ON ltm.org_id = d.dept_id
+                    WHERE
+                        lt.del_flag = 0
+                        AND u.del_flag = 0
+                        AND d.del_flag = 0
+                        AND lt.current = 1
+                        AND find_in_set( #{orgId}, d.full_path )
+                    HAVING
+                        age BETWEEN 30 AND 60
+                    ) t
+                GROUP BY
+                    ageRange
+            ) tt USING ( ageRange )
+            ORDER BY label
+    </select>
+
+    <!--根据类型统计单位占比-->
+    <select id="countUnitRatioByType" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+            dict.label,
+            count( ui.unit_id ) AS datas
+        FROM
+            sys_dict dict
+            INNER JOIN tab_pb_unit_info ui ON dict.id = ui.unit_property
+            LEFT JOIN sys_dept d ON ui.org_id = d.dept_id
+        WHERE
+            dict.type = 'DWLB'
+            AND dict.type != `value`
+            AND ui.del_flag = 0
+            AND d.del_flag = 0
+            AND dict.del_flag = 0
+            AND find_in_set( #{orgId}, d.full_path )
+        GROUP BY
+            dict.label
+    </select>
+
+    <!--根据类型统计党组织数量-->
+    <select id="countOrgNumByType" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+            '党组织' AS label,
+            count( * ) AS datas
+        FROM sys_dept WHERE del_flag = 0 AND find_in_set( #{orgId}, full_path )
+        UNION
+        SELECT
+            '党委' AS label,
+            count( * ) AS datas
+        FROM sys_dept WHERE del_flag = 0
+            AND find_in_set( #{orgId}, full_path )
+            AND orgnize_property IN ( 986, 987, 990, 993, 997, 998, 1000, 1005 ) UNION
+        SELECT
+            '党总支' AS label,
+            count( * ) AS datas
+        FROM sys_dept WHERE del_flag = 0
+            AND find_in_set( #{orgId}, full_path )
+            AND orgnize_property IN ( 988, 991, 994, 1001, 1006 ) UNION
+        SELECT
+            '党支部' AS label,
+            count( * ) AS datas
+        FROM sys_dept WHERE del_flag = 0
+            AND find_in_set( #{orgId}, full_path )
+            AND orgnize_property IN ( 989, 992, 995, 1002, 1007 ) UNION
+        SELECT
+            '临时党支部' AS label,
+            count( * ) AS datas
+        FROM sys_dept WHERE del_flag = 0
+            AND find_in_set( #{orgId}, full_path )
+            AND orgnize_property IN ( 1003, 1008 )
+    </select>
+
+    <!--根据类型统计党员数-->
+    <select id="countPartyMemberNumByType" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+            '党员数' AS label,
+            count( * ) AS datas
+        <choose>
+            <when test="orgId != 14307">
+                from (select dept_id as org_id from sys_dept dept
+                    where dept.del_flag = 0
+                    and find_in_set(#{orgId}, dept.full_path)
+                ) d
+                INNER JOIN sys_user u on u.dept_id = d.org_id
+            </when>
+            <otherwise>
+                FROM sys_user u
+            </otherwise>
+        </choose>
+        WHERE u.del_flag = 0 UNION
+        SELECT
+            '预备党员数' AS label,
+            count( * ) AS datas
+        <choose>
+            <when test="orgId != 14307">
+                from (select dept_id as org_id from sys_dept dept
+                where dept.del_flag = 0
+                and find_in_set(#{orgId}, dept.full_path)
+                ) d
+                INNER JOIN sys_user u on u.dept_id = d.org_id
+            </when>
+            <otherwise>
+                FROM sys_user u
+            </otherwise>
+        </choose>
+        WHERE u.del_flag = 0 AND identity_type = 224 UNION
+        SELECT
+            '发展对象' AS label,
+        count( dpm.dp_id ) AS datas
+        FROM tab_pb_dev_party_member dpm
+        <if test="orgId != 14307">
+            INNER JOIN (
+            SELECT user_id
+            FROM
+            ( SELECT dept_id AS org_id FROM sys_dept dept WHERE dept.del_flag = 0 AND find_in_set( #{orgId}, dept.full_path ) ) d
+            INNER JOIN sys_user u ON u.dept_id = d.org_id AND u.del_flag = 0
+            ) t USING ( user_id )
+        </if>
+        WHERE dpm.del_flag = 0 and host_id3_1 > 0 and host_id4_1 is null UNION
+        SELECT
+            '入党积极分子' AS label,
+        count( dpm.dp_id ) AS datas
+        FROM tab_pb_dev_party_member dpm
+        <if test="orgId != 14307">
+            INNER JOIN (
+            SELECT user_id
+            FROM
+            ( SELECT dept_id AS org_id FROM sys_dept dept WHERE dept.del_flag = 0 AND find_in_set( #{orgId}, dept.full_path ) ) d
+            INNER JOIN sys_user u ON u.dept_id = d.org_id AND u.del_flag = 0
+            ) t USING ( user_id )
+        </if>
+        WHERE dpm.del_flag = 0 and host_id2_1 > 0 and host_id3_1 is null UNION
+        SELECT
+            '入党申请人' AS label,
+            count( dpm.dp_id ) AS datas
+        FROM tab_pb_dev_party_member dpm
+        <if test="orgId != 14307">
+                INNER JOIN (
+                    SELECT user_id
+                    FROM
+                    ( SELECT dept_id AS org_id FROM sys_dept dept WHERE dept.del_flag = 0 AND find_in_set( #{orgId}, dept.full_path ) ) d
+                    INNER JOIN sys_user u ON u.dept_id = d.org_id AND u.del_flag = 0
+                ) t USING ( user_id )
+        </if>
+        WHERE dpm.del_flag = 0
+    </select>
+
+
+    <!--根据行政区划查询党员数量及发展趋势-->
+    <select id="countPartyMemberNumByAreaCodeAndMonth" parameterType="java.lang.String" resultMap="PartyMemberNumResultMap">
+        SELECT
+            #{areaCode} AS area_code,
+            nowyear_count AS count,
+            nowyear_count / lastyear_count AS rate
+        FROM
+            (
+            SELECT
+                count( user_id ) lastyear_count
+            FROM
+                sys_user u
+            WHERE
+                u.del_flag = 0
+                AND YEAR ( u.join_time ) = YEAR ( now( ) ) - 1
+            ) AS lastyear,
+            (
+            SELECT
+                count( user_id ) nowyear_count
+            FROM
+                sys_user u
+            WHERE
+                u.del_flag = 0
+            AND YEAR ( u.join_time ) = YEAR ( now( ) )
+            ) AS nowyear
+    </select>
+
+    <!--查询当年不同月份不同区域党员数量附属查询-->
+    <select id="countPartyMemberNumByAreaCodeAndMonthSubSelect" parameterType="java.util.Map" resultMap="TwoValueResultMap">
+        SELECT
+            vbm.tab AS label,
+            ifnull( t.count, 0 ) AS leftValue,
+            ifnull( ot.count, 0 ) AS rightValue
+        FROM
+            view_birth_month vbm
+            LEFT JOIN (
+            SELECT MONTH
+                ( u.join_time ) AS `month`,
+                count( u.user_id ) AS count
+            FROM
+                sys_user u
+            WHERE
+                u.del_flag = 0
+                AND YEAR ( u.join_time ) = NOW()
+            ) t USING ( `month` )
+            LEFT JOIN (
+            SELECT MONTH
+                ( u.join_time ) AS `month`,
+                count( u.user_id ) AS count
+            FROM
+                ( SELECT dept_id AS org_id FROM sys_dept dept WHERE dept.del_flag = 0 AND dept.org_code LIKE '${areaCode}%' ) d
+                INNER JOIN sys_user u ON u.dept_id = d.org_id
+            WHERE
+                u.del_flag = 0
+                AND YEAR ( u.join_time ) = NOW()
+            ) ot USING ( `month` )
+    </select>
+
+    <!--统计特殊党员分类-->
+    <select id="countSpecialPartyMemberClassificationNum" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+            '退役党员' AS label,
+            count( ut.usertag_id ) AS datas
+        FROM
+            tab_pb_user_tag ut
+        <if test="orgId != 14307">
+            INNER JOIN (
+            SELECT user_id
+            FROM
+            ( SELECT dept_id AS org_id FROM sys_dept dept WHERE dept.del_flag = 0 AND find_in_set( #{orgId}, dept.full_path ) ) d
+            INNER JOIN sys_user u ON u.dept_id = d.org_id AND u.del_flag = 0
+            ) t USING ( user_id )
+        </if>
+        WHERE ut.tag_type = 59386 UNION
+        SELECT
+            '两新组织党员',
+            count( u.user_id )
+        FROM
+            (
+            SELECT
+                dept_id AS org_id
+            FROM
+                sys_dept dept
+                INNER JOIN tab_pb_unit_info ui ON dept.dept_id = ui.org_id
+            WHERE
+                dept.del_flag = 0
+                AND find_in_set( #{orgId}, dept.full_path )
+                AND ui.unit_property IN ( 388, 391 )
+            ) d
+            INNER JOIN sys_user u ON u.dept_id = d.org_id
+            AND u.del_flag = 0 UNION
+        SELECT
+            '困难党员',
+            count( u.user_id )
+        <choose>
+            <when test="orgId != 14307">
+                from (select dept_id as org_id from sys_dept dept
+                where dept.del_flag = 0
+                and find_in_set(#{orgId}, dept.full_path)
+                ) d
+                INNER JOIN sys_user u on u.dept_id = d.org_id
+            </when>
+            <otherwise>
+                FROM sys_user u
+            </otherwise>
+        </choose>
+        WHERE
+            u.del_flag = 0
+            AND u.is_poor = 1 UNION
+        SELECT
+            '流动党员',
+            count( u.user_id )
+        <choose>
+            <when test="orgId != 14307">
+                from (select dept_id as org_id from sys_dept dept
+                where dept.del_flag = 0
+                and find_in_set(#{orgId}, dept.full_path)
+                ) d
+                INNER JOIN sys_user u on u.dept_id = d.org_id
+            </when>
+            <otherwise>
+                FROM sys_user u
+            </otherwise>
+        </choose>
+        WHERE
+            u.del_flag = 0
+            AND flow_status = 41207 UNION
+        SELECT
+            '历史党员',
+            count( mrl.member_reduce_id )
+        FROM
+            tab_pb_member_reduce_list mrl
+            INNER JOIN sys_dept d USING ( dept_id )
+        WHERE
+            mrl.del_flag = 0
+            AND d.del_flag = 0
+            AND find_in_set(#{orgId}, d.full_path)
+    </select>
+</mapper>

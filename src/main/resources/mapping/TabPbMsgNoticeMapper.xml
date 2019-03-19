@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbMsgNoticeMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbMsgNotice">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="notice_type" jdbcType="BIGINT" property="noticeType"/>
+        <result column="notice_title" jdbcType="VARCHAR" property="noticeTitle"/>
+        <result column="state" jdbcType="VARCHAR" property="state"/>
+        <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="signing_situation" property="signingSituation"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbMsgNotice">
+        <result column="notice_content" jdbcType="LONGVARCHAR" property="noticeContent"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, dept_id, dept_name, notice_type, notice_title, state, publish_time, del_flag, 
+    create_time, create_userid, create_username, update_time, update_userid, update_username
+  </sql>
+    <sql id="Blob_Column_List">
+    notice_content
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tab_pb_msg_notice
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectNoticeList" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNotice" resultMap="ResultMapWithBLOBs">
+        SELECT a.*,COUNT(if(attac.attachment_file_type=${@com.yizheng.commons.util.AttachmentType@PHOTO},TRUE,NULL)) AS photo,
+        COUNT(if(attac.attachment_file_type=${@com.yizheng.commons.util.AttachmentType@DOC},TRUE,NULL)) AS doc
+        FROM (SELECT notice.*,CONCAT(COUNT(nDept.recevie_username),'/',COUNT(nDept.id)) AS signing_situation
+        FROM tab_pb_msg_notice notice
+        JOIN tab_pb_msg_notice_dept nDept ON nDept.notice_id = notice.id
+        WHERE notice.del_flag = '0'
+        GROUP BY nDept.notice_id) a
+        LEFT JOIN tab_pb_attachment attac ON attac.host_id = a.id
+        AND attac.attachment_type = ${@com.yizheng.commons.util.AttachmentType@NOTICE}
+        and attac.del_flag = '0'
+        join sys_dept dept on dept.dept_id = a.dept_id and dept.del_flag = '0'
+        where true
+        <if test="orgRange != null and orgRange != ''">
+            <choose>
+                <when test="orgRange == 1">
+                    AND (dept.dept_id = #{deptId} OR dept.parent_id = #{deptId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{deptId}, dept.full_path)
+                </when>
+            </choose>
+        </if>
+        <if test="orgRange == null or orgRange.toString() == ''">
+            AND dept.dept_id = #{deptId}
+        </if>
+        <if test="stateTime != null">
+            AND date_format(a.publish_time, '%Y-%m-%d') &gt;= date_format(#{stateTime}, '%Y-%m-%d')
+        </if>
+        <if test="endTime != null ">
+            AND date_format(a.publish_time, '%Y-%m-%d') &lt;= date_format(#{endTime}, '%Y-%m-%d')
+        </if>
+        <if test="state != null and state!= '' ">
+            AND a.state = #{state}
+        </if>
+        <if test="noticeType != null and noticeType != '' ">
+            AND a.notice_type = #{noticeType}
+        </if>
+        GROUP BY a.id
+    </select>
+
+    <!--发布|取消发布-->
+    <update id="editState" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNotice">
+        update tab_pb_msg_notice
+        <set>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+                publish_time = #{publishTime,jdbcType=VARCHAR},
+            </if>
+        </set>
+         where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_msg_notice
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNotice" useGeneratedKeys="true" keyProperty="id">
+        insert into tab_pb_msg_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">
+                dept_id,
+            </if>
+            <if test="deptName != null">
+                dept_name,
+            </if>
+            <if test="noticeType != null">
+                notice_type,
+            </if>
+            <if test="noticeTitle != null">
+                notice_title,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="publishTime != null">
+                publish_time,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="noticeContent != null">
+                notice_content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">
+                #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="deptName != null">
+                #{deptName,jdbcType=VARCHAR},
+            </if>
+            <if test="noticeType != null">
+                #{noticeType,jdbcType=BIGINT},
+            </if>
+            <if test="noticeTitle != null">
+                #{noticeTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="publishTime != null">
+                #{publishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="noticeContent != null">
+                #{noticeContent,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNotice">
+        update tab_pb_msg_notice
+        <set>
+            <if test="deptId != null">
+                dept_id = #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="deptName != null">
+                dept_name = #{deptName,jdbcType=VARCHAR},
+            </if>
+            <if test="noticeType != null">
+                notice_type = #{noticeType,jdbcType=BIGINT},
+            </if>
+            <if test="noticeTitle != null">
+                notice_title = #{noticeTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="publishTime != null">
+                publish_time = #{publishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="noticeContent != null">
+                notice_content = #{noticeContent,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="tombstone" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNotice">
+        update tab_pb_msg_notice
+        <set>
+            del_flag = 1,
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

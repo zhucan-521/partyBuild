@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduStudyMarkMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduStudyMark">
+        <id column="mark_id" jdbcType="BIGINT" property="markId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="study_id" jdbcType="BIGINT" property="studyId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    mark_id, user_id, study_id, create_time
+  </sql>
+    <sql id="Base_WhereCase_List">
+        <if test="userId != null and userId != ''">
+            AND esm.user_id = #{userId}
+        </if>
+        <if test="studyId != null and studyId != ''">
+            AND esm.study_id = #{studyId}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            AND esm.create_time = #{createTime}
+        </if>
+        <if test="date != null and date != ''">
+            AND date_format(esm.create_time, '%Y-%m-%d') = #{date}
+        </if>
+        <if test="type != null and type != ''">
+            AND esc.file_type = #{type}
+        </if>
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_edu_study_mark
+        where mark_id = #{markId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_edu_study_mark
+    where mark_id = #{markId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduStudyMark">
+    insert into tab_pb_edu_study_mark (mark_id, user_id, study_id, 
+      create_time)
+    values (#{markId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{studyId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="markId"
+            parameterType="com.yizheng.partybuilding.entity.TabPbEduStudyMark">
+        insert into tab_pb_edu_study_mark
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="markId != null">
+                mark_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="studyId != null">
+                study_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="markId != null">
+                #{markId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="studyId != null">
+                #{studyId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduStudyMark">
+        update tab_pb_edu_study_mark
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="studyId != null">
+                study_id = #{studyId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where mark_id = #{markId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduStudyMark">
+    update tab_pb_edu_study_mark
+    set user_id = #{userId,jdbcType=BIGINT},
+      study_id = #{studyId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where mark_id = #{markId,jdbcType=BIGINT}
+  </update>
+
+    <!--查询历史记录-->
+    <select id="selectMarkHistory" resultMap="BaseResultMap">
+        select * from tab_pb_edu_study_mark
+        where study_id = #{studyId}
+        and user_id = #{userId}
+        and date_format(create_time, '%Y-%m-%d') = date_format(current_date(), '%Y-%m-%d')
+    </select>
+    
+    <!--根据条件查询记录-->
+    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="com.yizheng.partybuilding.repository.TabPbEduStudyCenterMapper.BaseResultMap">
+        select esc.*
+        from tab_pb_edu_study_mark esm
+        left join tab_pb_edu_study_center esc using(study_id)
+        <where>
+            <include refid="Base_WhereCase_List"/>
+        </where>
+        order by esm.create_time desc
+    </select>
+</mapper>

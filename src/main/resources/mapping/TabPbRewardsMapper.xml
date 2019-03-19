@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbRewardsMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbRewards">
+        <id column="rewards_id" jdbcType="BIGINT" property="rewardsId"/>
+        <result column="rewards_date" jdbcType="TIMESTAMP" property="rewardsDate"/>
+        <result column="rewards_orgnize" jdbcType="VARCHAR" property="rewardsOrgnize"/>
+        <result column="rewards_orgnize_id" jdbcType="BIGINT" property="rewardsOrgnizeId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="rewards" jdbcType="BIGINT" property="rewards"/>
+        <result column="rewards_reason" jdbcType="BIGINT" property="rewardsReason"/>
+        <result column="approved_level" jdbcType="BIGINT" property="approvedLevel"/>
+        <result column="revoke_date" jdbcType="TIMESTAMP" property="revokeDate"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="rewards_name" jdbcType="VARCHAR" property="rewardsName"/>
+        <result column="rewards_type" jdbcType="VARCHAR" property="rewardsType"/>
+
+        <result column="img_tool" jdbcType="BIGINT" property="imgTool"/>
+        <result column="file_tool" jdbcType="BIGINT" property="fileTool"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbRewards">
+        <result column="base_status" jdbcType="LONGVARCHAR" property="baseStatus"/>
+        <result column="deed" jdbcType="LONGVARCHAR" property="deed"/>
+        <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        rewards_id, rewards_date, rewards_orgnize, rewards_orgnize_id, user_id, rewards,
+        rewards_reason, approved_level, revoke_date, ebl_flag, del_flag, order_num, description,
+        create_time, create_userid, create_username, update_time, update_userid, update_username,
+        version, rewards_name, rewards_type
+  </sql>
+    <sql id="Blob_Column_List">
+    base_status, deed, comment
+  </sql>
+    <sql id="atta_result">
+    img_tool, file_tool
+  </sql>
+    <sql id="attachment">
+        SELECT
+	a.host_id,
+	max( a.attachment_type ) AS attachment_type,
+	MAX( CASE a.attachment_file_type WHEN ${@com.yizheng.commons.util.AttachmentType@PHOTO} THEN a.co ELSE 0 END ) AS img_tool,
+	MAX( CASE a.attachment_file_type WHEN ${@com.yizheng.commons.util.AttachmentType@DOC} THEN a.co ELSE 0 END ) AS file_tool
+FROM
+	( SELECT COUNT( 1 ) AS co, host_id, attachment_file_type, attachment_type FROM tab_pb_attachment WHERE del_flag = 0 GROUP BY host_id, attachment_type, attachment_file_type ) a
+GROUP BY
+	a.host_id,
+	attachment_type
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tab_pb_rewards
+        where rewards_id = #{rewardsId,jdbcType=BIGINT}
+    </select>
+    <select id="selectList" parameterType="com.yizheng.partybuilding.entity.TabPbRewards" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        <if test="attachmentType != null">
+            ,
+            <include refid="atta_result"/>
+        </if>
+        from tab_pb_rewards
+        <if test="attachmentType != null">
+            left join (<include refid="attachment"/>) atta on atta.host_id =  rewards_id and atta.attachment_type = #{attachmentType}
+        </if>
+        where del_flag = 0
+        <if test="userId != null">
+            and user_id = #{userId}
+        </if>
+        <if test="rewardsOrgnize != null">
+            and rewards_orgnize = #{rewardsOrgnize}
+        </if>
+        <if test="rewardsOrgnizeId != null">
+            and rewards_orgnize_id = #{rewardsOrgnizeId}
+        </if>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_rewards
+    where rewards_id = #{rewardsId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbRewards">
+    insert into tab_pb_rewards (rewards_id, rewards_date, rewards_orgnize,
+        rewards_orgnize_id, user_id, rewards,
+        rewards_reason, approved_level, revoke_date,
+        ebl_flag, del_flag, order_num,
+        description, create_time, create_userid,
+        create_username, update_time, update_userid,
+        update_username, version, rewards_name,
+        rewards_type, base_status, deed,
+        comment)
+    values (#{rewardsId,jdbcType=BIGINT}, #{rewardsDate,jdbcType=TIMESTAMP}, #{rewardsOrgnize,jdbcType=VARCHAR},
+        #{rewardsOrgnizeId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{rewards,jdbcType=BIGINT},
+        #{rewardsReason,jdbcType=BIGINT}, #{approvedLevel,jdbcType=BIGINT}, #{revokeDate,jdbcType=TIMESTAMP},
+        #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT},
+        #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT},
+        #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT},
+        #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{rewardsName,jdbcType=VARCHAR},
+        #{rewardsType,jdbcType=VARCHAR}, #{baseStatus,jdbcType=LONGVARCHAR}, #{deed,jdbcType=LONGVARCHAR},
+        #{comment,jdbcType=LONGVARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbRewards" useGeneratedKeys="true" keyProperty="rewardsId">
+        insert into tab_pb_rewards
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="rewardsId != null">
+                rewards_id,
+            </if>
+            <if test="rewardsDate != null">
+                rewards_date,
+            </if>
+            <if test="rewardsOrgnize != null">
+                rewards_orgnize,
+            </if>
+            <if test="rewardsOrgnizeId != null">
+                rewards_orgnize_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="rewards != null">
+                rewards,
+            </if>
+            <if test="rewardsReason != null">
+                rewards_reason,
+            </if>
+            <if test="approvedLevel != null">
+                approved_level,
+            </if>
+            <if test="revokeDate != null">
+                revoke_date,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="rewardsName != null">
+                rewards_name,
+            </if>
+            <if test="rewardsType != null">
+                rewards_type,
+            </if>
+            <if test="baseStatus != null">
+                base_status,
+            </if>
+            <if test="deed != null">
+                deed,
+            </if>
+            <if test="comment != null">
+                comment,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="rewardsId != null">
+                #{rewardsId,jdbcType=BIGINT},
+            </if>
+            <if test="rewardsDate != null">
+                #{rewardsDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="rewardsOrgnize != null">
+                #{rewardsOrgnize,jdbcType=VARCHAR},
+            </if>
+            <if test="rewardsOrgnizeId != null">
+                #{rewardsOrgnizeId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="rewards != null">
+                #{rewards,jdbcType=BIGINT},
+            </if>
+            <if test="rewardsReason != null">
+                #{rewardsReason,jdbcType=BIGINT},
+            </if>
+            <if test="approvedLevel != null">
+                #{approvedLevel,jdbcType=BIGINT},
+            </if>
+            <if test="revokeDate != null">
+                #{revokeDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="rewardsName != null">
+                #{rewardsName,jdbcType=VARCHAR},
+            </if>
+            <if test="rewardsType != null">
+                #{rewardsType,jdbcType=VARCHAR},
+            </if>
+            <if test="baseStatus != null">
+                #{baseStatus,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="deed != null">
+                #{deed,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="comment != null">
+                #{comment,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbRewards">
+        update tab_pb_rewards
+        <set>
+            <if test="rewardsDate != null">
+                rewards_date = #{rewardsDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="rewardsOrgnize != null">
+                rewards_orgnize = #{rewardsOrgnize,jdbcType=VARCHAR},
+            </if>
+            <if test="rewardsOrgnizeId != null">
+                rewards_orgnize_id = #{rewardsOrgnizeId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="rewards != null">
+                rewards = #{rewards,jdbcType=BIGINT},
+            </if>
+            <if test="rewardsReason != null">
+                rewards_reason = #{rewardsReason,jdbcType=BIGINT},
+            </if>
+            <if test="approvedLevel != null">
+                approved_level = #{approvedLevel,jdbcType=BIGINT},
+            </if>
+            <if test="revokeDate != null">
+                revoke_date = #{revokeDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="rewardsName != null">
+                rewards_name = #{rewardsName,jdbcType=VARCHAR},
+            </if>
+            <if test="rewardsType != null">
+                rewards_type = #{rewardsType,jdbcType=VARCHAR},
+            </if>
+            <if test="baseStatus != null">
+                base_status = #{baseStatus,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="deed != null">
+                deed = #{deed,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="comment != null">
+                comment = #{comment,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where rewards_id = #{rewardsId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbRewards">
+    update tab_pb_rewards
+    set rewards_date = #{rewardsDate,jdbcType=TIMESTAMP},
+      rewards_orgnize = #{rewardsOrgnize,jdbcType=VARCHAR},
+      rewards_orgnize_id = #{rewardsOrgnizeId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      rewards = #{rewards,jdbcType=BIGINT},
+      rewards_reason = #{rewardsReason,jdbcType=BIGINT},
+      approved_level = #{approvedLevel,jdbcType=BIGINT},
+      revoke_date = #{revokeDate,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+        rewards_name = #{rewardsName,jdbcType=VARCHAR},
+        rewards_type = #{rewardsType,jdbcType=VARCHAR},
+      base_status = #{baseStatus,jdbcType=LONGVARCHAR},
+      deed = #{deed,jdbcType=LONGVARCHAR},
+      comment = #{comment,jdbcType=LONGVARCHAR}
+    where rewards_id = #{rewardsId,jdbcType=BIGINT}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbRewards">
+    update tab_pb_rewards
+    set rewards_date = #{rewardsDate,jdbcType=TIMESTAMP},
+      rewards_orgnize = #{rewardsOrgnize,jdbcType=VARCHAR},
+      rewards_orgnize_id = #{rewardsOrgnizeId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      rewards = #{rewards,jdbcType=BIGINT},
+      rewards_reason = #{rewardsReason,jdbcType=BIGINT},
+      approved_level = #{approvedLevel,jdbcType=BIGINT},
+      revoke_date = #{revokeDate,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+        version = #{version,jdbcType=BIGINT},
+        rewards_name = #{rewardsName,jdbcType=VARCHAR},
+        rewards_type = #{rewardsType,jdbcType=VARCHAR}
+    where rewards_id = #{rewardsId,jdbcType=BIGINT}
+  </update>
+</mapper>

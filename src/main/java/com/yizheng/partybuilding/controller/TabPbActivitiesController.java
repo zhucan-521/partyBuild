@@ -1,0 +1,45 @@
+package com.yizheng.partybuilding.controller;
+
+import com.github.pagehelper.PageInfo;
+import com.yizheng.commons.domain.Page;
+import com.yizheng.partybuilding.dto.TabPbActivitiesDto;
+import com.yizheng.partybuilding.service.inf.TabPbActivitiesService;
+import io.swagger.annotations.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * @author YangYingXiang on 2018/12/03
+ */
+@RestController
+@RequestMapping("/activities")
+@Api(tags = "党员-社区活动")
+public class TabPbActivitiesController {
+
+    @Autowired
+    private TabPbActivitiesService activitiesService;
+
+    @GetMapping(value = "/list")
+    @ApiOperation(value = "获取社区活动信息列表", notes = "可指定条件查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "活动名称", name = "subject",dataType = "String"),
+            @ApiImplicitParam(value = "党员名称", name = "username",dataType = "String",paramType = "query"),
+            @ApiImplicitParam(value = "活动类型", name = "activitiesType",dataType = "Long",paramType = "query"),
+            @ApiImplicitParam(value = "组织主键", name = "rangeDeptId",paramType = "query"),
+            @ApiImplicitParam(value = "组织范围 0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）", name = "orgRange",paramType = "query"),
+            @ApiImplicitParam(value = "是否直属组织 0直属，1报到",name = "deptState",paramType = "query")
+    })
+    public PageInfo<TabPbActivitiesDto> list(String subject, String username, Long activitiesType,Long rangeDeptId,Long orgRange ,Long deptState, @ApiParam Page page){
+        TabPbActivitiesDto tabPbActivitiesDto = new TabPbActivitiesDto();
+        tabPbActivitiesDto.setSubject(subject);
+        tabPbActivitiesDto.setUsername(username);
+        tabPbActivitiesDto.setActivitiesType(activitiesType);
+        tabPbActivitiesDto.setRangeDeptId(rangeDeptId);
+        tabPbActivitiesDto.setOrgRange(orgRange);
+        tabPbActivitiesDto.setDeptState(deptState);
+        return new PageInfo<>(this.activitiesService.ActivitiesDtoList(tabPbActivitiesDto,page));
+    }
+
+}

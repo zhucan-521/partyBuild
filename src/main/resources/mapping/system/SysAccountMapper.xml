@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.system.mapper.SysAccountMapper">
+  <resultMap id="baseResultMap" type="com.yizheng.partybuilding.system.entity.SysAccount">
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="sys_user_id" jdbcType="INTEGER" property="sysUserId" />
+    <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="realname" jdbcType="VARCHAR" property="realname" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="salt" jdbcType="VARCHAR" property="salt" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    <result column="manage_dept_id" jdbcType="INTEGER" property="manageDeptId" />
+    <result column="wx_openid" jdbcType="VARCHAR" property="wxOpenid" />
+    <result column="qq_openid" jdbcType="VARCHAR" property="qqOpenid" />
+    <result column="represent_dept_id" jdbcType="INTEGER" property="representDeptId" />
+    <result column="del_flag" jdbcType="CHAR" property="delFlag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+    <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+    <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    user_id, sys_user_id, id_card_no, username, realname,password, salt, phone, avatar, manage_dept_id, del_flag,wx_openid, qq_openid, represent_dept_id,
+    create_time, create_userid, create_username, update_time, update_userid, update_username
+  </sql>
+
+
+  <!-- 所有后台用户信息列表 -->
+  <select id="listAll" parameterType="com.yizheng.partybuilding.system.dto.UserAdminDTO" resultMap="userAllListMap">
+    select
+    users.user_id,users.username,users.realname,users.manage_dept_id,users.del_flag,users.phone ,users.create_time,
+    users.create_username,dept.name as dept_name,r.role_name,users.id_card_no
+    from sys_account users
+    INNER JOIN sys_dept dept on users.manage_dept_id=dept.dept_id
+    LEFT JOIN sys_user_role ur ON ur.user_id = users.user_id
+    LEFT JOIN sys_role r ON r.role_id = ur.role_id
+    where users.del_flag = '0'
+    <if test="createUserid != null">
+      and users.create_userid =#{createUserid}
+    </if>
+    <if test="realname != null and realname != ''">
+      and users.realname LIKE CONCAT('%',#{realname},'%')
+    </if>
+    <if test="idCardNo != null and idCardNo != ''">
+      and users.id_card_no LIKE CONCAT('%',#{idCardNo},'%')
+    </if>
+    order by users.user_id desc
+  </select>
+  <!-- userVo结果集 -->
+  <resultMap id="userAllListMap" type="com.yizheng.partybuilding.system.dto.UserAdminDTO">
+    <id column="user_id" property="userId"/>
+    <result column="username" property="username"/>
+    <result column="realname" property="realname"/>
+    <result column="id_card_no" property="idCardNo"/>
+    <result column="phone" property="phone"/>
+    <result column="create_time" property="createTime"/>
+    <result column="create_username" property="createUsername"/>
+    <result column="del_flag" property="delFlag"/>
+    <result column="manage_dept_id" property="manageDeptId"/>
+    <result column="dept_name" property="deptName"/>
+    <collection property="roleNames" ofType="java.lang.String">
+      <result column="role_name" property="roleName"/>
+    </collection>
+  </resultMap>
+
+  <sql id="selectUserVo">
+    SELECT `user`.user_id, `user`.username, `user`.realname, `user`.`password`, `user`.salt, `user`.phone,
+    `user`.avatar, `user`.wx_openid, `user`.qq_openid, `user`.manage_dept_id, `user`.create_time AS ucreate_time,
+    `user`.update_time AS uupdate_time, `user`.del_flag AS udel_flag,
+     r.role_id, r.role_name, r.role_code, r.role_desc, r.create_time AS rcreate_time, r.update_time AS rupdate_time
+    FROM sys_account AS `user`
+    LEFT JOIN sys_user_role AS ur ON ur.user_id = `user`.user_id
+    LEFT JOIN sys_role AS r ON r.role_id = ur.role_id
+  </sql>
+  <select id="selectUserVoByCardNo" resultMap="userVoResultMap">
+    <include refid="selectUserVo"/>
+    WHERE user.del_flag = '0' and `user`.id_card_no = #{idCardNo}
+  </select>
+  <!-- userVo结果集 -->
+  <resultMap id="userVoResultMap" type="com.yizheng.partybuilding.system.vo.UserVO">
+    <id column="user_id" property="userId"/>
+    <result column="username" property="username"/>
+    <result column="realname" property="realname"/>
+    <result column="id_card_no" property="idCardNo"/>
+    <result column="password" property="password"/>
+    <result column="salt" property="salt"/>
+    <result column="phone" property="phone"/>
+    <result column="avatar" property="avatar"/>
+    <result column="wx_openid" property="wxOpenid"/>
+    <result column="qq_openid" property="qqOpenid"/>
+    <result column="ucreate_time" property="createTime"/>
+    <result column="uupdate_time" property="updateTime"/>
+    <result column="udel_flag" property="delFlag"/>
+    <result column="manage_dept_id" property="manageDeptId"/>
+    <result column="deptName" property="deptName"/>
+    <collection property="roleList" ofType="com.yizheng.partybuilding.system.entity.SysRole">
+      <id column="role_id" property="roleId"/>
+      <result column="role_name" property="roleName"/>
+      <result column="role_code" property="roleCode"/>
+      <result column="role_desc" property="roleDesc"/>
+      <result column="rcreate_time" property="createTime"/>
+      <result column="rupdate_time" property="updateTime"/>
+    </collection>
+  </resultMap>
+
+
+  <select id="selectUserVoById" resultMap="userVoResultMap">
+    SELECT
+    `user`.user_id, `user`.username, `user`.realname, `user`.id_card_no,
+    `user`.`password`, `user`.salt, `user`.phone, `user`.avatar, `user`.wx_openid, `user`.qq_openid,
+    `user`.create_time AS ucreate_time, `user`.update_time AS uupdate_time, `user`.del_flag AS udel_flag, r.role_id,
+     r.role_name, r.role_code, r.role_desc,  r.create_time AS rcreate_time, r.update_time AS rupdate_time,
+     d.name AS deptName, d.dept_id AS manageDeptId
+    FROM sys_account AS `user`
+    LEFT JOIN sys_user_role AS ur ON ur.user_id = `user`.user_id
+    LEFT JOIN sys_role AS r ON r.role_id = ur.role_id
+    LEFT JOIN sys_dept AS d ON d.dept_id = `user`.manage_dept_id
+    WHERE user.del_flag = '0' and `user`.user_id = #{id}
+  </select>
+
+
+  <select id="selectDeletedUserByCardNo" resultMap="baseResultMap">
+    SELECT
+     user_id, username, realname, password, phone, avatar, salt,  manage_dept_id, wx_openid, qq_openid,
+     del_flag,create_time, create_userid, create_username, update_time, update_userid, update_username
+    FROM sys_account
+    WHERE id_card_no = #{idCardNo} AND del_flag = '1'
+  </select>
+
+  <update id="deleteSysUserByCardNoAndUserId">
+    update sys_account set del_flag = '1' where id_card_no=#{idCardNo} AND user_id=#{userId};
+  </update>
+  <!--<delete id="deleteSysUserByCardNoAndUserId">
+    DELETE FROM sys_account WHERE id_card_no=#{idCardNo} AND user_id=#{userId};
+  </delete>-->
+
+  <!--根据id修改密码-->
+  <update id="updatePwdById" parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+    update sys_account set password = #{password}, update_userid = #{updateUserid}, update_username = #{updateUsername},
+    update_time = #{updateTime} where user_id = #{userId}
+  </update>
+</mapper>

@@ -1,0 +1,621 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper  namespace="com.yizheng.partybuilding.repository.TabPbFlowOutMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbFlowOut">
+        <id column="flow_out_id" jdbcType="BIGINT" property="flowOutId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="flow_out_date" jdbcType="TIMESTAMP" property="flowOutDate"/>
+        <result column="flow_out_type" jdbcType="BIGINT" property="flowOutType"/>
+        <result column="flow_out_range" jdbcType="BIGINT" property="flowOutRange"/>
+        <result column="flow_out_reason" jdbcType="BIGINT" property="flowOutReason"/>
+        <result column="flow_out_place" jdbcType="BIGINT" property="flowOutPlace"/>
+        <result column="flow_to_unit_name" jdbcType="VARCHAR" property="flowToUnitName"/>
+        <result column="flow_to_orgnize_name" jdbcType="VARCHAR" property="flowToOrgnizeName"/>
+        <result column="flow_to_orgnize_code" jdbcType="VARCHAR" property="flowToOrgnizeCode"/>
+        <result column="flow_to_orgnize_id" jdbcType="BIGINT" property="flowToOrgnizeId"/>
+        <result column="link_status" jdbcType="BIGINT" property="linkStatus"/>
+        <result column="contact_type" jdbcType="VARCHAR" property="contactType"/>
+        <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone"/>
+        <result column="contact_address" jdbcType="VARCHAR" property="contactAddress"/>
+        <result column="out_industry" jdbcType="BIGINT" property="outIndustry"/>
+        <result column="out_profession" jdbcType="BIGINT" property="outProfession"/>
+        <result column="return_date" jdbcType="TIMESTAMP" property="returnDate"/>
+        <result column="return_tag" jdbcType="TINYINT" property="returnTag"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="flow_to_orgnize_contactor" jdbcType="VARCHAR" property="flowToOrgContactor"/>
+        <result column="flow_to_orgnize_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
+        <result column="flow_out_state" jdbcType="BIGINT" property="flowOutState"/>
+    </resultMap>
+    <resultMap id="selectActiveTabPbFlowOutDtoMap" extends="BaseResultMap" type="com.yizheng.partybuilding.dto.TabPbFlowOutDto">
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="old_place" jdbcType="VARCHAR" property="oldPlace"/>
+        <result column="flow_to_orgnize_contactor" jdbcType="VARCHAR" property="flowToOrgContactor"/>
+        <result column="flow_to_orgnize_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
+        <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
+        <result column="gender" jdbcType="BIGINT" property="gender"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="contact" jdbcType="BIGINT" property="contact"/>
+        <result column="joinelsetime" jdbcType="TIMESTAMP" property="joinelsetime"/>
+        <result column="police_office" jdbcType="VARCHAR" property="policeOffice"/>
+        <result column="retired_time" jdbcType="TIMESTAMP" property="retiredTime"/>
+        <result column="post_time" jdbcType="TIMESTAMP" property="postTime"/>
+        <result column="portrait" jdbcType="VARCHAR" property="portrait"/>
+        <result column="person_identity" jdbcType="BIGINT" property="personIdentity"/>
+        <result column="stratum" jdbcType="BIGINT" property="stratum"/>
+        <result column="front_line" jdbcType="BIGINT" property="frontLine"/>
+        <result column="qq_number" jdbcType="VARCHAR" property="qqNumber"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="wx_openid" jdbcType="VARCHAR" property="wxOpenid"/>
+        <result column="qq_openid" jdbcType="VARCHAR" property="qqOpenid"/>
+        <result column="pm_code" jdbcType="VARCHAR" property="pmCode"/>
+        <result column="join_time" jdbcType="TIMESTAMP" property="joinTime"/>
+        <result column="regular_time" jdbcType="TIMESTAMP" property="regularTime"/>
+        <result column="regular_status" jdbcType="BIGINT" property="regularStatus"/>
+        <result column="develop_type" jdbcType="BIGINT" property="developType"/>
+        <result column="reference" jdbcType="VARCHAR" property="reference"/>
+        <result column="fee_ratio" jdbcType="DECIMAL" property="feeRatio"/>
+        <result column="join_after_august" jdbcType="TINYINT" property="joinAfterAugust"/>
+        <result column="is_poor" jdbcType="TINYINT" property="isPoor"/>
+        <result column="is_llost" jdbcType="TINYINT" property="isLlost"/>
+        <result column="flow_from_org_id" jdbcType="BIGINT" property="flowFromOrgId"/>
+        <result column="flow_from_org_name" jdbcType="VARCHAR" property="flowFromOrgName"/>
+        <result column="flow_from_org_contactor" jdbcType="VARCHAR" property="flowFromOrgContactor"/>
+        <result column="flow_from_org_phone" jdbcType="VARCHAR" property="flowFromOrgPhone"/>
+        <result column="flow_to_org_id" jdbcType="BIGINT" property="flowToOrgId"/>
+        <result column="flow_to_org_name" jdbcType="VARCHAR" property="flowToOrgName"/>
+        <result column="flow_to_org_contactor" jdbcType="VARCHAR" property="flowToOrgContactor"/>
+        <result column="flow_to_org_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
+        <result column="positived" jdbcType="VARCHAR" property="positived"/>
+        <result column="join_contact_id" jdbcType="BIGINT" property="joinContactId"/>
+        <result column="contactor" jdbcType="VARCHAR" property="contactor"/>
+        <result column="flow_out_date" jdbcType="TIMESTAMP" property="flowOutDate"/>
+        <result column="lost_time" jdbcType="TIMESTAMP" property="lostTime"/>
+        <result column="flow_out_type" jdbcType="BIGINT" property="flowOutType"/>
+        <result column="flow_out_range" jdbcType="BIGINT" property="flowOutRange"/>
+        <result column="flow_out_reason" jdbcType="BIGINT" property="flowOutReason"/>
+        <result column="flow_out_place" jdbcType="BIGINT" property="flowOutPlace"/>
+        <result column="flow_to_unit_name" jdbcType="VARCHAR" property="flowToUnitName"/>
+        <result column="flow_to_orgnize_name" jdbcType="VARCHAR" property="flowToOrgnizeName"/>
+        <result column="flow_to_orgnize_code" jdbcType="VARCHAR" property="flowToOrgnizeCode"/>
+        <result column="flow_to_orgnize_id" jdbcType="BIGINT" property="flowToOrgnizeId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    flow_out_id, org_id, user_id, flow_out_date, flow_out_type, flow_out_range, flow_out_reason,
+    flow_out_place, flow_to_unit_name, flow_to_orgnize_name, flow_to_orgnize_code, flow_to_orgnize_id,
+    link_status, contact_type, contact_phone, contact_address, out_industry, out_profession,
+    return_date, return_tag, ebl_flag, del_flag, order_num, description, create_time,
+    create_userid, create_username, update_time, update_userid, update_username,flow_out_state, version
+  </sql>
+    <sql id="Base_FlowOut_List">
+        tab_pb_flow_out.flow_out_id,
+        sys_user.realname AS username,
+        sys_user.gender,
+        sys_user.id_card_no,
+        -- 流入地
+        tab_pb_flow_out.flow_to_unit_name,
+        -- 原党组织
+        tab_pb_flow_out.org_id,
+        (select name from  sys_dept where dept_id=tab_pb_flow_out.org_id limit 1 ) flow_to_orgnize_name,
+        tab_pb_flow_out.out_industry,
+        tab_pb_flow_out.flow_out_type,
+        tab_pb_flow_out.out_profession,
+        tab_pb_flow_out.flow_out_reason,
+        -- 流入党组织
+        (select name from  sys_dept where dept_id=tab_pb_flow_out.flow_out_place limit 1) flowOutOrgName ,
+        tab_pb_flow_out.flow_out_date,
+        sys_user.flow_to_org_contactor,
+        sys_user.flow_to_org_phone,
+        sys_user.flow_from_org_contactor,
+        sys_user.flow_from_org_phone,
+        tab_pb_flow_out.lost_time,
+        tab_pb_flow_out.link_status,
+        sys_user.phone,
+        tab_pb_flow_out.flow_to_orgnize_id,
+        tab_pb_flow_out.flow_out_state,
+        tab_pb_flow_out.flow_to_orgnize_code
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_flow_out
+        where flow_out_id = #{flowOutId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_flow_out
+    where flow_out_id = #{flowOutId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="flowOutId" parameterType="com.yizheng.partybuilding.entity.TabPbFlowOut">
+    insert into tab_pb_flow_out (flow_out_id, org_id, user_id,
+      flow_out_date, flow_out_type, flow_out_range,
+      flow_out_reason, flow_out_place, flow_to_unit_name,
+      flow_to_orgnize_name, flow_to_orgnize_code, flow_to_orgnize_id,
+      link_status, contact_type, contact_phone,
+      contact_address, out_industry, out_profession,
+      return_date, return_tag, ebl_flag,
+      del_flag, order_num, description,
+      create_time, create_userid, create_username,
+      update_time, update_userid, update_username,
+      version ,lost_time)
+    values (#{flowOutId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
+      #{flowOutDate,jdbcType=TIMESTAMP}, #{flowOutType,jdbcType=BIGINT}, #{flowOutRange,jdbcType=BIGINT},
+      #{flowOutReason,jdbcType=BIGINT}, #{flowOutPlace,jdbcType=BIGINT}, #{flowToUnitName,jdbcType=VARCHAR},
+      #{flowToOrgnizeName,jdbcType=VARCHAR}, #{flowToOrgnizeCode,jdbcType=VARCHAR}, #{flowToOrgnizeId,jdbcType=BIGINT},
+      #{linkStatus,jdbcType=BIGINT}, #{contactType,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR},
+      #{contactAddress,jdbcType=VARCHAR}, #{outIndustry,jdbcType=BIGINT}, #{outProfession,jdbcType=BIGINT},
+      #{returnDate,jdbcType=TIMESTAMP}, #{returnTag,jdbcType=TINYINT}, #{eblFlag,jdbcType=VARCHAR},
+      #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR},
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR},
+      #{version,jdbcType=BIGINT},#{lostTime})
+  </insert>
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="flowOutId" parameterType="com.yizheng.partybuilding.entity.TabPbFlowOut">
+        insert into tab_pb_flow_out
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="flowOutId != null">
+                flow_out_id,
+            </if>
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="flowOutDate != null">
+                flow_out_date,
+            </if>
+            <if test="flowOutType != null">
+                flow_out_type,
+            </if>
+            <if test="flowOutRange != null">
+                flow_out_range,
+            </if>
+            <if test="flowOutReason != null">
+                flow_out_reason,
+            </if>
+            <if test="flowOutPlace != null">
+                flow_out_place,
+            </if>
+            <if test="flowToUnitName != null">
+                flow_to_unit_name,
+            </if>
+            <if test="flowToOrgnizeName != null">
+                flow_to_orgnize_name,
+            </if>
+            <if test="flowToOrgnizeCode != null">
+                flow_to_orgnize_code,
+            </if>
+            <if test="flowToOrgnizeId != null">
+                flow_to_orgnize_id,
+            </if>
+            <if test="linkStatus != null">
+                link_status,
+            </if>
+            <if test="contactType != null">
+                contact_type,
+            </if>
+            <if test="contactPhone != null">
+                contact_phone,
+            </if>
+            <if test="contactAddress != null">
+                contact_address,
+            </if>
+            <if test="outIndustry != null">
+                out_industry,
+            </if>
+            <if test="outProfession != null">
+                out_profession,
+            </if>
+            <if test="returnDate != null">
+                return_date,
+            </if>
+            <if test="returnTag != null">
+                return_tag,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test=" flowToOrgPhone != null">
+                flow_to_orgnize_phone,
+            </if>
+            <if test=" flowToOrgContactor != null">
+                flow_to_orgnize_contactor,
+            </if>
+            <if test=" lostTime != null">
+                Lost_time,
+            </if>
+            <if test=" flowOutState != null">
+                flow_out_state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="flowOutId != null">
+                #{flowOutId,jdbcType=BIGINT},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="flowOutDate != null">
+                #{flowOutDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flowOutType != null">
+                #{flowOutType,jdbcType=BIGINT},
+            </if>
+            <if test="flowOutRange != null">
+                #{flowOutRange,jdbcType=BIGINT},
+            </if>
+            <if test="flowOutReason != null">
+                #{flowOutReason,jdbcType=BIGINT},
+            </if>
+            <if test="flowOutPlace != null">
+                #{flowOutPlace,jdbcType=BIGINT},
+            </if>
+            <if test="flowToUnitName != null">
+                #{flowToUnitName,jdbcType=VARCHAR},
+            </if>
+            <if test="flowToOrgnizeName != null">
+                #{flowToOrgnizeName,jdbcType=VARCHAR},
+            </if>
+            <if test="flowToOrgnizeCode != null">
+                #{flowToOrgnizeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="flowToOrgnizeId != null">
+                #{flowToOrgnizeId,jdbcType=BIGINT},
+            </if>
+            <if test="linkStatus != null">
+                #{linkStatus,jdbcType=BIGINT},
+            </if>
+            <if test="contactType != null">
+                #{contactType,jdbcType=VARCHAR},
+            </if>
+            <if test="contactPhone != null">
+                #{contactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="contactAddress != null">
+                #{contactAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="outIndustry != null">
+                #{outIndustry,jdbcType=BIGINT},
+            </if>
+            <if test="outProfession != null">
+                #{outProfession,jdbcType=BIGINT},
+            </if>
+            <if test="returnDate != null">
+                #{returnDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="returnTag != null">
+                #{returnTag,jdbcType=TINYINT},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="flowToOrgPhone != null">
+                #{flowToOrgPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="flowToOrgContactor != null">
+                #{flowToOrgContactor,jdbcType=VARCHAR},
+            </if>
+            <if test="lostTime != null">
+                #{lostTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test=" flowOutState != null">
+                #{flowOutState},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbFlowOut">
+        update tab_pb_flow_out
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="flowOutDate != null">
+                flow_out_date = #{flowOutDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flowOutType != null">
+                flow_out_type = #{flowOutType,jdbcType=BIGINT},
+            </if>
+            <if test="flowOutRange != null">
+                flow_out_range = #{flowOutRange,jdbcType=BIGINT},
+            </if>
+            <if test="flowOutReason != null">
+                flow_out_reason = #{flowOutReason,jdbcType=BIGINT},
+            </if>
+            <if test="flowOutPlace != null">
+                flow_out_place = #{flowOutPlace,jdbcType=BIGINT},
+            </if>
+            <if test="flowToUnitName != null">
+                flow_to_unit_name = #{flowToUnitName,jdbcType=VARCHAR},
+            </if>
+            <if test="flowToOrgnizeName != null">
+                flow_to_orgnize_name = #{flowToOrgnizeName,jdbcType=VARCHAR},
+            </if>
+            <if test="flowToOrgnizeCode != null">
+                flow_to_orgnize_code = #{flowToOrgnizeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="flowToOrgnizeId != null">
+                flow_to_orgnize_id = #{flowToOrgnizeId,jdbcType=BIGINT},
+            </if>
+            <if test="linkStatus != null">
+                link_status = #{linkStatus,jdbcType=BIGINT},
+            </if>
+            <if test="contactType != null">
+                contact_type = #{contactType,jdbcType=VARCHAR},
+            </if>
+            <if test="contactPhone != null">
+                contact_phone = #{contactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="contactAddress != null">
+                contact_address = #{contactAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="outIndustry != null">
+                out_industry = #{outIndustry,jdbcType=BIGINT},
+            </if>
+            <if test="outProfession != null">
+                out_profession = #{outProfession,jdbcType=BIGINT},
+            </if>
+            <if test="returnDate != null">
+                return_date = #{returnDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="returnTag != null">
+                return_tag = #{returnTag,jdbcType=TINYINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="flowOutState != null">
+                flow_out_state = #{flowOutState},
+            </if>
+        </set>
+        where flow_out_id = #{flowOutId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbFlowOut">
+    update tab_pb_flow_out
+    set org_id = #{orgId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      flow_out_date = #{flowOutDate,jdbcType=TIMESTAMP},
+      flow_out_type = #{flowOutType,jdbcType=BIGINT},
+      flow_out_range = #{flowOutRange,jdbcType=BIGINT},
+      flow_out_reason = #{flowOutReason,jdbcType=BIGINT},
+      flow_out_place = #{flowOutPlace,jdbcType=BIGINT},
+      flow_to_unit_name = #{flowToUnitName,jdbcType=VARCHAR},
+      flow_to_orgnize_name = #{flowToOrgnizeName,jdbcType=VARCHAR},
+      flow_to_orgnize_code = #{flowToOrgnizeCode,jdbcType=VARCHAR},
+      flow_to_orgnize_id = #{flowToOrgnizeId,jdbcType=BIGINT},
+      link_status = #{linkStatus,jdbcType=BIGINT},
+      contact_type = #{contactType,jdbcType=VARCHAR},
+      contact_phone = #{contactPhone,jdbcType=VARCHAR},
+      contact_address = #{contactAddress,jdbcType=VARCHAR},
+      out_industry = #{outIndustry,jdbcType=BIGINT},
+      out_profession = #{outProfession,jdbcType=BIGINT},
+      return_date = #{returnDate,jdbcType=TIMESTAMP},
+      return_tag = #{returnTag,jdbcType=TINYINT},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+    where flow_out_id = #{flowOutId,jdbcType=BIGINT}
+  </update>
+
+    <select id="selectFlowOutByUserId" parameterType="Long" resultMap="BaseResultMap">
+        select
+        *
+        from
+        tab_pb_flow_out
+        where user_id= #{userId}
+        ORDER BY
+        flow_out_date DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectDeptNameByDeptId" parameterType="Long" resultType="String">
+        select name from sys_dept where dept_id= #{deptId}
+    </select>
+
+
+    <select id="selectUntilName" parameterType="Long" resultType="String">
+        select unit_name from  tab_pb_unit_info where unit_id=#{filesManageUnitId}
+    </select>
+
+    <select id="selectCommuntiyDto" parameterType="com.yizheng.partybuilding.dto.CommunityDto" resultType="com.yizheng.partybuilding.dto.CommunityDto">
+        select id ,label ,value from sys_dict
+        <where>
+            <if test="label !=null and ''!=label">
+                and  label like CONCAT('%',#{label},'%')
+            </if>
+            <if test="id !=null and ''!=id">
+                and  id = #{id}
+            </if>
+            <if test="value !=null and ''!=value">
+                and  value = #{value}
+            </if>
+               and  type ='XZQH'
+        </where>
+    </select>
+
+    <select id="CommunityNameById" parameterType="Long" resultType="String">
+        select label  from sys_dict where type ='XZQH' and  id= #{id}
+    </select>
+
+    <!--流出党员dto查询-->
+    <select id="selectActiveTabPbFlowOutDto" parameterType="com.yizheng.partybuilding.dto.TabPbFlowOutDto" resultMap="selectActiveTabPbFlowOutDtoMap">
+        SELECT
+        <include refid="Base_FlowOut_List" />
+        FROM
+        tab_pb_flow_out
+        left JOIN sys_user ON tab_pb_flow_out.user_id = sys_user.user_id
+        left JOIN sys_dept ON tab_pb_flow_out.org_id = sys_dept.dept_id
+        <where>
+            tab_pb_flow_out.del_flag='0'
+            <if test="flowOutId!=null and ''!=flowOutId">
+              and tab_pb_flow_out.flow_out_id =#{flowOutId}
+            </if>
+            <if test="username!=null and ''!=username">
+              and sys_user.realname like concat('%',#{username},'%')
+            </if>
+            <if test="idCardNo != null and ''!=idCardNo">
+               and sys_user.id_card_no=#{idCardNo}
+            </if>
+            <if test="flowToUnitName != null and ''!=flowToUnitName">
+              and tab_pb_flow_out.flow_to_unit_name like concat('%',#{flowToUnitName},'%')
+            </if>
+            <if test="orgRange != null and orgRange != '' ">
+                <choose>
+                    <when test="orgRange == 1">
+                        AND (sys_dept.dept_id = #{rangeDeptId} OR sys_dept.parent_id = #{rangeDeptId})
+                    </when>
+                    <when test="orgRange == 2">
+                        AND find_in_set(#{rangeDeptId}, sys_dept.full_path)
+                    </when>
+                </choose>
+            </if>
+            <if test="orgRange == null or orgRange.toString() == ''">
+                AND sys_dept.dept_id = #{rangeDeptId}
+            </if>
+        </where>
+        order by
+        tab_pb_flow_out.flow_out_id
+        desc
+    </select>
+
+
+    <!--根据id查询单个流出党员详情-->
+    <select id="findTabPbFlowOutDtoById" parameterType="Long" resultMap="selectActiveTabPbFlowOutDtoMap">
+        SELECT
+        <include refid="Base_FlowOut_List" />
+        FROM
+        tab_pb_flow_out
+        left JOIN sys_user ON tab_pb_flow_out.user_id = sys_user.user_id
+        left JOIN sys_dept ON tab_pb_flow_out.org_id = sys_dept.dept_id
+        <where>
+        tab_pb_flow_out.del_flag='0'
+        <if test="_parameter!=null and ''!=_parameter">
+            and tab_pb_flow_out.flow_out_id =#{_parameter,jdbcType=BIGINT}
+        </if>
+        </where>
+    </select>
+
+    <!--查询待报道流动党员是否存在-->
+    <select id="checkTabPbFlowOutExixtByUserId" resultMap="BaseResultMap">
+        select  * from tab_pb_flow_out where user_id=#{userId} and flow_out_state=59413 and del_flag=0
+    </select>
+
+
+
+</mapper>

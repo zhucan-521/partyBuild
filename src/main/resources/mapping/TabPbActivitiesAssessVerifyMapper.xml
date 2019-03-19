@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbActivitiesAssessVerifyMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbActivitiesAssessVerify">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="assess_id" jdbcType="BIGINT" property="assessId"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="content" jdbcType="BIGINT" property="content"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, assess_id, dept_id, create_userid, content, remark, create_time, ebl_flag
+  </sql>
+    <sql id="Base_WhereCase_List">
+        <if test="assessId != null and assessId != ''">
+            AND aav.assess_id = #{assessId}
+        </if>
+        <if test="deptId != null and deptId != ''">
+            AND aav.dept_id = #{deptId}
+        </if>
+        <if test="createUserid != null and createUserid != ''">
+            AND aav.create_userid = #{createUserid}
+        </if>
+        <if test="content != null and content != ''">
+            AND aav.content = #{content}
+        </if>
+        <if test="remark != null and remark != ''">
+            AND aav.remark = #{remark}
+        </if>
+        <if test="createTime != null and createTime != ''">
+            AND aav.create_time = #{createTime}
+        </if>
+        <if test="eblFlag != null and eblFlag != '' and eblFlag != ''">
+            AND aav.ebl_flag = #{eblFlag}
+        </if>
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_activities_assess_verify
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_activities_assess_verify
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbActivitiesAssessVerify">
+        insert into tab_pb_activities_assess_verify (id, assess_id, dept_id,
+      create_userid, content, remark, 
+      create_time, ebl_flag)
+        values (#{id,jdbcType=BIGINT}, #{assessId,jdbcType=BIGINT}, #{deptId,jdbcType=BIGINT},
+      #{createUserid,jdbcType=BIGINT}, #{content,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{eblFlag,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbActivitiesAssessVerify">
+        insert into tab_pb_activities_assess_verify
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="assessId != null">
+                assess_id,
+            </if>
+            <if test="deptId != null">
+                dept_id,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="assessId != null">
+                #{assessId,jdbcType=BIGINT},
+            </if>
+            <if test="deptId != null">
+                #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.yizheng.partybuilding.entity.TabPbActivitiesAssessVerify">
+        update tab_pb_activities_assess_verify
+        <set>
+            <if test="assessId != null">
+                assess_id = #{assessId,jdbcType=BIGINT},
+            </if>
+            <if test="deptId != null">
+                dept_id = #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbActivitiesAssessVerify">
+    update tab_pb_activities_assess_verify
+        set assess_id = #{assessId,jdbcType=BIGINT},
+      dept_id = #{deptId,jdbcType=BIGINT},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      content = #{content,jdbcType=BIGINT},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <!--根据条件查询-->
+    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+          aav.*,
+          d.name as dept_name,
+          u.realname AS create_username
+        FROM
+          tab_pb_activities_assess_verify aav
+        LEFT JOIN sys_dept d ON aav.dept_id = d.dept_id
+        LEFT JOIN sys_user u ON aav.create_userid = u.user_id
+        <where>
+            <include refid="Base_WhereCase_List"/>
+        </where>
+        ORDER BY aav.create_time DESC
+    </select>
+
+    <!--根据评议ID查询审核信息-->
+    <select id="selectByAssessId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT * FROM tab_pb_activities_assess_verify WHERE assess_id = #{assessId} AND ebl_flag = 1
+    </select>
+
+    <!--根据评议ID逻辑删除评议审核数据-->
+    <update id="logicDeleteByAssessId" parameterType="java.lang.Long">
+        UPDATE tab_pb_activities_assess_verify SET ebl_flag = 0 WHERE assess_id = #{assessId}
+    </update>
+</mapper>

@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbFlowInMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbFlowIn">
+        <id column="flow_in_id" jdbcType="BIGINT" property="flowInId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="flow_in_date" jdbcType="TIMESTAMP" property="flowInDate"/>
+        <result column="flow_in_type" jdbcType="BIGINT" property="flowInType"/>
+        <result column="flow_in_range" jdbcType="BIGINT" property="flowInRange"/>
+        <result column="flow_in_reason" jdbcType="VARCHAR" property="flowInReason"/>
+        <result column="old_place" jdbcType="VARCHAR" property="oldPlace"/>
+        <result column="old_unit_name" jdbcType="VARCHAR" property="oldUnitName"/>
+        <result column="old_orgnize_id" jdbcType="BIGINT" property="oldOrgnizeId"/>
+        <result column="old_orgnize_code" jdbcType="VARCHAR" property="oldOrgnizeCode"/>
+        <result column="old_orgnize_name" jdbcType="VARCHAR" property="oldOrgnizeName"/>
+        <result column="old_orgnize_phone" jdbcType="VARCHAR" property="oldOrgnizePhone"/>
+        <result column="old_orgnize_contactor" jdbcType="VARCHAR" property="oldOrgnizeContactor"/>
+        <result column="old_contact_phone" jdbcType="VARCHAR" property="oldContactPhone"/>
+        <result column="old_unit_postcode" jdbcType="VARCHAR" property="oldUnitPostcode"/>
+        <result column="return_date" jdbcType="TIMESTAMP" property="returnDate"/>
+        <result column="return_tag" jdbcType="TINYINT" property="returnTag"/>
+        <result column="flow_out_id" jdbcType="BIGINT" property="flowOutId"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="flow_in_state" jdbcType="BIGINT" property="flowInState"/>
+        <result column="lost_time" jdbcType="TIMESTAMP" property="lostTime"/>
+        <result column="link_status" jdbcType="BIGINT" property="linkStatus"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="TabPbFlowInDtoResultMap" type="com.yizheng.partybuilding.dto.TabPbFlowInDto">
+        <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
+        <result column="gender" jdbcType="BIGINT" property="gender"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="flow_to_org_name" jdbcType="VARCHAR" property="flowToOrgName"/>
+        <result column="flowOutDate" jdbcType="TIMESTAMP" property="flowOutDate"/>
+        <result column="outProfession" jdbcType="VARCHAR" property="outProfession"/>
+        <result column="flow_from_org_phone" jdbcType="VARCHAR" property="flowFromOrgPhone"/>
+        <result column="flow_from_org_contactor" jdbcType="VARCHAR" property="flowFromOrgContactor"/>
+        <result column="flow_to_org_contactor" jdbcType="VARCHAR" property="flowToOrgContactor"/>
+        <result column="flow_to_org_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    flow_in_id, org_id, user_id, flow_in_date, flow_in_type, flow_in_range, flow_in_reason, 
+    old_place, old_unit_name, old_orgnize_id, old_orgnize_code, old_orgnize_name, old_orgnize_phone, 
+    old_orgnize_contactor, old_contact_phone, old_unit_postcode, return_date, return_tag, 
+    flow_out_id, ebl_flag, del_flag, order_num, description, create_time, create_userid, 
+    create_username, update_time, update_userid, update_username, version,flow_in_state
+  </sql>
+    <sql id="Base_FlowIn_List">
+        t.flow_in_id,
+		t.org_id,
+		t.user_id,
+		t.flow_in_date,
+		t.flow_in_type,
+		t.flow_in_range,
+		t.flow_in_reason,
+		t.old_place,
+		t.old_unit_name,
+		t.old_orgnize_id,
+		t.old_orgnize_code,
+		( SELECT NAME FROM sys_dept WHERE dept_id = t.old_orgnize_id ) AS old_orgnize_name,
+		t.old_orgnize_phone,
+		t.old_orgnize_contactor,
+		t.old_contact_phone,
+		t.old_unit_postcode,
+		t.return_date,
+		t.return_tag,
+		t.flow_out_id,
+		t.ebl_flag,
+		t.del_flag,
+		t.order_num,
+		t.description,
+		t.create_time,
+		t.create_userid,
+		t.create_username,
+		t.update_time,
+		t.update_userid,
+		t.update_username,
+		t.version,
+		t.flow_in_state,
+		s.username,
+		s.id_card_no,
+		s.gender,
+		s.phone,
+		t.lost_time,
+		t.link_status,
+		( SELECT NAME FROM sys_dept WHERE dept_id = t.org_id ) AS flow_to_org_name ,
+		f.flow_out_date as flowOutDate,
+		s.flow_to_org_contactor,
+        s.flow_to_org_phone,
+        s.flow_from_org_contactor,
+        s.flow_from_org_phone,
+		f.out_profession as outProfession
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_flow_in
+        where flow_in_id = #{flowInId,jdbcType=BIGINT} and del_flag=0
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_flow_in
+    where flow_in_id = #{flowInId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbFlowIn">
+    insert into tab_pb_flow_in (flow_in_id, org_id, user_id, 
+      flow_in_date, flow_in_type, flow_in_range, 
+      flow_in_reason, old_place, old_unit_name, 
+      old_orgnize_id, old_orgnize_code, old_orgnize_name, 
+      old_orgnize_phone, old_orgnize_contactor, old_contact_phone, 
+      old_unit_postcode, return_date, return_tag, 
+      flow_out_id, ebl_flag, del_flag, 
+      order_num, description, create_time, 
+      create_userid, create_username, update_time, 
+      update_userid, update_username, version,flow_in_state
+      )
+    values (#{flowInId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{flowInDate,jdbcType=TIMESTAMP}, #{flowInType,jdbcType=BIGINT}, #{flowInRange,jdbcType=BIGINT}, 
+      #{flowInReason,jdbcType=VARCHAR}, #{oldPlace,jdbcType=VARCHAR}, #{oldUnitName,jdbcType=VARCHAR}, 
+      #{oldOrgnizeId,jdbcType=BIGINT}, #{oldOrgnizeCode,jdbcType=VARCHAR}, #{oldOrgnizeName,jdbcType=VARCHAR}, 
+      #{oldOrgnizePhone,jdbcType=VARCHAR}, #{oldOrgnizeContactor,jdbcType=VARCHAR}, #{oldContactPhone,jdbcType=VARCHAR}, 
+      #{oldUnitPostcode,jdbcType=VARCHAR}, #{returnDate,jdbcType=TIMESTAMP}, #{returnTag,jdbcType=TINYINT}, 
+      #{flowOutId,jdbcType=BIGINT}, #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, 
+      #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT},#{flowInState,jdbcType=BIGINT}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbFlowIn">
+        insert into tab_pb_flow_in
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="flowInId != null">
+                flow_in_id,
+            </if>
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="flowInDate != null">
+                flow_in_date,
+            </if>
+            <if test="flowInType != null">
+                flow_in_type,
+            </if>
+            <if test="flowInRange != null">
+                flow_in_range,
+            </if>
+            <if test="flowInReason != null">
+                flow_in_reason,
+            </if>
+            <if test="oldPlace != null">
+                old_place,
+            </if>
+            <if test="oldUnitName != null">
+                old_unit_name,
+            </if>
+            <if test="oldOrgnizeId != null">
+                old_orgnize_id,
+            </if>
+            <if test="oldOrgnizeCode != null">
+                old_orgnize_code,
+            </if>
+            <if test="oldOrgnizeName != null">
+                old_orgnize_name,
+            </if>
+            <if test="oldOrgnizePhone != null">
+                old_orgnize_phone,
+            </if>
+            <if test="oldOrgnizeContactor != null">
+                old_orgnize_contactor,
+            </if>
+            <if test="oldContactPhone != null">
+                old_contact_phone,
+            </if>
+            <if test="oldUnitPostcode != null">
+                old_unit_postcode,
+            </if>
+            <if test="returnDate != null">
+                return_date,
+            </if>
+            <if test="returnTag != null">
+                return_tag,
+            </if>
+            <if test="flowOutId != null">
+                flow_out_id,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="flowInState != null">
+                flow_in_state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="flowInId != null">
+                #{flowInId,jdbcType=BIGINT},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="flowInDate != null">
+                #{flowInDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flowInType != null">
+                #{flowInType,jdbcType=BIGINT},
+            </if>
+            <if test="flowInRange != null">
+                #{flowInRange,jdbcType=BIGINT},
+            </if>
+            <if test="flowInReason != null">
+                #{flowInReason,jdbcType=VARCHAR},
+            </if>
+            <if test="oldPlace != null">
+                #{oldPlace,jdbcType=VARCHAR},
+            </if>
+            <if test="oldUnitName != null">
+                #{oldUnitName,jdbcType=VARCHAR},
+            </if>
+            <if test="oldOrgnizeId != null">
+                #{oldOrgnizeId,jdbcType=BIGINT},
+            </if>
+            <if test="oldOrgnizeCode != null">
+                #{oldOrgnizeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="oldOrgnizeName != null">
+                #{oldOrgnizeName,jdbcType=VARCHAR},
+            </if>
+            <if test="oldOrgnizePhone != null">
+                #{oldOrgnizePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="oldOrgnizeContactor != null">
+                #{oldOrgnizeContactor,jdbcType=VARCHAR},
+            </if>
+            <if test="oldContactPhone != null">
+                #{oldContactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="oldUnitPostcode != null">
+                #{oldUnitPostcode,jdbcType=VARCHAR},
+            </if>
+            <if test="returnDate != null">
+                #{returnDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="returnTag != null">
+                #{returnTag,jdbcType=TINYINT},
+            </if>
+            <if test="flowOutId != null">
+                #{flowOutId,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="flowInState != null">
+                #{flowInState,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByFlowOutIdKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbFlowIn">
+        update tab_pb_flow_in
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="flowInDate != null">
+                flow_in_date = #{flowInDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flowInType != null">
+                flow_in_type = #{flowInType,jdbcType=BIGINT},
+            </if>
+            <if test="flowInRange != null">
+                flow_in_range = #{flowInRange,jdbcType=BIGINT},
+            </if>
+            <if test="flowInReason != null">
+                flow_in_reason = #{flowInReason,jdbcType=VARCHAR},
+            </if>
+            <if test="oldPlace != null">
+                old_place = #{oldPlace,jdbcType=VARCHAR},
+            </if>
+            <if test="oldUnitName != null">
+                old_unit_name = #{oldUnitName,jdbcType=VARCHAR},
+            </if>
+            <if test="oldOrgnizeId != null">
+                old_orgnize_id = #{oldOrgnizeId,jdbcType=BIGINT},
+            </if>
+            <if test="oldOrgnizeCode != null">
+                old_orgnize_code = #{oldOrgnizeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="oldOrgnizeName != null">
+                old_orgnize_name = #{oldOrgnizeName,jdbcType=VARCHAR},
+            </if>
+            <if test="oldOrgnizePhone != null">
+                old_orgnize_phone = #{oldOrgnizePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="oldOrgnizeContactor != null">
+                old_orgnize_contactor = #{oldOrgnizeContactor,jdbcType=VARCHAR},
+            </if>
+            <if test="oldContactPhone != null">
+                old_contact_phone = #{oldContactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="oldUnitPostcode != null">
+                old_unit_postcode = #{oldUnitPostcode,jdbcType=VARCHAR},
+            </if>
+            <if test="returnDate != null">
+                return_date = #{returnDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="returnTag != null">
+                return_tag = #{returnTag,jdbcType=TINYINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="flowInState != null">
+                flow_in_state = #{flowInState,jdbcType=BIGINT},
+            </if>
+        </set>
+        where flow_out_id = #{flowOutId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbFlowIn">
+        update tab_pb_flow_in
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="flowInDate != null">
+                flow_in_date = #{flowInDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="flowInType != null">
+                flow_in_type = #{flowInType,jdbcType=BIGINT},
+            </if>
+            <if test="flowInRange != null">
+                flow_in_range = #{flowInRange,jdbcType=BIGINT},
+            </if>
+            <if test="flowInReason != null">
+                flow_in_reason = #{flowInReason,jdbcType=VARCHAR},
+            </if>
+            <if test="oldPlace != null">
+                old_place = #{oldPlace,jdbcType=VARCHAR},
+            </if>
+            <if test="oldUnitName != null">
+                old_unit_name = #{oldUnitName,jdbcType=VARCHAR},
+            </if>
+            <if test="oldOrgnizeId != null">
+                old_orgnize_id = #{oldOrgnizeId,jdbcType=BIGINT},
+            </if>
+            <if test="oldOrgnizeCode != null">
+                old_orgnize_code = #{oldOrgnizeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="oldOrgnizeName != null">
+                old_orgnize_name = #{oldOrgnizeName,jdbcType=VARCHAR},
+            </if>
+            <if test="oldOrgnizePhone != null">
+                old_orgnize_phone = #{oldOrgnizePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="oldOrgnizeContactor != null">
+                old_orgnize_contactor = #{oldOrgnizeContactor,jdbcType=VARCHAR},
+            </if>
+            <if test="oldContactPhone != null">
+                old_contact_phone = #{oldContactPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="oldUnitPostcode != null">
+                old_unit_postcode = #{oldUnitPostcode,jdbcType=VARCHAR},
+            </if>
+            <if test="returnDate != null">
+                return_date = #{returnDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="returnTag != null">
+                return_tag = #{returnTag,jdbcType=TINYINT},
+            </if>
+            <if test="flowOutId != null">
+                flow_out_id = #{flowOutId,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="flowInState != null">
+                flow_in_state = #{flowInState,jdbcType=BIGINT},
+            </if>
+            <if test="lostTime != null">
+                lost_time = #{lostTime},
+            </if>
+            <if test="linkStatus != null">
+                link_status = #{linkStatus},
+            </if>
+        </set>
+        where flow_in_id = #{flowInId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbFlowIn">
+    update tab_pb_flow_in
+    set org_id = #{orgId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      flow_in_date = #{flowInDate,jdbcType=TIMESTAMP},
+      flow_in_type = #{flowInType,jdbcType=BIGINT},
+      flow_in_range = #{flowInRange,jdbcType=BIGINT},
+      flow_in_reason = #{flowInReason,jdbcType=VARCHAR},
+      old_place = #{oldPlace,jdbcType=VARCHAR},
+      old_unit_name = #{oldUnitName,jdbcType=VARCHAR},
+      old_orgnize_id = #{oldOrgnizeId,jdbcType=BIGINT},
+      old_orgnize_code = #{oldOrgnizeCode,jdbcType=VARCHAR},
+      old_orgnize_name = #{oldOrgnizeName,jdbcType=VARCHAR},
+      old_orgnize_phone = #{oldOrgnizePhone,jdbcType=VARCHAR},
+      old_orgnize_contactor = #{oldOrgnizeContactor,jdbcType=VARCHAR},
+      old_contact_phone = #{oldContactPhone,jdbcType=VARCHAR},
+      old_unit_postcode = #{oldUnitPostcode,jdbcType=VARCHAR},
+      return_date = #{returnDate,jdbcType=TIMESTAMP},
+      return_tag = #{returnTag,jdbcType=TINYINT},
+      flow_out_id = #{flowOutId,jdbcType=BIGINT},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT},
+      flow_in_state = #{flowInState,jdbcType=BIGINT}
+    where flow_in_id = #{flowInId,jdbcType=BIGINT}
+  </update>
+
+
+    <!--流入党员列表查询-->
+    <select id="selectListByFlowInDto" parameterType="java.util.Map" resultMap="TabPbFlowInDtoResultMap">
+        SELECT
+         <include refid="Base_FlowIn_List" />
+        FROM
+        tab_pb_flow_in AS t
+        LEFT JOIN sys_user AS s ON t.user_id = s.user_id
+        LEFT JOIN sys_dept d ON t.org_id = d.dept_id
+        LEFT JOIN tab_pb_flow_out f on t.flow_out_id=f.flow_out_id
+        AND d.del_flag = '0'
+        where
+        1=1
+        <if test="username != null and username != ''">
+            AND s.username like CONCAT('%',#{username},'%')
+        </if>
+        <if test="idCardNo != null and idCardNo != ''">
+            AND s.id_card_no = #{idCardNo}
+        </if>
+        <!--组织范围  0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <if test="orgRange != null and orgRange != ''">
+            <choose>
+                <when test="orgRange == 1">
+                    AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{rangeDeptId}, d.full_path)
+                </when>
+            </choose>
+        </if>
+        <if test="orgRange == null or orgRange.toString() == ''">
+            AND d.dept_id = #{rangeDeptId}
+        </if>
+        AND t.del_flag = '0'
+        order by
+        t.flow_in_id
+        desc
+    </select>
+
+    <!--单个流入党员详情查询-->
+    <select id="selectFlowInByFlowId" parameterType="java.lang.Long" resultMap="TabPbFlowInDtoResultMap">
+       SELECT
+        <include refid="Base_FlowIn_List" />
+	    FROM
+		tab_pb_flow_in AS t
+		LEFT JOIN sys_user AS s ON t.user_id = s.user_id
+		LEFT JOIN sys_dept d ON t.org_id = d.dept_id
+		LEFT JOIN tab_pb_flow_out f on t.flow_out_id=f.flow_out_id
+        where
+        t.flow_in_id = #{flowInId,jdbcType=BIGINT}
+    </select>
+
+
+</mapper>

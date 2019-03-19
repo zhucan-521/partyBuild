@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduSubscribeMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduSubscribe">
+        <id column="subscribe_id" jdbcType="BIGINT" property="subscribeId"/>
+        <result column="extend_info" jdbcType="VARCHAR" property="extendInfo"/>
+        <result column="like_type" jdbcType="VARCHAR" property="likeType"/>
+        <result column="bus_id" jdbcType="BIGINT" property="busId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="subscribe_name" jdbcType="VARCHAR" property="subscribeName"/>
+        <result column="cell_phone" jdbcType="VARCHAR" property="cellPhone"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    subscribe_id, like_type, bus_id, user_id, create_time
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        *
+        from tab_pb_edu_subscribe
+        where subscribe_id = #{subscribeId,jdbcType=BIGINT}
+        and del_flag= '0'
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_edu_subscribe
+    where subscribe_id = #{subscribeId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert"  keyProperty="subscribeId" useGeneratedKeys="true"   parameterType="com.yizheng.partybuilding.entity.TabPbEduSubscribe">
+    insert into tab_pb_edu_subscribe (subscribe_id, like_type, bus_id, 
+      user_id, create_time)
+    values (#{subscribeId,jdbcType=BIGINT}, #{likeType,jdbcType=VARCHAR}, #{busId,jdbcType=BIGINT}, 
+      #{userId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubscribe">
+        insert into tab_pb_edu_subscribe
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="subscribeId != null">
+                subscribe_id,
+            </if>
+            <if test="likeType != null">
+                like_type,
+            </if>
+            <if test="busId != null">
+                bus_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="extendInfo != null">
+                extend_info,
+            </if>
+            <if test="subscribeName != null">
+                subscribe_name,
+            </if>
+            <if test="cellPhone != null">
+                cell_phone,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="subscribeId != null">
+                #{subscribeId,jdbcType=BIGINT},
+            </if>
+            <if test="likeType != null">
+                #{likeType,jdbcType=VARCHAR},
+            </if>
+            <if test="busId != null">
+                #{busId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="extendInfo != null">
+                #{extendInfo,jdbcType=TIMESTAMP},
+            </if>
+            <if test="subscribeName != null">
+                #{subscribeName},
+            </if>
+            <if test="cellPhone != null">
+                #{cellPhone},
+            </if>
+            <if test="title != null">
+                #{title},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubscribe">
+        update tab_pb_edu_subscribe
+        <set>
+            <if test="likeType != null">
+                like_type = #{likeType,jdbcType=VARCHAR},
+            </if>
+            <if test="busId != null">
+                bus_id = #{busId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="likeType != null">
+                like_type = #{likeType,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=TIMESTAMP},
+            </if>
+            <if test="extendInfo != null">
+                extend_info = #{extendInfo,jdbcType=TIMESTAMP},
+            </if>
+            <if test="subscribeName != null">
+                subscribe_name = #{subscribeName},
+            </if>
+            <if test="cellPhone != null">
+                cell_phone = #{cellPhone},
+            </if>
+            <if test="title != null">
+                title  = #{title},
+            </if>
+            <if test="remark != null">
+                remark  = #{remark},
+            </if>
+        </set>
+        where subscribe_id = #{subscribeId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubscribe">
+    update tab_pb_edu_subscribe
+    set like_type = #{likeType,jdbcType=VARCHAR},
+      bus_id = #{busId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where subscribe_id = #{subscribeId,jdbcType=BIGINT}
+  </update>
+
+    <select id="selectSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubscribe" resultMap="BaseResultMap">
+       select * from tab_pb_edu_subscribe
+       <where>
+           <if test="busId != null">
+             and  bus_id=#{busId}
+           </if>
+           <if test="likeType != null">
+               and like_type=#{likeType}
+           </if>
+           <if test="subscribeId != null">
+               and subscribe_id= #{subscribeId}
+           </if>
+             and  del_flag="0"
+       </where>
+    </select>
+
+    <select id="selectSubScribeCount" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubscribe" resultType="java.lang.Long">
+    select count(*) from tab_pb_edu_subscribe
+    <where>
+        <if test="busId !=null">
+            and  bus_id=#{busId}
+        </if>
+        <if test="likeType">
+            and like_type=#{likeType}
+        </if>
+    </where>
+    </select>
+
+    <!--判断同一个人是否预约过同一个业务-->
+    <select id="selectTabPbEduSubscribeByUserId" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubscribe" resultMap="BaseResultMap">
+      select
+      *
+      from tab_pb_edu_subscribe
+      where
+      user_id=#{userId}  and bus_id=#{busId}  and  like_type=#{likeType}
+      limit 1
+    </select>
+
+    <!--预约人数-->
+    <select id="selectSubCount" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubscribe" resultType="Long">
+       select
+       count(*)
+       from
+       tab_pb_edu_subscribe
+       where
+       bus_id=#{busId} and  like_type=#{likeType}
+    </select>
+
+
+</mapper>

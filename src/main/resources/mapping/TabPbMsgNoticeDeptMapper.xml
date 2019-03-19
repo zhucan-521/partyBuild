@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbMsgNoticeDeptMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbMsgNoticeDept">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="notice_id" jdbcType="BIGINT" property="noticeId"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="recevie_user_id" jdbcType="BIGINT" property="recevieUserId"/>
+        <result column="recevie_username" jdbcType="VARCHAR" property="recevieUsername"/>
+        <result column="recevie_time" jdbcType="TIMESTAMP" property="recevieTime"/>
+        <result column="photo" property="photo"/>
+        <result column="doc" property="doc"/>
+        <result column="notice_title" property="noticeTitle"/>
+        <result column="notice_type" property="noticeType"/>
+        <result column="publish_time" property="publishTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, notice_id, dept_id, dept_name, recevie_user_id, recevie_username, recevie_time
+    </sql>
+    <!--查询list-->
+    <select id="selectList" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNoticeDept" resultMap="BaseResultMap">
+        SELECT dept.*,notice.notice_title,notice.notice_type,notice.publish_time
+        ,COUNT(if(attac.attachment_file_type='58992',TRUE,NULL)) AS photo,
+        COUNT(if(attac.attachment_file_type='58993',TRUE,NULL)) AS doc
+        FROM tab_pb_msg_notice notice
+        JOIN tab_pb_msg_notice_dept dept ON notice.id = dept.notice_id
+        <if test="noticeId == null">
+            AND notice.state = '1'
+        </if>
+        AND notice.del_flag = '0'
+        <if test="stateTime != null">
+            AND date_format(notice.publish_time, '%Y-%m-%d') &gt;= date_format(#{stateTime}, '%Y-%m-%d')
+        </if>
+        <if test="endTime != null ">
+            AND date_format(notice.publish_time, '%Y-%m-%d') &lt;= date_format(#{endTime}, '%Y-%m-%d')
+        </if>
+        LEFT JOIN tab_pb_attachment attac ON attac.host_id = dept.notice_id
+        AND attac.attachment_type = '50'
+        and attac.del_flag = '0'
+        <where>
+            <if test="deptId != null">
+                and dept.dept_id = #{deptId}
+            </if>
+            <choose>
+                <when test="noticeId != null">
+                    and dept.notice_id = #{noticeId}
+                </when>
+                <otherwise>
+                    and notice.publish_time IS NOT NULL
+                </otherwise>
+            </choose>
+        </where>
+        GROUP BY dept.id
+    </select>
+
+    <!--查询单条数据-->
+    <select id="findByDept" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_msg_notice_dept
+        where id = #{id}
+    </select>
+
+    <!--根据主表id查询list数据-->
+    <select id="selectDeptList" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_msg_notice_dept
+        where notice_id = #{noticeId};
+    </select>
+
+    <!--删除-->
+    <delete id="deleteByPrimaryKey" parameterType="java.util.List">
+    delete from tab_pb_msg_notice_dept
+    where id in
+    <foreach collection="list" item="item" open="(" close=")" separator=",">
+        ${item}
+    </foreach>
+    </delete>
+
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNoticeDept">
+        insert into tab_pb_msg_notice_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="noticeId != null">
+                notice_id,
+            </if>
+            <if test="deptId != null">
+                dept_id,
+            </if>
+            <if test="deptName != null">
+                dept_name,
+            </if>
+            <if test="recevieUserId != null">
+                recevie_user_id,
+            </if>
+            <if test="recevieUsername != null">
+                recevie_username,
+            </if>
+            <if test="recevieTime != null">
+                recevie_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="noticeId != null">
+                #{noticeId,jdbcType=BIGINT},
+            </if>
+            <if test="deptId != null">
+                #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="deptName != null">
+                #{deptName,jdbcType=VARCHAR},
+            </if>
+            <if test="recevieUserId != null">
+                #{recevieUserId,jdbcType=BIGINT},
+            </if>
+            <if test="recevieUsername != null">
+                #{recevieUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="recevieTime != null">
+                #{recevieTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <!--签收时候用-->
+    <update id="updateSigning" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNoticeDept">
+        update tab_pb_msg_notice_dept
+        <set>
+            <if test="recevieUserId != null">
+                recevie_user_id = #{recevieUserId,jdbcType=BIGINT},
+            </if>
+            <if test="recevieUsername != null">
+                recevie_username = #{recevieUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="recevieTime != null">
+                recevie_time = #{recevieTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNoticeDept">
+    update tab_pb_msg_notice_dept
+    set notice_id = #{noticeId,jdbcType=BIGINT},
+      dept_id = #{deptId,jdbcType=BIGINT},
+      dept_name = #{deptName,jdbcType=VARCHAR},
+      recevie_user_id = #{recevieUserId,jdbcType=BIGINT},
+      recevie_username = #{recevieUsername,jdbcType=VARCHAR},
+      recevie_time = #{recevieTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

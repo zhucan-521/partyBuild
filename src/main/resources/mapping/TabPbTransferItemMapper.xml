@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbTransferItemMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbTransferItem">
+        <id column="item_id" jdbcType="BIGINT" property="itemId"/>
+        <result column="transfer_id" jdbcType="BIGINT" property="transferId"/>
+        <result column="sh_index" jdbcType="INTEGER" property="shIndex"/>
+        <result column="opt_time" jdbcType="TIMESTAMP" property="optTime"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="opt_result" jdbcType="VARCHAR" property="optResult"/>
+        <result column="pb_contacts" jdbcType="VARCHAR" property="pbContacts"/>
+        <result column="pb_phone" jdbcType="VARCHAR" property="pbPhone"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="revoke_flag" jdbcType="VARCHAR" property="revokeFlag"/>
+        <result column="is_sp_flag" jdbcType="VARCHAR" property="isSpFlag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        item_id, transfer_id, sh_index, opt_time, status, opt_result, pb_contacts,
+        pb_phone, create_time, create_userid,update_time, dept_name, dept_id, user_id,revoke_flag,is_sp_flag
+  </sql>
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_transfer_item
+        where item_id = #{itemId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByIdAndTransferId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_transfer_item
+        where item_id = #{itemId,jdbcType=BIGINT} and transfer_id = #{transferId,jdbcType=BIGINT}
+    </select>
+
+    <select id="listByTransferId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_transfer_item
+        where transfer_id = #{transferId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getNextItemByTransferIdAndIndex" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_transfer_item
+        where transfer_id = #{transferId,jdbcType=BIGINT} and sh_index = #{shIndex,jdbcType=INTEGER}
+    </select>
+
+    <!-- 获取已审批的数量 -->
+    <select id="approvalCount" resultType="java.lang.Integer">
+       select count(*) from tab_pb_transfer_item where transfer_id=#{transferId,jdbcType=BIGINT} and is_sp_flag=#{isSpFlag,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbTransferItem">
+        insert into tab_pb_transfer_item (item_id, transfer_id
+      sh_index, opt_time, status, 
+      opt_result, pb_contacts, pb_phone,
+        create_time, create_userid, update_time,dept_name,
+        dept_id, user_id,revoke_flag,is_sp_flag)
+        values (#{itemId,jdbcType=BIGINT}, #{transferId,jdbcType=BIGINT},
+      #{shIndex,jdbcType=INTEGER}, #{optTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
+      #{optResult,jdbcType=VARCHAR}, #{pbContacts,jdbcType=VARCHAR}, #{pbPhone,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{updateTime,jdbcType=TIMESTAMP},
+        #{deptName,jdbcType=VARCHAR},
+        #{deptId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{revokeFlag,jdbcType=VARCHAR},
+        #{isSpFlag,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbTransferItem">
+        insert into tab_pb_transfer_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="itemId != null">
+                item_id,
+            </if>
+            <if test="transferId != null">
+                transfer_id,
+            </if>
+            <if test="shIndex != null">
+                sh_index,
+            </if>
+            <if test="optTime != null">
+                opt_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="optResult != null">
+                opt_result,
+            </if>
+            <if test="pbContacts != null">
+                pb_contacts,
+            </if>
+            <if test="pbPhone != null">
+                pb_phone,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="deptName != null">
+                dept_name,
+            </if>
+            <if test="deptId != null">
+                dept_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="revokeFlag != null">
+                revoke_flag,
+            </if>
+            <if test="isSpFlag != null">
+                is_sp_flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="itemId != null">
+                #{itemId,jdbcType=BIGINT},
+            </if>
+            <if test="transferId != null">
+                #{transferId,jdbcType=BIGINT},
+            </if>
+            <if test="shIndex != null">
+                #{shIndex,jdbcType=INTEGER},
+            </if>
+            <if test="optTime != null">
+                #{optTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="optResult != null">
+                #{optResult,jdbcType=VARCHAR},
+            </if>
+            <if test="pbContacts != null">
+                #{pbContacts,jdbcType=VARCHAR},
+            </if>
+            <if test="pbPhone != null">
+                #{pbPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deptName != null">
+                #{deptName,jdbcType=VARCHAR},
+            </if>
+            <if test="deptId != null">
+                #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="revokeFlag != null">
+                #{revokeFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="isSpFlag != null">
+                #{isSpFlag,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateBySelective" parameterType="com.yizheng.partybuilding.entity.TabPbTransferItem">
+        update tab_pb_transfer_item
+        <set>
+            <if test="transferId != null">
+                transfer_id = #{transferId,jdbcType=BIGINT},
+            </if>
+            <if test="shIndex != null">
+                sh_index = #{shIndex,jdbcType=INTEGER},
+            </if>
+            <if test="optTime != null">
+                opt_time = #{optTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="optResult != null">
+                opt_result = #{optResult,jdbcType=VARCHAR},
+            </if>
+            <if test="pbContacts != null">
+                pb_contacts = #{pbContacts,jdbcType=VARCHAR},
+            </if>
+            <if test="pbPhone != null">
+                pb_phone = #{pbPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="deptName != null">
+                dept_name = #{deptName,jdbcType=VARCHAR},
+            </if>
+            <if test="deptId != null">
+                dept_id = #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="revokeFlag != null">
+                revoke_flag = #{revokeFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="isSpFlag != null">
+                is_sp_flag = #{isSpFlag,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where item_id = #{itemId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbTransferItem">
+        update tab_pb_transfer_item
+        set transfer_id = #{transferId,jdbcType=BIGINT},
+        sh_index = #{shIndex,jdbcType=INTEGER},
+        opt_time = #{optTime,jdbcType=TIMESTAMP},
+        status = #{status,jdbcType=INTEGER},
+        opt_result = #{optResult,jdbcType=VARCHAR},
+        pb_contacts = #{pbContacts,jdbcType=VARCHAR},
+        pb_phone = #{pbPhone,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_userid = #{createUserid,jdbcType=BIGINT},
+        dept_name = #{deptName,jdbcType=VARCHAR},
+        dept_id = #{deptId,jdbcType=BIGINT},
+        user_id = #{userId,jdbcType=BIGINT},
+        revoke_flag = #{revokeFlag,jdbcType=VARCHAR},
+        is_sp_flag = #{isSpFlag,jdbcType=VARCHAR}
+        where item_id = #{itemId,jdbcType=BIGINT}
+    </update>
+
+    <!-- 更新审批状态 -->
+    <update id="updateIsSpFlag" parameterType="com.yizheng.partybuilding.entity.TabPbTransferItem">
+        update tab_pb_transfer_item
+        set is_sp_flag = #{isSpFlag,jdbcType=VARCHAR} , update_time = now()
+        where item_id = #{itemId,jdbcType=BIGINT}
+    </update>
+</mapper>

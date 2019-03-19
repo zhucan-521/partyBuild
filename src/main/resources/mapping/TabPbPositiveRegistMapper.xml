@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbPositiveRegistMapper">
+  <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbPositiveRegist">
+    <id column="positive_regist_id" jdbcType="BIGINT" property="positiveRegistId" />
+    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="regist_date" jdbcType="VARCHAR" property="registDate" />
+    <result column="regist_comment" jdbcType="VARCHAR" property="registComment" />
+    <result column="from_orgnize_id" jdbcType="BIGINT" property="fromOrgnizeId" />
+    <result column="from_orgnize_code" jdbcType="VARCHAR" property="fromOrgnizeCode" />
+    <result column="from_orgnize_name" jdbcType="VARCHAR" property="fromOrgnizeName" />
+    <result column="from_orgnize_place" jdbcType="VARCHAR" property="fromOrgnizePlace" />
+    <result column="process_man" jdbcType="VARCHAR" property="processMan" />
+    <result column="process_time" jdbcType="TIMESTAMP" property="processTime" />
+    <result column="process_result" jdbcType="VARCHAR" property="processResult" />
+    <result column="revoke_tag" jdbcType="TINYINT" property="revokeTag" />
+    <result column="revoke_tomment" jdbcType="VARCHAR" property="revokeTomment" />
+    <result column="revoke_date" property="revokeDate"/>
+    <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag" />
+    <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
+    <result column="order_num" jdbcType="BIGINT" property="orderNum" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_userid" jdbcType="BIGINT" property="createUserid" />
+    <result column="create_username" jdbcType="VARCHAR" property="createUsername" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_userid" jdbcType="BIGINT" property="updateUserid" />
+    <result column="update_username" jdbcType="VARCHAR" property="updateUsername" />
+    <result column="version" jdbcType="BIGINT" property="version" />
+    <result column="attachment_instance" property="attachmentInstance"/>
+    <result column="attachment_description" property="attachmentDescription"/>
+    <collection property="sysUserList" ofType="com.yizheng.partybuilding.system.entity.SysUser">
+      <id column="user_id" property="userId"></id>
+      <result column="username" property="username"/>
+      <result column="gender" property="gender"/>
+      <result column="age" property="age"/>
+      <result column="phone" property="phone"/>
+      <result column="identity_type" property="identityType"/>
+      <result column="id_card_no" property="idCardNo"/>
+      <result column="family_address" property="familyAddress"/>
+    </collection>
+    <collection property="sysDeptList" ofType="com.yizheng.partybuilding.dto.SysDeptDto">
+      <id column="dept_id" property="deptId"/>
+      <result column="name" property="name"/>
+      <result column="dept_name" property="deptName"/>
+    </collection>
+  </resultMap>
+  <!--保存报到信息-->
+  <insert id="addPositiveRegist" parameterType="com.yizheng.partybuilding.entity.TabPbPositiveRegist" useGeneratedKeys="true" keyProperty="positiveRegistId">
+    insert into tab_pb_positive_regist
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="deptId != null">
+        dept_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="registDate != null">
+        regist_date,
+      </if>
+      <if test="fromOrgnizeId != null">
+        from_orgnize_id,
+      </if>
+      <if test="revokeTag != null">
+        revoke_tag,
+      </if>
+      <if test="orderNum != null">
+        order_num,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUserid != null">
+        create_userid,
+      </if>
+      <if test="createUsername != null">
+        create_username,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateUserid != null">
+        update_userid,
+      </if>
+      <if test="updateUsername != null">
+        update_username,
+      </if>
+      <if test="version != null">
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="deptId != null">
+        #{deptId},
+      </if>
+      <if test="userId != null">
+        #{userId},
+      </if>
+      <if test="registDate != null">
+        #{registDate},
+      </if>
+      <if test="fromOrgnizeId != null">
+        #{fromOrgnizeId},
+      </if>
+      <if test="revokeTag != null">
+        #{revokeTag},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=BIGINT},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserid != null">
+        #{createUserid,jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null">
+        #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        #{updateUserid,jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        #{updateUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectListPage" parameterType="com.yizheng.partybuilding.entity.TabPbPositiveRegist" resultMap="BaseResultMap">
+    select regist.*,a.`name` AS dept_name,a.realname as username,a.gender,TIMESTAMPDIFF(YEAR, a.birthday, CURDATE()) AS age,a.phone,a.identity_type,a.id_card_no,
+    dept.`name`,attac.attachment_instance
+    from tab_pb_positive_regist regist
+    join (SELECT suser.*,dept.`name` FROM sys_user suser join sys_dept dept on suser.dept_id = dept.dept_id and suser.del_flag = 0 and dept.del_flag = 0) a
+	ON regist.user_id = a.user_id
+    join sys_dept dept on regist.dept_id = dept.dept_id and dept.del_flag = '0'
+    LEFT JOIN tab_pb_attachment attac ON attac.host_id = regist.positive_regist_id
+    AND attac.attachment_type = ${@com.yizheng.commons.util.AttachmentType@POSITIVE}
+    and attac.del_flag = '0'
+    WHERE true
+    <if test="orgRange != null and orgRange != ''">
+      <choose>
+        <when test="orgRange == 1">
+          AND (dept.dept_id = #{rangeDeptId} OR dept.parent_id = #{rangeDeptId})
+        </when>
+        <when test="orgRange == 2">
+          AND find_in_set(#{rangeDeptId}, dept.full_path)
+        </when>
+      </choose>
+    </if>
+    <if test="orgRange == null or orgRange.toString() == ''">
+      AND dept.dept_id = #{rangeDeptId}
+    </if>
+    <if test="userName != null and userName != ''">
+      and a.realname like CONCAT('%',#{userName},'%')
+    </if>
+    <if test="registDate != null and registDate != ''">
+      and regist_date = #{registDate}
+    </if>
+    <if test="revokeTag != null and revokeTag != ''">
+        and revoke_tag = #{revokeTag}
+    </if>
+
+    and  regist.del_flag = '0'
+  </select>
+  <update id="editPositive" parameterType="com.yizheng.partybuilding.entity.TabPbPositiveRegist">
+    update tab_pb_positive_regist
+    <set>
+      <if test="revokeTag != null">
+        revoke_tag = #{revokeTag},
+        <if test="revokeTag == 2">
+          revoke_date = #{revokeDate}
+        </if>
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        update_userid = #{updateUserid,jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        update_username = #{updateUsername,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where positive_regist_id = #{positiveRegistId}
+  </update>
+
+  <update id="deleteRegist" parameterType="com.yizheng.partybuilding.entity.TabPbPositiveRegist">
+    update tab_pb_positive_regist
+    set ebl_flag = 0, del_flag = 1,
+        update_time = #{updateTime}, update_userid = #{updateUserid},
+        update_username = #{updateUsername}
+    where positive_regist_id = #{positiveRegistId}
+  </update>
+
+  <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select regist.*,dept.name from tab_pb_positive_regist regist
+    join sys_dept dept on regist.dept_id = dept.dept_id and dept.del_flag = 0
+    where user_id = #{userId}
+    and regist.del_flag = 0 and revoke_tag = 1
+  </select>
+
+  <select id="editFindById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select regist.*,a.`name` AS dept_name,a.realname as username,a.gender,TIMESTAMPDIFF(YEAR, a.birthday, CURDATE()) AS age,a.phone,a.identity_type,a.id_card_no,
+    a.family_address,dept.`name`,attac.attachment_instance,attac.attachment_description
+    from tab_pb_positive_regist regist
+    join (SELECT suser.*,dept.`name` FROM sys_user suser join sys_dept dept on suser.dept_id = dept.dept_id and suser.del_flag = 0 and dept.del_flag = 0) a
+	ON regist.user_id = a.user_id
+    join sys_dept dept on regist.dept_id = dept.dept_id and dept.del_flag = 0
+    LEFT JOIN tab_pb_attachment attac ON attac.host_id = regist.positive_regist_id
+    AND attac.attachment_type = ${@com.yizheng.commons.util.AttachmentType@POSITIVE}
+    and attac.del_flag = 0
+    WHERE true
+    and  regist.del_flag = 0
+    and regist.positive_regist_id = #{positiveRegistId}
+  </select>
+</mapper>

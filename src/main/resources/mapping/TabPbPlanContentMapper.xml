@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbPlanContentMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbPlanContent">
+        <id column="plan_content_id" jdbcType="BIGINT" property="planContentId"/>
+        <result column="plan_id" jdbcType="BIGINT" property="planId"/>
+        <result column="active_type" jdbcType="BIGINT" property="activeType"/>
+        <result column="target_count" jdbcType="BIGINT" property="targetCount"/>
+        <result column="static_duration" jdbcType="BIGINT" property="staticDuration"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    plan_content_id, plan_id, active_type, target_count, static_duration, ebl_flag, del_flag, 
+    order_num, description, create_time, create_userid, create_username, update_time, 
+    update_userid, update_username, version
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_plan_content
+        where plan_content_id = #{planContentId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_plan_content
+    where plan_content_id = #{planContentId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbPlanContent">
+    insert into tab_pb_plan_content (plan_content_id, plan_id, active_type, 
+      target_count, static_duration, ebl_flag, 
+      del_flag, order_num, description, 
+      create_time, create_userid, create_username, 
+      update_time, update_userid, update_username, 
+      version)
+    values (#{planContentId,jdbcType=BIGINT}, #{planId,jdbcType=BIGINT}, #{activeType,jdbcType=BIGINT}, 
+      #{targetCount,jdbcType=BIGINT}, #{staticDuration,jdbcType=BIGINT}, #{eblFlag,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
+      #{version,jdbcType=BIGINT})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbPlanContent">
+        insert into tab_pb_plan_content
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="planContentId != null">
+                plan_content_id,
+            </if>
+            <if test="planId != null">
+                plan_id,
+            </if>
+            <if test="activeType != null">
+                active_type,
+            </if>
+            <if test="targetCount != null">
+                target_count,
+            </if>
+            <if test="staticDuration != null">
+                static_duration,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="planContentId != null">
+                #{planContentId,jdbcType=BIGINT},
+            </if>
+            <if test="planId != null">
+                #{planId,jdbcType=BIGINT},
+            </if>
+            <if test="activeType != null">
+                #{activeType,jdbcType=BIGINT},
+            </if>
+            <if test="targetCount != null">
+                #{targetCount,jdbcType=BIGINT},
+            </if>
+            <if test="staticDuration != null">
+                #{staticDuration,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbPlanContent">
+        update tab_pb_plan_content
+        <set>
+            <if test="planId != null">
+                plan_id = #{planId,jdbcType=BIGINT},
+            </if>
+            <if test="activeType != null">
+                active_type = #{activeType,jdbcType=BIGINT},
+            </if>
+            <if test="targetCount != null">
+                target_count = #{targetCount,jdbcType=BIGINT},
+            </if>
+            <if test="staticDuration != null">
+                static_duration = #{staticDuration,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+        </set>
+        where plan_content_id = #{planContentId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbPlanContent">
+    update tab_pb_plan_content
+    set plan_id = #{planId,jdbcType=BIGINT},
+      active_type = #{activeType,jdbcType=BIGINT},
+      target_count = #{targetCount,jdbcType=BIGINT},
+      static_duration = #{staticDuration,jdbcType=BIGINT},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      description = #{description,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+    where plan_content_id = #{planContentId,jdbcType=BIGINT}
+  </update>
+</mapper>
