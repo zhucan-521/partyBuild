@@ -91,6 +91,11 @@ public class  FlowOutServiceImpl implements FlowOutService {
                    .setFlowInRange(tabPbFlowOutDto.getOutIndustry()) //设置流动范围
                    .setFlowInReason(tabPbFlowOutDto.getFlowOutReason().toString()) //设置流动原因
                    .setOldOrgnizeCode(tabPbFlowOutDto.getFlowToOrgnizeCode());  //设置流动证
+                if(tabPbFlowOutDto.getFlowInDate()!=null){
+                    tabPbFlowIn.setFlowInDate(tabPbFlowOutDto.getFlowInDate());//设置流入日期
+                    tabPbFlowIn.setFlowInState(59415L);//已录入
+                }
+
         return  tabPbFlowInMapper.insertSelective(tabPbFlowIn);
     }
 
@@ -149,7 +154,7 @@ public class  FlowOutServiceImpl implements FlowOutService {
     @PaddingBaseField
     public int delete(Long id) {
         TabPbFlowOut tabPbFlowOut=tabPbFlowOutMapper.selectByPrimaryKey(id);
-        if(tabPbFlowOut.getFlowOutState()==59414){
+        if(tabPbFlowOut.getFlowOutState()==59414||tabPbFlowOut.getFlowOutState()==59413){
             throw new BusinessDataCheckFailException("次党员正在流动，删除会造成数据流失！");
         }
         tabPbFlowOut.setDelFlag("1");

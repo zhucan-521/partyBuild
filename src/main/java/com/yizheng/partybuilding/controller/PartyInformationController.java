@@ -18,6 +18,7 @@ import com.yizheng.partybuilding.system.entity.SysUser;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -48,7 +49,7 @@ public class PartyInformationController {
      */
     @ApiOperation(value = "党员信息补录", notes = "党员信息补录", httpMethod = "POST")
     @PostMapping("/insert")
-    public int insert(@RequestBody SysUser sysUser) {
+    public int insert(@RequestBody @Validated SysUser sysUser) {
         int id = partyInformationService.insert(sysUser);
         return id;
     }

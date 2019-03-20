@@ -3,6 +3,7 @@ package com.yizheng.partybuilding.service.inf;
 import com.github.pagehelper.PageInfo;
 import com.yizheng.commons.domain.Page;
 import com.yizheng.partybuilding.dto.TabPbFlowInDto;
+import com.yizheng.partybuilding.entity.TabPbFlowOut;
 
 import java.util.Map;
 
@@ -52,4 +53,7 @@ public interface TabPbFlowInService {
      * @return
      */
     TabPbFlowInDto selectFlowInById(Long flowInId);
+
+
+
 }

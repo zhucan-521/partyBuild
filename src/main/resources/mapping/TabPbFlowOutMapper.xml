@@ -126,6 +126,7 @@
         sys_user.phone,
         tab_pb_flow_out.flow_to_orgnize_id,
         tab_pb_flow_out.flow_out_state,
+        tab_pb_flow_out.return_date,
         tab_pb_flow_out.flow_to_orgnize_code
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">

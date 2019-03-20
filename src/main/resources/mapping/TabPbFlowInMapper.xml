@@ -95,11 +95,11 @@
 		t.lost_time,
 		t.link_status,
 		( SELECT NAME FROM sys_dept WHERE dept_id = t.org_id ) AS flow_to_org_name ,
-		f.flow_out_date as flowOutDate,
 		s.flow_to_org_contactor,
         s.flow_to_org_phone,
         s.flow_from_org_contactor,
         s.flow_from_org_phone,
+        f.flow_out_date as flowOutDate,
 		f.out_profession as outProfession
     </sql>
 

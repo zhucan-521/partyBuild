@@ -2,15 +2,12 @@ package com.yizheng.partybuilding.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.yizheng.commons.domain.Page;
-import com.yizheng.partybuilding.dto.TabPbFlowInDto;
-import com.yizheng.partybuilding.dto.TabPbFlowOutDto;
-import com.yizheng.partybuilding.service.inf.FlowOutService;
-import com.yizheng.partybuilding.service.inf.TabPbFlowInService;
 import com.yizheng.commons.util.ReturnEntity;
 import com.yizheng.commons.util.ReturnUtil;
+import com.yizheng.partybuilding.dto.TabPbFlowInDto;
+import com.yizheng.partybuilding.service.inf.TabPbFlowInService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -24,8 +21,6 @@ public class TabPbFlowInControlle {
     @Autowired
     private TabPbFlowInService tabPbFlowInService;
 
-    @Autowired
-    private FlowOutService flowOutService;
 
     @ApiOperation(value = "录入流入党员", notes = "传入录入的流入党员", httpMethod = "POST")
     @PostMapping("/insert")
@@ -82,17 +77,5 @@ public class TabPbFlowInControlle {
         return ReturnUtil.buildReturn(retVal);
     }
 
-    /**
-     * 手动登记
-     * @return
-     */
-    @ApiOperation(value = "手动登记流入党员", notes = "手动登记流入党员", httpMethod = "POST")
-    @PostMapping("/manualRegit")
-    public ReturnEntity manualRegit(@RequestBody TabPbFlowInDto tabPbFlowInDto,@RequestBody @Validated TabPbFlowOutDto tabPbFlowOutDto){
-        int retVal =0;
-        if( flowOutService.insert(tabPbFlowOutDto)>0){
-            retVal = tabPbFlowInService.insert(tabPbFlowInDto);
-        }
-        return ReturnUtil.buildReturn(retVal);
-    }
+
 }

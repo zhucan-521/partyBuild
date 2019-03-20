@@ -1,11 +1,14 @@
 package com.yizheng.partybuilding.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.yizheng.commons.config.DictSerializer;
 import com.yizheng.partybuilding.entity.TabPbFlowOut;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.Date;
 
 @ApiModel(value = "流出党员扩展类")
 @Data
@@ -38,5 +41,9 @@ public class TabPbFlowOutDto extends TabPbFlowOut {
 
     @ApiModelProperty(value = "组织ID")
     private Long rangeDeptId;
+
+    @ApiModelProperty(value = "流入时间")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date flowInDate;
 
 }
