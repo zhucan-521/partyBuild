@@ -140,9 +140,9 @@ public class TabPbOrgnizeChangeServiceImpl implements TabPbOrgnizeChangeService 
         if (dict.getValue().equals("ZZGM")) {
             this.ZZGM(org);
         } else if (dict.getValue().equals("ZZCX")) {
-            this.orgChange(org, "1", 59123L);
+            this.orgChange(org, "0", 59123L);
         } else if (dict.getValue().equals("ZZHF")) {
-            this.orgChange(org, "0", 59122L);
+            this.orgChange(org, "1", 59122L);
         } else if (dict.getValue().equals("ZZTZ")) {
             this.insertOrgChange(org);
         }
