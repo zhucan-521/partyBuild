@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -32,14 +33,14 @@ public class OrganizationUpgradeController {
     
     @ApiOperation(value = "升格修改组织信息",notes = "升格修改组织信息")
     @PostMapping("/updateOrganization")
-    public ReturnEntity updateOrganization(@RequestBody OrganizationUpgradeAndChangeDto organizationUpgradeAndChangeDto){
+    public ReturnEntity updateOrganization(@RequestBody @Validated OrganizationUpgradeAndChangeDto organizationUpgradeAndChangeDto){
         int retVal = iOrganizationUpgradeService.insertSelective(organizationUpgradeAndChangeDto);
         return ReturnUtil.buildReturn(retVal);
     }
 
     @ApiOperation(value = "升格新建组织支部", notes = "升格新建组织支部",httpMethod = "POST")
     @PostMapping("/upgradedNewOrganizationBranch")
-    public ReturnEntity upgradedNewOrganizationBranch(@RequestBody SysDeptUpgradeTemp sysDeptUpgradeTemp) {
+    public ReturnEntity upgradedNewOrganizationBranch(@RequestBody @Validated SysDeptUpgradeTemp sysDeptUpgradeTemp) {
         int retVal = iOrganizationUpgradeService.updateByPrimaryKeySelective(sysDeptUpgradeTemp);
         return ReturnUtil.buildReturn(retVal);
     }
@@ -52,7 +53,7 @@ public class OrganizationUpgradeController {
 
     @ApiOperation(value = "批量修改人员组织id", notes = "批量修改人员组织id")
     @PostMapping("/updateListUser")
-    public ReturnEntity updateListUser(@ApiParam(value = "组织升格人员转移dto") @RequestBody OrganizationUpgradeDto organizationUpgradeDto) {
+    public ReturnEntity updateListUser(@ApiParam(value = "组织升格人员转移dto") @RequestBody @Validated OrganizationUpgradeDto organizationUpgradeDto) {
         int retVal = iOrganizationUpgradeService.batchDeptIdByUserId(organizationUpgradeDto);
         return ReturnUtil.buildReturn(retVal);
     }

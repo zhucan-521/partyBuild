@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @ApiModel("组织关系升格临时记录实体")
@@ -14,15 +15,18 @@ public class SysDeptUpgradeTemp {
     private Long id;
 
     @ApiModelProperty(value = "升格组织id", required = true)
+    @NotNull(message = "升格组织id不能为空")
     private Long deptId;
 
     @ApiModelProperty(value = "原党组织名称")
     private String deptName;
 
     @ApiModelProperty(value = "升格后的组织名称", required = true)
+    @NotNull(message = "升格后的组织名称不能为空")
     private String upgradeDeptName;
 
-    @ApiModelProperty(value = "升格后的组织简称")
+    @ApiModelProperty(value = "升格后的组织简称", required = true)
+    @NotNull(message = "升格后的组织简称不能为空")
     private String upgradeShortName;
 
     /**

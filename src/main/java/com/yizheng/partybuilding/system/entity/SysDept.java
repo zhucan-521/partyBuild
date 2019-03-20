@@ -36,6 +36,7 @@ public class SysDept extends Model<SysDept> {
     private String name;
 
     @ApiModelProperty(value = "组织短名称")
+    @NotBlank(message = "组织短名称不能为空")
     private String orgShortName;
 
     @ApiModelProperty(value = "组织编码")
