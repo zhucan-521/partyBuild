@@ -142,7 +142,7 @@ public class TabPbActivities implements Serializable {
     @ApiModelProperty(value = "上报类型 1为上级代办； 2为本机办理")
     private Long  reportToType;
 
-    @JsonIgnore
+    @ApiModelProperty(value = "置顶次数")
     private Long  stickNum;
     /**
      * 有效标记

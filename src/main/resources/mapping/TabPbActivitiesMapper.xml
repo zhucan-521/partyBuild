@@ -699,6 +699,7 @@
             a.create_username,
             a.create_time,
             a.audit_result,
+            a.stick_num,
             d2.`name` AS superiorName,
             (a.fact_count / (
               a.due_count - ifnull((
