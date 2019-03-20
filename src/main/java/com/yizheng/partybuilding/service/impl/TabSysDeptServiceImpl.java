@@ -10,11 +10,13 @@ import com.yizheng.partybuilding.dto.SysDeptDtoWithCountInfo;
 import com.yizheng.partybuilding.dto.TabDeptPositionDto;
 import com.yizheng.commons.domain.TabPbAttachment;
 import com.yizheng.partybuilding.entity.TabPbOrgClassify;
+import com.yizheng.partybuilding.entity.TabPbOrgnizeChange;
 import com.yizheng.partybuilding.entity.TabPbUnitInfo;
 import com.yizheng.partybuilding.repository.TabPbOrgClassifyMapper;
 import com.yizheng.partybuilding.repository.TabPbUnitInfoMapper;
 import com.yizheng.partybuilding.repository.TabSysDeptMapper;
 import com.yizheng.partybuilding.service.inf.ITabPbAttachmentService;
+import com.yizheng.partybuilding.service.inf.TabPbOrgnizeChangeService;
 import com.yizheng.partybuilding.service.inf.TabSysDeptService;
 import com.yizheng.partybuilding.system.entity.SysDept;
 import org.apache.commons.lang.StringUtils;
@@ -43,6 +45,8 @@ public class TabSysDeptServiceImpl implements TabSysDeptService {
     private TabPbUnitInfoMapper tabPbUnitInfoMapper;
     @Autowired
     private TabPbOrgClassifyMapper tabPbOrgClassifyMapper;
+    @Autowired
+    private TabPbOrgnizeChangeService tabPbOrgnizeChangeService;
     @Autowired
     private ITabPbAttachmentService iTabPbAttachmentService;
 
@@ -83,14 +87,11 @@ public class TabSysDeptServiceImpl implements TabSysDeptService {
         //新增Relation表
         tabSysDeptMapper.insertToDeptRelationTable(sysDeptDto.getParentId(), sysDeptDto.getDeptId());
 
+        //新增调整【新建】状态
+        initToOrgnizeChangeTable(sysDeptDto);
+
         //新增分类定等数据，如果需要
-        if (sysDeptDto.getOrgLevel() != null) {
-            TabPbOrgClassify tabPbOrgClassify = new TabPbOrgClassify();
-            tabPbOrgClassify.setOrgLevel(sysDeptDto.getOrgLevel());
-            tabPbOrgClassify.setLevelDate(sysDeptDto.getLevelDate());
-            tabPbOrgClassify.setDeptId(sysDeptDto.getDeptId().longValue());
-            tabPbOrgClassifyMapper.insertSelective(tabPbOrgClassify);
-        }
+        insertClassifyIfNecessary(sysDeptDto);
 
         //新增单位数据
         List<TabPbUnitInfo> tabPbUnitInfoList = sysDeptDto.getTabPbUnitInfos();
@@ -101,6 +102,38 @@ public class TabSysDeptServiceImpl implements TabSysDeptService {
         modifyFullPathAndSubDeptIfNecessary(sysDeptDto);
         tabSysDeptMapper.updateByPrimaryKeySelective(sysDeptDto);
         return retVal;
+    }
+
+    /**
+     * 如有需要，新增分类定等数据
+     * @param sysDeptDto
+     */
+    private void insertClassifyIfNecessary(SysDeptDto sysDeptDto) {
+        if (sysDeptDto.getOrgLevel() != null) {
+            TabPbOrgClassify tabPbOrgClassify = new TabPbOrgClassify();
+            tabPbOrgClassify.setOrgLevel(sysDeptDto.getOrgLevel());
+            tabPbOrgClassify.setLevelDate(sysDeptDto.getLevelDate());
+            tabPbOrgClassify.setDeptId(sysDeptDto.getDeptId().longValue());
+            tabPbOrgClassifyMapper.insertSelective(tabPbOrgClassify);
+        }
+    }
+
+    /**
+     * 初始化组织调整表
+     * @param sysDeptDto 组织实体
+     */
+    private void initToOrgnizeChangeTable(SysDeptDto sysDeptDto) {
+        long orgId = sysDeptDto.getDeptId().longValue();
+        long parentOrgId = sysDeptDto.getParentId().longValue();
+        TabPbOrgnizeChange tabPbOrgnizeChange = new TabPbOrgnizeChange();
+        tabPbOrgnizeChange.setDeptId(orgId);
+        tabPbOrgnizeChange.setOldSuperiorId(parentOrgId);
+        tabPbOrgnizeChange.setNowSuperiorId(parentOrgId);
+        tabPbOrgnizeChange.setOrgnizeCode(sysDeptDto.getOrgCode());
+        tabPbOrgnizeChange.setOrgnizeName(sysDeptDto.getName());
+        tabPbOrgnizeChange.setFileNumber(sysDeptDto.getFoundedFileNumber());
+        tabPbOrgnizeChange.setChangeType(59525L);
+        tabPbOrgnizeChangeService.insertSelective(tabPbOrgnizeChange);
     }
 
     @PaddingBaseField
@@ -171,7 +204,7 @@ public class TabSysDeptServiceImpl implements TabSysDeptService {
             //从 db 中拿当前组织旧数据
             SysDept dbOldSysDept = tabSysDeptMapper.selectAloneByPrimaryKey(deptId.longValue());
             //上级节点有改变
-            if (dbOldSysDept != null && dbOldSysDept.getParentId() != sysDept.getParentId()) {
+            if (dbOldSysDept != null && !dbOldSysDept.getParentId().equals(sysDept.getParentId())) {
                 ifNecessary = true;
                 subIfNecessary = true;
                 oldFullPath = dbOldSysDept.getFullPath();

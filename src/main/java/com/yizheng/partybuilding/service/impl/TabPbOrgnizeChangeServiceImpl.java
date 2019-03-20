@@ -107,6 +107,12 @@ public class TabPbOrgnizeChangeServiceImpl implements TabPbOrgnizeChangeService 
         deptMapper.updateByPrimaryKeySelective(sysDept);
     }
 
+    @PaddingBaseField
+    @Override
+    public int insertSelective(TabPbOrgnizeChange tabPbOrgnizeChange) {
+        return tabPbOrgnizeChangeMapper.insertSelective(tabPbOrgnizeChange);
+    }
+
     /**
      * 组织变动 (分为组织更名 ZZGM, 组织撤销 ZZCX, 组织恢复 ZZHF)
      *

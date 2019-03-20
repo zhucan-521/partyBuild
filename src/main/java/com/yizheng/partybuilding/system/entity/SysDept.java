@@ -154,6 +154,7 @@ public class SysDept extends Model<SysDept> {
 
     @ApiModelProperty(value = "党组织所在单位情况 dict DZZSZDWQK")
     @JsonSerialize(using = DictSerializer.class)
+    @NotNull(message = "党组织所在单位情况不能为空")
     private Long unitState;
 
     @ApiModelProperty(value = "联点领导ID")

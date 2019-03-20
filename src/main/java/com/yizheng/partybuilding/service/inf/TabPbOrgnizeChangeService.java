@@ -12,6 +12,8 @@ public interface TabPbOrgnizeChangeService {
 
     void insertOrgChange(TabPbOrgnizeChange tabPbOrgnizeChange);
 
+    int insertSelective(TabPbOrgnizeChange tabPbOrgnizeChange);
+
     TabPbOrgnizeChange selectOrgChangeByDeptIdOrderTime(Long deptId,Long changeType);
 
     /**
