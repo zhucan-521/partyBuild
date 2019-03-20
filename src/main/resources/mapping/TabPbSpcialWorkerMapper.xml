@@ -491,5 +491,34 @@
         delete from sys_user_role where user_id= #{userId}  and  role_id=44
     </delete>
 
+    <!--单个详情查询-->
+    <select id="selectOneById" parameterType="com.yizheng.partybuilding.dto.TabSpecialWorkerResultDto" resultMap="tabSpecialWorkerDtoMap">
+    SELECT
+    sw.special_worker_id,
+    d.contactor,
+    d.contact_number,
+    u.id_card_no,
+    u.gender,
+    u.realname AS username,
+    u.phone,
+    sw.arrive_time,
+    sw.manage_org_id,
+    (case when IFNULL(sw.left_time,0)>sw.arrive_time then -1
+    when IFNULL(sw.left_time,0) &lt;= sw.arrive_time then 1   end
+    ) status,
+    (select name from sys_dept where dept_id= sw.manage_org_id) deptName,
+    u.dept_id,
+    (select name from sys_dept where dept_id= u.dept_id) manageOrgName,
+    sw.left_time
+    FROM
+    tab_pb_spcial_worker sw
+    LEFT JOIN sys_user u on u.user_id=sw.user_id
+    left  join sys_dept d on sw.manage_org_id = d.dept_id
+    <where>
+    sw.special_worker_id = #{specialWorkerId}
+    </where>
+    </select>
+
+
 
 </mapper>

@@ -36,12 +36,6 @@ public interface TabPbSpcialWorkerMapper {
      */
     List<TabSpecialWorkerResultDto> selectAllTabSpecialWorkerDto(TabSpecialWorkerResultDto dto);
 
-    /**
-     * 修改专干党员信息
-     * @param dto
-     * @return
-     */
-    int updateTabSpecialWorkerResultDto(TabSpecialWorkerResultDto dto);
 
     /**
      * 删除专干人员根据用户id
@@ -49,4 +43,28 @@ public interface TabPbSpcialWorkerMapper {
      * @return
      */
     int deleteTabSpecialWorkerByUserId(Long UserId);
+
+
+    /**
+     * 判断专干是否已经在XX组织里面
+     * 存在这返回这个实体不存在返回null
+     * @param tabSpecialWorkerResultDto
+     * @return
+     */
+    List<TabSpecialWorkerResultDto> checkSpecialWorkerOndeptId(TabSpecialWorkerResultDto tabSpecialWorkerResultDto);
+
+    /**
+     * 根据mangerId和userId寻找专干主键
+     * @param tabSpecialWorkerResultDto
+     * @return
+     */
+    Long selectSpecialWorkerIdByIdcard(TabSpecialWorkerResultDto tabSpecialWorkerResultDto);
+
+
+    /**
+     * 详情查询
+     * @param specialWorkerId
+     * @return
+     */
+    TabSpecialWorkerResultDto selectOneById(Long specialWorkerId);
 }
