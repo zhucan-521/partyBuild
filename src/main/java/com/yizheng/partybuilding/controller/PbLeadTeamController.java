@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 public class PbLeadTeamController {
 
     @Autowired
-    private PbLeadTeamService pbLeadTeamService;
+    private PbLeadTeamService  pbLeadTeamService;
 
     //时间格式化
     public static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyyMMddHHmmss");
