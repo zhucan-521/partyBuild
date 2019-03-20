@@ -1,11 +1,12 @@
 package com.yizheng.partybuilding.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.yizheng.commons.util.UserContextHolder;
 import com.yizheng.commons.domain.Page;
+import com.yizheng.commons.exception.BusinessDataInvalidException;
+import com.yizheng.commons.util.Symbol;
+import com.yizheng.commons.util.UserContextHolder;
 import com.yizheng.partybuilding.entity.PanelStatistics;
 import com.yizheng.partybuilding.entity.PanelStatisticsDetail;
-import com.yizheng.commons.exception.BusinessDataInvalidException;
 import com.yizheng.partybuilding.service.inf.PanelStatisticsService;
 import com.yizheng.partybuilding.service.inf.TabSysDeptService;
 import com.yizheng.partybuilding.system.entity.SysDept;
@@ -78,8 +79,8 @@ public class PanelStatisticsController {
         }
         Map<String, Object> conditions = new HashMap<>();
         conditions.put("taskId", taskId);
-        if (StringUtils.contains(value, "-")) {
-            String[] values = value.split("-");
+        if (StringUtils.contains(value, Symbol.HLINE)) {
+            String[] values = value.split(Symbol.HLINE);
             conditions.put("year", values[0]);
             conditions.put("value", values[1]);
         } else {
@@ -94,18 +95,18 @@ public class PanelStatisticsController {
         conditions.put("orgId", orgId);
         conditions.put("status", status);
         List<PanelStatisticsDetail> list = panelStatisticsService.selectDetailWorkInfoForActivity(conditions, page);
-        PageInfo<PanelStatisticsDetail> pageInfo = new PageInfo<>(list);
-        return pageInfo;
+        return new PageInfo<>(list);
     }
 
 
     private String covertCycle(Integer cycle) {
-        if (cycle == 1)
+        if (cycle == 1) {
             return "59418";
-        else if (cycle == 2)
+        } else if (cycle == 2) {
             return "59419";
-        else if (cycle == 3)
+        } else if (cycle == 3) {
             return "59420";
+        }
         throw new BusinessDataInvalidException("周期值无效");
     }
 

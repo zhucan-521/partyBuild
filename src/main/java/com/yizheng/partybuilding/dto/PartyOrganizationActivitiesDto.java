@@ -91,7 +91,7 @@ public class PartyOrganizationActivitiesDto extends TabPbActivities {
 
     //======================================
 
-    @ApiModelProperty(value = "组织范围")
+    @ApiModelProperty(value = "组织范围 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） 其他值 当前组织")
     private Long orgRange;
 
     @ApiModelProperty(value = "范围组织ID")

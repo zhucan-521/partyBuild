@@ -1,6 +1,7 @@
 package com.yizheng.partybuilding.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.yizheng.commons.domain.OrgRange;
 import com.yizheng.commons.exception.BusinessDataCheckFailException;
 import com.yizheng.commons.exception.BusinessDataNotFoundException;
 import com.yizheng.commons.util.ReturnEntity;
@@ -35,21 +36,14 @@ public class TabPbDoubleCommentaryController {
 
     @ApiOperation(value = "双述双评列表", notes = "双述双评列表", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "orgRange", value = "列表范围 0 查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织", paramType = "query"),
             @ApiImplicitParam(name = "planYear", value = "所属年度 yyyy", paramType = "query"),
             @ApiImplicitParam(name = "reportStartDate", value = "上报日期-开始 yyyy-MM-dd", paramType = "query"),
-            @ApiImplicitParam(name = "reportEndDate", value = "上报日期-结束 yyyy-MM-dd", paramType = "query"),
-            @ApiImplicitParam(name = "rangeDeptId", value = "组织ID", paramType = "query")
+            @ApiImplicitParam(name = "reportEndDate", value = "上报日期-结束 yyyy-MM-dd", paramType = "query")
     })
     @GetMapping("/list")
-    public PageInfo<TabPbDoubleCommentary> list(String orgRange, String planYear, String reportStartDate,
-                                                String reportEndDate, Long rangeDeptId, Page page) {
-        Map<String, Object> conditions = new HashMap<>();
-        conditions.put("orgRange", orgRange);
-        if (rangeDeptId == null || rangeDeptId == 0) {
-            rangeDeptId = UserContextHolder.getOrgId();
-        }
-        conditions.put("rangeDeptId", rangeDeptId);
+    public PageInfo<TabPbDoubleCommentary> list(String planYear, String reportStartDate, String reportEndDate,
+                                                Page page, OrgRange orgRange) {
+        Map<String, Object> conditions = orgRange.toMap();
         conditions.put("planYear", planYear);
         conditions.put("reportStartDate", reportStartDate);
         conditions.put("reportEndDate", reportEndDate);

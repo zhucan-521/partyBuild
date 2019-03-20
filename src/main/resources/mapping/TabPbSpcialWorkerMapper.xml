@@ -421,19 +421,17 @@
         <if test="null != phone and ''!=phone">
             and   u.phone= #{phone}
         </if>
-        <if test="orgRange != null and orgRange != ''">
-            <choose>
-                <when test="orgRange == 1">
-                    AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
-                </when>
-                <when test="orgRange == 2">
-                    AND find_in_set(#{rangeDeptId}, d.full_path)
-                </when>
-            </choose>
-        </if>
-        <if test="orgRange == null or orgRange.toString() == ''">
-            AND d.dept_id = #{rangeDeptId}
-        </if>
+        <choose>
+            <when test="orgRange == 1">
+                AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+            </when>
+            <when test="orgRange == 2">
+                AND find_in_set(#{rangeDeptId}, d.full_path)
+            </when>
+            <otherwise>
+                AND d.dept_id = #{rangeDeptId}
+            </otherwise>
+        </choose>
         and sw.del_flag = 0
     </where>
         ORDER BY

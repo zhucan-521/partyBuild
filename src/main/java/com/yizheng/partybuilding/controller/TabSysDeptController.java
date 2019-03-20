@@ -1,17 +1,16 @@
 package com.yizheng.partybuilding.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.yizheng.commons.domain.OrgRange;
+import com.yizheng.commons.domain.Page;
 import com.yizheng.commons.exception.BusinessDataInvalidException;
 import com.yizheng.commons.exception.BusinessDataNotFoundException;
 import com.yizheng.commons.util.*;
-import com.yizheng.commons.domain.Page;
 import com.yizheng.partybuilding.dto.SysDeptDto;
 import com.yizheng.partybuilding.dto.SysDeptDtoWithCountInfo;
 import com.yizheng.partybuilding.dto.TabDeptPositionDto;
-
 import com.yizheng.partybuilding.service.inf.TabSysDeptService;
 import com.yizheng.partybuilding.system.entity.SysDept;
-
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -44,16 +43,14 @@ public class TabSysDeptController {
             @ApiImplicitParam(name = "orgStatus", value = "组织状态", paramType = "query"),
             @ApiImplicitParam(name = "orgnizeMaster", value = "书记名称", paramType = "query"),
             @ApiImplicitParam(name = "dependencyRelation", value = "组织隶属关系 dict ZZLS 多个用,号拼接", paramType = "query"),
-            @ApiImplicitParam(name = "orgRange", value = "列表范围 0 查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织", paramType = "query"),
-            @ApiImplicitParam(name = "rangeDeptId", value = "组织ID", paramType = "query"),
             @ApiImplicitParam(name = "orgnizeProperty", value = "组织类别 dict ZZLB 多个用,号拼接", paramType = "query"),
             @ApiImplicitParam(name = "unitProperty", value = "单位类型 dict DWLB 多个用,号拼接", paramType = "query")
     })
     @GetMapping("/list")
     public PageInfo<SysDept> list(String orgCode, String unitCode, String orgName, String unitName, String orgStatus, String orgnizeMaster,
-                                  String dependencyRelation, String orgRange, Long rangeDeptId, String orgnizeProperty,
-                                  String unitProperty, Page page) {
-        Map<String, Object> conditions = new HashMap<>();
+                                  String dependencyRelation, String orgnizeProperty,
+                                  String unitProperty, Page page, OrgRange orgRange) {
+        Map<String, Object> conditions = orgRange.toMap();
         conditions.put("orgCode", orgCode);
         conditions.put("unitCode", unitCode);
         conditions.put("name", orgName);
@@ -61,11 +58,6 @@ public class TabSysDeptController {
         conditions.put("orgStatus", orgStatus);
         conditions.put("orgnizeMaster", orgnizeMaster);
         conditions.put("dependencyRelation", dependencyRelation);
-        conditions.put("orgRange", orgRange);
-        if (rangeDeptId == null || rangeDeptId == 0) {
-            rangeDeptId = UserContextHolder.getOrgId();
-        }
-        conditions.put("rangeDeptId", rangeDeptId);
         conditions.put("orgnizeProperty", orgnizeProperty);
         conditions.put("unitProperty", unitProperty);
         conditions.put("delFlag", "0");
@@ -90,9 +82,9 @@ public class TabSysDeptController {
     })
     @GetMapping("/listWithCount")
     public PageInfo<SysDeptDtoWithCountInfo> listWithCount(String orgCode, String unitCode, String orgName, String unitName, String orgStatus, String orgnizeMaster,
-                                                           String dependencyRelation, String orgRange, Long rangeDeptId, String orgnizeProperty,
-                                                           String unitProperty, Page page) {
-        Map<String, Object> conditions = new HashMap<>();
+                                                           String dependencyRelation, String orgnizeProperty,
+                                                           String unitProperty, Page page, OrgRange orgRange) {
+        Map<String, Object> conditions = orgRange.toMap();
         conditions.put("orgCode", orgCode);
         conditions.put("unitCode", unitCode);
         conditions.put("name", orgName);
@@ -100,11 +92,6 @@ public class TabSysDeptController {
         conditions.put("orgStatus", orgStatus);
         conditions.put("orgnizeMaster", orgnizeMaster);
         conditions.put("dependencyRelation", dependencyRelation);
-        conditions.put("orgRange", orgRange);
-        if (rangeDeptId == null || rangeDeptId == 0) {
-            rangeDeptId = UserContextHolder.getOrgId();
-        }
-        conditions.put("rangeDeptId", rangeDeptId);
         conditions.put("orgnizeProperty", orgnizeProperty);
         conditions.put("unitProperty", unitProperty);
         conditions.put("delFlag", "0");
@@ -179,18 +166,9 @@ public class TabSysDeptController {
 //    }
 
     @ApiOperation(value = "组织阵地列表", notes = "组织阵地列表", httpMethod = "GET")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "orgRange", value = "列表范围 0 查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织", paramType = "query"),
-            @ApiImplicitParam(name = "rangeDeptId", value = "组织ID", paramType = "query")
-    })
     @GetMapping("/position/list")
-    public PageInfo<TabDeptPositionDto> positionList(String orgRange, Long rangeDeptId, Page page) {
-        Map<String, Object> conditions = new HashMap<>();
-        conditions.put("orgRange", orgRange);
-        if (rangeDeptId == null || rangeDeptId == 0) {
-            rangeDeptId = UserContextHolder.getOrgId();
-        }
-        conditions.put("rangeDeptId", rangeDeptId);
+    public PageInfo<TabDeptPositionDto> positionList(Page page, OrgRange orgRange) {
+        HashMap<String, Object> conditions = orgRange.toMap();
         conditions.put("delFlag", "0");
         List<TabDeptPositionDto> list = tabSysDeptService.selectPositionWithConditions(conditions, page);
         PageInfo<TabDeptPositionDto> pageInfo = new PageInfo<>(list);
@@ -229,6 +207,7 @@ public class TabSysDeptController {
 
     /**
      * 组织数据校验
+     *
      * @param sysDeptDto
      */
     private void orgDataVerification(SysDeptDto sysDeptDto) {

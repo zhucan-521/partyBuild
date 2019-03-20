@@ -34,7 +34,7 @@ public class TabPbMsgNoticeController {
             @ApiImplicitParam(name = "endTime", value = "结束时间", paramType = "query"),
             @ApiImplicitParam(name = "state", value = "发布状态", paramType = "query"),
             @ApiImplicitParam(name = "noticeType", value = "通知类别", paramType = "query"),
-            @ApiImplicitParam(name = "orgRange ",value = "组织范围 0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）",dataType = "long"),
+            @ApiImplicitParam(name = "orgRange ",value = "组织范围 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） 其他值 当前组织",dataType = "long"),
     })
     public PageInfo<TabPbMsgNotice> listPage(Long deptId, String stateTime,String endTime,String state,Long noticeType,Long orgRange,  @ApiParam Page page) throws ParseException {
         TabPbMsgNotice notice = new TabPbMsgNotice();
@@ -98,7 +98,7 @@ public class TabPbMsgNoticeController {
             @ApiImplicitParam(name = "deptId", value = "组织", paramType = "query"),
             @ApiImplicitParam(name = "stateTime", value = "开始时间", paramType = "query"),
             @ApiImplicitParam(name = "endTime", value = "结束时间", paramType = "query"),
-            @ApiImplicitParam(name = "orgRange ",value = "组织范围 0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）",dataType = "long"),
+            @ApiImplicitParam(name = "orgRange ",value = "组织范围 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） 其他值 当前组织",dataType = "long"),
     })
     public PageInfo<TabPbMsgNoticeDept> selectNoticeDeptList(Long deptId, String stateTime,String endTime,Long orgRange,  @ApiParam Page page) throws ParseException {
         TabPbMsgNoticeDept noticeDept = new TabPbMsgNoticeDept();

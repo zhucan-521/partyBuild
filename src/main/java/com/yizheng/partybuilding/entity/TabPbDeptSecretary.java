@@ -144,7 +144,7 @@ public class TabPbDeptSecretary implements Serializable {
     private String name;
 
     @TableField(exist = false)
-    @ApiModelProperty(value = "组织范围 0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）")
+    @ApiModelProperty(value = "组织范围 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） 其他值 当前组织")
     private Long orgRange;
 
     @TableField(exist = false)

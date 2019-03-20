@@ -159,7 +159,7 @@
         <if test="summaryCheck != null and summaryCheck != ''">
             AND p.summary_check = #{summaryCheck}
         </if>
-        <!--组织范围  0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
         <if test="orgRange != null and orgRange != ''">
             <choose>
                 <when test="orgRange == 1">

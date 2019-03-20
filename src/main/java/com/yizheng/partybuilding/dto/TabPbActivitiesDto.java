@@ -42,7 +42,7 @@ public class TabPbActivitiesDto extends TabPbActivities {
     private Long rangeDeptId;
 
     @ApiModelProperty(value = "范围")
-    private Long orgRange;
+    private String orgRange;
 
     @ApiModelProperty(value = "党员姓名")
     private String username;

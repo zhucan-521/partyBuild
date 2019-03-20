@@ -42,7 +42,7 @@ public class TabPbPositiveRegistController {
             @ApiImplicitParam(value = "状态", name = "revokeTag", dataType = "Byte"),
             @ApiImplicitParam(value = "报到日期", name = "date", dataType = "String"),
             @ApiImplicitParam(value = "组织主键", name = "rangeDeptId", paramType = "query"),
-            @ApiImplicitParam(value = "组织范围 0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）", name = "orgRange", paramType = "query"),
+            @ApiImplicitParam(value = "组织范围 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） 其他值 当前组织", name = "orgRange", paramType = "query"),
     })
     public PageInfo<TabPbPositiveRegist> list(String userName, Byte revokeTag, String date, Long rangeDeptId, Long orgRange, @ApiParam Page page) {
         return new PageInfo<>(this.positiveRegistService.selectListPage(userName, revokeTag, date, rangeDeptId, orgRange, page));

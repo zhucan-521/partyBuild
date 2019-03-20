@@ -1,14 +1,15 @@
 package com.yizheng.partybuilding.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.yizheng.commons.domain.OrgRange;
 import com.yizheng.commons.domain.Page;
+import com.yizheng.commons.exception.BusinessDataCheckFailException;
+import com.yizheng.commons.exception.BusinessDataIncompleteException;
+import com.yizheng.commons.exception.BusinessDataNotFoundException;
 import com.yizheng.commons.util.*;
 import com.yizheng.partybuilding.dto.*;
 import com.yizheng.partybuilding.entity.TabPbActivities;
 import com.yizheng.partybuilding.entity.TabPbParticipant;
-import com.yizheng.commons.exception.BusinessDataCheckFailException;
-import com.yizheng.commons.exception.BusinessDataIncompleteException;
-import com.yizheng.commons.exception.BusinessDataNotFoundException;
 import com.yizheng.partybuilding.service.inf.PartyOrganizationActivitiesService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,8 +66,6 @@ public class PartyOrganizationActivitiesController {
 
     @ApiOperation(value = "活动列表", notes = "活动列表", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "orgRange", value = "列表范围 0 查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织", paramType = "query"),
-            @ApiImplicitParam(name = "rangeDeptId", value = "组织ID", paramType = "query"),
             @ApiImplicitParam(name = "subject", value = "活动标题", paramType = "query"),
             @ApiImplicitParam(name = "activitiesType", value = "主题类型", paramType = "query", required = true),
             @ApiImplicitParam(name = "startTime", value = "开始时间", paramType = "query"),
@@ -75,16 +74,11 @@ public class PartyOrganizationActivitiesController {
             @ApiImplicitParam(name = "auditResult", value = "审核情况", paramType = "query")
     })
     @GetMapping("/findByList")
-    public PageInfo<PartyOrganizationActivitiesDto> findByList(@ApiIgnore PartyOrganizationActivitiesDto activitiesDto, Page page) {
-        Map<String, Object> conditions = new HashMap<>();
+    public PageInfo<PartyOrganizationActivitiesDto> findByList(@ApiIgnore PartyOrganizationActivitiesDto activitiesDto,
+                                                               Page page, OrgRange orgRange) {
+        Map<String, Object> conditions = orgRange.toMap();
         conditions.put("orgName", activitiesDto.getOrgName());
         conditions.put("subject", activitiesDto.getSubject());
-        conditions.put("orgRange", activitiesDto.getOrgRange());
-        Long rangeDeptId = activitiesDto.getRangeDeptId();
-        if (rangeDeptId == null || rangeDeptId == 0) {
-            rangeDeptId = UserContextHolder.getOrgId();
-        }
-        conditions.put("rangeDeptId", rangeDeptId);
         conditions.put("reportToType", activitiesDto.getReportToType());
         if (activitiesDto.getActivitiesType() != null) {
             conditions.put("activitiesType", activitiesDto.getActivitiesType());
@@ -94,8 +88,7 @@ public class PartyOrganizationActivitiesController {
         conditions.put("startTime", activitiesDto.getStartTime());
         conditions.put("finishedTime", activitiesDto.getFinishedTime());
         List<PartyOrganizationActivitiesDto> list = activitiesService.selectWithConditions(conditions, page);
-        PageInfo<PartyOrganizationActivitiesDto> pageInfo = new PageInfo<>(list);
-        return pageInfo;
+        return new PageInfo<>(list);
     }
 
     @ApiOperation(value = "人员参加活动列表", notes = "人员参加活动列表", httpMethod = "GET")
@@ -103,8 +96,7 @@ public class PartyOrganizationActivitiesController {
     public PageInfo<PartyOrganizationActivitiesDto> listByUserId(@PathVariable("userId") @ApiParam(value = "用户ID", required = true) Long userId,
                                                                  Page page) {
         List<PartyOrganizationActivitiesDto> list = activitiesService.selectListByUserId(userId, page);
-        PageInfo<PartyOrganizationActivitiesDto> pageInfo = new PageInfo<>(list);
-        return pageInfo;
+        return new PageInfo<>(list);
     }
 
     @ApiOperation(value = "二维码签到", notes = "二维码签到", httpMethod = "GET")
@@ -114,7 +106,7 @@ public class PartyOrganizationActivitiesController {
             @ApiImplicitParam(name = "idCardNo", value = "身份证号码", paramType = "query")
     })
     public ReturnEntity signByQRCode(@RequestParam @ApiParam(name = "activitiesId", value = "组织生活Id") Long activitiesId,
-                             @RequestParam(defaultValue = "430402194704262010") @ApiParam(name = "idCardNo", value = "身份证号码") String idCardNo) {
+                                     @RequestParam(defaultValue = "430402194704262010") @ApiParam(name = "idCardNo", value = "身份证号码") String idCardNo) {
         int retVal = activitiesService.signByQRCode(activitiesId, idCardNo);
         return ReturnUtil.buildReturn(retVal);
     }
@@ -179,23 +171,13 @@ public class PartyOrganizationActivitiesController {
     }
 
     @ApiOperation(value = "结对共建列表", notes = "结对共建列表", httpMethod = "GET")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "orgRange", value = "列表范围 0 查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织", paramType = "query"),
-            @ApiImplicitParam(name = "rangeDeptId", value = "组织ID", paramType = "query")
-    })
     @GetMapping("/pairing/list")
-    public PageInfo<TabPbActivitiesDto> pairingList(Long orgRange, Long rangeDeptId, Page page) {
-        HashMap<String, Object> conditions = new HashMap<>();
-        conditions.put("orgRange", orgRange);
-        if (rangeDeptId == null || rangeDeptId == 0) {
-            rangeDeptId = UserContextHolder.getOrgId();
-        }
-        conditions.put("rangeDeptId", rangeDeptId);
+    public PageInfo<TabPbActivitiesDto> pairingList(Page page, OrgRange orgRange) {
+        HashMap<String, Object> conditions = orgRange.toMap();
         conditions.put("delFlag", "0");
         conditions.put("activitiesType", ActivityType.Pairing.getType());
         List<TabPbActivitiesDto> list = activitiesService.selectPairingListWithConditions(conditions, page);
-        PageInfo<TabPbActivitiesDto> pageInfo = new PageInfo<>(list);
-        return pageInfo;
+        return new PageInfo<>(list);
     }
 
     @ApiOperation(value = "查看结对共建详情", notes = "查看结对共建详情", httpMethod = "GET")
@@ -286,16 +268,16 @@ public class PartyOrganizationActivitiesController {
         activitiesDto.setFactCount(factCount);
     }
 
-    @ApiOperation(value = "置顶功能",notes = "置顶功能",httpMethod = "POST")
+    @ApiOperation(value = "置顶功能", notes = "置顶功能", httpMethod = "POST")
     @PostMapping("/stick")
-    public ReturnEntity stick(Long activitiesId){
+    public ReturnEntity stick(Long activitiesId) {
         int retVal = activitiesService.stick(activitiesId);
         return ReturnUtil.buildReturn(retVal);
     }
 
-    @ApiOperation(value = "取消置顶功能",notes = "取消置顶功能",httpMethod = "POST")
+    @ApiOperation(value = "取消置顶功能", notes = "取消置顶功能", httpMethod = "POST")
     @PostMapping("/deleteStick")
-    public ReturnEntity deleteStick(Long activitiesId){
+    public ReturnEntity deleteStick(Long activitiesId) {
         int retVal = activitiesService.deleteStick(activitiesId);
         return ReturnUtil.buildReturn(retVal);
     }

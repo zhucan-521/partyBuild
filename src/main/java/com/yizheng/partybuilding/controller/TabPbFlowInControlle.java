@@ -36,7 +36,7 @@ public class TabPbFlowInControlle {
 
     @ApiOperation(value = "分页查询流入党员", notes = "分页查询流入党员", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "orgRange", value = "组织范围  0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）", paramType = "query"),
+            @ApiImplicitParam(name = "orgRange", value = "组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） 其他值 当前组织", paramType = "query"),
             @ApiImplicitParam(name = "rangeDeptId", value = "组织ID", paramType = "query"),
             @ApiImplicitParam(name = "username", value = "姓名", paramType = "query", dataType = "String"),
             @ApiImplicitParam(name = "idCardNo", value = "身份证号码", paramType = "query", dataType = "String")

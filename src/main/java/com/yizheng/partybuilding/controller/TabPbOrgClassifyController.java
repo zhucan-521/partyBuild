@@ -1,6 +1,7 @@
 package com.yizheng.partybuilding.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.yizheng.commons.domain.OrgRange;
 import com.yizheng.commons.exception.BusinessDataNotFoundException;
 import com.yizheng.commons.util.ReturnEntity;
 import com.yizheng.commons.util.ReturnUtil;
@@ -35,24 +36,14 @@ public class TabPbOrgClassifyController {
     private TabSysDeptService tabSysDeptService;
 
     @ApiOperation(value = "分类定等列表", notes = "分类定等列表", httpMethod = "GET")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "orgLevel", value = "定等级别 dict FLDD", paramType = "query"),
-            @ApiImplicitParam(name = "orgRange", value = "列表范围 0 查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织", paramType = "query"),
-            @ApiImplicitParam(name = "rangeDeptId", value = "组织ID", paramType = "query")
-    })
+    @ApiImplicitParam(name = "orgLevel", value = "定等级别 dict FLDD", paramType = "query")
     @GetMapping("/list")
-    public PageInfo<TabPbOrgClassify> list(String orgLevel, String orgRange, Long rangeDeptId, Page page) {
-        Map<String, Object> conditions = new HashMap<>();
-        conditions.put("orgRange", orgRange);
-        if (rangeDeptId == null || rangeDeptId == 0) {
-            rangeDeptId = UserContextHolder.getOrgId();//当前用户的组织ID
-        }
-        conditions.put("rangeDeptId", rangeDeptId);
+    public PageInfo<TabPbOrgClassify> list(String orgLevel, Page page, OrgRange orgRange) {
+        Map<String, Object> conditions = orgRange.toMap();
         conditions.put("orgLevel", orgLevel);
         conditions.put("delFlag", "0");
         List<TabPbOrgClassify> list = tabPbOrgClassifyService.selectWithConditions(conditions, page);
-        PageInfo<TabPbOrgClassify> pageInfo = new PageInfo<>(list);
-        return pageInfo;
+        return new PageInfo<>(list);
     }
 
     @ApiOperation(value = "新增分类定等", notes = "新增分类定等", httpMethod = "POST")

@@ -99,20 +99,18 @@
         <if test="signInTime != null and signInTime != ''">
             AND aa.sign_in_time = #{signInTime}
         </if>
-        <!--组织范围  0 全组织 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
-        <if test="orgRange != null and orgRange != ''">
-            <choose>
-                <when test="orgRange == 1">
-                    AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
-                </when>
-                <when test="orgRange == 2">
-                    AND find_in_set(#{rangeDeptId}, d.full_path)
-                </when>
-            </choose>
-        </if>
-        <if test="orgRange == null or orgRange.toString() == ''">
-            AND d.dept_id = #{rangeDeptId}
-        </if>
+        <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <choose>
+            <when test="orgRange == 1">
+                AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+            </when>
+            <when test="orgRange == 2">
+                AND find_in_set(#{rangeDeptId}, d.full_path)
+            </when>
+            <otherwise>
+                AND d.dept_id = #{rangeDeptId}
+            </otherwise>
+        </choose>
         <if test="auditResult != null and auditResult != ''">
             <choose>
                 <when test="auditResult == 1">

@@ -48,7 +48,7 @@ public class TabSpecialWorkerController {
             @ApiImplicitParam(name = "rangeDeptId", value = "组织ID", paramType = "query"),
             @ApiImplicitParam(value = "专干姓名", name = "username", paramType = "query"),
             @ApiImplicitParam(value = "身份证号码", name = "idCardNo", paramType = "query"),
-            @ApiImplicitParam(value = "组织范围  0 查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织", name = "orgRange", paramType = "query")
+            @ApiImplicitParam(value = "组织范围 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） 其他值 当前组织", name = "orgRange", paramType = "query")
     })
     @GetMapping("/selectAll")
     public PageInfo<TabSpecialWorkerResultDto> selectAll(Page page, @ApiIgnore TabSpecialWorkerResultDto dto) {

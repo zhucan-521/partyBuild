@@ -575,19 +575,17 @@
             <if test="flowToUnitName != null and ''!=flowToUnitName">
               and tab_pb_flow_out.flow_to_unit_name like concat('%',#{flowToUnitName},'%')
             </if>
-            <if test="orgRange != null and orgRange != '' ">
-                <choose>
-                    <when test="orgRange == 1">
-                        AND (sys_dept.dept_id = #{rangeDeptId} OR sys_dept.parent_id = #{rangeDeptId})
-                    </when>
-                    <when test="orgRange == 2">
-                        AND find_in_set(#{rangeDeptId}, sys_dept.full_path)
-                    </when>
-                </choose>
-            </if>
-            <if test="orgRange == null or orgRange.toString() == ''">
-                AND sys_dept.dept_id = #{rangeDeptId}
-            </if>
+            <choose>
+                <when test="orgRange == 1">
+                    AND (sys_dept.dept_id = #{rangeDeptId} OR sys_dept.parent_id = #{rangeDeptId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{rangeDeptId}, sys_dept.full_path)
+                </when>
+                <otherwise>
+                    AND sys_dept.dept_id = #{rangeDeptId}
+                </otherwise>
+            </choose>
         </where>
         order by
         tab_pb_flow_out.flow_out_id

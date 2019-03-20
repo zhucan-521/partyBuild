@@ -81,6 +81,7 @@ public class SysDept extends Model<SysDept> {
 
     @ApiModelProperty(value = "组织类别 dict ZZLB")
     @JsonSerialize(using = DictSerializer.class)
+    @NotNull(message = "组织类别不能为空")
     private Long orgnizeProperty;
 
     @ApiModelProperty(value = "依赖关系 dict KZ41")

@@ -47,7 +47,7 @@ public class TabPbMsgUpInfoController {
             @ApiImplicitParam(value = "主题、专题标签 码表ZTZT", name = "titleLabel", paramType = "query"),
             @ApiImplicitParam(value = "上报日期(开始)", name = "upTime", paramType = "query"),
             @ApiImplicitParam(value = "上报日期(结束)", name = "upTimeOver", paramType = "query"),
-            @ApiImplicitParam(value = "组织范围  0 查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织 ；不传只查找当前组织", name = "orgRange", paramType = "query"),
+            @ApiImplicitParam(value = "组织范围 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） 其他值 当前组织", name = "orgRange", paramType = "query"),
             @ApiImplicitParam(value = "组织ID", name = "rangeDeptId", paramType = "query"),
     })
     public PageInfo<TabPbMsgUpInfoDto> selectActive(@ApiIgnore TabPbMsgUpInfoDto tabPbMsgUpInfoDto, Page page) {
@@ -64,7 +64,7 @@ public class TabPbMsgUpInfoController {
             @ApiImplicitParam(value = "主题、专题标签 码表ZTZT", name = "titleLabel", paramType = "query"),
             @ApiImplicitParam(value = "上报日期", name = "upTime", paramType = "query"),
             @ApiImplicitParam(value = "上报日期(结束)", name = "upTimeOver", paramType = "query"),
-            @ApiImplicitParam(value = "组织范围  0 查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织 ；不传只查找当前组织", name = "orgRange", paramType = "query"),
+            @ApiImplicitParam(value = "组织范围 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） 其他值 当前组织", name = "orgRange", paramType = "query"),
             @ApiImplicitParam(value = "组织ID", name = "rangeDeptId", paramType = "query"),
     })
     public PageInfo<TabPbMsgUpInfoDto> selectActiveRec(@ApiIgnore TabPbMsgUpInfoDto tabPbMsgUpInfoDto, Page page) {
