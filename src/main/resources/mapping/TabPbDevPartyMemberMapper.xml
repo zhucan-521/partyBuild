@@ -289,7 +289,7 @@
     <select id="list" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from tab_pb_dev_party_member where del_flag='0'
+        from tab_pb_dev_party_member where del_flag=0
         <if test="dpId != null">
             and dp_id=#{dpId}
         </if>

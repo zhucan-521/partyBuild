@@ -2,10 +2,12 @@ package com.yizheng.partybuilding.repository;
 
 import com.yizheng.partybuilding.dto.TabPbFlowInDto;
 import com.yizheng.partybuilding.entity.TabPbFlowIn;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public interface TabPbFlowInMapper {
     int deleteByPrimaryKey(Long flowInId);
 

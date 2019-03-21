@@ -198,6 +198,13 @@ public class TabPbDevPartyMemberServiceImpl implements ITabPbDevPartyMemberServi
     @Override
     public PageInfo<DevPartyUserDto> getDevPartyList(PartyApplyConditionsDto conditions, Page page) {
         PageHelper.startPage(page);
+        if(conditions!=null){
+            if(!partyDao.verification(UserContextHolder.getOrgId(),conditions.getOrgId())){
+                //不属于改变orgId的值
+                conditions.setOrgId(UserContextHolder.getOrgId());
+                conditions.setOrgRange(2L);
+            }
+        }
         var list = this.devDao.selectDevParty(conditions);
         return new PageInfo<>(list);
     }

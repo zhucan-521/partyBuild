@@ -3,9 +3,10 @@ package com.yizheng.partybuilding.repository;
 import com.yizheng.partybuilding.dto.CommunityDto;
 import com.yizheng.partybuilding.dto.TabPbFlowOutDto;
 import com.yizheng.partybuilding.entity.TabPbFlowOut;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface  TabPbFlowOutMapper {
     int deleteByPrimaryKey(Long flowOutId);
 
