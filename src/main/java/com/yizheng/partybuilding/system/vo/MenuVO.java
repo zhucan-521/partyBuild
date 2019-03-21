@@ -86,6 +86,11 @@ public class MenuVO implements Serializable {
 	 */
 	private String delFlag;
 
+	/**
+	 * 备注-扩展字段
+	 */
+	private String remark;
+
 
 	@Override
 	public int hashCode() {
