@@ -65,6 +65,9 @@ public class SysMenu extends Model<SysMenu> {
     @ApiModelProperty(value = "前端URL")
     private String path;
 
+    @ApiModelProperty(value = "备注-扩展字段")
+    private String remark;
+
     @Override
     protected Serializable pkVal() {
         return this.menuId;
