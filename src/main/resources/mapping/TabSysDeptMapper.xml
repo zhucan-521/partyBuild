@@ -540,10 +540,6 @@
         <if test="fullPath != null">
             d.full_path = #{fullPath,jdbcType=VARCHAR},
         </if>
-        <if test="fullPath == null and parentId != null">
-            d.full_path = concat( (select t.full_path from ( SELECT full_path FROM sys_dept WHERE dept_id = #{parentId}
-            ) t), '-', d.dept_id ),
-        </if>
         <if test="parentId != null">
             d.parent_id = #{parentId,jdbcType=BIGINT},
         </if>
