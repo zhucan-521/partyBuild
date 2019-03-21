@@ -147,8 +147,8 @@ public interface TabSysUserMapper {
 
     /**
      * 判断是否属于此节点
-     * @param ordId
-     * @param deptId
+     * @param ordId 当前登录人的组织id
+     * @param deptId 传进来的组织id
      * @return
      */
     Boolean verification(@Param("orgId")Long ordId,@Param("deptId")Long deptId);

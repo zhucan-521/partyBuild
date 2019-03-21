@@ -3,6 +3,7 @@ package com.yizheng.partybuilding.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.yizheng.commons.config.PaddingBaseField;
 import com.yizheng.commons.exception.BusinessDataIncompleteException;
+import com.yizheng.commons.exception.BusinessDataNotFoundException;
 import com.yizheng.commons.util.UserContextHolder;
 import com.yizheng.commons.domain.Page;
 import com.yizheng.partybuilding.entity.TabPbDeptSecretary;
@@ -40,13 +41,17 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
     @Override
     @PaddingBaseField(recursive = true)
     public int insertSelective(TabPbDeptSecretary record) {
-        int retVal = userMapper.saveEntity(record.getUser());
-        if(retVal>0){
-            record.setUserId(record.getUser().getUserId().longValue());
-            deptSecretaryMapper.insertSelective(record);
-        }else{
-            throw new BusinessDataIncompleteException("保存失败");
+        if(record==null){
+            throw new BusinessDataIncompleteException("请传入书记参数");
         }
+        if(record.getUser()== null){
+            throw new BusinessDataIncompleteException("请传入党员参数");
+        }
+        if(userMapper.selectUserByIdCardNo(record.getUser().getIdCardNo())==null){
+             userMapper.saveEntity(record.getUser());
+        }
+        record.setUserId(record.getUser().getUserId().longValue());
+        int retVal = deptSecretaryMapper.insertSelective(record);
         return retVal;
     }
 
