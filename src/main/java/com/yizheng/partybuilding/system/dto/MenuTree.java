@@ -18,6 +18,7 @@ public class MenuTree extends TreeNode {
     private String type;
     private String label;
     private Integer sort;
+    private String remark;
 
     public MenuTree() {
     }
@@ -46,5 +47,6 @@ public class MenuTree extends TreeNode {
         this.type = menuVo.getType();
         this.label = menuVo.getName();
         this.sort = menuVo.getSort();
+        this.remark = menuVo.getRemark();
     }
 }
