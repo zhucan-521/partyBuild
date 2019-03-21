@@ -144,4 +144,12 @@ public interface TabSysUserMapper {
      * @return
      */
     int saveEntity(SysUser sysUser);
+
+    /**
+     * 判断是否属于此节点
+     * @param ordId
+     * @param deptId
+     * @return
+     */
+    Boolean verification(@Param("orgId")Long ordId,@Param("deptId")Long deptId);
 }

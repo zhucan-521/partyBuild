@@ -1689,6 +1689,9 @@
         <if test="idCardNo != null and idCardNo != ''">
             AND id_card_no = #{idCardNo}
         </if>
+        <if test="">
+
+        </if>
     </select>
 
 
@@ -1978,5 +1981,9 @@
                 and report_org_id = #{reportOrgId}
             </otherwise>
         </choose>
+    </select>
+    <!--判断是否属于org的组织-->
+    <select id="verification" resultType="boolean" parameterType="java.lang.Long">
+        <![CDATA[ SELECT COUNT(1) FROM sys_dept WHERE dept_id = #{orgId} AND FIND_IN_SET(#{orgId},(SELECT full_path FROM sys_dept WHERE dept_id = #{deptId})) ]]>
     </select>
 </mapper>

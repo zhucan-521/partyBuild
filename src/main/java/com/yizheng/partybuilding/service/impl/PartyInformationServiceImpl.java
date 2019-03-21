@@ -7,6 +7,7 @@ import com.yizheng.commons.config.PaddingBaseField;
 import com.yizheng.commons.domain.Page;
 import com.yizheng.commons.exception.BusinessDataCheckFailException;
 import com.yizheng.commons.exception.BusinessDataIncompleteException;
+import com.yizheng.commons.util.UserContextHolder;
 import com.yizheng.partybuilding.dto.*;
 import com.yizheng.partybuilding.entity.OrganizationPeopleStatistics;
 import com.yizheng.partybuilding.entity.TabPbMemberReduceList;
@@ -175,21 +176,30 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @Override
     public PageInfo<SysUser> selectPage(Map<String, Object> params) {
         params.entrySet().removeIf(entry -> entry.getValue() instanceof  String && StringUtils.isEmpty(((String) entry.getValue())));
-        if(!params.containsKey("page") && !params.containsKey("limit") && !params.containsKey("username") &&
-                !params.containsKey("idCardNo") &&!params.containsKey("deptId")){
-            return null;
-        }
-        if (StringUtils.isNotEmpty((String) params.get("page")) && StringUtils.isNotEmpty((String) params.get("limit"))) {
-            PageHelper.startPage(Integer.parseInt((String) params.get("page")), Integer.parseInt((String) params.get("limit")));
-            params.remove("page");
-            params.remove("limit");
-        }
+//        if(!params.containsKey("page") && !params.containsKey("limit") && !params.containsKey("username") &&
+//                !params.containsKey("idCardNo") &&!params.containsKey("deptId")){
+//            return null;
+//        }
         //PS:优化查询重写OrgRange
         if (params.containsKey("deptId")) {
             String deptId = String.valueOf(params.get("deptId"));
             String orgRange = String.valueOf(params.get("orgRange")); // 2 包含所有下级
-            if ("14307".equals(deptId) && "2".equals(orgRange)) {
+            if(!"14307".equals(deptId)){
+                //判断是否属于此节点
+                if(!tabSysUserMapper.verification(UserContextHolder.getOrgId(),Long.parseLong(deptId))){
+                    //不属于改变deptId的值
+                    params.put("deptId",UserContextHolder.getOrgId());
+                }
+                params.put("orgRange", "2");
+            }else if ("14307".equals(deptId) && "2".equals(orgRange)) {
                 params.put("orgRange", "0");
+            }
+        }else{
+            params.put("deptId",UserContextHolder.getOrgId());
+            if(14307 == UserContextHolder.getOrgId()){
+                params.put("orgRange", "0");
+            }else{
+                params.put("orgRange", "2");
             }
         }
         //姓名、用户名
@@ -236,6 +246,16 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             params.put("status",rs.split(","));
         }else if(!params.containsKey("identityType")){
             params.put("status",new String[] {"223","224"});
+        }
+        //不存在分页key，就进行填充
+        if(!params.containsKey("page") || !params.containsKey("limit")){
+            params.put("page","1");
+            params.put("limit","10");
+        }
+        if (StringUtils.isNotEmpty((String) params.get("page")) && StringUtils.isNotEmpty((String) params.get("limit"))) {
+            PageHelper.startPage(Integer.parseInt((String) params.get("page")), Integer.parseInt((String) params.get("limit")));
+            params.remove("page");
+            params.remove("limit");
         }
         params.entrySet().removeIf(entry -> ObjectUtils.isEmpty(entry.getValue()));
         List<SysUser> sysUsers = tabSysUserMapper.selectPageByMap(params);
