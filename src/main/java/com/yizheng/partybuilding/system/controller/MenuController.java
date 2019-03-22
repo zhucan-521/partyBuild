@@ -2,6 +2,7 @@ package com.yizheng.partybuilding.system.controller;
 
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.yizheng.commons.exception.BusinessException;
 import com.yizheng.commons.util.UserContextHolder;
 import com.yizheng.partybuilding.system.dto.MenuTree;
 import com.yizheng.partybuilding.system.entity.SysMenu;
@@ -38,6 +39,13 @@ public class MenuController {
     })
     @PostMapping
     public Boolean menu(@ApiIgnore @Valid SysMenu sysMenu) {
+        if(!(sysMenu != null && sysMenu.getMenuId() != null)){
+            throw new BusinessException("请传入菜单信息");
+        }
+        SysMenu dbMenu = sysMenuService.selectById(sysMenu.getMenuId());
+        if(dbMenu != null){
+            throw new BusinessException("传入的MenuId已存在");
+        }
         return sysMenuService.insert(sysMenu);
     }
 
