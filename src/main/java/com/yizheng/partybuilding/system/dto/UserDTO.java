@@ -1,5 +1,6 @@
 package com.yizheng.partybuilding.system.dto;
 
+import com.yizheng.partybuilding.system.entity.SysAccount;
 import com.yizheng.partybuilding.system.entity.SysUser;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,7 +12,7 @@ import java.util.List;
 @ApiModel(value = "用户实体")
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class UserDTO extends SysUser {
+public class UserDTO extends SysAccount {
     /**
      * 角色ID
      */

@@ -137,7 +137,7 @@ public class AccountController {
             @ApiImplicitParam(name = "roleIds", value = "角色IDS 多个用,号分隔", paramType = "form")
     })
     @PutMapping
-    public Boolean userUpdate(@ApiIgnore @Valid UserDTO userDto) {
+    public Boolean userUpdate(@ApiIgnore UserDTO userDto) {
         if(!(userDto != null && !StringUtil.isEmpty(userDto.getIdCardNo()))){
             throw new BusinessException("请传入正确的用户信息");
         }
@@ -191,7 +191,7 @@ public class AccountController {
             @ApiImplicitParam(name = "idCardNo", value = "身份证", paramType = "query")
     })
     @GetMapping("/listAll")
-    public List<UserAdminDTO> listAll(@ApiIgnore @Valid UserAdminDTO userDto) {
+    public List<UserAdminDTO> listAll(@ApiIgnore UserAdminDTO userDto) {
         //超级管理员可以查看所有用户信息，其他角色只能查看自己创建的用户
         if(!UserContextHolder.getRoles().anyMatch(role -> role.equals("ROLE_ADMIN"))){
             userDto.setCreateUserid(UserContextHolder.getUserIdLong());
