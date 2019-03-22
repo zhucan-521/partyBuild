@@ -6,6 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.0.6.RELEASE</version>
+		<relativePath></relativePath>
 	</parent>
 
 	<groupId>com.yizheng</groupId>
@@ -111,6 +112,19 @@
 			<url>http://sonatype.egov-china.com/repository/maven-releases/</url>
 		</repository>
 	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+		</repository>
+		<repository>
+			<id>nexus</id>
+			<name>releases</name>
+			<url>http://sonatype.egov-china.com/repository/maven-releases/</url>
+		</repository>
+	</repositories>
 
 	<build>
 		<plugins>
