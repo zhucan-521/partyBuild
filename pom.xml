@@ -10,7 +10,7 @@
 
 	<groupId>com.yizheng</groupId>
 	<artifactId>partybuilding-service</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0.RELEASE</version>
 	<packaging>jar</packaging>
 	<name>partybuilding-service</name>
 	<description>智慧党建，后台、党组织、党员、党员教育服务</description>
