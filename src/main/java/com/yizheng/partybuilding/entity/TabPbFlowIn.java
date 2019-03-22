@@ -36,11 +36,11 @@ public class TabPbFlowIn {
     @JsonSerialize(using = DictSerializer.class)
     private Long flowInType;
 
-    @ApiModelProperty(value = "流出范围 码表LCFW")
+    @ApiModelProperty(value = "流动范围 码表LRFW")
     @JsonSerialize(using = DictSerializer.class)
     private Long flowInRange;
 
-    @ApiModelProperty(value = "流入原因")
+    @ApiModelProperty(value = "流入原因 码表LDYY")
     @JsonSerialize(using = DictSerializer.class)
     private String flowInReason;
 
@@ -155,7 +155,7 @@ public class TabPbFlowIn {
     @ApiModelProperty(value = "失联时间")
     private Date lostTime;
 
-    @ApiModelProperty(value = "流入状态 码表值DZZLXQK")
+    @ApiModelProperty(value = "失联情况 码表值LXQK")
     @JsonSerialize(using = DictSerializer.class)
     private Long linkStatus;
 

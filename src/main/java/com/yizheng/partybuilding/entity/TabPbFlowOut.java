@@ -52,10 +52,10 @@ public class TabPbFlowOut {
     @JsonSerialize(using = DictSerializer.class)
     private Long flowOutType;
 
-    @ApiModelProperty(value = "外出流向 码表XLXL")
+    @ApiModelProperty(value = "流动范围 码表LCFW")
     private Long flowOutRange;
 
-    @ApiModelProperty(value = "流出范围 码表LCFW")
+    @ApiModelProperty(value = "外出流动行业 码表WCHY")
     @JsonSerialize(using = DictSerializer.class)
     private Long outIndustry;
 

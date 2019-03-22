@@ -49,7 +49,7 @@ public class TabPbUnitInfo {
     @JsonSerialize(using = DictSerializer.class)
     private String entScale;
 
-    @ApiModelProperty(value = "单位类别 码表值DWLB")
+    @ApiModelProperty(value = "企业类型 码表值QYLX")
     @JsonSerialize(using = DictSerializer.class)
     private String entType;
 
@@ -77,7 +77,7 @@ public class TabPbUnitInfo {
     @ApiModelProperty(value = "法定代表人兼任党组书记 1是；0否")
     private Byte corpAsGroupSecretary;
 
-    @ApiModelProperty(value = "法人单位建立党的基层组织情况 码表值ZFJD")
+    @ApiModelProperty(value = "法人单位建立党的基层组织情况 码表值DWJLDZZQK")
     @JsonSerialize(using = DictSerializer.class)
     private Long corpOrgnizeStatus;
 

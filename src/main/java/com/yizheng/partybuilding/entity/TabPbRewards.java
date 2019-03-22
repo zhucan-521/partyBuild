@@ -89,7 +89,7 @@ public class TabPbRewards {
     @JsonIgnore
     private Long version;
 
-    @ApiModelProperty(value = "奖励名称", required = true)
+    @ApiModelProperty(value = "奖励名称 dict DYJCJL", required = true)
     @JsonSerialize(using = DictSerializer.class)
     private String rewardsName;
 
