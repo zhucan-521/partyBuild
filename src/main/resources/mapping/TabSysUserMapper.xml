@@ -144,6 +144,7 @@
     <resultMap extends="BaseResultMap" id="BaseResultMapExtendsTags" type="com.yizheng.partybuilding.system.entity.SysUser">
         <collection property="tabPbUserTags" select="com.yizheng.partybuilding.repository.TabPbUserTagMapper.selectAllListSelective"
                     column="{userId=user_id}"/>
+        <collection property="positiveList" select="com.yizheng.partybuilding.repository.TabPbPositivesMapper.selectPositives" column="{userId=user_id}"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.system.entity.SysUser">
         <result column="post_reason" jdbcType="LONGVARCHAR" property="postReason"/>

@@ -11,6 +11,7 @@ import com.yizheng.commons.util.UserContextHolder;
 import com.yizheng.partybuilding.dto.*;
 import com.yizheng.partybuilding.entity.OrganizationPeopleStatistics;
 import com.yizheng.partybuilding.entity.TabPbMemberReduceList;
+import com.yizheng.partybuilding.entity.TabPbPositives;
 import com.yizheng.partybuilding.entity.TabPbUserTag;
 
 import com.yizheng.partybuilding.repository.*;
@@ -58,6 +59,9 @@ public class PartyInformationServiceImpl implements PartyInformationService {
 
     @Autowired
     private SysUserCountDtoMapper countDtoMapper;
+
+    @Autowired
+    TabPbPositivesMapper positivesMapper;
 
     /**
      * 补录党员基本信息

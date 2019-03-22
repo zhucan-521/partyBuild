@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.yizheng.commons.config.DictSerializer;
+import com.yizheng.partybuilding.entity.TabPbPositives;
 import com.yizheng.partybuilding.entity.TabPbUserTag;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -583,4 +584,8 @@ public class SysUser implements Serializable {
     @TableField(exist = false)
     @ApiModelProperty(value = "基础资料完成度")
     private Integer complete;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "人员职务集合")
+    private List<TabPbPositives> positiveList;
 }
