@@ -17,7 +17,6 @@ import lombok.experimental.Accessors;
 import org.apache.ibatis.type.Alias;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -69,7 +68,6 @@ public class SysUser implements Serializable {
     private String delFlag;
 
     @ApiModelProperty(value = "电话号码")
-    @NotNull(message = "请填写手机号码")
     private String phone;
 
     @ApiModelProperty(value = "头像")
@@ -178,7 +176,6 @@ public class SysUser implements Serializable {
 
     @ApiModelProperty(value = "学历 码表值 WHCD")
     @JsonSerialize(using = DictSerializer.class)
-    @NotNull(message = "请填写学历")
     private Long education;
 
     @JsonIgnore
@@ -194,7 +191,6 @@ public class SysUser implements Serializable {
     private String degreeName;
 
     @ApiModelProperty(value = "家庭住址")
-    @NotNull(message = "请填写家庭住址")
     private String familyAddress;
 
     @ApiModelProperty(value = "居住地所在社区   码表值XZQH")
