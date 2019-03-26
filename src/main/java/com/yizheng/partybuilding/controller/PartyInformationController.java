@@ -49,7 +49,7 @@ public class PartyInformationController {
      */
     @ApiOperation(value = "党员信息补录", notes = "党员信息补录", httpMethod = "POST")
     @PostMapping("/insert")
-    public int insert(@RequestBody @Validated SysUser sysUser) {
+    public int insert(@RequestBody SysUser sysUser) {
         int id = partyInformationService.insert(sysUser);
         return id;
     }
