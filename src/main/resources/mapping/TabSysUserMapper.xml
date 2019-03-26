@@ -389,7 +389,7 @@
                 from (select dept_id as org_id from sys_dept dept
                 where dept.del_flag = 0
                 <if test="orgRange == 1">
-                    and (dept.dept_id = #{deptId} or dept.parent_dept_id = #{deptId})
+                    and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
                 </if>
                 <if test="orgRange == 2">
                     and find_in_set(#{deptId}, dept.full_path)
@@ -422,7 +422,7 @@
                 from (select dept_id as org_id from sys_dept dept
                   where dept.del_flag = 0
                 <if test="orgRange == 1">
-                    and (dept.dept_id = #{deptId} or dept.parent_dept_id = #{deptId})
+                    and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
                 </if>
                 <if test="orgRange == 2">
                     and find_in_set(#{deptId}, dept.full_path)
@@ -453,7 +453,7 @@
                 from (select dept_id as org_id from sys_dept dept
                 where dept.del_flag = 0
                 <if test="orgRange == 1">
-                    and (dept.dept_id = #{deptId} or dept.parent_dept_id = #{deptId})
+                    and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
                 </if>
                 <if test="orgRange == 2">
                     and find_in_set(#{deptId}, dept.full_path)

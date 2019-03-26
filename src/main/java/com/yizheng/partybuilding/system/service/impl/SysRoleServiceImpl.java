@@ -74,11 +74,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 	public PageInfo<Object> getRolePageList(Long createUserid , String roleName, com.yizheng.commons.domain.Page page) {
 		PageHelper.startPage(page);
 		List<Object> list = sysRoleMapper.listPage(createUserid ,roleName);
-		if (!(list != null && list.size() > 0)) {
-			throw new BusinessDataNotFoundException("暂无数据");
-		}
-		PageInfo<Object> pageInfo = new PageInfo<>(list);
-		return pageInfo;
+		return new PageInfo<>(list);
 	}
 
 	/**
