@@ -41,7 +41,7 @@ public class TabPbDeptSecretary implements Serializable {
     private String professionalSpecialty;
 
     @ApiModelProperty(value = "健康状况")
-    private String health;
+    private Long health;
 
     @ApiModelProperty(value = "学历学位-全日制教育")
     private String fullTimeSchooling;
