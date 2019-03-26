@@ -8,11 +8,18 @@ spring:
     password:  3bf9d1f7f0e13723a6ff
     url: jdbc:mysql://119.23.215.202:8017/partbuilding?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowMultiQueries=true
     hikari:
-      maximum-pool-size: 20
-      minimum-idle: 5
+      # 池中允许的最大连接数
+      maximum-pool-size: 5
+      # 最小空闲连接数
+      minimum-idle: 2
+      # 一个连接的生命时长，超时且没被使用则被释放
       max-lifetime: 1800000
+      # 一个连接在池中最大闲置时间（毫秒）， 超时将被释放
       idle-timeout: 30000
+      # 自动提交
       auto-commit: true
       pool-name: PbHikariCP
+      # 连接测试语句
       connection-test-query: SELECT 1
+      # 等待连接池分配连接的最大时长（毫秒），超过指定时长没有可用连接将保存
       connection-timeout: 30000
