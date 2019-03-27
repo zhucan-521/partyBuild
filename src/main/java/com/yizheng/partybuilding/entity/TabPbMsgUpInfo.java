@@ -63,6 +63,7 @@ public class TabPbMsgUpInfo {
     private String delFlag;
 
     @JsonIgnore
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createTime;
 
     @JsonIgnore
@@ -72,6 +73,7 @@ public class TabPbMsgUpInfo {
     private String createUsername;
 
     @JsonIgnore
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date updateTime;
 
     @JsonIgnore

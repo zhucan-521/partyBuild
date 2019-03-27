@@ -112,7 +112,7 @@ public class TabPbFlowOut {
     private String description;
 
     @ApiModelProperty(hidden = true)
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+800000")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createTime;
 
     @ApiModelProperty(hidden = true)
