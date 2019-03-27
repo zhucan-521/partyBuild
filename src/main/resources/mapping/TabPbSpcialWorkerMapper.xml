@@ -367,13 +367,10 @@
     where special_worker_id = #{specialWorkerId,jdbcType=BIGINT}
   </update>
 
-
-
     <!--查询人员权限表中有没有专干人员-->
     <select id="selectSysUserRoleByUserId" parameterType="Long"  resultMap="SysUserRoleMap">
        select * from sys_user_role where user_id= #{userId} and role_id =44 limit 1
     </select>
-
 
 
     <!--查询专干党员信息-->
@@ -435,54 +432,9 @@
         and sw.del_flag = 0
     </where>
         ORDER BY
-        sw.arrive_time
+        status
         DESC
     </select>
-
-
-
-    <!--修改专干党员信息-->
-    <update id="updateTabSpecialWorkerResultDto" parameterType="com.yizheng.partybuilding.dto.TabSpecialWorkerResultDto">
-        UPDATE
-        tab_pb_spcial_worker
-        LEFT JOIN sys_user on sys_user.user_id=tab_pb_spcial_worker.user_id
-        left  join sys_dept on tab_pb_spcial_worker.manage_org_id = sys_dept.dept_id
-        <set>
-            <if test="null != contactor ">
-                sys_dept.contactor= #{contactor},
-            </if>
-            <if test="null != contactNumber">
-                sys_dept.contact_number= #{contactNumber},
-            </if>
-            <if test="null != username ">
-                sys_user.realname= #{username},
-            </if>
-            <if test="null != idCardNo">
-                sys_user.id_card_no= #{idCardNo},
-            </if>
-            <if test="null != gender">
-                sys_user.gender= #{gender},
-            </if>
-            <if test="null != phone ">
-                sys_user.phone= #{phone},
-            </if>
-            <if test="null != arriveTime">
-                tab_pb_spcial_worker.arrive_time= #{arriveTime},
-            </if>
-            <if test="null != leftTime">
-                tab_pb_spcial_worker.left_time= #{leftTime},
-            </if>
-            <if test="null != deptId">
-                sys_user.dept_id = #{deptId} ,
-            </if>
-            <if test="null != manageOrgId">
-               tab_pb_spcial_worker.manage_org_id= #{manageOrgId},
-            </if>
-        </set>
-        <where>
-            tab_pb_spcial_worker.special_worker_id =#{specialWorkerId}
-        </where>
-    </update>
 
     <!--删除专干人员根据用户id-->
     <delete id="deleteTabSpecialWorkerByUserId" parameterType="Long">
@@ -545,6 +497,14 @@
     </where>
     </select>
 
-
+    <!--查找专干是否离职 没有离职返回null 离职返回离职对象-->
+    <select id="checkSpecialWhetherTOLeave" parameterType="Long" resultMap="tabSpecialWorkerDtoMap">
+       select
+       *
+       from tab_pb_spcial_worker
+       where #{user_id} in
+       (select user_id from tab_pb_spcial_worker where  IFNULL(left_time,0)>arrive_time   and del_flag=0)
+       and del_flag=0
+    </select>
 
 </mapper>

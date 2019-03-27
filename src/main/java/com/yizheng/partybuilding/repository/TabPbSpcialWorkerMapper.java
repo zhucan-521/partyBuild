@@ -67,4 +67,12 @@ public interface TabPbSpcialWorkerMapper {
      * @return
      */
     TabSpecialWorkerResultDto selectOneById(Long specialWorkerId);
+
+
+    /**
+     * 查找专干是否离职 没有离职返回null 离职返回离职对象集合
+     * @param userId
+     * @return
+     */
+    List<TabSpecialWorkerResultDto> checkSpecialWhetherTOLeave(Long userId);
 }

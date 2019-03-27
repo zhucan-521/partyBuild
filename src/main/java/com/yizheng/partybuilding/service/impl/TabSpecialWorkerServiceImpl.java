@@ -54,14 +54,19 @@ public class TabSpecialWorkerServiceImpl implements TabSpecialWorkerService {
             sysUserRoleMapper.insert(sysUserRole);
         }
         int flag=0;
-        if(null!=tabPbSpcialWorkerMapper.checkSpecialWorkerOndeptId(tabSpecialWorkerResultDto)){
-            //如果已存在专干表 修改专干表
-            tabSpecialWorkerResultDto.setSpecialWorkerId(tabPbSpcialWorkerMapper.selectSpecialWorkerIdByIdcard(tabSpecialWorkerResultDto));
-            flag=tabPbSpcialWorkerMapper.updateByPrimaryKeySelective(tabSpecialWorkerResultDto);
-        }else{
-            //插入专干表
+        if(tabPbSpcialWorkerMapper.checkSpecialWhetherTOLeave(userId).size()>0){
             flag=tabPbSpcialWorkerMapper.insertSelective(tabSpecialWorkerResultDto);
+        }else{
+            throw new BusinessDataCheckFailException("该专干正处于任职状态，请离职后在任职");
         }
+//        if(null!=tabPbSpcialWorkerMapper.checkSpecialWorkerOndeptId(tabSpecialWorkerResultDto)){
+//            //如果已存在专干表 修改专干表
+//            tabSpecialWorkerResultDto.setSpecialWorkerId(tabPbSpcialWorkerMapper.selectSpecialWorkerIdByIdcard(tabSpecialWorkerResultDto));
+//            flag=tabPbSpcialWorkerMapper.updateByPrimaryKeySelective(tabSpecialWorkerResultDto);
+//        }else{
+//            //插入专干表
+//            flag=tabPbSpcialWorkerMapper.insertSelective(tabSpecialWorkerResultDto);
+//        }
         return  flag;
     }
 
