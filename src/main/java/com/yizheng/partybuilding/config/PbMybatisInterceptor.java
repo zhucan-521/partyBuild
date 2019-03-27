@@ -26,7 +26,7 @@ import java.util.Properties;
  ResultSetHandler (handleResultSets, handleOutputParameters)
  StatementHandler (prepare, parameterize, batch, update, query)
  */
-@Component
+//@Component
 @Intercepts({@Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class }) })
 public class PbMybatisInterceptor implements Interceptor {
 
