@@ -31,4 +31,18 @@ public interface TabPbPositivesMapper {
     List<TabPbPositives> selectPositives(TabPbPositives tabPbPositives);
 
     List<TabPbPositives> verifyDuplicateDuties(TabPbPositives tabPbPositives);
+
+    /**
+     * 批量保存职务
+     * @param pbPositivesList
+     * @return
+     */
+    int batchAdd(List<TabPbPositives> pbPositivesList);
+
+    /**
+     * 批量逻辑删除
+     * @param pbPositivesList
+     * @return
+     */
+    int tombstone(List<TabPbPositives> pbPositivesList);
 }

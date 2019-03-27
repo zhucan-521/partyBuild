@@ -262,5 +262,4 @@ WHERE
         </set>
         where relation_id = #{relationId,jdbcType=BIGINT}
     </update>
-
 </mapper>

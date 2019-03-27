@@ -1884,6 +1884,9 @@
             <if test="birthday != null">
                 birthday,
             </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
             <if test="createTime != null">
                 create_time,
             </if>
@@ -1930,6 +1933,9 @@
             </if>
             <if test="birthday != null">
                 #{birthday}
+            </if>
+            <if test="orderNum != null">
+                #{orderNum},
             </if>
             <if test="createTime != null">
                 #{createTime},

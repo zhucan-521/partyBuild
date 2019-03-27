@@ -31,17 +31,11 @@ public class TabPbDeptSecretary implements Serializable {
     @ApiModelProperty(value = "参加工作时间")
     private Date joinWorkerTime;
 
-    @ApiModelProperty(value = "出生地")
-    private String birthAddress;
-
     @ApiModelProperty(value = "专业技术职称")
     private String professionalTitles;
 
     @ApiModelProperty(value = "熟悉专业有何专长")
     private String professionalSpecialty;
-
-    @ApiModelProperty(value = "健康状况")
-    private Long health;
 
     @ApiModelProperty(value = "学历学位-全日制教育")
     private String fullTimeSchooling;
@@ -138,6 +132,10 @@ public class TabPbDeptSecretary implements Serializable {
     @TableField(exist = false)
     @ApiModelProperty(value = "奖惩情况")
     private List<PunishmentRewardsDto> rewardsDtoList;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "党内职务")
+    private List<TabPbPositives> positivesList;
 
     @TableField(exist = false)
     @ApiModelProperty(value = "组织名称")

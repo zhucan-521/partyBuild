@@ -371,4 +371,32 @@
       version = #{version,jdbcType=BIGINT}
     where positive_id = #{positiveId,jdbcType=INTEGER}
   </update>
+    <insert id="batchAdd" parameterType="java.util.List">
+        insert into tab_pb_positives (user_id,left_type,positive_type,positive_org_id,positive_org,positive_name,positive_level,positive_start,positive_finished,create_time,
+        create_userid,update_time,update_userid,update_username,version)
+        values <foreach collection="list" item="item" separator=",">
+        (#{item.userId},#{item.leftType},#{item.positiveType},#{item.positiveOrgId},#{item.positiveOrg},#{item.positiveName},#{item.positiveLevel},#{item.positiveStart},
+        #{item.positiveFinished},#{item.createTime},#{item.createUsername},#{item.createUserid},#{item.updateTime},#{item.updateUserid},#{item.updateUsername},#{item.version}
+        )
+                </foreach>
+    </insert>
+
+    <update id="tombstone" parameterType="java.util.List">
+      <foreach collection="list" item="item" separator=";">
+          update tab_pb_positives
+          <set>
+              del_flag = 1,
+              <if test="updateTime != null">
+                  update_time = #{item.updateTime},
+              </if>
+              <if test="updateUserid != null">
+                  update_userid = #{item.updateUserid},
+              </if>
+              <if test="updateUsername != null">
+                  update_username = #{item.updateUsername},
+              </if>
+          </set>
+          where positive_id = #{item.positiveId}
+      </foreach>
+    </update>
 </mapper>
