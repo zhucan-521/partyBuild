@@ -121,6 +121,12 @@ public class TabPbDeptSecretary implements Serializable {
     @ApiModelProperty(value = "近五年培训情况")
     private String trainingSituation;
 
+    @ApiModelProperty(value = "是否委员 0是1否")
+    private String whetherMember;
+
+    @ApiModelProperty(value = "是否书记 0是1否")
+    private String whetherSecretary;
+
     @TableField(exist = false)
     @ApiModelProperty(value = "人员信息")
     private SysUser user;
