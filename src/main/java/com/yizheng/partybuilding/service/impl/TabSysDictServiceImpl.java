@@ -81,7 +81,7 @@ public class TabSysDictServiceImpl implements ITabSysDictService {
         return tabSysDictMapper.insertSelective(sysDict) > 0;
     }
 
-    @CacheEvict(value = "DETAIL::DICT_FORMAT", key = "#sysDict.id")
+    @CacheEvict(value = "DETAIL::DICT_FORMAT", key = "#id")
     @Override
     public Boolean deleteById(Integer id) {
         SysDict sysDict = new SysDict();
