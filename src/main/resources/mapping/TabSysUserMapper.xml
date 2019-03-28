@@ -1905,6 +1905,9 @@
             <if test="updateUsername != null">
                 update_username,
             </if>
+            <if test="version != null">
+                version,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="username != null">
@@ -1932,7 +1935,7 @@
                 #{positive},
             </if>
             <if test="birthday != null">
-                #{birthday}
+                #{birthday},
             </if>
             <if test="orderNum != null">
                 #{orderNum},
@@ -1954,6 +1957,9 @@
             </if>
             <if test="updateUsername != null">
                 #{updateUsername},
+            </if>
+            <if test="version != null">
+                #{version},
             </if>
         </trim>
     </insert>

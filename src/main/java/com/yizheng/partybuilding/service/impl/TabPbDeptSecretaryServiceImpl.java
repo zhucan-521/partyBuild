@@ -18,6 +18,7 @@ import com.yizheng.partybuilding.service.inf.ITabPbDeptSecretaryService;
 import com.yizheng.partybuilding.service.inf.TabPbFamilyService;
 import com.yizheng.partybuilding.system.entity.SysUser;
 import com.yizheng.partybuilding.system.mapper.SysUserMapper;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,38 +55,44 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
 
     @Override
     @PaddingBaseField
-    public int insertSelective(TabPbDeptSecretary record) {
-        if(record==null){
-            throw new BusinessDataIncompleteException("请传入书记参数");
-        }
+    public int insertSelective(@NonNull TabPbDeptSecretary record) {
         if(record.getUser()== null){
             throw new BusinessDataIncompleteException("请传入党员参数");
+        }
+        if(record.getDeptId()==null){
+            throw new BusinessDataIncompleteException("请传入组织Id");
         }
         SysUser user = userMapper.selectUserByIdCardNo(record.getUser().getIdCardNo());
         //判断该人员信息是否存在
         if(user==null){
             userMapper.insertSelective(record.getUser());
             record.setUserId(record.getUser().getUserId().longValue());
-
         }else {
             record.setUserId(user.getUserId().longValue());
         }
-        if(record.getFamilyList().size()>0){
-            record.getFamilyList().forEach(v->v.setUserId(record.getUserId()));
-        }
-        if(record.getPositivesList().size()>0){
-            record.getPositivesList().forEach(v->v.setUserId(record.getUserId()));
-        }
-        //保存书记
-        int retVal = deptSecretaryMapper.insertSelective(record);
-        //保存家庭成员
         if(!CollectionUtil.isEmpty(record.getFamilyList())){
+            record.getFamilyList().forEach(v->v.setUserId(record.getUserId()));
+            //保存家庭成员
             handleFamily(record.getFamilyList(),record.getUserId());
         }
-        //保存党内职务
         if(!CollectionUtil.isEmpty(record.getPositivesList())){
+            record.getPositivesList().forEach(v->v.setUserId(record.getUserId()));
+            //保存党内职务
             handlePositives(record.getPositivesList(),record.getUserId());
         }
+//        //保存书记
+//        if(0L == record.getWhetherSecretary()){
+//            record.setOrderNum(1L);
+//        }else{
+//            Long orderNum = deptSecretaryMapper.maxOrderNum(record.getDeptId());
+//            if(orderNum>=1){
+//                orderNum += orderNum;
+//            }else {
+//                orderNum = 2L;
+//            }
+//            record.setOrderNum(orderNum);
+//        }
+        int retVal = deptSecretaryMapper.insertSelective(record);
         return retVal;
     }
 
@@ -93,8 +100,12 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
     public TabPbDeptSecretary selectByPrimaryKey(Long secretaryId) {
         TabPbDeptSecretary secretary = deptSecretaryMapper.selectByPrimaryKey(secretaryId);
         if(secretary != null){
-            secretary.setRewardsDtoList(deptSecretaryMapper.punishmentRewards(secretary.getUser().getUserId().longValue()));
+            secretary.setRewardsDtoList(deptSecretaryMapper.punishmentRewards(secretary.getUserId()));
             secretary.setFamilyList(pbFamilyMapper.selectListPrimary(secretary.getUserId()));
+            TabPbPositives positives = new TabPbPositives();
+            positives.setUserId(secretary.getUserId());
+            positives.setPositiveType(59421);
+            secretary.setPositivesList(positivesMapper.selectPositives(positives));
         }
         return secretary;
     }
@@ -123,6 +134,15 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
         if(!CollectionUtil.isEmpty(pbFamilyList)){
             familyList.forEach(v-> {
                 PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(v);
+                if(v.getIdCardNo()!=null && v.getIdCardNo().length()==18){
+                    if(Integer.parseInt(v.getIdCardNo().substring(16,17))%2==1){
+                        //女
+                        v.setGender(96L);
+                    }else{
+                        //男
+                        v.setGender(95L);
+                    }
+                }
                 familyService.add(v);
             });
             return;
@@ -137,6 +157,15 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
             //add
             addFamily.forEach(family-> {
                 PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(family);
+                if(family.getIdCardNo()!=null && family.getIdCardNo().length()==18){
+                    if(Integer.parseInt(family.getIdCardNo().substring(16,17))%2==1){
+                        //女
+                        family.setGender(96L);
+                    }else{
+                        //男
+                        family.setGender(95L);
+                    }
+                }
                 familyService.add(family);
             });
         }
@@ -150,11 +179,13 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
     private void handlePositives(List<TabPbPositives> positivesList,Long userId){
         TabPbPositives positives = new TabPbPositives();
         positives.setUserId(userId);
+        positives.setPositiveType(59421);
         List<TabPbPositives> pbPositivesList = positivesMapper.selectPositives(positives);
         //数据库不存在直接添加
         if(!CollectionUtil.isEmpty(pbPositivesList)){
             for (TabPbPositives positive : positivesList){
                 PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(positive);
+                positive.setPositiveType(59421);
             }
             positivesMapper.batchAdd(positivesList);
             return;
@@ -184,6 +215,13 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
     @Override
     public List<TabPbDeptSecretary> selectList(TabPbDeptSecretary record, Page page) {
         PageHelper.startPage(page);
+        if(record!=null){
+            if(!userMapper.verification(UserContextHolder.getOrgId(),record.getDeptId())){
+                //不属于改变orgId的值
+                record.setDeptId(UserContextHolder.getOrgId());
+                record.setOrgRange(2L);
+            }
+        }
         return deptSecretaryMapper.selectList(record);
     }
 }

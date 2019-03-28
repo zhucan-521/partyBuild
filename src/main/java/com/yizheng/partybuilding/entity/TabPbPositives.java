@@ -42,7 +42,7 @@ public class TabPbPositives {
     @ApiModelProperty(value = "职务名称中文",required=true)
     private String positiveNameDict;
 
-    @ApiModelProperty(value = "职务级别")
+    @ApiModelProperty(value = "职务级别 ZWJB")
     @JsonSerialize(using = DictSerializer.class)
     private Long positiveLevel;
 
