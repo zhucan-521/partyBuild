@@ -30,4 +30,11 @@ public interface TabPbDeptSecretaryMapper {
      */
     List<TabPbDeptSecretary> selectList(TabPbDeptSecretary record);
 
+    /**
+     * 寻找组织里面最大的排序码
+     * @param deptId
+     * @return
+     */
+    Long maxOrderNum(@Param(value = "deptId") Long deptId);
+
 }

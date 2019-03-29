@@ -23,6 +23,9 @@ public class TabPbDeptSecretary implements Serializable {
     @ApiModelProperty(value = "党员id，非党员也会维护到党员表，只是状态为非党员")
     private Long userId;
 
+    @ApiModelProperty(value = "在哪个组织下面当书记")
+    private Long deptId;
+
     @ApiModelProperty(value = "职务，手动录入：如：中共长沙市委基层党建工作领导小组办公室常务副主任")
     private String postive;
 
@@ -121,6 +124,12 @@ public class TabPbDeptSecretary implements Serializable {
     @ApiModelProperty(value = "近五年培训情况")
     private String trainingSituation;
 
+    @ApiModelProperty(value = "是否委员 0是1否")
+    private Long whetherMember;
+
+    @ApiModelProperty(value = "是否书记 0是1否")
+    private Long whetherSecretary;
+
     @TableField(exist = false)
     @ApiModelProperty(value = "人员信息")
     private SysUser user;
@@ -153,7 +162,4 @@ public class TabPbDeptSecretary implements Serializable {
     @ApiModelProperty(value = "名字")
     private String realname;
 
-    @TableField(exist = false)
-    @ApiModelProperty(value = "组织id")
-    private Long rangeDeptId;
 }
