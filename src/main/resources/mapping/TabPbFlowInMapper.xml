@@ -57,6 +57,8 @@
     create_username, update_time, update_userid, update_username, version,flow_in_state
   </sql>
     <sql id="Base_FlowIn_List">
+        s.flow_from_org_name AS old_orgnize_name,
+        s.flow_to_org_name AS flow_to_org_name,
         t.flow_in_id,
 		t.org_id,
 		t.user_id,
@@ -68,7 +70,7 @@
 		t.old_unit_name,
 		t.old_orgnize_id,
 		t.old_orgnize_code,
-		( SELECT NAME FROM sys_dept WHERE dept_id = t.old_orgnize_id ) AS old_orgnize_name,
+		--( SELECT NAME FROM sys_dept WHERE dept_id = t.old_orgnize_id ) AS old_orgnize_name,
 		t.old_orgnize_phone,
 		t.old_orgnize_contactor,
 		t.old_contact_phone,
@@ -94,7 +96,7 @@
 		s.phone,
 		t.lost_time,
 		t.link_status,
-		( SELECT NAME FROM sys_dept WHERE dept_id = t.org_id ) AS flow_to_org_name ,
+		-- ( SELECT NAME FROM sys_dept WHERE dept_id = t.org_id ) AS flow_to_org_name ,
 		s.flow_to_org_contactor,
         s.flow_to_org_phone,
         s.flow_from_org_contactor,
