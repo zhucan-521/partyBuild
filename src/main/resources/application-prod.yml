@@ -4,8 +4,8 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    username: party
-    password:  3bf9d1f7f0e13723a6ff
+    username: root
+    password:  123456
     url: jdbc:mysql://${mysql.ip}:${mysql.port}/partybuilding?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowMultiQueries=true
     hikari:
       maximum-pool-size: 20
