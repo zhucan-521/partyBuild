@@ -152,4 +152,12 @@ public interface TabSysUserMapper {
      * @return
      */
     Boolean verification(@Param("orgId")Long ordId,@Param("deptId")Long deptId);
+
+    /**
+     * 修改头像
+     * @param avatar
+     * @param userId
+     * @return
+     */
+    int editAvatar(@Param("avatar") String avatar,@Param("userId")String userId);
 }

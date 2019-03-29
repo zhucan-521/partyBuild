@@ -372,11 +372,11 @@
     where positive_id = #{positiveId,jdbcType=INTEGER}
   </update>
     <insert id="batchAdd" parameterType="java.util.List">
-        insert into tab_pb_positives (user_id,left_type,positive_type,positive_org_id,positive_org,positive_name,positive_level,positive_start,positive_finished,create_time,
-        create_userid,update_time,update_userid,update_username,version)
+        insert into tab_pb_positives (user_id,left_type,positive_type,positive_org_id,positive_org,positive_name,positive_level,positive_start,positive_finished,create_time,create_username,
+        create_userid,update_time,update_userid,update_username,version,description)
         values <foreach collection="list" item="item" separator=",">
         (#{item.userId},#{item.leftType},#{item.positiveType},#{item.positiveOrgId},#{item.positiveOrg},#{item.positiveName},#{item.positiveLevel},#{item.positiveStart},
-        #{item.positiveFinished},#{item.createTime},#{item.createUsername},#{item.createUserid},#{item.updateTime},#{item.updateUserid},#{item.updateUsername},#{item.version}
+        #{item.positiveFinished},#{item.createTime},#{item.createUsername},#{item.createUserid},#{item.updateTime},#{item.updateUserid},#{item.updateUsername},#{item.version},#{item.description}
         )
                 </foreach>
     </insert>

@@ -3,6 +3,7 @@ package com.yizheng.partybuilding.entity;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.yizheng.commons.config.DictSerializer;
@@ -36,6 +37,7 @@ public class TabPbPositives {
     @ApiModelProperty(value = "任职 机构/党组织 名称",required=true)
     private String positiveOrg;
 
+    @JsonSerialize(using = DictSerializer.class)
     @ApiModelProperty(value = "职务名称，字典：党内职务（DNZW）；行政职务（HZZW）",required=true)
     private Long positiveName;
 
@@ -47,10 +49,12 @@ public class TabPbPositives {
     private Long positiveLevel;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "任职开始",required=true)
     private Date positiveStart;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "任职结束",required=true)
     private Date positiveFinished;
 

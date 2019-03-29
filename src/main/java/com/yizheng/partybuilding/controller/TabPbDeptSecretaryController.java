@@ -55,14 +55,16 @@ public class TabPbDeptSecretaryController {
     @GetMapping("/list")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "idCardNo", value = "身份证", paramType = "query"),
-            @ApiImplicitParam(name = "realname", value = "姓名", paramType = "query")
+            @ApiImplicitParam(name = "realname", value = "姓名", paramType = "query"),
+            @ApiImplicitParam(name = "positiveLevel",value = "级别")
     })
     public PageInfo<TabPbDeptSecretary> selectList(String idCardNo, String realname,
-                                                   Page page, OrgRange orgRange) {
+                                                   Page page, OrgRange orgRange,Long positiveLevel) {
         TabPbDeptSecretary secretary = new TabPbDeptSecretary();
         secretary.setIdCardNo(idCardNo);
         secretary.setRealname(realname);
         orgRange.paddingToEntity(secretary);
+        secretary.setPositiveLevel(positiveLevel);
         return new PageInfo<>(secretaryService.selectList(secretary, page));
     }
 }

@@ -1673,7 +1673,7 @@
 
     <!--根据身份証查找user信息-->
     <select id="selectUserByIdCardNo" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select * from sys_user where id_card_no =#{idCardNo} limit 1
+        select * from sys_user where id_card_no =#{idCardNo} where del_flag = 0 limit 1
     </select>
 
 
@@ -1997,6 +1997,15 @@
     </select>
     <!--判断是否属于org的组织-->
     <select id="verification" resultType="boolean" parameterType="java.lang.Long">
-        <![CDATA[ SELECT COUNT(1) FROM sys_dept WHERE dept_id = #{orgId} AND FIND_IN_SET(#{orgId},(SELECT full_path FROM sys_dept WHERE dept_id = #{deptId})) ]]>
+        <![CDATA[ SELECT COUNT(1) FROM sys_dept WHERE dept_id = #{orgId} AND FIND_IN_SET(#{orgId},(SELECT full_path FROM sys_dept WHERE dept_id = #{deptId} and del_flag = 0))]]>
     </select>
+
+    <!--修改头像-->
+    <update id="editAvatar" parameterType="java.lang.String">
+        update sys_user
+        <set>
+            avatar = #{avatar},
+        </set>
+        where user_id = #{userId}
+    </update>
 </mapper>

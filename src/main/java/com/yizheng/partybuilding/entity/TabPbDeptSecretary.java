@@ -6,13 +6,12 @@ import com.yizheng.partybuilding.dto.PunishmentRewardsDto;
 import com.yizheng.partybuilding.system.entity.SysUser;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
-import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @ApiModel(value = "实体")
 @Data
@@ -152,7 +151,7 @@ public class TabPbDeptSecretary implements Serializable {
 
     @TableField(exist = false)
     @ApiModelProperty(value = "组织范围 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） 其他值 当前组织")
-    private Long orgRange;
+    private String orgRange;
 
     @TableField(exist = false)
     @ApiModelProperty(value = "身份证")
@@ -161,5 +160,17 @@ public class TabPbDeptSecretary implements Serializable {
     @TableField(exist = false)
     @ApiModelProperty(value = "名字")
     private String realname;
+
+    @TableField(exist = false)
+    @ApiModelProperty("组织ID")
+    private Long rangeDeptId;
+
+    @TableField(exist = false)
+    @ApiModelProperty("职务级别")
+    private Long positiveLevel;
+
+    @TableField(exist = false)
+    @ApiModelProperty("职务显示")
+    private TabPbPositives positive;
 
 }
