@@ -55,9 +55,9 @@ public class TabSpecialWorkerServiceImpl implements TabSpecialWorkerService {
         }
         int flag=0;
         if(tabPbSpcialWorkerMapper.checkSpecialWhetherTOLeave(userId).size()>0){
-            flag=tabPbSpcialWorkerMapper.insertSelective(tabSpecialWorkerResultDto);
-        }else{
             throw new BusinessDataCheckFailException("该专干正处于任职状态，请离职后在任职");
+        }else{
+            flag=tabPbSpcialWorkerMapper.insertSelective(tabSpecialWorkerResultDto);
         }
 //        if(null!=tabPbSpcialWorkerMapper.checkSpecialWorkerOndeptId(tabSpecialWorkerResultDto)){
 //            //如果已存在专干表 修改专干表

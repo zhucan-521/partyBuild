@@ -497,13 +497,13 @@
     </where>
     </select>
 
-    <!--查找专干是否离职 没有离职返回null 离职返回离职对象-->
+    <!--查找专干是否在职 没有在职返回null 在职返回在职对象-->
     <select id="checkSpecialWhetherTOLeave" parameterType="Long" resultMap="tabSpecialWorkerDtoMap">
        select
        *
        from tab_pb_spcial_worker
        where #{user_id} in
-       (select user_id from tab_pb_spcial_worker where  IFNULL(left_time,0)>arrive_time   and del_flag=0)
+       (select user_id from tab_pb_spcial_worker where  IFNULL(left_time,0)&lt;=arrive_time   and del_flag=0)
        and del_flag=0
     </select>
 
