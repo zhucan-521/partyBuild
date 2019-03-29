@@ -108,7 +108,7 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
     }
 
     @Override
-    @PaddingBaseField(recursive = true,updateOnly = true)
+    @PaddingBaseField(updateOnly = true)
     public int updateByPrimaryKeySelective(TabPbDeptSecretary record) {
         TabPbDeptSecretary secretary = deptSecretaryMapper.selectByPrimaryKey(record.getSecretaryId());
         if(secretary != null){
