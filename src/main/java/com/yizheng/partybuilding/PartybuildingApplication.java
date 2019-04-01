@@ -32,10 +32,10 @@ public class PartybuildingApplication {
 	 * 注入公用commons项目，改写统一公用返回
 	 * @return
 	 */
-//	@Bean
-//	public ResponseBodyWrapFactoryBean getResponseBodyWrap(){
-//		return new ResponseBodyWrapFactoryBean();
-//	}
+	@Bean
+	public ResponseBodyWrapFactoryBean getResponseBodyWrap(){
+		return new ResponseBodyWrapFactoryBean();
+	}
 
 
 	/**
