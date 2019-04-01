@@ -41,7 +41,7 @@ public class PbLeadTeamController {
     //时间格式化
     public static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyyMMddHHmmss");
 
-    @ApiOperation(value = "增加领导班子", notes = "增加领导班子", httpMethod = "POST")
+    @ApiOperation(value = "增加领导班子", notes = "增加领导班子-蒋安", httpMethod = "POST")
     @PostMapping("/add")
     public ReturnEntity add(@ApiParam(value = "班子实体") @RequestBody TabPbLeadTeam tabPbLeadTeam) throws ParseException {
         int retVal = pbLeadTeamService.insert(tabPbLeadTeam);
@@ -50,26 +50,26 @@ public class PbLeadTeamController {
 
     @ApiOperation(value = "查询单个领导班子详情", notes = "查看单个领导班子详情", httpMethod = "GET")
     @GetMapping("/selectById")
-    public TabPbLeadTeamDto selectById(@RequestParam @ApiParam(value = "领导班子Id", required = true) Long leadTeamId) {
+    public TabPbLeadTeamDto selectById(@RequestParam @ApiParam(value = "领导班子Id-蒋安", required = true) Long leadTeamId) {
         TabPbLeadTeamDto tabPbLeadTeam = pbLeadTeamService.selectByPrimaryKey(leadTeamId);
         return tabPbLeadTeam;
     }
 
-    @ApiOperation(value = "删除单个领导班子", notes = "删除单个领导班子", httpMethod = "GET")
+    @ApiOperation(value = "删除单个领导班子", notes = "删除单个领导班子-蒋安", httpMethod = "GET")
     @GetMapping("/delete")
     public ReturnEntity deleteById(@RequestParam @ApiParam(value = "领导班子Id", required = true) Long leadTeamId) {
         int retVal = pbLeadTeamService.deleteId(leadTeamId);
         return ReturnUtil.buildReturn(retVal);
     }
 
-    @ApiOperation(value = "修改领导班子", notes = "修改领导班子", httpMethod = "POST")
+    @ApiOperation(value = "修改领导班子", notes = "修改领导班子-蒋安", httpMethod = "POST")
     @PostMapping("/update")
     public ReturnEntity update(@ApiParam(value = "班子实体") @RequestBody TabPbLeadTeam tabPbLeadTeam) {
         int retVal = pbLeadTeamService.updateWithAboutInfo(tabPbLeadTeam);
         return ReturnUtil.buildReturn(retVal);
     }
 
-    @ApiOperation(value = "查询领导班子", notes = "查询领导班子", httpMethod = "POST")
+    @ApiOperation(value = "查询领导班子", notes = "查询领导班子-蒋安", httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "orgRange", value = "列表范围 0 查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织", paramType = "query"),
             @ApiImplicitParam(name = "rangeDeptId", value = "组织Id ", paramType = "query"),
@@ -96,7 +96,7 @@ public class PbLeadTeamController {
     }
 
     @GetMapping(value = "/export")
-    @ApiOperation(value = "导出", notes = "可指定条件导出")
+    @ApiOperation(value = "导出", notes = "可指定条件导出-蒋安")
     public void export(@RequestParam @ApiParam(name = "leadTeamId", value = "领导班子Id") String leadTeamId,
                        HttpServletResponse response) throws IOException {
         Map<String, Object> conditions = new HashMap<>();

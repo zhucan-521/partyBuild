@@ -32,7 +32,7 @@ public class TabPbHardshipController {
 
 
 
-    @ApiOperation(value = "困难党员列表", notes = "困难党员列表", httpMethod = "POST")
+    @ApiOperation(value = "困难党员列表", notes = "困难党员列表-蒋安", httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "orgRange", value = "列表范围 0 查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织", paramType = "query"),
             @ApiImplicitParam(name = "username",value = "姓名",paramType = "query"),
@@ -57,7 +57,7 @@ public class TabPbHardshipController {
         return pageInfo;
     }
 
-    @ApiOperation(value = "删除困难党员", notes = "删除困难党员", httpMethod = "GET")
+    @ApiOperation(value = "删除困难党员", notes = "删除困难党员-蒋安", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "hardshipId", value = "困难Id", paramType = "query")
     })
@@ -68,13 +68,13 @@ public class TabPbHardshipController {
         return ReturnUtil.buildReturn(retVal);
     }
 
-    @ApiOperation(value = "查询单个困难党员详情", notes = "查询单个困难党员详情 ", httpMethod = "POST")
+    @ApiOperation(value = "查询单个困难党员详情", notes = "查询单个困难党员详情-蒋安", httpMethod = "POST")
     @PostMapping("/findById")
     public TabPbHardship findById(@RequestParam @ApiParam(value = "数据ID", required = true) Long hardshipId) {
         return tabPbHardshipService.selectAndDeleteId(hardshipId);
     }
 
-    @ApiOperation(value = "增加困难党员", notes = "增加困难党员", httpMethod = "POST")
+    @ApiOperation(value = "增加困难党员", notes = "增加困难党员-蒋安", httpMethod = "POST")
     @PostMapping("/insert")
     public ReturnEntity insert(@ApiParam(value = "困难党员实体") @RequestBody TabPbHardship tabPbHardship) {
 
@@ -82,7 +82,7 @@ public class TabPbHardshipController {
         return ReturnUtil.buildReturn(retVal);
     }
 
-    @ApiOperation(value = "修改困难党员", notes = "修改困难党员", httpMethod = "POST")
+    @ApiOperation(value = "修改困难党员", notes = "修改困难党员-蒋安", httpMethod = "POST")
     @PostMapping("/update")
     public ReturnEntity update(@ApiParam(value = "困难党员实体") @RequestBody TabPbHardship tabPbHardship) {
         //首先查询出困难表的单个字段
@@ -102,7 +102,7 @@ public class TabPbHardshipController {
         }
     }
 
-     @ApiOperation(value = "根据userid党员困难详情",notes = "根据userid党员困难详情",httpMethod = "POST")
+     @ApiOperation(value = "根据userid党员困难详情",notes = "根据userid党员困难详情-蒋安",httpMethod = "POST")
     @PostMapping("/findByUserId")
     public TabPbHardship findByUserId(@RequestParam @ApiParam(value = "userId", required = true) Long userId){
          return tabPbHardshipService.selectByUserId(userId);
