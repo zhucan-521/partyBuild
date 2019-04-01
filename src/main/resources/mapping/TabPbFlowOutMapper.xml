@@ -88,7 +88,7 @@
         <result column="flow_out_reason" jdbcType="BIGINT" property="flowOutReason"/>
         <result column="flow_out_place" jdbcType="BIGINT" property="flowOutPlace"/>
         <result column="flow_to_unit_name" jdbcType="VARCHAR" property="flowToUnitName"/>
-        <result column="flow_to_orgnize_name" jdbcType="VARCHAR" property="flowToOrgnizeName"/>
+        <result column="flow_to_orgnize_name" jdbcType="VARCHAR" property="flowToOrgName"/>
         <result column="flow_to_orgnize_code" jdbcType="VARCHAR" property="flowToOrgnizeCode"/>
         <result column="flow_to_orgnize_id" jdbcType="BIGINT" property="flowToOrgnizeId"/>
     </resultMap>
@@ -109,13 +109,15 @@
         tab_pb_flow_out.flow_to_unit_name,
         -- 原党组织
         tab_pb_flow_out.org_id,
-        (select name from  sys_dept where dept_id=tab_pb_flow_out.org_id limit 1 ) flow_to_orgnize_name,
+        -- (select name from  sys_dept where dept_id=tab_pb_flow_out.org_id limit 1 ) flow_to_orgnize_name,
+        sys_user.flow_from_org_name ,
         tab_pb_flow_out.out_industry,
         tab_pb_flow_out.flow_out_type,
         tab_pb_flow_out.out_profession,
         tab_pb_flow_out.flow_out_reason,
         -- 流入党组织
-        (select name from  sys_dept where dept_id=tab_pb_flow_out.flow_out_place limit 1) flowOutOrgName ,
+        -- (select name from  sys_dept where dept_id=tab_pb_flow_out.flow_out_place limit 1) flowOutOrgName ,
+        sys_user.flow_to_org_name ,
         tab_pb_flow_out.flow_out_date,
         sys_user.flow_to_org_contactor,
         sys_user.flow_to_org_phone,
@@ -610,9 +612,9 @@
         </where>
     </select>
 
-    <!--查询待报道流动党员是否存在-->
+    <!--查询待报道流动党员是否在流动-->
     <select id="checkTabPbFlowOutExixtByUserId" resultMap="BaseResultMap">
-        select  * from tab_pb_flow_out where user_id=#{userId} and flow_out_state=59413 and del_flag=0
+        select  * from tab_pb_flow_out where user_id=#{userId} and flow_out_state in (59413 ,59414 ,59415) and del_flag=0
     </select>
 
 

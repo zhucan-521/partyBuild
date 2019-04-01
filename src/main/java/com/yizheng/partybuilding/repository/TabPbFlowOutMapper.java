@@ -72,7 +72,8 @@ public interface  TabPbFlowOutMapper {
 
 
     /**
-     * 查询待报道流动党员是否存在
+     * 查询待报道流动党员是否流动
+     * 返回状态 返回实体 其余状态 null
      * @param userId
      * @return
      */

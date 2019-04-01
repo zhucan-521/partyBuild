@@ -42,12 +42,13 @@
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="flow_to_org_name" jdbcType="VARCHAR" property="flowToOrgName"/>
-        <result column="flowOutDate" jdbcType="TIMESTAMP" property="flowOutDate"/>
+        <result column="flow_out_date" jdbcType="TIMESTAMP" property="flowOutDate"/>
         <result column="outProfession" jdbcType="VARCHAR" property="outProfession"/>
         <result column="flow_from_org_phone" jdbcType="VARCHAR" property="flowFromOrgPhone"/>
         <result column="flow_from_org_contactor" jdbcType="VARCHAR" property="flowFromOrgContactor"/>
         <result column="flow_to_org_contactor" jdbcType="VARCHAR" property="flowToOrgContactor"/>
         <result column="flow_to_org_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
+        <result column="out_profession" jdbcType="BIGINT" property="outProfession"/>
     </resultMap>
     <sql id="Base_Column_List">
     flow_in_id, org_id, user_id, flow_in_date, flow_in_type, flow_in_range, flow_in_reason, 
@@ -94,15 +95,15 @@
 		s.id_card_no,
 		s.gender,
 		s.phone,
-		t.lost_time,
-		t.link_status,
+		f.lost_time,
+		f.link_status,
 		-- ( SELECT NAME FROM sys_dept WHERE dept_id = t.org_id ) AS flow_to_org_name ,
 		s.flow_to_org_contactor,
         s.flow_to_org_phone,
         s.flow_from_org_contactor,
         s.flow_from_org_phone,
-        f.flow_out_date as flowOutDate,
-		f.out_profession as outProfession
+        f.flow_out_date ,
+		f.out_profession
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">

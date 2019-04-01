@@ -3,6 +3,7 @@ package com.yizheng.partybuilding.service.inf;
 import com.github.pagehelper.PageInfo;
 import com.yizheng.commons.domain.Page;
 import com.yizheng.partybuilding.dto.TabPbFlowOutDto;
+import com.yizheng.partybuilding.system.entity.SysUser;
 
 public interface  FlowOutService {
 
@@ -43,4 +44,6 @@ public interface  FlowOutService {
      * @return
      */
     int delete(Long id);
+
+
 }

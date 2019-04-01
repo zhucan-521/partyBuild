@@ -7,6 +7,7 @@ import com.yizheng.partybuilding.dto.TabPbFlowOutDto;
 import com.yizheng.partybuilding.service.inf.FlowOutService;
 import com.yizheng.commons.util.ReturnEntity;
 import com.yizheng.commons.util.ReturnUtil;
+import com.yizheng.partybuilding.system.entity.SysUser;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -27,7 +28,7 @@ public class PartyOutflowController {
     @Autowired
     FlowOutService flowOutService;
 
-    @ApiOperation(value = "添加", notes = "添加", httpMethod = "POST")
+    @ApiOperation(value = "流出党员登记/市外流动党员手动录入", notes = "添加", httpMethod = "POST")
     @PostMapping("/insert")
     public ReturnEntity insert(@RequestBody @Validated TabPbFlowOutDto tabPbFlowOutDto) {
         return ReturnUtil.buildReturn(flowOutService.insert(tabPbFlowOutDto));
@@ -67,4 +68,5 @@ public class PartyOutflowController {
     public TabPbFlowOutDto selectOne(@RequestParam @ApiParam(value = "flowOutId")Long flowOutId) {
         return flowOutService.findOne(flowOutId);
     }
+
 }
