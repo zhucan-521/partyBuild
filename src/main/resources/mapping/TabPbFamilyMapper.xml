@@ -262,4 +262,12 @@ WHERE
         </set>
         where relation_id = #{relationId,jdbcType=BIGINT}
     </update>
+
+    <update id="tombstoneUser" parameterType="java.lang.Long">
+        update tab_pb_family
+        <set>
+            del_flag = 1,
+        </set>
+        where user_id = #{userId}
+    </update>
 </mapper>

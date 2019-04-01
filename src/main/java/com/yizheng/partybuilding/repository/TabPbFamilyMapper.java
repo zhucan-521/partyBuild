@@ -20,4 +20,11 @@ public interface TabPbFamilyMapper extends BaseMapper<TabPbFamily> {
     List<TabPbFamily> selectListPrimary(Long partyMemberId);
 
     TabPbFamily findById(Long relationId);
+
+    /**
+     * 逻辑删除党员的家庭成员
+     * @param userId
+     * @return
+     */
+    int tombstoneUser(Long userId);
 }

@@ -11,7 +11,7 @@ import java.util.List;
 public interface TabPbDeptSecretaryMapper {
     int insertSelective(TabPbDeptSecretary record);
 
-    TabPbDeptSecretary selectByPrimaryKey(Long secretaryId);
+    TabPbDeptSecretary selectByPrimaryKey(TabPbDeptSecretary secretary);
 
     int updateByPrimaryKeySelective(TabPbDeptSecretary record);
 
@@ -36,5 +36,21 @@ public interface TabPbDeptSecretaryMapper {
      * @return
      */
     Long maxOrderNum(@Param(value = "deptId") Long deptId);
+
+    /**
+     *
+     * @param orderNum
+     * @param userId
+     * @return
+     */
+    int updateOrderNum(@Param(value = "orderNum")Long orderNum,@Param(value = "userId")Long userId);
+
+    /**
+     * 查询该组织下是否已存在信息
+     * @param idCardNo
+     * @param deptId
+     * @return
+     */
+    Long selectByIdCardNo(@Param(value = "idCardNo")String idCardNo,@Param(value = "deptId")String deptId);
 
 }

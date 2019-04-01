@@ -21,14 +21,14 @@ public class TabPbDeptSecretaryController {
     @Autowired
     ITabPbDeptSecretaryService secretaryService;
 
-    @ApiOperation(value = "添加", httpMethod = "POST")
+    @ApiOperation(value = "添加", httpMethod = "POST",notes = "杨颖翔")
     @PostMapping("/add")
     public ReturnEntity add(@ApiParam(value = "保存信息") @RequestBody TabPbDeptSecretary secretary) {
         int add = secretaryService.insertSelective(secretary);
         return ReturnUtil.buildReturn(add);
     }
 
-    @ApiOperation(value = "查询单条数据", httpMethod = "GET")
+    @ApiOperation(value = "查询单条数据", httpMethod = "GET",notes = "杨颖翔")
     @GetMapping("/findById")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "secretaryId", value = "主键id", paramType = "query"),
@@ -37,26 +37,26 @@ public class TabPbDeptSecretaryController {
         return secretaryService.selectByPrimaryKey(secretaryId);
     }
 
-    @ApiOperation(value = "修改", notes = "修改除了主键Id都不是必填")
+    @ApiOperation(value = "修改", notes = "修改除了主键Id都不是必填 杨颖翔")
     @PutMapping("/edit")
     public ReturnEntity edit(@ApiParam(value = "修改信息") @RequestBody TabPbDeptSecretary secretary) {
         int edit = secretaryService.updateByPrimaryKeySelective(secretary);
         return ReturnUtil.buildReturn(edit);
     }
 
-    @ApiOperation(value = "删除")
+    @ApiOperation(value = "删除",notes = "杨颖翔")
     @DeleteMapping("/{id}")
     public ReturnEntity delete(@PathVariable Long id) {
         int retVal = secretaryService.tombstone(id);
         return ReturnUtil.buildReturn(retVal);
     }
 
-    @ApiOperation(value = "书记(分页)", httpMethod = "GET")
+    @ApiOperation(value = "书记(分页)", httpMethod = "GET",notes = "杨颖翔")
     @GetMapping("/list")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "idCardNo", value = "身份证", paramType = "query"),
             @ApiImplicitParam(name = "realname", value = "姓名", paramType = "query"),
-            @ApiImplicitParam(name = "positiveLevel",value = "级别")
+            @ApiImplicitParam(name = "positiveLevel",value = "职务")
     })
     public PageInfo<TabPbDeptSecretary> selectList(String idCardNo, String realname,
                                                    Page page, OrgRange orgRange,Long positiveLevel) {
@@ -64,7 +64,20 @@ public class TabPbDeptSecretaryController {
         secretary.setIdCardNo(idCardNo);
         secretary.setRealname(realname);
         orgRange.paddingToEntity(secretary);
+        //查询职务
         secretary.setPositiveLevel(positiveLevel);
         return new PageInfo<>(secretaryService.selectList(secretary, page));
+    }
+
+    @PutMapping("/editNum")
+    @ApiOperation(value = "修改排序码",notes = "杨颖翔")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "oldId",value = "需要替换的人员id"),
+            @ApiImplicitParam(name = "oldNum",value = "需要替换的人员排序码"),
+            @ApiImplicitParam(name = "newId",value = "替换人员id"),
+            @ApiImplicitParam(name = "newNum",value = "替换人员排序码"),
+    })
+    public ReturnEntity updateOrderNum(Long oldId, Long oldNum, Long newId, Long newNum,Page page){
+        return ReturnUtil.buildReturn(secretaryService.updateOrderNum(oldId, oldNum, newId, newNum));
     }
 }

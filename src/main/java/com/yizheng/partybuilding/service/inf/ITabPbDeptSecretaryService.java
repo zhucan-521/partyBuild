@@ -23,4 +23,14 @@ public interface ITabPbDeptSecretaryService {
      * @return
      */
     List<TabPbDeptSecretary> selectList(TabPbDeptSecretary record, Page page);
+
+    /**
+     * 替换排序码
+     * @param oldId  需要替换的
+     * @param oldNum
+     * @param newId 替换成谁的。
+     * @param newNum
+     * @return
+     */
+    int updateOrderNum(Long oldId,Long oldNum,Long newId,Long newNum);
 }

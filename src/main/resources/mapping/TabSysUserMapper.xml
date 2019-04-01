@@ -545,9 +545,6 @@
             parameterType="com.yizheng.partybuilding.system.entity.SysUser">
         insert into sys_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="userId != null">
-                user_id,
-            </if>
             <if test="deptId != null">
                 dept_id,
             </if>
@@ -838,9 +835,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="userId != null">
-                #{userId,jdbcType=BIGINT},
-            </if>
             <if test="deptId != null">
                 #{deptId,jdbcType=BIGINT},
             </if>
@@ -1673,7 +1667,7 @@
 
     <!--根据身份証查找user信息-->
     <select id="selectUserByIdCardNo" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select * from sys_user where id_card_no =#{idCardNo} where del_flag = 0 limit 1
+        select * from sys_user where id_card_no =#{idCardNo} and del_flag = 0 limit 1
     </select>
 
 

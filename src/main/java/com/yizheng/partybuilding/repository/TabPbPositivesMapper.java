@@ -45,4 +45,11 @@ public interface TabPbPositivesMapper {
      * @return
      */
     int tombstone(List<TabPbPositives> pbPositivesList);
+
+    /**
+     * 根据userId删除所有职务
+     * @param userId
+     * @return
+     */
+    int tombstoneUser(Long userId);
 }
