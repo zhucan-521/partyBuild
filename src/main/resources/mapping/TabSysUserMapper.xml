@@ -1677,7 +1677,7 @@
     </select>
 
 
-    <select id="selectPertyByIdCardNoOnUserName" parameterType="com.yizheng.partybuilding.system.entity.SysUser"
+    <select id="selectPartyByIdCardNoOnUserName" parameterType="com.yizheng.partybuilding.system.entity.SysUser"
             resultMap="BaseResultMap">
         select
         *
@@ -1689,9 +1689,6 @@
         </if>
         <if test="idCardNo != null and idCardNo != ''">
             AND id_card_no = #{idCardNo}
-        </if>
-        <if test="">
-
         </if>
     </select>
 
