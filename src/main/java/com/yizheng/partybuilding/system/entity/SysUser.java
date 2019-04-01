@@ -588,4 +588,8 @@ public class SysUser implements Serializable {
     @TableField(exist = false)
     @ApiModelProperty(value = "人员职务集合")
     private List<TabPbPositives> positiveList;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "人员排序")
+    private Long orderNumUser;
 }

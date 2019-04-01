@@ -18,6 +18,7 @@ import com.yizheng.partybuilding.system.entity.SysDict;
 import com.yizheng.partybuilding.system.entity.SysUser;
 import com.yizheng.partybuilding.system.mapper.SysUserMapper;
 import lombok.NonNull;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -135,12 +136,12 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
                 pbFamilyMapper.tombstoneUser(record.getUser().getUserId().longValue());
             }
             if(!CollectionUtil.isEmpty(record.getPositivesList())){
-                handlePositives(record.getPositivesList(),record.getUser().getUserId().longValue());
+                handlePositives(record.getPositivesList(),record.getUserId());
                 //找到职位最大的排序码
                 Long orderNumPositives = record.getPositivesList().stream().mapToLong((x)->x.getOrderNum()).summaryStatistics().getMax();
                 record.setOrderNum(orderNumPositives);
             }else{
-                positivesMapper.tombstoneUser(record.getUser().getUserId().longValue());
+                positivesMapper.tombstoneUser(record.getUserId());
                 record.setOrderNum(500L);
             }
             int retVal = deptSecretaryMapper.updateByPrimaryKeySelective(record);
@@ -259,12 +260,13 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
             }
         }
         PageHelper.startPage(page);
-        return deptSecretaryMapper.selectList(record);
+        var list = deptSecretaryMapper.selectList(record);
+        return list;
     }
 
     @Override
     public int updateOrderNum(Long oldId, Long oldNum, Long newId, Long newNum) {
-        int retVal = deptSecretaryMapper.updateOrderNum(newId,oldId);
+        int retVal = deptSecretaryMapper.updateOrderNum(newNum,oldId);
         retVal += deptSecretaryMapper.updateOrderNum(oldNum,newId);
         return retVal;
     }

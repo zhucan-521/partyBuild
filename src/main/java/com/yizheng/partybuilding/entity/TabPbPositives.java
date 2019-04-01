@@ -1,5 +1,6 @@
 package com.yizheng.partybuilding.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
@@ -100,5 +101,9 @@ public class TabPbPositives {
     @ApiModelProperty(value = "离职方式 dict LZFS")
     @JsonSerialize(using = DictSerializer.class)
     private Long leftType;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "数据字典排序")
+    private Long sort;
 
 }
