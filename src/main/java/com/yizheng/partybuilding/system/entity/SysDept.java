@@ -165,6 +165,9 @@ public class SysDept extends Model<SysDept> {
     @ApiModelProperty(value = "结对共建组织")
     private Long partnerOrgId;
 
+    @ApiModelProperty(value = "信息完整度")
+    private Integer complete;
+
     /**
      * 有效标记
      */

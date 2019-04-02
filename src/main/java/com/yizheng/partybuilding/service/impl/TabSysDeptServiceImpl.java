@@ -19,11 +19,12 @@ import com.yizheng.partybuilding.service.inf.ITabPbAttachmentService;
 import com.yizheng.partybuilding.service.inf.TabPbOrgnizeChangeService;
 import com.yizheng.partybuilding.service.inf.TabSysDeptService;
 import com.yizheng.partybuilding.system.entity.SysDept;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -38,6 +39,8 @@ import java.util.stream.Collectors;
  **/
 @Service("tabSysDeptService")
 public class TabSysDeptServiceImpl implements TabSysDeptService {
+
+    private static final int COMPLETEBASE = 10;
 
     @Autowired
     private TabSysDeptMapper tabSysDeptMapper;
@@ -54,6 +57,7 @@ public class TabSysDeptServiceImpl implements TabSysDeptService {
     public List<SysDept> selectWithConditions(Map<String, Object> conditions, Page page) {
         PageHelper.startPage(page);
         List<SysDept> list = tabSysDeptMapper.selectWithConditions(conditions);
+        calculationComplete(list);
         return list;
     }
 
@@ -420,5 +424,42 @@ public class TabSysDeptServiceImpl implements TabSysDeptService {
     @Override
     public String excelTemplateName() {
         return "temp_orgnaizationInfo";
+    }
+
+    public void calculationComplete(List<SysDept> orgList){
+        orgList.forEach(org ->{
+            int tool = 100;
+            if(ObjectUtils.isEmpty(org.getIsCity())){
+                tool -= COMPLETEBASE;
+            }
+            if(ObjectUtils.isEmpty(org.getIsTeam())){
+                tool -= COMPLETEBASE;
+            }
+            if(ObjectUtils.isEmpty(org.getPostCode())){
+                tool -= COMPLETEBASE;
+            }
+            if(ObjectUtils.isEmpty(org.getCommunityAddr())){
+                tool -= COMPLETEBASE;
+            }
+            if(ObjectUtils.isEmpty(org.getContactNumber())){
+                tool -= COMPLETEBASE;
+            }
+            if(ObjectUtils.isEmpty(org.getContactor())){
+                tool -= COMPLETEBASE;
+            }
+            if(ObjectUtils.isEmpty(org.getOrgnizeMasterId())){
+                tool -= COMPLETEBASE;
+            }
+            if(ObjectUtils.isEmpty(org.getFoundedDate())){
+                tool -= COMPLETEBASE;
+            }
+            if(ObjectUtils.isEmpty(org.getFoundedFileNumber())){
+                tool -= COMPLETEBASE;
+            }
+            if(ObjectUtils.isEmpty(org.getFoundedReason())){
+                tool -= COMPLETEBASE;
+            }
+            org.setComplete(tool);
+        });
     }
 }
