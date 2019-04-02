@@ -106,7 +106,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
     public PageInfo<SysUser> selectPartyByIdCardNoOnUserName(SysUser sysUser, Page page) {
         PageHelper.startPage(page);
 
-        List<SysUser> sysUsers = tabSysUserMapper.selectPertyByIdCardNoOnUserName(sysUser);
+        List<SysUser> sysUsers = tabSysUserMapper.selectPartyByIdCardNoOnUserName(sysUser);
         return new PageInfo<>(sysUsers);
     }
 
