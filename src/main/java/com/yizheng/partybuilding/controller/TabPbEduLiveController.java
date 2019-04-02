@@ -21,7 +21,7 @@ import java.util.List;
  * @author wuyunjie
  * Date 2018-12-10 11:42
  */
-@Api(tags = "党员教育-直播管理模块")
+@Api(tags = "党员教育-直播管理模块-吴云杰")
 @RestController
 @RequestMapping("/live")
 public class TabPbEduLiveController {

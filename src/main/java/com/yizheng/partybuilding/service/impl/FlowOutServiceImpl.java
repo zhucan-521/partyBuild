@@ -51,7 +51,7 @@ public class  FlowOutServiceImpl implements FlowOutService {
 
 
     /**
-     * 登记流出党员信息
+     * 登记流出党员信息(市外流动党员录入)
      * @param tabPbFlowOutDto
      * @return
      */
@@ -61,7 +61,13 @@ public class  FlowOutServiceImpl implements FlowOutService {
         //修改用户表信息
         SysUser sysUser=tabSysUserMapper.selectUserByIdCardNo(tabPbFlowOutDto.getIdCardNo());
         if(null==sysUser){
-            throw new BusinessDataNotFoundException("不存在该党员！");
+            //外市流动党员登记
+            SysUser newSysUser=new SysUser()
+                    .setRealname(tabPbFlowOutDto.getUsername())
+                    .setGender(tabPbFlowOutDto.getGender())
+                    .setIdCardNo(tabPbFlowOutDto.getIdCardNo());
+            tabSysUserMapper.insertSelective(newSysUser);
+            sysUser=tabSysUserMapper.selectUserByIdCardNo(tabPbFlowOutDto.getIdCardNo());
         }
         Long userId=sysUser.getUserId().longValue();
         if(null !=tabPbFlowOutMapper.checkTabPbFlowOutExixtByUserId(userId)){
@@ -69,33 +75,46 @@ public class  FlowOutServiceImpl implements FlowOutService {
         }
         BeanUtils.copyProperties(tabPbFlowOutDto,sysUser);
         tabPbFlowOutDto.setUserId(userId);
-        //流入党组织
-        sysUser.setFlowToOrgId(tabPbFlowOutDto.getFlowOutPlace());
-        sysUser.setFlowToOrgName(tabPbFlowOutMapper.selectDeptNameByDeptId(tabPbFlowOutDto.getFlowOutPlace()));
+        //流入党组织 没有流入组织id则流出到市外
+        if(tabPbFlowOutDto.getFlowOutPlace()!=null){
+            sysUser.setFlowToOrgId(tabPbFlowOutDto.getFlowOutPlace());
+            //插入流出表 设置状态为待报道
+            tabPbFlowOutDto.setFlowOutState(59413L);
+         }else{
+            //插入流出表 设置状态为已经流出
+            tabPbFlowOutDto.setFlowOutState(59414L);
+            sysUser.setFlowStatus(41207L);
+        }
         //流出党组织
-        sysUser.setFlowFromOrgId(tabPbFlowOutDto.getOrgId()) ;
-        sysUser.setFlowFromOrgName(tabPbFlowOutMapper.selectDeptNameByDeptId(tabPbFlowOutDto.getOrgId()));
+        if(tabPbFlowOutDto.getOrgId()!=null){
+            sysUser.setFlowFromOrgId(tabPbFlowOutDto.getOrgId()) ;
+        }
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
-        //插入流出表 设置状态为待报道
-        tabPbFlowOutDto.setFlowOutState(59413L);
         tabPbFlowOutMapper.insertSelective(tabPbFlowOutDto);
-       //插入流入表
+        //插入流入表
         var tabPbFlowIn=new TabPbFlowIn()
                    .setFlowOutId(tabPbFlowOutDto.getFlowOutId())
-                   .setFlowInState(59413L)//设置状态为待报道
-                   .setUserId(userId) //设置流入人
-                   .setOldOrgnizeId(tabPbFlowOutDto.getOrgId()) //设置原党组织
-                   .setOrgId(tabPbFlowOutDto.getFlowOutPlace()) //设置流入组织
+                   .setFlowInState(59413L) //设置状态为待报道
+                   .setUserId(userId)  //设置流入人
                    .setOldPlace(tabPbFlowOutDto.getFlowToUnitName())  //设置原地
                    .setFlowInType(tabPbFlowOutDto.getFlowOutType()) //设置流出类型
                    .setFlowInRange(tabPbFlowOutDto.getOutIndustry()) //设置流动范围
                    .setFlowInReason(tabPbFlowOutDto.getFlowOutReason().toString()) //设置流动原因
                    .setOldOrgnizeCode(tabPbFlowOutDto.getFlowToOrgnizeCode());  //设置流动证
-                if(tabPbFlowOutDto.getFlowInDate()!=null){
-                    tabPbFlowIn.setFlowInDate(tabPbFlowOutDto.getFlowInDate());//设置流入日期
-                    tabPbFlowIn.setFlowInState(59415L);//已录入
-                }
-
+       //流入党组织
+        if(tabPbFlowOutDto.getFlowOutPlace()!=null){
+            tabPbFlowIn.setOrgId(tabPbFlowOutDto.getFlowOutPlace()); //设置流入组织
+        }else{
+            tabPbFlowOutDto.setFlowOutState(59414L); //已经流出
+        }
+        //流出党组织
+        if(tabPbFlowOutDto.getOrgId()!=null){
+            tabPbFlowIn.setOldOrgnizeId(tabPbFlowOutDto.getOrgId()) ;//设置原党组织
+        }
+        if(tabPbFlowOutDto.getFlowInDate()!=null){  //如果有录入日期则为手动录入
+            tabPbFlowIn.setFlowInDate(tabPbFlowOutDto.getFlowInDate());//设置流入日期
+            tabPbFlowIn.setFlowInState(59415L);//已录入
+        }
         return  tabPbFlowInMapper.insertSelective(tabPbFlowIn);
     }
 
@@ -111,11 +130,15 @@ public class  FlowOutServiceImpl implements FlowOutService {
         SysUser sysUser=tabSysUserMapper.selectUserByIdCardNo(tabPbFlowOutDto.getIdCardNo());
         BeanUtils.copyProperties(tabPbFlowOutDto,sysUser);
         //流入党组织
-        sysUser.setFlowToOrgId(tabPbFlowOutDto.getFlowOutPlace());
-        sysUser.setFlowToOrgName(tabPbFlowOutMapper.selectDeptNameByDeptId(tabPbFlowOutDto.getFlowOutPlace()));
+        if(tabPbFlowOutDto.getFlowOutPlace()!=null){
+            sysUser.setFlowToOrgId(tabPbFlowOutDto.getFlowOutPlace());
+            sysUser.setFlowToOrgName(tabPbFlowOutMapper.selectDeptNameByDeptId(tabPbFlowOutDto.getFlowOutPlace()));
+        }
         //流出党组织
-        sysUser.setFlowFromOrgId(tabPbFlowOutDto.getOrgId()) ;
-        sysUser.setFlowFromOrgName(tabPbFlowOutMapper.selectDeptNameByDeptId(tabPbFlowOutDto.getOrgId()));
+        if(tabPbFlowOutDto.getOrgId()!=null){
+            sysUser.setFlowFromOrgId(tabPbFlowOutDto.getOrgId()) ;
+            sysUser.setFlowFromOrgName(tabPbFlowOutMapper.selectDeptNameByDeptId(tabPbFlowOutDto.getOrgId()));
+        }
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         //修改流入表
         var tabPbFlowIn=new TabPbFlowIn()
@@ -154,8 +177,14 @@ public class  FlowOutServiceImpl implements FlowOutService {
     @PaddingBaseField
     public int delete(Long id) {
         TabPbFlowOut tabPbFlowOut=tabPbFlowOutMapper.selectByPrimaryKey(id);
-        if(tabPbFlowOut.getFlowOutState()==59414||tabPbFlowOut.getFlowOutState()==59413){
-            throw new BusinessDataCheckFailException("次党员正在流动，删除会造成数据流失！");
+        if(tabPbFlowOut.getFlowOutPlace()==null){
+            if(tabPbFlowOut.getFlowOutState()==59413){
+                throw new BusinessDataCheckFailException("次党员正在流动，删除会造成数据流失！");
+            }
+        } else{
+            if(tabPbFlowOut.getFlowOutState()==59413 || tabPbFlowOut.getFlowOutState()==59414){
+                throw new BusinessDataCheckFailException("次党员正在流动，删除会造成数据流失！");
+            }
         }
         tabPbFlowOut.setDelFlag("1");
         tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOut);
@@ -164,6 +193,9 @@ public class  FlowOutServiceImpl implements FlowOutService {
         sysUser.setFlowStatus(41209L);
         return tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
     }
+
+
+
 
 
 }

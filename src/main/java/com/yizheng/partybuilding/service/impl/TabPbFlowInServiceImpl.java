@@ -6,6 +6,7 @@ import com.yizheng.commons.config.PaddingBaseField;
 import com.yizheng.commons.util.UserContextHolder;
 import com.yizheng.commons.domain.Page;
 import com.yizheng.partybuilding.dto.TabPbFlowInDto;
+import com.yizheng.partybuilding.dto.TabPbFlowOutDto;
 import com.yizheng.partybuilding.entity.TabPbFlowIn;
 import com.yizheng.partybuilding.entity.TabPbFlowOut;
 import com.yizheng.commons.exception.BusinessDataCheckFailException;
@@ -122,6 +123,12 @@ public class TabPbFlowInServiceImpl implements TabPbFlowInService {
         SysUser sysUser=new SysUser();
         sysUser.setUserId(userId.intValue());
         BeanUtils.copyProperties(tabPbFlowInDto,sysUser);
+
+        TabPbFlowIn tabPbFlowIn=tabPbFlowInMapper.selectByPrimaryKey(tabPbFlowInDto.getFlowInId());
+        TabPbFlowOutDto tabPbFlowOutDto=new TabPbFlowOutDto();
+        BeanUtils.copyProperties(tabPbFlowInDto,tabPbFlowOutDto);
+        tabPbFlowOutDto.setFlowOutId(tabPbFlowIn.getFlowOutId());
+        tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOutDto);
         //修改流入流出党组织联系人和电话
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         return tabPbFlowInMapper.updateByPrimaryKeySelective(tabPbFlowInDto);
