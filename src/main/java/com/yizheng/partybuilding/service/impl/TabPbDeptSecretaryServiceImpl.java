@@ -10,19 +10,20 @@ import com.yizheng.commons.util.UserContextHolder;
 import com.yizheng.partybuilding.entity.TabPbDeptSecretary;
 import com.yizheng.partybuilding.entity.TabPbFamily;
 import com.yizheng.partybuilding.entity.TabPbPositives;
-import com.yizheng.partybuilding.repository.TabPbDeptSecretaryMapper;
-import com.yizheng.partybuilding.repository.TabPbFamilyMapper;
-import com.yizheng.partybuilding.repository.TabPbPositivesMapper;
-import com.yizheng.partybuilding.repository.TabSysUserMapper;
+import com.yizheng.partybuilding.repository.*;
 import com.yizheng.partybuilding.service.inf.ITabPbDeptSecretaryService;
+import com.yizheng.partybuilding.service.inf.ITabPbPositivesService;
 import com.yizheng.partybuilding.service.inf.TabPbFamilyService;
+import com.yizheng.partybuilding.system.entity.SysDict;
 import com.yizheng.partybuilding.system.entity.SysUser;
 import com.yizheng.partybuilding.system.mapper.SysUserMapper;
 import lombok.NonNull;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,9 +50,9 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
     @Autowired
     private TabPbPositivesMapper positivesMapper;
 
-
     @Autowired
     private TabPbFamilyService familyService;
+
 
     @Override
     @PaddingBaseField
@@ -62,19 +63,29 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
         if(record.getDeptId()==null){
             throw new BusinessDataIncompleteException("请传入组织Id");
         }
+        if(deptSecretaryMapper.selectByIdCardNo(record.getUser().getIdCardNo(),record.getDeptId()+"")>=1){
+            throw new BusinessDataIncompleteException("该组织已存在此人员信息");
+        }
         SysUser user = userMapper.selectUserByIdCardNo(record.getUser().getIdCardNo());
+        //最大排序码
+        Long orderNum = deptSecretaryMapper.maxOrderNum(record.getDeptId());
         //判断该人员信息是否存在
         if(user==null){
+            record.getUser().setOrderNum(orderNum+1);
             userMapper.insertSelective(record.getUser());
             record.setUserId(record.getUser().getUserId().longValue());
         }else {
-            //修改头像
+            //是否修改排序码
+            if(user.getOrderNum()==null || "".equals(user.getOrderNum())){
+                record.getUser().setOrderNum(orderNum+1);
+            }
+            //是否修改头像
             if(record.getUser().getAvatar()!=null && !"".equals(record.getUser().getAvatar())){
                 userMapper.editAvatar(record.getUser().getAvatar(),user.getUserId()+"");
             }
             record.setUserId(user.getUserId().longValue());
         }
-
+        //判断书记有没有添加家庭成员
         if(!CollectionUtil.isEmpty(record.getFamilyList())){
             record.getFamilyList().forEach(v->v.setUserId(record.getUserId()));
             //保存家庭成员
@@ -85,9 +96,11 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
             record.getPositivesList().forEach(v->v.setUserId(record.getUserId()));
             //保存党内职务
             handlePositives(record.getPositivesList(),record.getUserId());
-        }else{
-            orderNum(record);
+            //找到职位最大的排序码
+            Long orderNumPositives = record.getPositivesList().stream().mapToLong((x)->x.getOrderNum()).summaryStatistics().getMax();
+            record.setOrderNum(orderNumPositives);
         }
+
         //保存书记
         int retVal = deptSecretaryMapper.insertSelective(record);
         return retVal;
@@ -95,7 +108,9 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
 
     @Override
     public TabPbDeptSecretary selectByPrimaryKey(Long secretaryId) {
-        TabPbDeptSecretary secretary = deptSecretaryMapper.selectByPrimaryKey(secretaryId);
+        TabPbDeptSecretary secretary = new TabPbDeptSecretary();
+        secretary.setSecretaryId(secretaryId);
+        secretary = deptSecretaryMapper.selectByPrimaryKey(secretary);
         if(secretary != null){
             secretary.setRewardsDtoList(deptSecretaryMapper.punishmentRewards(secretary.getUserId()));
             secretary.setFamilyList(pbFamilyMapper.selectListPrimary(secretary.getUserId()));
@@ -108,19 +123,28 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
     }
 
     @Override
+    @PaddingBaseField(updateOnly = true)
     public int updateByPrimaryKeySelective(TabPbDeptSecretary record) {
-        TabPbDeptSecretary secretary = deptSecretaryMapper.selectByPrimaryKey(record.getSecretaryId());
+        TabPbDeptSecretary secretary = deptSecretaryMapper.selectByPrimaryKey(record);
         if(secretary != null){
-            int retVal = deptSecretaryMapper.updateByPrimaryKeySelective(record);
             if(record.getUser()!=null){
-                retVal += sysUserMapper.updateById(record.getUser());
+                sysUserMapper.updateById(record.getUser());
             }
             if(!CollectionUtil.isEmpty(record.getFamilyList())){
-                handleFamily(record.getFamilyList(),record.getUserId());
+                handleFamily(record.getFamilyList(),record.getUser().getUserId().longValue());
+            }else{
+                pbFamilyMapper.tombstoneUser(record.getUser().getUserId().longValue());
             }
             if(!CollectionUtil.isEmpty(record.getPositivesList())){
                 handlePositives(record.getPositivesList(),record.getUserId());
+                //找到职位最大的排序码
+                Long orderNumPositives = record.getPositivesList().stream().mapToLong((x)->x.getOrderNum()).summaryStatistics().getMax();
+                record.setOrderNum(orderNumPositives);
+            }else{
+                positivesMapper.tombstoneUser(record.getUserId());
+                record.setOrderNum(500L);
             }
+            int retVal = deptSecretaryMapper.updateByPrimaryKeySelective(record);
             return retVal;
         }else{
             throw new BusinessDataIncompleteException("该书记不存在");
@@ -146,6 +170,10 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
             List<TabPbFamily> removeFamily = pbFamilyList.stream().filter(family-> !familyList.contains(family.getRelationId())).collect(Collectors.toList());
             //前端和数据库不想等的需要添加
             List<TabPbFamily> addFamily = familyList.stream().filter(family -> !pbFamilyList.contains(family.getRelationId())).collect(Collectors.toList());
+            //相等的进行修改
+            List<TabPbFamily> editFamily = familyList.stream().filter(family -> pbFamilyList.contains(family.getRelationId())).collect(Collectors.toList());
+            //修改
+            editFamily.forEach(v->familyService.updateByPrimaryKeySelective(v));
             //logicDelete
             removeFamily.forEach(v->familyService.deleteByPrimaryKey(v.getRelationId()));
             //add
@@ -197,33 +225,19 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
             List<TabPbPositives> removePositives = pbPositivesList.stream().filter(positive -> !positivesList.contains(positives.getPositiveId())).collect(Collectors.toList());
             //前端和数据库不想等的需要添加
             List<TabPbPositives> addPositives = positivesList.stream().filter(positive -> !pbPositivesList.contains(positive.getPositiveId())).collect(Collectors.toList());
+            //相等的进行修改
+            List<TabPbPositives> editPositives = positivesList.stream().filter(positive -> pbPositivesList.contains(positive.getPositiveId())).collect(Collectors.toList());
+            //修改
+            editPositives.forEach(v->positivesMapper.updateByPrimaryKeySelective(v));
             //批量逻辑删除
             positivesMapper.tombstone(removePositives);
             //批量添加
+            for (TabPbPositives positive : addPositives){
+                PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(positive);
+                positive.setPositiveType(59421);
+            }
             positivesMapper.batchAdd(addPositives);
         }
-    }
-
-    /**
-     * 处理排序码
-     * @param record
-     */
-    private void orderNum(TabPbDeptSecretary record){
-        //判断是否兼职书记
-        if(0L == record.getWhetherSecretary()){
-            //书记排序码默认为1
-            record.setOrderNum(1L);
-            return;
-        }
-        Long orderNum = deptSecretaryMapper.maxOrderNum(record.getDeptId());
-        //党内职务副书记id
-        String[] viceSecretary = {"251","254","257","261","349"};
-        if(orderNum>=1){
-            orderNum = orderNum+1;
-        }else {
-            orderNum = 2L;
-        }
-        record.setOrderNum(orderNum);
     }
 
     @Override
@@ -246,6 +260,16 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
             }
         }
         PageHelper.startPage(page);
-        return deptSecretaryMapper.selectList(record);
+        var list = deptSecretaryMapper.selectList(record);
+        return list;
     }
+
+    @Override
+    public int updateOrderNum(Long oldId, Long oldNum, Long newId, Long newNum) {
+        int retVal = deptSecretaryMapper.updateOrderNum(newNum,oldId);
+        retVal += deptSecretaryMapper.updateOrderNum(oldNum,newId);
+        return retVal;
+    }
+
+
 }

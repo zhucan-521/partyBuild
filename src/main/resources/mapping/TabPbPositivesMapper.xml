@@ -53,7 +53,7 @@
     <select id="selectList" parameterType="com.yizheng.partybuilding.entity.TabPbPositives" resultMap="ResultMapWithBLOBs">
         select
         <include refid="P_Base_Column_List"/>
-        ,d.label as positive_name_dict
+        ,d.label as positive_name_dict,d.sort
         from tab_pb_positives p
         left join sys_dict d on d.id = p.positive_name
         where p.del_flag = 0
@@ -378,7 +378,7 @@
         (#{item.userId},#{item.leftType},#{item.positiveType},#{item.positiveOrgId},#{item.positiveOrg},#{item.positiveName},#{item.positiveLevel},#{item.positiveStart},
         #{item.positiveFinished},#{item.createTime},#{item.createUsername},#{item.createUserid},#{item.updateTime},#{item.updateUserid},#{item.updateUsername},#{item.version},#{item.description}
         )
-                </foreach>
+        </foreach>
     </insert>
 
     <update id="tombstone" parameterType="java.util.List">
@@ -386,17 +386,24 @@
           update tab_pb_positives
           <set>
               del_flag = 1,
-              <if test="updateTime != null">
+              <if test="item.updateTime != null">
                   update_time = #{item.updateTime},
               </if>
-              <if test="updateUserid != null">
+              <if test="item.updateUserid != null">
                   update_userid = #{item.updateUserid},
               </if>
-              <if test="updateUsername != null">
+              <if test="item.updateUsername != null">
                   update_username = #{item.updateUsername},
               </if>
           </set>
           where positive_id = #{item.positiveId}
       </foreach>
+    </update>
+    <update id="tombstoneUser" parameterType="java.lang.Long">
+        update tab_pb_positives
+        <set>
+            del_flag = 1,
+        </set>
+        where user_id = #{userId}
     </update>
 </mapper>
