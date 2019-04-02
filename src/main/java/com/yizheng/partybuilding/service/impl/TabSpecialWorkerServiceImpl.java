@@ -11,6 +11,7 @@ package com.yizheng.partybuilding.service.impl;
         import com.yizheng.partybuilding.entity.TabPbSpcialWorker;
 
         import com.yizheng.partybuilding.repository.TabPbSpcialWorkerMapper;
+        import com.yizheng.partybuilding.repository.TabSysDeptMapper;
         import com.yizheng.partybuilding.repository.TabSysUserMapper;
         import com.yizheng.partybuilding.service.inf.TabSpecialWorkerService;
 
@@ -36,6 +37,9 @@ public class TabSpecialWorkerServiceImpl implements TabSpecialWorkerService {
     @Autowired
     TabPbSpcialWorkerMapper tabPbSpcialWorkerMapper;
 
+    @Autowired
+    TabSysDeptMapper tabSysDeptMapper;
+
     /**
      * 专干新增
      * roleId为44
@@ -43,6 +47,9 @@ public class TabSpecialWorkerServiceImpl implements TabSpecialWorkerService {
     @PaddingBaseField
     @Override
     public int insert(TabSpecialWorkerResultDto tabSpecialWorkerResultDto) {
+       if(null==tabSysDeptMapper.selectByPrimaryKey(tabSpecialWorkerResultDto.getManageOrgId()) || null==tabSysDeptMapper.selectByPrimaryKey(tabSpecialWorkerResultDto.getDeptId())){
+           throw new BusinessDataCheckFailException("根据传入的deptId或者mangerOrgId查找不到对应的组织部门");
+       }
         Long userId = tabSysUserMapper.selectUserByIdCardNo(tabSpecialWorkerResultDto.getIdCardNo()).getUserId().longValue();
         tabSpecialWorkerResultDto.setUserId(userId);
         //设置专干角色为44，并且插入sys_user_role
@@ -105,16 +112,19 @@ public class TabSpecialWorkerServiceImpl implements TabSpecialWorkerService {
     /**
      * 修改
      *
-     * @param dto
+     * @param tabSpecialWorkerResultDto
      * @return
      */
     @PaddingBaseField(updateOnly = true)
     @Override
-    public int updateBySpecialWorkerId(TabSpecialWorkerResultDto dto) {
-        if(dto.getSpecialWorkerId()==null){
+    public int updateBySpecialWorkerId(TabSpecialWorkerResultDto tabSpecialWorkerResultDto) {
+        if(null==tabSysDeptMapper.selectByPrimaryKey(tabSpecialWorkerResultDto.getManageOrgId()) || null==tabSysDeptMapper.selectByPrimaryKey(tabSpecialWorkerResultDto.getDeptId())){
+            throw new BusinessDataCheckFailException("根据传入的deptId或者mangerOrgId查找不到对应的组织部门");
+        }
+        if(tabSpecialWorkerResultDto.getSpecialWorkerId()==null){
             throw new BusinessDataCheckFailException("缺少专干主键");
         }
-        return tabPbSpcialWorkerMapper.updateByPrimaryKeySelective(dto);
+        return tabPbSpcialWorkerMapper.updateByPrimaryKeySelective(tabSpecialWorkerResultDto);
     }
 
 
