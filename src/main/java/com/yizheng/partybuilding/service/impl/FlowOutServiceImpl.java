@@ -51,7 +51,7 @@ public class  FlowOutServiceImpl implements FlowOutService {
 
 
     /**
-     * 登记流出党员信息
+     * 登记流出党员信息(市外流动党员录入)
      * @param tabPbFlowOutDto
      * @return
      */
@@ -75,7 +75,7 @@ public class  FlowOutServiceImpl implements FlowOutService {
         }
         BeanUtils.copyProperties(tabPbFlowOutDto,sysUser);
         tabPbFlowOutDto.setUserId(userId);
-        //流入党组织
+        //流入党组织 没有流入组织id则流出到市外
         if(tabPbFlowOutDto.getFlowOutPlace()!=null){
             sysUser.setFlowToOrgId(tabPbFlowOutDto.getFlowOutPlace());
             //插入流出表 设置状态为待报道
@@ -107,12 +107,11 @@ public class  FlowOutServiceImpl implements FlowOutService {
         }else{
             tabPbFlowOutDto.setFlowOutState(59414L); //已经流出
         }
-
         //流出党组织
         if(tabPbFlowOutDto.getOrgId()!=null){
             tabPbFlowIn.setOldOrgnizeId(tabPbFlowOutDto.getOrgId()) ;//设置原党组织
         }
-        if(tabPbFlowOutDto.getFlowInDate()!=null){  //手动录入市外党员
+        if(tabPbFlowOutDto.getFlowInDate()!=null){  //如果有录入日期则为手动录入
             tabPbFlowIn.setFlowInDate(tabPbFlowOutDto.getFlowInDate());//设置流入日期
             tabPbFlowIn.setFlowInState(59415L);//已录入
         }

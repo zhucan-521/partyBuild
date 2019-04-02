@@ -7,12 +7,15 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 @ApiModel(value="党建专干Dto")
 @Data
 public class TabSpecialWorkerResultDto extends TabPbSpcialWorker {
 
 
     @ApiModelProperty(value = "所属组织ID")
+    @NotNull(message = "请传入deptId")
     private Long deptId;
 
     @ApiModelProperty(value = "组织联系人")
