@@ -83,7 +83,8 @@ public class AccountController {
             @ApiImplicitParam(name = "idCardNo", required = true, value = "身份证号", paramType = "form"),
             @ApiImplicitParam(name = "phone", value = "手机号", paramType = "form"),
             @ApiImplicitParam(name = "manageDeptId", value = "组织ID", paramType = "form"),
-            @ApiImplicitParam(name = "roleIds", value = "角色IDS 多个用,号分隔", paramType = "form")
+            @ApiImplicitParam(name = "roleIds", value = "角色IDS 多个用,号分隔", paramType = "form"),
+            @ApiImplicitParam(name = "representDeptId", value = "XZQH数据字典值，后台帐号管理某一区域（区县、乡镇）的党代表" , paramType = "form")
     })
     @PostMapping
     public Boolean user(@ApiIgnore UserDTO userDto) {
@@ -134,7 +135,8 @@ public class AccountController {
             @ApiImplicitParam(name = "idCardNo", required = true, value = "身份证", paramType = "form"),
             @ApiImplicitParam(name = "phone", value = "手机号", paramType = "form"),
             @ApiImplicitParam(name = "manageDeptId", value = "管理组织ID", paramType = "form"),
-            @ApiImplicitParam(name = "roleIds", value = "角色IDS 多个用,号分隔", paramType = "form")
+            @ApiImplicitParam(name = "roleIds", value = "角色IDS 多个用,号分隔", paramType = "form"),
+            @ApiImplicitParam(name = "representDeptId", value = "XZQH数据字典值，后台帐号管理某一区域（区县、乡镇）的党代表" , paramType = "form")
     })
     @PutMapping
     public Boolean userUpdate(@ApiIgnore UserDTO userDto) {
@@ -206,7 +208,8 @@ public class AccountController {
             @ApiImplicitParam(name = "newPassword", value = "新密码", paramType = "form"),
             @ApiImplicitParam(name = "phone", value = "手机号", paramType = "form"),
             @ApiImplicitParam(name = "manageDeptId", value = "管理组织ID", paramType = "form"),
-            @ApiImplicitParam(name = "roleIds", value = "角色IDS 多个用,号分隔", paramType = "form")
+            @ApiImplicitParam(name = "roleIds", value = "角色IDS 多个用,号分隔", paramType = "form"),
+            @ApiImplicitParam(name = "representDeptId", value = "XZQH数据字典值，后台帐号管理某一区域（区县、乡镇）的党代表" , paramType = "form")
     })
     @PutMapping("/editInfo")
     public Boolean editInfo(@ApiIgnore @Valid UserDTO userDto) {

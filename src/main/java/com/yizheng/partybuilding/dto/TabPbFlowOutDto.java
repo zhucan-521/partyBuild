@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @ApiModel(value = "流出党员扩展类")
@@ -45,5 +46,16 @@ public class TabPbFlowOutDto extends TabPbFlowOut {
     @ApiModelProperty(value = "流入时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date flowInDate;
+
+    @ApiModelProperty(value = "流入组织名称")
+    @NotNull(message = "请选择流入组织名称！")
+    private String flowToOrgName;
+
+
+    @ApiModelProperty(value = "流出组织名称")
+    @NotNull(message = "请选择流出组织名称！")
+    private String flowFromOrgName;
+
+
 
 }

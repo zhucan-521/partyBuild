@@ -40,14 +40,7 @@
     <select id="selectListPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long" flushCache="true">
         SELECT
 	family.relation,
-	(
-		CASE family.whether_abroad
-		WHEN 1 THEN
-			'否'
-		ELSE
-			'是'
-		END
-	) AS `whether_abroad`,
+	family.whether_abroad,
 	family.abroad,
 	family.relation_id,
 	family.relation_user_id,
@@ -90,9 +83,6 @@ WHERE
     <insert id="insertSelective"  parameterType="com.yizheng.partybuilding.entity.TabPbFamily">
         insert into tab_pb_family
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="relationId != null">
-                relation_id,
-            </if>
             <if test="userId != null">
                 user_id,
             </if>
@@ -143,9 +133,6 @@ WHERE
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="relationId != null">
-                #{relationId,jdbcType=BIGINT},
-            </if>
             <if test="userId != null">
                 #{userId,jdbcType=BIGINT},
             </if>
@@ -261,5 +248,13 @@ WHERE
             </if>
         </set>
         where relation_id = #{relationId,jdbcType=BIGINT}
+    </update>
+
+    <update id="tombstoneUser" parameterType="java.lang.Long">
+        update tab_pb_family
+        <set>
+            del_flag = 1,
+        </set>
+        where user_id = #{userId}
     </update>
 </mapper>

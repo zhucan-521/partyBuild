@@ -18,7 +18,7 @@ import java.text.ParseException;
 /**
  * @author YangYingXiang on 2018/11/29
  */
-@Api(value = "在职党员社区报到", tags = {"党员-在职党员社区报到接口"})
+@Api(value = "在职党员社区报到", tags = {"党员-在职党员社区报到接口 杨颖翔"})
 @RestController
 @RequestMapping("/PositiveRegist")
 public class TabPbPositiveRegistController {

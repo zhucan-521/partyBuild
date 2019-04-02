@@ -34,7 +34,7 @@ public class PartyOrganizationActivitiesController {
     @Autowired
     private PartyOrganizationActivitiesService activitiesService;
 
-    @ApiOperation(value = "新增活动", notes = "新增活动", httpMethod = "POST")
+    @ApiOperation(value = "新增活动", notes = "新增活动-蒋安", httpMethod = "POST")
     @PostMapping("/add")
     public ReturnEntity add(@ApiParam(value = "活动实体") @RequestBody @Validated PartyOrganizationActivitiesDto activitiesDto) {
         validateActivitiesData(activitiesDto);
@@ -42,7 +42,7 @@ public class PartyOrganizationActivitiesController {
         return ReturnUtil.buildReturn(retVal);
     }
 
-    @ApiOperation(value = "修改活动", notes = "修改活动", httpMethod = "POST")
+    @ApiOperation(value = "修改活动", notes = "修改活动-蒋安", httpMethod = "POST")
     @PostMapping("/update")
     public ReturnEntity updateById(@ApiParam(value = "活动实体") @RequestBody @Validated PartyOrganizationActivitiesDto activitiesDto) {
         validateActivitiesData(activitiesDto);
@@ -50,21 +50,21 @@ public class PartyOrganizationActivitiesController {
         return ReturnUtil.buildReturn(retVal);
     }
 
-    @ApiOperation(value = "查看活动详情", notes = "查看活动详情", httpMethod = "GET")
+    @ApiOperation(value = "查看活动详情", notes = "查看活动详情-蒋安", httpMethod = "GET")
     @GetMapping("/findById")
     public PartyOrganizationActivitiesDto findById(@RequestParam @ApiParam(value = "活动ID") Long activitiesId,
                                                    @RequestParam @ApiParam(value = "活动类型") Long activitiesType) {
         return activitiesService.findDetails(activitiesId, activitiesType);
     }
 
-    @ApiOperation(value = "删除活动", notes = "删除活动", httpMethod = "GET")
+    @ApiOperation(value = "删除活动", notes = "删除活动-蒋安", httpMethod = "GET")
     @GetMapping("/delete")
     public ReturnEntity delete(@RequestParam @ApiParam(value = "活动ID", required = true) Long activitiesId) {
         int retVal = activitiesService.delete(activitiesId);
         return ReturnUtil.buildReturn(retVal);
     }
 
-    @ApiOperation(value = "活动列表", notes = "活动列表", httpMethod = "GET")
+    @ApiOperation(value = "活动列表", notes = "活动列表-蒋安", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "subject", value = "活动标题", paramType = "query"),
             @ApiImplicitParam(name = "activitiesType", value = "主题类型", paramType = "query", required = true),
@@ -91,7 +91,7 @@ public class PartyOrganizationActivitiesController {
         return new PageInfo<>(list);
     }
 
-    @ApiOperation(value = "人员参加活动列表", notes = "人员参加活动列表", httpMethod = "GET")
+    @ApiOperation(value = "人员参加活动列表", notes = "人员参加活动列表-蒋安", httpMethod = "GET")
     @GetMapping("/list/{userId}")
     public PageInfo<PartyOrganizationActivitiesDto> listByUserId(@PathVariable("userId") @ApiParam(value = "用户ID", required = true) Long userId,
                                                                  Page page) {
@@ -99,7 +99,7 @@ public class PartyOrganizationActivitiesController {
         return new PageInfo<>(list);
     }
 
-    @ApiOperation(value = "二维码签到", notes = "二维码签到", httpMethod = "GET")
+    @ApiOperation(value = "二维码签到", notes = "二维码签到-蒋安", httpMethod = "GET")
     @GetMapping(value = "/sign")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "activitiesId", value = "组织活动Id", paramType = "query"),
@@ -111,7 +111,7 @@ public class PartyOrganizationActivitiesController {
         return ReturnUtil.buildReturn(retVal);
     }
 
-    @ApiOperation(value = "活动参加侯选人列表", notes = "活动参加侯选人列表", httpMethod = "GET")
+    @ApiOperation(value = "活动参加侯选人列表", notes = "活动参加侯选人列表-蒋安", httpMethod = "GET")
     @GetMapping("/candidateMemberList")
     public List<Personnel> candidateMemberList(@RequestParam @ApiParam(value = "组织ID", required = true) Long orgId,
                                                @RequestParam(required = false) @ApiParam(value = "结对组织ID") Long pairOrgId,
@@ -132,7 +132,7 @@ public class PartyOrganizationActivitiesController {
         return activitiesService.selectExclusionMemberList(orgId, pairOrgId);
     }
 
-    @ApiOperation(value = "联席会活动参加侯选人列表", notes = "联席会活动参加侯选人列表", httpMethod = "GET")
+    @ApiOperation(value = "联席会活动参加侯选人列表", notes = "联席会活动参加侯选人列表-蒋安", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "orgId", value = "联席组织ID", required = true, paramType = "query"),
             @ApiImplicitParam(name = "userName", value = "用户名", paramType = "query"),
@@ -154,7 +154,7 @@ public class PartyOrganizationActivitiesController {
         return pageInfo;
     }
 
-    @ApiOperation(value = "新增结对共建", notes = "新增结对共建", httpMethod = "POST")
+    @ApiOperation(value = "新增结对共建", notes = "新增结对共建-张帆", httpMethod = "POST")
     @PostMapping(value = "/pairing/insert")
     public ReturnEntity pairingInsert(@ApiParam(value = "结对共建实体") @RequestBody @Validated PartyOrganizationActivitiesDto activitiesDto) {
         validatePairingData(activitiesDto);
@@ -162,7 +162,7 @@ public class PartyOrganizationActivitiesController {
         return ReturnUtil.buildReturn(retVal);
     }
 
-    @ApiOperation(value = "修改结对共建", notes = "修改结对共建", httpMethod = "POST")
+    @ApiOperation(value = "修改结对共建", notes = "修改结对共建-张帆", httpMethod = "POST")
     @PostMapping("/pairing/update")
     public ReturnEntity pairingUpdate(@ApiParam(value = "结对共建实体") @RequestBody @Validated PartyOrganizationActivitiesDto activitiesDto) {
         validatePairingData(activitiesDto);
@@ -170,7 +170,7 @@ public class PartyOrganizationActivitiesController {
         return ReturnUtil.buildReturn(retVal);
     }
 
-    @ApiOperation(value = "结对共建列表", notes = "结对共建列表", httpMethod = "GET")
+    @ApiOperation(value = "结对共建列表", notes = "结对共建列表-张帆", httpMethod = "GET")
     @GetMapping("/pairing/list")
     public PageInfo<TabPbActivitiesDto> pairingList(Page page, OrgRange orgRange) {
         HashMap<String, Object> conditions = orgRange.toMap();
@@ -180,13 +180,13 @@ public class PartyOrganizationActivitiesController {
         return new PageInfo<>(list);
     }
 
-    @ApiOperation(value = "查看结对共建详情", notes = "查看结对共建详情", httpMethod = "GET")
+    @ApiOperation(value = "查看结对共建详情", notes = "查看结对共建详情-张帆", httpMethod = "GET")
     @GetMapping("/pairing/detail")
     public PartyOrganizationActivitiesDto pairingDetail(@RequestParam @ApiParam(value = "数据ID") Long activitiesId) {
         return activitiesService.selectPairingDetail(activitiesId);
     }
 
-    @ApiOperation(value = "活动审核/重审", notes = "活动审核/重审", httpMethod = "POST")
+    @ApiOperation(value = "活动审核/重审", notes = "活动审核/重审-蒋安", httpMethod = "POST")
     @PostMapping("/review")
     public ReturnEntity review(@RequestParam @ApiParam(value = "活动ID", required = true) Long activitiesId,
                                @RequestParam @ApiParam(value = "审核结果 dict SHJG", required = true) Long auditResult,
@@ -207,7 +207,7 @@ public class PartyOrganizationActivitiesController {
      *
      * @param
      */
-    @ApiOperation(value = "签到情况列表", notes = "签到情况详情", httpMethod = "GET")
+    @ApiOperation(value = "签到情况列表", notes = "签到情况详情-蒋安", httpMethod = "GET")
     @GetMapping("/checkInList")
     public PageInfo<PartyOrganizationActivitiesDto> checkInList(@RequestParam @ApiParam(value = "活动ID", required = true) Long activitiesId,
                                                                 @RequestParam(required = false) @ApiParam(value = "签到状态 1 已签到； 2 未签到") Long signType,
@@ -217,7 +217,7 @@ public class PartyOrganizationActivitiesController {
         return pageInfo;
     }
 
-    @ApiOperation(value = "签到变更", notes = "已签到会取消签到记录，未签到的会将当前时间作为签到时间", httpMethod = "GET")
+    @ApiOperation(value = "签到变更", notes = "已签到会取消签到记录，未签到的会将当前时间作为签到时间-蒋安", httpMethod = "GET")
     @GetMapping("/updateSignIn")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "activitiesId", value = "活动Id", paramType = "query", required = true),
@@ -268,14 +268,14 @@ public class PartyOrganizationActivitiesController {
         activitiesDto.setFactCount(factCount);
     }
 
-    @ApiOperation(value = "置顶功能", notes = "置顶功能", httpMethod = "POST")
+    @ApiOperation(value = "置顶功能", notes = "置顶功能-蒋安", httpMethod = "POST")
     @PostMapping("/stick")
     public ReturnEntity stick(Long activitiesId) {
         int retVal = activitiesService.stick(activitiesId);
         return ReturnUtil.buildReturn(retVal);
     }
 
-    @ApiOperation(value = "取消置顶功能", notes = "取消置顶功能", httpMethod = "POST")
+    @ApiOperation(value = "取消置顶功能", notes = "取消置顶功能-蒋安", httpMethod = "POST")
     @PostMapping("/deleteStick")
     public ReturnEntity deleteStick(Long activitiesId) {
         int retVal = activitiesService.deleteStick(activitiesId);

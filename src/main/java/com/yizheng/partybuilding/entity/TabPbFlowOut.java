@@ -21,14 +21,12 @@ public class TabPbFlowOut {
     private Long flowOutId;
 
     @ApiModelProperty(value = "流出地单位Id")
-    @NotNull(message = "请选择流出地单位！")
     private Long orgId;
 
     @ApiModelProperty(value = "流出地单位名称")
     private String flowToOrgnizeName;
 
     @ApiModelProperty(value = "流入地Id")
-    @NotNull(message = "请选择流入党组织！")
     private Long flowOutPlace;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
