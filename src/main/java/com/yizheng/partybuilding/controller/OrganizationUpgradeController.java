@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
  * @author wuyunjie
  * Date 2019-01-03 14:29
  */
-@Api(tags = "党组织-党组织升级")
+@Api(tags = "党组织-党组织升级-吴云杰")
 @RestController
 @RequestMapping("/organizationUpgrade")
 public class OrganizationUpgradeController {

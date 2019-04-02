@@ -21,7 +21,7 @@ import java.util.List;
  * @author wuyunjie
  * Date 2018-12-02 10:45
  */
-@Api(tags = "党组织-组织变动和联点信息")
+@Api(tags = "党组织-组织变动和联点信息-吴云杰")
 @RestController
 @RequestMapping("/orgChange")
 public class TabPbOrgnizeChangeController {

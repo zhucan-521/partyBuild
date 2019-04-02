@@ -20,7 +20,7 @@ import java.util.List;
  * @author wuyunjie
  * Date 2018-12-11 18:03
  */
-@Api(tags = "党组织-单位管理")
+@Api(tags = "党组织-单位管理-吴云杰")
 @RestController
 @RequestMapping("/unitInfo")
 public class TabPbUnitInfoController {
