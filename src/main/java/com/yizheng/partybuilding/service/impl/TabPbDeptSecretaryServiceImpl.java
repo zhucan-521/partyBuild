@@ -100,7 +100,6 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
             Long orderNumPositives = record.getPositivesList().stream().mapToLong((x)->x.getOrderNum()).summaryStatistics().getMax();
             record.setOrderNum(orderNumPositives);
         }
-
         //保存书记
         int retVal = deptSecretaryMapper.insertSelective(record);
         return retVal;
