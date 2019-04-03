@@ -1,13 +1,12 @@
 package com.yizheng.partybuilding.system.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.yizheng.commons.domain.UserInfo;
 import com.yizheng.commons.domain.UserLoginDto;
 import com.yizheng.commons.exception.BusinessDataCheckFailException;
+import com.yizheng.commons.util.CollectionUtil;
 import com.yizheng.partybuilding.service.inf.TabSysDeptService;
 import com.yizheng.partybuilding.system.dto.UserAdminDTO;
 import com.yizheng.partybuilding.system.dto.UserDTO;
@@ -16,13 +15,16 @@ import com.yizheng.partybuilding.system.entity.SysDept;
 import com.yizheng.partybuilding.system.entity.SysRole;
 import com.yizheng.partybuilding.system.entity.SysUserRole;
 import com.yizheng.partybuilding.system.mapper.SysAccountMapper;
-import com.yizheng.partybuilding.system.service.*;
+import com.yizheng.partybuilding.system.service.SysAccountService;
+import com.yizheng.partybuilding.system.service.SysMenuService;
+import com.yizheng.partybuilding.system.service.SysRoleService;
+import com.yizheng.partybuilding.system.service.SysUserRoleService;
 import com.yizheng.partybuilding.system.util.CommonConstant;
 import com.yizheng.partybuilding.system.vo.MenuVO;
 import com.yizheng.partybuilding.system.vo.UserVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -65,42 +68,75 @@ public class SysAccountServiceImpl extends ServiceImpl<SysAccountMapper, SysAcco
         if (sysAccount == null) {
             return null;
         }
+        Integer userId = sysAccount.getUserId();
 
+        //生成用户信息
+        UserInfo userInfo = generateUserInfo(sysAccount);
+        //设置角色列表
+        String[] roleCodes = getUserRoleCodes(userId);
+        userInfo.setRoles(roleCodes);
+
+        //设置权限列表
+        String[] permissions = getPermissionByRole(roleCodes);
+        userInfo.setPermissions(permissions);
+        return userInfo;
+    }
+
+    /**
+     * 生成UserInfo实体
+     *
+     * @param sysAccount 系统账号实体
+     * @return UserInfo实体
+     */
+    private UserInfo generateUserInfo(SysAccount sysAccount) {
         UserInfo userInfo = new UserInfo();
         UserLoginDto userLoginDto = new UserLoginDto();
         BeanUtils.copyProperties(sysAccount, userLoginDto);
         userLoginDto.setUsername(sysAccount.getRealname());
         //获取后台用户所能管理的组织名称
         if (userLoginDto.getManageDeptId() != null && userLoginDto.getManageDeptId() > 0) {
-            SysDept dept = sysDeptService.selectByPrimaryKey(Long.valueOf(userLoginDto.getManageDeptId()));
-            if (dept != null) {
-                userLoginDto.setManageDeptName(dept.getName());
+            SysDept manageDept = sysDeptService.selectByPrimaryKey(Long.valueOf(userLoginDto.getManageDeptId()));
+            if (manageDept != null) {
+                userLoginDto.setManageDeptName(manageDept.getName());
             }
         }
         userInfo.setUserLogin(userLoginDto);
-        //设置角色列表
-        List<SysRole> roleList = sysRoleService.findRolesByUserId(sysAccount.getUserId());
-        List<String> roleCodes = new ArrayList<>();
-        if (CollUtil.isNotEmpty(roleList)) {
-            roleList.forEach(sysRole -> roleCodes.add(sysRole.getRoleCode()));
-        }
-        userInfo.setRoles(ArrayUtil.toArray(roleCodes, String.class));
+        return userInfo;
+    }
 
-        //设置权限列表（menu.permission）
-        Set<MenuVO> menuVoSet = new HashSet<>();
+    /**
+     * 根据角色获取权限数组
+     *
+     * @param roleCodes 角色编码集
+     * @return 权限数组
+     */
+    private String[] getPermissionByRole(String[] roleCodes) {
+        Set<String> permissions = new HashSet<>();
         for (String role : roleCodes) {
             List<MenuVO> menuVos = sysMenuService.findMenuByRoleCode(role);
-            menuVoSet.addAll(menuVos);
-        }
-        Set<String> permissions = new HashSet<>();
-        for (MenuVO menuVo : menuVoSet) {
-            if (StringUtils.isNotEmpty(menuVo.getPermission())) {
-                String permission = menuVo.getPermission();
-                permissions.add(permission);
+            if (CollectionUtil.isNotEmpty(menuVos)) {
+                Set<String> collect = menuVos.stream().map(MenuVO::getPermission)
+                        .filter(StringUtils::isNotEmpty)
+                        .collect(Collectors.toSet());
+                permissions.addAll(collect);
             }
         }
-        userInfo.setPermissions(ArrayUtil.toArray(permissions, String.class));
-        return userInfo;
+        return permissions.toArray(new String[0]);
+    }
+
+    /**
+     * 获取用户的角色编码
+     *
+     * @param userId 用户id
+     * @return 角色编码数组
+     */
+    private String[] getUserRoleCodes(Integer userId) {
+        List<String> roleCodes = new ArrayList<>();
+        List<SysRole> roleList = sysRoleService.findRolesByUserId(userId);
+        if (CollectionUtil.isNotEmpty(roleList)) {
+            roleList.forEach(sysRole -> roleCodes.add(sysRole.getRoleCode()));
+        }
+        return roleCodes.toArray(new String[0]);
     }
 
     @Override

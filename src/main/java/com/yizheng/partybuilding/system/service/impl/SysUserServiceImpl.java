@@ -3,16 +3,13 @@ package com.yizheng.partybuilding.system.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-
 import com.yizheng.commons.domain.UserInfo;
 import com.yizheng.commons.domain.UserLoginDto;
 import com.yizheng.commons.exception.BusinessDataCheckFailException;
 import com.yizheng.commons.exception.BusinessDataNotFoundException;
 import com.yizheng.commons.util.JwtUtil;
-import com.yizheng.commons.util.UserContextHolder;
 import com.yizheng.partybuilding.service.inf.TabSysDeptService;
 import com.yizheng.partybuilding.system.dto.UserAdminDTO;
 import com.yizheng.partybuilding.system.dto.UserDTO;
@@ -28,11 +25,9 @@ import com.yizheng.partybuilding.system.service.SysUserService;
 import com.yizheng.partybuilding.system.util.CommonConstant;
 import com.yizheng.partybuilding.system.vo.MenuVO;
 import com.yizheng.partybuilding.system.vo.UserVO;
-
 import com.yizheng.partybuilding.util.PasswordDecoderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.cache.annotation.CacheEvict;
@@ -250,7 +245,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
                 boolean flag = PasswordDecoderUtil.matches(password , user.getPassword());
                 if(flag){
                     user.setPassword(null);
-                    token = JwtUtil.generateToken(JSON.toJSONString(userInfo));
+                    token = JwtUtil.generateToken(userInfo);
                 } else {
                     throw new BusinessDataCheckFailException("请输入正确的密码");
                 }

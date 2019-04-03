@@ -5,7 +5,6 @@ import com.yizheng.commons.domain.UserInfo;
 import com.yizheng.commons.exception.BusinessDataCheckFailException;
 import com.yizheng.commons.exception.BusinessDataNotFoundException;
 import com.yizheng.commons.util.PaddingBaseFieldUtil;
-import com.yizheng.commons.util.StringUtil;
 import com.yizheng.commons.util.UserContextHolder;
 import com.yizheng.partybuilding.service.inf.ITabSysUserService;
 import com.yizheng.partybuilding.system.dto.UserAdminDTO;
@@ -16,8 +15,11 @@ import com.yizheng.partybuilding.system.service.SysUserService;
 import com.yizheng.partybuilding.system.util.CommonConstant;
 import com.yizheng.partybuilding.system.vo.UserVO;
 import com.yizheng.partybuilding.util.PasswordDecoderUtil;
-
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -57,7 +59,7 @@ public class UserController {
     @GetMapping(value = {"/info", "/info/{idCardNo}"})
     public UserInfo user(@ApiParam(value = "身份证, 为空时查当前用户") @PathVariable(required = false) String idCardNo) {
         //为空时查询当前用户
-        if (StringUtil.isEmpty(idCardNo) || (idCardNo != null && idCardNo.equals("undefined"))) {
+        if (StringUtils.isEmpty(idCardNo)) {
             return userService.findUserInfo("PWD", UserContextHolder.getIdCardNo());
         }
         return userService.findUserInfo("PWD", idCardNo);

@@ -2,18 +2,16 @@ package com.yizheng.partybuilding.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yizheng.commons.domain.Page;
 import com.yizheng.commons.exception.BusinessDataCheckFailException;
 import com.yizheng.commons.exception.BusinessException;
 import com.yizheng.commons.util.ReturnEntity;
 import com.yizheng.commons.util.ReturnUtil;
-import com.yizheng.commons.util.StringUtil;
-import com.yizheng.commons.domain.Page;
 import com.yizheng.partybuilding.dto.TabPbEduSubjectBatchDto;
 import com.yizheng.partybuilding.entity.TabPbEduSubject;
-
 import com.yizheng.partybuilding.service.inf.ITabPbEduSubjectService;
-
 import io.swagger.annotations.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -77,7 +75,7 @@ public class TabPbEduSubjectController {
     @PostMapping("/batchInsert")
     public ReturnEntity batchInsert(@RequestBody TabPbEduSubjectBatchDto subjectBatch) {
         //批量新增内容的格式： "1、“三会一课”不包含哪一个？ A、使用其他车辆的形式证 B、饮酒驾驶机动车 C、不知道 D、没有  答案：D  解析：请知悉“三会一课”课件内容  <---------->  2、“三会一课”不包含哪一个？ A、使用其他车辆的形式证 B、饮酒驾驶机动车 C、不知道 D、没有  答案：D  解析：请知悉“三会一课”课件内容";
-        if (StringUtil.isEmpty(subjectBatch.getSubjects())) {
+        if (StringUtils.isEmpty(subjectBatch.getSubjects())) {
             throw new BusinessDataCheckFailException("请传入正确参数");
         }
         String[] strs = subjectBatch.getSubjects().split("<---------->");
@@ -110,7 +108,7 @@ public class TabPbEduSubjectController {
             //把单个题目的每一项添加到list中
             List<String> subjectList = new ArrayList<>();
             for (String singleSubject : singleSubjectStrs) {
-                if (!StringUtil.isEmpty(singleSubject) && singleSubject.trim().length() > 0) {
+                if (StringUtils.isNotEmpty(singleSubject) && singleSubject.trim().length() > 0) {
                     subjectList.add(singleSubject);
                 }
             }
