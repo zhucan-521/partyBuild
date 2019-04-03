@@ -19,7 +19,7 @@ import springfox.documentation.annotations.ApiIgnore;
  *
  * @Author zhu can
  **/
-@Api(tags = "党组织-专干管理模块")
+@Api(tags = "党组织-专干管理模块 朱灿")
 @RestController
 @RequestMapping("/dedict/")
 public class TabSpecialWorkerController {

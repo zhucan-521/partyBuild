@@ -19,7 +19,7 @@ import java.util.List;
  * @version 1.0
  * @date 2018/12/04
  */
-@Api(tags = "党组织-街道大公委 杨颖翔")
+@Api(tags = "党组织-街道大公委 朱灿")
 @RestController
 @RequestMapping("/grantCommittee")
 public class TabPbGrantCommitteeController {

@@ -13,7 +13,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Map;
 
-@Api(value = "流入党员", tags = {"党员-流入党员"})
+@Api(value = "流入党员", tags = {"党员-流入党员 朱灿"})
 @RestController
 @RequestMapping("/flowIn")
 public class TabPbFlowInControlle {

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 /**
  * @author YangYingXiang on 2018/12/10
  */
-@Api(tags = "党员教育-师资管理模块 杨颖翔")
+@Api(tags = "党员教育-师资管理模块 朱灿")
 @RestController
 @RequestMapping("/teachers")
 public class TabPbEduTeachersController {

@@ -18,7 +18,7 @@ import java.util.List;
  * @author: zhucan
  * 党员培训控制层
  */
-@Api(tags = "党员-党员培训情况")
+@Api(tags = "党员-党员培训情况 朱灿")
 @RestController
 @RequestMapping("/TabPbTraining/")
 public class TabPbTrainingController {

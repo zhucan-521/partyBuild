@@ -20,7 +20,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 
 @RestController
-@Api(tags = "上传下达-信息报送模块")
+@Api(tags = "上传下达-信息报送模块 朱灿")
 @RequestMapping("/tabPbMsgUpInfo")
 public class TabPbMsgUpInfoController {
 

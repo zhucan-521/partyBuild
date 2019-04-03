@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "党员教育-党员兴趣爱好添加")
+@Api(tags = "党员教育-党员兴趣爱好添加 朱灿")
 @RestController
 @RequestMapping("/sysUserLikes/")
 public class SysUserLikesController {
