@@ -686,6 +686,7 @@
     <select id="selectWithConditions" resultMap="ResultMapWithCount" parameterType="java.util.Map">
         SELECT
             a.activities_id,
+            a.org_id,
             d.`name`,
             d.orgnize_master,
             d.unit_name,
@@ -782,6 +783,7 @@
     <select id="findDetails" parameterType="java.util.Map" resultMap="ResultMapWithAbout">
       SELECT
             a.*,
+            a.org_id,
             d.NAME AS org_name,
             d.orgnize_master,
             d.unit_name,
