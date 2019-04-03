@@ -23,7 +23,7 @@ import static com.yizheng.commons.util.UserContextHolder.currentUser;
  * @date 2019/01/02
  */
 
-@Api(tags = "党组织-联席单位管理 朱灿")
+@Api(tags = "党组织-联席单位管理 杨颖翔")
 @RestController
 @RequestMapping("/jointMeet")
 public class TabPbJointMeetController {

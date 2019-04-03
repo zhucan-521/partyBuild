@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @author YangYingXiang on 2018/12/13
  */
-@Api(tags = "党员教育-学习交流模块 朱灿")
+@Api(tags = "党员教育-学习交流模块 杨颖翔")
 @RestController
 @RequestMapping("/communication")
 public class TabPbEduCommunicationController {

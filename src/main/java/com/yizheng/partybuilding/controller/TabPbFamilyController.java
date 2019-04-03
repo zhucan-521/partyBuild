@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * @author YangYingXiang on 2018/11/26
  */
-@Api(value = "家庭成员", tags = {"党员-家庭成员操作接口 朱灿"})
+@Api(value = "家庭成员", tags = {"党员-家庭成员操作接口 杨颖翔"})
 @RestController
 @RequestMapping("/family")
 public class TabPbFamilyController {
