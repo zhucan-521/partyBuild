@@ -370,7 +370,9 @@
             tab_pb_orgnize_change t
         JOIN sys_dept d ON t.dept_id = d.dept_id
         WHERE
-            t.del_flag = 0 and t.dept_id = #{deptId}
+            t.del_flag = 0
+            AND t.change_type != 59424
+            and t.dept_id = #{deptId}
         UNION
           select
                 ch.change_id,
