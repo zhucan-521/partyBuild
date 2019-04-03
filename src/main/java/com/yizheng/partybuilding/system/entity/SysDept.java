@@ -166,6 +166,7 @@ public class SysDept extends Model<SysDept> {
     private Long partnerOrgId;
 
     @ApiModelProperty(value = "信息完整度")
+    @TableField(exist = false)
     private Integer complete;
 
     /**
