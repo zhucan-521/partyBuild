@@ -1,8 +1,9 @@
 package com.yizheng.partybuilding.config;
 
 import com.yizheng.commons.config.AuthInterceptor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -16,14 +17,13 @@ import java.util.List;
 @Configuration
 public class WebConfigurer implements WebMvcConfigurer {
 
-    //获取配置文件中的token过期时间, 单位分钟，默认30
-    @Value("${com.jwttoken.expireTime:30}")
-    private long configExpireTime;
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     //添加拦截器
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthInterceptor(configExpireTime)).excludePathPatterns(getExcludePath()).order(1);
+        registry.addInterceptor(new AuthInterceptor(redisTemplate)).excludePathPatterns(getExcludePath()).order(1);
 //        registry.addInterceptor(new PermissionInterceptor()).excludePathPatterns(getExcludePath()).order(2);
     }
 
