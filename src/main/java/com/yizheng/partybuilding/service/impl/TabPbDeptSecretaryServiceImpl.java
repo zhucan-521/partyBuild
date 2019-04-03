@@ -93,7 +93,12 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
         }
         //判断书记有没有添加职务
         if(!CollectionUtil.isEmpty(record.getPositivesList())){
-            record.getPositivesList().forEach(v->v.setUserId(record.getUserId()));
+            record.getPositivesList().forEach(v->{
+                if(v.getOrderNum() == null || "".equals(v.getOrderNum())){
+                    throw new BusinessDataIncompleteException("职务没传排序码");
+                }
+                v.setUserId(record.getUserId());
+            });
             //保存党内职务
             handlePositives(record.getPositivesList(),record.getUserId());
             //找到职位最大的排序码
@@ -135,8 +140,12 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
                 pbFamilyMapper.tombstoneUser(record.getUser().getUserId().longValue());
             }
             if(!CollectionUtil.isEmpty(record.getPositivesList())){
+                for(TabPbPositives positive : record.getPositivesList()){
+                    if(positive.getOrderNum()==null || "".equals(positive.getOrderNum())){
+                        throw new BusinessDataIncompleteException("职务没传排序码");
+                    }
+                }
                 handlePositives(record.getPositivesList(),record.getUserId());
-                //找到职位最大的排序码
                 Long orderNumPositives = record.getPositivesList().stream().mapToLong((x)->x.getOrderNum()).summaryStatistics().getMax();
                 record.setOrderNum(orderNumPositives);
             }else{
@@ -213,6 +222,9 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
         //数据库不存在直接添加
         if(CollectionUtil.isEmpty(pbPositivesList)){
             for (TabPbPositives positive : positivesList){
+                if(positive.getOrderNum()==null || "".equals(positive.getOrderNum())){
+                    throw new BusinessDataIncompleteException("职务没传排序码");
+                }
                 PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(positive);
                 positive.setPositiveType(59421);
             }
