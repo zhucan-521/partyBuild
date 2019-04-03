@@ -3,6 +3,7 @@ package com.yizheng.partybuilding.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yizheng.commons.config.PaddingBaseField;
+import com.yizheng.commons.util.BeanUtil;
 import com.yizheng.commons.util.UserContextHolder;
 import com.yizheng.commons.domain.Page;
 import com.yizheng.partybuilding.dto.TabPbFlowInDto;
@@ -122,11 +123,10 @@ public class TabPbFlowInServiceImpl implements TabPbFlowInService {
         Long userId=tabSysUserMapper.SelectUserIdByIDcard(tabPbFlowInDto.getIdCardNo());
         SysUser sysUser=new SysUser();
         sysUser.setUserId(userId.intValue());
-        BeanUtils.copyProperties(tabPbFlowInDto,sysUser);
-
+        BeanUtil.copyPropertiesIgnoreNull(tabPbFlowInDto, sysUser);
         TabPbFlowIn tabPbFlowIn=tabPbFlowInMapper.selectByPrimaryKey(tabPbFlowInDto.getFlowInId());
         TabPbFlowOutDto tabPbFlowOutDto=new TabPbFlowOutDto();
-        BeanUtils.copyProperties(tabPbFlowInDto,tabPbFlowOutDto);
+        BeanUtil.copyPropertiesIgnoreNull(tabPbFlowInDto,tabPbFlowOutDto);
         tabPbFlowOutDto.setFlowOutId(tabPbFlowIn.getFlowOutId());
         tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOutDto);
         //修改流入流出党组织联系人和电话

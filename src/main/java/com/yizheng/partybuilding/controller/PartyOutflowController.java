@@ -20,7 +20,7 @@ import springfox.documentation.annotations.ApiIgnore;
  *
  * @Author zhu can
  **/
-@Api(tags = "党员-党员流出模块")
+@Api(tags = "党员-党员流出模块 朱灿")
 @RestController
 @RequestMapping("/partyOut/")
 public class PartyOutflowController {

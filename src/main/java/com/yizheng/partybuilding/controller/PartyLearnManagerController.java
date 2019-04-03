@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 1.0
  * @date 2018/12/10
  */
-@Api(tags = "党员教育-资源管理 杨颖翔")
+@Api(tags = "党员教育-资源管理 朱灿")
 @RestController
 @RequestMapping("/partyLearn")
 public class PartyLearnManagerController {

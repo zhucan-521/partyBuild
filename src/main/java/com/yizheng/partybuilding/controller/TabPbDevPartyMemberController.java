@@ -29,7 +29,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/devPartyMember")
-@Api(tags = "党员-发展步骤 杨颖翔")
+@Api(tags = "党员-发展步骤 朱灿")
 public class TabPbDevPartyMemberController {
 
     @Autowired

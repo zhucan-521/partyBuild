@@ -6,6 +6,7 @@ import com.yizheng.commons.config.PaddingBaseField;
 import com.yizheng.commons.exception.BusinessDataCheckFailException;
 import com.yizheng.commons.exception.BusinessDataNotFoundException;
 import com.yizheng.commons.domain.Page;
+import com.yizheng.commons.util.BeanUtil;
 import com.yizheng.partybuilding.dto.TabPbFlowOutDto;
 import com.yizheng.partybuilding.entity.TabPbFlowIn;
 import com.yizheng.partybuilding.entity.TabPbFlowOut;
@@ -128,7 +129,7 @@ public class  FlowOutServiceImpl implements FlowOutService {
     public int update(TabPbFlowOutDto tabPbFlowOutDto) {
         //修改用户表
         SysUser sysUser=tabSysUserMapper.selectUserByIdCardNo(tabPbFlowOutDto.getIdCardNo());
-        BeanUtils.copyProperties(tabPbFlowOutDto,sysUser);
+        BeanUtil.copyPropertiesIgnoreNull(tabPbFlowOutDto,sysUser);
         //流入党组织
         if(tabPbFlowOutDto.getFlowOutPlace()!=null){
             sysUser.setFlowToOrgId(tabPbFlowOutDto.getFlowOutPlace());
@@ -150,7 +151,8 @@ public class  FlowOutServiceImpl implements FlowOutService {
                     .setFlowInType(tabPbFlowOutDto.getFlowOutType())
                     .setFlowInRange(tabPbFlowOutDto.getOutIndustry())
                     .setFlowInReason(tabPbFlowOutDto.getFlowOutReason().toString())
-                    .setOldOrgnizeCode(tabPbFlowOutDto.getFlowToOrgnizeCode());
+                    .setOldOrgnizeCode(tabPbFlowOutDto.getFlowToOrgnizeCode())
+                    .setLostTime(tabPbFlowOutDto.getLostTime());
         tabPbFlowInMapper.updateByFlowOutIdKeySelective(tabPbFlowIn);
         //修改流出表
         return tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOutDto);

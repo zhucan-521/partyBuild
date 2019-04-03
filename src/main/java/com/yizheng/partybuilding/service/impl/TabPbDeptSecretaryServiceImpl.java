@@ -100,7 +100,6 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
             Long orderNumPositives = record.getPositivesList().stream().mapToLong((x)->x.getOrderNum()).summaryStatistics().getMax();
             record.setOrderNum(orderNumPositives);
         }
-
         //保存书记
         int retVal = deptSecretaryMapper.insertSelective(record);
         return retVal;
@@ -253,7 +252,7 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
     @Override
     public List<TabPbDeptSecretary> selectList(TabPbDeptSecretary record, Page page) {
         if(record!=null){
-            if(!userMapper.verification(UserContextHolder.getOrgId(),record.getDeptId())){
+            if(!userMapper.verification(UserContextHolder.getOrgId(),record.getRangeDeptId())){
                 //不属于改变orgId的值
                 record.setRangeDeptId(UserContextHolder.getOrgId());
                 record.setOrgRange("2");

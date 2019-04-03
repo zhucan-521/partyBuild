@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-@Api(tags = "党员教育-点赞模块")
+@Api(tags = "党员教育-点赞模块 朱灿")
 @RestController
 @RequestMapping("/tabPbEduLike")
 public class TabPbEduLikeController {

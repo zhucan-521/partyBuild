@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @ApiModel(value = "党员信息流出表")

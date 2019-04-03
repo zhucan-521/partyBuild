@@ -478,6 +478,9 @@
             <if test="flowOutState != null">
                 flow_out_state = #{flowOutState},
             </if>
+            <if test="lostTime != null">
+                lost_time = #{lostTime},
+            </if>
         </set>
         where flow_out_id = #{flowOutId,jdbcType=BIGINT}
     </update>
