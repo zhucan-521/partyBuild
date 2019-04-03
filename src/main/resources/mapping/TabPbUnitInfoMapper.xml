@@ -611,7 +611,7 @@
                 #{organUnitType,jdbcType=BIGINT},
             </if>
             <if test="partyBuidingStatus != null">
-                #{partyBuidingStatus,jdbcTyp=BIGINT},
+                #{partyBuidingStatus,jdbcType=BIGINT},
             </if>
             <if test="partyMemberCount != null">
                 #{partyMemberCount,jdbcType=BIGINT},

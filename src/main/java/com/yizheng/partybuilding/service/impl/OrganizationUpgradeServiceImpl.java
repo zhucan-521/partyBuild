@@ -2,6 +2,7 @@ package com.yizheng.partybuilding.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.util.StringUtil;
+import com.yizheng.commons.config.PaddingBaseField;
 import com.yizheng.commons.util.PaddingBaseFieldUtil;
 import com.yizheng.partybuilding.dto.*;
 import com.yizheng.partybuilding.entity.SysDeptUpgradeTemp;
@@ -101,6 +102,9 @@ public class OrganizationUpgradeServiceImpl implements IOrganizationUpgradeServi
                 if(branchOrganization.getName().equals(vo.getKey())){
                     //获取userId集合
                     List<Integer> userIds = userListMap.get(vo.getKey()).stream().map(SysUser::getUserId).collect(Collectors.toList());
+                    if(userIds.size() == personnels.size()){
+                        throw new BusinessDataIncompleteException("不能把所有党员移入一个组织");
+                    }
                     longArrayList.addAll(userIds);
                     if(userIds.size() > 0){
                         tabSysUserMapper.batchDeptIdByUserId(
@@ -133,9 +137,6 @@ public class OrganizationUpgradeServiceImpl implements IOrganizationUpgradeServi
         //支部组织数据校验
         if(StringUtil.isNotEmpty(sysDeptUpgradeTemp.getDeptBranchs())){
             List<SysDeptDto> sysDeptDtos = JSONObject.parseArray(sysDeptUpgradeTemp.getDeptBranchs(), SysDeptDto.class);
-            if(sysDeptDtos.size()< 2){
-                throw new BusinessDataIncompleteException("请添加两个党支部");
-            }
             sysDeptDtos.forEach(sysDeptDto -> {
                 if (StringUtils.isEmpty(sysDeptDto.getName())) {
                     throw new BusinessDataIncompleteException("支部组织名称不能为空");
@@ -176,6 +177,7 @@ public class OrganizationUpgradeServiceImpl implements IOrganizationUpgradeServi
 
     @Override
     @Transactional
+    @PaddingBaseField(recursive = true)
     public Integer insertSelective(OrganizationUpgradeAndChangeDto organizationUpgradeAndChangeDto) {
         int retVal = 0;
         if(!tabSysDeptService.checkOrgIsExists(organizationUpgradeAndChangeDto.getDeptId())){
@@ -228,11 +230,18 @@ public class OrganizationUpgradeServiceImpl implements IOrganizationUpgradeServi
     }
 
     @Override
+    @PaddingBaseField
     public Integer updateByPrimaryKeySelective(SysDeptUpgradeTemp sysDeptUpgradeTemp) {
         int retVal = 0;
-        if(sysDeptUpgradeTemp.getDeptBranchs().isEmpty()){
+        List<SysDeptDto> sysDeptDtos = JSONObject.parseArray(sysDeptUpgradeTemp.getDeptBranchs(), SysDeptDto.class);
+        if(sysDeptDtos.size() < 2){
             throw new BusinessDataIncompleteException("请添加两个党支部");
         }
+        sysDeptDtos.forEach(branchOrganization -> {
+            if(branchOrganization.getOrgnizeProperty() == null){
+                throw new BusinessDataIncompleteException("请选择组织类别");
+            }
+                });
         orgDataVerification(sysDeptUpgradeTemp);
         sysDeptUpgradeTemp.setId(sysDeptUpgradeTempMapper.selectByDeptId(sysDeptUpgradeTemp.getDeptId()).getId());
         retVal += sysDeptUpgradeTempMapper.updateByPrimaryKeySelective(sysDeptUpgradeTemp);

@@ -23,7 +23,7 @@ import java.util.Map;
  * @author wuyunjie
  * Date 2019-01-11 9:35
  */
-@Api(value = "课程体系", tags = {"党员教育-课程体系"})
+@Api(value = "课程体系", tags = {"党员教育-课程体系-吴云杰"})
 @RestController
 @RequestMapping("/special")
 public class TabPbEduSpecialController {

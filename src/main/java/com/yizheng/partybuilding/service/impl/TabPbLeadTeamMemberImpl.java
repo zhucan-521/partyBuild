@@ -1,13 +1,15 @@
 package com.yizheng.partybuilding.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.yizheng.commons.util.PaddingBaseFieldUtil;
 import com.yizheng.commons.domain.Page;
+import com.yizheng.commons.exception.BusinessDataCheckFailException;
+import com.yizheng.commons.exception.BusinessDataNotFoundException;
+import com.yizheng.commons.util.AttachmentType;
+import com.yizheng.commons.util.CollectionUtil;
+import com.yizheng.commons.util.PaddingBaseFieldUtil;
 import com.yizheng.partybuilding.dto.TabPbLeadTeamMemberDto;
 import com.yizheng.partybuilding.entity.TabPbLeadTeamMember;
 import com.yizheng.partybuilding.entity.TabPbPositives;
-import com.yizheng.commons.exception.BusinessDataCheckFailException;
-import com.yizheng.commons.exception.BusinessDataNotFoundException;
 import com.yizheng.partybuilding.repository.TabPbLeadTeamMapper;
 import com.yizheng.partybuilding.repository.TabPbLeadTeamMemberMapper;
 import com.yizheng.partybuilding.repository.TabPbPositivesMapper;
@@ -15,9 +17,7 @@ import com.yizheng.partybuilding.repository.TabSysUserMapper;
 import com.yizheng.partybuilding.service.inf.ITabPbAttachmentService;
 import com.yizheng.partybuilding.service.inf.TabPbLeadTeamMemberService;
 import com.yizheng.partybuilding.system.entity.SysUser;
-import com.yizheng.commons.util.AttachmentType;
-import com.yizheng.commons.util.CollectionUtil;
-import com.yizheng.commons.util.StringUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -92,7 +92,7 @@ public class TabPbLeadTeamMemberImpl implements TabPbLeadTeamMemberService {
             tabPbPositives.setPositiveStart(tabPbLeadTeamMember.getTenureBegin());
             tabPbPositives.setPositiveFinished(tabPbLeadTeamMember.getTenureLeave());
             tabPbPositives.setDescription(tabPbLeadTeamMember.getDescription());
-            if(!StringUtil.isEmpty(tabPbLeadTeamMember.getRank())){
+            if (StringUtils.isNotEmpty(tabPbLeadTeamMember.getRank())) {
                 tabPbPositives.setPositiveLevel(Long.parseLong(tabPbLeadTeamMember.getRank()));
             }
             PaddingBaseFieldUtil.paddingBaseFiled(tabPbPositives);

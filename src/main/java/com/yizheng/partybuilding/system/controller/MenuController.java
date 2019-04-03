@@ -95,7 +95,7 @@ public class MenuController {
         return TreeUtil.bulid(menuTreeList, -1);
     }
 
-    @ApiOperation(value = "返回系统菜单树", notes = "该方法返回系统中所有菜单并以树的形式展现", httpMethod = "GET")
+    @ApiOperation(value = "系统菜单树", notes = "该方法返回系统中所有菜单并以树的形式展现", httpMethod = "GET")
     @GetMapping(value = "/allTree")
     public List<MenuTree> getTree() {
         SysMenu condition = new SysMenu();
@@ -103,18 +103,12 @@ public class MenuController {
         return TreeUtil.bulidTree(sysMenuService.selectList(new EntityWrapper<>(condition).orderBy(CommonConstant.SQL_SORT)), -1);
     }
 
-    @ApiOperation(value = "返回角色菜单树", notes = "返回指定角色拥有的菜单并以树形放回", httpMethod = "GET")
+    @ApiOperation(value = "角色菜单树", notes = "返回指定角色拥有的菜单并以树形返回", httpMethod = "GET")
     @GetMapping("/roleTree/{role}")
     public List<MenuTree> roleTree(@ApiParam(value = "角色名", required = true) @PathVariable String role) {
         List<MenuVO> menus = sysMenuService.findMenuByRoleCode(role);
         List<MenuTree> menuTreeList = new ArrayList<>();
-        menus.forEach(menuVo -> {
-            String menuType = menuVo.getType();
-            if (CommonConstant.MENU.equals(menuType) ||
-                    CommonConstant.JUMP.equals(menuType)) {
-                menuTreeList.add(new MenuTree(menuVo));
-            }
-        });
+        menus.forEach(menuVo -> menuTreeList.add(new MenuTree(menuVo)));
         CollUtil.sort(menuTreeList, Comparator.comparingInt(MenuTree::getSort));
         return TreeUtil.bulid(menuTreeList, -1);
     }

@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 @ApiModel(value="党建专干")
 @Data
@@ -20,6 +21,7 @@ public class TabPbSpcialWorker {
     private Long userId;
 
     @ApiModelProperty(value="组织id")
+    @NotNull(message = "请传入manageOrgId")
     private Long manageOrgId;
 
     @ApiModelProperty(value="接任时间", example = "yyyy-MM-dd")

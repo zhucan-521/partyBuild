@@ -6,7 +6,6 @@ import com.yizheng.commons.exception.BusinessDataCheckFailException;
 import com.yizheng.commons.exception.BusinessDataNotFoundException;
 import com.yizheng.commons.exception.BusinessException;
 import com.yizheng.commons.util.PaddingBaseFieldUtil;
-import com.yizheng.commons.util.StringUtil;
 import com.yizheng.commons.util.UserContextHolder;
 import com.yizheng.partybuilding.system.dto.UserAdminDTO;
 import com.yizheng.partybuilding.system.dto.UserDTO;
@@ -20,6 +19,7 @@ import com.yizheng.partybuilding.system.util.CommonConstant;
 import com.yizheng.partybuilding.system.vo.UserVO;
 import com.yizheng.partybuilding.util.PasswordDecoderUtil;
 import io.swagger.annotations.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,6 +31,9 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * @author Admin
+ */
 @Api(tags = "系统用户模块v2")
 @RestController
 @RequestMapping("/account")
@@ -38,23 +41,26 @@ public class AccountController {
 
     private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
 
-    @Autowired private SysAccountService accountService; //后台用户服务
-    @Autowired private SysUserService userService;       //党员服务
-    @Autowired private LoginService loginService;        //登录服务
+    @Autowired
+    private SysAccountService accountService;
+    @Autowired
+    private SysUserService userService;
+    @Autowired
+    private LoginService loginService;
 
-    @ApiOperation(value = "系统用户登录--默认：99999999-123456", notes = "根据用户名和密码登录", httpMethod = "POST")
+    @ApiOperation(value = "系统用户登录", notes = "根据用户名和密码登录，返回token", httpMethod = "POST")
     @PostMapping(value = "/login")
-    public String login(@RequestParam @ApiParam(value = "登录类型：admin(后台)，edu(教育平台)，represent(党代表平台)", required = true) LoginType loginType ,
+    public String login(@RequestParam @ApiParam(value = "登录类型：admin(后台)，edu(教育平台)，represent(党代表平台)", required = true) LoginType loginType,
                         @RequestParam @ApiParam(value = "身份证号", required = true) String idCardNo,
                         @RequestParam @ApiParam(value = "密码", required = true) String password) {
-        return loginService.login(loginType ,idCardNo, password);
+        return loginService.login(loginType, idCardNo, password);
     }
 
     @ApiOperation(value = "获取用户信息（角色、权限）", notes = "获取用户信息（角色、权限）", httpMethod = "GET")
     @GetMapping(value = {"/info", "/info/{idCardNo}"})
     public UserInfo user(@ApiParam(value = "身份证, 为空时查当前用户") @PathVariable(required = false) String idCardNo) {
         //为空时查询当前用户
-        if (StringUtil.isEmpty(idCardNo) || (idCardNo != null && idCardNo.equals("undefined"))) {
+        if (StringUtils.isEmpty(idCardNo)) {
             return accountService.findUserInfo("PWD", UserContextHolder.getIdCardNo());
         }
         return accountService.findUserInfo("PWD", idCardNo);
@@ -70,7 +76,7 @@ public class AccountController {
     @DeleteMapping("/{id}")
     public Boolean userDel(@ApiParam(value = "用户ID", required = true) @PathVariable Integer id) {
         SysAccount sysAccount = accountService.selectById(id);
-        if(sysAccount == null){
+        if (sysAccount == null) {
             throw new BusinessException("没有查到该用户，无法删除");
         }
         return accountService.deleteUserById(sysAccount);
@@ -84,18 +90,17 @@ public class AccountController {
             @ApiImplicitParam(name = "phone", value = "手机号", paramType = "form"),
             @ApiImplicitParam(name = "manageDeptId", value = "组织ID", paramType = "form"),
             @ApiImplicitParam(name = "roleIds", value = "角色IDS 多个用,号分隔", paramType = "form"),
-            @ApiImplicitParam(name = "representDeptId", value = "XZQH数据字典值，后台帐号管理某一区域（区县、乡镇）的党代表" , paramType = "form")
+            @ApiImplicitParam(name = "representDeptId", value = "XZQH数据字典值，后台帐号管理某一区域（区县、乡镇）的党代表", paramType = "form")
     })
     @PostMapping
     public Boolean user(@ApiIgnore UserDTO userDto) {
-        if(!(userDto != null && !StringUtil.isEmpty(userDto.getIdCardNo()))){
+        if (userDto == null || StringUtils.isEmpty(userDto.getIdCardNo())) {
             throw new BusinessException("请传入正确的用户信息");
         }
         //判断是否已存在
         SysAccount deletedUser = accountService.selectDeletedUserByCardNo(userDto.getIdCardNo());
         if (deletedUser != null) {
-            throw new BusinessException("该用户已存在，请联系后台管理员");
-            //accountService.deleteSysUserByCardNoAndUserId(userDto.getIdCardNo(), deletedUser.getUserId());
+            throw new BusinessDataCheckFailException("该用户已存在，请联系后台管理员");
         }
 
         SysAccount sysAccount = new SysAccount();
@@ -104,7 +109,7 @@ public class AccountController {
         sysAccount.setPassword(ENCODER.encode(userDto.getPassword()));
         //关联党员id
         SysUser sysUser = userService.selectDeletedUserByCardNo(userDto.getIdCardNo());
-        if(sysUser != null){
+        if (sysUser != null) {
             sysAccount.setSysUserId(sysUser.getUserId());
         }
         setDefaultAccountInfo(sysAccount);
@@ -117,8 +122,9 @@ public class AccountController {
         });
         return Boolean.TRUE;
     }
+
     //给用户设置默认信息
-    private void setDefaultAccountInfo(SysAccount sysAccount){
+    private void setDefaultAccountInfo(SysAccount sysAccount) {
         sysAccount.setCreateUserid(UserContextHolder.getUserIdLong());
         sysAccount.setCreateUsername(UserContextHolder.getUserName());
         sysAccount.setCreateTime(LocalDateTime.now());
@@ -136,11 +142,11 @@ public class AccountController {
             @ApiImplicitParam(name = "phone", value = "手机号", paramType = "form"),
             @ApiImplicitParam(name = "manageDeptId", value = "管理组织ID", paramType = "form"),
             @ApiImplicitParam(name = "roleIds", value = "角色IDS 多个用,号分隔", paramType = "form"),
-            @ApiImplicitParam(name = "representDeptId", value = "XZQH数据字典值，后台帐号管理某一区域（区县、乡镇）的党代表" , paramType = "form")
+            @ApiImplicitParam(name = "representDeptId", value = "XZQH数据字典值，后台帐号管理某一区域（区县、乡镇）的党代表", paramType = "form")
     })
     @PutMapping
     public Boolean userUpdate(@ApiIgnore UserDTO userDto) {
-        if(!(userDto != null && !StringUtil.isEmpty(userDto.getIdCardNo()))){
+        if (userDto == null || StringUtils.isEmpty(userDto.getIdCardNo())) {
             throw new BusinessException("请传入正确的用户信息");
         }
         UserInfo user = accountService.findUserInfo("PWD", userDto.getIdCardNo());
@@ -195,7 +201,7 @@ public class AccountController {
     @GetMapping("/listAll")
     public List<UserAdminDTO> listAll(@ApiIgnore UserAdminDTO userDto) {
         //超级管理员可以查看所有用户信息，其他角色只能查看自己创建的用户
-        if(!UserContextHolder.getRoles().anyMatch(role -> role.equals("ROLE_ADMIN"))){
+        if (!UserContextHolder.getRoles().anyMatch(role -> role.equals("ROLE_ADMIN"))) {
             userDto.setCreateUserid(UserContextHolder.getUserIdLong());
         }
         return accountService.listAll(userDto);
@@ -209,7 +215,7 @@ public class AccountController {
             @ApiImplicitParam(name = "phone", value = "手机号", paramType = "form"),
             @ApiImplicitParam(name = "manageDeptId", value = "管理组织ID", paramType = "form"),
             @ApiImplicitParam(name = "roleIds", value = "角色IDS 多个用,号分隔", paramType = "form"),
-            @ApiImplicitParam(name = "representDeptId", value = "XZQH数据字典值，后台帐号管理某一区域（区县、乡镇）的党代表" , paramType = "form")
+            @ApiImplicitParam(name = "representDeptId", value = "XZQH数据字典值，后台帐号管理某一区域（区县、乡镇）的党代表", paramType = "form")
     })
     @PutMapping("/editInfo")
     public Boolean editInfo(@ApiIgnore @Valid UserDTO userDto) {

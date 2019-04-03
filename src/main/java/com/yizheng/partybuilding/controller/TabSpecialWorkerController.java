@@ -10,6 +10,7 @@ import com.yizheng.partybuilding.service.inf.TabSpecialWorkerService;
 
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 

@@ -2,16 +2,12 @@ package com.yizheng.partybuilding.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.yizheng.commons.exception.BusinessException;
-import com.yizheng.commons.util.IdWorker;
 import com.yizheng.commons.util.UserContextHolder;
-import com.yizheng.commons.util.WordTextParam;
-import com.yizheng.commons.util.WordUtil;
 import com.yizheng.partybuilding.entity.ClientUser;
 import com.yizheng.partybuilding.service.inf.IClientUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -85,21 +81,4 @@ public class ClientUserController {
         return userService.getPageList(pageSize, pageNum);
     }
 
-    @ApiOperation(value = "导出word示例", httpMethod = "POST" , notes = "朱宇")
-    @PostMapping("/exportDoc")
-    public String exportDoc(){
-        String content ="    额尔古纳河在1689年的《中俄尼布楚条约》中成为中国和俄罗斯的界河，额尔古纳河上游称海拉尔河，源于大兴安岭西侧，西流至阿该巴图山脚， 折而北行始称额尔古纳河。额尔古纳河在黑龙江省漠河县以西的内蒙古自治区额尔古纳右旗的恩和哈达附近与流经俄罗斯境内的石勒喀河汇合后始称黑龙江。沿额尔古纳河沿岸地区土地肥沃，森林茂密，水草丰美， 鱼类品种很多，动植物资源丰富，宜农宜木，是人类理想的天堂。";
-        ParagraphAlignment align = ParagraphAlignment.CENTER;
-        String fontFamily = "仿宋";
-        int fontSize = 13;
-        String targetPath =  generatorPath + IdWorker.getDateId() + ".docx";
-        System.out.println("targetPath : " + targetPath);
-        try {
-            WordTextParam textParam = new WordTextParam(content , align , fontFamily , fontSize);
-            WordUtil.exportTextDoc(textParam , targetPath);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return targetPath;
-    }
 }
