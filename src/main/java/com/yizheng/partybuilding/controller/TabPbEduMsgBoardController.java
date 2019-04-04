@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * @Author Jiang An
  **/
-@Api(tags = "党员教育-留言板模块-蒋安")
+@Api(tags = "党员教育-模块 蒋安")
 @RestController
 @RequestMapping("/msgBoard/")
 public class TabPbEduMsgBoardController {

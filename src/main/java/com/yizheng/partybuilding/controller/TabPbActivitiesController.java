@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/activities")
-@Api(tags = "党员-社区活动 杨颖翔")
+@Api(tags = "党员-社区活动 蒋安")
 public class TabPbActivitiesController {
 
     @Autowired
