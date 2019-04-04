@@ -607,4 +607,11 @@
             AND u.id_card_no = #{idCardNo}
     </select>
 
+    <select id="selectBySignIn" resultMap="BaseResultMap">
+           SELECT * from tab_pb_participant
+                where activities_id = #{activitiesId}
+                AND participant_id = #{participantId}
+                and del_flag=0
+    </select>
+
 </mapper>

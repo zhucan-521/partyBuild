@@ -281,4 +281,12 @@ public class PartyOrganizationActivitiesController {
         int retVal = activitiesService.deleteStick(activitiesId);
         return ReturnUtil.buildReturn(retVal);
     }
+
+    @ApiOperation(value = "签到接口加人",notes = "签到接口加人",httpMethod = "GET")
+    @GetMapping("/addSignIn")
+    public ReturnEntity addSignIn(@RequestParam @ApiParam(name = "activitiesId", value = "组织生活Id") Long activitiesId,
+                                  @RequestParam(defaultValue = "430402194704262010") @ApiParam(name = "idCardNo", value = "身份证号码") String idCardNo){
+           int retVal=activitiesService.addSignIn(activitiesId,idCardNo);
+           return ReturnUtil.buildReturn(retVal);
+    }
 }

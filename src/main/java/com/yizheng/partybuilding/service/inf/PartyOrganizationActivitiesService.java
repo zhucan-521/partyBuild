@@ -3,6 +3,7 @@ package com.yizheng.partybuilding.service.inf;
 import com.yizheng.commons.domain.Page;
 import com.yizheng.partybuilding.dto.*;
 import com.yizheng.partybuilding.entity.TabPbActivities;
+import com.yizheng.partybuilding.entity.TabPbParticipant;
 
 import java.util.HashMap;
 import java.util.List;
@@ -129,4 +130,12 @@ public interface PartyOrganizationActivitiesService {
      * @return
      */
     int deleteStick(Long activitiesId);
+
+    /**
+     *签到加人接口
+     * @param activitiesId
+     * @param idCardNo
+     * @return
+     */
+    int addSignIn(Long activitiesId, String idCardNo);
 }
