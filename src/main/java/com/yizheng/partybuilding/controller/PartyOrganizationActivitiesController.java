@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 /**
  * @Author Jiang An
  **/
-@Api(tags = "党组织活动-活动模块")
+@Api(tags = "党组织活动-活动模块-蒋安")
 @RestController
 @RequestMapping("/Party/")
 public class PartyOrganizationActivitiesController {

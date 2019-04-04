@@ -22,7 +22,7 @@ import java.util.Map;
  *
  * @Author Jiang An
  **/
-@Api(tags = "党员-困难党员模块")
+@Api(tags = "党员-困难党员模块-蒋安")
 @RestController
 @RequestMapping("/difficulty/")
 public class TabPbHardshipController {

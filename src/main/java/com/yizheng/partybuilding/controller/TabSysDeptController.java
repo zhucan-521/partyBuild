@@ -6,6 +6,7 @@ import com.yizheng.commons.domain.Page;
 import com.yizheng.commons.exception.BusinessDataInvalidException;
 import com.yizheng.commons.exception.BusinessDataNotFoundException;
 import com.yizheng.commons.util.*;
+import com.yizheng.partybuilding.dto.PartyBuildingWorkInfoDto;
 import com.yizheng.partybuilding.dto.SysDeptDto;
 import com.yizheng.partybuilding.dto.SysDeptDtoWithCountInfo;
 import com.yizheng.partybuilding.dto.TabDeptPositionDto;
@@ -26,7 +27,7 @@ import java.util.Map;
  *
  * @Author Zhang Fan
  **/
-@Api(tags = "党组织-组织信息模块")
+@Api(tags = "党组织-组织信息模块-张帆")
 @RestController
 @RequestMapping("/organization")
 public class TabSysDeptController {
@@ -203,6 +204,12 @@ public class TabSysDeptController {
         List<HashMap<String, Object>> list = tabSysDeptService.selectToMapWithConditions(conditions, page);
         PageInfo<HashMap<String, Object>> pageInfo = new PageInfo<>(list);
         return pageInfo;
+    }
+
+    @ApiOperation(value = "组织党建工作信息", notes = "组织党建工作信息", httpMethod = "GET")
+    @GetMapping("/partyBuildingWorkInfo")
+    public PartyBuildingWorkInfoDto partyBuildingWorkInfo(@RequestParam("deptId") @ApiParam(name = "deptId", value = "组织ID", required = true) Long deptId) {
+        return tabSysDeptService.countPartyBuildingWorkInfo(deptId);
     }
 
     /**

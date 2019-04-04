@@ -2,6 +2,7 @@ package com.yizheng.partybuilding.service.inf;
 
 import com.yizheng.commons.util.IBaseExcelImport;
 import com.yizheng.commons.domain.Page;
+import com.yizheng.partybuilding.dto.PartyBuildingWorkInfoDto;
 import com.yizheng.partybuilding.dto.SysDeptDto;
 import com.yizheng.partybuilding.dto.SysDeptDtoWithCountInfo;
 import com.yizheng.partybuilding.dto.TabDeptPositionDto;
@@ -95,4 +96,11 @@ public interface TabSysDeptService extends IBaseExcelImport<SysDept> {
      * @param sysDept
      */
     SysDeptDtoWithCountInfo linkCountInfo(SysDept sysDept);
+
+    /**
+     * 根据组织id统计党建工作信息
+     * @param deptId
+     * @return
+     */
+    PartyBuildingWorkInfoDto countPartyBuildingWorkInfo(Long deptId);
 }

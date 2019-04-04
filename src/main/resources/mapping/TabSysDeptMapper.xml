@@ -967,4 +967,60 @@
         ) t2
     </select>
 
+    <!--统计组织党建工作信息-->
+    <select id="countPartyBuildingWorkInfo" parameterType="java.lang.Long" resultType="PartyBuildingWorkInfoDto">
+        SELECT
+            d.dependency_relation AS dependencyRelation,
+            ui.party_buiding_status AS partyBuidingStatus,
+            (SELECT count( ltm.member_id )
+              FROM tab_pb_lead_team lt
+                INNER JOIN tab_pb_lead_team_member ltm USING ( lead_team_id )
+              WHERE lt.current = 1 AND lt.del_flag = 0
+                AND ltm.del_flag = 0 AND d.dept_id = lt.org_id
+            ) AS leadTeamMemberCount,
+            (SELECT count( ltm.member_id )
+              FROM tab_pb_lead_team lt
+                INNER JOIN tab_pb_lead_team_member ltm USING ( lead_team_id )
+              WHERE lt.current = 1 AND lt.del_flag = 0
+                AND ltm.del_flag = 0 AND lt.org_id = d.dept_id
+                AND NOT EXISTS (SELECT 1
+                        FROM (SELECT DISTINCT ltm.user_id
+                                FROM tab_pb_lead_team lt
+                                    INNER JOIN tab_pb_lead_team_member ltm USING ( lead_team_id )
+                                WHERE lt.current = 1 AND lt.del_flag = 0
+                                    AND ltm.del_flag = 0 AND lt.org_id != #{deptId}
+                            ) t WHERE t.user_id = ltm.user_id )
+            ) AS leadTeamMemberCrossCount,
+            CASE WHEN oc.org_level = 59134 THEN 1 ELSE 0 END AS ifWeaknessOrg,
+            ifnull((
+              SELECT CASE WHEN YEAR ( lt.change_date ) = YEAR ( now( ) ) THEN 1 ELSE 0 END
+				FROM tab_pb_lead_team lt
+				WHERE lt.org_id = d.dept_id AND lt.del_flag = 0
+					AND lt.current = 1
+            ), 0 ) AS ifChange,
+            ( SELECT count( sw.special_worker_id )
+              FROM tab_pb_spcial_worker sw
+              WHERE d.dept_id = sw.manage_org_id AND sw.del_flag = 0
+            ) AS specialWorkerCount,
+            ifnull((
+              SELECT
+                  CASE WHEN a.activities_id IS NOT NULL THEN 1 ELSE 0 END
+              FROM tab_pb_activities a
+              WHERE d.dept_id = a.org_id AND a.del_flag = 0
+                  AND find_in_set( 59131, a.activities_type_ids )
+                  AND YEAR ( a.create_time ) = YEAR ( now( ) ) LIMIT 1
+            ), 0 ) AS ifHeldALifeMeeting,
+            ifnull((
+              SELECT
+                  CASE WHEN aa.id IS NOT NULL THEN 1 ELSE 0 END
+              FROM tab_pb_activities_assess aa
+              WHERE d.dept_id = aa.dept_id AND aa.del_flag = 0
+                  AND aa.years = YEAR ( now( ) ) LIMIT 1
+            ), 0 ) AS ifGetOnDemocraticReview
+        FROM sys_dept d
+        LEFT JOIN tab_pb_unit_info ui ON d.dept_id = ui.org_id
+        LEFT JOIN tab_pb_org_classify oc ON d.dept_id = oc.dept_id AND oc.del_flag = 0
+        WHERE d.dept_id = #{deptId}
+    </select>
+
 </mapper>

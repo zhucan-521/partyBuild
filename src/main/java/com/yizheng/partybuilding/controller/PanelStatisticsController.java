@@ -28,7 +28,7 @@ import java.util.Map;
  *
  * @Author Zhang Fan
  **/
-@Api(tags = "首页-面板统计模块")
+@Api(tags = "首页-面板统计模块 张帆")
 @RestController
 @RequestMapping("/statistics")
 public class PanelStatisticsController {

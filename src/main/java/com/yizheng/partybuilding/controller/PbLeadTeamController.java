@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
  *
  * @Author Jiang An
  **/
-@Api(tags = "党组织-领导班子")
+@Api(tags = "党组织-领导班子-蒋安")
 @RestController
 @RequestMapping("/pbleadteam")
 public class PbLeadTeamController {

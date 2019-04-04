@@ -5,6 +5,7 @@ import com.yizheng.commons.config.PaddingBaseField;
 import com.yizheng.commons.util.*;
 import com.yizheng.commons.util.PaddingBaseFieldUtil;
 import com.yizheng.commons.domain.Page;
+import com.yizheng.partybuilding.dto.PartyBuildingWorkInfoDto;
 import com.yizheng.partybuilding.dto.SysDeptDto;
 import com.yizheng.partybuilding.dto.SysDeptDtoWithCountInfo;
 import com.yizheng.partybuilding.dto.TabDeptPositionDto;
@@ -252,6 +253,11 @@ public class TabSysDeptServiceImpl implements TabSysDeptService {
     @Cacheable(value = "COUNT::ORG_LIST::ORG_PARTY-MAN", key = "#sysDept.deptId", unless = "#result == null")
     public SysDeptDtoWithCountInfo linkCountInfo(SysDept sysDept) {
         return tabSysDeptMapper.countOrgWithPartyManInfo(sysDept.getDeptId());
+    }
+
+    @Override
+    public PartyBuildingWorkInfoDto countPartyBuildingWorkInfo(Long deptId) {
+        return tabSysDeptMapper.countPartyBuildingWorkInfo(deptId);
     }
 
 

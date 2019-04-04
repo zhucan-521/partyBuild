@@ -26,7 +26,7 @@ import java.util.Map;
  *
  * @Author Zhang Fan
  **/
-@Api(tags = "党组织-双述双评模块")
+@Api(tags = "党组织-双述双评模块-张帆")
 @RestController
 @RequestMapping("/doubleCommentary")
 public class TabPbDoubleCommentaryController {

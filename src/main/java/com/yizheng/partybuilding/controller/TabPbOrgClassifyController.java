@@ -25,7 +25,7 @@ import java.util.Map;
  *
  * @Author Zhang Fan
  **/
-@Api(tags = "党组织-分类定等模块")
+@Api(tags = "党组织-分类定等模块-张帆")
 @RestController
 @RequestMapping("/classify")
 public class TabPbOrgClassifyController {

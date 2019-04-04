@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @Author Zhang Fan
  **/
-@Api(tags = "党员教育-远教站点模块")
+@Api(tags = "党员教育-远教站点模块-张帆")
 @RestController
 @RequestMapping("/eduSite")
 public class TabPbEduSiteController {

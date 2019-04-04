@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @Author Zhang Fan
  **/
-@Api(tags = "大数据分析模块")
+@Api(tags = "大数据分析模块 张帆")
 @RestController
 @RequestMapping("/dataAnalysis")
 public class DataAnalysisController {

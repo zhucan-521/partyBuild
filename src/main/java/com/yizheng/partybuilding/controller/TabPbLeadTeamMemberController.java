@@ -21,7 +21,7 @@ import java.util.List;
  *
  * @Author Jiang An
  **/
-@Api(tags = "党组织-领导班子成员模块")
+@Api(tags = "党组织-领导班子成员模块-蒋安")
 @RestController
 @RequestMapping("/member/")
 public class TabPbLeadTeamMemberController {

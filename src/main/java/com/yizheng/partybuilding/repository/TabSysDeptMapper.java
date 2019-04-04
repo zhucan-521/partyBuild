@@ -1,5 +1,6 @@
 package com.yizheng.partybuilding.repository;
 
+import com.yizheng.partybuilding.dto.PartyBuildingWorkInfoDto;
 import com.yizheng.partybuilding.dto.SysDeptDto;
 import com.yizheng.partybuilding.dto.SysDeptDtoWithCountInfo;
 import com.yizheng.partybuilding.dto.TabDeptPositionDto;
@@ -93,4 +94,11 @@ public interface TabSysDeptMapper {
      * @return
      */
     SysDeptDtoWithCountInfo countOrgWithPartyManInfo(@Param("orgId") Integer orgId);
+
+    /**
+     * 统计党建工作信息
+     * @param deptId
+     * @return
+     */
+    PartyBuildingWorkInfoDto countPartyBuildingWorkInfo(Long deptId);
 }

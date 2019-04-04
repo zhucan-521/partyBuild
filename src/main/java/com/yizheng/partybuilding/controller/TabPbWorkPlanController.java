@@ -28,7 +28,7 @@ import java.util.Map;
  *
  * @Author Zhang Fan
  **/
-@Api(tags = "党组织-工作计划、工作总结模块")
+@Api(tags = "党组织-工作计划、工作总结模块-张帆")
 @RestController
 @RequestMapping("/workPlan")
 public class TabPbWorkPlanController {

@@ -1,25 +1,23 @@
 package com.yizheng.partybuilding.system.service.impl;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.yizheng.partybuilding.system.entity.SysRoleMenu;
 import com.yizheng.partybuilding.system.mapper.SysRoleMenuMapper;
 import com.yizheng.partybuilding.system.service.SysRoleMenuService;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service("sysRoleMenuService")
 @AllArgsConstructor
 public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRoleMenu> implements SysRoleMenuService {
-
-	private CacheManager cacheManager;
 
 	/**
 	 * @param role
@@ -28,18 +26,22 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
 	 * @return
 	 */
 	@Override
-	@CacheEvict(value = "DETAIL::MENU", key = "#role + '_menu'")
+	@Caching(evict = {
+			@CacheEvict(value = "DETAIL::MENU", key = "#role + '_menu'"),
+			@CacheEvict(value = "DETAIL::ACCOUNT", allEntries = true)
+	})
 	public Boolean insertRoleMenus(String role, Integer roleId, String menuIds) {
 		SysRoleMenu condition = new SysRoleMenu();
 		condition.setRoleId(roleId);
-		this.delete(new EntityWrapper<>(condition)); //先删除
+		//先删除
+		this.delete(new EntityWrapper<>(condition));
 
-		if (StrUtil.isBlank(menuIds)) {
+		if (StringUtils.isBlank(menuIds)) {
 			return Boolean.TRUE;
 		}
 
 		List<SysRoleMenu> roleMenuList = new ArrayList<>();
-		List<String> menuIdList = Arrays.asList(menuIds.split(","));
+		String[] menuIdList = menuIds.split(",");
 
 		for (String menuId : menuIdList) {
 			SysRoleMenu roleMenu = new SysRoleMenu();
@@ -47,9 +49,6 @@ public class SysRoleMenuServiceImpl extends ServiceImpl<SysRoleMenuMapper, SysRo
 			roleMenu.setMenuId(Integer.valueOf(menuId));
 			roleMenuList.add(roleMenu);
 		}
-
-		//清空userinfo
-		cacheManager.getCache("user_details").clear();
 		return this.insertBatch(roleMenuList);
 	}
 }

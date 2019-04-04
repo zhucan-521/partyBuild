@@ -29,7 +29,7 @@ import java.util.Map;
  *
  * @Author Zhang Fan
  **/
-@Api(tags = "党员教育-学习中心模块")
+@Api(tags = "党员教育-学习中心模块-张帆")
 @RestController
 @RequestMapping(value = "eduStudy")
 public class TabPbEduStudyController {
