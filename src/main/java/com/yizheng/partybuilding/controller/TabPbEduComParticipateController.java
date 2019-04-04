@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/participate")
-@Api(tags = "党员教育-(明细)学习交流 朱灿")
+@Api(tags = "党员教育-(明细)学习交流 杨颖翔")
 public class TabPbEduComParticipateController {
 
     @Autowired

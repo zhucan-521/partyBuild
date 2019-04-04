@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-@Api(tags = "党员教育-预约模块")
+@Api(tags = "党员教育-预约模块 朱灿")
 @RestController
 @RequestMapping("/tabPbSubscribe")
 public class TabPbEduSubscribeController {
