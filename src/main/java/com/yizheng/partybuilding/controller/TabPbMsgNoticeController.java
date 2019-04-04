@@ -18,7 +18,7 @@ import java.text.ParseException;
 /**
  * @author YangYingXiang on 2018/12/29
  */
-@Api(tags = "上传下达-文件通知 杨颖翔")
+@Api(tags = "上传下达-文件通知 朱灿")
 @RestController
 @RequestMapping("/msgNotice")
 public class TabPbMsgNoticeController {
