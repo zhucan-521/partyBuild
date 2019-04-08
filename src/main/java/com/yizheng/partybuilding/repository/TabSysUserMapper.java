@@ -120,7 +120,7 @@ public interface TabSysUserMapper {
     List<SysUser> partyIdentityVerification(@Param("username") String username, @Param("idCardNo") String idCardNo, @Param("phone") String phone);
 
     /**
-     * 社区活动选人接口(根据主键id或者报到组织id进行筛选必填其中一项)
+     * 选人接口(根据主键id或者报到组织id进行筛选必填其中一项)
      * @param user
      * @return
      */

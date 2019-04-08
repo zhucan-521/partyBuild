@@ -138,4 +138,11 @@ public interface PartyOrganizationActivitiesService {
      * @return
      */
     int addSignIn(Long activitiesId, String idCardNo);
+
+    /**
+     * 在职党员活动list数据
+     * @param activitiesDto
+     * @return
+     */
+    List<TabPbActivitiesDto> ActivitiesDtoList(TabPbActivitiesDto activitiesDto, Page page);
 }

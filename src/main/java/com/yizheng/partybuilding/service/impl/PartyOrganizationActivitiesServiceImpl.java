@@ -19,6 +19,7 @@ import com.yizheng.partybuilding.service.inf.PartyOrganizationActivitiesService;
 import com.yizheng.partybuilding.service.inf.TabPbActivitiesService;
 import com.yizheng.partybuilding.service.inf.TabSysDeptService;
 import com.yizheng.partybuilding.system.entity.SysUser;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -363,6 +364,19 @@ public class PartyOrganizationActivitiesServiceImpl implements PartyOrganization
         }
 
         return 0;
+    }
+
+    /**
+     * 社区活动查询
+     * @param activitiesDto
+     * @param page
+     * @return
+     */
+    @Override
+    public List<TabPbActivitiesDto> ActivitiesDtoList(TabPbActivitiesDto activitiesDto, Page page) {
+        PageHelper.startPage(page);
+        var list = activitiesMapper.ActivitiesDtoList(activitiesDto);
+        return list;
     }
 
 }
