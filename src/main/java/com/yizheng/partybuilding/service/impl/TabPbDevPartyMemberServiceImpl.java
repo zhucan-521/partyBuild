@@ -192,21 +192,22 @@ public class TabPbDevPartyMemberServiceImpl implements ITabPbDevPartyMemberServi
     /**
      * 分页显示发展党员的信息
      *
-     * @param page   分页信息
+     * @param page  分页信息
      * @return
      */
     @Override
     public PageInfo<DevPartyUserDto> getDevPartyList(PartyApplyConditionsDto conditions, Page page) {
-        PageHelper.startPage(page);
-        if(conditions!=null){
-            if(!partyDao.verification(UserContextHolder.getOrgId(),conditions.getOrgId())){
+        if (conditions != null) {
+            if (!partyDao.verification(UserContextHolder.getOrgId(), conditions.getOrgId())) {
                 //不属于改变orgId的值
                 conditions.setOrgId(UserContextHolder.getOrgId());
                 conditions.setOrgRange(2L);
             }
         }
-        var list = this.devDao.selectDevParty(conditions);
-        return new PageInfo<>(list);
+        PageHelper.startPage(page);
+        List<DevPartyUserDto> devPartyList = this.devDao.selectDevParty(conditions);
+        System.out.println("list-->" + devPartyList.size());
+        return new PageInfo<>(devPartyList);
     }
 
     /**
@@ -236,6 +237,7 @@ public class TabPbDevPartyMemberServiceImpl implements ITabPbDevPartyMemberServi
      * @param hostId 步骤id
      * @return
      */
+    @Override
     public List<TabPbDevPartyMemberDate> getDevDate(Long hostId) {
         return this.devDateDao.selectByHostId(hostId);
     }
