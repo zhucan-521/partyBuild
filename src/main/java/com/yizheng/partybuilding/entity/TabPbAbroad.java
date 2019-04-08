@@ -24,7 +24,7 @@ public class TabPbAbroad {
     @ApiModelProperty(hidden = true)
     private static final String FORMAT = "yyyy-MM-dd";
 
-    @ApiModelProperty(value = "出国Id", readOnly = true)
+    @ApiModelProperty(value = "出国Id")
     private Long abroadId;
 
     @ApiModelProperty(value = "组织id")
