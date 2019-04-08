@@ -28,7 +28,7 @@ public class PartyOutflowController {
     @Autowired
     FlowOutService flowOutService;
 
-    @ApiOperation(value = "流出党员登记/市外流动党员手动录入", notes = "添加", httpMethod = "POST")
+    @ApiOperation(value = "流出党员（包括市外）登记/市外流入党员手动录入功能聚合", notes = "添加", httpMethod = "POST")
     @PostMapping("/insert")
     public ReturnEntity insert(@RequestBody @Validated TabPbFlowOutDto tabPbFlowOutDto) {
         return ReturnUtil.buildReturn(flowOutService.insert(tabPbFlowOutDto));

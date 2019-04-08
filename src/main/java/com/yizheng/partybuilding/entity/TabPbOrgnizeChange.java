@@ -82,8 +82,7 @@ public class TabPbOrgnizeChange {
     @JsonIgnore
     private Long createUserid;
 
-    @ApiModelProperty(value = "创建人姓名", hidden = true)
-    @JsonIgnore
+    @ApiModelProperty(value = "创建人姓名")
     private String createUsername;
 
     @ApiModelProperty(value = "修改时间", hidden = true)

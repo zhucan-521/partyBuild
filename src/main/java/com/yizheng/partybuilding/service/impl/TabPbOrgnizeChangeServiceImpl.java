@@ -121,6 +121,7 @@ public class TabPbOrgnizeChangeServiceImpl implements TabPbOrgnizeChangeService 
      */
     @Transactional
     @Override
+    @PaddingBaseField
     public String changeOrg(TabPbOrgnizeChange org) {
         // 我改不了, 只能转int了
         if(Objects.requireNonNull(currentUser()).getDeptId() != null ){
