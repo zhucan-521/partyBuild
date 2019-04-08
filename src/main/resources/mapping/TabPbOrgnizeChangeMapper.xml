@@ -362,10 +362,13 @@
             t.dept_id,
             d.`name` AS orgnize_name,
             d.org_short_name AS short_name,
+            (select `name` from  sys_dept where dept_id = t.now_superior_id) now_superior_name,
             t.change_type,
             t.change_date,
             t.file_number,
-            t.create_username
+            t.create_username,
+            t.description,
+            t.change_reason
         FROM
             tab_pb_orgnize_change t
         JOIN sys_dept d ON t.dept_id = d.dept_id
@@ -379,10 +382,13 @@
                 ch.dept_id,
                 up.upgrade_dept_name AS `name`,
                 up.upgrade_short_name AS short_name,
+                (select `name` from  sys_dept where dept_id = ch.now_superior_id) now_superior_name,
                 ch.change_type,
                 ch.change_date,
                 ch.file_number,
-                up.create_username
+                up.create_username,
+                ch.description,
+                ch.change_reason
                 from sys_dept_upgrade_temp up
                 LEFT JOIN tab_pb_orgnize_change ch ON up.dept_id = ch.dept_id AND ch.change_type = 59424 AND ch.del_flag = 0
                 where up.del_flag = 0 and ch.dept_id = #{deptId}) a order by change_date asc

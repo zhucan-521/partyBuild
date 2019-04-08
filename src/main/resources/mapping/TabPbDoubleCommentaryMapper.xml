@@ -289,16 +289,16 @@
                 #{commentaryContent,jdbcType=LONGVARCHAR},
             </if>
             <if test="checkResult != null">
-                #{check_result,jdbcType=BIGINT},
+                #{checkResult,jdbcType=BIGINT},
             </if>
             <if test="checkOrg != null">
-                #{check_org,jdbcType=BIGINT},
+                #{checkOrg,jdbcType=BIGINT},
             </if>
             <if test="checkUser != null">
-                #{check_user,jdbcType=BIGINT},
+                #{checkUser,jdbcType=BIGINT},
             </if>
             <if test="checkDesc != null">
-                #{check_desc,jdbcType=VARCHAR},
+                #{checkDesc,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
