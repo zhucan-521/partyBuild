@@ -292,7 +292,7 @@ public class PartyOrganizationActivitiesController {
     }
 
 
-    @GetMapping(value = "/list")
+    @GetMapping(value = "/community")
     @ApiOperation(value = "获取社区活动信息列表", notes = "可指定条件查询")
     @ApiImplicitParams({
             @ApiImplicitParam(value = "活动名称", name = "subject", dataType = "String"),
