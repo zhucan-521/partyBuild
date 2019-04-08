@@ -3,20 +3,23 @@ package com.yizheng.partybuilding.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.yizheng.commons.config.PaddingBaseField;
 import com.yizheng.commons.domain.Page;
+import com.yizheng.commons.exception.BusinessDataCheckFailException;
+import com.yizheng.commons.exception.BusinessDataInvalidException;
+import com.yizheng.commons.util.ActivityType;
+import com.yizheng.commons.util.AttachmentType;
 import com.yizheng.commons.util.UserContextHolder;
 import com.yizheng.partybuilding.dto.*;
 import com.yizheng.partybuilding.entity.TabPbActivities;
 import com.yizheng.partybuilding.entity.TabPbParticipant;
-import com.yizheng.commons.exception.BusinessDataCheckFailException;
-import com.yizheng.commons.exception.BusinessDataInvalidException;
 import com.yizheng.partybuilding.repository.TabPbActivitiesMapper;
 import com.yizheng.partybuilding.repository.TabPbParticipantMapper;
+import com.yizheng.partybuilding.repository.TabSysUserMapper;
 import com.yizheng.partybuilding.service.inf.ITabPbAttachmentService;
 import com.yizheng.partybuilding.service.inf.PartyOrganizationActivitiesService;
 import com.yizheng.partybuilding.service.inf.TabPbActivitiesService;
 import com.yizheng.partybuilding.service.inf.TabSysDeptService;
-import com.yizheng.commons.util.ActivityType;
-import com.yizheng.commons.util.AttachmentType;
+import com.yizheng.partybuilding.system.entity.SysUser;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +45,8 @@ public class PartyOrganizationActivitiesServiceImpl implements PartyOrganization
     private ITabPbAttachmentService iTabPbAttachmentService;
     @Autowired
     private TabSysDeptService tabSysDeptService;
-
+    @Autowired
+    private TabSysUserMapper userMapper;
     @Transactional
     @PaddingBaseField
     @Override
@@ -312,6 +316,67 @@ public class PartyOrganizationActivitiesServiceImpl implements PartyOrganization
     @Override
     public int deleteStick(Long activitiesId) {
         return activitiesMapper.deleteStick(activitiesId);
+    }
+
+    /**
+     * 签到加人接口
+     * @param activitiesId
+     * @param idCardNo
+     * @return
+     */
+    @PaddingBaseField
+    @Override
+    public int addSignIn(Long activitiesId, String idCardNo) {
+        //首先判断是否组织下的人
+        SysUser sysUser = userMapper.selectUserByIdCardNo(idCardNo);
+        if (sysUser==null){
+            throw new BusinessDataCheckFailException("身份证不正确");
+        }
+        //查看活动中已存在的人
+        List<TabPbParticipant>list= pbParticipantMapper.selectDetailTableByActivitiesId(activitiesId);
+        for (TabPbParticipant tabPbParticipant : list) {
+            if (tabPbParticipant.getUserId()==sysUser.getUserId().longValue()){
+                throw new BusinessDataCheckFailException("已签到成功");
+            }
+        }
+        //判断该人是否是本组织下面的 如果是则签到并把人存入进去
+        TabPbActivities tabPbActivities = activitiesMapper.selectByActivitiesId(activitiesId);
+        if (sysUser.getDeptId().longValue()==tabPbActivities.getOrgId()){
+            Map<String, Object> conditions = new HashMap<>();
+            conditions.put("orgId", sysUser.getDeptId());
+            conditions.put("exclusion", "1");
+            conditions.put("userTag", "59388,59389"); //年老体弱者、经常外出者
+            List<Personnel> personnels = activitiesMapper.selectCandidateMemberListWithConditions(conditions);
+            long exists = personnels.stream().filter(personel -> personel.getUserId().longValue() == sysUser.getUserId()).count();
+            if (exists > 0){
+                //添加入进表
+                TabPbParticipant participant = new TabPbParticipant();
+                participant.setActivitiesId(activitiesId)
+                        .setUserId(sysUser.getUserId().longValue())
+                        .setRealName(sysUser.getRealname())
+                        .setSigninTime(new Date())
+                        .setDelFlag("0")
+                        .setEblFlag("1")
+                        .setActivitytype(tabPbActivities.getActivitiesType().toString());
+                pbParticipantMapper.insertSelective(participant);
+            }
+                throw new BusinessDataCheckFailException("该用户不符合要求,不能签到");
+        }
+
+        return 0;
+    }
+
+    /**
+     * 社区活动查询
+     * @param activitiesDto
+     * @param page
+     * @return
+     */
+    @Override
+    public List<TabPbActivitiesDto> ActivitiesDtoList(TabPbActivitiesDto activitiesDto, Page page) {
+        PageHelper.startPage(page);
+        var list = activitiesMapper.ActivitiesDtoList(activitiesDto);
+        return list;
     }
 
 }

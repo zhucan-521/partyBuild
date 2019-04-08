@@ -78,5 +78,4 @@ public interface TabPbParticipantMapper {
      */
     TabPbParticipant validateUserExists(@Param("activitiesId") Long activitiesId, @Param("idCardNo") String idCardNo);
 
-
 }

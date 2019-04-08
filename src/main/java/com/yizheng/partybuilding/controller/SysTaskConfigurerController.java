@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @Author Zhang Fan
  **/
-@Api(tags = "系统任务配置——张帆")
+@Api(tags = "系统任务配置 蒋安")
 @RestController
 @RequestMapping("/taskConfigurer")
 public class SysTaskConfigurerController {
