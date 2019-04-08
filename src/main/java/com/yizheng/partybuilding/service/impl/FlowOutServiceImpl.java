@@ -127,6 +127,9 @@ public class  FlowOutServiceImpl implements FlowOutService {
     @Override
     @PaddingBaseField(updateOnly = true)
     public int update(TabPbFlowOutDto tabPbFlowOutDto) {
+        //不让他修改流出组织
+        tabPbFlowOutDto.setOrgId(null);
+        tabPbFlowOutDto.setFlowFromOrgName(null);
         //修改用户表
         SysUser sysUser=tabSysUserMapper.selectUserByIdCardNo(tabPbFlowOutDto.getIdCardNo());
         BeanUtil.copyPropertiesIgnoreNull(tabPbFlowOutDto,sysUser);
@@ -134,11 +137,6 @@ public class  FlowOutServiceImpl implements FlowOutService {
         if(tabPbFlowOutDto.getFlowOutPlace()!=null){
             sysUser.setFlowToOrgId(tabPbFlowOutDto.getFlowOutPlace());
             sysUser.setFlowToOrgName(tabPbFlowOutMapper.selectDeptNameByDeptId(tabPbFlowOutDto.getFlowOutPlace()));
-        }
-        //流出党组织
-        if(tabPbFlowOutDto.getOrgId()!=null){
-            sysUser.setFlowFromOrgId(tabPbFlowOutDto.getOrgId()) ;
-            sysUser.setFlowFromOrgName(tabPbFlowOutMapper.selectDeptNameByDeptId(tabPbFlowOutDto.getOrgId()));
         }
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         //修改流入表

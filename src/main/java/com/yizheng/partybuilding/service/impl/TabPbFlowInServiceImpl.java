@@ -120,6 +120,9 @@ public class TabPbFlowInServiceImpl implements TabPbFlowInService {
     @Override
     @PaddingBaseField(updateOnly = true)
     public int updateTabPbFlowInDto(TabPbFlowInDto tabPbFlowInDto) {
+        //不让修改流入党组织
+        tabPbFlowInDto.setOrgId(null);
+        tabPbFlowInDto.setFlowToOrgName(null);
         Long userId=tabSysUserMapper.SelectUserIdByIDcard(tabPbFlowInDto.getIdCardNo());
         SysUser sysUser=new SysUser();
         sysUser.setUserId(userId.intValue());
