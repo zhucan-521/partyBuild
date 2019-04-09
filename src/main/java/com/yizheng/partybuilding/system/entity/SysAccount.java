@@ -5,12 +5,16 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yizheng.commons.util.BeanUtil;
+import com.yizheng.partybuilding.util.PasswordCodecUtil;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -28,12 +32,14 @@ public class SysAccount  implements Serializable {
     private Integer sysUserId;
 
     @ApiModelProperty(value = "身份证")
+    @NotEmpty(message = "身份证不能为空")
     private String idCardNo;
 
     @ApiModelProperty(value = "用户名")
     private String username;
 
     @ApiModelProperty(value = "真实姓名")
+    @NotEmpty(message = "用户名不能为空")
     private String realname;
 
     @ApiModelProperty(value = "密码")
@@ -88,4 +94,19 @@ public class SysAccount  implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private LocalDateTime updateTime;
+
+    /**
+     * 复制一个对象
+     * @param other 其他对象
+     * @return
+     */
+    public static SysAccount copyOf(SysAccount other) {
+        SysAccount sysAccount = new SysAccount();
+        BeanUtil.copyPropertiesIgnoreNull(other, sysAccount);
+        sysAccount.setUsername(other.getRealname());
+        if (StringUtils.isNotEmpty(other.getPassword())) {
+            sysAccount.setPassword(PasswordCodecUtil.encode(other.getPassword()));
+        }
+        return sysAccount;
+    }
 }

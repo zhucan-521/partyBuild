@@ -6,29 +6,25 @@ import com.yizheng.commons.exception.BusinessDataCheckFailException;
 import com.yizheng.commons.exception.BusinessDataNotFoundException;
 import com.yizheng.commons.exception.BusinessException;
 import com.yizheng.commons.util.PaddingBaseFieldUtil;
+import com.yizheng.commons.util.ReturnEntity;
+import com.yizheng.commons.util.ReturnUtil;
 import com.yizheng.commons.util.UserContextHolder;
 import com.yizheng.partybuilding.system.dto.UserAdminDTO;
 import com.yizheng.partybuilding.system.dto.UserDTO;
 import com.yizheng.partybuilding.system.entity.SysAccount;
 import com.yizheng.partybuilding.system.entity.SysUser;
-import com.yizheng.partybuilding.system.entity.SysUserRole;
 import com.yizheng.partybuilding.system.service.LoginService;
 import com.yizheng.partybuilding.system.service.SysAccountService;
 import com.yizheng.partybuilding.system.service.SysUserService;
-import com.yizheng.partybuilding.system.util.CommonConstant;
 import com.yizheng.partybuilding.system.vo.UserVO;
-import com.yizheng.partybuilding.util.PasswordDecoderUtil;
+import com.yizheng.partybuilding.util.PasswordCodecUtil;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -38,8 +34,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/account")
 public class AccountController {
-
-    private static final PasswordEncoder ENCODER = new BCryptPasswordEncoder();
 
     @Autowired
     private SysAccountService accountService;
@@ -83,77 +77,30 @@ public class AccountController {
     }
 
     @ApiOperation(value = "添加用户", notes = "添加用户", httpMethod = "POST")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "realname", value = "用户名", paramType = "form"),
-            @ApiImplicitParam(name = "password", value = "密码", paramType = "form"),
-            @ApiImplicitParam(name = "idCardNo", required = true, value = "身份证号", paramType = "form"),
-            @ApiImplicitParam(name = "phone", value = "手机号", paramType = "form"),
-            @ApiImplicitParam(name = "manageDeptId", value = "组织ID", paramType = "form"),
-            @ApiImplicitParam(name = "roleIds", value = "角色IDS 多个用,号分隔", paramType = "form"),
-            @ApiImplicitParam(name = "representDeptId", value = "XZQH数据字典值，后台帐号管理某一区域（区县、乡镇）的党代表", paramType = "form")
-    })
     @PostMapping
-    public Boolean user(@ApiIgnore UserDTO userDto) {
-        if (userDto == null || StringUtils.isEmpty(userDto.getIdCardNo())) {
-            throw new BusinessException("请传入正确的用户信息");
-        }
+    public ReturnEntity addUser(@RequestBody @Validated UserDTO userDto) {
         //判断是否已存在
         SysAccount deletedUser = accountService.selectDeletedUserByCardNo(userDto.getIdCardNo());
         if (deletedUser != null) {
-            throw new BusinessDataCheckFailException("该用户已存在，请联系后台管理员");
+            throw new BusinessDataCheckFailException("用户已存在");
         }
 
-        SysAccount sysAccount = new SysAccount();
-        BeanUtils.copyProperties(userDto, sysAccount);
-        sysAccount.setUsername(userDto.getRealname());
-        sysAccount.setPassword(ENCODER.encode(userDto.getPassword()));
+        SysAccount sysAccount = SysAccount.copyOf(userDto);
         //关联党员id
-        SysUser sysUser = userService.selectDeletedUserByCardNo(userDto.getIdCardNo());
-        if (sysUser != null) {
-            sysAccount.setSysUserId(sysUser.getUserId());
-        }
-        setDefaultAccountInfo(sysAccount);
-        accountService.insert(sysAccount);
-        userDto.getRoleIds().forEach(roleId -> {
-            SysUserRole userRole = new SysUserRole();
-            userRole.setUserId(sysAccount.getUserId());
-            userRole.setRoleId(roleId);
-            userRole.insert();
-        });
-        return Boolean.TRUE;
-    }
+        associatedPartyMemberIdIfExists(sysAccount);
 
-    //给用户设置默认信息
-    private void setDefaultAccountInfo(SysAccount sysAccount) {
-        sysAccount.setCreateUserid(UserContextHolder.getUserIdLong());
-        sysAccount.setCreateUsername(UserContextHolder.getUserName());
-        sysAccount.setCreateTime(LocalDateTime.now());
-        sysAccount.setDelFlag(CommonConstant.STATUS_NORMAL);
-        sysAccount.setUpdateTime(LocalDateTime.now());
-        sysAccount.setUpdateUserid(UserContextHolder.getUserIdLong());
-        sysAccount.setUpdateUsername(UserContextHolder.getUserName());
+        int retVal = accountService.insertAccountWithRole(sysAccount, userDto.getRoleIds());
+        return ReturnUtil.buildReturn(retVal);
     }
 
     @ApiOperation(value = "更新用户信息", notes = "更新用户信息", httpMethod = "PUT")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "用户Id", paramType = "form"),
-            @ApiImplicitParam(name = "realname", value = "用户名", paramType = "form"),
-            @ApiImplicitParam(name = "idCardNo", required = true, value = "身份证", paramType = "form"),
-            @ApiImplicitParam(name = "phone", value = "手机号", paramType = "form"),
-            @ApiImplicitParam(name = "manageDeptId", value = "管理组织ID", paramType = "form"),
-            @ApiImplicitParam(name = "roleIds", value = "角色IDS 多个用,号分隔", paramType = "form"),
-            @ApiImplicitParam(name = "representDeptId", value = "XZQH数据字典值，后台帐号管理某一区域（区县、乡镇）的党代表", paramType = "form")
-    })
     @PutMapping
-    public Boolean userUpdate(@ApiIgnore UserDTO userDto) {
-        if (userDto == null || StringUtils.isEmpty(userDto.getIdCardNo())) {
-            throw new BusinessException("请传入正确的用户信息");
-        }
-        UserInfo user = accountService.findUserInfo("PWD", userDto.getIdCardNo());
-        if (user == null) {
+    public ReturnEntity updateUser(@RequestBody @Validated UserDTO userDto) {
+        UserInfo dbUser = accountService.findUserInfo("PWD", userDto.getIdCardNo());
+        if (dbUser == null) {
             throw new BusinessDataNotFoundException("用户信息不存在");
         }
-        return accountService.updateUser(userDto);
+        return ReturnUtil.buildReturn(accountService.updateUser(userDto));
     }
 
     @ApiOperation(value = "修改密码", notes = "修改密码", httpMethod = "POST")
@@ -163,14 +110,13 @@ public class AccountController {
                              @RequestParam @ApiParam(value = "新密码", required = true) String newPwd) {
         SysAccount sysAccount = accountService.selectById(userId);
         if (sysAccount == null) {
-            throw new BusinessDataNotFoundException("用户信息不存在");
+            throw new BusinessDataNotFoundException("用户不存在");
         }
-        if (!PasswordDecoderUtil.matches(oldPwd, sysAccount.getPassword())) {
+        if (!PasswordCodecUtil.matches(oldPwd, sysAccount.getPassword())) {
             throw new BusinessDataCheckFailException("原密码不正确");
         }
         //加密新密码
-        sysAccount.setPassword(ENCODER.encode(newPwd));
-        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(sysAccount);
+        sysAccount.setPassword(PasswordCodecUtil.encode(newPwd));
         return accountService.updatePwdById(sysAccount);
     }
 
@@ -181,7 +127,7 @@ public class AccountController {
         if (sysAccount == null) {
             throw new BusinessDataNotFoundException("用户信息不存在");
         }
-        sysAccount.setPassword(ENCODER.encode("123456")); //默认
+        sysAccount.setPassword(PasswordCodecUtil.encode("123456")); //默认
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(sysAccount);
         return accountService.updatePwdById(sysAccount);
     }
@@ -201,25 +147,21 @@ public class AccountController {
     @GetMapping("/listAll")
     public List<UserAdminDTO> listAll(@ApiIgnore UserAdminDTO userDto) {
         //超级管理员可以查看所有用户信息，其他角色只能查看自己创建的用户
-        if (!UserContextHolder.getRoles().anyMatch(role -> role.equals("ROLE_ADMIN"))) {
+        if (UserContextHolder.getRoles().noneMatch(role -> role.equals("ROLE_ADMIN"))) {
             userDto.setCreateUserid(UserContextHolder.getUserIdLong());
         }
         return accountService.listAll(userDto);
     }
 
-    @ApiOperation(value = "修改个人信息", notes = "修改个人信息", httpMethod = "PUT")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "realname", value = "用户名", paramType = "form"),
-            @ApiImplicitParam(name = "idCardNo", required = true, value = "身份证", paramType = "form"),
-            @ApiImplicitParam(name = "newPassword", value = "新密码", paramType = "form"),
-            @ApiImplicitParam(name = "phone", value = "手机号", paramType = "form"),
-            @ApiImplicitParam(name = "manageDeptId", value = "管理组织ID", paramType = "form"),
-            @ApiImplicitParam(name = "roleIds", value = "角色IDS 多个用,号分隔", paramType = "form"),
-            @ApiImplicitParam(name = "representDeptId", value = "XZQH数据字典值，后台帐号管理某一区域（区县、乡镇）的党代表", paramType = "form")
-    })
-    @PutMapping("/editInfo")
-    public Boolean editInfo(@ApiIgnore @Valid UserDTO userDto) {
-        return accountService.updateUserInfo(userDto);
+    /**
+     * 如果指定身份证对应的党员存在，给账号关联党员id
+     * @param sysAccount 账号实体
+     */
+    private void associatedPartyMemberIdIfExists(SysAccount sysAccount) {
+        SysUser sysUser = userService.selectDeletedUserByCardNo(sysAccount.getIdCardNo());
+        if (sysUser != null) {
+            sysAccount.setSysUserId(sysUser.getUserId());
+        }
     }
 
 }

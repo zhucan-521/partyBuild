@@ -14,7 +14,7 @@ import com.yizheng.partybuilding.system.entity.SysUserRole;
 import com.yizheng.partybuilding.system.service.SysUserService;
 import com.yizheng.partybuilding.system.util.CommonConstant;
 import com.yizheng.partybuilding.system.vo.UserVO;
-import com.yizheng.partybuilding.util.PasswordDecoderUtil;
+import com.yizheng.partybuilding.util.PasswordCodecUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -136,7 +136,7 @@ public class UserController {
         if (sysUser == null) {
             throw new BusinessDataNotFoundException("用户信息不存在");
         }
-        if (!PasswordDecoderUtil.matches(oldPwd, sysUser.getPassword())) {
+        if (!PasswordCodecUtil.matches(oldPwd, sysUser.getPassword())) {
             throw new BusinessDataCheckFailException("原密码不正确");
         }
         //加密新密码

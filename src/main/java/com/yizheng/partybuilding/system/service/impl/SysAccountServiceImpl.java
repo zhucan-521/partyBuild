@@ -1,11 +1,10 @@
 package com.yizheng.partybuilding.system.service.impl;
 
-import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import com.yizheng.commons.config.PaddingBaseField;
 import com.yizheng.commons.domain.UserInfo;
 import com.yizheng.commons.domain.UserLoginDto;
-import com.yizheng.commons.exception.BusinessDataCheckFailException;
 import com.yizheng.commons.util.CollectionUtil;
 import com.yizheng.partybuilding.service.inf.TabSysDeptService;
 import com.yizheng.partybuilding.system.dto.UserAdminDTO;
@@ -31,8 +30,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -167,48 +166,27 @@ public class SysAccountServiceImpl extends ServiceImpl<SysAccountMapper, SysAcco
         return Boolean.TRUE;
     }
 
-    /**
-     * 修改用户信息
-     * @param userDto  用户信息
-     * @return
-     */
+    @Transactional
+    @PaddingBaseField(updateOnly = true)
     @Override
     @CacheEvict(value = "DETAIL::ACCOUNT", key = "#userDto.idCardNo")
-    public Boolean updateUserInfo(UserDTO userDto) {
-        UserVO userVO = sysAccountMapper.selectUserVoByCardNo(userDto.getIdCardNo());
-        SysAccount sysAccount = new SysAccount();
-        if (StrUtil.isNotBlank(userDto.getPassword()) && StrUtil.isNotBlank(userDto.getNewPassword())) {
-            if (ENCODER.matches(userDto.getPassword(), userVO.getPassword())) {
-                sysAccount.setPassword(ENCODER.encode(userDto.getNewPassword()));
-            } else {
-                log.warn("原密码错误，修改密码失败:{}", userDto.getIdCardNo());
-                throw new BusinessDataCheckFailException("原密码错误，修改失败");
-            }
+    public int updateUser(UserDTO userDto) {
+        SysAccount sysAccount = SysAccount.copyOf(userDto);
+        boolean updated = this.updateById(sysAccount);
+        int affected = 0;
+        if (updated) {
+            affected = 1;
+            SysUserRole condition = new SysUserRole();
+            condition.setUserId(userDto.getUserId());
+            sysUserRoleService.delete(new EntityWrapper<>(condition));
+            userDto.getRoleIds().forEach(roleId -> {
+                SysUserRole userRole = new SysUserRole();
+                userRole.setUserId(sysAccount.getUserId());
+                userRole.setRoleId(roleId);
+                userRole.insert();
+            });
         }
-        sysAccount.setPhone(userDto.getPhone());
-        sysAccount.setUserId(userVO.getUserId());
-        sysAccount.setAvatar(userDto.getAvatar());
-        return this.updateById(sysAccount);
-    }
-
-    @Override
-    @CacheEvict(value = "DETAIL::ACCOUNT", key = "#userDto.idCardNo")
-    public Boolean updateUser(UserDTO userDto) {
-        SysAccount sysAccount = new SysAccount();
-        BeanUtils.copyProperties(userDto, sysAccount);
-        sysAccount.setUpdateTime(LocalDateTime.now());
-        this.updateById(sysAccount);
-
-        SysUserRole condition = new SysUserRole();
-        condition.setUserId(userDto.getUserId());
-        sysUserRoleService.delete(new EntityWrapper<>(condition));
-        userDto.getRoleIds().forEach(roleId -> {
-            SysUserRole userRole = new SysUserRole();
-            userRole.setUserId(sysAccount.getUserId());
-            userRole.setRoleId(roleId);
-            userRole.insert();
-        });
-        return Boolean.TRUE;
+        return affected;
     }
 
     /**
@@ -256,9 +234,26 @@ public class SysAccountServiceImpl extends ServiceImpl<SysAccountMapper, SysAcco
         //redisTemplate.opsForValue().set(SecurityConstants.DEFAULT_CODE_KEY + randomStr, imageCode, SecurityConstants.DEFAULT_IMAGE_EXPIRE, TimeUnit.SECONDS);
     }
 
+    @PaddingBaseField(updateOnly = true)
     @Override
     @CacheEvict(value = "DETAIL::ACCOUNT", key = "#sysAccount.idCardNo")
     public Boolean updatePwdById(SysAccount sysAccount) {
         return sysAccountMapper.updatePwdById(sysAccount);
+    }
+
+    @Transactional
+    @PaddingBaseField
+    @Override
+    public int insertAccountWithRole(SysAccount sysAccount, List<Integer> roleIds) {
+        int retVal = sysAccountMapper.insert(sysAccount);
+        if (retVal > 0 && CollectionUtil.isNotEmpty(roleIds)) {
+            roleIds.forEach(roleId -> {
+                SysUserRole userRole = new SysUserRole();
+                userRole.setUserId(sysAccount.getUserId());
+                userRole.setRoleId(roleId);
+                userRole.insert();
+            });
+        }
+        return retVal;
     }
 }

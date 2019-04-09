@@ -3,9 +3,9 @@ package com.yizheng.partybuilding.util;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
- * 密码解密帮助类
+ * 密码加密解密帮助类
  */
-public class PasswordDecoderUtil {
+public class PasswordCodecUtil {
 
     private static final BCryptPasswordEncoder ENCODER = new BCryptPasswordEncoder();
 
@@ -17,5 +17,9 @@ public class PasswordDecoderUtil {
      */
     public static boolean matches(CharSequence rawPassword , String encodePassword){
         return ENCODER.matches(rawPassword , encodePassword);
+    }
+
+    public static String encode(String rawPassword) {
+        return ENCODER.encode(rawPassword);
     }
 }

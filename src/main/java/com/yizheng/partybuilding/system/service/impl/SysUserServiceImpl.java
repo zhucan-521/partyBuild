@@ -25,7 +25,7 @@ import com.yizheng.partybuilding.system.service.SysUserService;
 import com.yizheng.partybuilding.system.util.CommonConstant;
 import com.yizheng.partybuilding.system.vo.MenuVO;
 import com.yizheng.partybuilding.system.vo.UserVO;
-import com.yizheng.partybuilding.util.PasswordDecoderUtil;
+import com.yizheng.partybuilding.util.PasswordCodecUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -242,7 +242,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         if (userInfo != null && userInfo.getUserLogin() != null) {
             UserLoginDto user = userInfo.getUserLogin();
             if(user != null && !StringUtils.isEmpty(user.getPassword())){
-                boolean flag = PasswordDecoderUtil.matches(password , user.getPassword());
+                boolean flag = PasswordCodecUtil.matches(password , user.getPassword());
                 if(flag){
                     user.setPassword(null);
                     token = JwtUtil.generateToken(userInfo);
