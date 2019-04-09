@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * @author: huang
  * Date: 2019/1/14
  */
-@Api(tags = "党员-党员标记")
+@Api(tags = "党员-党员标记-官颖鑫")
 @RestController
 @RequestMapping("/userTag")
 public class TabPbUserTagController {

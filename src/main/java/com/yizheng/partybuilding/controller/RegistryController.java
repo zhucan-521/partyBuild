@@ -17,7 +17,7 @@ import java.util.List;
  * @author: huang
  * Date: 2018/12/12
  */
-@Api(tags = "党员-党籍模块")
+@Api(tags = "党员-党籍模块-官颖鑫")
 @RestController
 @RequestMapping("/registry")
 public class RegistryController {
@@ -49,7 +49,7 @@ public class RegistryController {
      * updata
      */
     @ApiOperation(value = "更新用户党籍信息")
-    @PostMapping("/updata")
+    @PutMapping("/updata")
     public boolean updata(@ApiParam(value = "党籍信息")@Valid @RequestBody SysUser sysUser){
         return sysUserService.updataUser(sysUser);
     }

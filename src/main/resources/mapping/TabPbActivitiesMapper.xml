@@ -674,7 +674,7 @@
     </update>
 
     <select id="selectByActivitiesId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        select * from tab_pb_activities where activities_id = #{activitiesId}
+        select * from tab_pb_activities where activities_id = #{activitiesId} and del_flag=0
     </select>
 
     <!--逻辑删除-->
@@ -1148,6 +1148,5 @@
     <update id="deleteStick" parameterType="java.lang.Long">
         update tab_pb_activities set stick_num =0 where activities_id = #{activitiesId}
     </update>
-
 </mapper>
 

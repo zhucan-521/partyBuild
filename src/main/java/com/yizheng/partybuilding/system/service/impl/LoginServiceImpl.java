@@ -10,7 +10,7 @@ import com.yizheng.commons.util.JwtUtil;
 import com.yizheng.partybuilding.system.service.LoginService;
 import com.yizheng.partybuilding.system.service.SysAccountService;
 import com.yizheng.partybuilding.system.service.SysUserService;
-import com.yizheng.partybuilding.util.PasswordDecoderUtil;
+import com.yizheng.partybuilding.util.PasswordCodecUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,7 +63,7 @@ public class LoginServiceImpl implements LoginService {
         }
         UserLoginDto user = userInfo.getUserLogin();
         if (user != null && !StringUtils.isEmpty(user.getPassword())) {
-            boolean flag = PasswordDecoderUtil.matches(password, user.getPassword());
+            boolean flag = PasswordCodecUtil.matches(password, user.getPassword());
             if (flag) {
                 user.setPassword(null);
                 token = JwtUtil.generateToken(userInfo);

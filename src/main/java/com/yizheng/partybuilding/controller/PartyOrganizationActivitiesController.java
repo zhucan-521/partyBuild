@@ -11,6 +11,7 @@ import com.yizheng.partybuilding.dto.*;
 import com.yizheng.partybuilding.entity.TabPbActivities;
 import com.yizheng.partybuilding.entity.TabPbParticipant;
 import com.yizheng.partybuilding.service.inf.PartyOrganizationActivitiesService;
+import com.yizheng.partybuilding.service.inf.TabPbActivitiesService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -280,5 +281,34 @@ public class PartyOrganizationActivitiesController {
     public ReturnEntity deleteStick(Long activitiesId) {
         int retVal = activitiesService.deleteStick(activitiesId);
         return ReturnUtil.buildReturn(retVal);
+    }
+
+    @ApiOperation(value = "签到接口加人",notes = "签到接口加人",httpMethod = "GET")
+    @GetMapping("/addSignIn")
+    public ReturnEntity addSignIn(@RequestParam @ApiParam(name = "activitiesId", value = "组织生活Id") Long activitiesId,
+                                  @RequestParam(defaultValue = "430402194704262010") @ApiParam(name = "idCardNo", value = "身份证号码") String idCardNo){
+           int retVal=activitiesService.addSignIn(activitiesId,idCardNo);
+           return ReturnUtil.buildReturn(retVal);
+    }
+
+
+    @GetMapping(value = "/community")
+    @ApiOperation(value = "获取社区活动信息列表", notes = "可指定条件查询")
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "活动名称", name = "subject", dataType = "String"),
+            @ApiImplicitParam(value = "党员名称", name = "username", dataType = "String", paramType = "query"),
+            @ApiImplicitParam(value = "活动类型", name = "activitiesType", dataType = "Long", paramType = "query"),
+            @ApiImplicitParam(value = "是否直属组织 0直属，1报到", name = "deptState", paramType = "query")
+    })
+    public PageInfo<TabPbActivitiesDto> list(String subject, String username, Long activitiesType,
+                                             Long deptState, @ApiParam Page page, OrgRange orgRange) {
+        TabPbActivitiesDto tabPbActivitiesDto = new TabPbActivitiesDto();
+        tabPbActivitiesDto.setSubject(subject);
+        tabPbActivitiesDto.setUsername(username);
+        tabPbActivitiesDto.setActivitiesType(activitiesType);
+        tabPbActivitiesDto.setRangeDeptId(orgRange.getRangeDeptId());
+        tabPbActivitiesDto.setOrgRange(orgRange.getOrgRange());
+        tabPbActivitiesDto.setDeptState(deptState);
+        return new PageInfo<>(this.activitiesService.ActivitiesDtoList(tabPbActivitiesDto, page));
     }
 }

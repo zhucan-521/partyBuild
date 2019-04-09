@@ -40,12 +40,12 @@ public class TabPbActivitiesServiceImpl implements TabPbActivitiesService {
     @Autowired
     private ITabSysDictService sysDictService;
 
-    @Override
-    public List<TabPbActivitiesDto> ActivitiesDtoList(TabPbActivitiesDto activitiesDto, Page page) {
-        PageHelper.startPage(page);
-        var list = activitiesMapper.ActivitiesDtoList(activitiesDto);
-        return list;
-    }
+//    @Override
+//    public List<TabPbActivitiesDto> ActivitiesDtoList(TabPbActivitiesDto activitiesDto, Page page) {
+//        PageHelper.startPage(page);
+//        var list = activitiesMapper.ActivitiesDtoList(activitiesDto);
+//        return list;
+//    }
 
     @Transactional
     @Override

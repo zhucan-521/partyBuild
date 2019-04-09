@@ -1,0 +1,17 @@
+# consul 使用动态配置，必须在bootstrap.yml中配置好动态配置项目的配置
+
+spring:
+  cloud:
+    consul:
+      host: localhost
+      port: 10025
+      config:
+        # enabled将此值设置为"false"禁用consul配置
+        enabled: true   # 默认是true
+        format: yaml    # 表示consul上面的文件格式
+        data-key: data  # 表示consul上面的KEY值(或者说文件的名字) 默认是data
+        # watch选项为配置监视功能，主要监视配置的改变
+        watch:
+          enabled: true
+          delay: 1000
+          wait-time: 30

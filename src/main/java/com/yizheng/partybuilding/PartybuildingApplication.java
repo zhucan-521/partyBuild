@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.stereotype.Component;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 @MapperScan({"com.yizheng.partybuilding.repository", "com.yizheng.partybuilding.system.mapper"})
 @ComponentScan(basePackages = "com.yizheng")
 @EnableFeignClients
+@EnableScheduling //启用后会定时从consul上拉取配置
 @SpringBootApplication
 public class PartybuildingApplication {
 

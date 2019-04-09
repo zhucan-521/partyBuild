@@ -29,7 +29,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/devPartyMember")
-@Api(tags = "党员-发展步骤 杨颖翔")
+@Api(tags = "党员-发展步骤-范焱根")
 public class TabPbDevPartyMemberController {
 
     @Autowired
@@ -107,8 +107,7 @@ public class TabPbDevPartyMemberController {
     @ApiOperation(value = "添加发展步骤时间")
     @PostMapping("devDate")
     public ReturnEntity devDate(@RequestBody List<TabPbDevPartyMemberDate> dates) {
-        int retVal = memberService.saveDevDate(dates);
-        return ReturnUtil.buildReturn(retVal);
+        return ReturnUtil.buildReturn(memberService.saveDevDate(dates));
     }
 
     @ApiOperation(value = "通过hostId获取发展步骤时间")

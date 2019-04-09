@@ -2,11 +2,9 @@ package com.yizheng.partybuilding.system.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.yizheng.commons.domain.UserInfo;
-import com.yizheng.commons.enums.LoginType;
 import com.yizheng.partybuilding.system.dto.UserAdminDTO;
 import com.yizheng.partybuilding.system.dto.UserDTO;
 import com.yizheng.partybuilding.system.entity.SysAccount;
-import com.yizheng.partybuilding.system.entity.SysUser;
 import com.yizheng.partybuilding.system.vo.UserVO;
 
 import java.util.List;
@@ -42,18 +40,11 @@ public interface SysAccountService extends IService<SysAccount> {
     Boolean deleteUserById(SysAccount sysAccount);
 
     /**
-     * 更新当前用户基本信息
-     * @param userDto  用户信息
-     * @return Boolean
-     */
-    Boolean updateUserInfo(UserDTO userDto);
-
-    /**
      * 更新指定用户信息
      * @param userDto  用户信息
      * @return
      */
-    Boolean updateUser(UserDTO userDto);
+    int updateUser(UserDTO userDto);
 
     /**
      * 通过ID查询用户信息
@@ -91,4 +82,11 @@ public interface SysAccountService extends IService<SysAccount> {
      */
     Boolean updatePwdById(SysAccount sysAccount);
 
+    /**
+     * 新增账户及权限
+     * @param sysAccount 系统账户实体
+     * @param roleIds 权限ids
+     * @return
+     */
+    int insertAccountWithRole(SysAccount sysAccount, List<Integer> roleIds);
 }

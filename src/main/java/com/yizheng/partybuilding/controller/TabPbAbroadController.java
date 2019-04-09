@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
  * @author chenshanlu
  * @version 1.0
  * @date 2018/11/26
+ * Update by FanYanGen in 2019/04/04 16:42:19
  */
-
-@Api(tags = "党员-出国出境管理 杨颖翔")
+@Api(tags = "党员-出国出境管理-范焱根")
 @RestController
 @RequestMapping(value = "/abroad")
 public class TabPbAbroadController {

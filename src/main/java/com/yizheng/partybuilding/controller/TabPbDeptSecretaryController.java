@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @author YangYingXiang on 2019/03/01
  */
-@Api(tags = "党员-书记")
+@Api(tags = "党员-书记 朱灿")
 @RestController
 @RequestMapping("/secretary")
 public class TabPbDeptSecretaryController {
