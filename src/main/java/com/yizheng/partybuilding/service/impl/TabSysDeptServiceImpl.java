@@ -199,21 +199,15 @@ public class TabSysDeptServiceImpl implements TabSysDeptService {
         Integer deptId = sysDept.getDeptId();
         Integer parentId = sysDept.getParentId();
 
-        boolean ifNecessary = false; //是否需要维护
+        boolean ifNecessary = true; //是否需要维护
         boolean subIfNecessary = false;
         String oldFullPath = null;
-        if (deptId == null || deptId == 0) { //新增
-            ifNecessary = true;
-        }
-        if (!ifNecessary) {
-            //从 db 中拿当前组织旧数据
-            SysDept dbOldSysDept = tabSysDeptMapper.selectAloneByPrimaryKey(deptId.longValue());
-            //上级节点有改变
-            if (dbOldSysDept != null && !dbOldSysDept.getParentId().equals(sysDept.getParentId())) {
-                ifNecessary = true;
-                subIfNecessary = true;
-                oldFullPath = dbOldSysDept.getFullPath();
-            }
+        //从 db 中拿当前组织旧数据
+        SysDept dbOldSysDept = tabSysDeptMapper.selectAloneByPrimaryKey(deptId.longValue());
+        //上级节点有改变
+        if (dbOldSysDept != null && !dbOldSysDept.getParentId().equals(sysDept.getParentId())) {
+            subIfNecessary = true;
+            oldFullPath = dbOldSysDept.getFullPath();
         }
 
         //需要维护
