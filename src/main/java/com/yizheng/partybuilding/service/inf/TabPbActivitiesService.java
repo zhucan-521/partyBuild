@@ -21,11 +21,11 @@ public interface TabPbActivitiesService {
     //党组织生活修改
    int updatePartyTable(PartyOrganizationActivitiesDto activitiesDto);
 
-    /**
-     * 在职党员活动list数据
-     * @param activitiesDto
-     * @return
-     */
-    List<TabPbActivitiesDto> ActivitiesDtoList(TabPbActivitiesDto activitiesDto, Page page);
+//    /**
+//     * 在职党员活动list数据
+//     * @param activitiesDto
+//     * @return
+//     */
+//    List<TabPbActivitiesDto> ActivitiesDtoList(TabPbActivitiesDto activitiesDto, Page page);
 
 }

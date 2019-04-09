@@ -64,7 +64,8 @@ public class TabPbAbroad {
     @ApiModelProperty(value = "前往国家地区 字典:CGCJ", notes = "字典CGCJ")
     @NotNull(message = "出境国家不能为空")
     @JsonSerialize(using = DictSerializer.class)
-    private Long goCountry;
+    @NotNull(message = "出境国家不能为空")
+    private Long goCountry=null;
 
     @ApiModelProperty(value = "党员基本情况")
     private String baseStatus;

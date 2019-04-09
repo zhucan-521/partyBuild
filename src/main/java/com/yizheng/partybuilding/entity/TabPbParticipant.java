@@ -7,6 +7,7 @@ import com.yizheng.commons.config.DictSerializer;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -14,6 +15,7 @@ import java.util.Date;
 
 @Data
 @ApiModel(value = "在职党员活动明细表")
+@Accessors(chain = true)
 public class TabPbParticipant {
 
     private static final long serialVersionUID = 1L;
