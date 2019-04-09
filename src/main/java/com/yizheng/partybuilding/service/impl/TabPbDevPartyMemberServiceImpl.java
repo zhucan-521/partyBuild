@@ -206,7 +206,6 @@ public class TabPbDevPartyMemberServiceImpl implements ITabPbDevPartyMemberServi
         }
         PageHelper.startPage(page);
         List<DevPartyUserDto> devPartyList = this.devDao.selectDevParty(conditions);
-        System.out.println("list-->" + devPartyList.size());
         return new PageInfo<>(devPartyList);
     }
 
