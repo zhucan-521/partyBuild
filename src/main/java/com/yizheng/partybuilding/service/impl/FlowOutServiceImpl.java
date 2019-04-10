@@ -66,7 +66,8 @@ public class  FlowOutServiceImpl implements FlowOutService {
             SysUser newSysUser=new SysUser()
                     .setRealname(tabPbFlowOutDto.getUsername())
                     .setGender(tabPbFlowOutDto.getGender())
-                    .setIdCardNo(tabPbFlowOutDto.getIdCardNo());
+                    .setIdCardNo(tabPbFlowOutDto.getIdCardNo())
+                    .setFlowStatus(41207L);
             tabSysUserMapper.insertSelective(newSysUser);
             sysUser=tabSysUserMapper.selectUserByIdCardNo(tabPbFlowOutDto.getIdCardNo());
         }
@@ -179,11 +180,11 @@ public class  FlowOutServiceImpl implements FlowOutService {
         TabPbFlowOut tabPbFlowOut=tabPbFlowOutMapper.selectByPrimaryKey(id);
         if(tabPbFlowOut.getFlowOutPlace()==null){
             if(tabPbFlowOut.getFlowOutState()==59413){
-                throw new BusinessDataCheckFailException("次党员正在流动，删除会造成数据流失！");
+                throw new BusinessDataCheckFailException("此党员正在流动，删除会造成数据流失！");
             }
         } else{
             if(tabPbFlowOut.getFlowOutState()==59413 || tabPbFlowOut.getFlowOutState()==59414){
-                throw new BusinessDataCheckFailException("次党员正在流动，删除会造成数据流失！");
+                throw new BusinessDataCheckFailException("此党员正在流动，删除会造成数据流失！");
             }
         }
         tabPbFlowOut.setDelFlag("1");

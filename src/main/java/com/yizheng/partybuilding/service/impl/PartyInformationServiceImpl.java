@@ -73,7 +73,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @PaddingBaseField
     public int insert(SysUser sysUser) {
         if (null != tabSysUserMapper.selectUserByIdCardNo(sysUser.getIdCardNo())) {
-            throw new BusinessDataCheckFailException("单位已经存在这人，无需补录！");
+            throw new BusinessDataCheckFailException("此人已经是党员！");
         }
         sysUser.setIdentityType(59423L);
         tabSysUserMapper.insertSelective(sysUser);

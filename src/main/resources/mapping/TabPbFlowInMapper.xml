@@ -62,6 +62,7 @@
         s.flow_to_org_name AS flow_to_org_name,
         t.flow_in_id,
 		t.org_id,
+		t.old_orgnize_id,
 		t.user_id,
 		t.flow_in_date,
 		t.flow_in_type,

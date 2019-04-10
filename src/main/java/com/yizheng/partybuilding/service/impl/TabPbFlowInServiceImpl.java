@@ -70,7 +70,7 @@ public class TabPbFlowInServiceImpl implements TabPbFlowInService {
     public int deleteByPrimaryKey(Long flowInId) {
         TabPbFlowIn tabPbFlowIn= tabPbFlowInMapper.selectByPrimaryKey(flowInId);
         if(tabPbFlowIn.getFlowInState()==59415||tabPbFlowIn.getFlowInState()==59413){
-            throw new BusinessDataCheckFailException("次党员正在流动，删除会造成数据流失！");
+            throw new BusinessDataCheckFailException("此党员正在流动，删除会造成数据流失！");
         }
         tabPbFlowIn.setDelFlag("1");
         tabPbFlowInMapper.updateByFlowOutIdKeySelective(tabPbFlowIn);

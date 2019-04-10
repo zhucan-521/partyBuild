@@ -101,6 +101,8 @@
     create_userid, create_username, update_time, update_userid, update_username,flow_out_state, version
   </sql>
     <sql id="Base_FlowOut_List">
+        tab_pb_flow_out.org_id,
+        tab_pb_flow_out.flow_out_place,
         tab_pb_flow_out.flow_out_id,
         sys_user.realname AS username,
         sys_user.gender,
@@ -531,7 +533,7 @@
     </select>
 
     <select id="selectDeptNameByDeptId" parameterType="Long" resultType="String">
-        select name from sys_dept where dept_id= #{deptId}
+        select org_short_name from sys_dept where dept_id= #{deptId}
     </select>
 
 
