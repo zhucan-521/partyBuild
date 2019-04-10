@@ -21,7 +21,7 @@ public interface ExtendedInfoService {
 
     int updateByPrimaryKey(SysUser record);
 
-    PageInfo<SysUser> selectPartyByIdCardNoOnUserName(SysUser sysUser, Page page);
+    PageInfo<SysUser> selectPartyByIdCardNoOrUserName(SysUser sysUser, Page page);
 
     int updateByUserId(Long userId);
 

@@ -18,7 +18,6 @@ import com.yizheng.partybuilding.system.entity.SysUser;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -167,9 +166,9 @@ public class PartyInformationController {
             @ApiImplicitParam(name = "username", value = "姓名", paramType = "query", dataType = "String"),
             @ApiImplicitParam(name = "idCardNo", value = "身份证号码", paramType = "query", dataType = "String")
     })
-    @GetMapping("/pertyByIdCardNoOnUserName")
-    public PageInfo<SysUser> getPartyByIdCardNoOnUserName(@ApiIgnore SysUser sysUser, Page page) {
-        return extendedInfoService.selectPartyByIdCardNoOnUserName(sysUser,page);
+    @GetMapping("/getPartyByIdCardNoOrUserName")
+    public PageInfo<SysUser> getPartyByIdCardNoOrUserName(@ApiIgnore SysUser sysUser, Page page) {
+        return extendedInfoService.selectPartyByIdCardNoOrUserName(sysUser,page);
     }
 
     @ApiOperation(value = "根据id删除 user信息")

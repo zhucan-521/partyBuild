@@ -51,7 +51,7 @@ public interface TabSysUserMapper {
     SysUser selectUserByIdCardNo(String idCardNo);
 
 
-    List<SysUser> selectPartyByIdCardNoOnUserName(SysUser sysUser);
+    List<SysUser> selectPartyByIdCardNoOrUserName(SysUser sysUser);
 
     //根据组织Id 获取党务工作者信息
     TransferUserDeptInfo getDWRoleUserInfoByDeptId(Long deptId);

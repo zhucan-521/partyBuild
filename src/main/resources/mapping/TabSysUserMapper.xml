@@ -1671,7 +1671,7 @@
     </select>
 
 
-    <select id="selectPartyByIdCardNoOnUserName" parameterType="com.yizheng.partybuilding.system.entity.SysUser"
+    <select id="selectPartyByIdCardNoOrUserName" parameterType="com.yizheng.partybuilding.system.entity.SysUser"
             resultMap="BaseResultMap">
         select
         *
