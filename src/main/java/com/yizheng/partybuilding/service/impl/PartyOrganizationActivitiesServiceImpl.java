@@ -304,8 +304,8 @@ public class PartyOrganizationActivitiesServiceImpl implements PartyOrganization
      */
     @Override
     public int stick(Long activitiesId) {
-        Long orderNum=activitiesMapper.findByOrderNum();
-        return activitiesMapper.stick(activitiesId,orderNum);
+        Long stickNum=activitiesMapper.findByOrderNum();
+        return activitiesMapper.stick(activitiesId,stickNum);
     }
 
     /**

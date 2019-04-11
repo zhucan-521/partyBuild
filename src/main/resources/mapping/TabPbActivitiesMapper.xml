@@ -776,9 +776,8 @@
         <if test="orgRange == null or orgRange.toString() == ''">
             AND d.dept_id = #{rangeDeptId}
         </if>
-        order by a.stick_num desc , a.order_num desc
+        order by  a.stick_num desc
     </select>
-
     <!--查询活动详情-->
     <select id="findDetails" parameterType="java.util.Map" resultMap="ResultMapWithAbout">
       SELECT
@@ -1136,12 +1135,12 @@
 
     <!--置顶功能-->
     <update id="stick" parameterType="java.lang.Long">
-        update tab_pb_activities set stick_num =#{orderNum}+1 where activities_id = #{activitiesId}
+        update tab_pb_activities set stick_num =#{stickNum}+1 where activities_id = #{activitiesId}
     </update>
 
     <!--查询最大访问量-->
     <select id="findByOrderNum" resultType="java.lang.Long">
-        select MAX(order_num) FROM tab_pb_activities
+        select MAX(stick_num) FROM tab_pb_activities
     </select>
 
     <!--取消置顶功能-->
