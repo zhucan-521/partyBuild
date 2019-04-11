@@ -116,7 +116,9 @@ public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService
         secretary.setSecretaryId(secretaryId);
         secretary = deptSecretaryMapper.selectByPrimaryKey(secretary);
         if(secretary != null){
-            secretary.setRewardsDtoList(deptSecretaryMapper.punishmentRewards(secretary.getUserId()));
+            if(deptSecretaryMapper.punishmentRewards(secretary.getUserId()).size()>0 ||deptSecretaryMapper.punishmentRewards(secretary.getUserId())!=null){
+                secretary.setRewardsDtoList(deptSecretaryMapper.punishmentRewards(secretary.getUserId()));
+            }
             secretary.setFamilyList(pbFamilyMapper.selectListPrimary(secretary.getUserId()));
             TabPbPositives positives = new TabPbPositives();
             positives.setUserId(secretary.getUserId());

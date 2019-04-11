@@ -1,13 +1,16 @@
 package com.yizheng.partybuilding.dto;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author YangYingXiang on 2019/03/01
  */
-public class PunishmentRewardsDto {
+@Data
+public class PunishmentRewardsDto implements Serializable {
 
     @ApiModelProperty(value = "时间")
     private Date startingTime;

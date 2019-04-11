@@ -232,4 +232,13 @@ public class TabSysDeptController {
             sysDeptDto.setUnitId(parentDept.getUnitId());
         }
     }
+    @ApiOperation(value = "维护组织结对共建信息",notes = "维护组织结对共建信息",httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pairOrgId", value = "结对共建组织id", paramType = "query", dataType = "Long"),
+            @ApiImplicitParam(name = "orgId", value = "组织id", paramType = "query", dataType = "Long")
+    })
+    @PostMapping("/pushPairOrgIdToDeptTable")
+    public Integer pushPairOrgIdToDeptTable(Long pairOrgId, Long orgId){
+        return tabSysDeptService.pushPairOrgIdToDeptTable(pairOrgId,orgId);
+    }
 }
