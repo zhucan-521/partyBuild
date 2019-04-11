@@ -47,11 +47,7 @@ public class TabPbHardshipController {
         conditions.put("orgRange", tabPbHardshipDto.getOrgRange());
         conditions.put("username",tabPbHardshipDto.getUsername());
         conditions.put("delFlag", 0);
-        Long rangeDeptId = tabPbHardshipDto.getOrgId();
-        if (rangeDeptId == null || rangeDeptId == 0) {
-            rangeDeptId = UserContextHolder.getOrgId();
-        }
-        conditions.put("rangeDeptId",rangeDeptId);
+        conditions.put("rangeDeptId",tabPbHardshipDto.getRangeDeptId());
         List<TabPbHardship> list = tabPbHardshipService.selectWithConditions(conditions, page);
         PageInfo<TabPbHardship> pageInfo = new PageInfo<>(list);
         return pageInfo;

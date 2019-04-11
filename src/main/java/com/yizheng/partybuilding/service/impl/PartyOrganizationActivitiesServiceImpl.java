@@ -204,7 +204,7 @@ public class PartyOrganizationActivitiesServiceImpl implements PartyOrganization
             //添加
             for (TabPbParticipant participant : tabPbParticipantList) {
                 participant.setActivitiesId(activitiesDto.getActivitiesId());
-                participant.setActivitytype(ActivityType.Pairing.getTypeString()); //结对共建
+                participant.setActivitytype("59148"); //结对共建
                 pbParticipantMapper.insertSelective(participant);
             }
             retVal += modifyAnnexInfo(activitiesDto);
