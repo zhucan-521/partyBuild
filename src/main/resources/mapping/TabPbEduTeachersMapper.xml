@@ -355,8 +355,8 @@
         where teacher_id = #{teacherId}
     </update>
 
-    <select id="checkAccount" parameterType="java.lang.String">
-        SELECT COUNT(*) FROM tab_pb_edu_teachers WHERE account = #{account}
+    <select id="checkAccount" parameterType="java.lang.String" resultType="java.lang.Integer" >
+        SELECT COUNT(*) FROM tab_pb_edu_teachers WHERE account = #{account} and del_flag = '0'
     </select>
     
     <select id="selectListTeachers" parameterType="com.yizheng.partybuilding.entity.TabPbEduTeachers" resultMap="BaseResultMap">

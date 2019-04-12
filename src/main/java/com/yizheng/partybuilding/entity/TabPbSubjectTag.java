@@ -7,10 +7,12 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.Date;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
-@ApiModel(value = "TODO")
+@ApiModel(value = "主题标签")
 @Data
+@Accessors(chain = true)
 public class TabPbSubjectTag {
     @ApiModelProperty(value = "主键")
     private Long tagId;
@@ -22,7 +24,7 @@ public class TabPbSubjectTag {
     private Boolean statisticFlag;
 
     @ApiModelProperty(value = "有效标识 1有效；0无效；默认1")
-    private Boolean belFlag;
+    private Boolean eblFlag;
 
     @ApiModelProperty(value = "删除标识 1已删除；0未删除；默认0")
     private Boolean delFlag;
@@ -32,7 +34,7 @@ public class TabPbSubjectTag {
 
     @ApiModelProperty(value = "标签范围 dict ZZHD  多个用,号分隔 ")
     @JsonSerialize(using = DictSerializer.class)
-    private String range;
+    private String scope;
 
     @ApiModelProperty(value = "备注")
     private String remark;
