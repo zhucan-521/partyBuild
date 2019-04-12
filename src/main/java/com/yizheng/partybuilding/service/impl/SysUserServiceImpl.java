@@ -32,7 +32,6 @@ import static org.springframework.util.StringUtils.isEmpty;
  * desc: 党员信息-业务逻辑层接口实现
  * Created by FanYanGen on 2019/4/12 09:15
  */
-@Transactional(rollbackFor = Exception.class)
 @Service("userService")
 public class SysUserServiceImpl implements SysUserService {
 
@@ -51,6 +50,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     @PaddingBaseField(recursive = true)
+    @Transactional(rollbackFor = Exception.class)
     public int saveSysUserInfo(SysUserDto sysUser) {
         SysUser user = sysUser.getSysUser();
         if (null != tabSysUserMapper.selectUserByIdCardNo(user.getIdCardNo())) {
@@ -70,6 +70,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     @PaddingBaseField(recursive = true)
+    @Transactional(rollbackFor = Exception.class)
     public int updateSysUserInfo(SysUserDto sysUser) {
         if (isEmpty(sysUser.getSysUser().getUserId())) {
             throw new BusinessDataIncompleteException("人员id不存在");
