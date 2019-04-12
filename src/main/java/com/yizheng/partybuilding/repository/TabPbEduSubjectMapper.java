@@ -18,4 +18,5 @@ public interface TabPbEduSubjectMapper {
     int updateByPrimaryKey(TabPbEduSubject record);
 
     List<TabPbEduSubject> getSubjects(TabPbEduSubject subject);
+
 }

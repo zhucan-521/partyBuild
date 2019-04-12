@@ -26,13 +26,13 @@ public class TabPbGrantCommitteeController {
 
     @Autowired
     private ITabPbGrantCommitteeService service;
-
-    @ApiOperation(value = "添加街道大公委数据", notes = "街道大公委对象, 如果orgId存在则更新, 否则新增街道大公委数据")
-    @PostMapping()
-    public ReturnEntity save(@RequestBody TabPbGrantCommittee committee) {
-        int retVal = this.service.committeeSave(committee);
-        return ReturnUtil.buildReturn(retVal);
-    }
+//
+//    @ApiOperation(value = "添加街道大公委数据", notes = "街道大公委对象, 如果orgId存在则更新, 否则新增街道大公委数据")
+//    @PostMapping()
+//    public ReturnEntity save(@RequestBody TabPbGrantCommittee committee) {
+//        int retVal = this.service.committeeSave(committee);
+//        return ReturnUtil.buildReturn(retVal);
+//    }
 
     @ApiOperation(value = "添加街道大公委数据", notes = "1. 街道大公委对象, 如果orgId存在则更新, 否则新增街道大公委数据 2. 添加街道大公委成员数据")
     @PostMapping("list")
@@ -54,17 +54,17 @@ public class TabPbGrantCommitteeController {
         return this.service.committeeFindById(grantCommitteeId);
     }
 
-    @GetMapping()
-    @ApiOperation(value = "获取街道大公委list数据")
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "组织id", name = "orgId",dataType = "Long"),
-            @ApiImplicitParam(value = "范围", name = "orgRange",dataType = "Long"),
-            @ApiImplicitParam(value = "成员名称", name = "name",dataType = "String"),
-            @ApiImplicitParam(value = "职位", name = "positiveName",dataType = "String"),
-    })
-    public PageInfo<TabPbGrantCommittee> find(Long orgId,Long orgRange,String name, String positiveName,@ApiParam() Page page) {
-        return this.service.committeeFind(orgId,orgRange, name, positiveName, page);
-    }
+//    @GetMapping()
+//    @ApiOperation(value = "获取街道大公委list数据")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(value = "组织id", name = "orgId",dataType = "Long"),
+//            @ApiImplicitParam(value = "范围", name = "orgRange",dataType = "Long"),
+//            @ApiImplicitParam(value = "成员名称", name = "name",dataType = "String"),
+//            @ApiImplicitParam(value = "职位", name = "positiveName",dataType = "String"),
+//    })
+//    public PageInfo<TabPbGrantCommittee> find(Long orgId,Long orgRange,String name, String positiveName,@ApiParam() Page page) {
+//        return this.service.committeeFind(orgId,orgRange, name, positiveName, page);
+//    }
 
     // ----------- 街道大公委成员相关 -------------
 

@@ -15,6 +15,8 @@ import com.yizheng.partybuilding.repository.TabPbEduTeachersMapper;
 import com.yizheng.partybuilding.service.inf.ITabPbAttachmentService;
 import com.yizheng.partybuilding.service.inf.TabPbEduTeachersService;
 
+import org.springframework.beans.factory.BeanCreationNotAllowedException;
+import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,9 +42,7 @@ public class TabPbEduTeachersServiceImpl extends ServiceImpl<TabPbEduTeachersMap
 
     @Override
     public List<TabPbEduTeachers> listData(EntityWrapper<TabPbEduTeachers> teachers, Page page) {
-        if (page != null) {
             PageHelper.startPage(page);
-        }
         return this.teachersMapper.selectListTeachers(teachers.getEntity());
     }
 
@@ -118,14 +118,18 @@ public class TabPbEduTeachersServiceImpl extends ServiceImpl<TabPbEduTeachersMap
 
     @Override
     public int checkAccount(String account) {
-        return teachersMapper.checkAccount(account.trim());
+        int retVal = teachersMapper.checkAccount(account.trim());
+        if (retVal > 0){
+            throw new BeanDefinitionStoreException("账号已存在");
+        }else {
+            throw new BeanDefinitionStoreException("账号不存在,可以注册");
+        }
+
     }
 
     @Override
     public List<TabPbEduTeachersCourse> selectList(TabPbEduTeachersCourse course, Page page) {
-        if (page != null) {
             PageHelper.startPage(page);
-        }
         return courseMapper.selectList(course);
     }
 

@@ -41,7 +41,7 @@ public interface SysUserCountDtoMapper {
     Long selectCountLeadTeamMemberUser(@Param(value="deptId")Long deptId);
 
     /**
-     * 统计困难党员
+     * 统计
      * @param deptId
      * @return
      */
