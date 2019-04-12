@@ -141,6 +141,9 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduCommunication">
         update tab_pb_edu_communication
         <set>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
             <if test="title != null">
                 title = #{title,jdbcType=VARCHAR},
             </if>
