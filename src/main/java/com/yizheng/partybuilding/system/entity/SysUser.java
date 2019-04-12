@@ -460,19 +460,15 @@ public class SysUser implements Serializable {
     private String description;
 
     @ApiModelProperty(value = "创建用户Id", hidden = true)
-    @JsonIgnore
     private Long createUserid;
 
     @ApiModelProperty(value = "创建人姓名", hidden = true)
-    @JsonIgnore
     private String createUsername;
 
     @ApiModelProperty(value = "修改用户Id", hidden = true)
-    @JsonIgnore
     private Long updateUserid;
 
     @ApiModelProperty(value = "修改用户姓名", hidden = true)
-    @JsonIgnore
     private String updateUsername;
 
     @ApiModelProperty(value = "版本", hidden = true)

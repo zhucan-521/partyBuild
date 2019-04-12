@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbPartyWorkMapper">
+    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbPartyWork">
+        <id column="work_id" jdbcType="BIGINT" property="workId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="unit" jdbcType="VARCHAR" property="unit"/>
+        <result column="post" jdbcType="VARCHAR" property="post"/>
+        <result column="front_line" jdbcType="BIGINT" property="frontLine"/>
+        <result column="stratum" jdbcType="BIGINT" property="stratum"/>
+        <result column="start_date" jdbcType="DATE" property="startDate"/>
+        <result column="end_date" jdbcType="DATE" property="endDate"/>
+        <result column="del_flag" jdbcType="BIT" property="delFlag"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    work_id, user_id, unit, post, front_line, stratum, start_date, end_date, del_flag, 
+    create_time, create_userid, create_username, update_time, update_userid, update_username
+  </sql>
+
+    <!-- base method -->
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_party_work
+        where work_id = #{workId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_party_work
+    where work_id = #{workId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbPartyWork">
+    insert into tab_pb_party_work (work_id, user_id, unit, 
+      post, front_line, stratum, 
+      start_date, end_date, del_flag, 
+      create_time, create_userid, create_username, 
+      update_time, update_userid, update_username
+      )
+    values (#{workId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{unit,jdbcType=VARCHAR}, 
+      #{post,jdbcType=VARCHAR}, #{frontLine,jdbcType=BIGINT}, #{stratum,jdbcType=BIGINT}, 
+      #{startDate,jdbcType=DATE}, #{endDate,jdbcType=DATE}, #{delFlag,jdbcType=BIT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbPartyWork">
+        insert into tab_pb_party_work
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="workId != null">
+                work_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="unit != null">
+                unit,
+            </if>
+            <if test="post != null">
+                post,
+            </if>
+            <if test="frontLine != null">
+                front_line,
+            </if>
+            <if test="stratum != null">
+                stratum,
+            </if>
+            <if test="startDate != null">
+                start_date,
+            </if>
+            <if test="endDate != null">
+                end_date,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="workId != null">
+                #{workId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="unit != null">
+                #{unit,jdbcType=VARCHAR},
+            </if>
+            <if test="post != null">
+                #{post,jdbcType=VARCHAR},
+            </if>
+            <if test="frontLine != null">
+                #{frontLine,jdbcType=BIGINT},
+            </if>
+            <if test="stratum != null">
+                #{stratum,jdbcType=BIGINT},
+            </if>
+            <if test="startDate != null">
+                #{startDate,jdbcType=DATE},
+            </if>
+            <if test="endDate != null">
+                #{endDate,jdbcType=DATE},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbPartyWork">
+        update tab_pb_party_work
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="unit != null">
+                unit = #{unit,jdbcType=VARCHAR},
+            </if>
+            <if test="post != null">
+                post = #{post,jdbcType=VARCHAR},
+            </if>
+            <if test="frontLine != null">
+                front_line = #{frontLine,jdbcType=BIGINT},
+            </if>
+            <if test="stratum != null">
+                stratum = #{stratum,jdbcType=BIGINT},
+            </if>
+            <if test="startDate != null">
+                start_date = #{startDate,jdbcType=DATE},
+            </if>
+            <if test="endDate != null">
+                end_date = #{endDate,jdbcType=DATE},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where work_id = #{workId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbPartyWork">
+    update tab_pb_party_work
+    set user_id = #{userId,jdbcType=BIGINT},
+      unit = #{unit,jdbcType=VARCHAR},
+      post = #{post,jdbcType=VARCHAR},
+      front_line = #{frontLine,jdbcType=BIGINT},
+      stratum = #{stratum,jdbcType=BIGINT},
+      start_date = #{startDate,jdbcType=DATE},
+      end_date = #{endDate,jdbcType=DATE},
+      del_flag = #{delFlag,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR}
+    where work_id = #{workId,jdbcType=BIGINT}
+  </update>
+
+    <!-- custom method -->
+
+    <select id="findAllByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_party_work
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into tab_pb_party_work
+        (
+        work_id, user_id, unit, post, front_line, stratum, start_date, end_date,
+        create_time, create_userid,create_username, update_time, update_userid,update_username
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.workId,jdbcType=BIGINT}, #{item.userId,jdbcType=BIGINT}, #{item.unit,jdbcType=VARCHAR},
+            #{item.post,jdbcType=VARCHAR}, #{item.frontLine,jdbcType=BIGINT}, #{item.stratum,jdbcType=BIGINT},
+            #{item.startDate,jdbcType=DATE}, #{item.endDate,jdbcType=DATE}, #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.createUserid,jdbcType=BIGINT}, #{item.createUsername,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.updateUserid,jdbcType=BIGINT}, #{item.updateUsername,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update tab_pb_party_work
+            <set>
+                <if test="item.userId != null">
+                    user_id = #{item.userId,jdbcType=BIGINT},
+                </if>
+                <if test="item.unit != null">
+                    unit = #{item.unit,jdbcType=VARCHAR},
+                </if>
+                <if test="item.post != null">
+                    post = #{item.post,jdbcType=VARCHAR},
+                </if>
+                <if test="item.frontLine != null">
+                    front_line = #{item.frontLine,jdbcType=BIGINT},
+                </if>
+                <if test="item.stratum != null">
+                    stratum = #{item.stratum,jdbcType=BIGINT},
+                </if>
+                <if test="item.startDate != null">
+                    start_date = #{item.startDate,jdbcType=DATE},
+                </if>
+                <if test="item.endDate != null">
+                    end_date = #{item.endDate,jdbcType=DATE},
+                </if>
+                <if test="item.delFlag != null">
+                    del_flag = #{item.delFlag,jdbcType=BIT},
+                </if>
+                <if test="item.createTime != null">
+                    create_time = #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createUserid != null">
+                    create_userid = #{item.createUserid,jdbcType=BIGINT},
+                </if>
+                <if test="item.createUsername != null">
+                    create_username = #{item.createUsername,jdbcType=VARCHAR},
+                </if>
+                <if test="item.updateTime != null">
+                    update_time = #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateUserid != null">
+                    update_userid = #{item.updateUserid,jdbcType=BIGINT},
+                </if>
+                <if test="item.updateUsername != null">
+                    update_username = #{item.updateUsername,jdbcType=VARCHAR},
+                </if>
+            </set>
+            where work_id = #{item.workId,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
+</mapper>

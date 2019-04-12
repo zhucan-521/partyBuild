@@ -1661,7 +1661,7 @@
    </update>
 
     <!--根据身份政查找userId-->
-    <select id="SelectUserIdByIDcard" resultType="Long">
+    <select id="SelectUserIdByIDcard" resultType="java.lang.String">
         select user_id from sys_user where id_card_no =#{idCardNo}
     </select>
 

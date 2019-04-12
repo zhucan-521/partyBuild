@@ -4,16 +4,17 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
     <!-- 数据库驱动:选择你的本地硬盘上面的数据库驱动包-->
-    <classPathEntry  location="D:\software\database\mysql-connector-java-5.1.47.jar"/>
+    <classPathEntry  location="D:\demo\mysql-connector-java-5.1.6.jar"/>
     <context id="DB2Tables"  targetRuntime="MyBatis3" defaultModelType="flat">
+        <property name="ignoreFields" value="createTime,createUserid,createUsername,updateTime,updateUserid,updateUsername,delFlag"/>
         <commentGenerator>
             <property name="suppressDate" value="true"/>
             <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" userId="party" password="3bf9d1f7f0e13723a6ff"
-                        connectionURL="jdbc:mysql://119.23.215.202:8017/partbuilding?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;allowMultiQueries=true">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" userId="root" password="123456"
+                        connectionURL="jdbc:mysql://192.168.4.102:8017/partybuilding?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;allowMultiQueries=true">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
@@ -277,6 +278,19 @@
         <!--<table tableName="test_generator_table" domainObjectName="TestGeneratorTable" enableCountByExample="false"-->
                <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
                <!--selectByExampleQueryId="false"></table>-->
+
+<!--        <table tableName="tab_pb_party_education" domainObjectName="TabPbPartyEducation" swaggerModelName="党员学历实体" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"></table>-->
+
+<!--        <table tableName="tab_pb_party_job_title" domainObjectName="TabPbPartyJobTitle" swaggerModelName="党员技术职务实体" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"></table>-->
+
+<!--        <table tableName="tab_pb_party_work" domainObjectName="TabPbPartyWork" swaggerModelName="党员工作信息实体" enableCountByExample="false"-->
+<!--               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+<!--               selectByExampleQueryId="false"></table>-->
+
 
 
 
