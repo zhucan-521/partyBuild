@@ -105,10 +105,10 @@ public interface TabPbActivitiesMapper {
     /**
      * 置顶功能
      * @param activitiesId
-     * @param orderNum
+     * @param stickNum
      * @return
      */
-    int stick(@Param("activitiesId")Long activitiesId,@Param("orderNum")Long orderNum);
+    int stick(@Param("activitiesId")Long activitiesId,@Param("stickNum")Long stickNum);
 
     /**
      * 取消置顶功能

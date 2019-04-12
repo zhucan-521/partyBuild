@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yizheng.partybuilding.repository.TabPbSubjectTagMapper">
+  <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbSubjectTag">
+    <id column="tag_id" jdbcType="BIGINT" property="tagId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="statistic_flag" jdbcType="BIT" property="statisticFlag" />
+    <result column="bel_flag" jdbcType="BIT" property="belFlag" />
+    <result column="del_flag" jdbcType="BIT" property="delFlag" />
+    <result column="order_num" jdbcType="INTEGER" property="orderNum" />
+    <result column="range" jdbcType="VARCHAR" property="range" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_userid" jdbcType="BIGINT" property="createUserid" />
+    <result column="create_username" jdbcType="VARCHAR" property="createUsername" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_userid" jdbcType="BIGINT" property="updateUserid" />
+    <result column="update_username" jdbcType="VARCHAR" property="updateUsername" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tag_id, name, statistic_flag, bel_flag, del_flag, order_num, range, remark, create_time, 
+    create_userid, create_username, update_time, update_userid, update_username
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tab_pb_subject_tag
+    where tag_id = #{tagId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_subject_tag
+    where tag_id = #{tagId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbSubjectTag">
+    insert into tab_pb_subject_tag (tag_id, name, statistic_flag, 
+      bel_flag, del_flag, order_num, 
+      range, remark, create_time, 
+      create_userid, create_username, update_time, 
+      update_userid, update_username)
+    values (#{tagId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{statisticFlag,jdbcType=BIT}, 
+      #{belFlag,jdbcType=BIT}, #{delFlag,jdbcType=BIT}, #{orderNum,jdbcType=INTEGER}, 
+      #{range,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbSubjectTag">
+    insert into tab_pb_subject_tag
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tagId != null">
+        tag_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="statisticFlag != null">
+        statistic_flag,
+      </if>
+      <if test="belFlag != null">
+        bel_flag,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="orderNum != null">
+        order_num,
+      </if>
+      <if test="range != null">
+        range,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUserid != null">
+        create_userid,
+      </if>
+      <if test="createUsername != null">
+        create_username,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateUserid != null">
+        update_userid,
+      </if>
+      <if test="updateUsername != null">
+        update_username,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tagId != null">
+        #{tagId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="statisticFlag != null">
+        #{statisticFlag,jdbcType=BIT},
+      </if>
+      <if test="belFlag != null">
+        #{belFlag,jdbcType=BIT},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=BIT},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="range != null">
+        #{range,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserid != null">
+        #{createUserid,jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null">
+        #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        #{updateUserid,jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        #{updateUsername,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbSubjectTag">
+    update tab_pb_subject_tag
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="statisticFlag != null">
+        statistic_flag = #{statisticFlag,jdbcType=BIT},
+      </if>
+      <if test="belFlag != null">
+        bel_flag = #{belFlag,jdbcType=BIT},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=BIT},
+      </if>
+      <if test="orderNum != null">
+        order_num = #{orderNum,jdbcType=INTEGER},
+      </if>
+      <if test="range != null">
+        range = #{range,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserid != null">
+        create_userid = #{createUserid,jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null">
+        create_username = #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        update_userid = #{updateUserid,jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        update_username = #{updateUsername,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where tag_id = #{tagId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbSubjectTag">
+    update tab_pb_subject_tag
+    set name = #{name,jdbcType=VARCHAR},
+      statistic_flag = #{statisticFlag,jdbcType=BIT},
+      bel_flag = #{belFlag,jdbcType=BIT},
+      del_flag = #{delFlag,jdbcType=BIT},
+      order_num = #{orderNum,jdbcType=INTEGER},
+      range = #{range,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR}
+    where tag_id = #{tagId,jdbcType=BIGINT}
+  </update>
+</mapper>
