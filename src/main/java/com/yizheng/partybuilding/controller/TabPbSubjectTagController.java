@@ -1,18 +1,20 @@
 package com.yizheng.partybuilding.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.yizheng.commons.domain.Page;
 import com.yizheng.commons.util.ReturnEntity;
 import com.yizheng.commons.util.ReturnUtil;
 import com.yizheng.partybuilding.entity.TabPbSubjectTag;
 import com.yizheng.partybuilding.service.inf.TabPbSubjectTagService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Jiang An
@@ -68,7 +70,24 @@ public class TabPbSubjectTagController {
 
     @ApiOperation(value = "分页查询标签列表", notes = "分页查询标签列表", httpMethod = "POST")
     @PostMapping("/list")
-    public PageInfo<TabPbSubjectTag> findByList() {
-        return null;
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "标签名", paramType = "query"),
+            @ApiImplicitParam(name = "scope", value = "活动类型", paramType = "query")
+    })
+    public PageInfo<TabPbSubjectTag> findByList(@ApiIgnore TabPbSubjectTag tabPbSubjectTag, Page page) {
+        List<Integer> array = new ArrayList<>();
+        String[] split =tabPbSubjectTag.getScope().split(",");
+        if (split.length>0){
+            for (String s : split) {
+                int i = Integer.parseInt(s);
+                array.add(i);
+            }
+        }
+        Map<String, Object> conditions = new HashMap<>();
+        conditions.put("name",tabPbSubjectTag.getName());
+        conditions.put("scope",array);
+        List<TabPbSubjectTag>list=tabPbSubjectTagService.findByList(conditions,page);
+        PageInfo<TabPbSubjectTag> pageInfo = new PageInfo<>(list);
+        return pageInfo;
     }
 }

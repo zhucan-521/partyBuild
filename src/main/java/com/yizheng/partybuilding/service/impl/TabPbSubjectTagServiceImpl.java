@@ -1,6 +1,9 @@
 package com.yizheng.partybuilding.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yizheng.commons.config.PaddingBaseField;
+import com.yizheng.commons.domain.Page;
 import com.yizheng.commons.exception.BusinessDataNotFoundException;
 import com.yizheng.partybuilding.entity.TabPbSubjectTag;
 import com.yizheng.partybuilding.repository.TabPbSubjectTagMapper;
@@ -9,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Jiang An
@@ -84,6 +88,23 @@ public class TabPbSubjectTagServiceImpl implements TabPbSubjectTagService {
         List<TabPbSubjectTag> byRange = subjectMapper.findByRange(list);
         return byRange;
     }
+
+
+
+    /**
+     * 分页查询标签
+     * @param conditions
+     * @return
+     */
+    @Override
+    public List<TabPbSubjectTag> findByList(Map<String, Object> conditions, Page page) {
+        PageHelper.startPage(page);
+        List<TabPbSubjectTag>list = subjectMapper.findByList(conditions);
+        return list;
+    }
+
+
+
 
 
     public void verify(TabPbSubjectTag subjectTag) {

@@ -1,8 +1,10 @@
 package com.yizheng.partybuilding.service.inf;
 
+import com.yizheng.commons.domain.Page;
 import com.yizheng.partybuilding.entity.TabPbSubjectTag;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author Jiang An
@@ -49,4 +51,11 @@ public interface TabPbSubjectTagService {
      * @return
      */
     List<TabPbSubjectTag> findByRange(List<Integer> list);
+
+    /**
+     * 分页查询标签
+     * @param conditions
+     * @return
+     */
+    List<TabPbSubjectTag> findByList(Map<String,Object> conditions, Page page);
 }
