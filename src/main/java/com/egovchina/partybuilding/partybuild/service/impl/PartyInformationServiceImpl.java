@@ -194,12 +194,6 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             return 1;
         }
         return 0;
-//        Map<String, Object> map = Maps.newHashMap();
-//        map.put("sysUser", sysUserDto.getSysUser());
-//        map.put("educationList", sysUserDto.getEducationList());
-//        map.put("jobList", sysUserDto.getJobTitleList());
-//        map.put("workList", sysUserDto.getWorkList());
-//        return tabSysUserMapper.insertBatch(map);
     }
 
     @Override
