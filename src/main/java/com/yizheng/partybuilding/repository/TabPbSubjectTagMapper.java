@@ -3,6 +3,7 @@ package com.yizheng.partybuilding.repository;
 import com.yizheng.partybuilding.entity.TabPbSubjectTag;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TabPbSubjectTagMapper {
     int deleteByPrimaryKey(Long tagId);
@@ -40,4 +41,11 @@ public interface TabPbSubjectTagMapper {
      * @return
      */
     TabPbSubjectTag selectByTagId(Long tagId);
+
+    /**
+     * 分页查询标签
+     * @param conditions
+     * @return
+     */
+    List<TabPbSubjectTag> findByList(Map<String, Object> conditions);
 }

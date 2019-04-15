@@ -152,8 +152,8 @@
             <if test="orderNum != null">
                 order_num = #{orderNum,jdbcType=INTEGER},
             </if>
-            <if test="range != null">
-                range = #{range,jdbcType=VARCHAR},
+            <if test="scope != null">
+                scope = #{scope,jdbcType=VARCHAR},
             </if>
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},
@@ -186,7 +186,7 @@
       bel_flag = #{belFlag,jdbcType=BIT},
       del_flag = #{delFlag,jdbcType=BIT},
       order_num = #{orderNum,jdbcType=INTEGER},
-      range = #{range,jdbcType=VARCHAR},
+      scope = #{scope,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_userid = #{createUserid,jdbcType=BIGINT},
@@ -212,4 +212,16 @@
     <update id="deleteByTagId" parameterType="java.lang.Long">
         update tab_pb_subject_tag set del_flag=1 where tag_id = #{tagId,jdbcType=BIGINT}
   </update>
+
+    <select id="findByList" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+        select * from  tab_pb_subject_tag where del_flag=0
+         <if test="list != null and list != ''">
+            <foreach collection="list" index="index" item="item" open="(" separator="" close=")">
+                and scope in  #{item}
+            </foreach>
+         </if>
+            <if test="name != null and name != ''">
+              and name like CONCAT('%',#{name},'%')
+             </if>
+    </select>
 </mapper>
