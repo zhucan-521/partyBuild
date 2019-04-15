@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabSysDeptMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.system.entity.SysDept">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
         <id column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="org_short_name" jdbcType="VARCHAR" property="orgShortName"/>
@@ -47,19 +47,19 @@
         <result column="is_parent" jdbcType="TINYINT" property="isParent"/>
         <result column="is_branch" jdbcType="TINYINT" property="isBranch"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.system.entity.SysDept">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
         <result column="position" jdbcType="LONGVARCHAR" property="position"/>
         <result column="position_range" jdbcType="LONGVARCHAR" property="positionRange"/>
         <result column="founded_reason" jdbcType="LONGVARCHAR" property="foundedReason"/>
     </resultMap>
     <!--包含组织关联信息的ResultMap-->
-    <resultMap extends="ResultMapWithBLOBs" id="ResultMapWithAboutInfo" type="com.yizheng.partybuilding.dto.SysDeptDto">
+    <resultMap extends="ResultMapWithBLOBs" id="ResultMapWithAboutInfo" type="com.egovchina.partybuilding.partybuild.dto.SysDeptDto">
         <result column="parent_name" jdbcType="VARCHAR" property="parentName"/>
         <collection property="tabPbUnitInfos"
-                    select="com.yizheng.partybuilding.repository.TabPbUnitInfoMapper.selectByOrgId" column="dept_id"/>
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbUnitInfoMapper.selectByOrgId" column="dept_id"/>
     </resultMap>
     <!--组织阵地BaseResultMap-->
-    <resultMap id="BasePositionResultMap" type="com.yizheng.partybuilding.dto.TabDeptPositionDto">
+    <resultMap id="BasePositionResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabDeptPositionDto">
         <id column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="office_size" jdbcType="BIGINT" property="officeSize"/>
@@ -70,9 +70,9 @@
     </resultMap>
     <!--包含附件的组织阵地BaseResultMap-->
     <resultMap extends="BasePositionResultMap" id="WithAttachmentsPositionResultMap"
-               type="com.yizheng.partybuilding.dto.TabDeptPositionDto">
+               type="com.egovchina.partybuilding.partybuild.dto.TabDeptPositionDto">
         <collection property="arrangePhotos"
-                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=dept_id,attachmentType=attachment_type}"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -671,7 +671,7 @@
     where d.dept_id = #{deptId,jdbcType=BIGINT}
   </delete>
     <insert id="insert" useGeneratedKeys="true" keyProperty="deptId"
-            parameterType="com.yizheng.partybuilding.system.entity.SysDept">
+            parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
     insert into sys_dept (name, org_short_name,
       org_code, org_inner_code, parent_id,
       is_team, org_level, level_date,
@@ -704,14 +704,14 @@
       )
   </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="deptId"
-            parameterType="com.yizheng.partybuilding.system.entity.SysDept">
+            parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
         insert into sys_dept
         <include refid="Selective_Column_List"/>
         values
         <include refid="Selective_Values_List"/>
     </insert>
     <!--根据主键修改选择的字段-->
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.system.entity.SysDept">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
         update sys_dept d
         <set>
             <include refid="Base_Set_Column_List"/>
@@ -719,7 +719,7 @@
         where d.dept_id = #{deptId,jdbcType=BIGINT}
     </update>
     <!--根据主键修改-->
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.system.entity.SysDept">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
     update sys_dept
     set name = #{name,jdbcType=VARCHAR},
       org_short_name = #{orgShortName,jdbcType=VARCHAR},
@@ -762,7 +762,7 @@
   </update>
 
     <!--判断组织机构名称合法性-->
-    <select id="checkOrgNameAvailability" resultType="com.yizheng.partybuilding.system.entity.SysDept">
+    <select id="checkOrgNameAvailability" resultType="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
     SELECT dept_id as deptId, `name` FROM sys_dept WHERE `name` = #{deptName}
   </select>
 
@@ -884,7 +884,7 @@
 
     <!--修改组织信息的同时修改 relation 表-->
     <update id="updateWithRelationByPrimaryKeySelective"
-            parameterType="com.yizheng.partybuilding.system.entity.SysDept">
+            parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
         update sys_dept d
         inner join sys_dept_relation dr on d.dept_id = dr.descendant
         <set>

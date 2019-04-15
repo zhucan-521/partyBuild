@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduTrainDynamicMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduTrainDynamic">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduTrainDynamicMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainDynamic">
         <id column="dynamic_id" jdbcType="BIGINT" property="dynamicId"/>
         <result column="train_id" jdbcType="BIGINT" property="trainId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -15,7 +15,7 @@
         <result column="tool_num" jdbcType="BIGINT" property="toolNum"/>
         <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
         <result column="train_name" jdbcType="VARCHAR" property="trainName"/>
-        <collection property="attachments" ofType="com.yizheng.commons.domain.TabPbAttachment">
+        <collection property="attachments" ofType="com.egovchina.partybuilding.common.entity.TabPbAttachment">
             <id column="attachment_id" jdbcType="BIGINT" property="attachmentId"/>
             <result column="attachment_instance" jdbcType="VARCHAR" property="attachmentInstance"/>
             <result column="attachment_description" jdbcType="LONGVARCHAR" property="attachmentDescription"/>
@@ -33,14 +33,14 @@
     <sql id="attachment_Column_List">
     attachment.description as atta_description, attachment_description, attachment_instance, attachment_id
   </sql>
-    <select id="selectiveList" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainDynamic" resultMap="BaseResultMap">
+    <select id="selectiveList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainDynamic" resultMap="BaseResultMap">
         select
         <include refid="dynamic_Column_List"/>,train.name as train_name,atta.tool_num
         from tab_pb_edu_train_dynamic dynamic
         left join tab_pb_edu_train train on train.train_id = dynamic.train_id
         left join
         (SELECT count(0) tool_num,host_id FROM tab_pb_attachment
-        WHERE  attachment_type = ${@com.yizheng.commons.util.AttachmentType@TRAINDYNAMIC} and del_flag = 0
+        WHERE  attachment_type = ${@com.egovchina.partybuilding.common.util.AttachmentType@TRAINDYNAMIC} and del_flag = 0
         GROUP BY host_id)
         atta on atta.host_id = dynamic.dynamic_id
         where 1 = 1
@@ -59,7 +59,7 @@
         <include refid="dynamic_Column_List"/>,<include refid="attachment_Column_List"/>,train.name as train_name
         from tab_pb_edu_train_dynamic dynamic
         left join tab_pb_edu_train train on train.train_id = dynamic.train_id
-        left join tab_pb_attachment attachment on dynamic.dynamic_id = attachment.host_id and attachment.attachment_type = ${@com.yizheng.commons.util.AttachmentType@TRAINDYNAMIC}
+        left join tab_pb_attachment attachment on dynamic.dynamic_id = attachment.host_id and attachment.attachment_type = ${@com.egovchina.partybuilding.common.util.AttachmentType@TRAINDYNAMIC}
         and attachment.del_flag = 0
         where  dynamic.dynamic_id = #{dynamicId,jdbcType=BIGINT}
     </select>
@@ -67,7 +67,7 @@
     delete from tab_pb_edu_train_dynamic
     where dynamic_id = #{dynamicId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainDynamic">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainDynamic">
         insert into tab_pb_edu_train_dynamic (dynamic_id, train_id,user_id, username,
       title, content, create_time, 
       state, verify_time, verify_userid, 
@@ -78,7 +78,7 @@
       #{state,jdbcType=VARCHAR}, #{verifyTime,jdbcType=TIMESTAMP}, #{verifyUserid,jdbcType=BIGINT}, 
       #{createUsername,jdbcType=VARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainDynamic" useGeneratedKeys="true"
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainDynamic" useGeneratedKeys="true"
             keyProperty="dynamicId">
         insert into tab_pb_edu_train_dynamic
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -152,7 +152,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainDynamic">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainDynamic">
         update tab_pb_edu_train_dynamic
         <set>
             <if test="trainId != null">
@@ -188,7 +188,7 @@
         </set>
         where dynamic_id = #{dynamicId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainDynamic">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainDynamic">
     update tab_pb_edu_train_dynamic
         set train_id = #{trainId,jdbcType=BIGINT},
         user_id = #{userId,jdbcType=BIGINT},

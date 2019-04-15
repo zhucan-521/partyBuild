@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduCourseMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduCourse">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduCourseMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduCourse">
         <id column="course_id" jdbcType="BIGINT" property="courseId"/>
         <result column="type" jdbcType="BIGINT" property="type"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
@@ -25,7 +25,7 @@
         <result column="bus_type" jdbcType="BIGINT" property="busType"/>
     </resultMap>
     <!--selectAllTabPbEduCourseMap-->
-    <resultMap id="selectAllTabPbEduCourseMap" extends="BaseResultMap" type="com.yizheng.partybuilding.dto.TabPbEduCourseDto">
+    <resultMap id="selectAllTabPbEduCourseMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbEduCourseDto">
         <result column="like_count" jdbcType="BIGINT" property="likeCount"/>
         <result column="watch_count" jdbcType="BIGINT" property="watchCount"/>
     </resultMap>
@@ -46,7 +46,7 @@
     delete from tab_pb_edu_course
     where course_id = #{courseId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduCourse">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduCourse">
     insert into tab_pb_edu_course (course_id, type, name, 
       cover, is_video, quantity, 
       course_time, duration, teacher_id, 
@@ -63,7 +63,7 @@
       #{updateUsername,jdbcType=VARCHAR})
   </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="courseId"
-            parameterType="com.yizheng.partybuilding.entity.TabPbEduCourse">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduCourse">
         insert into tab_pb_edu_course
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="courseId != null">
@@ -202,7 +202,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduCourse">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduCourse">
         update tab_pb_edu_course
         <set>
             <if test="type != null">
@@ -268,7 +268,7 @@
         </set>
         where course_id = #{courseId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduCourse">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduCourse">
     update tab_pb_edu_course
     set type = #{type,jdbcType=BIGINT},
       name = #{name,jdbcType=VARCHAR},
@@ -324,7 +324,7 @@
     </update>
 
     <!--根据课程名字查询课程-->
-    <select id="selectAllTabPbEduCourse" parameterType="com.yizheng.partybuilding.dto.TabPbEduCourseDto" resultMap="selectAllTabPbEduCourseMap">
+    <select id="selectAllTabPbEduCourse" parameterType="com.egovchina.partybuilding.partybuild.dto.TabPbEduCourseDto" resultMap="selectAllTabPbEduCourseMap">
                select * from tab_pb_edu_course
                <where>
                    <if test="name != null">

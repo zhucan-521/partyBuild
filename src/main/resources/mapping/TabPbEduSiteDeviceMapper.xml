@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduSiteDeviceMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduSiteDevice">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduSiteDeviceMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduSiteDevice">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="site_id" jdbcType="BIGINT" property="siteId"/>
         <result column="device_name" jdbcType="VARCHAR" property="deviceName"/>
@@ -19,9 +19,9 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="WithAboutInfoResultMap"
-               type="com.yizheng.partybuilding.entity.TabPbEduSiteDevice">
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbEduSiteDevice">
         <collection property="attachments"
-                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=id,attachmentType=attachment_type}"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -84,7 +84,7 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
     <insert id="insert" useGeneratedKeys="true" keyProperty="id"
-            parameterType="com.yizheng.partybuilding.entity.TabPbEduSiteDevice">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSiteDevice">
     insert into tab_pb_edu_site_device (id, site_id, device_name, 
       device_address, device_model, device_time, 
       device_status, del_flag, order_num, 
@@ -99,7 +99,7 @@
       )
   </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
-            parameterType="com.yizheng.partybuilding.entity.TabPbEduSiteDevice">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSiteDevice">
         insert into tab_pb_edu_site_device
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -196,7 +196,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSiteDevice">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSiteDevice">
         update tab_pb_edu_site_device
         <set>
             <if test="siteId != null">
@@ -244,7 +244,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduSiteDevice">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSiteDevice">
     update tab_pb_edu_site_device
     set site_id = #{siteId,jdbcType=BIGINT},
       device_name = #{deviceName,jdbcType=VARCHAR},

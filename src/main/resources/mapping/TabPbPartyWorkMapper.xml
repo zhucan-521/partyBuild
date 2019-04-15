@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbPartyWorkMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbPartyWork">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbPartyWorkMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbPartyWork">
         <id column="work_id" jdbcType="BIGINT" property="workId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="unit" jdbcType="VARCHAR" property="unit"/>
@@ -35,7 +35,7 @@
     delete from tab_pb_party_work
     where work_id = #{workId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbPartyWork">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyWork">
     insert into tab_pb_party_work (work_id, user_id, unit, 
       post, front_line, stratum, 
       start_date, end_date, del_flag, 
@@ -49,7 +49,7 @@
       #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbPartyWork">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyWork">
         insert into tab_pb_party_work
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="workId != null">
@@ -146,7 +146,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbPartyWork">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyWork">
         update tab_pb_party_work
         <set>
             <if test="userId != null">
@@ -194,7 +194,7 @@
         </set>
         where work_id = #{workId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbPartyWork">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyWork">
     update tab_pb_party_work
     set user_id = #{userId,jdbcType=BIGINT},
       unit = #{unit,jdbcType=VARCHAR},

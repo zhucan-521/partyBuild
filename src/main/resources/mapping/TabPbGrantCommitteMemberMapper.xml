@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbGrantCommitteMemberMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbGrantCommitteMember">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbGrantCommitteMemberMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember">
         <id column="grant_committee_member_id" jdbcType="BIGINT" property="grantCommitteeMemberId"/>
         <result column="grant_committee_id" jdbcType="BIGINT" property="grantCommitteeId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -66,7 +66,7 @@
             AND B.grant_committee_member_id = #{grantCommitteeMemberId,jdbcType=BIGINT}
     </select>
 
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbGrantCommitteMember">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember">
         insert into tab_pb_grant_committe_member
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="grantCommitteeId != null">
@@ -218,7 +218,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbGrantCommitteMember">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember">
         update tab_pb_grant_committe_member
         <set>
             <if test="grantCommitteeId != null">
@@ -303,7 +303,7 @@
         where grant_committee_member_id = #{grantCommitteeMemberId,jdbcType=BIGINT}
     </update>
 
-    <select id="selectByCommitteeIdAndUserId" parameterType="com.yizheng.partybuilding.entity.TabPbGrantCommitteMember"
+    <select id="selectByCommitteeIdAndUserId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember"
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -312,7 +312,7 @@
         user_id=#{userId,jdbcType=BIGINT}
     </select>
 
-    <select id="selectByGrantCommitteeId" parameterType="com.yizheng.partybuilding.entity.TabPbGrantCommitteMember"
+    <select id="selectByGrantCommitteeId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember"
             resultMap="BaseResultMap">
         SELECT
         B.*,
@@ -344,7 +344,7 @@
     </select>
 
     <update id="updateByGrantCommitteeSelective"
-            parameterType="com.yizheng.partybuilding.entity.TabPbGrantCommitteMember">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember">
         update tab_pb_grant_committe_member
         <set>
             <if test="userId != null">

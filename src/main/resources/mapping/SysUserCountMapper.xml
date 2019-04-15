@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.SysUserCountDtoMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.dto.SysUserCountDto">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.SysUserCountDtoMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.dto.SysUserCountDto">
 
     </resultMap>
     
@@ -15,7 +15,7 @@
         ) and del_flag = 0
     </sql>
 
-    <select id="selectCountUser" resultType="com.yizheng.partybuilding.dto.BaseDataAnalysisDto" parameterType="java.lang.Long">
+    <select id="selectCountUser" resultType="com.egovchina.partybuilding.partybuild.dto.BaseDataAnalysisDto" parameterType="java.lang.Long">
         <choose>
             <when test="deptId == 14307 ">
                 SELECT
@@ -199,18 +199,18 @@
             <when test="deptId == 14307 ">
                 SELECT COUNT(1) as retiredUser FROM tab_pb_user_tag tag
                 JOIN sys_user user ON tag.user_id = user.user_id
-                WHERE tag_type = ${@com.yizheng.partybuilding.system.util.UserTagType@RETIRED} AND user.del_flag = 0
+                WHERE tag_type = ${@com.egovchina.partybuilding.partybuild.system.util.UserTagType@RETIRED} AND user.del_flag = 0
             </when>
             <otherwise>
                 SELECT COUNT(1) as retiredUser FROM tab_pb_user_tag tag
                 JOIN sys_user user ON tag.user_id = user.user_id
-                WHERE tag_type = ${@com.yizheng.partybuilding.system.util.UserTagType@RETIRED} AND user.del_flag = 0 AND user.dept_id <include refid="find_in_set_dept_id"/>
+                WHERE tag_type = ${@com.egovchina.partybuilding.partybuild.system.util.UserTagType@RETIRED} AND user.del_flag = 0 AND user.dept_id <include refid="find_in_set_dept_id"/>
             </otherwise>
         </choose>
     </select>
 
     <!--统计指定组织下各类型党员人数-->
-    <select id="selectPeopleCountingByOrgId" parameterType="java.lang.Long" resultType="com.yizheng.partybuilding.entity.OrganizationPeopleStatistics">
+    <select id="selectPeopleCountingByOrgId" parameterType="java.lang.Long" resultType="com.egovchina.partybuilding.partybuild.entity.OrganizationPeopleStatistics">
         SELECT
             d.dept_id AS orgId,
             d.NAME AS orgName,

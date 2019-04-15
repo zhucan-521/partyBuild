@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE  mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabSysUserMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.system.entity.SysUser">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
         <id column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
@@ -128,25 +128,25 @@
     </resultMap>
 
     <!-- UserDeptPositiveDto结果集 -->
-    <resultMap id="userDeptPositiveDtoResultMap" type="com.yizheng.partybuilding.dto.UserDeptPositiveDto">
+    <resultMap id="userDeptPositiveDtoResultMap" type="com.egovchina.partybuilding.partybuild.dto.UserDeptPositiveDto">
         <result column="user_id" property="userId"/>
         <result column="username" property="userName"/>
         <result column="dept_id" property="deptId"/>
         <result column="name" property="name"/>
         <result column="link_ledaer_id" property="linkLedaerId"/>
-        <collection property="positiveList" ofType="com.yizheng.partybuilding.entity.TabPbPositives">
+        <collection property="positiveList" ofType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
             <id column="positive_id" property="positiveId"/>
             <result column="positive_name" property="positiveName"/>
             <result column="positive_name_dict" property="positiveNameDict"/>
         </collection>
     </resultMap>
     <!-- 带标记的结果集 -->
-    <resultMap extends="BaseResultMap" id="BaseResultMapExtendsTags" type="com.yizheng.partybuilding.system.entity.SysUser">
-        <collection property="tabPbUserTags" select="com.yizheng.partybuilding.repository.TabPbUserTagMapper.selectAllListSelective"
+    <resultMap extends="BaseResultMap" id="BaseResultMapExtendsTags" type="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
+        <collection property="tabPbUserTags" select="com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper.selectAllListSelective"
                     column="{userId=user_id}"/>
-        <collection property="positiveList" select="com.yizheng.partybuilding.repository.TabPbPositivesMapper.selectPositives" column="{userId=user_id}"/>
+        <collection property="positiveList" select="com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper.selectPositives" column="{userId=user_id}"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.system.entity.SysUser">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
         <result column="post_reason" jdbcType="LONGVARCHAR" property="postReason"/>
         <result column="work_resumes" jdbcType="LONGVARCHAR" property="workResumes"/>
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
@@ -165,7 +165,7 @@
         <result column="old_place" jdbcType="VARCHAR" property="oldPlace"/>
         <result column="registry_status" jdbcType="BIGINT" property="registryStatus"/>
     </resultMap>
-    <resultMap id="PersonnelResultMap" type="com.yizheng.partybuilding.dto.Personnel">
+    <resultMap id="PersonnelResultMap" type="com.egovchina.partybuilding.partybuild.dto.Personnel">
         <result column="user_id" property="userId"/>
         <result column="username" property="username"/>
         <result column="org_id" property="orgId"/>
@@ -346,7 +346,7 @@
         where user_id = #{userId,jdbcType=BIGINT}
     </select>
 
-    <select id="selectPage" parameterType="com.yizheng.partybuilding.system.entity.SysUser" resultMap="BaseResultMapExtendsTags">
+    <select id="selectPage" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysUser" resultMap="BaseResultMapExtendsTags">
         select
         <include refid="Base_Column_List"/>
         ,
@@ -474,7 +474,7 @@
     delete from sys_user
     where user_id = #{userId,jdbcType=BIGINT}
     </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
     insert into sys_user (user_id, dept_id, username,
       identity_type, password, salt,
       avatar, id_card_no, used_name,
@@ -542,7 +542,7 @@
       )
     </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="userId"
-            parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+            parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
         insert into sys_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="deptId != null">
@@ -1125,7 +1125,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
         update sys_user
         <set>
             <if test="deptId != null">
@@ -1449,7 +1449,7 @@
         </set>
         where user_id = #{userId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
     update sys_user
     set dept_id = #{deptId,jdbcType=BIGINT},
       username = #{username,jdbcType=VARCHAR},
@@ -1547,7 +1547,7 @@
       job_position = #{jobPosition,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
     update sys_user
     set dept_id = #{deptId,jdbcType=BIGINT},
       username = #{username,jdbcType=VARCHAR},
@@ -1639,7 +1639,7 @@
       version = #{version,jdbcType=BIGINT}
     where user_id = #{userId}
     </update>
-    <update id="updateByPrimaryKeyId" parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+    <update id="updateByPrimaryKeyId" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
     update sys_user
     set ancestor_place = #{ancestorPlace,jdbcType=BIGINT},
     front_line = #{frontLine,jdbcType=BIGINT},
@@ -1661,7 +1661,7 @@
    </update>
 
     <!--根据身份政查找userId-->
-    <select id="SelectUserIdByIDcard" resultType="java.lang.String">
+    <select id="SelectUserIdByIDcard" resultType="Long">
         select user_id from sys_user where id_card_no =#{idCardNo}
     </select>
 
@@ -1671,7 +1671,7 @@
     </select>
 
 
-    <select id="selectPartyByIdCardNoOrUserName" parameterType="com.yizheng.partybuilding.system.entity.SysUser"
+    <select id="selectPartyByIdCardNoOnUserName" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysUser"
             resultMap="BaseResultMap">
         select
         *
@@ -1758,7 +1758,7 @@
         AND p.label IS NOT NULL
     </select>
 
-    <resultMap id="dwRoleUserInfo" type="com.yizheng.partybuilding.dto.TransferUserDeptInfo">
+    <resultMap id="dwRoleUserInfo" type="com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo">
         <result column="manage_dept_id" jdbcType="BIGINT" property="manageDeptId"/>
         <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -1790,12 +1790,12 @@
        select  IFNULL(s.likes,'0') from sys_user s where user_id = #{userId}
     </select>
 
-    <update id="updateByisPoor" parameterType="com.yizheng.partybuilding.entity.TabPbHardship">
+    <update id="updateByisPoor" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
            update sys_user set is_poor =1 where user_id=#{userId,jdbcType=BIGINT}
 
     </update>
 
-    <update id="updateNoPoor" parameterType="com.yizheng.partybuilding.entity.TabPbHardship">
+    <update id="updateNoPoor" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
           update sys_user set is_poor =0 where user_id=#{userId,jdbcType=BIGINT}
     </update>
     <!--批量修改党员所在组织-->
@@ -1818,7 +1818,7 @@
     </select>
 
     <!--党员信息核查-->
-    <select id="partyIdentityVerification" resultType="com.yizheng.partybuilding.dto.Personnel">
+    <select id="partyIdentityVerification" resultType="com.egovchina.partybuilding.partybuild.dto.Personnel">
         SELECT
             u.user_id AS userId,
             u.realname AS username,
@@ -1845,7 +1845,7 @@
             </if>
         </where>
     </select>
-    <insert id="saveEntity" useGeneratedKeys="true" keyProperty="userId" parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+    <insert id="saveEntity" useGeneratedKeys="true" keyProperty="userId" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
         insert into sys_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="username != null">
@@ -1963,7 +1963,7 @@
         </set>
         where user_id = #{userId}
     </update>
-    <update id="editUserRegister" parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+    <update id="editUserRegister" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
         update sys_user
         <set>
             report_org_id = #{reportOrgId},
@@ -1973,7 +1973,7 @@
         </set>
         where user_id = #{userId}
     </update>
-    <select id="selectAllRegister" parameterType="com.yizheng.partybuilding.system.entity.SysUser" resultMap="BaseResultMap">
+    <select id="selectAllRegister" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysUser" resultMap="BaseResultMap">
         SELECT user.*,hard.hardship_type FROM sys_user user
         LEFT JOIN tab_pb_hardship hard ON `user`.user_id = hard.user_id AND hard.del_flag = '0'
         WHERE `user`.del_flag = '0'

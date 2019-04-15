@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbAbroadMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbAbroad">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbAbroadMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbAbroad">
         <id column="abroad_id" jdbcType="BIGINT" property="abroadId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -36,7 +36,7 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbAbroad">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbAbroad">
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -59,7 +59,7 @@
         from tab_pb_abroad
         where abroad_id = #{abroadId,jdbcType=BIGINT}
     </select>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbAbroad">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbAbroad">
         insert into tab_pb_abroad
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="orgId != null">
@@ -240,7 +240,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbAbroad">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbAbroad">
         update tab_pb_abroad
         <set>
             <if test="orgId != null">
@@ -333,7 +333,7 @@
         </set>
         where abroad_id = #{abroadId,jdbcType=BIGINT}
     </update>
-    <select id="selectBySomeInfo" parameterType="com.yizheng.partybuilding.entity.TabPbAbroad"
+    <select id="selectBySomeInfo" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbAbroad"
             resultMap="BaseResultMap">
         SELECT
         A.* , B.realname AS username,

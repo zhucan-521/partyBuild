@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbDevStageAuditMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbDevStageAudit">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbDevStageAuditMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbDevStageAudit">
         <id column="audit_id" jdbcType="BIGINT" property="auditId"/>
         <result column="cultivator" jdbcType="VARCHAR" property="cultivator"/>
         <result column="audit_stage" jdbcType="BIGINT" property="auditStage"/>
@@ -27,7 +27,7 @@
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
-               type="com.yizheng.partybuilding.entity.TabPbDevStageAudit">
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbDevStageAudit">
         <result column="cultivator_opinion" jdbcType="LONGVARCHAR" property="cultivatorOpinion"/>
         <result column="thought_report" jdbcType="LONGVARCHAR" property="thoughtReport"/>
         <result column="talk_content" jdbcType="LONGVARCHAR" property="talkContent"/>
@@ -65,7 +65,7 @@
     delete from tab_pb_dev_stage_audit
     where audit_id = #{auditId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbDevStageAudit">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDevStageAudit">
     insert into tab_pb_dev_stage_audit (audit_id, cultivator, audit_stage, 
       passed, cultivate_date, report_date, 
       branch_meeting_count, branch_meeting_date, 
@@ -95,7 +95,7 @@
       #{committeerOpinion,jdbcType=LONGVARCHAR}, #{committeeAudit,jdbcType=LONGVARCHAR}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbDevStageAudit">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDevStageAudit">
         insert into tab_pb_dev_stage_audit
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="auditId != null">
@@ -318,7 +318,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbDevStageAudit">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDevStageAudit">
         update tab_pb_dev_stage_audit
         <set>
             <if test="cultivator != null">
@@ -429,7 +429,7 @@
         </set>
         where audit_id = #{auditId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbDevStageAudit">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDevStageAudit">
     update tab_pb_dev_stage_audit
     set cultivator = #{cultivator,jdbcType=VARCHAR},
       audit_stage = #{auditStage,jdbcType=BIGINT},
@@ -468,7 +468,7 @@
       committee_audit = #{committeeAudit,jdbcType=LONGVARCHAR}
     where audit_id = #{auditId,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbDevStageAudit">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDevStageAudit">
     update tab_pb_dev_stage_audit
     set cultivator = #{cultivator,jdbcType=VARCHAR},
       audit_stage = #{auditStage,jdbcType=BIGINT},

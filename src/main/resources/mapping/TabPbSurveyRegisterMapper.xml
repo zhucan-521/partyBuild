@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbSurveyRegisterMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbSurveyRegister">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbSurveyRegisterMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbSurveyRegister">
         <id column="survey_rgister_id" jdbcType="BIGINT" property="surveyRgisterId"/>
         <result column="group_man" jdbcType="VARCHAR" property="groupMan"/>
         <result column="group_view_date" jdbcType="TIMESTAMP" property="groupViewDate"/>
@@ -26,7 +26,7 @@
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
-               type="com.yizheng.partybuilding.entity.TabPbSurveyRegister">
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbSurveyRegister">
         <result column="train_status" jdbcType="LONGVARCHAR" property="trainStatus"/>
         <result column="enco_tatus" jdbcType="LONGVARCHAR" property="encoTatus"/>
         <result column="reward_status" jdbcType="LONGVARCHAR" property="rewardStatus"/>
@@ -59,7 +59,7 @@
     delete from tab_pb_survey_register
     where survey_rgister_id = #{surveyRgisterId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbSurveyRegister">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSurveyRegister">
     insert into tab_pb_survey_register (survey_rgister_id, group_man, group_view_date, 
       branch_man, branch_view_date, comm_man, 
       comm_view_date, audit_man, audit_date, 
@@ -83,7 +83,7 @@
       #{branchView,jdbcType=LONGVARCHAR}, #{commView,jdbcType=LONGVARCHAR}, #{auditResult,jdbcType=LONGVARCHAR}, 
       #{surveyView,jdbcType=LONGVARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbSurveyRegister">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSurveyRegister">
         insert into tab_pb_survey_register
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="surveyRgisterId != null">
@@ -276,7 +276,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbSurveyRegister">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSurveyRegister">
         update tab_pb_survey_register
         <set>
             <if test="groupMan != null">
@@ -372,7 +372,7 @@
         </set>
         where survey_rgister_id = #{surveyRgisterId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbSurveyRegister">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSurveyRegister">
     update tab_pb_survey_register
     set group_man = #{groupMan,jdbcType=VARCHAR},
       group_view_date = #{groupViewDate,jdbcType=TIMESTAMP},
@@ -406,7 +406,7 @@
       survey_view = #{surveyView,jdbcType=LONGVARCHAR}
     where survey_rgister_id = #{surveyRgisterId,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbSurveyRegister">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSurveyRegister">
     update tab_pb_survey_register
     set group_man = #{groupMan,jdbcType=VARCHAR},
       group_view_date = #{groupViewDate,jdbcType=TIMESTAMP},

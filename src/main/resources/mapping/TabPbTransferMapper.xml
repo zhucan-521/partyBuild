@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbTransferMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbTransfer">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbTransferMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbTransfer">
         <id column="transfer_id" jdbcType="BIGINT" property="transferId"/>
         <result column="flow_out_type" jdbcType="BIGINT" property="flowOutType"/>
         <result column="code" jdbcType="VARCHAR" property="code"/>
@@ -55,7 +55,7 @@
     </select>
 
     <!-- 获取组织关系转出列表，状态为未撤销 -->
-    <select id="getFlowOutPageList" parameterType="com.yizheng.partybuilding.entity.TabPbTransfer"
+    <select id="getFlowOutPageList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbTransfer"
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -67,7 +67,7 @@
     </select>
 
     <!-- 获取组织关系接收列表，状态为已接收 -->
-    <select id="getFlowInPageList" parameterType="com.yizheng.partybuilding.entity.TabPbTransfer"
+    <select id="getFlowInPageList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbTransfer"
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -94,7 +94,7 @@
             AND transfer.username like CONCAT('%',#{username,jdbcType=VARCHAR},'%')
         </if>
     </select>
-    <resultMap id="ResultMapByWaiting" type="com.yizheng.partybuilding.dto.TransferListWaitingDto">
+    <resultMap id="ResultMapByWaiting" type="com.egovchina.partybuilding.partybuild.dto.TransferListWaitingDto">
         <id column="item_id" jdbcType="BIGINT" property="itemId"/>
         <result column="transfer_id" jdbcType="BIGINT" property="transferId"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
@@ -109,7 +109,7 @@
     </resultMap>
 
     <!-- 获取组织关系，未办结工作列表 -->
-    <select id="getNotFinshedPageList" parameterType="com.yizheng.partybuilding.entity.TabPbTransfer"
+    <select id="getNotFinshedPageList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbTransfer"
             resultMap="ResultMapByWaiting">
         select
         item.transfer_id,transfer.username,transfer.id_card_no,transfer.flow_out_dept_id,transfer.flow_out_dept_name,transfer.flow_in_dept_id,transfer.flow_in_dept_name,
@@ -129,7 +129,7 @@
     </select>
 
     <!-- 获取组织关系，即将办理工作列表 -->
-    <select id="getHandlePageList" parameterType="com.yizheng.partybuilding.dto.TransferListSpDto"
+    <select id="getHandlePageList" parameterType="com.egovchina.partybuilding.partybuild.dto.TransferListSpDto"
             resultMap="ResultMapBySpRecord">
         select
         item.transfer_id,transfer.username,transfer.id_card_no,transfer.flow_out_dept_id,transfer.flow_out_dept_name,transfer.flow_in_dept_id,transfer.flow_in_dept_name,
@@ -150,7 +150,7 @@
     </select>
 
     <!-- 获取组织关系审批记录查询列表 -->
-    <select id="getSpRecordPageList" parameterType="com.yizheng.partybuilding.dto.TransferListSpDto"
+    <select id="getSpRecordPageList" parameterType="com.egovchina.partybuilding.partybuild.dto.TransferListSpDto"
             resultMap="ResultMapBySpRecord">
         select
         item.item_id,item.opt_time,item.`status`,item.opt_result,item.dept_id,transfer.transfer_id,transfer.username,transfer.phone,transfer.gender,
@@ -167,7 +167,7 @@
         </if>
         order by item.item_id desc
     </select>
-    <resultMap id="ResultMapBySpRecord" type="com.yizheng.partybuilding.dto.TransferListSpDto">
+    <resultMap id="ResultMapBySpRecord" type="com.egovchina.partybuilding.partybuild.dto.TransferListSpDto">
         <id column="item_id" jdbcType="BIGINT" property="itemId"/>
         <result column="opt_time" jdbcType="TIMESTAMP" property="optTime"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
@@ -183,7 +183,7 @@
         <result column="flow_in_dept_name" jdbcType="VARCHAR" property="flowInDeptName"/>
     </resultMap>
 
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbTransfer" useGeneratedKeys="true"
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbTransfer" useGeneratedKeys="true"
             keyProperty="transferId" keyColumn="transfer_id">
         insert into tab_pb_transfer
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -378,7 +378,7 @@
         </trim>
     </insert>
 
-    <update id="updateById" parameterType="com.yizheng.partybuilding.entity.TabPbTransfer">
+    <update id="updateById" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbTransfer">
         update tab_pb_transfer
         <set>
             <if test="flowOutType != null">

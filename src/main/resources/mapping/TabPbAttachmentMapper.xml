@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbAttachmentMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.commons.domain.TabPbAttachment">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.common.entity.TabPbAttachment">
         <id column="attachment_id" jdbcType="BIGINT" property="attachmentId"/>
         <result column="host_id" jdbcType="BIGINT" property="hostId"/>
         <result column="attachment_instance" jdbcType="VARCHAR" property="attachmentInstance"/>
@@ -19,7 +19,7 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.commons.domain.TabPbAttachment">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.common.entity.TabPbAttachment">
         <result column="attachment_description" jdbcType="LONGVARCHAR" property="attachmentDescription"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -49,7 +49,7 @@
         where host_id = #{hostId,jdbcType=BIGINT} and attachment_type = #{attachmentType,jdbcType=BIGINT} and del_flag=0
     </select>
 
-    <insert id="insert" parameterType="com.yizheng.commons.domain.TabPbAttachment">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.common.entity.TabPbAttachment">
     insert into tab_pb_attachment (attachment_id, host_id, attachment_instance, 
       attachment_type, attachment_file_type, ebl_flag, 
       del_flag, order_num, description, 
@@ -64,7 +64,7 @@
       #{version,jdbcType=BIGINT}, #{attachmentDescription,jdbcType=LONGVARCHAR})
   </insert>
 
-    <insert id="insertSelective" parameterType="com.yizheng.commons.domain.TabPbAttachment"
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.common.entity.TabPbAttachment"
             useGeneratedKeys="true"
             keyProperty="attachmentId">
         insert into tab_pb_attachment
@@ -175,7 +175,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.commons.domain.TabPbAttachment">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.common.entity.TabPbAttachment">
         update tab_pb_attachment
         <set>
             <if test="hostId != null">
@@ -229,7 +229,7 @@
         </set>
         where attachment_id = #{attachmentId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.commons.domain.TabPbAttachment">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.common.entity.TabPbAttachment">
     update tab_pb_attachment
     set host_id = #{hostId,jdbcType=BIGINT},
       attachment_instance = #{attachmentInstance,jdbcType=VARCHAR},
@@ -249,7 +249,7 @@
       attachment_description = #{attachmentDescription,jdbcType=LONGVARCHAR}
     where attachment_id = #{attachmentId,jdbcType=BIGINT}
   </update>
-    <update id="updateById" parameterType="com.yizheng.commons.domain.TabPbAttachment">
+    <update id="updateById" parameterType="com.egovchina.partybuilding.common.entity.TabPbAttachment">
     update tab_pb_attachment
     set host_id = #{hostId,jdbcType=BIGINT},
       attachment_instance = #{attachmentInstance,jdbcType=VARCHAR},
@@ -270,13 +270,13 @@
   </update>
 
     <!-- 根据id删除附件，改变删除标识 -->
-    <update id="deleteById" parameterType="com.yizheng.commons.domain.TabPbAttachment">
+    <update id="deleteById" parameterType="com.egovchina.partybuilding.common.entity.TabPbAttachment">
         update tab_pb_attachment
         set del_flag = 1
         where attachment_id = #{attachmentId,jdbcType=BIGINT}
     </update>
 
-    <update id="deleteByHostId" parameterType="com.yizheng.commons.domain.TabPbAttachment">
+    <update id="deleteByHostId" parameterType="com.egovchina.partybuilding.common.entity.TabPbAttachment">
         update tab_pb_attachment
         set del_flag = 1
         where host_id = #{hostId,jdbcType=BIGINT}
@@ -323,7 +323,7 @@
 
 
     <!--根据一些条件查询, 模糊查询等-->
-    <select id="selectBySomeCondition" parameterType="com.yizheng.commons.domain.TabPbAttachment"
+    <select id="selectBySomeCondition" parameterType="com.egovchina.partybuilding.common.entity.TabPbAttachment"
             resultMap="ResultMapWithBLOBs">
         select * from tab_pb_attachment where
         del_flag = '0'

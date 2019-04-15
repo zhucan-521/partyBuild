@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbWorkPlanMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbWorkPlan">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbWorkPlanMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbWorkPlan">
         <id column="plan_id" jdbcType="BIGINT" property="planId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="plan_year" jdbcType="BIGINT" property="planYear"/>
@@ -28,23 +28,23 @@
         <result column="version" jdbcType="BIGINT" property="version"/>
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbWorkPlan">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbWorkPlan">
         <result column="plan_content" jdbcType="LONGVARCHAR" property="planContent"/>
         <result column="plan_summary" jdbcType="LONGVARCHAR" property="planSummary"/>
         <result column="plan_check" jdbcType="LONGVARCHAR" property="planCheck"/>
         <result column="summary_check" jdbcType="LONGVARCHAR" property="summaryCheck"/>
     </resultMap>
-    <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithAttachments" type="com.yizheng.partybuilding.entity.TabPbWorkPlan">
+    <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithAttachments" type="com.egovchina.partybuilding.partybuild.entity.TabPbWorkPlan">
         <result column="check_org_name" jdbcType="VARCHAR" property="checkOrgName"/>
         <result column="check_user_name" jdbcType="VARCHAR" property="checkUserName"/>
         <result column="summary_check_org_name" jdbcType="VARCHAR" property="summaryCheckOrgName"/>
         <result column="summary_check_user_name" jdbcType="VARCHAR" property="summaryCheckUserName"/>
-        <collection property="planAttachments" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+        <collection property="planAttachments" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=plan_id,attachmentType=attachment_type_plan}"/>
-        <collection property="summaryAttachments" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+        <collection property="summaryAttachments" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=plan_id,attachmentType=attachment_type_summary}"/>
     </resultMap>
-    <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithCount" type="com.yizheng.partybuilding.entity.TabPbWorkPlan">
+    <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithCount" type="com.egovchina.partybuilding.partybuild.entity.TabPbWorkPlan">
         <result column="video_num" jdbcType="INTEGER" property="videoNum"/>
         <result column="img_num" jdbcType="BIGINT" property="imgNum"/>
         <result column="doc_num" jdbcType="BIGINT" property="docNum"/>
@@ -199,7 +199,7 @@
     where plan_id = #{planId,jdbcType=BIGINT}
   </delete>
     <insert id="insert" useGeneratedKeys="true" keyProperty="planId" 
-            parameterType="com.yizheng.partybuilding.entity.TabPbWorkPlan">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbWorkPlan">
     insert into tab_pb_work_plan (org_id, plan_year,
       report_date, summary_date, plan_check_date,
       summary_check_date, check_org, check_result, check_user,
@@ -220,7 +220,7 @@
       #{summaryCheck,jdbcType=LONGVARCHAR})
   </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="planId"
-            parameterType="com.yizheng.partybuilding.entity.TabPbWorkPlan">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbWorkPlan">
         insert into tab_pb_work_plan
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="planId != null">
@@ -395,7 +395,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbWorkPlan">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbWorkPlan">
         update tab_pb_work_plan
         <set>
             <if test="orgId != null">
@@ -482,7 +482,7 @@
         </set>
         where plan_id = #{planId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbWorkPlan">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbWorkPlan">
     update tab_pb_work_plan
     set org_id = #{orgId,jdbcType=BIGINT},
       plan_year = #{planYear,jdbcType=BIGINT},

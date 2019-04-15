@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbOrgnizeChangeMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbOrgnizeChange">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbOrgnizeChangeMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange">
         <id column="change_id" jdbcType="BIGINT" property="changeId"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="change_type" jdbcType="BIGINT" property="changeType"/>
@@ -26,7 +26,7 @@
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
-               type="com.yizheng.partybuilding.entity.TabPbOrgnizeChange">
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange">
         <result column="change_reason" jdbcType="LONGVARCHAR" property="changeReason"/>
         <result column="short_name" jdbcType="VARCHAR" property="shortName"/>
     </resultMap>
@@ -69,7 +69,7 @@
     delete from tab_pb_orgnize_change
     where change_id = #{changeId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbOrgnizeChange">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange">
     insert into tab_pb_orgnize_change (change_id, dept_id, change_type, 
       old_superior_id, now_superior_id, orgnize_name, 
       orgnize_code, change_date, file_number, 
@@ -87,7 +87,7 @@
       #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{changeReason,jdbcType=LONGVARCHAR}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbOrgnizeChange">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange">
         insert into tab_pb_orgnize_change
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="changeId != null">
@@ -220,7 +220,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbOrgnizeChange">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange">
         update tab_pb_orgnize_change
         <set>
             <if test="deptId != null">
@@ -286,7 +286,7 @@
         </set>
         where change_id = #{changeId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbOrgnizeChange">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange">
     update tab_pb_orgnize_change
     set dept_id = #{deptId,jdbcType=BIGINT},
       change_type = #{changeType,jdbcType=BIGINT},
@@ -310,7 +310,7 @@
       change_reason = #{changeReason,jdbcType=LONGVARCHAR}
     where change_id = #{changeId,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbOrgnizeChange">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange">
     update tab_pb_orgnize_change
     set dept_id = #{deptId,jdbcType=BIGINT},
       change_type = #{changeType,jdbcType=BIGINT},

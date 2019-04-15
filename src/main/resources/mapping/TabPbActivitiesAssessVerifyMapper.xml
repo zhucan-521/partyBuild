@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbActivitiesAssessVerifyMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbActivitiesAssessVerify">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbActivitiesAssessVerifyMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbActivitiesAssessVerify">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="assess_id" jdbcType="BIGINT" property="assessId"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
@@ -49,7 +49,7 @@
     delete from tab_pb_activities_assess_verify
     where id = #{id,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbActivitiesAssessVerify">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbActivitiesAssessVerify">
         insert into tab_pb_activities_assess_verify (id, assess_id, dept_id,
       create_userid, content, remark, 
       create_time, ebl_flag)
@@ -57,7 +57,7 @@
       #{createUserid,jdbcType=BIGINT}, #{content,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{eblFlag,jdbcType=VARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbActivitiesAssessVerify">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbActivitiesAssessVerify">
         insert into tab_pb_activities_assess_verify
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -113,7 +113,7 @@
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective"
-            parameterType="com.yizheng.partybuilding.entity.TabPbActivitiesAssessVerify">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbActivitiesAssessVerify">
         update tab_pb_activities_assess_verify
         <set>
             <if test="assessId != null">
@@ -140,7 +140,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbActivitiesAssessVerify">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbActivitiesAssessVerify">
     update tab_pb_activities_assess_verify
         set assess_id = #{assessId,jdbcType=BIGINT},
       dept_id = #{deptId,jdbcType=BIGINT},

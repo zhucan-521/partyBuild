@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbMemberAddListMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbMemberAddList">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbMemberAddListMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbMemberAddList">
         <id column="member_add_id" jdbcType="BIGINT" property="memberAddId"/>
         <result column="person_id" jdbcType="BIGINT" property="personId"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
@@ -27,7 +27,7 @@
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
-               type="com.yizheng.partybuilding.entity.TabPbMemberAddList">
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbMemberAddList">
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -65,7 +65,7 @@
     delete from tab_pb_member_add_list
     where member_add_id = #{memberAddId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbMemberAddList">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberAddList">
     insert into tab_pb_member_add_list (member_add_id, person_id, dept_id, 
       real_name, add_time, in_type, 
       from_org_id, from_org_code, from_org_name, 
@@ -85,7 +85,7 @@
       #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{comment,jdbcType=LONGVARCHAR}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbMemberAddList">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberAddList">
         insert into tab_pb_member_add_list
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="memberAddId != null">
@@ -236,7 +236,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbMemberAddList">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberAddList">
         update tab_pb_member_add_list
         <set>
             <if test="personId != null">
@@ -311,7 +311,7 @@
         </set>
         where member_add_id = #{memberAddId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbMemberAddList">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberAddList">
     update tab_pb_member_add_list
     set person_id = #{personId,jdbcType=BIGINT},
       dept_id = #{deptId,jdbcType=BIGINT},
@@ -338,7 +338,7 @@
       comment = #{comment,jdbcType=LONGVARCHAR}
     where member_add_id = #{memberAddId,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbMemberAddList">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberAddList">
     update tab_pb_member_add_list
     set person_id = #{personId,jdbcType=BIGINT},
       dept_id = #{deptId,jdbcType=BIGINT},

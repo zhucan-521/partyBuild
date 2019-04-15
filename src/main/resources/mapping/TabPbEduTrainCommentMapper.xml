@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduTrainCommentMapper">
-  <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduTrainComment">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduTrainCommentMapper">
+  <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainComment">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="course_id" jdbcType="BIGINT" property="courseId" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
@@ -18,7 +18,7 @@
     from tab_pb_edu_train_comment
     where id = #{id,jdbcType=BIGINT}
   </select>
-  <select id="selectList" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainComment" resultMap="BaseResultMap">
+  <select id="selectList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainComment" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from tab_pb_edu_train_comment
@@ -34,7 +34,7 @@
     delete from tab_pb_edu_train_comment
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainComment">
+  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainComment">
     insert into tab_pb_edu_train_comment (id, course_id, user_id, 
       level, result, create_time
       )
@@ -42,7 +42,7 @@
       #{level,jdbcType=INTEGER}, #{result,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainComment">
+  <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainComment">
     insert into tab_pb_edu_train_comment
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -85,7 +85,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainComment">
+  <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainComment">
     update tab_pb_edu_train_comment
     <set>
       <if test="courseId != null">
@@ -106,7 +106,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainComment">
+  <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainComment">
     update tab_pb_edu_train_comment
     set course_id = #{courseId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},

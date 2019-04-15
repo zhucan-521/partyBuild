@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbActivitiesAssessMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbActivitiesAssess">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbActivitiesAssessMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbActivitiesAssess">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
@@ -22,7 +22,7 @@
     </resultMap>
 
     <resultMap extends="BaseResultMap" id="WithCountResultMap"
-               type="com.yizheng.partybuilding.dto.TabPbActivitiesAssessDto">
+               type="com.egovchina.partybuilding.partybuild.dto.TabPbActivitiesAssessDto">
         <result column="audit_result" jdbcType="BIGINT" property="auditResult"/>
         <result column="video_num" jdbcType="INTEGER" property="videoNum"/>
         <result column="img_num" jdbcType="BIGINT" property="imgNum"/>
@@ -30,19 +30,19 @@
     </resultMap>
 
     <resultMap extends="BaseResultMap" id="WithAboutResultMap"
-               type="com.yizheng.partybuilding.dto.TabPbActivitiesAssessDto">
+               type="com.egovchina.partybuilding.partybuild.dto.TabPbActivitiesAssessDto">
         <collection property="historyReviews"
-                    select="com.yizheng.partybuilding.repository.TabPbActivitiesAssessVerifyMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbActivitiesAssessVerifyMapper.selectWithConditions"
                     column="assessId=id"/>
         <!--附件-->
         <collection property="docAttachments"
-                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=host_id,attachmentType=attachment_type,fileTypeLabel=file_type_doc}"/>
         <collection property="imgAttachments"
-                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=host_id,attachmentType=attachment_type,fileTypeLabel=file_type_img}"/>
         <collection property="videoAttachments"
-                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=host_id,attachmentType=attachment_type,fileTypeLabel=file_type_video}"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -136,7 +136,7 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
     <insert id="insert" useGeneratedKeys="true" keyProperty="id"
-            parameterType="com.yizheng.partybuilding.entity.TabPbActivitiesAssess">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbActivitiesAssess">
     insert into tab_pb_activities_assess (id, host_id, dept_id, years,
       user_id, username,
       type, assess_result, del_flag,
@@ -151,7 +151,7 @@
       #{updateUsername,jdbcType=VARCHAR}, #{signInTime,jdbcType=TIMESTAMP})
   </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
-            parameterType="com.yizheng.partybuilding.entity.TabPbActivitiesAssess">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbActivitiesAssess">
         insert into tab_pb_activities_assess
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -254,7 +254,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbActivitiesAssess">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbActivitiesAssess">
         update tab_pb_activities_assess
         <set>
             <if test="hostId != null">
@@ -305,7 +305,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbActivitiesAssess">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbActivitiesAssess">
     update tab_pb_activities_assess
     set host_id = #{hostId,jdbcType=BIGINT},
       dept_id = #{deptId,jdbcType=BIGINT},
@@ -381,7 +381,7 @@
 
     <!--根据组织ID查询待评议的党员列表-->
     <select id="selectPreAssessMemberWithConditions" parameterType="java.util.Map"
-            resultType="com.yizheng.partybuilding.dto.AssessUserDto">
+            resultType="com.egovchina.partybuilding.partybuild.dto.AssessUserDto">
         SELECT
             u.user_id AS userId,
             u.realname AS username

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbPositivesMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbPositives">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
         <id column="positive_id" jdbcType="INTEGER" property="positiveId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="positive_type" jdbcType="INTEGER" property="positiveType"/>
@@ -25,7 +25,7 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbPositives">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
         <result column="left_reason" jdbcType="BIGINT" property="leftReason"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -50,7 +50,7 @@
         from tab_pb_positives p left join sys_dict d on d.id = p.positive_name
         where p.positive_id = #{positiveId,jdbcType=INTEGER}
     </select>
-    <select id="selectList" parameterType="com.yizheng.partybuilding.entity.TabPbPositives" resultMap="ResultMapWithBLOBs">
+    <select id="selectList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives" resultMap="ResultMapWithBLOBs">
         select
         <include refid="P_Base_Column_List"/>
         ,d.label as positive_name_dict,d.sort
@@ -66,7 +66,7 @@
     </select>
 
     <!--查询党员职务，党员信息列表使用-->
-    <select id="selectPositives" parameterType="com.yizheng.partybuilding.entity.TabPbPositives" resultMap="ResultMapWithBLOBs">
+    <select id="selectPositives" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives" resultMap="ResultMapWithBLOBs">
         select
         p.positive_name,p.positive_id,d.label AS positive_name_dict
         from tab_pb_positives p
@@ -74,7 +74,7 @@
         where p.del_flag = 0
         and p.user_id = #{userId}
     </select>
-    <select id="verifyDuplicateDuties" parameterType="com.yizheng.partybuilding.entity.TabPbPositives" resultMap="ResultMapWithBLOBs">
+    <select id="verifyDuplicateDuties" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives" resultMap="ResultMapWithBLOBs">
         select
         <include refid="P_Base_Column_List"/>
         ,d.label as positive_name_dict
@@ -95,7 +95,7 @@
     delete from tab_pb_positives
     where positive_id = #{positiveId,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbPositives">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
     insert into tab_pb_positives (positive_id, user_id, positive_type, 
       positive_org_id, positive_org, positive_name, 
       positive_level, positive_start, positive_finished, 
@@ -114,7 +114,7 @@
         #{leftReason,jdbcType=BIGINT},#{leftType,jdbcType=INTEGER}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbPositives">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
         insert into tab_pb_positives
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="positiveId != null">
@@ -253,7 +253,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbPositives">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
         update tab_pb_positives
         <set>
             <if test="userId != null">
@@ -322,7 +322,7 @@
         </set>
         where positive_id = #{positiveId,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbPositives">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
     update tab_pb_positives
     set user_id = #{userId,jdbcType=BIGINT},
       positive_type = #{positiveType,jdbcType=INTEGER},
@@ -347,7 +347,7 @@
       left_reason = #{leftReason,jdbcType=BIGINT}
     where positive_id = #{positiveId,jdbcType=INTEGER}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbPositives">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
     update tab_pb_positives
     set user_id = #{userId,jdbcType=BIGINT},
         left_type = #{leftType,jdbcType=INTEGER},

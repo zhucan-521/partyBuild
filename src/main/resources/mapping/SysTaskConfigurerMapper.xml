@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.SysTaskConfigurerMapper">
-  <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.SysTaskConfigurer">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.SysTaskConfigurerMapper">
+  <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.SysTaskConfigurer">
     <result column="id" jdbcType="BIGINT" property="id" />
     <result column="task_id" jdbcType="VARCHAR" property="taskId" />
     <result column="fulfill_id" jdbcType="BIGINT" property="fulfillId" />
@@ -74,7 +74,7 @@
   </sql>
   
   <insert id="insert" useGeneratedKeys="true" keyProperty="id"
-          parameterType="com.yizheng.partybuilding.entity.SysTaskConfigurer">
+          parameterType="com.egovchina.partybuilding.partybuild.entity.SysTaskConfigurer">
     insert into sys_task_configurer (id, task_id, fulfill_id, 
       expected, cycle, year, 
       create_userid, create_username, create_time,
@@ -88,7 +88,7 @@
       )
   </insert>
   <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
-          parameterType="com.yizheng.partybuilding.entity.SysTaskConfigurer">
+          parameterType="com.egovchina.partybuilding.partybuild.entity.SysTaskConfigurer">
     insert into sys_task_configurer
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -174,7 +174,7 @@
     </trim>
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.SysTaskConfigurer">
+  <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.SysTaskConfigurer">
     update sys_task_configurer
     <set>
       <if test="taskId != null">
@@ -268,7 +268,7 @@
   </update>
 
   <!--先删除-->
-  <update id="aheadDelete" parameterType="com.yizheng.partybuilding.entity.SysTaskConfigurer">
+  <update id="aheadDelete" parameterType="com.egovchina.partybuilding.partybuild.entity.SysTaskConfigurer">
       UPDATE sys_task_configurer
       SET del_flag = 1, update_time = #{updateTime},
       update_userid = #{updateUserid}, update_username = #{updateUsername}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbMsgNoticeDeptMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbMsgNoticeDept">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbMsgNoticeDeptMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="notice_id" jdbcType="BIGINT" property="noticeId"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
@@ -19,7 +19,7 @@
     id, notice_id, dept_id, dept_name, recevie_user_id, recevie_username, recevie_time
     </sql>
     <!--查询list-->
-    <select id="selectList" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNoticeDept" resultMap="BaseResultMap">
+    <select id="selectList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept" resultMap="BaseResultMap">
         SELECT dept.*,notice.notice_title,notice.notice_type,notice.publish_time
         ,COUNT(if(attac.attachment_file_type='58992',TRUE,NULL)) AS photo,
         COUNT(if(attac.attachment_file_type='58993',TRUE,NULL)) AS doc
@@ -79,7 +79,7 @@
     </foreach>
     </delete>
 
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNoticeDept">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept">
         insert into tab_pb_msg_notice_dept
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -129,7 +129,7 @@
         </trim>
     </insert>
     <!--签收时候用-->
-    <update id="updateSigning" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNoticeDept">
+    <update id="updateSigning" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept">
         update tab_pb_msg_notice_dept
         <set>
             <if test="recevieUserId != null">
@@ -144,7 +144,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNoticeDept">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept">
     update tab_pb_msg_notice_dept
     set notice_id = #{noticeId,jdbcType=BIGINT},
       dept_id = #{deptId,jdbcType=BIGINT},

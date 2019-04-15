@@ -9,12 +9,11 @@
 		<relativePath/>
 	</parent>
 
-	<groupId>com.yizheng</groupId>
+	<groupId>com.egov-china.partybuilding</groupId>
 	<artifactId>partybuilding-service</artifactId>
 	<version>1.0.RELEASE</version>
-	<packaging>jar</packaging>
 	<name>partybuilding-service</name>
-	<description>智慧党建，后台、党组织、党员、党员教育服务</description>
+	<description>智慧党建党建服务（党员、党组织）</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -23,15 +22,15 @@
 		<java.version>1.8</java.version>
 		<spring-boot.version>2.0.6.RELEASE</spring-boot.version>
 		<spring-cloud.version>Finchley.SR2</spring-cloud.version>
-		<docker.image.prefix>yizheng</docker.image.prefix>
-		<docker.host>http://localhost:2375</docker.host>
+		<docker.image.prefix>egov-china</docker.image.prefix>
+		<docker.host>http://192.168.5.251:2375</docker.host>
 	</properties>
 
 	<dependencies>
 		<!--公用模块-->
 		<dependency>
-			<groupId>com.yizheng</groupId>
-			<artifactId>commons</artifactId>
+			<groupId>com.egov-china.partybuilding</groupId>
+			<artifactId>common</artifactId>
 			<version>1.0.RELEASE</version>
 		</dependency>
 		<!--consul-->
@@ -85,11 +84,6 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-stream-binder-rabbit</artifactId>
-		</dependency>
-		<!--spring security 、oauth、jwt依赖-->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-security</artifactId>
 		</dependency>
 		<!--Test-->
 		<dependency>

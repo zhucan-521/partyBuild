@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduLiveMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduLive">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduLiveMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduLive">
         <id column="live_id" jdbcType="BIGINT" property="liveId"/>
         <id column="description" jdbcType="VARCHAR" property="description"/>
         <result column="region" jdbcType="BIGINT" property="region"/>
@@ -27,15 +27,15 @@
         <result column="record_id" jdbcType="BIGINT" property="recordId"/>
     </resultMap>
 
-    <resultMap extends="BaseResultMap" id="TabPbEduLiveDtoResultMap" type="com.yizheng.partybuilding.dto.TabPbEduLiveDto">
+    <resultMap extends="BaseResultMap" id="TabPbEduLiveDtoResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbEduLiveDto">
         <result column="sumClick" jdbcType="BIGINT" property="sumClick"/>
         <result column="sumSubscribe" jdbcType="BIGINT" property="sumSubscribe"/>
         <result column="sumMsg" jdbcType="BIGINT" property="sumMsg"/>
         <result column="teacherName" jdbcType="VARCHAR" property="teacherName"/>
         <!--关联附件数据-->
-        <association property="listCourseware" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+        <association property="listCourseware" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                      column="{hostId=live_id,attachmentType=attachment_type}" />
-        <association property="recordList" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+        <association property="recordList" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                      column="{hostId=record_id,attachmentType=attachment_type}" />
     </resultMap>
 
@@ -54,7 +54,7 @@
     delete from tab_pb_edu_live
     where live_id = #{liveId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduLive">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduLive">
     insert into tab_pb_edu_live (live_id, description, region, 
       plan, name, cover, state, 
       res_address, start_time, end_time, 
@@ -72,7 +72,7 @@
       #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
       #{recordId,jdbcType=BIGINT})
   </insert>
-    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="liveId" parameterType="com.yizheng.partybuilding.entity.TabPbEduLive">
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="liveId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduLive">
         insert into tab_pb_edu_live
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="liveId != null">
@@ -217,7 +217,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduLive">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduLive">
         update tab_pb_edu_live
         <set>
             <if test="region != null">
@@ -289,7 +289,7 @@
         </set>
         where live_id = #{liveId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduLive">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduLive">
     update tab_pb_edu_live
     set region = #{region,jdbcType=BIGINT},
       plan = #{plan,jdbcType=BIGINT},
@@ -315,7 +315,7 @@
     where live_id = #{liveId,jdbcType=BIGINT}
   </update>
     <!-- 查询直播列表 -->
-    <select id="selectLiveByTabPbEduLive" parameterType="com.yizheng.partybuilding.entity.TabPbEduLive"
+    <select id="selectLiveByTabPbEduLive" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduLive"
             resultMap="TabPbEduLiveDtoResultMap">
         select
         '14' as attachment_type,

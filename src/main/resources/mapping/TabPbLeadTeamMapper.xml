@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbLeadTeamMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbLeadTeam">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbLeadTeamMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeam">
         <id column="lead_team_id" jdbcType="BIGINT" property="leadTeamId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="session_year" jdbcType="BIGINT" property="sessionYear"/>
@@ -32,7 +32,7 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.dto.TabPbLeadTeamDto">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.dto.TabPbLeadTeamDto">
         <result column="vote_status" jdbcType="LONGVARCHAR" property="voteStatus"/>
         <result column="vote_result" jdbcType="LONGVARCHAR" property="voteResult"/>
         <result column="orgnize_master" jdbcType="VARCHAR" property="orgNiZeMaster"/>
@@ -42,13 +42,13 @@
         <result column="doc_num" jdbcType="INTEGER" property="docNum"/>
     </resultMap>
     <resultMap extends="ResultMapWithBLOBs" id="ResultMapWithFiles"
-               type="com.yizheng.partybuilding.dto.TabPbLeadTeamDto">
+               type="com.egovchina.partybuilding.partybuild.dto.TabPbLeadTeamDto">
         <collection property="documents"
-                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=lead_team_id,attachmentType=attachment_type,fileTypeLabel=file_type_doc}"/>
 
         <collection property="pictures"
-                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=lead_team_id,attachmentType=attachment_type,fileTypeLabel=file_type_img}"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -78,7 +78,7 @@
     where lead_team_id = #{leadTeamId,jdbcType=BIGINT}
   </delete>
     <insert id="insert" useGeneratedKeys="true" keyProperty="leadTeamId"
-            parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeam">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeam">
     insert into tab_pb_lead_team (lead_team_id, org_id, session_year, 
       change_date, during_year, vote_type, 
       due_count, fact_count, vote_count, 
@@ -103,7 +103,7 @@
       #{voteResult,jdbcType=VARCHAR}
       )
   </insert>
-    <insert id="insertSelective" keyProperty="leadTeamId" useGeneratedKeys="true" parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeam">
+    <insert id="insertSelective" keyProperty="leadTeamId" useGeneratedKeys="true" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeam">
         insert into tab_pb_lead_team
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="leadTeamId != null">
@@ -296,7 +296,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeam">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeam">
         update tab_pb_lead_team
         <set>
             <if test="orgId != null">
@@ -392,7 +392,7 @@
         </set>
         where lead_team_id = #{leadTeamId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeam">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeam">
     update tab_pb_lead_team
     set org_id = #{orgId,jdbcType=BIGINT},
       session_year = #{sessionYear,jdbcType=BIGINT},
@@ -426,7 +426,7 @@
        vote_result = #{voteResult,jdbcType=LONGVARCHAR}
     where lead_team_id = #{leadTeamId,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeam">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeam">
     update tab_pb_lead_team
     set org_id = #{orgId,jdbcType=BIGINT},
       session_year = #{sessionYear,jdbcType=BIGINT},

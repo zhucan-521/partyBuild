@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduPositionMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduPosition">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduPositionMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduPosition">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="if_site" jdbcType="TINYINT" property="ifSite"/>
@@ -30,20 +30,20 @@
     </resultMap>
     <!--包含关联数据的ResultMap-->
     <resultMap extends="BaseResultMap" id="WithAboutInfoResultMap"
-               type="com.yizheng.partybuilding.dto.TabPbEduPositionDto">
+               type="com.egovchina.partybuilding.partybuild.dto.TabPbEduPositionDto">
         <collection property="eduPositionProjects"
-                    select="com.yizheng.partybuilding.repository.TabPbEduPositionProjectMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbEduPositionProjectMapper.selectWithConditions"
                     column="delFlag=del_flag,positionId=id"/>
         <collection property="eduPositionCourses"
-                    select="com.yizheng.partybuilding.repository.TabPbEduPositionCourseMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbEduPositionCourseMapper.selectWithConditions"
                     column="delFlag=del_flag,positionId=id"/>
         <collection property="tabPbAttachments"
-                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=id,attachmentType=attachment_type}"/>
     </resultMap>
 
     <!--智能选学ResultMap-->
-    <resultMap id="ZLXXResultMap" type="com.yizheng.partybuilding.dto.TabPbEduIntelligentStudyDto">
+    <resultMap id="ZLXXResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbEduIntelligentStudyDto">
         <result column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="type" jdbcType="BIGINT" property="type"/>
@@ -54,15 +54,15 @@
     </resultMap>
 
     <!--智能选学详情ResultMap-->
-    <resultMap extends="ZLXXResultMap" id="ZLXXDetailResultMap" type="com.yizheng.partybuilding.dto.TabPbEduIntelligentStudyDto">
+    <resultMap extends="ZLXXResultMap" id="ZLXXDetailResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbEduIntelligentStudyDto">
         <collection property="eduPositionProjects"
-                    select="com.yizheng.partybuilding.repository.TabPbEduPositionProjectMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbEduPositionProjectMapper.selectWithConditions"
                     column="delFlag=del_flag,positionId=id"/>
         <collection property="eduPositionCourses"
-                    select="com.yizheng.partybuilding.repository.TabPbEduPositionCourseMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbEduPositionCourseMapper.selectWithConditions"
                     column="delFlag=del_flag,positionId=id"/>
         <collection property="teachers"
-                    select="com.yizheng.partybuilding.repository.TabPbEduTeachersMapper.selectTeacherWithCoursesForZZLX"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbEduTeachersMapper.selectTeacherWithCoursesForZZLX"
                     column="teacherType=teacher_type"/>
     </resultMap>
 
@@ -159,7 +159,7 @@
     delete from tab_pb_edu_position
     where id = #{id,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduPosition">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduPosition">
     insert into tab_pb_edu_position (id, name, if_site,
       type, sub_types, property,
       address, traffic_info, grid, introduction,
@@ -178,7 +178,7 @@
       #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{totalDuration,jdbcType=BIGINT})
   </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
-            parameterType="com.yizheng.partybuilding.entity.TabPbEduPosition">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduPosition">
         insert into tab_pb_edu_position
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -335,7 +335,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduPosition">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduPosition">
         update tab_pb_edu_position
         <set>
             <if test="name != null">
@@ -404,7 +404,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduPosition">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduPosition">
     update tab_pb_edu_position
     set name = #{name,jdbcType=VARCHAR},
       if_site = #{ifSite,jdbcType=TINYINT},

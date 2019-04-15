@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbTransferItemMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbTransferItem">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbTransferItemMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbTransferItem">
         <id column="item_id" jdbcType="BIGINT" property="itemId"/>
         <result column="transfer_id" jdbcType="BIGINT" property="transferId"/>
         <result column="sh_index" jdbcType="INTEGER" property="shIndex"/>
@@ -57,7 +57,7 @@
        select count(*) from tab_pb_transfer_item where transfer_id=#{transferId,jdbcType=BIGINT} and is_sp_flag=#{isSpFlag,jdbcType=VARCHAR}
     </select>
 
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbTransferItem">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbTransferItem">
         insert into tab_pb_transfer_item (item_id, transfer_id
       sh_index, opt_time, status, 
       opt_result, pb_contacts, pb_phone,
@@ -71,7 +71,7 @@
         #{deptId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{revokeFlag,jdbcType=VARCHAR},
         #{isSpFlag,jdbcType=VARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbTransferItem">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbTransferItem">
         insert into tab_pb_transfer_item
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="itemId != null">
@@ -174,7 +174,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateBySelective" parameterType="com.yizheng.partybuilding.entity.TabPbTransferItem">
+    <update id="updateBySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbTransferItem">
         update tab_pb_transfer_item
         <set>
             <if test="transferId != null">
@@ -225,7 +225,7 @@
         </set>
         where item_id = #{itemId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbTransferItem">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbTransferItem">
         update tab_pb_transfer_item
         set transfer_id = #{transferId,jdbcType=BIGINT},
         sh_index = #{shIndex,jdbcType=INTEGER},
@@ -245,7 +245,7 @@
     </update>
 
     <!-- 更新审批状态 -->
-    <update id="updateIsSpFlag" parameterType="com.yizheng.partybuilding.entity.TabPbTransferItem">
+    <update id="updateIsSpFlag" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbTransferItem">
         update tab_pb_transfer_item
         set is_sp_flag = #{isSpFlag,jdbcType=VARCHAR} , update_time = now()
         where item_id = #{itemId,jdbcType=BIGINT}

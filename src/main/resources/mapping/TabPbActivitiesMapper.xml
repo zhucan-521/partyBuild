@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbActivitiesMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbActivities">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbActivitiesMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbActivities">
         <id column="activities_id" jdbcType="BIGINT" property="activitiesId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
@@ -48,7 +48,7 @@
         <result column="report_to_type" jdbcType="BIGINT" property="reportToType"/>
         <result column="stick_num" jdbcType="BIGINT" property="stickNum"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbActivities">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbActivities">
         <result column="prepare" jdbcType="LONGVARCHAR" property="prepare"/>
         <result column="content" jdbcType="LONGVARCHAR" property="content"/>
         <result column="effect" jdbcType="LONGVARCHAR" property="effect"/>
@@ -56,7 +56,7 @@
     </resultMap>
 
     <resultMap extends="ResultMapWithBLOBs" id="ResultMapWithCount"
-               type="com.yizheng.partybuilding.dto.PartyOrganizationActivitiesDto">
+               type="com.egovchina.partybuilding.partybuild.dto.PartyOrganizationActivitiesDto">
         <result column="attachment_instance" jdbcType="VARCHAR" property="attachment"/>
         <result column="deptName" jdbcType="VARCHAR" property="deptName"/>
         <result column="superiorName" jdbcType="VARCHAR" property="superiorName"/>
@@ -75,45 +75,45 @@
     </resultMap>
 
     <!--包含附件的ResultMap-->
-    <resultMap extends="ResultMapWithCount" id="ResultMapWithAbout" type="com.yizheng.partybuilding.dto.PartyOrganizationActivitiesDto">
+    <resultMap extends="ResultMapWithCount" id="ResultMapWithAbout" type="com.egovchina.partybuilding.partybuild.dto.PartyOrganizationActivitiesDto">
         <collection property="documents"
-                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=activities_id,attachmentType=attachment_type,fileTypeLabel=file_type_doc}"/>
         <collection property="pictures"
-                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=activities_id,attachmentType=attachment_type,fileTypeLabel=file_type_img}"/>
         <collection property="videos"
-                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=activities_id,attachmentType=attachment_type,fileTypeLabel=file_type_video}"/>
 
         <collection property="tabPbParticipant"
-                    select="com.yizheng.partybuilding.repository.TabPbParticipantMapper.selectSimpleListWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbParticipantMapper.selectSimpleListWithConditions"
                     column="activitiesId=activities_id,delFlag=del_flag,moderatorId=moderator_id"/>
     </resultMap>
 
     <!--结对共建ResultMap-->
-    <resultMap extends="ResultMapWithCount" id="PairingResultMap" type="com.yizheng.partybuilding.dto.PartyOrganizationActivitiesDto">
+    <resultMap extends="ResultMapWithCount" id="PairingResultMap" type="com.egovchina.partybuilding.partybuild.dto.PartyOrganizationActivitiesDto">
         <result column="pair_org_id" jdbcType="BIGINT" property="pairOrgId"/>
         <result column="pair_org_name" jdbcType="VARCHAR" property="pairOrgName"/>
     </resultMap>
-    <resultMap extends="ResultMapWithAbout" id="PairingResultMapWithAnnex" type="com.yizheng.partybuilding.dto.PartyOrganizationActivitiesDto">
+    <resultMap extends="ResultMapWithAbout" id="PairingResultMapWithAnnex" type="com.egovchina.partybuilding.partybuild.dto.PartyOrganizationActivitiesDto">
         <result column="pair_org_id" jdbcType="BIGINT" property="pairOrgId"/>
         <result column="pair_org_name" jdbcType="VARCHAR" property="pairOrgName"/>
     </resultMap>
 
     <!--活动排除人员ResultMap-->
-    <resultMap id="ExclusionMemberResultMap" type="com.yizheng.partybuilding.dto.ActivityExclusionParticipantDto">
+    <resultMap id="ExclusionMemberResultMap" type="com.egovchina.partybuilding.partybuild.dto.ActivityExclusionParticipantDto">
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
         <result column="pair_org_id" jdbcType="BIGINT" property="pairOrgId"/>
         <result column="pair_org_name" jdbcType="VARCHAR" property="pairOrgName"/>
-        <collection property="nltr" select="com.yizheng.partybuilding.repository.TabPbActivitiesMapper.selectCandidateMemberListWithConditions"
+        <collection property="nltr" select="com.egovchina.partybuilding.partybuild.repository.TabPbActivitiesMapper.selectCandidateMemberListWithConditions"
                     column="orgId=org_id,pairOrgId=pair_org_id,userTag=nltr"/>
-        <collection property="jcwc" select="com.yizheng.partybuilding.repository.TabPbActivitiesMapper.selectCandidateMemberListWithConditions"
+        <collection property="jcwc" select="com.egovchina.partybuilding.partybuild.repository.TabPbActivitiesMapper.selectCandidateMemberListWithConditions"
                     column="orgId=org_id,pairOrgId=pair_org_id,userTag=jcwc"/>
     </resultMap>
 
-    <resultMap extends="ResultMapWithBLOBs" id="TabPbActivitiesDtoMap" type="com.yizheng.partybuilding.dto.TabPbActivitiesDto">
+    <resultMap extends="ResultMapWithBLOBs" id="TabPbActivitiesDtoMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbActivitiesDto">
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="photo" property="photo"/>
         <result column="video" property="video"/>
@@ -123,7 +123,7 @@
     </resultMap>
 
     <!--联席会活动候选参与者列表-->
-    <resultMap id="JoinMeetActivitiesPreUserResultMap" type="com.yizheng.partybuilding.dto.JointMeetUsersDto">
+    <resultMap id="JoinMeetActivitiesPreUserResultMap" type="com.egovchina.partybuilding.partybuild.dto.JointMeetUsersDto">
         <result column="positive_id" jdbcType="BIGINT" property="positiveId"/>
         <result column="positive_name" jdbcType="VARCHAR" property="positiveName"/>
         <result column="unit_id" jdbcType="BIGINT" property="unitId"/>
@@ -284,20 +284,20 @@
             AND d.dept_id = #{rangeDeptId}
         </if>
     </sql>
-    <select id="selectByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbActivities"
+    <select id="selectByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbActivities"
             resultMap="TabPbActivitiesDtoMap">
         SELECT a.*,dept.`name`,COUNT(if(participant.if_leader='1',TRUE,NULL)) AS communityUserCount,
         COUNT(if(participant.if_leader='0',TRUE,NULL)) AS organCommunityUserCount FROM(
         SELECT
-        activi.*,COUNT(if(attac.attachment_file_type=${@com.yizheng.commons.util.AttachmentType@PHOTO},TRUE,NULL))
+        activi.*,COUNT(if(attac.attachment_file_type=${@com.egovchina.partybuilding.common.util.AttachmentType@PHOTO},TRUE,NULL))
         AS photo,
-        COUNT(if(attac.attachment_file_type=${@com.yizheng.commons.util.AttachmentType@VIDEO},TRUE,NULL)) AS
+        COUNT(if(attac.attachment_file_type=${@com.egovchina.partybuilding.common.util.AttachmentType@VIDEO},TRUE,NULL)) AS
         video,
-        COUNT(if(attac.attachment_file_type=${@com.yizheng.commons.util.AttachmentType@DOC},TRUE,NULL)) AS doc
+        COUNT(if(attac.attachment_file_type=${@com.egovchina.partybuilding.common.util.AttachmentType@DOC},TRUE,NULL)) AS doc
         FROM
         tab_pb_activities activi
         LEFT JOIN tab_pb_attachment attac ON activi.activities_id = attac.host_id
-        AND attac.attachment_type = ${@com.yizheng.commons.util.AttachmentType@ACTIVITIES} and attac.del_flag = '0'
+        AND attac.attachment_type = ${@com.egovchina.partybuilding.common.util.AttachmentType@ACTIVITIES} and attac.del_flag = '0'
         WHERE
         activi.del_flag = '0'
         GROUP BY activi.activities_id) a
@@ -329,7 +329,7 @@
         GROUP BY participant.activities_id
     </select>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="activitiesId"
-            parameterType="com.yizheng.partybuilding.entity.TabPbActivities">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbActivities">
         insert into tab_pb_activities
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="orgId != null">
@@ -552,7 +552,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbActivities">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbActivities">
         update tab_pb_activities
         <set>
             <if test="orgId != null">
@@ -678,7 +678,7 @@
     </select>
 
     <!--逻辑删除-->
-    <update id="deleteId" parameterType="com.yizheng.partybuilding.entity.TabPbActivities">
+    <update id="deleteId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbActivities">
         update tab_pb_activities set del_flag=1 where activities_id = #{activitiesId,jdbcType=BIGINT}
     </update>
 
@@ -894,7 +894,7 @@
     </select>
 
     <!--活动审核/重审-->
-    <update id="review" parameterType="com.yizheng.partybuilding.entity.TabPbActivities">
+    <update id="review" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbActivities">
         UPDATE tab_pb_activities a
         LEFT JOIN tab_pb_participant p  ON a.activities_id = p.activities_id
         SET a.audit_result = #{auditResult}, p.parent_org_assess = #{auditResult}, a.audit_time = #{auditTime}, p.audit_time = #{auditTime},
@@ -905,7 +905,7 @@
     </update>
 
     <!--根据组织和活动类型删除活动-->
-    <update id="deleteByOrgIdAndActivityType" parameterType="com.yizheng.partybuilding.entity.TabPbActivities">
+    <update id="deleteByOrgIdAndActivityType" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbActivities">
         UPDATE tab_pb_activities A
         INNER JOIN tab_pb_participant B ON A.activities_id = B.activities_id
         SET A.del_flag = #{delFlag}, B.del_flag =#{delFlag}
@@ -913,7 +913,7 @@
             A.org_id =#{orgId} AND A.activities_type = #{activitiesType}
     </update>
 
-    <select id="ActivitiesDtoList" parameterType="com.yizheng.partybuilding.entity.TabPbActivities"
+    <select id="ActivitiesDtoList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbActivities"
             resultMap="TabPbActivitiesDtoMap">
         SELECT
             u.realname AS username,
@@ -1001,7 +1001,7 @@
 
     <!--根据条件查询活动候选人列表-->
     <select id="selectCandidateMemberListWithConditions" parameterType="java.util.Map"
-            resultType="com.yizheng.partybuilding.dto.Personnel">
+            resultType="com.egovchina.partybuilding.partybuild.dto.Personnel">
         SELECT
             d.dept_id AS orgId,
             d.NAME AS orgName,

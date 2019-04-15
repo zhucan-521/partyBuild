@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbPartyEducationMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbPartyEducation">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbPartyEducationMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbPartyEducation">
         <id column="education_id" jdbcType="BIGINT" property="educationId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="level" jdbcType="BIGINT" property="level"/>
@@ -33,7 +33,7 @@
     delete from tab_pb_party_education
     where education_id = #{educationId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbPartyEducation">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyEducation">
     insert into tab_pb_party_education (education_id, user_id, level, 
       degree, graduated_school, spec, 
       del_flag, create_time, create_userid, 
@@ -45,7 +45,7 @@
       #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, 
       #{updateUsername,jdbcType=VARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbPartyEducation">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyEducation">
         insert into tab_pb_party_education
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="educationId != null">
@@ -130,7 +130,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbPartyEducation">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyEducation">
         update tab_pb_party_education
         <set>
             <if test="userId != null">
@@ -172,7 +172,7 @@
         </set>
         where education_id = #{educationId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbPartyEducation">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyEducation">
     update tab_pb_party_education
     set user_id = #{userId,jdbcType=BIGINT},
       level = #{level,jdbcType=BIGINT},

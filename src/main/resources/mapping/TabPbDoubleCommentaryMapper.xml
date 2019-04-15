@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbDoubleCommentaryMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbDoubleCommentaryMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
         <id column="commentary_id" jdbcType="BIGINT" property="commentaryId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="plan_year" jdbcType="BIGINT" property="planYear"/>
@@ -28,14 +28,14 @@
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
-               type="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
         <result column="commentary_content" jdbcType="LONGVARCHAR" property="commentaryContent"/>
     </resultMap>
-    <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithAttachments" type="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
-        <collection property="tabPbAttachments" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions" column="{hostId=commentary_id,attachmentType=attachment_type}"/>
+    <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithAttachments" type="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
+        <collection property="tabPbAttachments" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions" column="{hostId=commentary_id,attachmentType=attachment_type}"/>
     </resultMap>
     <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithCount"
-               type="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
         <result column="video_num" jdbcType="INTEGER" property="videoNum"/>
         <result column="img_num" jdbcType="BIGINT" property="imgNum"/>
         <result column="doc_num" jdbcType="BIGINT" property="docNum"/>
@@ -150,7 +150,7 @@
     where commentary_id = #{commentaryId,jdbcType=BIGINT}
   </delete>
     <insert id="insert" useGeneratedKeys="true" keyProperty="commentaryId"
-            parameterType="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
     insert into tab_pb_double_commentary (commentary_id, org_id, plan_year, 
       report_date, check_date, ebl_flag,
       del_flag, order_num, description,
@@ -169,7 +169,7 @@
       )
   </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="commentaryId"
-            parameterType="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
         insert into tab_pb_double_commentary
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="commentaryId != null">
@@ -302,7 +302,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
         update tab_pb_double_commentary
         <set>
             <if test="orgId != null">
@@ -368,7 +368,7 @@
         </set>
         where commentary_id = #{commentaryId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
     update tab_pb_double_commentary
     set org_id = #{orgId,jdbcType=BIGINT},
       plan_year = #{planYear,jdbcType=BIGINT},
@@ -392,7 +392,7 @@
       check_desc = #{checkDesc,jdbcType=VARCHAR}
     where commentary_id = #{commentaryId,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbDoubleCommentary">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
     update tab_pb_double_commentary
     set org_id = #{orgId,jdbcType=BIGINT},
       plan_year = #{planYear,jdbcType=BIGINT},

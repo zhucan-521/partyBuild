@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbRewardsMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbRewards">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbRewardsMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbRewards">
         <id column="rewards_id" jdbcType="BIGINT" property="rewardsId"/>
         <result column="rewards_date" jdbcType="TIMESTAMP" property="rewardsDate"/>
         <result column="rewards_orgnize" jdbcType="VARCHAR" property="rewardsOrgnize"/>
@@ -28,7 +28,7 @@
         <result column="img_tool" jdbcType="BIGINT" property="imgTool"/>
         <result column="file_tool" jdbcType="BIGINT" property="fileTool"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbRewards">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbRewards">
         <result column="base_status" jdbcType="LONGVARCHAR" property="baseStatus"/>
         <result column="deed" jdbcType="LONGVARCHAR" property="deed"/>
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
@@ -49,8 +49,8 @@
         SELECT
 	a.host_id,
 	max( a.attachment_type ) AS attachment_type,
-	MAX( CASE a.attachment_file_type WHEN ${@com.yizheng.commons.util.AttachmentType@PHOTO} THEN a.co ELSE 0 END ) AS img_tool,
-	MAX( CASE a.attachment_file_type WHEN ${@com.yizheng.commons.util.AttachmentType@DOC} THEN a.co ELSE 0 END ) AS file_tool
+	MAX( CASE a.attachment_file_type WHEN ${@com.egovchina.partybuilding.common.util.AttachmentType@PHOTO} THEN a.co ELSE 0 END ) AS img_tool,
+	MAX( CASE a.attachment_file_type WHEN ${@com.egovchina.partybuilding.common.util.AttachmentType@DOC} THEN a.co ELSE 0 END ) AS file_tool
 FROM
 	( SELECT COUNT( 1 ) AS co, host_id, attachment_file_type, attachment_type FROM tab_pb_attachment WHERE del_flag = 0 GROUP BY host_id, attachment_type, attachment_file_type ) a
 GROUP BY
@@ -67,7 +67,7 @@ GROUP BY
         from tab_pb_rewards
         where rewards_id = #{rewardsId,jdbcType=BIGINT}
     </select>
-    <select id="selectList" parameterType="com.yizheng.partybuilding.entity.TabPbRewards" resultMap="ResultMapWithBLOBs">
+    <select id="selectList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbRewards" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
         ,
@@ -95,7 +95,7 @@ GROUP BY
     delete from tab_pb_rewards
     where rewards_id = #{rewardsId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbRewards">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbRewards">
     insert into tab_pb_rewards (rewards_id, rewards_date, rewards_orgnize,
         rewards_orgnize_id, user_id, rewards,
         rewards_reason, approved_level, revoke_date,
@@ -115,7 +115,7 @@ GROUP BY
         #{rewardsType,jdbcType=VARCHAR}, #{baseStatus,jdbcType=LONGVARCHAR}, #{deed,jdbcType=LONGVARCHAR},
         #{comment,jdbcType=LONGVARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbRewards" useGeneratedKeys="true" keyProperty="rewardsId">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbRewards" useGeneratedKeys="true" keyProperty="rewardsId">
         insert into tab_pb_rewards
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="rewardsId != null">
@@ -272,7 +272,7 @@ GROUP BY
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbRewards">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbRewards">
         update tab_pb_rewards
         <set>
             <if test="rewardsDate != null">
@@ -350,7 +350,7 @@ GROUP BY
         </set>
         where rewards_id = #{rewardsId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbRewards">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbRewards">
     update tab_pb_rewards
     set rewards_date = #{rewardsDate,jdbcType=TIMESTAMP},
       rewards_orgnize = #{rewardsOrgnize,jdbcType=VARCHAR},
@@ -378,7 +378,7 @@ GROUP BY
       comment = #{comment,jdbcType=LONGVARCHAR}
     where rewards_id = #{rewardsId,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbRewards">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbRewards">
     update tab_pb_rewards
     set rewards_date = #{rewardsDate,jdbcType=TIMESTAMP},
       rewards_orgnize = #{rewardsOrgnize,jdbcType=VARCHAR},

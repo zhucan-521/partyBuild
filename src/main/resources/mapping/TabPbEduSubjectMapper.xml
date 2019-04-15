@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduSubjectMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduSubject">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduSubjectMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubject">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="category" jdbcType="INTEGER" property="category"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
@@ -53,7 +53,7 @@
         and endSubject.del_flag='0'
         order by endSubject.id desc
     </select>
-    <resultMap id="SubjectsResultMap" extends="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduSubject">
+    <resultMap id="SubjectsResultMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubject">
         <result column="category_name" jdbcType="VARCHAR" property="categoryName"/>
     </resultMap>
 
@@ -62,7 +62,7 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubject">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubject">
     insert into tab_pb_edu_subject (id, category, title, 
       type, difficulty, selects, 
       answer, answer_analysis, del_flag,
@@ -76,7 +76,7 @@
       #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, 
       #{updateUsername,jdbcType=VARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubject">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubject">
         insert into tab_pb_edu_subject
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -173,7 +173,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByIdSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubject">
+    <update id="updateByIdSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubject">
         update tab_pb_edu_subject
         <set>
             <if test="category != null">
@@ -221,7 +221,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubject">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubject">
     update tab_pb_edu_subject
     set category = #{category,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbParticipantMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbParticipant">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbParticipantMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbParticipant">
         <id column="participant_id" jdbcType="BIGINT" property="participantId"/>
         <result column="activities_id" jdbcType="BIGINT" property="activitiesId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -41,14 +41,14 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbParticipant">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbParticipant">
         <result column="performance" jdbcType="LONGVARCHAR" property="performance"/>
         <result column="speech" jdbcType="LONGVARCHAR" property="speech"/>
         <result column="org_assess_content" jdbcType="LONGVARCHAR" property="orgAssessContent"/>
         <result column="parent_org_assess_content" jdbcType="LONGVARCHAR" property="parentOrgAssessContent"/>
     </resultMap>
 
-    <!--<resultMap id="BaseResultSign"  extends="BaseResultMap" type="com.yizheng.partybuilding.dto.PartyOrganizationActivitiesDto">-->
+    <!--<resultMap id="BaseResultSign"  extends="BaseResultMap" type="PartyOrganizationActivitiesDto">-->
         <!--<result column="signname" property="signName" jdbcType="VARCHAR"/>-->
         <!--<result column="nosignname" property="nosignName" jdbcType="VARCHAR"/>-->
     <!--</resultMap>-->
@@ -75,7 +75,7 @@
     delete from tab_pb_participant
     where activities_id = #{activitiesId,jdbcType=BIGINT}
   </delete>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbParticipant">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbParticipant">
         insert into tab_pb_participant
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="activitiesId != null">
@@ -304,7 +304,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbParticipant">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbParticipant">
         update tab_pb_participant
         <set>
             <if test="userId != null">
@@ -418,7 +418,7 @@
         </set>
         where participant_id = #{participantId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbParticipant">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbParticipant">
     update tab_pb_participant
     set activities_id = #{activitiesId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},
@@ -459,7 +459,7 @@
       parent_org_assess_content = #{parentOrgAssessContent,jdbcType=LONGVARCHAR}
     where participant_id = #{participantId,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbParticipant">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbParticipant">
     update tab_pb_participant
     set activities_id = #{activitiesId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},
@@ -533,12 +533,12 @@
     </insert>
 
 
-    <select id="ifModerator" parameterType="com.yizheng.partybuilding.entity.TabPbParticipant">
+    <select id="ifModerator" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbParticipant">
             SELECT * FROM tab_pb_participant WHERE if_moderator =1 and activities_id= #{activitiesId}
 
     </select>
 
-    <select id="selectCountByParticipant" parameterType="com.yizheng.partybuilding.entity.TabPbParticipant"
+    <select id="selectCountByParticipant" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbParticipant"
             resultType="java.lang.Integer">
         select count(*) from  tab_pb_participant
         where activities_id = #{activitiesId,jdbcType=BIGINT}

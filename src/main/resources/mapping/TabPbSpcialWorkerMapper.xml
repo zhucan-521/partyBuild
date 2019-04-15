@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbSpcialWorkerMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbSpcialWorker">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbSpcialWorkerMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker">
         <id column="special_worker_id" jdbcType="BIGINT" property="specialWorkerId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="manage_org_id" jdbcType="BIGINT" property="manageOrgId"/>
@@ -20,16 +20,16 @@
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
-               type="com.yizheng.partybuilding.entity.TabPbSpcialWorker">
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker">
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
     </resultMap>
 
-    <resultMap id="SysUserRoleMap" type="com.yizheng.partybuilding.system.entity.SysUserRole">
+    <resultMap id="SysUserRoleMap" type="com.egovchina.partybuilding.partybuild.system.entity.SysUserRole">
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="role_id" jdbcType="BIGINT" property="roleId"/>
     </resultMap>
 
-    <resultMap id="tabSpecialWorkerDtoMap" extends="BaseResultMap" type="com.yizheng.partybuilding.dto.TabSpecialWorkerResultDto">
+    <resultMap id="tabSpecialWorkerDtoMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabSpecialWorkerResultDto">
         <id column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
@@ -150,7 +150,7 @@
     delete from tab_pb_spcial_worker
     where special_worker_id = #{specialWorkerId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" useGeneratedKeys="true"  keyProperty="specialWorkerId" parameterType="com.yizheng.partybuilding.entity.TabPbSpcialWorker">
+    <insert id="insert" useGeneratedKeys="true"  keyProperty="specialWorkerId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker">
     insert into tab_pb_spcial_worker (special_worker_id, user_id, manage_org_id, 
       arrive_time, left_time, ebl_flag, 
       del_flag, order_num, description, 
@@ -164,7 +164,7 @@
       #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
       #{version,jdbcType=BIGINT}, #{comment,jdbcType=LONGVARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbSpcialWorker">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker">
         insert into tab_pb_spcial_worker
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="specialWorkerId != null">
@@ -273,7 +273,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbSpcialWorker">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker">
         update tab_pb_spcial_worker
         <set>
             <if test="userId != null">
@@ -327,7 +327,7 @@
         </set>
         where special_worker_id = #{specialWorkerId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbSpcialWorker">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker">
     update tab_pb_spcial_worker
     set user_id = #{userId,jdbcType=BIGINT},
       manage_org_id = #{manageOrgId,jdbcType=BIGINT},
@@ -347,7 +347,7 @@
       comment = #{comment,jdbcType=LONGVARCHAR}
     where special_worker_id = #{specialWorkerId,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbSpcialWorker">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker">
     update tab_pb_spcial_worker
     set user_id = #{userId,jdbcType=BIGINT},
       manage_org_id = #{manageOrgId,jdbcType=BIGINT},
@@ -374,7 +374,7 @@
 
 
     <!--查询专干党员信息-->
-    <select id="selectAllTabSpecialWorkerDto" parameterType="com.yizheng.partybuilding.dto.TabSpecialWorkerResultDto" resultMap="tabSpecialWorkerDtoMap">
+    <select id="selectAllTabSpecialWorkerDto" parameterType="com.egovchina.partybuilding.partybuild.dto.TabSpecialWorkerResultDto" resultMap="tabSpecialWorkerDtoMap">
     SELECT
         sw.special_worker_id,
         d.contactor,
@@ -442,7 +442,7 @@
     </delete>
 
     <!--判断专干是否已经在XX组织里面-->
-    <select id="checkSpecialWorkerOndeptId" parameterType="com.yizheng.partybuilding.dto.TabSpecialWorkerResultDto" resultMap="tabSpecialWorkerDtoMap">
+    <select id="checkSpecialWorkerOndeptId" parameterType="com.egovchina.partybuilding.partybuild.dto.TabSpecialWorkerResultDto" resultMap="tabSpecialWorkerDtoMap">
       select
       *
       from
@@ -456,7 +456,7 @@
 
 
     <!--根据mangerId和userId寻找专干主键-->
-    <select id="selectSpecialWorkerIdByIdcard" parameterType="com.yizheng.partybuilding.dto.TabSpecialWorkerResultDto" resultType="Long">
+    <select id="selectSpecialWorkerIdByIdcard" parameterType="com.egovchina.partybuilding.partybuild.dto.TabSpecialWorkerResultDto" resultType="Long">
       select
       special_worker_id
       from
@@ -470,7 +470,7 @@
     </select>
 
     <!--单个详情查询-->
-    <select id="selectOneById" parameterType="com.yizheng.partybuilding.dto.TabSpecialWorkerResultDto" resultMap="tabSpecialWorkerDtoMap">
+    <select id="selectOneById" parameterType="com.egovchina.partybuilding.partybuild.dto.TabSpecialWorkerResultDto" resultMap="tabSpecialWorkerDtoMap">
     SELECT
     sw.special_worker_id,
     d.contactor,

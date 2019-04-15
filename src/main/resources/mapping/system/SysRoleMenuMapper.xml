@@ -2,10 +2,10 @@
 
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.system.mapper.SysRoleMenuMapper">
+<mapper namespace="com.egovchina.partybuilding.partybuild.system.mapper.SysRoleMenuMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.system.entity.SysRoleMenu">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.system.entity.SysRoleMenu">
         <id column="role_id" property="roleId"/>
         <result column="menu_id" property="menuId"/>
     </resultMap>

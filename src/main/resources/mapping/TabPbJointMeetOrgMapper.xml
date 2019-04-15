@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbJointMeetOrgMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbJointMeetOrg">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbJointMeetOrgMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbJointMeetOrg">
         <id column="member_org_id" jdbcType="BIGINT" property="memberOrgId"/>
         <result column="joint_meet_id" jdbcType="BIGINT" property="jointMeetId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
@@ -36,7 +36,7 @@
         where member_org_id = #{memberOrgId,jdbcType=BIGINT}
     </select>
 
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbJointMeetOrg">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbJointMeetOrg">
         insert into tab_pb_joint_meet_org
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="memberOrgId != null">
@@ -134,7 +134,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbJointMeetOrg">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbJointMeetOrg">
         update tab_pb_joint_meet_org
         <set>
             <if test="orgId != null">
@@ -181,7 +181,7 @@
     </update>
 
 
-    <update id="update" parameterType="com.yizheng.partybuilding.entity.TabPbJointMeetOrg">
+    <update id="update" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbJointMeetOrg">
         update tab_pb_joint_meet_org
         <set>
 

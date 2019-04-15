@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbMsgNoticeMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbMsgNotice">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbMsgNoticeMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
@@ -18,7 +18,7 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
         <result column="signing_situation" property="signingSituation"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbMsgNotice">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice">
         <result column="notice_content" jdbcType="LONGVARCHAR" property="noticeContent"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -37,16 +37,16 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="selectNoticeList" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNotice" resultMap="ResultMapWithBLOBs">
-        SELECT a.*,COUNT(if(attac.attachment_file_type=${@com.yizheng.commons.util.AttachmentType@PHOTO},TRUE,NULL)) AS photo,
-        COUNT(if(attac.attachment_file_type=${@com.yizheng.commons.util.AttachmentType@DOC},TRUE,NULL)) AS doc
+    <select id="selectNoticeList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice" resultMap="ResultMapWithBLOBs">
+        SELECT a.*,COUNT(if(attac.attachment_file_type=${@com.egovchina.partybuilding.common.util.AttachmentType@PHOTO},TRUE,NULL)) AS photo,
+        COUNT(if(attac.attachment_file_type=${@com.egovchina.partybuilding.common.util.AttachmentType@DOC},TRUE,NULL)) AS doc
         FROM (SELECT notice.*,CONCAT(COUNT(nDept.recevie_username),'/',COUNT(nDept.id)) AS signing_situation
         FROM tab_pb_msg_notice notice
         JOIN tab_pb_msg_notice_dept nDept ON nDept.notice_id = notice.id
         WHERE notice.del_flag = '0'
         GROUP BY nDept.notice_id) a
         LEFT JOIN tab_pb_attachment attac ON attac.host_id = a.id
-        AND attac.attachment_type = ${@com.yizheng.commons.util.AttachmentType@NOTICE}
+        AND attac.attachment_type = ${@com.egovchina.partybuilding.common.util.AttachmentType@NOTICE}
         and attac.del_flag = '0'
         join sys_dept dept on dept.dept_id = a.dept_id and dept.del_flag = '0'
         where true
@@ -77,7 +77,7 @@
     </select>
 
     <!--发布|取消发布-->
-    <update id="editState" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNotice">
+    <update id="editState" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice">
         update tab_pb_msg_notice
         <set>
             <if test="state != null">
@@ -92,7 +92,7 @@
     delete from tab_pb_msg_notice
     where id = #{id,jdbcType=BIGINT}
   </delete>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNotice" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice" useGeneratedKeys="true" keyProperty="id">
         insert into tab_pb_msg_notice
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="deptId != null">
@@ -183,7 +183,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNotice">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice">
         update tab_pb_msg_notice
         <set>
             <if test="deptId != null">
@@ -223,7 +223,7 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <update id="tombstone" parameterType="com.yizheng.partybuilding.entity.TabPbMsgNotice">
+    <update id="tombstone" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice">
         update tab_pb_msg_notice
         <set>
             del_flag = 1,

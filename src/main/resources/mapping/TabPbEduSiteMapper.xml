@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduSiteMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduSite">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduSiteMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduSite">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="region" jdbcType="BIGINT" property="region"/>
         <result column="site_name" jdbcType="VARCHAR" property="siteName"/>
@@ -34,15 +34,15 @@
     </resultMap>
     <!--包含关联数据的ResultMap-->
     <resultMap extends="BaseResultMap" id="WithAboutInfoResultMap"
-               type="com.yizheng.partybuilding.dto.TabPbEduSiteDto">
+               type="com.egovchina.partybuilding.partybuild.dto.TabPbEduSiteDto">
         <collection property="activitys"
-                    select="com.yizheng.partybuilding.repository.TabPbEduSiteActivityMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbEduSiteActivityMapper.selectWithConditions"
                     column="delFlag=del_flag,siteId=id"/>
         <collection property="devices"
-                    select="com.yizheng.partybuilding.repository.TabPbEduSiteDeviceMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbEduSiteDeviceMapper.selectWithConditions"
                     column="delFlag=del_flag,siteId=id"/>
         <collection property="attachments"
-                    select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=id,attachmentType=attachment_type}"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -146,7 +146,7 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
     <insert id="insert" useGeneratedKeys="true" keyProperty="id"
-            parameterType="com.yizheng.partybuilding.entity.TabPbEduSite">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSite">
     insert into tab_pb_edu_site (id, region, site_name, 
       if_position, site_type, site_time, 
       site_net_play, site_address, site_grid,
@@ -170,7 +170,7 @@
       )
   </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
-            parameterType="com.yizheng.partybuilding.entity.TabPbEduSite">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSite">
         insert into tab_pb_edu_site
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -345,7 +345,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSite">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSite">
         update tab_pb_edu_site
         <set>
             <if test="region != null">
@@ -432,7 +432,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduSite">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSite">
     update tab_pb_edu_site
     set region = #{region,jdbcType=BIGINT},
       site_name = #{siteName,jdbcType=VARCHAR},

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbSubjectTagMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbSubjectTag">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbSubjectTagMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbSubjectTag">
         <id column="tag_id" jdbcType="BIGINT" property="tagId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="statistic_flag" jdbcType="BIT" property="statisticFlag"/>
@@ -31,7 +31,7 @@
     delete from tab_pb_subject_tag
     where tag_id = #{tagId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbSubjectTag">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSubjectTag">
     insert into tab_pb_subject_tag (tag_id, name, statistic_flag, 
       ebl_flag, del_flag, order_num,
       range, remark, create_time,
@@ -43,7 +43,7 @@
       #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbSubjectTag">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSubjectTag">
         insert into tab_pb_subject_tag
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="tagId != null">
@@ -134,7 +134,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbSubjectTag">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSubjectTag">
         update tab_pb_subject_tag
         <set>
             <if test="name != null">
@@ -179,7 +179,7 @@
         </set>
         where tag_id = #{tagId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbSubjectTag">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSubjectTag">
     update tab_pb_subject_tag
     set name = #{name,jdbcType=VARCHAR},
       statistic_flag = #{statisticFlag,jdbcType=BIT},
@@ -202,7 +202,7 @@
     select * from tab_pb_subject_tag where tag_id = #{tagId,jdbcType=BIGINT} and del_flag=0
   </select>
 
-    <select id="findByRange" resultType="com.yizheng.partybuilding.entity.TabPbSubjectTag">
+    <select id="findByRange" resultType="com.egovchina.partybuilding.partybuild.entity.TabPbSubjectTag">
         SELECT * from tab_pb_subject_tag where del_flag=0 and scope in
         <foreach collection="list" index="index" item="item" open="(" separator="" close=")">
             #{item}
