@@ -306,10 +306,10 @@ public class TabPbDevPartyMemberServiceImpl implements ITabPbDevPartyMemberServi
                 canSave.add(attach);
             });
             return canSave;
-        } else if (!isEmpty(dto.getExtendAttach()) && !dto.getExtendAttach().isEmpty()) {
-            dto.getExtendAttach().forEach(v -> v.setAttachmentId(null));
-            dto.getExtendAttach().forEach(this::attach);
-            return dto.getExtendAttach();
+        } else if (!isEmpty(dto.getAttachments()) && !dto.getAttachments().isEmpty()) {
+            dto.getAttachments().forEach(v -> v.setAttachmentId(null));
+            dto.getAttachments().forEach(this::attach);
+            return dto.getAttachments();
         }
         return EMPTY_LIST;
     }
