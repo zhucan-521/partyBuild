@@ -1,7 +1,9 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
 import com.egovchina.partybuilding.partybuild.dto.SysUserDto;
-import com.egovchina.partybuilding.partybuild.service.SysUserService;
+import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
+import com.egovchina.partybuilding.partybuild.service.PartyInformationService;
+import com.egovchina.partybuilding.partybuild.system.service.SysUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,18 +20,18 @@ import org.springframework.web.bind.annotation.*;
 public class PartyInfoController {
 
     @Autowired
-    private SysUserService userService;
+    private PartyInformationService partyInformationService;
 
-    @ApiOperation(value = "党员信息补录", notes = "党员信息补录", httpMethod = "POST")
+    @ApiOperation(value = "补录党员信息", notes = "补录党员信息", httpMethod = "POST")
     @PostMapping("/save")
     public int save(@RequestBody SysUserDto sysUser) {
-        return userService.saveSysUserInfo(sysUser);
+        return partyInformationService.saveSysUserInfo(sysUser);
     }
 
-    @ApiOperation(value = "党员信息更新", notes = "党员信息更新", httpMethod = "PUT")
+    @ApiOperation(value = "更新党员信息", notes = "更新党员信息", httpMethod = "PUT")
     @PutMapping("/update")
     public int updateSysUserInfo(@RequestBody SysUserDto sysUser) {
-        return userService.updateSysUserInfo(sysUser);
+        return partyInformationService.updateSysUserInfo(sysUser);
     }
 
 }
