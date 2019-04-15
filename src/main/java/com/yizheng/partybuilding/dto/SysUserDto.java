@@ -5,6 +5,7 @@ import com.yizheng.partybuilding.entity.TabPbPartyJobTitle;
 import com.yizheng.partybuilding.entity.TabPbPartyWork;
 import com.yizheng.partybuilding.system.entity.SysUser;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
  * Created by FanYanGen on 2019/4/11 16:00
  */
 @Data
+@AllArgsConstructor
 public class SysUserDto {
 
     @ApiModelProperty(value = "党员")

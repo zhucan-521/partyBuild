@@ -1,18 +1,11 @@
 package com.yizheng.partybuilding.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.yizheng.partybuilding.dto.SysUserDto;
-import com.yizheng.partybuilding.entity.TabPbPartyEducation;
-import com.yizheng.partybuilding.entity.TabPbPartyJobTitle;
-import com.yizheng.partybuilding.entity.TabPbPartyWork;
 import com.yizheng.partybuilding.service.inf.*;
-import com.yizheng.partybuilding.system.entity.SysUser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * desc: 党员信息
@@ -21,7 +14,7 @@ import java.util.List;
  */
 @Api(tags = "党员-党员信息模块v2-范焱根")
 @RestController
-@RequestMapping("/partyv2")
+@RequestMapping("/party/v2")
 public class PartyInfoController {
 
     @Autowired

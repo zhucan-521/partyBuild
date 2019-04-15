@@ -106,14 +106,15 @@ public interface TabSysUserMapper {
      * @param deptId
      * @return
      */
-    List<Personnel> selectUserByDeptId(@Param("deptId")Long deptId);
+    List<Personnel> selectUserByDeptId(@Param("deptId") Long deptId);
 
     /**
      * 查询组织下的直属党员
+     *
      * @param deptId
      * @return
      */
-    List<Personnel> getAllUserByDeptId(@Param("deptId")Long deptId);
+    List<Personnel> getAllUserByDeptId(@Param("deptId") Long deptId);
 
     void updateNoPoor(Long userId);
 
@@ -121,6 +122,7 @@ public interface TabSysUserMapper {
 
     /**
      * 选人接口(根据主键id或者报到组织id进行筛选必填其中一项)
+     *
      * @param user
      * @return
      */
@@ -128,18 +130,21 @@ public interface TabSysUserMapper {
 
     /**
      * 修改社区报到信息
+     *
      * @param user
      */
     void editUserRegister(SysUser user);
 
     /**
      * 根据id逻辑删除
+     *
      * @param userId
      */
     void flagDelete(Long userId);
 
     /**
      * 保存家庭成员信息并返回自增长Id
+     *
      * @param sysUser
      * @return
      */
@@ -147,17 +152,30 @@ public interface TabSysUserMapper {
 
     /**
      * 判断是否属于此节点
-     * @param ordId 当前登录人的组织id
+     *
+     * @param ordId  当前登录人的组织id
      * @param deptId 传进来的组织id
      * @return
      */
-    Boolean verification(@Param("orgId")Long ordId,@Param("deptId")Long deptId);
+    Boolean verification(@Param("orgId") Long ordId, @Param("deptId") Long deptId);
 
     /**
      * 修改头像
+     *
      * @param avatar
      * @param userId
      * @return
      */
-    int editAvatar(@Param("avatar") String avatar,@Param("userId")String userId);
+    int editAvatar(@Param("avatar") String avatar, @Param("userId") String userId);
+
+    /**
+     * desc: 根据用户Id查询该用户是否存在
+     *
+     * @param userId 用户Id
+     * @return 受影响行数
+     * @author FanYanGen
+     * @date 2019/4/15 9:32
+     **/
+    int checkIsExistByUserId(Integer userId);
+
 }

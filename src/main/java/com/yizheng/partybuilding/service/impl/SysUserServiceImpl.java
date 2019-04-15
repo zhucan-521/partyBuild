@@ -3,8 +3,6 @@ package com.yizheng.partybuilding.service.impl;
 import com.yizheng.commons.config.PaddingBaseField;
 import com.yizheng.commons.exception.BusinessDataCheckFailException;
 import com.yizheng.commons.exception.BusinessDataIncompleteException;
-import com.yizheng.commons.util.BeanUtil;
-import com.yizheng.commons.util.UserContextHolder;
 import com.yizheng.partybuilding.dto.SysUserDto;
 import com.yizheng.partybuilding.entity.TabPbPartyEducation;
 import com.yizheng.partybuilding.entity.TabPbPartyJobTitle;
@@ -15,18 +13,12 @@ import com.yizheng.partybuilding.repository.TabPbPartyWorkMapper;
 import com.yizheng.partybuilding.repository.TabSysUserMapper;
 import com.yizheng.partybuilding.service.inf.*;
 import com.yizheng.partybuilding.system.entity.SysUser;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
+import sun.java2d.pipe.SpanIterator;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import static org.springframework.util.StringUtils.isEmpty;
 
 /**
  * desc: 党员信息-业务逻辑层接口实现
@@ -47,22 +39,20 @@ public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private TabPbPartyWorkMapper tabPbPartyWorkMapper;
 
-
     @Override
     @PaddingBaseField(recursive = true)
     @Transactional(rollbackFor = Exception.class)
     public int saveSysUserInfo(SysUserDto sysUser) {
-        SysUser user = sysUser.getSysUser();
-        if (null != tabSysUserMapper.selectUserByIdCardNo(user.getIdCardNo())) {
+        SysUserDto sysUserDto = parseSysUserDto(sysUser);
+        if (null != tabSysUserMapper.selectUserByIdCardNo(sysUserDto.getSysUser().getIdCardNo())) {
             throw new BusinessDataCheckFailException("此人已经是党员！");
         }
-        user.setIdentityType(59423L);
-        tabSysUserMapper.insertSelective(user);
-        SysUserDto sysUserDto = parseSysUserDto(sysUser);
+        sysUserDto.getSysUser().setIdentityType(59423L);
+        tabSysUserMapper.insertSelective(sysUserDto.getSysUser());
         int addEducationRes = tabPbPartyEducationMapper.batchInsert(sysUserDto.getEducationList());
         int addJobTitleRes = tabPbPartyJobTitleMapper.batchInsert(sysUserDto.getJobTitleList());
         int addWorkRes = tabPbPartyWorkMapper.batchInsert(sysUser.getWorkList());
-        if (0 < user.getUserId() && 0 < addEducationRes && 0 < addJobTitleRes && 0 < addWorkRes) {
+        if (0 < sysUserDto.getSysUser().getUserId() && 0 < addEducationRes && 0 < addJobTitleRes && 0 < addWorkRes) {
             return 1;
         }
         return 0;
@@ -72,12 +62,6 @@ public class SysUserServiceImpl implements SysUserService {
     @PaddingBaseField(recursive = true)
     @Transactional(rollbackFor = Exception.class)
     public int updateSysUserInfo(SysUserDto sysUser) {
-        if (isEmpty(sysUser.getSysUser().getUserId())) {
-            throw new BusinessDataIncompleteException("人员id不存在");
-        }
-        if (isEmpty(sysUser.getSysUser().getAncestorPlace())) {
-            throw new BusinessDataIncompleteException("籍贯不能为空");
-        }
         SysUserDto sysUserDto = parseSysUserDto(sysUser);
         int updateUserRes = tabSysUserMapper.updateByPrimaryKeySelective(sysUser.getSysUser());
         int updateEducationRes = tabPbPartyEducationMapper.batchUpdate(sysUser.getEducationList());
@@ -90,29 +74,27 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     private SysUserDto parseSysUserDto(SysUserDto sysUser) {
-        SysUserDto sysUserDto = new SysUserDto();
-        long currentUserId = tabSysUserMapper.selectByPrimaryKey(sysUser.getSysUser().getUserId().longValue()).getUserId();
+        long currentUserId;
+        if (0 == tabSysUserMapper.checkIsExistByUserId(sysUser.getSysUser().getUserId())) {
+            throw new BusinessDataIncompleteException("用户ID不存在!!!");
+        } else {
+            currentUserId = tabSysUserMapper.selectByPrimaryKey(sysUser.getSysUser().getUserId().longValue()).getUserId();
+        }
+
         List<TabPbPartyEducation> educationList = sysUser.getEducationList();
         List<TabPbPartyJobTitle> jobTitleList = sysUser.getJobTitleList();
         List<TabPbPartyWork> workList = sysUser.getWorkList();
-
         educationList.forEach(eudcation -> {
             eudcation.setUserId(currentUserId);
         });
-
         jobTitleList.forEach(job -> {
             job.setUserId(currentUserId);
         });
-
         workList.forEach(work -> {
             work.setUserId(currentUserId);
         });
 
-        sysUserDto.setSysUser(sysUser.getSysUser());
-        sysUserDto.setEducationList(educationList);
-        sysUserDto.setJobTitleList(jobTitleList);
-        sysUserDto.setWorkList(workList);
-        return sysUserDto;
+        return new SysUserDto(sysUser.getSysUser(), educationList, jobTitleList, workList);
     }
 
 }
