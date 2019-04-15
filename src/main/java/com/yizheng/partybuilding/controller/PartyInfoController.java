@@ -36,7 +36,6 @@ public class PartyInfoController {
     @ApiOperation(value = "党员信息更新", notes = "党员信息更新", httpMethod = "PUT")
     @PutMapping("/update")
     public int updateSysUserInfo(@RequestBody SysUserDto sysUser) {
-        System.out.println(JSON.toJSONString(sysUser));
         return userService.updateSysUserInfo(sysUser);
     }
 
