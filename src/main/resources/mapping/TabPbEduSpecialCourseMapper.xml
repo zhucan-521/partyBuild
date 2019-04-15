@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduSpecialCourseMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduSpecialCourse">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduSpecialCourseMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduSpecialCourse">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="special_id" jdbcType="BIGINT" property="specialId"/>
         <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
@@ -47,7 +47,7 @@
     delete from tab_pb_edu_special_course
     where id = #{id,jdbcType=BIGINT}
     </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduSpecialCourse">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSpecialCourse">
     insert into tab_pb_edu_special_course (id, special_id, order_num, 
       course_time, type_lable, title, 
       content, del_flag, create_time, 
@@ -59,7 +59,7 @@
       #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR})
     </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSpecialCourse">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSpecialCourse">
         insert into tab_pb_edu_special_course
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -150,7 +150,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSpecialCourse">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSpecialCourse">
         update tab_pb_edu_special_course
         <set>
             <if test="specialId != null">
@@ -195,7 +195,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduSpecialCourse">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSpecialCourse">
     update tab_pb_edu_special_course
     set special_id = #{specialId,jdbcType=BIGINT},
       order_num = #{orderNum,jdbcType=BIGINT},

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduTrainCourseMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduTrainCourse">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduTrainCourseMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainCourse">
         <id column="id" jdbcType="BIGINT" property="id" />
         <result column="train_id" jdbcType="BIGINT" property="trainId" />
         <result column="order_num" jdbcType="BIGINT" property="orderNum" />
@@ -28,7 +28,7 @@
     delete from tab_pb_edu_train_course
     where train_id = #{trainId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainCourse">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainCourse">
     insert into tab_pb_edu_train_course (id, train_id, order_num, 
       course_name, course_time, course_forms, 
       teacher_name, address)
@@ -46,7 +46,7 @@
             #{course.teacherName,jdbcType=VARCHAR}, #{course.address,jdbcType=VARCHAR})
         </foreach>
     </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainCourse">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainCourse">
         insert into tab_pb_edu_train_course
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -101,7 +101,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainCourse">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainCourse">
         update tab_pb_edu_train_course
         <set>
             <if test="trainId != null">
@@ -128,7 +128,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrainCourse">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainCourse">
     update tab_pb_edu_train_course
     set train_id = #{trainId,jdbcType=BIGINT},
       order_num = #{orderNum,jdbcType=BIGINT},

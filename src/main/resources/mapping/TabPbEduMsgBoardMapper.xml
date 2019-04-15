@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduMsgBoardMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduMsgBoard">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduMsgBoardMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduMsgBoard">
         <id column="msg_id" jdbcType="BIGINT" property="msgId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="msg_type" jdbcType="VARCHAR" property="msgType"/>
@@ -10,7 +10,7 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
 
-    <resultMap extends="BaseResultMap" id="BaseResultByIdMap" type="com.yizheng.partybuilding.dto.TabPbEduMsgBoardDto">
+    <resultMap extends="BaseResultMap" id="BaseResultByIdMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbEduMsgBoardDto">
     <result column="attachment_instance" jdbcType="VARCHAR" property="attachment"/>
 
     </resultMap>
@@ -42,7 +42,7 @@
     delete from tab_pb_edu_msg_board
     where msg_id = #{msgId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert"  useGeneratedKeys="true" keyProperty="msgId" parameterType="com.yizheng.partybuilding.dto.TabPbEduMsgBoardDto">
+    <insert id="insert"  useGeneratedKeys="true" keyProperty="msgId" parameterType="com.egovchina.partybuilding.partybuild.dto.TabPbEduMsgBoardDto">
     insert into tab_pb_edu_msg_board (msg_id, user_id, msg_type, 
       title, content, create_time,bus_id
       )
@@ -51,7 +51,7 @@
        #{busId,jdbcType=BIGINT}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduMsgBoard">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduMsgBoard">
         insert into tab_pb_edu_msg_board
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="msgId != null">
@@ -94,7 +94,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduMsgBoard">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduMsgBoard">
         update tab_pb_edu_msg_board
         <set>
             <if test="userId != null">
@@ -115,7 +115,7 @@
         </set>
         where msg_id = #{msgId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduMsgBoard">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduMsgBoard">
     update tab_pb_edu_msg_board
     set user_id = #{userId,jdbcType=BIGINT},
       msg_type = #{msgType,jdbcType=VARCHAR},
@@ -139,7 +139,7 @@
     </select>
 
     <!-- 根据业务id和类型 查询评论的次数-->
-    <select id="selectMsgBoardCount" parameterType="com.yizheng.partybuilding.entity.TabPbEduMsgBoard" resultType="java.lang.Long">
+    <select id="selectMsgBoardCount" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduMsgBoard" resultType="java.lang.Long">
         select count(*) from tab_pb_edu_msg_board
         <where>
             <if test="busId !=null">

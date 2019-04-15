@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.PanelStatisticsMapper">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.PanelStatisticsMapper">
 
     <!--统计-支部活动相关工作情况-->
-    <select id="calculateBranchWorkInfoForActivity" parameterType="java.util.Map" resultType="com.yizheng.partybuilding.entity.PanelStatistics">
+    <select id="calculateBranchWorkInfoForActivity" parameterType="java.util.Map" resultType="com.egovchina.partybuilding.partybuild.entity.PanelStatistics">
         SELECT
             t.task_id AS taskId,
             t.remarks AS anchor,
@@ -43,7 +43,7 @@
     </select>
 
     <!--统计-非支部活动相关工作情况-->
-    <select id="calculateUnBranchWorkInfoForActivity" parameterType="java.util.Map" resultType="com.yizheng.partybuilding.entity.PanelStatistics">
+    <select id="calculateUnBranchWorkInfoForActivity" parameterType="java.util.Map" resultType="com.egovchina.partybuilding.partybuild.entity.PanelStatistics">
 
           SELECT
                 stc.task_id AS taskId,
@@ -126,7 +126,7 @@
 
     <!--查询活动相关工作详情列表-->
     <select id="selectDetailWorkInfoForActivityWithConditions" parameterType="java.util.Map"
-            resultType="com.yizheng.partybuilding.entity.PanelStatisticsDetail">
+            resultType="com.egovchina.partybuilding.partybuild.entity.PanelStatisticsDetail">
         SELECT
             t.parentOrgName,
             t.orgName,

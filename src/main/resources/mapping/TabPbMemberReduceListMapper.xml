@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbMemberReduceListMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbMemberReduceList">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbMemberReduceListMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
         <id column="member_reduce_id" jdbcType="BIGINT" property="memberReduceId"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -29,7 +29,7 @@
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
-               type="com.yizheng.partybuilding.entity.TabPbMemberReduceList">
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
         <result column="person_status" jdbcType="LONGVARCHAR" property="personStatus"/>
     </resultMap>
@@ -42,11 +42,11 @@
     <sql id="Blob_Column_List">
     comment, person_status
   </sql>
-    <select id="historyPartyPage" parameterType="com.yizheng.partybuilding.entity.TabPbMemberReduceList"
-            resultMap="com.yizheng.partybuilding.repository.TabSysUserMapper.BaseResultMap">
+    <select id="historyPartyPage" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList"
+            resultMap="com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper.BaseResultMap">
         select
         u.* ,d.name as in_where_dept_name,
-        <include refid="com.yizheng.partybuilding.repository.TabSysUserMapper.registry_status_name"/>
+        <include refid="com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper.registry_status_name"/>
         from tab_pb_member_reduce_list r
         JOIN sys_user u on r.user_id = u.user_id
         JOIN sys_dept d on r.dept_id = d.dept_id
@@ -101,7 +101,7 @@
     delete from tab_pb_member_reduce_list
     where member_reduce_id = #{memberReduceId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbMemberReduceList">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
     insert into tab_pb_member_reduce_list (member_reduce_id, dept_id, user_id, 
       real_name, reduce_time, out_type, 
       to_org_id, to_org_code, to_org_name, 
@@ -123,7 +123,7 @@
       #{version,jdbcType=BIGINT}, #{comment,jdbcType=LONGVARCHAR}, #{personStatus,jdbcType=LONGVARCHAR}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbMemberReduceList">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
         insert into tab_pb_member_reduce_list
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="memberReduceId != null">
@@ -292,7 +292,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbMemberReduceList">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
         update tab_pb_member_reduce_list
         <set>
             <if test="deptId != null">
@@ -376,7 +376,7 @@
         </set>
         where member_reduce_id = #{memberReduceId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbMemberReduceList">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
     update tab_pb_member_reduce_list
     set dept_id = #{deptId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},
@@ -406,7 +406,7 @@
       person_status = #{personStatus,jdbcType=LONGVARCHAR}
     where member_reduce_id = #{memberReduceId,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbMemberReduceList">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
     update tab_pb_member_reduce_list
     set dept_id = #{deptId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},

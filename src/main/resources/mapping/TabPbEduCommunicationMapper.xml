@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduCommunicationMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduCommunication">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduCommunicationMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduCommunication">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="type" jdbcType="BIGINT" property="type"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
@@ -16,7 +16,7 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
-               type="com.yizheng.partybuilding.entity.TabPbEduCommunication">
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbEduCommunication">
         <result column="content" jdbcType="LONGVARCHAR" property="content"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -26,7 +26,7 @@
     <sql id="Blob_Column_List">
     content
   </sql>
-    <select id="selectKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduCommunication" resultMap="ResultMapWithBLOBs">
+    <select id="selectKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduCommunication" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
         ,
@@ -41,7 +41,7 @@
     delete from tab_pb_edu_communication
     where id = #{id,jdbcType=BIGINT}
   </delete>
-    <insert id="insertAll" parameterType="com.yizheng.partybuilding.entity.TabPbEduCommunication">
+    <insert id="insertAll" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduCommunication">
     insert into tab_pb_edu_communication (id, type, title, 
       remark, del_flag, order_num, 
       create_time, create_userid, create_username, 
@@ -53,7 +53,7 @@
       #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
       #{content,jdbcType=LONGVARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduCommunication">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduCommunication">
         insert into tab_pb_edu_communication
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -138,9 +138,12 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduCommunication">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduCommunication">
         update tab_pb_edu_communication
         <set>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
             <if test="title != null">
                 title = #{title,jdbcType=VARCHAR},
             </if>
@@ -168,7 +171,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbEduCommunication">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduCommunication">
     update tab_pb_edu_communication
     set type = #{type,jdbcType=BIGINT},
       title = #{title,jdbcType=VARCHAR},
@@ -184,7 +187,7 @@
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduCommunication">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduCommunication">
     update tab_pb_edu_communication
     set type = #{type,jdbcType=BIGINT},
       title = #{title,jdbcType=VARCHAR},
@@ -200,7 +203,7 @@
     where id = #{id,jdbcType=BIGINT}
   </update>
 
-    <update id="flagDelete" parameterType="com.yizheng.partybuilding.entity.TabPbEduCommunication">
+    <update id="flagDelete" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduCommunication">
         update tab_pb_edu_communication
         <set>
             del_flag = 1,

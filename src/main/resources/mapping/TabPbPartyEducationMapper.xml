@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbPartyEducationMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbPartyEducation">
+        <id column="education_id" jdbcType="BIGINT" property="educationId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="level" jdbcType="BIGINT" property="level"/>
+        <result column="degree" jdbcType="BIGINT" property="degree"/>
+        <result column="graduated_school" jdbcType="VARCHAR" property="graduatedSchool"/>
+        <result column="spec" jdbcType="VARCHAR" property="spec"/>
+        <result column="del_flag" jdbcType="BIT" property="delFlag"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    education_id, user_id, level, degree, graduated_school, spec, del_flag, create_time, 
+    create_userid, create_username, update_time, update_userid, update_username
+  </sql>
+
+    <!-- base method -->
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_party_education
+        where education_id = #{educationId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_party_education
+    where education_id = #{educationId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyEducation">
+    insert into tab_pb_party_education (education_id, user_id, level, 
+      degree, graduated_school, spec, 
+      del_flag, create_time, create_userid, 
+      create_username, update_time, update_userid, 
+      update_username)
+    values (#{educationId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{level,jdbcType=BIGINT},
+      #{degree,jdbcType=BIGINT}, #{graduatedSchool,jdbcType=VARCHAR}, #{spec,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, 
+      #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, 
+      #{updateUsername,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyEducation">
+        insert into tab_pb_party_education
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="educationId != null">
+                education_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="degree != null">
+                degree,
+            </if>
+            <if test="graduatedSchool != null">
+                graduated_school,
+            </if>
+            <if test="spec != null">
+                spec,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="educationId != null">
+                #{educationId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=BIGINT},
+            </if>
+            <if test="degree != null">
+                #{degree,jdbcType=BIGINT},
+            </if>
+            <if test="graduatedSchool != null">
+                #{graduatedSchool,jdbcType=VARCHAR},
+            </if>
+            <if test="spec != null">
+                #{spec,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyEducation">
+        update tab_pb_party_education
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="level != null">
+                level = #{level,jdbcType=BIGINT},
+            </if>
+            <if test="degree != null">
+                degree = #{degree,jdbcType=BIGINT},
+            </if>
+            <if test="graduatedSchool != null">
+                graduated_school = #{graduatedSchool,jdbcType=VARCHAR},
+            </if>
+            <if test="spec != null">
+                spec = #{spec,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=BIT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where education_id = #{educationId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyEducation">
+    update tab_pb_party_education
+    set user_id = #{userId,jdbcType=BIGINT},
+      level = #{level,jdbcType=BIGINT},
+      degree = #{degree,jdbcType=BIGINT},
+      graduated_school = #{graduatedSchool,jdbcType=VARCHAR},
+      spec = #{spec,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR}
+    where education_id = #{educationId,jdbcType=BIGINT}
+  </update>
+
+    <!-- custom method -->
+    <select id="findAllByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_party_education
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into tab_pb_party_education
+        (education_id, user_id, level,degree, graduated_school, spec,
+        create_time, create_userid,create_username, update_time, update_userid,update_username)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.educationId,jdbcType=BIGINT}, #{item.userId,jdbcType=BIGINT}, #{item.level,jdbcType=BIGINT},
+            #{item.degree,jdbcType=BIGINT}, #{item.graduatedSchool,jdbcType=VARCHAR}, #{item.spec,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.createUserid,jdbcType=BIGINT}, #{item.createUsername,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.updateUserid,jdbcType=BIGINT}, #{item.updateUsername,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update tab_pb_party_education
+            <set>
+                <if test="item.userId != null">
+                    user_id = #{item.userId,jdbcType=BIGINT},
+                </if>
+                <if test="item.level != null">
+                    level = #{item.level,jdbcType=BIGINT},
+                </if>
+                <if test="item.degree != null">
+                    degree = #{item.degree,jdbcType=BIGINT},
+                </if>
+                <if test="item.graduatedSchool != null">
+                    graduated_school = #{item.graduatedSchool,jdbcType=VARCHAR},
+                </if>
+                <if test="item.spec != null">
+                    spec = #{item.spec,jdbcType=VARCHAR},
+                </if>
+                <if test="item.delFlag != null">
+                    del_flag = #{item.delFlag,jdbcType=BIT},
+                </if>
+                <if test="item.createTime != null">
+                    create_time = #{item.createTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.createUserid != null">
+                    create_userid = #{item.createUserid,jdbcType=BIGINT},
+                </if>
+                <if test="item.createUsername != null">
+                    create_username = #{item.createUsername,jdbcType=VARCHAR},
+                </if>
+                <if test="item.updateTime != null">
+                    update_time = #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateUserid != null">
+                    update_userid = #{item.updateUserid,jdbcType=BIGINT},
+                </if>
+                <if test="item.updateUsername != null">
+                    update_username = #{item.updateUsername,jdbcType=VARCHAR},
+                </if>
+            </set>
+            where education_id = #{item.educationId,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
+
+</mapper>

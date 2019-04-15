@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduSpecialMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduSpecial">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduSpecialMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduSpecial">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="region" jdbcType="BIGINT" property="region"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
@@ -25,10 +25,10 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
     </resultMap>
     <resultMap id="TabPbEduSpecialDtoBaseResultMap" extends="BaseResultMap"
-               type="com.yizheng.partybuilding.dto.TabPbEduSpecialDto">
-        <association property="tabPbEduSpecialCourses" select="com.yizheng.partybuilding.repository.TabPbEduSpecialCourseMapper.selectWithConditions"
+               type="com.egovchina.partybuilding.partybuild.dto.TabPbEduSpecialDto">
+        <association property="tabPbEduSpecialCourses" select="com.egovchina.partybuilding.partybuild.repository.TabPbEduSpecialCourseMapper.selectWithConditions"
                      column="{specialId=id,delFlag=del_flag}" />
-        <association property="tabPbEduSpecialTeachers" select="com.yizheng.partybuilding.repository.TabPbEduSpecialTeacherMapper.selectWithConditions"
+        <association property="tabPbEduSpecialTeachers" select="com.egovchina.partybuilding.partybuild.repository.TabPbEduSpecialTeacherMapper.selectWithConditions"
                      column="{specialId=id,delFlag=del_flag}" />
     </resultMap>
     <sql id="Base_Column_List">
@@ -60,7 +60,7 @@
     delete from tab_pb_edu_special
     where id = #{id,jdbcType=BIGINT}
     </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduSpecial">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSpecial">
     insert into tab_pb_edu_special (id, region, title, 
       special_type, duration, course_manager, 
       postived, course_liaisons, cell_phone, 
@@ -78,7 +78,7 @@
       #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}
       )
     </insert>
-    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.yizheng.partybuilding.entity.TabPbEduSpecial">
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSpecial">
         insert into tab_pb_edu_special
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -211,7 +211,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSpecial">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSpecial">
         update tab_pb_edu_special
         <set>
             <if test="region != null">
@@ -277,7 +277,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduSpecial">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSpecial">
     update tab_pb_edu_special
     set region = #{region,jdbcType=BIGINT},
       title = #{title,jdbcType=VARCHAR},

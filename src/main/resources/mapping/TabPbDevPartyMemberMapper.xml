@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbDevPartyMemberMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbDevPartyMember">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbDevPartyMemberMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMember">
         <id column="dp_id" jdbcType="BIGINT" property="dpId"/>
         <result column="status" jdbcType="BIGINT" property="status"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -37,12 +37,12 @@
         <result column="dept_id" property="deptId"/>
     </resultMap>
 
-    <resultMap id="UserIdMap" type="com.yizheng.partybuilding.entity.TabPbDevPartyMember">
+    <resultMap id="UserIdMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMember">
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
     </resultMap>
 
     <!--发展党员信息-->
-    <resultMap id="PartyUserMap" type="com.yizheng.partybuilding.dto.DevPartyUserDto">
+    <resultMap id="PartyUserMap" type="com.egovchina.partybuilding.partybuild.dto.DevPartyUserDto">
         <result column="dp_id" jdbcType="BIGINT" property="dpId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
@@ -89,7 +89,7 @@
     where dp_id = #{dpId,jdbcType=BIGINT}
   </delete>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="dpId"
-            parameterType="com.yizheng.partybuilding.entity.TabPbDevPartyMember">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMember">
         insert into tab_pb_dev_party_member
         <trim prefix="(" suffix=")" suffixOverrides=",">
             status, user_id,
@@ -270,7 +270,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbDevPartyMember">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMember">
         update tab_pb_dev_party_member
         <set>
             <if test="delFlag != null">

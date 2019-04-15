@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduAnswerforsubjectMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduAnswerforsubject">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduAnswerforsubjectMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduAnswerforsubject">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="answer_id" jdbcType="INTEGER" property="answerId"/>
         <result column="subject_id" jdbcType="INTEGER" property="subjectId"/>
@@ -21,13 +21,13 @@
     delete from tab_pb_edu_answerforsubject
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduAnswerforsubject">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduAnswerforsubject">
     insert into tab_pb_edu_answerforsubject (id, answer_id, subject_id, 
       answer_content, answer_score)
     values (#{id,jdbcType=INTEGER}, #{answerId,jdbcType=INTEGER}, #{subjectId,jdbcType=INTEGER}, 
       #{answerContent,jdbcType=VARCHAR}, #{answerScore,jdbcType=REAL})
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduAnswerforsubject">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduAnswerforsubject">
         insert into tab_pb_edu_answerforsubject
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -64,7 +64,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduAnswerforsubject">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduAnswerforsubject">
         update tab_pb_edu_answerforsubject
         <set>
             <if test="answerId != null">
@@ -82,7 +82,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduAnswerforsubject">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduAnswerforsubject">
     update tab_pb_edu_answerforsubject
     set answer_id = #{answerId,jdbcType=INTEGER},
       subject_id = #{subjectId,jdbcType=INTEGER},

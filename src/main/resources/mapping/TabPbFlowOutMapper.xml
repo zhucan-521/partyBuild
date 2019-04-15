@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper  namespace="com.yizheng.partybuilding.repository.TabPbFlowOutMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbFlowOut">
+<mapper  namespace="com.egovchina.partybuilding.partybuild.repository.TabPbFlowOutMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbFlowOut">
         <id column="flow_out_id" jdbcType="BIGINT" property="flowOutId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -37,7 +37,7 @@
         <result column="flow_to_orgnize_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
         <result column="flow_out_state" jdbcType="BIGINT" property="flowOutState"/>
     </resultMap>
-    <resultMap id="selectActiveTabPbFlowOutDtoMap" extends="BaseResultMap" type="com.yizheng.partybuilding.dto.TabPbFlowOutDto">
+    <resultMap id="selectActiveTabPbFlowOutDtoMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbFlowOutDto">
         <id column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
@@ -101,6 +101,8 @@
     create_userid, create_username, update_time, update_userid, update_username,flow_out_state, version
   </sql>
     <sql id="Base_FlowOut_List">
+        tab_pb_flow_out.org_id,
+        tab_pb_flow_out.flow_out_place,
         tab_pb_flow_out.flow_out_id,
         sys_user.realname AS username,
         sys_user.gender,
@@ -141,7 +143,7 @@
     delete from tab_pb_flow_out
     where flow_out_id = #{flowOutId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" useGeneratedKeys="true" keyProperty="flowOutId" parameterType="com.yizheng.partybuilding.entity.TabPbFlowOut">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="flowOutId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbFlowOut">
     insert into tab_pb_flow_out (flow_out_id, org_id, user_id,
       flow_out_date, flow_out_type, flow_out_range,
       flow_out_reason, flow_out_place, flow_to_unit_name,
@@ -165,7 +167,7 @@
       #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR},
       #{version,jdbcType=BIGINT},#{lostTime})
   </insert>
-    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="flowOutId" parameterType="com.yizheng.partybuilding.entity.TabPbFlowOut">
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="flowOutId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbFlowOut">
         insert into tab_pb_flow_out
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="flowOutId != null">
@@ -382,7 +384,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbFlowOut">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbFlowOut">
         update tab_pb_flow_out
         <set>
             <if test="orgId != null">
@@ -484,7 +486,7 @@
         </set>
         where flow_out_id = #{flowOutId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbFlowOut">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbFlowOut">
     update tab_pb_flow_out
     set org_id = #{orgId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},
@@ -531,7 +533,7 @@
     </select>
 
     <select id="selectDeptNameByDeptId" parameterType="Long" resultType="String">
-        select name from sys_dept where dept_id= #{deptId}
+        select org_short_name from sys_dept where dept_id= #{deptId}
     </select>
 
 
@@ -539,7 +541,7 @@
         select unit_name from  tab_pb_unit_info where unit_id=#{filesManageUnitId}
     </select>
 
-    <select id="selectCommuntiyDto" parameterType="com.yizheng.partybuilding.dto.CommunityDto" resultType="com.yizheng.partybuilding.dto.CommunityDto">
+    <select id="selectCommuntiyDto" parameterType="com.egovchina.partybuilding.partybuild.dto.CommunityDto" resultType="com.egovchina.partybuilding.partybuild.dto.CommunityDto">
         select id ,label ,value from sys_dict
         <where>
             <if test="label !=null and ''!=label">
@@ -560,7 +562,7 @@
     </select>
 
     <!--流出党员dto查询-->
-    <select id="selectActiveTabPbFlowOutDto" parameterType="com.yizheng.partybuilding.dto.TabPbFlowOutDto" resultMap="selectActiveTabPbFlowOutDtoMap">
+    <select id="selectActiveTabPbFlowOutDto" parameterType="com.egovchina.partybuilding.partybuild.dto.TabPbFlowOutDto" resultMap="selectActiveTabPbFlowOutDtoMap">
         SELECT
         <include refid="Base_FlowOut_List" />
         FROM

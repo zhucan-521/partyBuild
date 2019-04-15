@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduAnswerMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduAnswer">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduAnswerMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduAnswer">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="test_id" jdbcType="INTEGER" property="testId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -29,7 +29,7 @@
         select AVG(score) avg_score, MAX(score) max_score, MIN(score) min_score from tab_pb_edu_answer
         where user_id=#{userId,jdbcType=BIGINT}
     </select>
-    <resultMap id="UserTestScoreMap" type="com.yizheng.partybuilding.dto.TabPbEduUserTestScoreDto">
+    <resultMap id="UserTestScoreMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbEduUserTestScoreDto">
         <result column="avg_score" jdbcType="REAL" property="avgScore"/>
         <result column="max_score" jdbcType="REAL" property="maxScore"/>
         <result column="min_score" jdbcType="REAL" property="minScore"/>
@@ -50,7 +50,7 @@
             AND etest.title like CONCAT('%',#{title,jdbcType=VARCHAR},'%')
         </if>
     </select>
-    <resultMap id="UserTestInfoMap" type="com.yizheng.partybuilding.dto.TabPbEduUserTestInfoDto">
+    <resultMap id="UserTestInfoMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbEduUserTestInfoDto">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="test_id" jdbcType="INTEGER" property="testId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -69,7 +69,7 @@
     delete from tab_pb_edu_answer
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduAnswer" useGeneratedKeys="true"
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduAnswer" useGeneratedKeys="true"
             keyProperty="id" keyColumn="id">
         insert into tab_pb_edu_answer (id, test_id, user_id, arrange_id,
       state, score, create_time
@@ -79,7 +79,7 @@
       #{state,jdbcType=INTEGER}, #{score,jdbcType=REAL}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduAnswer" useGeneratedKeys="true"
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduAnswer" useGeneratedKeys="true"
             keyProperty="id" keyColumn="id">
         <!--<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
             SELECT LAST_INSERT_ID()
@@ -132,7 +132,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByIdSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduAnswer">
+    <update id="updateByIdSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduAnswer">
         update tab_pb_edu_answer
         <set>
             <if test="testId != null">
@@ -156,7 +156,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduAnswer">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduAnswer">
     update tab_pb_edu_answer
     set test_id = #{testId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=BIGINT},

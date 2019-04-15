@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduTeachersCourseMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduTeachersCourse">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduTeachersCourseMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduTeachersCourse">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="teacher_id" jdbcType="BIGINT" property="teacherId"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
@@ -17,7 +17,7 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
-               type="com.yizheng.partybuilding.entity.TabPbEduTeachersCourse">
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbEduTeachersCourse">
         <result column="outline" jdbcType="LONGVARCHAR" property="outline"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -36,7 +36,7 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
 
-    <select id="selectList" parameterType="com.yizheng.partybuilding.entity.TabPbEduTeachersCourse" resultMap="ResultMapWithBLOBs">
+    <select id="selectList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTeachersCourse" resultMap="ResultMapWithBLOBs">
         select course.* from tab_pb_edu_teachers_course course
         where course.del_flag = 0
         <if test="teacherId != null and teacherId != '' ">
@@ -48,7 +48,7 @@
     delete from tab_pb_edu_teachers_course
     where teacher_id = #{teacherId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduTeachersCourse">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTeachersCourse">
     insert into tab_pb_edu_teachers_course (id, teacher_id, title, 
       del_flag, order_num, create_time, 
       create_userid, create_username, update_time, 
@@ -60,7 +60,7 @@
       #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{outline,jdbcType=LONGVARCHAR}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduTeachersCourse" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTeachersCourse" useGeneratedKeys="true" keyProperty="id">
         insert into tab_pb_edu_teachers_course
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -145,7 +145,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduTeachersCourse">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTeachersCourse">
         update tab_pb_edu_teachers_course
         <set>
             <if test="title != null">
@@ -175,7 +175,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbEduTeachersCourse">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTeachersCourse">
     update tab_pb_edu_teachers_course
     set teacher_id = #{teacherId,jdbcType=BIGINT},
       title = #{title,jdbcType=VARCHAR},
@@ -190,7 +190,7 @@
       outline = #{outline,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduTeachersCourse">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTeachersCourse">
     update tab_pb_edu_teachers_course
     set teacher_id = #{teacherId,jdbcType=BIGINT},
       title = #{title,jdbcType=VARCHAR},
@@ -204,7 +204,7 @@
       update_username = #{updateUsername,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-    <update id="tombstone" parameterType="com.yizheng.partybuilding.entity.TabPbEduTeachersCourse">
+    <update id="tombstone" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTeachersCourse">
         update tab_pb_edu_teachers_course
         <set>
             del_flag = 1,

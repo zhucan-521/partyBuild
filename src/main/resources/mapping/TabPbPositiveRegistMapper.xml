@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbPositiveRegistMapper">
-  <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbPositiveRegist">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbPositiveRegistMapper">
+  <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist">
     <id column="positive_regist_id" jdbcType="BIGINT" property="positiveRegistId" />
     <result column="dept_id" jdbcType="BIGINT" property="deptId" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
@@ -30,7 +30,7 @@
     <result column="version" jdbcType="BIGINT" property="version" />
     <result column="attachment_instance" property="attachmentInstance"/>
     <result column="attachment_description" property="attachmentDescription"/>
-    <collection property="sysUserList" ofType="com.yizheng.partybuilding.system.entity.SysUser">
+    <collection property="sysUserList" ofType="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
       <id column="user_id" property="userId"></id>
       <result column="username" property="username"/>
       <result column="gender" property="gender"/>
@@ -40,14 +40,14 @@
       <result column="id_card_no" property="idCardNo"/>
       <result column="family_address" property="familyAddress"/>
     </collection>
-    <collection property="sysDeptList" ofType="com.yizheng.partybuilding.dto.SysDeptDto">
+    <collection property="sysDeptList" ofType="com.egovchina.partybuilding.partybuild.dto.SysDeptDto">
       <id column="dept_id" property="deptId"/>
       <result column="name" property="name"/>
       <result column="dept_name" property="deptName"/>
     </collection>
   </resultMap>
   <!--保存报到信息-->
-  <insert id="addPositiveRegist" parameterType="com.yizheng.partybuilding.entity.TabPbPositiveRegist" useGeneratedKeys="true" keyProperty="positiveRegistId">
+  <insert id="addPositiveRegist" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist" useGeneratedKeys="true" keyProperty="positiveRegistId">
     insert into tab_pb_positive_regist
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="deptId != null">
@@ -139,7 +139,7 @@
     </trim>
   </insert>
 
-  <select id="selectListPage" parameterType="com.yizheng.partybuilding.entity.TabPbPositiveRegist" resultMap="BaseResultMap">
+  <select id="selectListPage" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist" resultMap="BaseResultMap">
     select regist.*,a.`name` AS dept_name,a.realname as username,a.gender,TIMESTAMPDIFF(YEAR, a.birthday, CURDATE()) AS age,a.phone,a.identity_type,a.id_card_no,
     dept.`name`,attac.attachment_instance
     from tab_pb_positive_regist regist
@@ -147,7 +147,7 @@
 	ON regist.user_id = a.user_id
     join sys_dept dept on regist.dept_id = dept.dept_id and dept.del_flag = '0'
     LEFT JOIN tab_pb_attachment attac ON attac.host_id = regist.positive_regist_id
-    AND attac.attachment_type = ${@com.yizheng.commons.util.AttachmentType@POSITIVE}
+    AND attac.attachment_type = ${@com.egovchina.partybuilding.common.util.AttachmentType@POSITIVE}
     and attac.del_flag = '0'
     WHERE true
     <if test="orgRange != null and orgRange != ''">
@@ -175,7 +175,7 @@
 
     and  regist.del_flag = '0'
   </select>
-  <update id="editPositive" parameterType="com.yizheng.partybuilding.entity.TabPbPositiveRegist">
+  <update id="editPositive" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist">
     update tab_pb_positive_regist
     <set>
       <if test="revokeTag != null">
@@ -197,7 +197,7 @@
     where positive_regist_id = #{positiveRegistId}
   </update>
 
-  <update id="deleteRegist" parameterType="com.yizheng.partybuilding.entity.TabPbPositiveRegist">
+  <update id="deleteRegist" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist">
     update tab_pb_positive_regist
     set ebl_flag = 0, del_flag = 1,
         update_time = #{updateTime}, update_userid = #{updateUserid},
@@ -220,7 +220,7 @@
 	ON regist.user_id = a.user_id
     join sys_dept dept on regist.dept_id = dept.dept_id and dept.del_flag = 0
     LEFT JOIN tab_pb_attachment attac ON attac.host_id = regist.positive_regist_id
-    AND attac.attachment_type = ${@com.yizheng.commons.util.AttachmentType@POSITIVE}
+    AND attac.attachment_type = ${@com.egovchina.partybuilding.common.util.AttachmentType@POSITIVE}
     and attac.del_flag = 0
     WHERE true
     and  regist.del_flag = 0

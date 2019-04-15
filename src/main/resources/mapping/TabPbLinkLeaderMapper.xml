@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbLinkLeaderMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbLinkLeader">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbLinkLeaderMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader">
         <id column="link_ledaer_id" jdbcType="BIGINT" property="linkLedaerId"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -19,13 +19,13 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbLinkLeader">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader">
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="LeaderDtoResultMap" type="com.yizheng.partybuilding.dto.TabPbLinkLeaderDto">
+    <resultMap extends="BaseResultMap" id="LeaderDtoResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbLinkLeaderDto">
         <result column="username" jdbcType="VARCHAR" property="realName"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <collection property="activitiesList" ofType="com.yizheng.partybuilding.entity.TabPbActivities">
+        <collection property="activitiesList" ofType="com.egovchina.partybuilding.partybuild.entity.TabPbActivities">
             <id column="activities_id" property="activitiesId"/>
             <result column="subject" property="subject"/>
             <result column="org_id" jdbcType="BIGINT" property="orgId"/>
@@ -53,7 +53,7 @@
     delete from tab_pb_link_leader
     where link_ledaer_id = #{linkLedaerId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbLinkLeader">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader">
     insert into tab_pb_link_leader (link_ledaer_id, dept_id, user_id, 
       link_start_date, link_finished_date, ebl_flag, 
       del_flag, order_num, description, 
@@ -67,7 +67,7 @@
       #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
       #{version,jdbcType=BIGINT}, #{comment,jdbcType=LONGVARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbLinkLeader">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader">
         insert into tab_pb_link_leader
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="linkLedaerId != null">
@@ -176,7 +176,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbLinkLeader">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader">
         update tab_pb_link_leader
         <set>
             <if test="deptId != null">
@@ -230,7 +230,7 @@
         </set>
         where link_ledaer_id = #{linkLedaerId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbLinkLeader">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader">
     update tab_pb_link_leader
     set dept_id = #{deptId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},
@@ -250,7 +250,7 @@
       comment = #{comment,jdbcType=LONGVARCHAR}
     where link_ledaer_id = #{linkLedaerId,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbLinkLeader">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader">
     update tab_pb_link_leader
     set dept_id = #{deptId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},
@@ -269,7 +269,7 @@
       version = #{version,jdbcType=BIGINT}
     where link_ledaer_id = #{linkLedaerId,jdbcType=BIGINT}
   </update>
-    <select id="selectByUserIdAndDeptId" parameterType="com.yizheng.partybuilding.entity.TabPbLinkLeader"
+    <select id="selectByUserIdAndDeptId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader"
             resultMap="BaseResultMap">
     select * from  tab_pb_link_leader
     where dept_id = #{deptId,jdbcType=BIGINT}

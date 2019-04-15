@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.system.mapper.SysUserMapper">
+<mapper namespace="com.egovchina.partybuilding.partybuild.system.mapper.SysUserMapper">
 	<!-- 通用查询映射结果 -->
-	<resultMap id="baseResultMap" type="com.yizheng.partybuilding.system.entity.SysUser">
+	<resultMap id="baseResultMap" type="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
 		<id column="user_id" property="userId"/>
 		<result column="username" property="username"/>
 		<result column="password" property="password"/>
@@ -25,7 +25,7 @@
 	</resultMap>
 
 	<!-- userVo结果集 -->
-	<resultMap id="userVoResultMap" type="com.yizheng.partybuilding.system.vo.UserVO">
+	<resultMap id="userVoResultMap" type="com.egovchina.partybuilding.partybuild.system.vo.UserVO">
 		<id column="user_id" property="userId"/>
 		<result column="username" property="username"/>
 		<result column="realname" property="realname"/>
@@ -42,7 +42,7 @@
 		<result column="deptId" property="deptId"/>
 		<result column="manage_dept_id" property="manageDeptId"/>
 		<result column="deptName" property="deptName"/>
-		<collection property="roleList" ofType="com.yizheng.partybuilding.system.entity.SysRole">
+		<collection property="roleList" ofType="com.egovchina.partybuilding.partybuild.system.entity.SysRole">
 			<id column="role_id" property="roleId"/>
 			<result column="role_name" property="roleName"/>
 			<result column="role_code" property="roleCode"/>
@@ -118,7 +118,7 @@
     </select>
 
 	<!-- 所有后台用户信息列表 -->
-	<select id="listAll" parameterType="com.yizheng.partybuilding.system.dto.UserAdminDTO" resultMap="userAllListMap">
+	<select id="listAll" parameterType="com.egovchina.partybuilding.partybuild.system.dto.UserAdminDTO" resultMap="userAllListMap">
 		select
 		users.user_id,users.username,users.realname,users.manage_dept_id,users.del_flag,users.phone ,users.create_time,
 		users.create_username,dept.name as dept_name,r.role_name,users.id_card_no
@@ -140,7 +140,7 @@
         order by users.user_id desc
     </select>
     <!-- userVo结果集 -->
-	<resultMap id="userAllListMap" type="com.yizheng.partybuilding.system.dto.UserAdminDTO">
+	<resultMap id="userAllListMap" type="com.egovchina.partybuilding.partybuild.system.dto.UserAdminDTO">
         <id column="user_id" property="userId"/>
         <result column="username" property="username"/>
 		<result column="realname" property="realname"/>
@@ -221,7 +221,7 @@
 	</delete>
 
 	<!--根据id修改密码-->
-	<update id="updatePwdById" parameterType="com.yizheng.partybuilding.system.entity.SysUser">
+	<update id="updatePwdById" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
 		update sys_user set password = #{password}, update_userid = #{updateUserid}, update_username = #{updateUsername},
 			update_time = #{updateTime} where user_id = #{userId}
 	</update>

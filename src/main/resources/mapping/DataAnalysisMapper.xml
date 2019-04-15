@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.DataAnalysisMapper">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.DataAnalysisMapper">
 
     <!--基础统计分析ResultMap-->
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.dto.BaseDataAnalysisDto">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.dto.BaseDataAnalysisDto">
         <result column="label" jdbcType="VARCHAR" property="label"/>
         <result column="datas" jdbcType="BIGINT" property="datas"/>
     </resultMap>
 
     <!--两个值的统计分析ResultMap-->
-    <resultMap id="TwoValueResultMap" type="com.yizheng.partybuilding.dto.TwoValueDataAnalysisDto">
+    <resultMap id="TwoValueResultMap" type="com.egovchina.partybuilding.partybuild.dto.TwoValueDataAnalysisDto">
         <result column="label" jdbcType="VARCHAR" property="label"/>
         <result column="leftValue" jdbcType="BIGINT" property="leftValue"/>
         <result column="rightValue" jdbcType="BIGINT" property="rightValue"/>
     </resultMap>
 
     <!--党员数量及发展趋势ResultMap-->
-    <resultMap id="PartyMemberNumResultMap" type="com.yizheng.partybuilding.dto.PartyMemberNumDataAnalysisDto">
+    <resultMap id="PartyMemberNumResultMap" type="com.egovchina.partybuilding.partybuild.dto.PartyMemberNumDataAnalysisDto">
         <result column="count" jdbcType="BIGINT" property="count"/>
         <result column="rate" jdbcType="DOUBLE" property="rate"/>
         <collection property="datas"
-                    select="com.yizheng.partybuilding.repository.DataAnalysisMapper.countPartyMemberNumByAreaCodeAndMonthSubSelect"
+                    select="com.egovchina.partybuilding.partybuild.repository.DataAnalysisMapper.countPartyMemberNumByAreaCodeAndMonthSubSelect"
                     column="areaCode=area_code"/>
     </resultMap>
 

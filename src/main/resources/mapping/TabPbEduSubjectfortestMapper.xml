@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduSubjectfortestMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduSubjectfortest">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduSubjectfortestMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubjectfortest">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="test_id" jdbcType="INTEGER" property="testId"/>
         <result column="subject_id" jdbcType="INTEGER" property="subjectId"/>
@@ -24,7 +24,7 @@
         where estest.test_id=#{testId,jdbcType=INTEGER}
         order by estest.id asc
     </select>
-    <resultMap id="SubjectAnswerMap" type="com.yizheng.partybuilding.dto.TabPbEduSubjectAnswerDto">
+    <resultMap id="SubjectAnswerMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbEduSubjectAnswerDto">
         <result column="subject_id" jdbcType="INTEGER" property="subjectId"/>
         <result column="answer" jdbcType="VARCHAR" property="answer"/>
         <result column="score" jdbcType="REAL" property="score"/>
@@ -38,7 +38,7 @@
         where estest.test_id=#{testId,jdbcType=INTEGER}
         order by estest.id asc
     </select>
-    <resultMap id="SubjectForTestMap" type="com.yizheng.partybuilding.dto.TabPbSubjectForTestDto">
+    <resultMap id="SubjectForTestMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbSubjectForTestDto">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="category" jdbcType="INTEGER" property="category"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
@@ -56,13 +56,13 @@
     delete from tab_pb_edu_subjectfortest
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubjectfortest">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubjectfortest">
     insert into tab_pb_edu_subjectfortest (id, test_id, subject_id, 
       score)
     values (#{id,jdbcType=INTEGER}, #{testId,jdbcType=INTEGER}, #{subjectId,jdbcType=INTEGER}, 
       #{score,jdbcType=REAL})
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubjectfortest">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubjectfortest">
         insert into tab_pb_edu_subjectfortest
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -93,7 +93,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubjectfortest">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubjectfortest">
         update tab_pb_edu_subjectfortest
         <set>
             <if test="testId != null">
@@ -108,7 +108,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubjectfortest">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubjectfortest">
     update tab_pb_edu_subjectfortest
     set test_id = #{testId,jdbcType=INTEGER},
       subject_id = #{subjectId,jdbcType=INTEGER},

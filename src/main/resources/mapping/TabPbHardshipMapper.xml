@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbHardshipMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbHardship">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbHardshipMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
         <id column="hardship_id" jdbcType="BIGINT" property="hardshipId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -25,7 +25,7 @@
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
         <result column="health" jdbcType="BIGINT" property="health"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbHardship">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
         <result column="implementation" jdbcType="LONGVARCHAR" property="implementation"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -111,7 +111,7 @@
     delete from tab_pb_hardship
     where hardship_id = #{hardshipId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbHardship">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
     insert into tab_pb_hardship (hardship_id, org_id, user_id, 
       hardship_type, if_allowances, if_pension, 
       if_old_member, ebl_flag, del_flag, 
@@ -127,7 +127,7 @@
       #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, 
       #{implementation,jdbcType=LONGVARCHAR})
   </insert>
-    <insert id="insertSelective"  useGeneratedKeys="true" keyProperty="hardshipId"  parameterType="com.yizheng.partybuilding.entity.TabPbHardship">
+    <insert id="insertSelective"  useGeneratedKeys="true" keyProperty="hardshipId"  parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
         insert into tab_pb_hardship
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="hardshipId != null">
@@ -260,7 +260,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbHardship">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
         update tab_pb_hardship
         <set>
             <if test="orgId != null">
@@ -326,7 +326,7 @@
         </set>
         where hardship_id = #{hardshipId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbHardship">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
     update tab_pb_hardship
     set org_id = #{orgId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},
@@ -349,7 +349,7 @@
       health =#{health}
     where hardship_id = #{hardshipId,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbHardship">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
     update tab_pb_hardship
     set org_id = #{orgId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},
@@ -417,12 +417,12 @@
     </select>
 
     <!--修改用户表的用户名-->
-    <update id="updateUsernameById" parameterType="com.yizheng.partybuilding.entity.TabPbHardship">
+    <update id="updateUsernameById" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
         update sys_user set username = #{username} where user_id = #{userId}
     </update>
 
 
-    <update id="deleteId" parameterType="com.yizheng.partybuilding.entity.TabPbHardship" >
+    <update id="deleteId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship" >
         update tab_pb_hardship set del_flag=1 where hardship_id = #{hardshipId,jdbcType=BIGINT}
     </update>
 

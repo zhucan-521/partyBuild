@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbLeadTeamMemberMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbLeadTeamMember">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbLeadTeamMemberMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember">
         <id column="member_id" jdbcType="BIGINT" property="memberId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="lead_team_id" jdbcType="BIGINT" property="leadTeamId"/>
@@ -32,7 +32,7 @@
     </resultMap>
 
     <resultMap id="TabPbLeadTeamMemberDtoResultMap" extends="BaseResultMap"
-               type="com.yizheng.partybuilding.dto.TabPbLeadTeamMemberDto">
+               type="com.egovchina.partybuilding.partybuild.dto.TabPbLeadTeamMemberDto">
         <result column="idCardNo" jdbcType="VARCHAR" property="idCardNo"/>
         <result column="deptName" jdbcType="VARCHAR" property="deptName"/>
         <result property="pictures" jdbcType="VARCHAR" column="pictures"/>
@@ -58,7 +58,7 @@
     delete from tab_pb_lead_team_member
     where member_id = #{memberId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeamMember">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember">
     insert into tab_pb_lead_team_member (member_id, org_id, lead_team_id, 
       user_id, person_name, positive_id, 
       positive_name, tenure_mode, tenure_begin, 
@@ -78,7 +78,7 @@
       #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
       #{version,jdbcType=BIGINT}), #{approval_number,jdbcType=BIGINT}), #{rank,jdbcType=BIGINT})
   </insert>
-    <insert id="insertSelective"  useGeneratedKeys="true" keyProperty="memberId" parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeamMember">
+    <insert id="insertSelective"  useGeneratedKeys="true" keyProperty="memberId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember">
         insert into tab_pb_lead_team_member
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="memberId != null">
@@ -249,7 +249,7 @@
 
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective"  parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeamMember">
+    <update id="updateByPrimaryKeySelective"  parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember">
         update tab_pb_lead_team_member
         <set>
             <if test="orgId != null">
@@ -333,7 +333,7 @@
         </set>
         where member_id = #{memberId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey"  useGeneratedKeys="true" keyProperty="memberId" parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeamMember">
+    <update id="updateByPrimaryKey"  useGeneratedKeys="true" keyProperty="memberId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember">
     update tab_pb_lead_team_member
     set org_id = #{orgId,jdbcType=BIGINT},
       lead_team_id = #{leadTeamId,jdbcType=BIGINT},
@@ -370,7 +370,7 @@
     </select>
 
     <!--逻辑删除-->
-    <update id="deleteId" parameterType="com.yizheng.partybuilding.entity.TabPbLeadTeamMember">
+    <update id="deleteId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember">
         update tab_pb_lead_team_member set del_flag=1 where member_id = #{memberId,jdbcType=BIGINT}
     </update>
 
@@ -466,7 +466,7 @@ WHERE
         </choose>
     </select>
 
-    <select id="selectByTabPbLeadTeamDto" parameterType="com.yizheng.partybuilding.dto.TabPbLeadTeamMemberDto"
+    <select id="selectByTabPbLeadTeamDto" parameterType="com.egovchina.partybuilding.partybuild.dto.TabPbLeadTeamMemberDto"
             resultMap="TabPbLeadTeamMemberDtoResultMap">
         SELECT
         lt.*,

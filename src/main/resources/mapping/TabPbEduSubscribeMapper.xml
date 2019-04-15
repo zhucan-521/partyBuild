@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduSubscribeMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduSubscribe">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduSubscribeMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubscribe">
         <id column="subscribe_id" jdbcType="BIGINT" property="subscribeId"/>
         <result column="extend_info" jdbcType="VARCHAR" property="extendInfo"/>
         <result column="like_type" jdbcType="VARCHAR" property="likeType"/>
@@ -27,13 +27,13 @@
     delete from tab_pb_edu_subscribe
     where subscribe_id = #{subscribeId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert"  keyProperty="subscribeId" useGeneratedKeys="true"   parameterType="com.yizheng.partybuilding.entity.TabPbEduSubscribe">
+    <insert id="insert"  keyProperty="subscribeId" useGeneratedKeys="true"   parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubscribe">
     insert into tab_pb_edu_subscribe (subscribe_id, like_type, bus_id, 
       user_id, create_time)
     values (#{subscribeId,jdbcType=BIGINT}, #{likeType,jdbcType=VARCHAR}, #{busId,jdbcType=BIGINT}, 
       #{userId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubscribe">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubscribe">
         insert into tab_pb_edu_subscribe
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="subscribeId != null">
@@ -100,7 +100,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubscribe">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubscribe">
         update tab_pb_edu_subscribe
         <set>
             <if test="likeType != null">
@@ -136,7 +136,7 @@
         </set>
         where subscribe_id = #{subscribeId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubscribe">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubscribe">
     update tab_pb_edu_subscribe
     set like_type = #{likeType,jdbcType=VARCHAR},
       bus_id = #{busId,jdbcType=BIGINT},
@@ -145,7 +145,7 @@
     where subscribe_id = #{subscribeId,jdbcType=BIGINT}
   </update>
 
-    <select id="selectSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubscribe" resultMap="BaseResultMap">
+    <select id="selectSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubscribe" resultMap="BaseResultMap">
        select * from tab_pb_edu_subscribe
        <where>
            <if test="busId != null">
@@ -161,7 +161,7 @@
        </where>
     </select>
 
-    <select id="selectSubScribeCount" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubscribe" resultType="java.lang.Long">
+    <select id="selectSubScribeCount" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubscribe" resultType="java.lang.Long">
     select count(*) from tab_pb_edu_subscribe
     <where>
         <if test="busId !=null">
@@ -174,7 +174,7 @@
     </select>
 
     <!--判断同一个人是否预约过同一个业务-->
-    <select id="selectTabPbEduSubscribeByUserId" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubscribe" resultMap="BaseResultMap">
+    <select id="selectTabPbEduSubscribeByUserId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubscribe" resultMap="BaseResultMap">
       select
       *
       from tab_pb_edu_subscribe
@@ -184,7 +184,7 @@
     </select>
 
     <!--预约人数-->
-    <select id="selectSubCount" parameterType="com.yizheng.partybuilding.entity.TabPbEduSubscribe" resultType="Long">
+    <select id="selectSubCount" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduSubscribe" resultType="Long">
        select
        count(*)
        from

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.system.mapper.SysMenuMapper">
+<mapper namespace="com.egovchina.partybuilding.partybuild.system.mapper.SysMenuMapper">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.yizheng.partybuilding.system.entity.SysMenu">
+	<resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.system.entity.SysMenu">
 		<id column="menu_id" property="menuId"/>
 		<result column="name" property="name"/>
 		<result column="permission" property="permission"/>
@@ -19,7 +19,7 @@
 		<result column="remark" property="remark"></result>
 	</resultMap>
 
-	<resultMap id="MenuVoResultMap" type="com.yizheng.partybuilding.system.vo.MenuVO">
+	<resultMap id="MenuVoResultMap" type="com.egovchina.partybuilding.partybuild.system.vo.MenuVO">
 		<id column="menu_id" property="menuId"/>
 		<result column="name" property="name"/>
 		<result column="permission" property="permission"/>

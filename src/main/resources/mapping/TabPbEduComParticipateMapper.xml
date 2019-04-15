@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduComParticipateMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduComParticipate">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduComParticipateMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduComParticipate">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="c_id" jdbcType="BIGINT" property="cId"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
@@ -19,7 +19,7 @@
     id, c_id, title, content, user_id, username, create_time, state, sh_result, sh_user_id, 
     sh_create_time,del_flag
     </sql>
-    <select id="selectData" parameterType="com.yizheng.partybuilding.entity.TabPbEduComParticipate" resultMap="BaseResultMap">
+    <select id="selectData" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduComParticipate" resultMap="BaseResultMap">
         select partici.*
         from tab_pb_edu_com_participate partici
         <if test="type != null">
@@ -40,7 +40,7 @@
     delete from tab_pb_edu_com_participate
     where id = #{id,jdbcType=BIGINT}
     </delete>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduComParticipate">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduComParticipate">
         insert into tab_pb_edu_com_participate
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -113,7 +113,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduComParticipate">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduComParticipate">
         update tab_pb_edu_com_participate
         <set>
             <if test="cId != null">
@@ -149,7 +149,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduComParticipate">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduComParticipate">
     update tab_pb_edu_com_participate
     set c_id = #{cId,jdbcType=BIGINT},
       title = #{title,jdbcType=VARCHAR},
@@ -171,7 +171,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="changeState" parameterType="com.yizheng.partybuilding.entity.TabPbEduComParticipate">
+    <update id="changeState" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduComParticipate">
         update tab_pb_edu_com_participate
         <set>
             state = #{state},

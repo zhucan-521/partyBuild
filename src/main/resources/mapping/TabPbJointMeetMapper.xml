@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbJointMeetMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbJointMeet">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbJointMeetMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbJointMeet">
         <id column="joint_meet_id" jdbcType="BIGINT" property="jointMeetId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="founded_date" jdbcType="TIMESTAMP" property="foundedDate"/>
@@ -32,7 +32,7 @@
     </select>
 
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="jointMeetId"
-            parameterType="com.yizheng.partybuilding.entity.TabPbJointMeet">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbJointMeet">
         insert into tab_pb_joint_meet
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="orgId != null">
@@ -110,7 +110,7 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbJointMeet">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbJointMeet">
         update tab_pb_joint_meet
         <set>
             <if test="orgId != null">

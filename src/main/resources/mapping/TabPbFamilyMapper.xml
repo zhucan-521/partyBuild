@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbFamilyMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbFamily">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbFamilyMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbFamily">
         <id column="relation_id" jdbcType="BIGINT" property="relationId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="relation" jdbcType="BIGINT" property="relation"/>
@@ -80,7 +80,7 @@ WHERE
         where family.relation_id = #{relationId,jdbcType=BIGINT};
     </select>
 
-    <insert id="insertSelective"  parameterType="com.yizheng.partybuilding.entity.TabPbFamily">
+    <insert id="insertSelective"  parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbFamily">
         insert into tab_pb_family
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="userId != null">
@@ -186,7 +186,7 @@ WHERE
 
 
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbFamily">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbFamily">
         update tab_pb_family
         <set>
             <if test="userId != null">
@@ -232,7 +232,7 @@ WHERE
         where relation_id = #{relationId,jdbcType=BIGINT}
     </update>
 
-    <update id="deleteByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbFamily">
+    <update id="deleteByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbFamily">
         update tab_pb_family
         <set>
             ebl_flag = 0,

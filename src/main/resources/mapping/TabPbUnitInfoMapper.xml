@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbUnitInfoMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbUnitInfo">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbUnitInfoMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo">
         <id column="unit_id" jdbcType="BIGINT" property="unitId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
@@ -108,7 +108,7 @@
     where unit_id = #{unitId,jdbcType=BIGINT}
   </delete>
     <insert id="insert" useGeneratedKeys="true" keyProperty="unitId"
-            parameterType="com.yizheng.partybuilding.entity.TabPbUnitInfo">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo">
         insert into tab_pb_unit_info (unit_id, org_id, unit_name,
         unit_code, belong_relation, unit_property,
         industry, economic_type, ent_scale,
@@ -167,7 +167,7 @@
         #{organUnitType,jdbcType=BIGINT},#{partyBuidingStatus,jdbcType=BIGINT},#{partyMemberCount,jdbcType=BIGINT})
   </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="unitId"
-            parameterType="com.yizheng.partybuilding.entity.TabPbUnitInfo">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo">
         insert into tab_pb_unit_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="unitId != null">
@@ -618,7 +618,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbUnitInfo">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo">
         update tab_pb_unit_info
         <set>
             <if test="orgId != null">
@@ -843,7 +843,7 @@
         </set>
         where unit_id = #{unitId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbUnitInfo">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo">
     update tab_pb_unit_info
     set org_id = #{orgId,jdbcType=BIGINT},
         unit_name = #{unitName,jdbcType=VARCHAR},

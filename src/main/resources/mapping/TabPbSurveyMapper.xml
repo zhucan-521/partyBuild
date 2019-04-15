@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbSurveyMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbSurvey">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbSurveyMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbSurvey">
         <id column="survey_id" jdbcType="BIGINT" property="surveyId"/>
         <result column="survey_type" jdbcType="BIGINT" property="surveyType"/>
         <result column="audit_stage" jdbcType="BIGINT" property="auditStage"/>
@@ -21,7 +21,7 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbSurvey">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbSurvey">
         <result column="discuss_content" jdbcType="LONGVARCHAR" property="discussContent"/>
         <result column="thought_report" jdbcType="LONGVARCHAR" property="thoughtReport"/>
         <result column="talk_content" jdbcType="LONGVARCHAR" property="talkContent"/>
@@ -46,7 +46,7 @@
     delete from tab_pb_survey
     where survey_id = #{surveyId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbSurvey">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSurvey">
     insert into tab_pb_survey (survey_id, survey_type, audit_stage, 
       meeting_man_numbers, meeting_date, talker, 
       talk_date, ebl_flag, del_flag, 
@@ -64,7 +64,7 @@
       #{discussContent,jdbcType=LONGVARCHAR}, #{thoughtReport,jdbcType=LONGVARCHAR}, 
       #{talkContent,jdbcType=LONGVARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbSurvey">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSurvey">
         insert into tab_pb_survey
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="surveyId != null">
@@ -197,7 +197,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbSurvey">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSurvey">
         update tab_pb_survey
         <set>
             <if test="surveyType != null">
@@ -263,7 +263,7 @@
         </set>
         where survey_id = #{surveyId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbSurvey">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSurvey">
     update tab_pb_survey
     set survey_type = #{surveyType,jdbcType=BIGINT},
       audit_stage = #{auditStage,jdbcType=BIGINT},
@@ -287,7 +287,7 @@
       talk_content = #{talkContent,jdbcType=LONGVARCHAR}
     where survey_id = #{surveyId,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbSurvey">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSurvey">
     update tab_pb_survey
     set survey_type = #{surveyType,jdbcType=BIGINT},
       audit_stage = #{auditStage,jdbcType=BIGINT},

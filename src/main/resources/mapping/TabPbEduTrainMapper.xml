@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduTrainMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduTrain">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduTrainMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrain">
         <id column="train_id" jdbcType="BIGINT" property="trainId"/>
         <result column="years" jdbcType="VARCHAR" property="years"/>
         <result column="train_obj" jdbcType="BIGINT" property="trainObj"/>
@@ -21,8 +21,8 @@
         <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
     </resultMap>
-    <resultMap id="BigResultMap" type="com.yizheng.partybuilding.entity.TabPbEduTrain" extends="BaseResultMap">
-        <collection property="trainObjList" ofType="com.yizheng.partybuilding.entity.TabPbEduTrainObj">
+    <resultMap id="BigResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrain" extends="BaseResultMap">
+        <collection property="trainObjList" ofType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainObj">
             <id column="id" jdbcType="BIGINT" property="id"/>
             <result column="train_id" jdbcType="BIGINT" property="trainId"/>
             <result column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -36,13 +36,13 @@
             <result column="admin_flag" jdbcType="BOOLEAN" property="adminFlag"/>
             <result column="report_flag" jdbcType="BOOLEAN" property="reportFlag"/>
         </collection>
-        <collection property="attachments" ofType="com.yizheng.commons.domain.TabPbAttachment">
+        <collection property="attachments" ofType="com.egovchina.partybuilding.common.entity.TabPbAttachment">
             <id column="attachment_id" jdbcType="BIGINT" property="attachmentId"/>
             <result column="attachment_instance" jdbcType="VARCHAR" property="attachmentInstance"/>
             <result column="attachment_description" jdbcType="LONGVARCHAR" property="attachmentDescription"/>
             <result column="atta_description" jdbcType="VARCHAR" property="description"/>
         </collection>
-        <collection property="courses" ofType="com.yizheng.partybuilding.entity.TabPbEduTrainCourse">
+        <collection property="courses" ofType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainCourse">
             <id column="courses_id" jdbcType="BIGINT" property="id" />
             <result column="courses_train_id" jdbcType="BIGINT" property="trainId" />
             <result column="c_order_num" jdbcType="BIGINT" property="orderNum" />
@@ -54,7 +54,7 @@
             <result column="address" jdbcType="VARCHAR" property="address" />
         </collection>
     </resultMap>
-    <resultMap id="EchartsDtoMap" type="com.yizheng.partybuilding.dto.EchartsDto">
+    <resultMap id="EchartsDtoMap" type="com.egovchina.partybuilding.partybuild.dto.EchartsDto">
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="value" jdbcType="VARCHAR" property="value"/>
     </resultMap>
@@ -75,13 +75,13 @@
     <sql id="attachment_Column_List">
     attachment.description as atta_description, attachment_description, attachment_instance, attachment_id
   </sql>
-    <select id="selectiveList" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrain" resultMap="BaseResultMap">
+    <select id="selectiveList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrain" resultMap="BaseResultMap">
         select
         <include refid="T_Base_Column_List"/>,IFNULL(tool_num,0) as tool_num
         from tab_pb_edu_train t
         left join
         (SELECT count(0) tool_num,host_id FROM tab_pb_attachment
-        WHERE attachment_file_type = 58991 and attachment_type = ${@com.yizheng.commons.util.AttachmentType@TRAIN}
+        WHERE attachment_file_type = 58991 and attachment_type = ${@com.egovchina.partybuilding.common.util.AttachmentType@TRAIN}
         GROUP BY host_id)
         atta on atta.host_id = t.train_id
         where t.del_flag = 0
@@ -117,7 +117,7 @@
         `tab_pb_edu_train_course` c
         LEFT JOIN tab_pb_edu_train_comment com ON c.id = com.course_id GROUP BY c.id) course on t.train_id = course.train_id
         left join  tab_pb_attachment attachment on t.train_id = attachment.host_id
-        and attachment.attachment_type = ${@com.yizheng.commons.util.AttachmentType@TRAIN} and attachment.del_flag = 0
+        and attachment.attachment_type = ${@com.egovchina.partybuilding.common.util.AttachmentType@TRAIN} and attachment.del_flag = 0
         where  t.train_id = #{trainId,jdbcType=BIGINT}
     </select>
     <select id="getTrainObjStatistics"  resultMap="EchartsDtoMap">
@@ -152,7 +152,7 @@
             #{updateUsername,jdbcType=VARCHAR},#{region,jdbcType=BIGINT})
         </foreach>
     </insert>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrain">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrain">
     insert into tab_pb_edu_train (train_id, years, train_obj, 
       name, description, cover, 
       video, remark, del_flag, 
@@ -166,7 +166,7 @@
       #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, 
       #{updateUsername,jdbcType=VARCHAR},#{region,jdbcType=BIGINT})
   </insert>
-    <insert id="insertSelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrain" useGeneratedKeys="true"
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrain" useGeneratedKeys="true"
             keyProperty="trainId">
         insert into tab_pb_edu_train
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -276,7 +276,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrain">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrain">
         update tab_pb_edu_train
         <set>
             <if test="years != null">
@@ -330,7 +330,7 @@
         </set>
         where train_id = #{trainId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrain">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrain">
     update tab_pb_edu_train
     set years = #{years,jdbcType=VARCHAR},
       train_obj = #{trainObj,jdbcType=BIGINT},
@@ -352,7 +352,7 @@
   </update>
 
 
-    <select id="getStatisticsTest" parameterType="com.yizheng.partybuilding.entity.TabPbEduTrain" resultMap="BaseResultMap">
+    <select id="getStatisticsTest" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduTrain" resultMap="BaseResultMap">
         select
         <include refid="T_Base_Column_List"/>
         from tab_pb_edu_train t

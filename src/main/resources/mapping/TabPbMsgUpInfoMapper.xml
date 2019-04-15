@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbMsgUpInfoMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbMsgUpInfo">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbMsgUpInfoMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="up_type" jdbcType="VARCHAR" property="upType"/>
         <result column="up_dept_id" jdbcType="BIGINT" property="upDeptId"/>
@@ -32,21 +32,21 @@
         <result column="real_dept_name" jdbcType="VARCHAR" property="realDeptName"/>
         <result column="real_dept_id" jdbcType="BIGINT" property="realDeptId"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yizheng.partybuilding.entity.TabPbMsgUpInfo">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo">
         <result column="content" jdbcType="LONGVARCHAR" property="content"/>
     </resultMap>
-    <resultMap extends="ResultMapWithBLOBs" id="MsgUpInfoDtoResultMap" type="com.yizheng.partybuilding.dto.TabPbMsgUpInfoDto">
+    <resultMap extends="ResultMapWithBLOBs" id="MsgUpInfoDtoResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbMsgUpInfoDto">
     </resultMap>
-   <resultMap id="MsgUpInfoDtoResultMapWithAbout" extends="MsgUpInfoDtoResultMap" type="com.yizheng.partybuilding.dto.TabPbMsgUpInfoDto">
+   <resultMap id="MsgUpInfoDtoResultMapWithAbout" extends="MsgUpInfoDtoResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbMsgUpInfoDto">
        <!--关联附件数据-->
-       <association property="docAttachments" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+       <association property="docAttachments" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=id,fileTypeLabel=file_type_doc, attachmentType=attachment_type}" />
-       <association property="imgAttachments" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+       <association property="imgAttachments" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=id,fileTypeLabel=file_type_img, attachmentType=attachment_type}" />
-       <association property="videoAttachments" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+       <association property="videoAttachments" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=id,fileTypeLabel=file_type_video, attachmentType=attachment_type}" />
    </resultMap>
-    <resultMap id="selectBydeptIdMap" type="com.yizheng.partybuilding.system.entity.SysUser">
+    <resultMap id="selectBydeptIdMap" type="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
         <id column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
@@ -76,7 +76,7 @@
     delete from tab_pb_msg_up_info
     where id = #{id,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbMsgUpInfo">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo">
     insert into tab_pb_msg_up_info (id, up_type, up_dept_id, 
       up_dept_name, up_user_id, up_username, 
       recevie_dept_id, recevie_dept_name, recevie_user_id, 
@@ -94,7 +94,7 @@
       #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR}
       )
   </insert>
-    <insert id="insertSelective"   useGeneratedKeys="true" keyProperty="id" parameterType="com.yizheng.partybuilding.entity.TabPbMsgUpInfo">
+    <insert id="insertSelective"   useGeneratedKeys="true" keyProperty="id" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo">
         insert into tab_pb_msg_up_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -281,7 +281,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.yizheng.partybuilding.entity.TabPbMsgUpInfo">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo">
         update tab_pb_msg_up_info
         <set>
             <if test="upType != null">
@@ -368,7 +368,7 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbMsgUpInfo">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo">
     update tab_pb_msg_up_info
     set up_type = #{upType,jdbcType=VARCHAR},
       up_dept_id = #{upDeptId,jdbcType=BIGINT},
@@ -392,7 +392,7 @@
       content = #{content,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbMsgUpInfo">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo">
     update tab_pb_msg_up_info
     set up_type = #{upType,jdbcType=VARCHAR},
       up_dept_id = #{upDeptId,jdbcType=BIGINT},
@@ -450,7 +450,7 @@
     </select>
 
     <!--条件查询上报信息报送列表-->
-    <select id="selectActive" parameterType="com.yizheng.partybuilding.dto.TabPbMsgUpInfoDto" resultMap="MsgUpInfoDtoResultMap">
+    <select id="selectActive" parameterType="com.egovchina.partybuilding.partybuild.dto.TabPbMsgUpInfoDto" resultMap="MsgUpInfoDtoResultMap">
         SELECT
         mup.*,
         ifnull(t.video_num, 0) videoNum,
@@ -497,7 +497,7 @@
     </select>
 
     <!--条件查询接收信息报送列表-->
-    <select id="selectActiveRec" parameterType="com.yizheng.partybuilding.dto.TabPbMsgUpInfoDto" resultMap="MsgUpInfoDtoResultMap">
+    <select id="selectActiveRec" parameterType="com.egovchina.partybuilding.partybuild.dto.TabPbMsgUpInfoDto" resultMap="MsgUpInfoDtoResultMap">
         SELECT
         mup.*,
         ifnull(t.video_num, 0) videoNum,

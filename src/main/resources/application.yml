@@ -41,6 +41,8 @@ spring:
         prefer-ip-address: true
         tags:
         - partybuilding
+        service-name: partybuilding
+        instance-id: partybuilding
 
 # mybatis-plus
 mybatis-plus:
@@ -49,7 +51,7 @@ mybatis-plus:
   - classpath*:mapping/*/*.xml
   - classpath:mapping/*.xml
   # 类型别名包路径
-  type-aliases-package: com.yizheng.commons.domain,com.yizheng.partybuilding.system.entity,com.yizheng.partybuilding.entity,com.yizheng.partybuilding.dto,com.yizheng.partybuilding.system.dto
+  type-aliases-package: com.egovchina.partybuilding.common.entity,com.egovchina.partybuilding.partybuild.system.entity,com.egovchina.partybuilding.partybuild.entity,com.egovchina.partybuilding.partybuild.dto,com.egovchina.partybuilding.partybuild.system.dto
   global-config:
     #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
     id-type: 0
@@ -119,29 +121,33 @@ ribbon:
 logging:
   level:
     root: warn
-    com.yizheng.partybuilding: info
-    com.yizheng.partybuilding.repository : debug
-    com.yizheng.partybuilding.system.mapper : debug
+    com.egovchina.partybuilding: info
+    com.egovchina.partybuilding.repository : debug
+    com.egovchina.partybuilding.system.mapper : debug
 
 # 自定义配置
-
-# 定义jwt token的过期时间，单位是分钟
-com:
-  jwttoken:
+egov-china:
+  # swagger
+  swagger:
+    apiInfo:
+      title: 党组织、党员、生活活动相关API
+      desc: "<h1 style=\"color:red;\">更新说明：\n</h1>
+      <h2 style=\"color:red;\">
+      前端相关：\n
+      \t1. 党组织活动相关接口全部迁移到生活服务中（右上角切换 life），当前党组织活动相关接口将于 2019-04-22 废弃 \n
+      \t2. 系统管理相关接口全部迁移到系统服务中（右上角切换 system），当前系统管理相关接口将于 2019-04-22 废弃 \n
+      \t3. 党员教育相关接口全部迁移到教育服务中（右上角切换 education），当前党员教育相关接口将于 2019-04-22 废弃 \n
+      \t调整方式：将要调整接口的前缀调整为对应的服务名，eg: 党组织活动接口前缀由 partybuilding 改为 life \n
+      后端相关：\n
+      \t1. 附件上传及回显统一使用一个集合（原来区分了图片、文档及视频），这个调整请在 2019-04-15 完成 \n
+      \t调整方式：实体中如 private List&lt;TabPbAttachment&gt; docAttachments; private List&lt;TabPbAttachment&gt; imgAttachments; private List&lt;TabPbAttachment&gt; videoAttachments;
+      这些附件字段删除后保留一个名称为 attachments 的字段
+      </h2>"
+  # jwt token
+  jwtToken:
+    # 定义token的过期时间，单位分钟
     expireTime: 600
-  word:
-    generatorPath: D:\\
-  #文件上传服务地址
-  upload:
-    path: http://dev.egov-china.com:9007/api/upload
-    authorization: Basic dXBsb2FkZXI6dXBsb2FkZXI=
-
-# swagger
-swagger:
-  apiinfo:
-    title: 党组织、党员、生活活动相关API
-
-# mysql 地址配置
-mysql:
-  ip: 192.168.4.102
-  port: 8017
+  # mysql 地址配置
+  datasource:
+    ip: 192.168.4.102
+    port: 8017

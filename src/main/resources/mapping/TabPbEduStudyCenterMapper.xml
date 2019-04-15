@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yizheng.partybuilding.repository.TabPbEduStudyCenterMapper">
-    <resultMap id="BaseResultMap" type="com.yizheng.partybuilding.entity.TabPbEduStudyCenter">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbEduStudyCenterMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduStudyCenter">
         <id column="study_id" jdbcType="BIGINT" property="studyId"/>
         <result column="file_type" jdbcType="BIGINT" property="fileType"/>
         <result column="study_type" jdbcType="BIGINT" property="studyType"/>
@@ -23,13 +23,13 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
-               type="com.yizheng.partybuilding.entity.TabPbEduStudyCenter">
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbEduStudyCenter">
         <result column="content" jdbcType="LONGVARCHAR" property="content"/>
     </resultMap>
     <!--包含关联信息的resultmap-->
-    <resultMap extends="ResultMapWithBLOBs" id="ResultMapWithAboutInfo" type="com.yizheng.partybuilding.entity.TabPbEduStudyCenter">
+    <resultMap extends="ResultMapWithBLOBs" id="ResultMapWithAboutInfo" type="com.egovchina.partybuilding.partybuild.entity.TabPbEduStudyCenter">
         <!--关联附件数据-->
-        <collection property="attachments" select="com.yizheng.partybuilding.repository.TabPbAttachmentMapper.selectWithConditions"
+        <collection property="attachments" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                      column="{hostId=study_id,attachmentType=attachment_type}" />
     </resultMap>
     <sql id="Base_Column_List">
@@ -128,7 +128,7 @@
     delete from tab_pb_edu_study_center
     where study_id = #{studyId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yizheng.partybuilding.entity.TabPbEduStudyCenter">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduStudyCenter">
     insert into tab_pb_edu_study_center (study_id, file_type, study_type, 
       duration, cover, title, 
       like_count, watch_count, description, articles_source, is_recommend,
@@ -146,7 +146,7 @@
       )
   </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="studyId"
-            parameterType="com.yizheng.partybuilding.entity.TabPbEduStudyCenter">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduStudyCenter">
         insert into tab_pb_edu_study_center
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="studyId != null">
@@ -274,7 +274,7 @@
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" useGeneratedKeys="true" keyProperty="studyId"
-            parameterType="com.yizheng.partybuilding.entity.TabPbEduStudyCenter">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduStudyCenter">
         update tab_pb_edu_study_center
         <set>
             <if test="fileType != null">
@@ -337,7 +337,7 @@
         </set>
         where study_id = #{studyId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yizheng.partybuilding.entity.TabPbEduStudyCenter">
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduStudyCenter">
     update tab_pb_edu_study_center
     set file_type = #{fileType,jdbcType=BIGINT},
       study_type = #{studyType,jdbcType=BIGINT},
@@ -360,7 +360,7 @@
       content = #{content,jdbcType=LONGVARCHAR}
     where study_id = #{studyId,jdbcType=BIGINT}
   </update>
-    <update id="updateByPrimaryKey" parameterType="com.yizheng.partybuilding.entity.TabPbEduStudyCenter">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbEduStudyCenter">
     update tab_pb_edu_study_center
     set file_type = #{fileType,jdbcType=BIGINT},
       study_type = #{studyType,jdbcType=BIGINT},
