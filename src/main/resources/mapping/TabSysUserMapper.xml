@@ -2000,7 +2000,7 @@
         where user_id = #{userId}
     </update>
 
-    <select id="checkIsExistByUserId" parameterType="java.lang.Integer" resultType="int">
+    <select id="checkIsExistByUserId" parameterType="java.lang.Integer" resultType="java.lang.Boolean">
         SELECT COUNT(1) FROM sys_user WHERE user_id = #{userId}
     </select>
 
