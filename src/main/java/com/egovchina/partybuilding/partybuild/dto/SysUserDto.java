@@ -5,7 +5,6 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbPartyJobTitle;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyWork;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
@@ -15,7 +14,6 @@ import java.util.List;
  * Created by FanYanGen on 2019/4/11 16:00
  */
 @Data
-@AllArgsConstructor
 public class SysUserDto {
 
     @ApiModelProperty(value = "党员")
@@ -29,5 +27,11 @@ public class SysUserDto {
 
     @ApiModelProperty(value = "工作信息")
     private List<TabPbPartyWork> workList;
+
+    public SysUserDto(List<TabPbPartyEducation> educationList, List<TabPbPartyJobTitle> jobTitleList, List<TabPbPartyWork> workList) {
+        this.educationList = educationList;
+        this.jobTitleList = jobTitleList;
+        this.workList = workList;
+    }
 
 }
