@@ -2,7 +2,7 @@ package com.egovchina.partybuilding.partybuild.controller;
 
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
-import com.egovchina.partybuilding.partybuild.service.ITabPbUserTagService;
+import com.egovchina.partybuilding.partybuild.service.TabPbUserTagService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class TabPbUserTagController {
 
     @Autowired
-    private ITabPbUserTagService tabPbUserTagService;
+    private TabPbUserTagService tabPbUserTagService;
 
     @ApiOperation(value = "根据用户ID和对应的用户标签字典ID", notes = "根据用户ID和对应的用户标签字典ID", httpMethod = "GET")
     @GetMapping("/addUserTag")

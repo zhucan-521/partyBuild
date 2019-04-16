@@ -4,7 +4,7 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.egovchina.partybuilding.partybuild.dto.PartyResourceDto;
 import com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper;
-import com.egovchina.partybuilding.partybuild.service.ITabPbLearnManagerService;
+import com.egovchina.partybuilding.partybuild.service.TabPbLearnManagerService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.var;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * @date 2018/12/10
  */
 @Service
-public class TabPbLearnManagerServiceImpl implements ITabPbLearnManagerService {
+public class TabPbLearnManagerServiceImpl implements TabPbLearnManagerService {
 
     @Autowired
     private TabPbAttachmentMapper mapper;

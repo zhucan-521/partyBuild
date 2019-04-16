@@ -9,8 +9,8 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbMemberAddListMappe
 import com.egovchina.partybuilding.partybuild.repository.TabPbMemberReduceListMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
-import com.egovchina.partybuilding.partybuild.service.ITabSysUserService;
 import com.egovchina.partybuilding.partybuild.service.TabSysDeptService;
+import com.egovchina.partybuilding.partybuild.service.TabSysUserService;
 import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
@@ -28,7 +28,7 @@ import java.util.List;
  * 党员--用户信息接口
  */
 @Service
-public class TabSysUserServiceImpl implements ITabSysUserService {
+public class TabSysUserServiceImpl implements TabSysUserService {
 
     @Autowired
     private TabSysUserMapper sysUserMapper;

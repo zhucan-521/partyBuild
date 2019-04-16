@@ -1,6 +1,5 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
@@ -10,14 +9,13 @@ import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.*;
 import com.egovchina.partybuilding.partybuild.entity.*;
 import com.egovchina.partybuilding.partybuild.repository.*;
-import com.egovchina.partybuilding.partybuild.service.ITabPbUserTagService;
 import com.egovchina.partybuilding.partybuild.service.PartyInformationService;
+import com.egovchina.partybuilding.partybuild.service.TabPbUserTagService;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.mapper.SysUserMapper;
 import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +48,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     TabPbFlowInMapper tabPbFlowInMapper;
 
     @Autowired
-    ITabPbUserTagService tabPbUserTagService;
+    TabPbUserTagService tabPbUserTagService;
 
     @Autowired
     private TabPbMemberReduceListMapper reduceListMapper;

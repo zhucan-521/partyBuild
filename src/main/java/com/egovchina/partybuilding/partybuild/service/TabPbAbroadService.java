@@ -9,7 +9,7 @@ import com.github.pagehelper.PageInfo;
  * @version 1.0
  * @date 2018/11/26
  */
-public interface ITabPbAbroadService {
+public interface TabPbAbroadService {
 
     int add(TabPbAbroad abroad);
 

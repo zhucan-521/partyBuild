@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author YangYingXiang on 2019/03/01
  */
-public interface ITabPbDeptSecretaryService {
+public interface TabPbDeptSecretaryService {
     int insertSelective(TabPbDeptSecretary record);
 
     TabPbDeptSecretary selectByPrimaryKey(Long secretaryId);

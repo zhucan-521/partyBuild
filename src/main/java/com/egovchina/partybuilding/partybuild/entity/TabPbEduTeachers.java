@@ -108,7 +108,7 @@ public class TabPbEduTeachers extends Model<TabPbEduTeachers> implements Seriali
 
     @TableField(exist = false)
     @ApiModelProperty(value = "保存附件和修改附件用")
-    private List<TabPbAttachment> annex;
+    private List<TabPbAttachment> attachments;
 
     @TableField(exist = false)
     @ApiModelProperty(value = "查看附件信息用")

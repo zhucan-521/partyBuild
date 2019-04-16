@@ -10,7 +10,7 @@ import com.github.pagehelper.PageInfo;
  * @version 1.0
  * @date 2018/12/10
  */
-public interface ITabPbLearnManagerService {
+public interface TabPbLearnManagerService {
 
     /**
      * 获取学习管理相关业务附件信息

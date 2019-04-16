@@ -16,7 +16,7 @@ import java.util.List;
  * @version 1.0
  * @date 2018/11/28
  */
-public interface ITabPbDevPartyMemberService {
+public interface TabPbDevPartyMemberService {
 
     /**
      * 通过用户id获取发展步骤信息

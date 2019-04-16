@@ -58,7 +58,7 @@ public class TabPbEduTeachersCourse extends Model<TabPbEduTeachersCourse> {
 
     @TableField(exist = false)
     @ApiModelProperty(value = "附件：课件")
-    private List<TabPbAttachment> attachmentList;
+    private List<TabPbAttachment> attachments;
 
 
     @Override

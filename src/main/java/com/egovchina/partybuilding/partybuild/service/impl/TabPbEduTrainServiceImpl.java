@@ -10,7 +10,7 @@ import com.egovchina.partybuilding.partybuild.entity.*;
 import com.egovchina.partybuilding.partybuild.feign.MessageServiceController;
 import com.egovchina.partybuilding.partybuild.repository.*;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
-import com.egovchina.partybuilding.partybuild.service.ITabPbEduTrainService;
+import com.egovchina.partybuilding.partybuild.service.TabPbEduTrainService;
 import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
  */
 @Service("eduTrainService")
 @Transactional(rollbackFor = Exception.class)
-public class TabPbEduTrainServiceImpl implements ITabPbEduTrainService {
+public class TabPbEduTrainServiceImpl implements TabPbEduTrainService {
 
     @Autowired
     private TabPbEduTrainMapper trainMapper;

@@ -152,8 +152,8 @@ public class TabPbPositiveRegist extends Model<TabPbPositiveRegist> implements S
     private Long orgRange;
 
     @TableField(exist = false)
-    @ApiModelProperty(value = "附件list")
-    private List<TabPbAttachment> attachmentList;
+    @ApiModelProperty(value = "附件")
+    private List<TabPbAttachment> attachments;
 
     @TableField(exist = false)
     @ApiModelProperty(value = "报到证")

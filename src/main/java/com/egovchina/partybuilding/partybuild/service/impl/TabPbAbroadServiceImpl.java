@@ -4,7 +4,7 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.entity.TabPbAbroad;
 import com.egovchina.partybuilding.partybuild.repository.TabPbAbroadMapper;
-import com.egovchina.partybuilding.partybuild.service.ITabPbAbroadService;
+import com.egovchina.partybuilding.partybuild.service.TabPbAbroadService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.var;
@@ -21,7 +21,7 @@ import java.util.Date;
  */
 @Transactional(rollbackFor = Exception.class)
 @Service
-public class TabPbAbroadServiceImpl implements ITabPbAbroadService {
+public class TabPbAbroadServiceImpl implements TabPbAbroadService {
 
     @Autowired
     private TabPbAbroadMapper abroadMapper;

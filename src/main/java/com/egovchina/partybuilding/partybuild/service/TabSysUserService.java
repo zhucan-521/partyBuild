@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * 党员--用户信息接口
  */
-public interface ITabSysUserService {
+public interface TabSysUserService {
 
     /**
      * 根据组织Id 获取党务工作者信息

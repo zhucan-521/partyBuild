@@ -4,7 +4,7 @@ import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPunishment;
 import com.egovchina.partybuilding.partybuild.entity.TabPbRewards;
-import com.egovchina.partybuilding.partybuild.service.ITabPbJiangChengService;
+import com.egovchina.partybuilding.partybuild.service.TabPbJiangChengService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ import java.util.Map;
 public class TabPbJiangChengController {
 
     @Autowired
-    ITabPbJiangChengService tabPbJiangChengService;
+    TabPbJiangChengService tabPbJiangChengService;
 
     /**
      * 添加处分

@@ -40,6 +40,7 @@ public class TabPbMsgNoticeServiceImpl extends ServiceImpl<TabPbMsgNoticeMapper,
     @Autowired
     private TabPbMsgNoticeDeptMapper deptMapper;
 
+    @Transactional
     @Override
     @PaddingBaseField(recursive = true)
     public int add(TabPbMsgNotice notice) {
@@ -51,9 +52,7 @@ public class TabPbMsgNoticeServiceImpl extends ServiceImpl<TabPbMsgNoticeMapper,
          * 保存附件
          */
         if(count>0){
-            if(notice.getAttachmentList()!=null){
-                iTabPbAttachmentService.intelligentOperation(notice.getAttachmentList(),notice.getId(),AttachmentType.NOTICE);
-            }
+            iTabPbAttachmentService.intelligentOperation(notice.getAttachments(), notice.getId(), AttachmentType.NOTICE);
             /**
              * 保存明细
              */
@@ -63,6 +62,7 @@ public class TabPbMsgNoticeServiceImpl extends ServiceImpl<TabPbMsgNoticeMapper,
     }
 
     @Override
+    @Transactional
     @PaddingBaseField(updateOnly = true)
     public int edit(TabPbMsgNotice notice) {
         if(CollectionUtils.isEmpty(notice.getNoticeDeptList())){
@@ -105,9 +105,7 @@ public class TabPbMsgNoticeServiceImpl extends ServiceImpl<TabPbMsgNoticeMapper,
             /**
              * 保存附件
              */
-            if(notice.getAttachmentList()!=null){
-                iTabPbAttachmentService.intelligentOperation(notice.getAttachmentList(),notice.getId(),AttachmentType.NOTICE);
-            }
+            iTabPbAttachmentService.intelligentOperation(notice.getAttachments(), notice.getId(), AttachmentType.NOTICE);
         }
         return count;
     }
@@ -126,10 +124,7 @@ public class TabPbMsgNoticeServiceImpl extends ServiceImpl<TabPbMsgNoticeMapper,
             /**
              * 查询附件list
              */
-            notice.setAttachmentList(iTabPbAttachmentService.listByHostId(notice.getId(), AttachmentType.NOTICE));
-            notice.setDocAttachmentList(notice.getAttachmentList().stream().filter(tabPbAttachment -> AttachmentType.DOC.equals(tabPbAttachment.getAttachmentFileType())).collect(Collectors.toList()));
-            notice.setPhotoAttachmentList(notice.getAttachmentList().stream().filter(tabPbAttachment -> AttachmentType.PHOTO.equals(tabPbAttachment.getAttachmentFileType())).collect(Collectors.toList()));
-            notice.setAttachmentList(null);
+            notice.setAttachments(iTabPbAttachmentService.listByHostId(notice.getId(), AttachmentType.NOTICE));
             return notice;
         }else{
             TabPbMsgNotice notice = noticeMapper.selectByPrimaryKey(id);
@@ -137,10 +132,7 @@ public class TabPbMsgNoticeServiceImpl extends ServiceImpl<TabPbMsgNoticeMapper,
             /**
              * 查询附件list
              */
-            notice.setAttachmentList(iTabPbAttachmentService.listByHostId(notice.getId(),AttachmentType.NOTICE));
-            notice.setDocAttachmentList(notice.getAttachmentList().stream().filter(tabPbAttachment -> AttachmentType.DOC.equals(tabPbAttachment.getAttachmentFileType())).collect(Collectors.toList()));
-            notice.setPhotoAttachmentList(notice.getAttachmentList().stream().filter(tabPbAttachment -> AttachmentType.PHOTO.equals(tabPbAttachment.getAttachmentFileType())).collect(Collectors.toList()));
-            notice.setAttachmentList(null);
+            notice.setAttachments(iTabPbAttachmentService.listByHostId(notice.getId(), AttachmentType.NOTICE));
             return notice;
         }
     }

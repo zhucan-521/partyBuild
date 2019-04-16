@@ -6,7 +6,7 @@ import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.*;
 import com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMember;
 import com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMemberDate;
-import com.egovchina.partybuilding.partybuild.service.ITabPbDevPartyMemberService;
+import com.egovchina.partybuilding.partybuild.service.TabPbDevPartyMemberService;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -32,7 +32,7 @@ import java.util.List;
 public class TabPbDevPartyMemberController {
 
     @Autowired
-    private ITabPbDevPartyMemberService memberService;
+    private TabPbDevPartyMemberService memberService;
 
     @ApiOperation(value = "更新党员发展步骤信息")
     @PutMapping()

@@ -70,7 +70,7 @@ public class TabPbLeadTeamMemberImpl implements TabPbLeadTeamMemberService {
             if (retVal > 0) {
                 Long i = tabPbLeadTeamMemberMapper.selectBycount(tabPbLeadTeamMember.getLeadTeamId());
                 tabPbLeadTeamMapper.updateNum(tabPbLeadTeamMember.getLeadTeamId());
-                retVal += iTabPbAttachmentService.intelligentOperation(tabPbLeadTeamMember.getTabPbAttachments(),
+                retVal += iTabPbAttachmentService.intelligentOperation(tabPbLeadTeamMember.getAttachments(),
                         tabPbLeadTeamMember.getMemberId(), AttachmentType.portrait);
             }
             return retVal;
@@ -157,7 +157,7 @@ public class TabPbLeadTeamMemberImpl implements TabPbLeadTeamMemberService {
         tabPbLeadTeamMemberMapper.updateByPrimaryKeySelective(tabPbLeadTeamMember);
         int retVal = iTabPbAttachmentService.deleteByHostId(tabPbLeadTeamMember.getMemberId());
         if (retVal > 0) {
-            retVal += iTabPbAttachmentService.intelligentOperation(tabPbLeadTeamMember.getTabPbAttachments(),
+            retVal += iTabPbAttachmentService.intelligentOperation(tabPbLeadTeamMember.getAttachments(),
                     tabPbLeadTeamMember.getMemberId(), AttachmentType.portrait);
         }
         return retVal;

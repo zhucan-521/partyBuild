@@ -43,5 +43,5 @@ public class TabDeptPositionDto {
     private Integer imgAnnexNum;
 
     @ApiModelProperty(value = "布置照片")
-    private List<TabPbAttachment> arrangePhotos;
+    private List<TabPbAttachment> attachments;
 }

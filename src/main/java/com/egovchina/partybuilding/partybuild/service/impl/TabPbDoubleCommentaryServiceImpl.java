@@ -80,7 +80,7 @@ public class TabPbDoubleCommentaryServiceImpl implements TabPbDoubleCommentarySe
         tabPbDoubleCommentary.setCheckDate(new Date());
         int retVal = tabPbDoubleCommentaryMapper.insertSelective(tabPbDoubleCommentary);
         if (retVal > 0) {
-            retVal += iTabPbAttachmentService.intelligentOperation(tabPbDoubleCommentary.getTabPbAttachments(),
+            retVal += iTabPbAttachmentService.intelligentOperation(tabPbDoubleCommentary.getAttachments(),
                     tabPbDoubleCommentary.getCommentaryId(), AttachmentType.DOUBLE_COMMENTARY);
         }
         return retVal;
@@ -98,7 +98,7 @@ public class TabPbDoubleCommentaryServiceImpl implements TabPbDoubleCommentarySe
     public int updateWithAnnexs(TabPbDoubleCommentary tabPbDoubleCommentary) {
         int retVal = tabPbDoubleCommentaryMapper.updateByPrimaryKeySelective(tabPbDoubleCommentary);
         if (retVal > 0) {
-            retVal += iTabPbAttachmentService.intelligentOperation(tabPbDoubleCommentary.getTabPbAttachments(),
+            retVal += iTabPbAttachmentService.intelligentOperation(tabPbDoubleCommentary.getAttachments(),
                     tabPbDoubleCommentary.getCommentaryId(), AttachmentType.DOUBLE_COMMENTARY);
         }
         return retVal;

@@ -37,8 +37,6 @@
         <result column="deptName" jdbcType="VARCHAR" property="deptName"/>
         <result property="pictures" jdbcType="VARCHAR" column="pictures"/>
         <result property="gender" jdbcType="BIGINT" column="gender"/>
-
-
     </resultMap>
 
 
@@ -245,8 +243,6 @@
             <if test="rank != null">
                 #{rank,jdbcType=VARCHAR},
             </if>
-
-
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective"  parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember">
@@ -359,10 +355,8 @@
       update_userid = #{updateUserid,jdbcType=BIGINT},
       update_username = #{updateUsername,jdbcType=VARCHAR},
       version = #{version,jdbcType=BIGINT}
-
     where member_id = #{memberId,jdbcType=BIGINT}
   </update>
-
 
     <!--查询userid是否匹配-->
     <select id="selectId" parameterType="java.lang.Long" resultType="java.lang.Integer">
@@ -412,7 +406,6 @@
         <if test="personName !=null and personName!=''">
             AND l.person_name like concat(concat("%",#{personName,jdbcType=VARCHAR}),"%")
         </if>
-
     </select>
 
 

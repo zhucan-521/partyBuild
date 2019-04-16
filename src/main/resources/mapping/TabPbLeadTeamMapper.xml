@@ -43,13 +43,9 @@
     </resultMap>
     <resultMap extends="ResultMapWithBLOBs" id="ResultMapWithFiles"
                type="com.egovchina.partybuilding.partybuild.dto.TabPbLeadTeamDto">
-        <collection property="documents"
+        <collection property="attachments"
                     select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
-                    column="{hostId=lead_team_id,attachmentType=attachment_type,fileTypeLabel=file_type_doc}"/>
-
-        <collection property="pictures"
-                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
-                    column="{hostId=lead_team_id,attachmentType=attachment_type,fileTypeLabel=file_type_img}"/>
+                    column="{hostId=lead_team_id,attachmentType=attachment_type}"/>
     </resultMap>
     <sql id="Base_Column_List">
     l.lead_team_id, l.org_id, l.session_year, l.change_date, l.during_year, l.vote_type, l.due_count,

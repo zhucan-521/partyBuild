@@ -6,7 +6,7 @@ import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.GrantCommitteeAndMembersDto;
 import com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember;
 import com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommittee;
-import com.egovchina.partybuilding.partybuild.service.ITabPbGrantCommitteeService;
+import com.egovchina.partybuilding.partybuild.service.TabPbGrantCommitteeService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -28,7 +28,7 @@ import java.util.List;
 public class TabPbGrantCommitteeController {
 
     @Autowired
-    private ITabPbGrantCommitteeService service;
+    private TabPbGrantCommitteeService service;
 //
 //    @ApiOperation(value = "添加街道大公委数据", notes = "街道大公委对象, 如果orgId存在则更新, 否则新增街道大公委数据")
 //    @PostMapping()

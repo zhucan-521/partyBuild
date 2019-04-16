@@ -190,7 +190,7 @@ public class TabSysDeptController {
             throw new BusinessDataNotFoundException("组织不存在");
         }
         BeanUtil.copyPropertiesIgnoreNull(tabDeptPositionDto, dbSysDept);
-        int retVal = tabSysDeptService.updatePositionWithAnnexs(dbSysDept, tabDeptPositionDto.getArrangePhotos());
+        int retVal = tabSysDeptService.updatePositionWithAnnexs(dbSysDept, tabDeptPositionDto.getAttachments());
         return ReturnUtil.buildReturn(retVal);
     }
 

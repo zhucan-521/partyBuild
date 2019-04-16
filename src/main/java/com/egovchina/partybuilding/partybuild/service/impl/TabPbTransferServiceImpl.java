@@ -9,7 +9,7 @@ import com.egovchina.partybuilding.partybuild.dto.TransferListWaitingDto;
 import com.egovchina.partybuilding.partybuild.entity.TabPbTransfer;
 import com.egovchina.partybuilding.partybuild.entity.TabPbTransferItem;
 import com.egovchina.partybuilding.partybuild.repository.TabPbTransferMapper;
-import com.egovchina.partybuilding.partybuild.service.ITabPbTransferService;
+import com.egovchina.partybuilding.partybuild.service.TabPbTransferService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class TabPbTransferServiceImpl implements ITabPbTransferService {
+public class TabPbTransferServiceImpl implements TabPbTransferService {
 
     @Autowired
     private TabPbTransferMapper mapper;

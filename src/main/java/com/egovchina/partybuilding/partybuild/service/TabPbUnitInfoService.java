@@ -5,7 +5,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo;
 
 import java.util.List;
 
-public interface ITabPbUnitInfoService {
+public interface TabPbUnitInfoService {
     List<TabPbUnitInfo> selectByUnitName(String unitName, Page page);
 
     TabPbUnitInfo selectByUnitId(Long unitId);

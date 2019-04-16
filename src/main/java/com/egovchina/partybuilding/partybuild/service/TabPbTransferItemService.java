@@ -7,7 +7,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbTransferItem;
 
 import java.util.List;
 
-public interface ITabPbTransferItemService {
+public interface TabPbTransferItemService {
 
     /**
      * 根据所在组织与目标组织，生成审批流程

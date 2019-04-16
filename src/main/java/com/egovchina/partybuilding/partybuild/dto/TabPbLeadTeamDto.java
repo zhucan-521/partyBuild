@@ -24,8 +24,6 @@ public class TabPbLeadTeamDto extends TabPbLeadTeam {
     @ApiModelProperty(value = "范围组织ID")
     private Long rangeDeptId;
 
-    @ApiModelProperty(hidden = true)
-    private static final String format = "yyyy-MM-dd";
     @ApiModelProperty(value = "身份证")
     private String idCardNo;
 
@@ -47,14 +45,11 @@ public class TabPbLeadTeamDto extends TabPbLeadTeam {
     @ApiModelProperty(value = "文档附件数量")
     private Integer docNum;
 
-    @ApiModelProperty(value = "图片集合")
-    private List<TabPbAttachment> pictures;
-
-    @ApiModelProperty(value = "文档集合")
-    private List<TabPbAttachment> documents;
+    @ApiModelProperty(value = "附件")
+    private List<TabPbAttachment> attachments;
 
     @ApiModelProperty(value = "换届时间", example = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = format)
-    @JsonFormat(pattern = format)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date changeDates;
 }
