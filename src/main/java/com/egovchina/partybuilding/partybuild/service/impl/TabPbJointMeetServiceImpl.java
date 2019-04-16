@@ -14,7 +14,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbJointMeetOrg;
 import com.egovchina.partybuilding.partybuild.repository.TabPbActivitiesMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbJointMeetMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbJointMeetOrgMapper;
-import com.egovchina.partybuilding.partybuild.service.ITabPbJointMeetService;
+import com.egovchina.partybuilding.partybuild.service.TabPbJointMeetService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.var;
@@ -33,7 +33,7 @@ import static org.springframework.util.StringUtils.isEmpty;
  * @date 2018/12/29
  */
 @Service
-public class TabPbJointMeetServiceImpl implements ITabPbJointMeetService {
+public class TabPbJointMeetServiceImpl implements TabPbJointMeetService {
 
     public final static String DEL_FLAG = "1";
 

@@ -74,16 +74,8 @@ public class TabPbMsgNotice extends Model<TabPbMsgNotice> implements Serializabl
     private String updateUsername;
 
     @TableField(exist = false)
-    @ApiModelProperty(value = "附件list")
-    private List<TabPbAttachment> attachmentList;
-
-    @TableField(exist = false)
-    @ApiModelProperty(value = "图片附件list")
-    private List<TabPbAttachment> photoAttachmentList;
-
-    @TableField(exist = false)
-    @ApiModelProperty(value = "文档附件list")
-    private List<TabPbAttachment> docAttachmentList;
+    @ApiModelProperty(value = "附件")
+    private List<TabPbAttachment> attachments;
 
     @TableField(exist = false)
     @ApiModelProperty(value = "组织list")

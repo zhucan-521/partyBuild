@@ -12,7 +12,7 @@ import java.util.List;
  * @version 1.0
  * @date 2018/12/04
  */
-public interface ITabPbGrantCommitteeService {
+public interface TabPbGrantCommitteeService {
 
     /**
      * 保存或更新街道大公委及数据

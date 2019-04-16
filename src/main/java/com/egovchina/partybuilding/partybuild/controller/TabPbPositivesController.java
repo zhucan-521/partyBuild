@@ -3,7 +3,7 @@ package com.egovchina.partybuilding.partybuild.controller;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPositives;
-import com.egovchina.partybuilding.partybuild.service.ITabPbPositivesService;
+import com.egovchina.partybuilding.partybuild.service.TabPbPositivesService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +24,7 @@ import java.util.Map;
 public class TabPbPositivesController {
 
     @Autowired
-    ITabPbPositivesService tabPbPositivesService;
+    TabPbPositivesService tabPbPositivesService;
 
     /**
      * 添加职务

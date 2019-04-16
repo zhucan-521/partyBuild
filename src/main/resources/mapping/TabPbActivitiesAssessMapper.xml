@@ -35,15 +35,9 @@
                     select="com.egovchina.partybuilding.partybuild.repository.TabPbActivitiesAssessVerifyMapper.selectWithConditions"
                     column="assessId=id"/>
         <!--附件-->
-        <collection property="docAttachments"
+        <collection property="attachments"
                     select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
-                    column="{hostId=host_id,attachmentType=attachment_type,fileTypeLabel=file_type_doc}"/>
-        <collection property="imgAttachments"
-                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
-                    column="{hostId=host_id,attachmentType=attachment_type,fileTypeLabel=file_type_img}"/>
-        <collection property="videoAttachments"
-                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
-                    column="{hostId=host_id,attachmentType=attachment_type,fileTypeLabel=file_type_video}"/>
+                    column="{hostId=host_id,attachmentType=attachment_type}"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, host_id, dept_id, years, user_id, username, type, assess_result,

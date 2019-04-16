@@ -9,10 +9,10 @@ import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
 import com.egovchina.partybuilding.partybuild.entity.TabPbTransfer;
 import com.egovchina.partybuilding.partybuild.entity.TabPbTransferItem;
 import com.egovchina.partybuilding.partybuild.repository.TabPbTransferItemMapper;
-import com.egovchina.partybuilding.partybuild.service.ITabPbTransferItemService;
-import com.egovchina.partybuilding.partybuild.service.ITabPbTransferService;
-import com.egovchina.partybuilding.partybuild.service.ITabSysUserService;
+import com.egovchina.partybuilding.partybuild.service.TabPbTransferItemService;
+import com.egovchina.partybuilding.partybuild.service.TabPbTransferService;
 import com.egovchina.partybuilding.partybuild.service.TabSysDeptService;
+import com.egovchina.partybuilding.partybuild.service.TabSysUserService;
 import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.util.DeptStrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +24,16 @@ import java.util.List;
 
 @Service
 @Transactional
-public class TabPbTransferItemServiceImpl implements ITabPbTransferItemService {
+public class TabPbTransferItemServiceImpl implements TabPbTransferItemService {
 
     @Autowired
     private TabPbTransferItemMapper mapper;
     @Autowired
     private TabSysDeptService tabSysDeptService;
     @Autowired
-    private ITabSysUserService sysUserService;
+    private TabSysUserService sysUserService;
     @Autowired
-    private ITabPbTransferService transferService;
+    private TabPbTransferService transferService;
 
     @Override
     public TabPbTransferItem getById(Long itemId) {

@@ -8,7 +8,6 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommittee;
 import com.egovchina.partybuilding.partybuild.repository.TabPbGrantCommitteMemberMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbGrantCommitteeMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
-import com.egovchina.partybuilding.partybuild.service.ITabPbGrantCommitteeService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.var;
@@ -26,7 +25,7 @@ import java.util.stream.Collectors;
  * @date 2018/12/04
  */
 @Service
-public class TabPbGrantCommitteeService implements ITabPbGrantCommitteeService {
+public class TabPbGrantCommitteeService implements com.egovchina.partybuilding.partybuild.service.TabPbGrantCommitteeService {
 
 
     @Autowired

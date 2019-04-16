@@ -10,7 +10,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbEduTestarrange;
 
 import java.util.List;
 
-public interface ITabPbEduTestService {
+public interface TabPbEduTestService {
 
     /**
      * 新增试卷

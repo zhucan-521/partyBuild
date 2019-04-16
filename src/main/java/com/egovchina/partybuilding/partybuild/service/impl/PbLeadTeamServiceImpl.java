@@ -69,7 +69,7 @@ public class PbLeadTeamServiceImpl implements PbLeadTeamService {
         tabPbLeadTeam.setChangeDate(calendar.getTime());
         int insert = tabPbLeadTeamMapper.insertSelective(tabPbLeadTeam);
         if (insert > 0) {
-            insert += iTabPbAttachmentService.intelligentOperation(tabPbLeadTeam.getTabPbAttachments(),
+            insert += iTabPbAttachmentService.intelligentOperation(tabPbLeadTeam.getAttachments(),
                     tabPbLeadTeam.getLeadTeamId(), AttachmentType.LEADERSHIP_TEAM);
         }
         return insert;
@@ -127,7 +127,7 @@ public class PbLeadTeamServiceImpl implements PbLeadTeamService {
     public int updateWithAboutInfo(TabPbLeadTeam tabPbLeadTeam) {
         int retVal = tabPbLeadTeamMapper.updateByPrimaryKeySelective(tabPbLeadTeam);
         if (retVal > 0) {
-            retVal += iTabPbAttachmentService.intelligentOperation(tabPbLeadTeam.getTabPbAttachments(),
+            retVal += iTabPbAttachmentService.intelligentOperation(tabPbLeadTeam.getAttachments(),
                     tabPbLeadTeam.getLeadTeamId(), AttachmentType.LEADERSHIP_TEAM);
         }
         return retVal;

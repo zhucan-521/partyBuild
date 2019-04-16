@@ -76,7 +76,7 @@ public class TabPbDoubleCommentary {
     private Integer videoNum;
 
     @ApiModelProperty(value = "附件实体集合")
-    private List<TabPbAttachment> tabPbAttachments;
+    private List<TabPbAttachment> attachments;
 
     //==================
 

@@ -8,7 +8,7 @@ import java.util.List;
  * @author: huang
  * Date: 2019/1/14
  */
-public interface ITabPbUserTagService {
+public interface TabPbUserTagService {
     int addUserTag(Long userId, Long tagType);
 
     int delete(Long usertagId);

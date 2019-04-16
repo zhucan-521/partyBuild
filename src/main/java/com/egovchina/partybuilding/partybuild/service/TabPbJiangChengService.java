@@ -10,7 +10,7 @@ import java.util.Map;
  * @author: huang
  * Date: 2018/12/3
  */
-public interface ITabPbJiangChengService {
+public interface TabPbJiangChengService {
     int insertPunishment(TabPbPunishment punishment);
 
     int deletePunishmentById(Long id);

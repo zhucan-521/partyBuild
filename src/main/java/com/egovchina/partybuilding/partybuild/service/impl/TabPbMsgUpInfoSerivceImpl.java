@@ -20,7 +20,6 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -61,21 +60,9 @@ public class TabPbMsgUpInfoSerivceImpl implements TabPbMsgUpInfoSerivce {
      * @return
      */
     private int modifyAttachment(TabPbMsgUpInfoDto tabPbMsgUpInfo) {
-        List<TabPbAttachment> docAttachments = tabPbMsgUpInfo.getDocAttachments();
-        List<TabPbAttachment> imgAttachments = tabPbMsgUpInfo.getImgAttachments();
-        List<TabPbAttachment> videoAttachments = tabPbMsgUpInfo.getVideoAttachments();
-        List<TabPbAttachment> attachmentList = new ArrayList<>();
-        if (CollectionUtil.isNotEmpty(docAttachments)) {
-            attachmentList.addAll(docAttachments);
-        }
-        if (CollectionUtil.isNotEmpty(imgAttachments)) {
-            attachmentList.addAll(imgAttachments);
-        }
-        if (CollectionUtil.isNotEmpty(videoAttachments)) {
-            attachmentList.addAll(videoAttachments);
-        }
-        if (CollectionUtil.isNotEmpty(attachmentList)) {
-            return iTabPbAttachmentService.intelligentOperation(attachmentList,
+        List<TabPbAttachment> attachments = tabPbMsgUpInfo.getAttachments();
+        if (CollectionUtil.isNotEmpty(attachments)) {
+            return iTabPbAttachmentService.intelligentOperation(attachments,
                     tabPbMsgUpInfo.getId(), AttachmentType.msgUpInfoType);
         }
         return 0;

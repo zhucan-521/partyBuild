@@ -140,8 +140,8 @@ egov-china:
       \t调整方式：将要调整接口的前缀调整为对应的服务名，eg: 党组织活动接口前缀由 partybuilding 改为 life \n
       后端相关：\n
       \t1. 附件上传及回显统一使用一个集合（原来区分了图片、文档及视频），这个调整请在 2019-04-15 完成 \n
-      \t调整方式：实体中如 private List&lt;TabPbAttachment&gt; docAttachments; private List&lt;TabPbAttachment&gt; imgAttachments; private List&lt;TabPbAttachment&gt; videoAttachments;
-      这些附件字段删除后保留一个名称为 attachments 的字段
+      \t调整方式：实体中如 private List&lt;TabPbAttachment&gt; courseList; private List&lt;TabPbAttachment&gt; imgAttachments; private List&lt;TabPbAttachment&gt; videoAttachments;
+      这些附件字段删除后保留一个名称为 courseList 的字段
       </h2>"
   # jwt token
   jwtToken:

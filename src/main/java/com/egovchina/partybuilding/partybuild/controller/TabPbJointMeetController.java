@@ -6,7 +6,7 @@ import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.TabPbJointMeetDto;
 import com.egovchina.partybuilding.partybuild.entity.TabPbJointMeet;
 import com.egovchina.partybuilding.partybuild.entity.TabPbJointMeetOrg;
-import com.egovchina.partybuilding.partybuild.service.ITabPbJointMeetService;
+import com.egovchina.partybuilding.partybuild.service.TabPbJointMeetService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import lombok.var;
@@ -29,7 +29,7 @@ import static com.egovchina.partybuilding.common.util.UserContextHolder.currentU
 public class TabPbJointMeetController {
 
     @Autowired
-    private ITabPbJointMeetService jointMeetService;
+    private TabPbJointMeetService jointMeetService;
 
     @ApiOperation(value = "添加联席单位", notes = "联系成员单位必须有")
     @PostMapping()

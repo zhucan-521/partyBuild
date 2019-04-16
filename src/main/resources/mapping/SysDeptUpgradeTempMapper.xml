@@ -26,7 +26,8 @@
         <result column="file_number" jdbcType="VARCHAR" property="fileNumber"/>
         <result column="change_reason" jdbcType="LONGVARCHAR" property="changeReason"/>
         <!--关联附件数据-->
-        <association property="tabPbAttachmentList" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+        <association property="attachments"
+                     select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                      column="{hostId=id,attachmentType=attachment_type}" />
     </resultMap>
     <sql id="Base_Column_List">

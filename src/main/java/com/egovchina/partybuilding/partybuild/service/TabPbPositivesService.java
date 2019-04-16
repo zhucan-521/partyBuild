@@ -9,7 +9,7 @@ import java.util.Map;
  * @author: huang
  * Date: 2018/11/30
  */
-public interface ITabPbPositivesService {
+public interface TabPbPositivesService {
     int insert(TabPbPositives positives);
 
     int deleteById(Integer id);

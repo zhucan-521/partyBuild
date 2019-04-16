@@ -6,8 +6,8 @@ import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteExcept
 import com.egovchina.partybuilding.partybuild.entity.TabPbHardship;
 import com.egovchina.partybuilding.partybuild.repository.TabPbHardshipMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
-import com.egovchina.partybuilding.partybuild.service.ITabPbUserTagService;
 import com.egovchina.partybuilding.partybuild.service.TabPbHardshipService;
+import com.egovchina.partybuilding.partybuild.service.TabPbUserTagService;
 import com.egovchina.partybuilding.partybuild.system.util.UserTagType;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class TabPbHardshipServiceImpl implements TabPbHardshipService {
     private TabSysUserMapper tabSysUserMapper;
 
     @Autowired
-    private ITabPbUserTagService tabPbUserTagService;
+    private TabPbUserTagService tabPbUserTagService;
 
 
     @Override

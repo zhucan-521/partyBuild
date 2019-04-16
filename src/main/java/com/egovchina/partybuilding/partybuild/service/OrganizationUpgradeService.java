@@ -14,7 +14,7 @@ import java.util.List;
  * @author wuyunjie
  * Date 2019-01-03 14:32
  */
-public interface IOrganizationUpgradeService {
+public interface OrganizationUpgradeService {
     /**
      * 批量修改人员组织id
      *

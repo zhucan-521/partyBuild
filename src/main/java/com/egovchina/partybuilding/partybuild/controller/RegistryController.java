@@ -1,7 +1,7 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
 import com.egovchina.partybuilding.partybuild.dto.RegistryDto;
-import com.egovchina.partybuilding.partybuild.service.ITabSysUserService;
+import com.egovchina.partybuilding.partybuild.service.TabSysUserService;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -23,7 +23,7 @@ import java.util.List;
 public class RegistryController {
 
     @Autowired
-    ITabSysUserService sysUserService;
+    TabSysUserService sysUserService;
 
     /**
      * 列表

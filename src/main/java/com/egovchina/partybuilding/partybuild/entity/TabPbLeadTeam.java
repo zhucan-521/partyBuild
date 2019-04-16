@@ -17,9 +17,6 @@ import java.util.List;
 @ApiModel("领导班子")
 public class TabPbLeadTeam {
 
-    @ApiModelProperty(hidden = true)
-    private static final String format = "yyyy-MM-dd";
-
     @ApiModelProperty("领导班子id")
     private Long leadTeamId;
 
@@ -30,8 +27,8 @@ public class TabPbLeadTeam {
     private Long sessionYear;
 
     @ApiModelProperty(value = "换届时间", example = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = format)
-    @JsonFormat(pattern = format)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date changeDate;
 
     @ApiModelProperty("任期年限")
@@ -60,8 +57,8 @@ public class TabPbLeadTeam {
     private Long electedType;
 
     @ApiModelProperty(value = "当选时间", example = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = format)
-    @JsonFormat(pattern = format)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date electedTime;
 
     @ApiModelProperty("委员人数")
@@ -88,8 +85,8 @@ public class TabPbLeadTeam {
     @ApiModelProperty("选举结果")
     private String voteResult;
 
-    @ApiModelProperty(value = "附件实体")
-    private List<TabPbAttachment> tabPbAttachments;
+    @ApiModelProperty(value = "附件")
+    private List<TabPbAttachment> attachments;
 
     /**
      * 有效标记

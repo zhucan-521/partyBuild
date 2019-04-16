@@ -2,7 +2,7 @@ package com.egovchina.partybuilding.partybuild.controller;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.entity.TabPbAbroad;
-import com.egovchina.partybuilding.partybuild.service.ITabPbAbroadService;
+import com.egovchina.partybuilding.partybuild.service.TabPbAbroadService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -24,12 +24,12 @@ import org.springframework.web.bind.annotation.*;
 public class TabPbAbroadController {
 
     @Autowired
-    private ITabPbAbroadService iTabPbAbroadService;
+    private TabPbAbroadService tabPbAbroadService;
 
     @PostMapping(value = "/add")
     @ApiOperation(value = "添加出国出境信息", notes = "添加指定党员的出国出境信息", httpMethod = "POST")
     public int add(@RequestBody @Validated TabPbAbroad abroad) {
-        return iTabPbAbroadService.add(abroad);
+        return tabPbAbroadService.add(abroad);
     }
 
     @GetMapping(value = "/list")
@@ -43,7 +43,7 @@ public class TabPbAbroadController {
             @ApiImplicitParam(value = "身份证号", name = "idCardNo", dataType = "Long"),
     })
     public PageInfo<TabPbAbroad> list(Long abroadId, Long orgId, Long orgRange, Long userId, String userName, String idCardNo, Page page) {
-        return this.iTabPbAbroadService.selectList(abroadId, orgId, orgRange, userId, userName, idCardNo, page);
+        return this.tabPbAbroadService.selectList(abroadId, orgId, orgRange, userId, userName, idCardNo, page);
     }
 
     @DeleteMapping(value = "/delete/{abroadId}")
@@ -52,13 +52,13 @@ public class TabPbAbroadController {
             @ApiImplicitParam(value = "党员id", name = "abroadId", dataType = "Long", required = true, paramType = "path")
     })
     public int delete(@PathVariable Long abroadId) {
-        return iTabPbAbroadService.delete(abroadId);
+        return tabPbAbroadService.delete(abroadId);
     }
 
     @PostMapping(value = "/update")
     @ApiOperation(value = "更新出国出境信息列表", notes = "需指定主键, 及更新信息")
     public int update(@RequestBody @Validated TabPbAbroad abroad) {
-        return iTabPbAbroadService.update(abroad);
+        return tabPbAbroadService.update(abroad);
     }
 
 }

@@ -11,8 +11,8 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPositiveRegistMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
-import com.egovchina.partybuilding.partybuild.service.ITabPbUserTagService;
 import com.egovchina.partybuilding.partybuild.service.TabPbPositiveRegistService;
+import com.egovchina.partybuilding.partybuild.service.TabPbUserTagService;
 import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.mapper.SysDeptMapper;
@@ -43,7 +43,7 @@ public class TabPbPositiveRegistServiceImpl extends ServiceImpl<TabPbPositiveReg
     private SysDeptMapper deptMapper;
 
     @Autowired
-    private ITabPbUserTagService tabPbUserTagService;
+    private TabPbUserTagService tabPbUserTagService;
 
     @Autowired
     private ITabPbAttachmentService iTabPbAttachmentService;
@@ -53,6 +53,7 @@ public class TabPbPositiveRegistServiceImpl extends ServiceImpl<TabPbPositiveReg
      * @param positiveRegistList
      */
     @Override
+    @Transactional
     @PaddingBaseField(recursive = true)
     public int add(TabPbPositiveRegist positiveRegistList) {
         TabPbPositiveRegist regist = positiveRegistMapper.findById(positiveRegistList.getUserId());
@@ -65,9 +66,7 @@ public class TabPbPositiveRegistServiceImpl extends ServiceImpl<TabPbPositiveReg
         newUser(positiveRegistList.getUserId().intValue(),true,positiveRegistList.getDeptId());
         int retVal = positiveRegistMapper.addPositiveRegist(positiveRegistList);
         if(retVal>0){
-            if (positiveRegistList.getAttachmentList() != null) {
-                iTabPbAttachmentService.intelligentOperation(positiveRegistList.getAttachmentList(), positiveRegistList.getPositiveRegistId(), AttachmentType.POSITIVE);
-            }
+            iTabPbAttachmentService.intelligentOperation(positiveRegistList.getAttachments(), positiveRegistList.getPositiveRegistId(), AttachmentType.POSITIVE);
         }
         return retVal;
     }
@@ -82,9 +81,7 @@ public class TabPbPositiveRegistServiceImpl extends ServiceImpl<TabPbPositiveReg
      */
     @Override
     public List<TabPbPositiveRegist> selectListPage( String userName, Byte revokeTag, String data,Long rangeDeptId,Long orgRange, Page page) {
-        if(page!=null){
-            PageHelper.startPage(page);
-        }
+        PageHelper.startPage(page);
         var list = positiveRegistMapper.selectListPage(new TabPbPositiveRegist().setUserName(userName)
         .setRevokeTag(revokeTag).setRegistDate(data).setRangeDeptId(rangeDeptId).setOrgRange(orgRange));
         return list;

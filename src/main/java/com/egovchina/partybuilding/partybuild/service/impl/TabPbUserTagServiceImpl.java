@@ -3,7 +3,7 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
 import com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper;
-import com.egovchina.partybuilding.partybuild.service.ITabPbUserTagService;
+import com.egovchina.partybuilding.partybuild.service.TabPbUserTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -17,7 +17,7 @@ import java.util.List;
  * Date: 2019/1/14
  */
 @Service
-public class TabPbUserTagServiceImpl implements ITabPbUserTagService {
+public class TabPbUserTagServiceImpl implements TabPbUserTagService {
 
     @Autowired
     TabPbUserTagMapper userTagMapper;
