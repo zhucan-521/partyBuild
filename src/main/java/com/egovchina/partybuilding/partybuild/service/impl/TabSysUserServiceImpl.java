@@ -80,26 +80,27 @@ public class TabSysUserServiceImpl implements TabSysUserService {
 
     /**
      * 获取党员党籍相关信息
+     *
      * @param userId
      * @return
      */
     @Override
     public SysUser getRegistryId(Long userId) {
-        if(userId == null){
+        if (userId == null) {
             return null;
         }
         SysUser user = sysUserMapper.selectByPrimaryKey(userId);
         SysDept dept = sysDeptService.selectByPrimaryKey(user.getJoinOrgId());
         TabPbMemberReduceList reduce = memberReduceListMapper.selectByUserId(userId);
-        if(reduce!=null){
+        if (reduce != null) {
             user.setOutType(reduce.getOutType());
             user.setReduceTime(reduce.getReduceTime());
         }
         TabPbMemberAddList add = memberAddListMapper.selectByUserId(userId);
-        if(add!=null){
+        if (add != null) {
             user.setAddTime(add.getAddTime());
         }
-        if(dept!=null){
+        if (dept != null) {
             user.setJoinOrgName(dept.getName());
         }
         setRegularTime(user);
@@ -108,10 +109,10 @@ public class TabSysUserServiceImpl implements TabSysUserService {
 
     @Override
     public boolean updataUser(SysUser sysUser) {
-        if(sysUser != null && !ObjectUtils.isEmpty(sysUser.getUserId())){
+        if (sysUser != null && !ObjectUtils.isEmpty(sysUser.getUserId())) {
             Integer userId = sysUser.getUserId();
             SysUser oldUser = sysUserMapper.selectByPrimaryKey(userId.longValue());
-            if (sysUser.getReduceTime()!=null && sysUser.getOutType()!=null && CommonConstant.STATUS_DEL.equals(oldUser.getDelFlag())){
+            if (sysUser.getReduceTime() != null && sysUser.getOutType() != null && CommonConstant.STATUS_DEL.equals(oldUser.getDelFlag())) {
                 TabPbMemberReduceList reduce = new TabPbMemberReduceList();
                 reduce.setUserId(userId.longValue());
                 reduce.setOutType(sysUser.getOutType());
@@ -130,24 +131,26 @@ public class TabSysUserServiceImpl implements TabSysUserService {
     @Override
     public List<RegistryDto> getRegistryList(Long userId) {
         SysUser user = sysUserMapper.selectByPrimaryKey(userId);
-        if(user==null){return null;}
+        if (user == null) {
+            return null;
+        }
         List<RegistryDto> list = new ArrayList<>();
         //预备党员
-        if(user.getJoinTime()!= null){
-            list.add(new RegistryDto(1L,user.getJoinTime(),user.getJoinTime(),user.getContactor()));
+        if (user.getJoinTime() != null) {
+            list.add(new RegistryDto(1L, user.getJoinTime(), user.getJoinTime(), user.getContactor()));
         }
         //正式党员
-        if(user.getRegularTime() != null){
-            list.add(new RegistryDto(2L,user.getRegularTime(),user.getRegularTime(),user.getUpdateUsername()));
+        if (user.getRegularTime() != null) {
+            list.add(new RegistryDto(2L, user.getRegularTime(), user.getRegularTime(), user.getUpdateUsername()));
         }
         //新增 和 减少
         List<TabPbMemberAddList> add = memberAddListMapper.selectListByUserId(userId);
         add.forEach(a -> {
-            list.add(new RegistryDto(a.getInType(),a.getCreateTime(),a.getCreateTime(),a.getCreateUsername()));
+            list.add(new RegistryDto(a.getInType(), a.getCreateTime(), a.getCreateTime(), a.getCreateUsername()));
         });
         List<TabPbMemberReduceList> reduce = memberReduceListMapper.selectListByUserId(userId);
         reduce.forEach(r -> {
-            list.add(new RegistryDto(r.getOutType(),r.getCreateTime(),r.getCreateTime(),r.getCreateUsername()));
+            list.add(new RegistryDto(r.getOutType(), r.getCreateTime(), r.getCreateTime(), r.getCreateUsername()));
         });
         return list;
     }
@@ -161,17 +164,19 @@ public class TabSysUserServiceImpl implements TabSysUserService {
             sysUser.setPartyStanding(calEnd.get(Calendar.YEAR) - calBegin.get(Calendar.YEAR) + 1);
         }
     }
+
     /**
      * 社区活动选人接口(通过组织主键来获取)
+     *
      * @param user
      * @return
      */
     @Override
-    public List<SysUser> selectAllRegister(SysUser user){
-        if(user.getReportOrgId()!=null && !"".equals(user.getReportOrgId())){
+    public List<SysUser> selectAllRegister(SysUser user) {
+        if (user.getReportOrgId() != null && !"".equals(user.getReportOrgId())) {
             var list = sysUserMapper.selectAllRegister(user);
             return list;
-        }else {
+        } else {
             user.setDeptId(UserContextHolder.currentUser().getDeptId());
             var list = sysUserMapper.selectAllRegister(user);
             return list;
