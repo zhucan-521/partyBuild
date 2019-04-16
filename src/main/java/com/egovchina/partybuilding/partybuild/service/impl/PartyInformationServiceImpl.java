@@ -16,7 +16,6 @@ import com.egovchina.partybuilding.partybuild.system.mapper.SysUserMapper;
 import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -187,16 +186,11 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         sysUser.getSysUser().setIdentityType(59423L);
         tabSysUserMapper.insertSelective(sysUser.getSysUser());
         SysUserDto sysUserDto = parseSysUserDto(sysUser, sysUser.getSysUser().getUserId());
-        List<Integer> list = new ArrayList<>();
-        list.add(tabPbPartyEducationMapper.batchInsert(sysUserDto.getEducationList()));
-        list.add(tabPbPartyJobTitleMapper.batchInsert(sysUserDto.getJobTitleList()));
-        list.add(tabPbPartyWorkMapper.batchInsert(sysUser.getWorkList()));
-        for (Integer result : list) {
-            if (1 > result) {
-                return 0;
-            }
-        }
-        return 1;
+        int effected = 0;
+        effected += tabPbPartyEducationMapper.batchInsert(sysUserDto.getEducationList());
+        effected += tabPbPartyJobTitleMapper.batchInsert(sysUserDto.getJobTitleList());
+        effected += tabPbPartyWorkMapper.batchInsert(sysUser.getWorkList());
+        return effected;
     }
 
     @Override
@@ -204,22 +198,16 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @Transactional(rollbackFor = Exception.class)
     public int updateSysUserInfo(SysUserDto sysUser) {
         Integer id = sysUser.getSysUser().getUserId();
-        if (0 == tabSysUserMapper.checkIsExistByUserId(id)) {
-            throw new BusinessDataIncompleteException("用户ID不存在!!!");
-        } else {
+        if (tabSysUserMapper.checkIsExistByUserId(id)) {
             SysUserDto sysUserDto = parseSysUserDto(sysUser, id);
-            List<Integer> list = new ArrayList<>();
-            list.add(tabSysUserMapper.updateByPrimaryKeySelective(sysUser.getSysUser()));
-            list.add(tabPbPartyEducationMapper.batchUpdate(sysUser.getEducationList()));
-            list.add(tabPbPartyJobTitleMapper.batchUpdate(sysUserDto.getJobTitleList()));
-            list.add(tabPbPartyWorkMapper.batchUpdate(sysUser.getWorkList()));
-            for (Integer result : list) {
-                if (1 > result) {
-                    return 0;
-                }
-            }
-            return 1;
+            int effected = 0;
+            effected += tabSysUserMapper.updateByPrimaryKeySelective(sysUser.getSysUser());
+            effected += tabPbPartyEducationMapper.batchUpdate(sysUser.getEducationList());
+            effected += tabPbPartyJobTitleMapper.batchUpdate(sysUserDto.getJobTitleList());
+            effected += tabPbPartyWorkMapper.batchUpdate(sysUser.getWorkList());
+            return effected;
         }
+        throw new BusinessDataIncompleteException("用户ID不存在!!!");
     }
 
     private SysUserDto parseSysUserDto(SysUserDto sysUser, long currentId) {

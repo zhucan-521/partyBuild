@@ -354,10 +354,10 @@
                 </foreach>
             </trim>
         </trim>
-        where attachment_id in
-        <foreach collection="list" open="(" separator="," close=")" item="item">
+        where attachment_id in (
+        <foreach collection="list" separator="," item="item">
             ${item.attachmentId}
-        </foreach>
+        </foreach>)
     </update>
 
     <!--根据条件查询 PS:请不要再mapper里定义这个方法-->
