@@ -19,8 +19,8 @@ public class TabPbUserTagController {
     @Autowired
     private ITabPbUserTagService tabPbUserTagService;
 
-    @ApiOperation(value = "根据用户ID和对应的用户标签字典ID", notes = "根据用户ID和对应的用户标签字典ID", httpMethod = "GET")
-    @GetMapping("/addUserTag")
+    @ApiOperation(value = "根据用户ID和对应的用户标签字典ID", notes = "根据用户ID和对应的用户标签字典ID", httpMethod = "PUT")
+    @PutMapping("/addUserTag")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "userId",dataType = "Long",paramType = "query"),
             @ApiImplicitParam(name = "tagType", value = "培训名称", paramType = "query")
@@ -32,7 +32,7 @@ public class TabPbUserTagController {
 
     @ApiOperation(value = "根据用户标签id删除对应记录《真删》", notes = "根据用户标签id删除对应记录", httpMethod = "DELETE")
     @DeleteMapping("/{usertagId}")
-    public ReturnEntity delete(@ApiParam(value = "usertagId", required = true) @PathVariable Long usertagId) {
+    public ReturnEntity delete(@ApiParam(value = "usertagId", required = true ) @PathVariable Long usertagId) {
         int delete = tabPbUserTagService.delete(usertagId);
         return ReturnUtil.buildReturn(delete);
     }
