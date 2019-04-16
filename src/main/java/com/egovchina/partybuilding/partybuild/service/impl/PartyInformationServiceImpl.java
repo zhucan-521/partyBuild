@@ -175,62 +175,66 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         return tabSysUserMapper.partyIdentityVerification(username, idCardNo, phone);
     }
 
-    @Override
+	@Override
     @PaddingBaseField(recursive = true)
     @Transactional(rollbackFor = Exception.class)
     public int saveSysUserInfo(SysUserDto sysUser) {
-        SysUserDto sysUserDto = parseSysUserDto(sysUser);
-        if (null != tabSysUserMapper.selectUserByIdCardNo(sysUserDto.getSysUser().getIdCardNo())) {
+        if (null != tabSysUserMapper.selectUserByIdCardNo(sysUser.getSysUser().getIdCardNo())) {
             throw new BusinessDataCheckFailException("该党员已存在!!!");
         }
-        sysUserDto.getSysUser().setIdentityType(59423L);
-        tabSysUserMapper.insertSelective(sysUserDto.getSysUser());
-        int addEducationRes = tabPbPartyEducationMapper.batchInsert(sysUserDto.getEducationList());
-        int addJobTitleRes = tabPbPartyJobTitleMapper.batchInsert(sysUserDto.getJobTitleList());
-        int addWorkRes = tabPbPartyWorkMapper.batchInsert(sysUser.getWorkList());
-        if (0 < sysUserDto.getSysUser().getUserId() && 0 < addEducationRes && 0 < addJobTitleRes && 0 < addWorkRes) {
-            return 1;
+        sysUser.getSysUser().setIdentityType(59423L);
+        tabSysUserMapper.insertSelective(sysUser.getSysUser());
+        SysUserDto sysUserDto = parseSysUserDto(sysUser, sysUser.getSysUser().getUserId());
+        List<Integer> list = Lists.newArrayList();
+        list.add(tabPbPartyEducationMapper.batchInsert(sysUserDto.getEducationList()));
+        list.add(tabPbPartyJobTitleMapper.batchInsert(sysUserDto.getJobTitleList()));
+        list.add(tabPbPartyWorkMapper.batchInsert(sysUser.getWorkList()));
+        for (Integer result : list) {
+            if (1 > result) {
+                return 0;
+            }
         }
-        return 0;
+        return 1;
     }
 
     @Override
     @PaddingBaseField(recursive = true)
     @Transactional(rollbackFor = Exception.class)
     public int updateSysUserInfo(SysUserDto sysUser) {
-        SysUserDto sysUserDto = parseSysUserDto(sysUser);
-        int updateUserRes = tabSysUserMapper.updateByPrimaryKeySelective(sysUser.getSysUser());
-        int updateEducationRes = tabPbPartyEducationMapper.batchUpdate(sysUser.getEducationList());
-        int updateJobTitleRes = tabPbPartyJobTitleMapper.batchUpdate(sysUserDto.getJobTitleList());
-        int updateWorkRes = tabPbPartyWorkMapper.batchUpdate(sysUser.getWorkList());
-        if (0 < updateUserRes && 0 < updateEducationRes && 0 < updateJobTitleRes && 0 < updateWorkRes) {
-            return 1;
-        }
-        return 0;
-    }
-
-    private SysUserDto parseSysUserDto(SysUserDto sysUser) {
-        long currentUserId;
-        if (0 == tabSysUserMapper.checkIsExistByUserId(sysUser.getSysUser().getUserId())) {
+        Integer id = sysUser.getSysUser().getUserId();
+        if (0 == tabSysUserMapper.checkIsExistByUserId(id)) {
             throw new BusinessDataIncompleteException("用户ID不存在!!!");
         } else {
-            currentUserId = tabSysUserMapper.selectByPrimaryKey(sysUser.getSysUser().getUserId().longValue()).getUserId();
+            SysUserDto sysUserDto = parseSysUserDto(sysUser, id);
+            List<Integer> list = Lists.newArrayList();
+            list.add(tabSysUserMapper.updateByPrimaryKeySelective(sysUser.getSysUser()));
+            list.add(tabPbPartyEducationMapper.batchUpdate(sysUser.getEducationList()));
+            list.add(tabPbPartyJobTitleMapper.batchUpdate(sysUserDto.getJobTitleList()));
+            list.add(tabPbPartyWorkMapper.batchUpdate(sysUser.getWorkList()));
+            for (Integer result : list) {
+                if (1 > result) {
+                    return 0;
+                }
+            }
+            return 1;
         }
+    }
 
+    private SysUserDto parseSysUserDto(SysUserDto sysUser, long currentId) {
         List<TabPbPartyEducation> educationList = sysUser.getEducationList();
         List<TabPbPartyJobTitle> jobTitleList = sysUser.getJobTitleList();
         List<TabPbPartyWork> workList = sysUser.getWorkList();
-        educationList.forEach(eudcation -> {
-            eudcation.setUserId(currentUserId);
+
+        educationList.forEach(education -> {
+            education.setUserId(currentId);
         });
         jobTitleList.forEach(job -> {
-            job.setUserId(currentUserId);
+            job.setUserId(currentId);
         });
         workList.forEach(work -> {
-            work.setUserId(currentUserId);
+            work.setUserId(currentId);
         });
-
-        return new SysUserDto(sysUser.getSysUser(), educationList, jobTitleList, workList);
+        return new SysUserDto(educationList, jobTitleList, workList);
     }
 
     /**
