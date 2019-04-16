@@ -27,6 +27,7 @@ import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -176,7 +177,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         return tabSysUserMapper.partyIdentityVerification(username, idCardNo, phone);
     }
 
-	@Override
+    @Override
     @PaddingBaseField(recursive = true)
     @Transactional(rollbackFor = Exception.class)
     public int saveSysUserInfo(SysUserDto sysUser) {
@@ -186,7 +187,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         sysUser.getSysUser().setIdentityType(59423L);
         tabSysUserMapper.insertSelective(sysUser.getSysUser());
         SysUserDto sysUserDto = parseSysUserDto(sysUser, sysUser.getSysUser().getUserId());
-        List<Integer> list = Lists.newArrayList();
+        List<Integer> list = new ArrayList<>();
         list.add(tabPbPartyEducationMapper.batchInsert(sysUserDto.getEducationList()));
         list.add(tabPbPartyJobTitleMapper.batchInsert(sysUserDto.getJobTitleList()));
         list.add(tabPbPartyWorkMapper.batchInsert(sysUser.getWorkList()));
@@ -207,7 +208,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             throw new BusinessDataIncompleteException("用户ID不存在!!!");
         } else {
             SysUserDto sysUserDto = parseSysUserDto(sysUser, id);
-            List<Integer> list = Lists.newArrayList();
+            List<Integer> list = new ArrayList<>();
             list.add(tabSysUserMapper.updateByPrimaryKeySelective(sysUser.getSysUser()));
             list.add(tabPbPartyEducationMapper.batchUpdate(sysUser.getEducationList()));
             list.add(tabPbPartyJobTitleMapper.batchUpdate(sysUserDto.getJobTitleList()));

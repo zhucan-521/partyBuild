@@ -8,6 +8,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept;
 import com.egovchina.partybuilding.partybuild.service.TabPbMsgNoticeService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,8 +40,12 @@ public class TabPbMsgNoticeController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         TabPbMsgNotice notice = new TabPbMsgNotice();
         notice.setDeptId(deptId);
-        notice.setStateTime(format.parse(stateTime));
-        notice.setEndTime(format.parse(endTime));
+        if(StringUtils.isNotEmpty(endTime)){
+            notice.setEndTime(format.parse(endTime));
+        }
+        if(StringUtils.isNotEmpty(stateTime)){
+            notice.setStateTime(format.parse(stateTime));
+        }
         notice.setState(state);
         notice.setNoticeType(noticeType);
         notice.setOrgRange(orgRange);
@@ -104,8 +109,12 @@ public class TabPbMsgNoticeController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         TabPbMsgNoticeDept noticeDept = new TabPbMsgNoticeDept();
         noticeDept.setDeptId(deptId);
-        noticeDept.setStateTime(format.parse(stateTime));
-        noticeDept.setEndTime(format.parse(endTime));
+        if(StringUtils.isNotEmpty(endTime)){
+            noticeDept.setEndTime(format.parse(endTime));
+        }
+        if(StringUtils.isNotEmpty(stateTime)){
+            noticeDept.setStateTime(format.parse(stateTime));
+        }
         noticeDept.setOrgRange(orgRange);
         return new PageInfo<>(noticeService.selectNoticeDeptList(noticeDept,page));
     }
