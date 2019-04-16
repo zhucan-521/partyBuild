@@ -121,9 +121,9 @@ ribbon:
 logging:
   level:
     root: warn
-    com.egovchina.partybuilding: info
-    com.egovchina.partybuilding.repository : debug
-    com.egovchina.partybuilding.system.mapper : debug
+    com.egovchina.partybuilding.partybuild: info
+    com.egovchina.partybuilding.partybuild.repository : debug
+    com.egovchina.partybuilding.partybuild.system.mapper : debug
 
 # 自定义配置
 egov-china:
