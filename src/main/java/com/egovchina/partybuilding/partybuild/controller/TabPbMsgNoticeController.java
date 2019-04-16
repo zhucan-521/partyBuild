@@ -100,13 +100,7 @@ public class TabPbMsgNoticeController {
             @ApiImplicitParam(name = "endTime", value = "结束时间", paramType = "query"),
             @ApiImplicitParam(name = "orgRange ",value = "组织范围 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） 其他值 当前组织",dataType = "long"),
     })
-    public PageInfo<TabPbMsgNoticeDept> selectNoticeDeptList(Long deptId, String stateTime,String endTime,Long orgRange,  @ApiParam Page page) throws ParseException {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        TabPbMsgNoticeDept noticeDept = new TabPbMsgNoticeDept();
-        noticeDept.setDeptId(deptId);
-        noticeDept.setStateTime(format.parse(stateTime));
-        noticeDept.setEndTime(format.parse(endTime));
-        noticeDept.setOrgRange(orgRange);
+    public PageInfo<TabPbMsgNoticeDept> selectNoticeDeptList(TabPbMsgNoticeDept noticeDept,  @ApiParam Page page) throws ParseException {
         return new PageInfo<>(noticeService.selectNoticeDeptList(noticeDept,page));
     }
 }
