@@ -61,18 +61,10 @@ public class TabPbMsgUpInfoSerivceImpl implements TabPbMsgUpInfoSerivce {
      * @return
      */
     private int modifyAttachment(TabPbMsgUpInfoDto tabPbMsgUpInfo) {
-        List<TabPbAttachment> docAttachments = tabPbMsgUpInfo.getDocAttachments();
-        List<TabPbAttachment> imgAttachments = tabPbMsgUpInfo.getImgAttachments();
-        List<TabPbAttachment> videoAttachments = tabPbMsgUpInfo.getVideoAttachments();
-        List<TabPbAttachment> attachmentList = new ArrayList<>();
-        if (CollectionUtil.isNotEmpty(docAttachments)) {
-            attachmentList.addAll(docAttachments);
-        }
-        if (CollectionUtil.isNotEmpty(imgAttachments)) {
-            attachmentList.addAll(imgAttachments);
-        }
-        if (CollectionUtil.isNotEmpty(videoAttachments)) {
-            attachmentList.addAll(videoAttachments);
+        List<TabPbAttachment> attachments = tabPbMsgUpInfo.getAttachments();
+        List<TabPbAttachment> attachmentList=new ArrayList<>();
+        if (CollectionUtil.isNotEmpty(attachments)) {
+            attachmentList.addAll(attachments);
         }
         if (CollectionUtil.isNotEmpty(attachmentList)) {
             return iTabPbAttachmentService.intelligentOperation(attachmentList,

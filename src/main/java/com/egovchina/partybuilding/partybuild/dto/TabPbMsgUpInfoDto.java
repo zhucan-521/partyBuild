@@ -24,21 +24,14 @@ public class TabPbMsgUpInfoDto extends TabPbMsgUpInfo {
     @ApiModelProperty(value = "视频数")
     private Integer videoNum;
 
-    @ApiModelProperty(value = "文档附件")
-    private List<TabPbAttachment> docAttachments;
-
-    @ApiModelProperty(value = "图片附件")
-    private List<TabPbAttachment> imgAttachments;
-
-    @ApiModelProperty(value = "视频附件")
-    private List<TabPbAttachment> videoAttachments;
+    @ApiModelProperty(value = "附件")
+    private List<TabPbAttachment> attachments;
 
     @ApiModelProperty(value = "列表范围 0查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织 ;3只查找当前组织")
     private String orgRange;
 
     @ApiModelProperty(value = "组织ID")
     private Long rangeDeptId;
-
 
     @ApiModelProperty(value = "上报日期(结束)")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

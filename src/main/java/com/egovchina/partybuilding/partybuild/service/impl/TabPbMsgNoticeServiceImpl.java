@@ -127,9 +127,9 @@ public class TabPbMsgNoticeServiceImpl extends ServiceImpl<TabPbMsgNoticeMapper,
              * 查询附件list
              */
             notice.setAttachmentList(iTabPbAttachmentService.listByHostId(notice.getId(), AttachmentType.NOTICE));
-            notice.setDocAttachmentList(notice.getAttachmentList().stream().filter(tabPbAttachment -> AttachmentType.DOC.equals(tabPbAttachment.getAttachmentFileType())).collect(Collectors.toList()));
-            notice.setPhotoAttachmentList(notice.getAttachmentList().stream().filter(tabPbAttachment -> AttachmentType.PHOTO.equals(tabPbAttachment.getAttachmentFileType())).collect(Collectors.toList()));
-            notice.setAttachmentList(null);
+//            notice.setDocAttachmentList(notice.getAttachmentList().stream().filter(tabPbAttachment -> AttachmentType.DOC.equals(tabPbAttachment.getAttachmentFileType())).collect(Collectors.toList()));
+//            notice.setPhotoAttachmentList(notice.getAttachmentList().stream().filter(tabPbAttachment -> AttachmentType.PHOTO.equals(tabPbAttachment.getAttachmentFileType())).collect(Collectors.toList()));
+//            notice.setAttachmentList(null);
             return notice;
         }else{
             TabPbMsgNotice notice = noticeMapper.selectByPrimaryKey(id);
@@ -138,9 +138,9 @@ public class TabPbMsgNoticeServiceImpl extends ServiceImpl<TabPbMsgNoticeMapper,
              * 查询附件list
              */
             notice.setAttachmentList(iTabPbAttachmentService.listByHostId(notice.getId(),AttachmentType.NOTICE));
-            notice.setDocAttachmentList(notice.getAttachmentList().stream().filter(tabPbAttachment -> AttachmentType.DOC.equals(tabPbAttachment.getAttachmentFileType())).collect(Collectors.toList()));
-            notice.setPhotoAttachmentList(notice.getAttachmentList().stream().filter(tabPbAttachment -> AttachmentType.PHOTO.equals(tabPbAttachment.getAttachmentFileType())).collect(Collectors.toList()));
-            notice.setAttachmentList(null);
+//            notice.setDocAttachmentList(notice.getAttachmentList().stream().filter(tabPbAttachment -> AttachmentType.DOC.equals(tabPbAttachment.getAttachmentFileType())).collect(Collectors.toList()));
+//            notice.setPhotoAttachmentList(notice.getAttachmentList().stream().filter(tabPbAttachment -> AttachmentType.PHOTO.equals(tabPbAttachment.getAttachmentFileType())).collect(Collectors.toList()));
+//            notice.setAttachmentList(null);
             return notice;
         }
     }

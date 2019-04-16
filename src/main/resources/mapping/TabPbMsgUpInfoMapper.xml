@@ -39,12 +39,8 @@
     </resultMap>
    <resultMap id="MsgUpInfoDtoResultMapWithAbout" extends="MsgUpInfoDtoResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbMsgUpInfoDto">
        <!--关联附件数据-->
-       <association property="docAttachments" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
-                    column="{hostId=id,fileTypeLabel=file_type_doc, attachmentType=attachment_type}" />
-       <association property="imgAttachments" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
-                    column="{hostId=id,fileTypeLabel=file_type_img, attachmentType=attachment_type}" />
-       <association property="videoAttachments" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
-                    column="{hostId=id,fileTypeLabel=file_type_video, attachmentType=attachment_type}" />
+       <association property="attachments" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=id, attachmentType=attachment_type}" />
    </resultMap>
     <resultMap id="selectBydeptIdMap" type="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
         <id column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -547,9 +543,6 @@
     <select id="selectWithAboutById" parameterType="java.lang.Long" resultMap="MsgUpInfoDtoResultMapWithAbout">
         SELECT
         '40' as attachment_type,
-        'DOCUMENT' as file_type_doc,
-        'IMAGE' as file_type_img,
-        'VIDEO' as file_type_video,
         mup.*
         FROM tab_pb_msg_up_info mup
         WHERE mup.id = #{id} AND mup.del_flag = 0

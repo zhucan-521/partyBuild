@@ -77,13 +77,13 @@ public class TabPbMsgNotice extends Model<TabPbMsgNotice> implements Serializabl
     @ApiModelProperty(value = "附件list")
     private List<TabPbAttachment> attachmentList;
 
-    @TableField(exist = false)
-    @ApiModelProperty(value = "图片附件list")
-    private List<TabPbAttachment> photoAttachmentList;
-
-    @TableField(exist = false)
-    @ApiModelProperty(value = "文档附件list")
-    private List<TabPbAttachment> docAttachmentList;
+//    @TableField(exist = false)
+//    @ApiModelProperty(value = "图片附件list")
+//    private List<TabPbAttachment> photoAttachmentList;
+//
+//    @TableField(exist = false)
+//    @ApiModelProperty(value = "文档附件list")
+//    private List<TabPbAttachment> docAttachmentList;
 
     @TableField(exist = false)
     @ApiModelProperty(value = "组织list")
