@@ -6,7 +6,7 @@ import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundExceptio
 import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo;
 import com.egovchina.partybuilding.partybuild.repository.TabPbUnitInfoMapper;
-import com.egovchina.partybuilding.partybuild.service.ITabPbUnitInfoService;
+import com.egovchina.partybuilding.partybuild.service.TabPbUnitInfoService;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import java.util.List;
  * @create 2018-12-11 18:07
  */
 @Service
-public class TabPbUnitInfoServiceImpl implements ITabPbUnitInfoService {
+public class TabPbUnitInfoServiceImpl implements TabPbUnitInfoService {
     @Autowired
     private TabPbUnitInfoMapper tabPbUnitInfoMapper;
 

@@ -13,7 +13,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbDeptSecretaryMappe
 import com.egovchina.partybuilding.partybuild.repository.TabPbFamilyMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
-import com.egovchina.partybuilding.partybuild.service.ITabPbDeptSecretaryService;
+import com.egovchina.partybuilding.partybuild.service.TabPbDeptSecretaryService;
 import com.egovchina.partybuilding.partybuild.service.TabPbFamilyService;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.mapper.SysUserMapper;
@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class TabPbDeptSecretaryServiceImpl implements ITabPbDeptSecretaryService {
+public class TabPbDeptSecretaryServiceImpl implements TabPbDeptSecretaryService {
 
     @Autowired
     TabPbDeptSecretaryMapper deptSecretaryMapper;

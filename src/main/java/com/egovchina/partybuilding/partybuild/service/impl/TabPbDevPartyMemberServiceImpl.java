@@ -15,7 +15,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbDevPartyMemberDate
 import com.egovchina.partybuilding.partybuild.repository.TabPbDevPartyMemberMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
-import com.egovchina.partybuilding.partybuild.service.ITabPbDevPartyMemberService;
+import com.egovchina.partybuilding.partybuild.service.TabPbDevPartyMemberService;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -42,7 +42,7 @@ import static org.springframework.util.StringUtils.isEmpty;
  */
 @Service
 @Transactional
-public class TabPbDevPartyMemberServiceImpl implements ITabPbDevPartyMemberService {
+public class TabPbDevPartyMemberServiceImpl implements TabPbDevPartyMemberService {
 
     @Autowired
     private TabPbDevPartyMemberMapper devDao;
@@ -306,10 +306,10 @@ public class TabPbDevPartyMemberServiceImpl implements ITabPbDevPartyMemberServi
                 canSave.add(attach);
             });
             return canSave;
-        } else if (!isEmpty(dto.getExtendAttach()) && !dto.getExtendAttach().isEmpty()) {
-            dto.getExtendAttach().forEach(v -> v.setAttachmentId(null));
-            dto.getExtendAttach().forEach(this::attach);
-            return dto.getExtendAttach();
+        } else if (!isEmpty(dto.getAttachments()) && !dto.getAttachments().isEmpty()) {
+            dto.getAttachments().forEach(v -> v.setAttachmentId(null));
+            dto.getAttachments().forEach(this::attach);
+            return dto.getAttachments();
         }
         return EMPTY_LIST;
     }

@@ -5,7 +5,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbEduTest;
 
 import java.util.List;
 
-public interface ITabPbEduSubjectService {
+public interface TabPbEduSubjectService {
 
     /**
      * 新增题目

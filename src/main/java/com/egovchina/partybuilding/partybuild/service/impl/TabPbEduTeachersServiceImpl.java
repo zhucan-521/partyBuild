@@ -52,7 +52,7 @@ public class TabPbEduTeachersServiceImpl extends ServiceImpl<TabPbEduTeachersMap
             teachers.setPassword(MD5Utils.getMD5String(teachers.getPassword()));
         }
         this.teachersMapper.insertSelective(teachers);
-        iTabPbAttachmentService.intelligentOperation(teachers.getAnnex(), teachers.getTeacherId(), AttachmentType.TEACHERS_MANAGER);
+        iTabPbAttachmentService.intelligentOperation(teachers.getAttachments(), teachers.getTeacherId(), AttachmentType.TEACHERS_MANAGER);
         if (teachers.getCourseList() != null) {
             for (TabPbEduTeachersCourse record : teachers.getCourseList()) {
                 if (record.getTitle() != null && !"".equals(record.getTitle())) {
@@ -67,7 +67,7 @@ public class TabPbEduTeachersServiceImpl extends ServiceImpl<TabPbEduTeachersMap
     @Override
     public TabPbEduTeachers findByIdData(Long teacherId, boolean flag) {
         TabPbEduTeachers tabPbEduTeachers = teachersMapper.selectByPrimaryKey(teacherId);
-        tabPbEduTeachers.setAnnex(iTabPbAttachmentService.listByHostId(teacherId, AttachmentType.TEACHERS_MANAGER));
+        tabPbEduTeachers.setAttachments(iTabPbAttachmentService.listByHostId(teacherId, AttachmentType.TEACHERS_MANAGER));
         /**
          * 课程list
          */
@@ -77,7 +77,7 @@ public class TabPbEduTeachersServiceImpl extends ServiceImpl<TabPbEduTeachersMap
              * 根据id和类型取出附件list
              */
             for (TabPbEduTeachersCourse course : tabPbEduTeachers.getCourseList()) {
-                course.setAttachmentList(iTabPbAttachmentService.listByHostId(course.getId(), AttachmentType.TEACHERS_COURSE));
+                course.setAttachments(iTabPbAttachmentService.listByHostId(course.getId(), AttachmentType.TEACHERS_COURSE));
             }
 
         }
@@ -93,7 +93,7 @@ public class TabPbEduTeachersServiceImpl extends ServiceImpl<TabPbEduTeachersMap
         int retVal = this.teachersMapper.updateByPrimaryKeySelective(teachers);
 
         if (retVal > 0) {
-            iTabPbAttachmentService.intelligentOperation(teachers.getAnnex(), teachers.getTeacherId(), AttachmentType.TEACHERS_MANAGER);
+            iTabPbAttachmentService.intelligentOperation(teachers.getAttachments(), teachers.getTeacherId(), AttachmentType.TEACHERS_MANAGER);
             if (teachers.getCourseList() != null) {
                 courseMapper.deleteByPrimaryKey(teachers.getTeacherId());
                 for (TabPbEduTeachersCourse record : teachers.getCourseList()) {
@@ -122,9 +122,7 @@ public class TabPbEduTeachersServiceImpl extends ServiceImpl<TabPbEduTeachersMap
 
     @Override
     public List<TabPbEduTeachersCourse> selectList(TabPbEduTeachersCourse course, Page page) {
-        if (page != null) {
-            PageHelper.startPage(page);
-        }
+        PageHelper.startPage(page);
         return courseMapper.selectList(course);
     }
 
@@ -144,9 +142,7 @@ public class TabPbEduTeachersServiceImpl extends ServiceImpl<TabPbEduTeachersMap
     public int updateByPrimaryKeySelective(TabPbEduTeachersCourse record) {
         int count = courseMapper.updateByPrimaryKeySelective(record);
         if (count > 0) {
-            if (record.getAttachmentList() != null) {
-                iTabPbAttachmentService.intelligentOperation(record.getAttachmentList(), record.getId(), AttachmentType.TEACHERS_COURSE);
-            }
+            iTabPbAttachmentService.intelligentOperation(record.getAttachments(), record.getId(), AttachmentType.TEACHERS_COURSE);
         }
         return count;
     }
@@ -155,9 +151,7 @@ public class TabPbEduTeachersServiceImpl extends ServiceImpl<TabPbEduTeachersMap
     public int insertSelective(TabPbEduTeachersCourse record) {
         int count = courseMapper.insertSelective(record);
         if (count > 0) {
-            if (record.getAttachmentList() != null) {
-                iTabPbAttachmentService.intelligentOperation(record.getAttachmentList(), record.getId(), AttachmentType.TEACHERS_COURSE);
-            }
+            iTabPbAttachmentService.intelligentOperation(record.getAttachments(), record.getId(), AttachmentType.TEACHERS_COURSE);
         }
         return count;
     }

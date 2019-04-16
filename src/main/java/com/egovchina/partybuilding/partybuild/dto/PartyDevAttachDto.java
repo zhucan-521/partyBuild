@@ -25,9 +25,9 @@ public class PartyDevAttachDto {
     @ApiModelProperty(value = "指定的步骤, 如第一步骤第一环节就是11", required = true)
     private Long status;
 
-    @ApiModelProperty(value = "附件列表, 只需文件名, 当使用此字段时, 将自动忽略extendAttach字段")
+    @ApiModelProperty(value = "附件列表, 只需文件名, 当使用此字段时, 将自动忽略attachments字段")
     private List<String> attach;
 
     @ApiModelProperty(value = "扩展字段, 若附件业务变动, 可使用此字段传递具体的附件信息. 一般情况下该字段不使用")
-    private List<TabPbAttachment> extendAttach;
+    private List<TabPbAttachment> attachments;
 }

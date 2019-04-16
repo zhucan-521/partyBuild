@@ -3,7 +3,7 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.partybuild.entity.TabPbEduSubject;
 import com.egovchina.partybuilding.partybuild.entity.TabPbEduTest;
 import com.egovchina.partybuilding.partybuild.repository.TabPbEduSubjectMapper;
-import com.egovchina.partybuilding.partybuild.service.ITabPbEduSubjectService;
+import com.egovchina.partybuilding.partybuild.service.TabPbEduSubjectService;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TabPbEduSubjectServiceImpl implements ITabPbEduSubjectService {
+public class TabPbEduSubjectServiceImpl implements TabPbEduSubjectService {
 
     @Autowired
     private TabPbEduSubjectMapper mapper;

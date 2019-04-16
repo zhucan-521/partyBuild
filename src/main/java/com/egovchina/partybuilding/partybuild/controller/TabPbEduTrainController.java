@@ -6,7 +6,7 @@ import com.egovchina.partybuilding.partybuild.dto.EchartsDto;
 import com.egovchina.partybuilding.partybuild.entity.TabPbEduTrain;
 import com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainComment;
 import com.egovchina.partybuilding.partybuild.entity.TabPbEduTrainDynamic;
-import com.egovchina.partybuilding.partybuild.service.ITabPbEduTrainService;
+import com.egovchina.partybuilding.partybuild.service.TabPbEduTrainService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import java.util.Map;
 public class TabPbEduTrainController {
 
     @Autowired
-    ITabPbEduTrainService eduTrainService;
+    TabPbEduTrainService eduTrainService;
 
     @Deprecated
     @ApiOperation(value = "获取统计", notes = "获取统计", httpMethod = "GET")

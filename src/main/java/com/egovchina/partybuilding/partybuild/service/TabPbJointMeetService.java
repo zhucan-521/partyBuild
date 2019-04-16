@@ -14,7 +14,7 @@ import java.util.List;
  * @version 1.0
  * @date 2018/12/29
  */
-public interface ITabPbJointMeetService {
+public interface TabPbJointMeetService {
 
     /**
      * 通过orgId添加成员组织, 如果联席会组织已存在则将成员附加

@@ -19,8 +19,8 @@ import com.egovchina.partybuilding.partybuild.repository.SysDeptUpgradeTempMappe
 import com.egovchina.partybuilding.partybuild.repository.TabPbOrgnizeChangeMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
-import com.egovchina.partybuilding.partybuild.service.IOrganizationUpgradeService;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
+import com.egovchina.partybuilding.partybuild.service.OrganizationUpgradeService;
 import com.egovchina.partybuilding.partybuild.service.TabSysDeptService;
 import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
  * Date 2019-01-03 14:33
  */
 @Service
-public class OrganizationUpgradeServiceImpl implements IOrganizationUpgradeService {
+public class OrganizationUpgradeServiceImpl implements OrganizationUpgradeService {
     @Autowired
     private TabSysUserMapper tabSysUserMapper;
     @Autowired
@@ -208,11 +208,9 @@ public class OrganizationUpgradeServiceImpl implements IOrganizationUpgradeServi
     @Transactional
     public Integer addOrModifyAdjustmentsAndAttachments(OrganizationUpgradeAndChangeDto organizationUpgradeAndChangeDto){
         int retVal = 0;
-        if(organizationUpgradeAndChangeDto.getTabPbAttachmentList() != null){
-            iTabPbAttachmentService.intelligentOperation(
-                    organizationUpgradeAndChangeDto.getTabPbAttachmentList(),
-                    organizationUpgradeAndChangeDto.getId(), AttachmentType.ORG_UPGRADE);
-        }
+        iTabPbAttachmentService.intelligentOperation(
+                organizationUpgradeAndChangeDto.getAttachments(),
+                organizationUpgradeAndChangeDto.getId(), AttachmentType.ORG_UPGRADE);
         TabPbOrgnizeChange tabPbOrgnizeChange = new TabPbOrgnizeChange();
         tabPbOrgnizeChange.setChangeType(59424L);
         tabPbOrgnizeChange.setDeptId(organizationUpgradeAndChangeDto.getDeptId());

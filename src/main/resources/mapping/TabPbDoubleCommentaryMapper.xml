@@ -32,7 +32,9 @@
         <result column="commentary_content" jdbcType="LONGVARCHAR" property="commentaryContent"/>
     </resultMap>
     <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithAttachments" type="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
-        <collection property="tabPbAttachments" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions" column="{hostId=commentary_id,attachmentType=attachment_type}"/>
+        <collection property="attachments"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=commentary_id,attachmentType=attachment_type}"/>
     </resultMap>
     <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithCount"
                type="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">

@@ -9,7 +9,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbRewards;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPunishmentMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbRewardsMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
-import com.egovchina.partybuilding.partybuild.service.ITabPbJiangChengService;
+import com.egovchina.partybuilding.partybuild.service.TabPbJiangChengService;
 import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * Date: 2018/12/3
  */
 @Service("jiangCheng")
-public class TabPbJiangChengServiceImpl implements ITabPbJiangChengService {
+public class TabPbJiangChengServiceImpl implements TabPbJiangChengService {
 
     @Autowired
     TabPbRewardsMapper tabPbRewardsMapper;

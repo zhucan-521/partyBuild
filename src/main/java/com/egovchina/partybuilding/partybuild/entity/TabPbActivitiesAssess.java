@@ -43,14 +43,8 @@ public class TabPbActivitiesAssess {
     @JsonSerialize(using = DictSerializer.class)
     private Long assessResult;
 
-    @ApiModelProperty(value = "文档附件")
-    private List<TabPbAttachment> docAttachments;
-
-    @ApiModelProperty(value = "图片附件")
-    private List<TabPbAttachment> imgAttachments;
-
-    @ApiModelProperty(value = "视频附件")
-    private List<TabPbAttachment> videoAttachments;
+    @ApiModelProperty(value = "附件")
+    private List<TabPbAttachment> attachments;
 
     /**
      * 签到时间

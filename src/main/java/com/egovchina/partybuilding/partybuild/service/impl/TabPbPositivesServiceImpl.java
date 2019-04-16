@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPositives;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper;
-import com.egovchina.partybuilding.partybuild.service.ITabPbPositivesService;
+import com.egovchina.partybuilding.partybuild.service.TabPbPositivesService;
 import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.Map;
  * Date: 2018/11/30
  */
 @Service("tabPbPositivesService")
-public class TabPbPositivesServiceImpl implements ITabPbPositivesService {
+public class TabPbPositivesServiceImpl implements TabPbPositivesService {
 
     @Autowired
     TabPbPositivesMapper tabPbPositivesMapper;

@@ -1,9 +1,11 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbMemberAddList;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface TabPbMemberAddListMapper {
     int deleteByPrimaryKey(Long memberAddId);
 

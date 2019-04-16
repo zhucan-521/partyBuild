@@ -10,8 +10,8 @@ import com.egovchina.partybuilding.partybuild.dto.*;
 import com.egovchina.partybuilding.partybuild.entity.TabPbEduSubject;
 import com.egovchina.partybuilding.partybuild.entity.TabPbEduTest;
 import com.egovchina.partybuilding.partybuild.entity.TabPbEduTestarrange;
-import com.egovchina.partybuilding.partybuild.service.ITabPbEduSubjectService;
-import com.egovchina.partybuilding.partybuild.service.ITabPbEduTestService;
+import com.egovchina.partybuilding.partybuild.service.TabPbEduSubjectService;
+import com.egovchina.partybuilding.partybuild.service.TabPbEduTestService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
@@ -36,9 +36,9 @@ import java.util.List;
 public class TabPbEduTestController {
 
     @Autowired
-    private ITabPbEduTestService eduTestService;
+    private TabPbEduTestService eduTestService;
     @Autowired
-    private ITabPbEduSubjectService eduSubjectService;
+    private TabPbEduSubjectService eduSubjectService;
 
     @Deprecated
     @ApiOperation(value = "获取试卷信息", notes = "返回指定ID信息", httpMethod = "GET")

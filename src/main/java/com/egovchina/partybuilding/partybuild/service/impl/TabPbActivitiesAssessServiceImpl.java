@@ -122,21 +122,9 @@ public class TabPbActivitiesAssessServiceImpl implements TabPbActivitiesAssessSe
      * @return
      */
     private int modifyAttachment(TabPbActivitiesAssess tabPbActivitiesAssess) {
-        List<TabPbAttachment> docAttachments = tabPbActivitiesAssess.getDocAttachments();
-        List<TabPbAttachment> imgAttachments = tabPbActivitiesAssess.getImgAttachments();
-        List<TabPbAttachment> videoAttachments = tabPbActivitiesAssess.getVideoAttachments();
-        List<TabPbAttachment> attachmentList = new ArrayList<>();
-        if (CollectionUtil.isNotEmpty(docAttachments)) {
-            attachmentList.addAll(docAttachments);
-        }
-        if (CollectionUtil.isNotEmpty(imgAttachments)) {
-            attachmentList.addAll(imgAttachments);
-        }
-        if (CollectionUtil.isNotEmpty(videoAttachments)) {
-            attachmentList.addAll(videoAttachments);
-        }
-        if (CollectionUtil.isNotEmpty(attachmentList)) {
-            return iTabPbAttachmentService.intelligentOperation(attachmentList,
+        List<TabPbAttachment> attachments = tabPbActivitiesAssess.getAttachments();
+        if (CollectionUtil.isNotEmpty(attachments)) {
+            return iTabPbAttachmentService.intelligentOperation(attachments,
                     tabPbActivitiesAssess.getHostId(), AttachmentType.PartyMaster);
         }
         return 0;

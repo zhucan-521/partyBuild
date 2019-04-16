@@ -6,7 +6,7 @@ import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailExcepti
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
-import com.egovchina.partybuilding.partybuild.service.ITabSysUserService;
+import com.egovchina.partybuilding.partybuild.service.TabSysUserService;
 import com.egovchina.partybuilding.partybuild.system.dto.UserAdminDTO;
 import com.egovchina.partybuilding.partybuild.system.dto.UserDTO;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
@@ -47,7 +47,7 @@ public class UserController {
     private SysUserService userService;
 
     @Autowired
-    private ITabSysUserService sysUserService;
+    private TabSysUserService sysUserService;
 
     @Deprecated
     @ApiOperation(value = "系统用户登录--默认：99999999-123456", notes = "根据用户名和密码登录", httpMethod = "POST")

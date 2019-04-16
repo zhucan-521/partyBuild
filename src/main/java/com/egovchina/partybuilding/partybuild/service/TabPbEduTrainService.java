@@ -14,7 +14,7 @@ import java.util.Map;
  * @author: huang
  * Date: 2018/12/10
  */
-public interface ITabPbEduTrainService {
+public interface TabPbEduTrainService {
     int insert(TabPbEduTrain train);
 
     int deleteById(Integer id);

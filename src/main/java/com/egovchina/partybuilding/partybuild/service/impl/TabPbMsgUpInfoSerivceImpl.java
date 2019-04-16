@@ -20,7 +20,6 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -61,21 +60,9 @@ public class TabPbMsgUpInfoSerivceImpl implements TabPbMsgUpInfoSerivce {
      * @return
      */
     private int modifyAttachment(TabPbMsgUpInfoDto tabPbMsgUpInfo) {
-        List<TabPbAttachment> docAttachments = tabPbMsgUpInfo.getDocAttachments();
-        List<TabPbAttachment> imgAttachments = tabPbMsgUpInfo.getImgAttachments();
-        List<TabPbAttachment> videoAttachments = tabPbMsgUpInfo.getVideoAttachments();
-        List<TabPbAttachment> attachmentList = new ArrayList<>();
-        if (CollectionUtil.isNotEmpty(docAttachments)) {
-            attachmentList.addAll(docAttachments);
-        }
-        if (CollectionUtil.isNotEmpty(imgAttachments)) {
-            attachmentList.addAll(imgAttachments);
-        }
-        if (CollectionUtil.isNotEmpty(videoAttachments)) {
-            attachmentList.addAll(videoAttachments);
-        }
-        if (CollectionUtil.isNotEmpty(attachmentList)) {
-            return iTabPbAttachmentService.intelligentOperation(attachmentList,
+        List<TabPbAttachment> attachments = tabPbMsgUpInfo.getAttachments();
+        if (CollectionUtil.isNotEmpty(attachments)) {
+            return iTabPbAttachmentService.intelligentOperation(attachments,
                     tabPbMsgUpInfo.getId(), AttachmentType.msgUpInfoType);
         }
         return 0;
@@ -95,8 +82,8 @@ public class TabPbMsgUpInfoSerivceImpl implements TabPbMsgUpInfoSerivce {
         TabPbMsgUpInfo tabPbMsgUpInfo = new TabPbMsgUpInfo();
         //党组织
         tabPbMsgUpInfo.setRealDeptId(realDeptId);
-        SysDept RealsysDept=tabSysDeptMapper.selectAloneByPrimaryKey(realDeptId);
-        tabPbMsgUpInfo.setRealDeptName( RealsysDept.getName());
+        SysDept realSysDept = tabSysDeptMapper.selectAloneByPrimaryKey(realDeptId);
+        tabPbMsgUpInfo.setRealDeptName( realSysDept.getName());
         //上报时间
         tabPbMsgUpInfo.setUpTime(new Date());
         //上报人姓名
@@ -108,10 +95,10 @@ public class TabPbMsgUpInfoSerivceImpl implements TabPbMsgUpInfoSerivce {
         tabPbMsgUpInfo.setUpDeptId(upDeptId);
         tabPbMsgUpInfo.setUpDeptName(upDept.getName());
         //接受组织名称
-        if(null==RealsysDept.getParentId()){
+        if(null == realSysDept.getParentId()){
            return tabPbMsgUpInfo;
         }
-        SysDept recDept = tabSysDeptMapper.selectAloneByPrimaryKey(RealsysDept.getParentId().longValue());
+        SysDept recDept = tabSysDeptMapper.selectAloneByPrimaryKey(realSysDept.getParentId().longValue());
         if (null == recDept) {
             return tabPbMsgUpInfo;
         }
@@ -138,8 +125,7 @@ public class TabPbMsgUpInfoSerivceImpl implements TabPbMsgUpInfoSerivce {
     public PageInfo<TabPbMsgUpInfoDto> selectActive(TabPbMsgUpInfoDto dto, Page page) {
         PageHelper.startPage(page);
         List<TabPbMsgUpInfoDto> list = tabPbMsgUpInfoMapper.selectActive(dto);
-        PageInfo<TabPbMsgUpInfoDto> pageInfo = new PageInfo(list);
-        return pageInfo;
+        return new PageInfo<>(list);
     }
 
     /**
@@ -153,8 +139,7 @@ public class TabPbMsgUpInfoSerivceImpl implements TabPbMsgUpInfoSerivce {
     public PageInfo<TabPbMsgUpInfoDto> selectActiveRec(TabPbMsgUpInfoDto dto, Page page) {
         PageHelper.startPage(page);
         List<TabPbMsgUpInfoDto> list = tabPbMsgUpInfoMapper.selectActiveRec(dto);
-        PageInfo<TabPbMsgUpInfoDto> pageInfo = new PageInfo(list);
-        return pageInfo;
+        return new PageInfo<>(list);
     }
 
 

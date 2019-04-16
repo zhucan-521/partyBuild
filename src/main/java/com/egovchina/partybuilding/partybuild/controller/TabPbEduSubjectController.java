@@ -7,7 +7,7 @@ import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.TabPbEduSubjectBatchDto;
 import com.egovchina.partybuilding.partybuild.entity.TabPbEduSubject;
-import com.egovchina.partybuilding.partybuild.service.ITabPbEduSubjectService;
+import com.egovchina.partybuilding.partybuild.service.TabPbEduSubjectService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
@@ -26,7 +26,7 @@ import java.util.List;
 public class TabPbEduSubjectController {
 
     @Autowired
-    private ITabPbEduSubjectService subjectService;
+    private TabPbEduSubjectService subjectService;
 
     @Deprecated
     @ApiOperation(value = "获取题目信息", notes = "返回指定ID信息", httpMethod = "GET")

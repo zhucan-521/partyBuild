@@ -40,5 +40,5 @@ public class OrganizationUpgradeAndChangeDto extends SysDeptUpgradeTemp {
     private String changeReason;
 
     @ApiModelProperty(value = "附件集合")
-    private List<TabPbAttachment> tabPbAttachmentList;
+    private List<TabPbAttachment> attachments;
 }

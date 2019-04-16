@@ -5,7 +5,7 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.entity.TabPbDeptSecretary;
-import com.egovchina.partybuilding.partybuild.service.ITabPbDeptSecretaryService;
+import com.egovchina.partybuilding.partybuild.service.TabPbDeptSecretaryService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/secretary")
 public class TabPbDeptSecretaryController {
     @Autowired
-    ITabPbDeptSecretaryService secretaryService;
+    TabPbDeptSecretaryService secretaryService;
 
     @ApiOperation(value = "添加", httpMethod = "POST",notes = "杨颖翔")
     @PostMapping("/add")

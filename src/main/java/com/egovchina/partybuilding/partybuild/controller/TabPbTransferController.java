@@ -8,8 +8,8 @@ import com.egovchina.partybuilding.partybuild.dto.TransferDetailDto;
 import com.egovchina.partybuilding.partybuild.dto.TransferListSpDto;
 import com.egovchina.partybuilding.partybuild.dto.TransferListWaitingDto;
 import com.egovchina.partybuilding.partybuild.entity.TabPbTransfer;
-import com.egovchina.partybuilding.partybuild.service.ITabPbTransferItemService;
-import com.egovchina.partybuilding.partybuild.service.ITabPbTransferService;
+import com.egovchina.partybuilding.partybuild.service.TabPbTransferItemService;
+import com.egovchina.partybuilding.partybuild.service.TabPbTransferService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,9 @@ import springfox.documentation.annotations.ApiIgnore;
 public class TabPbTransferController {
 
     @Autowired
-    private ITabPbTransferService transferService;
+    private TabPbTransferService transferService;
     @Autowired
-    private ITabPbTransferItemService transferItemService;
+    private TabPbTransferItemService transferItemService;
 
     @ApiOperation(value = "新增组织关系接转信息", notes = "新增组织关系接转信息", httpMethod = "POST")
     @PostMapping("/insert")

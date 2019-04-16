@@ -4,6 +4,7 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.dto.CommunityDto;
 import com.egovchina.partybuilding.partybuild.dto.SysUseDto;
 import com.egovchina.partybuilding.partybuild.dto.SysUserCountDto;
+import com.egovchina.partybuilding.partybuild.dto.SysUserDto;
 import com.egovchina.partybuilding.partybuild.entity.OrganizationPeopleStatistics;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
 import com.github.pagehelper.PageInfo;
@@ -34,6 +35,7 @@ public interface PartyInformationService {
 
     /**
      * 修改党员基本信息
+     *
      * @param sysUser
      * @return
      */
@@ -46,18 +48,12 @@ public interface PartyInformationService {
      */
     SysUseDto getSysUserById(Integer userId);
 
-
     /**
      * 根据社区名字模糊获取社区信息
+     *
      * @return
      */
     List<CommunityDto> selectCommunityDto(CommunityDto dto);
-
-
-
-
-
-
 
     /**
      * 分页查询党员信息
@@ -71,6 +67,7 @@ public interface PartyInformationService {
 
     /**
      * 统计指定组织下各类型人数
+     *
      * @param orgId
      * @return
      */
@@ -86,4 +83,25 @@ public interface PartyInformationService {
      * @return
      */
     List<SysUser> partyIdentityVerification(String username, String searchVal, String phone, Page page);
+
+    /**
+     * desc: 补录党员基本信息v2
+     *
+     * @param sysUser 用户数据传输对象
+     * @return int
+     * @author FanYanGen
+     * @date 2019/4/12 14:40
+     **/
+    int saveSysUserInfo(SysUserDto sysUser);
+
+    /**
+     * desc: 修改党员基本信息v2
+     *
+     * @param sysUser 用户数据传输对象
+     * @return int
+     * @author FanYanGen
+     * @date 2019/4/12 14:40
+     **/
+    int updateSysUserInfo(SysUserDto sysUser);
+
 }

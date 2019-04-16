@@ -75,8 +75,8 @@ public class TabPbLeadTeamMember {
     @ApiModelProperty("图片")
     private String pictures;
 
-    @ApiModelProperty(value = "附件实体")
-    private List<TabPbAttachment> tabPbAttachments;
+    @ApiModelProperty(value = "附件集合")
+    private List<TabPbAttachment> attachments;
 
     @ApiModelProperty(value = "数据描述")
     private String description;
