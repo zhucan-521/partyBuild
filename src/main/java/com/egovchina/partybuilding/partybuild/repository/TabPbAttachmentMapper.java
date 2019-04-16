@@ -31,6 +31,8 @@ public interface TabPbAttachmentMapper {
 
     int batchLogicDelete(List<Long> pendingRemoveIDList);
 
+    int batchUpdate(List<TabPbAttachment> pendingUpdateList);
+
     /**
      * 根据一些条件进行模糊查询等
      *
