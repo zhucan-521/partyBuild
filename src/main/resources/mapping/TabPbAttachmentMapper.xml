@@ -9,6 +9,7 @@
         <result column="attachment_file_type" jdbcType="BIGINT" property="attachmentFileType"/>
         <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
         <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="rotate" jdbcType="INTEGER" property="rotate"/>
         <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
@@ -24,7 +25,7 @@
     </resultMap>
     <sql id="Base_Column_List">
     attachment_id, host_id, attachment_instance, attachment_type, attachment_file_type, 
-    ebl_flag, del_flag, order_num, description, create_time, create_userid, create_username, 
+    ebl_flag, del_flag, rotate, order_num, description, create_time, create_userid, create_username,
     update_time, update_userid, update_username, version
   </sql>
     <sql id="Blob_Column_List">
@@ -52,13 +53,13 @@
     <insert id="insert" parameterType="com.egovchina.partybuilding.common.entity.TabPbAttachment">
     insert into tab_pb_attachment (attachment_id, host_id, attachment_instance, 
       attachment_type, attachment_file_type, ebl_flag, 
-      del_flag, order_num, description, 
+      del_flag, rotate, order_num, description,
       create_time, create_userid, create_username, 
       update_time, update_userid, update_username, 
       version, attachment_description)
     values (#{attachmentId,jdbcType=BIGINT}, #{hostId,jdbcType=BIGINT}, #{attachmentInstance,jdbcType=VARCHAR}, 
       #{attachmentType,jdbcType=BIGINT}, #{attachmentFileType,jdbcType=BIGINT}, #{eblFlag,jdbcType=VARCHAR}, 
-      #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=VARCHAR}, #{rotate,jdbcType=INTEGER}, #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
       #{version,jdbcType=BIGINT}, #{attachmentDescription,jdbcType=LONGVARCHAR})
@@ -89,6 +90,9 @@
             </if>
             <if test="delFlag != null">
                 del_flag,
+            </if>
+            <if test="rotate != null">
+                rotate,
             </if>
             <if test="orderNum != null">
                 order_num,
@@ -143,6 +147,9 @@
             <if test="delFlag != null">
                 #{delFlag,jdbcType=VARCHAR},
             </if>
+            <if test="rotate != null">
+                #{rotate,jdbcType=INTEGER},
+            </if>
             <if test="orderNum != null">
                 #{orderNum,jdbcType=BIGINT},
             </if>
@@ -196,6 +203,9 @@
             <if test="delFlag != null">
                 del_flag = #{delFlag,jdbcType=VARCHAR},
             </if>
+            <if test="rotate != null">
+                rotate = #{rotate,jdbcType=INTEGER},
+            </if>
             <if test="orderNum != null">
                 order_num = #{orderNum,jdbcType=BIGINT},
             </if>
@@ -237,6 +247,7 @@
       attachment_file_type = #{attachmentFileType,jdbcType=BIGINT},
       ebl_flag = #{eblFlag,jdbcType=VARCHAR},
       del_flag = #{delFlag,jdbcType=VARCHAR},
+      rotate = #{rotate,jdbcType=INTEGER},
       order_num = #{orderNum,jdbcType=BIGINT},
       description = #{description,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -257,6 +268,7 @@
       attachment_file_type = #{attachmentFileType,jdbcType=BIGINT},
       ebl_flag = #{eblFlag,jdbcType=VARCHAR},
       del_flag = #{delFlag,jdbcType=VARCHAR},
+      rotate = #{rotate,jdbcType=INTEGER},
       order_num = #{orderNum,jdbcType=BIGINT},
       description = #{description,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -285,11 +297,11 @@
     <!--批量新增-->
     <insert id="batchInsert" parameterType="java.util.List">
         insert into tab_pb_attachment(host_id, attachment_instance, attachment_description, attachment_type, attachment_file_type,
-        description, create_time, create_userid, create_username, update_time, update_userid, update_username)
+        rotate, order_num, description, create_time, create_userid, create_username, update_time, update_userid, update_username)
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.hostId}, #{item.attachmentInstance}, #{item.attachmentDescription}, #{item.attachmentType}, #{item.attachmentFileType},
-            #{item.description}, #{item.createTime}, #{item.createUserid}, #{item.createUsername}, #{item.updateTime}, #{item.updateUserid},
+            #{item.rotate}, #{item.orderNum}, #{item.description}, #{item.createTime}, #{item.createUserid}, #{item.createUsername}, #{item.updateTime}, #{item.updateUserid},
             #{item.updateUsername})
         </foreach>
     </insert>
@@ -299,6 +311,52 @@
         update tab_pb_attachment set del_flag = 1 where attachment_id in
         <foreach collection="list" item="item" open="(" close=")" separator=",">
             ${item}
+        </foreach>
+    </update>
+
+    <!--批量修改-->
+    <update id="batchUpdate" parameterType="java.util.List">
+        update tab_pb_attachment
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="rotate =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.rotate != null">
+                        when attachment_id = #{item.attachmentId} then #{item.rotate}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="order_num =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.orderNum != null">
+                        when attachment_id = #{item.attachmentId} then #{item.orderNum}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_time =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.updateTime != null">
+                        when attachment_id = #{item.attachmentId} then #{item.updateTime}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_userid =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.updateUserid != null">
+                        when attachment_id = #{item.attachmentId} then #{item.updateUserid}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="update_username =case" suffix="end,">
+                <foreach collection="list" item="item">
+                    <if test="item.updateUsername != null">
+                        when attachment_id = #{item.attachmentId} then #{item.updateUsername}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where attachment_id in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            ${item.attachmentId}
         </foreach>
     </update>
 
@@ -319,6 +377,7 @@
                 AND attachment_file_type = #{attachmentFileType}
             </if>
         </where>
+        ORDER BY attachment_file_type, attachment_type
     </select>
 
 

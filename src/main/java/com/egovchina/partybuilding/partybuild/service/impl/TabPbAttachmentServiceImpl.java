@@ -27,14 +27,14 @@ import java.util.stream.Collectors;
  * 3	文档
  */
 @Service
-public class TabPbAttachmentImpl implements ITabPbAttachmentService {
+public class TabPbAttachmentServiceImpl implements ITabPbAttachmentService {
 
     @Autowired
-    private TabPbAttachmentMapper mapper;
+    private TabPbAttachmentMapper tabPbAttachmentMapper;
 
     @Override
     public List<TabPbAttachment> listByHostId(Long hostId, String attachmentType) {
-        return mapper.listByHostId(hostId, attachmentType);
+        return tabPbAttachmentMapper.listByHostId(hostId, attachmentType);
     }
 
     @Override
@@ -44,14 +44,14 @@ public class TabPbAttachmentImpl implements ITabPbAttachmentService {
 
     @Override
     public TabPbAttachment getById(Long attachmentId) {
-        return mapper.selectById(attachmentId);
+        return tabPbAttachmentMapper.selectById(attachmentId);
     }
 
     @Override
     public TabPbAttachment add(TabPbAttachment attachment) {
         attachment.setCreateTime(new Date());
         attachment.setUpdateTime(new Date());
-        mapper.insertSelective(attachment);
+        tabPbAttachmentMapper.insertSelective(attachment);
         return attachment;
     }
 
@@ -60,7 +60,7 @@ public class TabPbAttachmentImpl implements ITabPbAttachmentService {
         attachment.setHostId(hostId);
         attachment.setCreateTime(new Date());
         attachment.setUpdateTime(new Date());
-        return mapper.insertSelective(attachment);
+        return tabPbAttachmentMapper.insertSelective(attachment);
     }
 
     @Override
@@ -69,18 +69,18 @@ public class TabPbAttachmentImpl implements ITabPbAttachmentService {
             attachment.setHostId(hostId);
             attachment.setCreateTime(new Date());
             attachment.setUpdateTime(new Date());
-            mapper.insertSelective(attachment);
+            tabPbAttachmentMapper.insertSelective(attachment);
         }
     }
 
     @Override
     public int deleteById(Long attachmentId) {
-        return mapper.deleteById(attachmentId);
+        return tabPbAttachmentMapper.deleteById(attachmentId);
     }
 
     @Override
     public int deleteByHostId(Long hostId) {
-        return mapper.deleteByHostId(hostId);
+        return tabPbAttachmentMapper.deleteByHostId(hostId);
     }
 
     @PaddingBaseField
@@ -96,14 +96,14 @@ public class TabPbAttachmentImpl implements ITabPbAttachmentService {
                                     String attType) {
         int retVal = 0;
         if (CollectionUtil.isEmpty(pendingList)) {
-            mapper.batchLogicDeleteByHostIdAndAttType(hostId, attType);
+            tabPbAttachmentMapper.batchLogicDeleteByHostIdAndAttType(hostId, attType);
             return retVal;
         }
         //数据处理
-        pendingList = pendingList.stream().filter(tabPbAttachment -> tabPbAttachment != null
+        final List<TabPbAttachment> finalPendingList = pendingList.stream().filter(tabPbAttachment -> tabPbAttachment != null
                 && StringUtils.isNotEmpty(tabPbAttachment.getAttachmentInstance())).collect(Collectors.toList());
         if (CollectionUtil.isEmpty(pendingList)) {
-            mapper.batchLogicDeleteByHostIdAndAttType(hostId, attType);
+            tabPbAttachmentMapper.batchLogicDeleteByHostIdAndAttType(hostId, attType);
             return retVal;
         }
         pendingList.forEach(tabPbAttachment -> {
@@ -113,11 +113,11 @@ public class TabPbAttachmentImpl implements ITabPbAttachmentService {
         });
 
         //根据当前业务id获取相关的所有附件
-        List<TabPbAttachment> dbList = mapper.listByHostId(hostId, attType);
+        List<TabPbAttachment> dbList = tabPbAttachmentMapper.listByHostId(hostId, attType);
 
         //数据库没数据，直接新增
         if (dbList == null || dbList.size() <= 0) {
-            retVal += mapper.batchInsert(pendingList);
+            retVal += tabPbAttachmentMapper.batchInsert(pendingList);
             return retVal;
         }
 
@@ -140,13 +140,21 @@ public class TabPbAttachmentImpl implements ITabPbAttachmentService {
                 .filter(tabPbAttachment -> !dbInstanceList.contains(tabPbAttachment.getAttachmentInstance()))
                 .collect(Collectors.toList());
 
-        if (!pendingAddList.isEmpty()) {
+        List<TabPbAttachment> pendingUpdateList = finalPendingList.stream().filter(attachment -> dbList.stream().anyMatch(dbAttachment -> dbAttachment.getAttachmentInstance()
+                .equals(attachment.getAttachmentInstance())
+                && (!dbAttachment.getRotate().equals(attachment.getRotate())
+                || !dbAttachment.getOrderNum().equals(attachment.getOrderNum())))).collect(Collectors.toList());
+
+        if (CollectionUtil.isNotEmpty(pendingAddList)) {
             //批量新增
-            retVal += mapper.batchInsert(pendingAddList);
+            retVal += tabPbAttachmentMapper.batchInsert(pendingAddList);
         }
-        if (!pendingRemoveIDList.isEmpty()) {
+        if (CollectionUtil.isNotEmpty(pendingRemoveIDList)) {
             //批量删除
-            retVal += mapper.batchLogicDelete(pendingRemoveIDList);
+            retVal += tabPbAttachmentMapper.batchLogicDelete(pendingRemoveIDList);
+        }
+        if (CollectionUtil.isNotEmpty(pendingUpdateList)) {
+            retVal += tabPbAttachmentMapper.batchUpdate(pendingUpdateList);
         }
         return retVal;
     }
