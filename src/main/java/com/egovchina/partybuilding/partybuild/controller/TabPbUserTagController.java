@@ -19,8 +19,8 @@ public class TabPbUserTagController {
     @Autowired
     private TabPbUserTagService tabPbUserTagService;
 
-    @ApiOperation(value = "根据用户ID和对应的用户标签字典ID", notes = "根据用户ID和对应的用户标签字典ID", httpMethod = "PUT")
-    @PutMapping("/addUserTag")
+    @ApiOperation(value = "根据用户ID和对应的用户标签字典ID插入", notes = "根据用户ID和对应的用户标签字典ID插入", httpMethod = "GET")
+    @GetMapping("/addUserTag")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "userId",dataType = "Long",paramType = "query"),
             @ApiImplicitParam(name = "tagType", value = "培训名称", paramType = "query")

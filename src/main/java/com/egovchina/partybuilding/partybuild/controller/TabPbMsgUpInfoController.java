@@ -57,7 +57,7 @@ public class TabPbMsgUpInfoController {
     }
 
     @GetMapping("/selectActiveRec")
-    @ApiOperation(value = "收到条件查询信息报送列表", notes = "", httpMethod = "GET")
+    @ApiOperation(value = "收到条件查询信息报送列表", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(value = "主题、专题标签 码表ZTZT", name = "titleLabel", paramType = "query"),
             @ApiImplicitParam(value = "上报日期", name = "upTime", paramType = "query"),

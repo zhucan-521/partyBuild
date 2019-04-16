@@ -82,8 +82,8 @@ public class TabPbMsgUpInfoSerivceImpl implements TabPbMsgUpInfoSerivce {
         TabPbMsgUpInfo tabPbMsgUpInfo = new TabPbMsgUpInfo();
         //党组织
         tabPbMsgUpInfo.setRealDeptId(realDeptId);
-        SysDept RealsysDept=tabSysDeptMapper.selectAloneByPrimaryKey(realDeptId);
-        tabPbMsgUpInfo.setRealDeptName( RealsysDept.getName());
+        SysDept realSysDept = tabSysDeptMapper.selectAloneByPrimaryKey(realDeptId);
+        tabPbMsgUpInfo.setRealDeptName( realSysDept.getName());
         //上报时间
         tabPbMsgUpInfo.setUpTime(new Date());
         //上报人姓名
@@ -95,10 +95,10 @@ public class TabPbMsgUpInfoSerivceImpl implements TabPbMsgUpInfoSerivce {
         tabPbMsgUpInfo.setUpDeptId(upDeptId);
         tabPbMsgUpInfo.setUpDeptName(upDept.getName());
         //接受组织名称
-        if(null==RealsysDept.getParentId()){
+        if(null == realSysDept.getParentId()){
            return tabPbMsgUpInfo;
         }
-        SysDept recDept = tabSysDeptMapper.selectAloneByPrimaryKey(RealsysDept.getParentId().longValue());
+        SysDept recDept = tabSysDeptMapper.selectAloneByPrimaryKey(realSysDept.getParentId().longValue());
         if (null == recDept) {
             return tabPbMsgUpInfo;
         }
@@ -125,8 +125,7 @@ public class TabPbMsgUpInfoSerivceImpl implements TabPbMsgUpInfoSerivce {
     public PageInfo<TabPbMsgUpInfoDto> selectActive(TabPbMsgUpInfoDto dto, Page page) {
         PageHelper.startPage(page);
         List<TabPbMsgUpInfoDto> list = tabPbMsgUpInfoMapper.selectActive(dto);
-        PageInfo<TabPbMsgUpInfoDto> pageInfo = new PageInfo(list);
-        return pageInfo;
+        return new PageInfo<>(list);
     }
 
     /**
@@ -140,8 +139,7 @@ public class TabPbMsgUpInfoSerivceImpl implements TabPbMsgUpInfoSerivce {
     public PageInfo<TabPbMsgUpInfoDto> selectActiveRec(TabPbMsgUpInfoDto dto, Page page) {
         PageHelper.startPage(page);
         List<TabPbMsgUpInfoDto> list = tabPbMsgUpInfoMapper.selectActiveRec(dto);
-        PageInfo<TabPbMsgUpInfoDto> pageInfo = new PageInfo(list);
-        return pageInfo;
+        return new PageInfo<>(list);
     }
 
 

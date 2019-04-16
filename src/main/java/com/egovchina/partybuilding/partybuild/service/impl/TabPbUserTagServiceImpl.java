@@ -6,6 +6,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper;
 import com.egovchina.partybuilding.partybuild.service.TabPbUserTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class TabPbUserTagServiceImpl implements TabPbUserTagService {
     TabPbUserTagMapper userTagMapper;
 
     @Override
+    @Transactional
     public int addUserTag(Long userId, Long tagType) {
         if(ObjectUtils.isEmpty(userId)||ObjectUtils.isEmpty(tagType)){
             return 0;
@@ -37,6 +39,7 @@ public class TabPbUserTagServiceImpl implements TabPbUserTagService {
     }
 
     @Override
+    @Transactional
     public int delete(Long usertagId) {
         return userTagMapper.deleteByPrimaryKey(usertagId);
     }

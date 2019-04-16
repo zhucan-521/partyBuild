@@ -8,6 +8,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept;
 import com.egovchina.partybuilding.partybuild.service.TabPbMsgNoticeService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +36,19 @@ public class TabPbMsgNoticeController {
             @ApiImplicitParam(name = "noticeType", value = "通知类别", paramType = "query"),
             @ApiImplicitParam(name = "orgRange ",value = "组织范围 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） 其他值 当前组织",dataType = "long"),
     })
-    public PageInfo<TabPbMsgNotice> listPage(TabPbMsgNotice notice, @ApiParam Page page) throws ParseException {
+    public PageInfo<TabPbMsgNotice> listPage(Long deptId, String stateTime, String endTime, String state, Long noticeType, Long orgRange, @ApiParam Page page) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        TabPbMsgNotice notice = new TabPbMsgNotice();
+        notice.setDeptId(deptId);
+        if(StringUtils.isNotEmpty(endTime)){
+            notice.setEndTime(format.parse(endTime));
+        }
+        if(StringUtils.isNotEmpty(stateTime)){
+            notice.setStateTime(format.parse(stateTime));
+        }
+        notice.setState(state);
+        notice.setNoticeType(noticeType);
+        notice.setOrgRange(orgRange);
         return new PageInfo<>(noticeService.selectList(notice,page));
     }
 
@@ -96,8 +109,12 @@ public class TabPbMsgNoticeController {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         TabPbMsgNoticeDept noticeDept = new TabPbMsgNoticeDept();
         noticeDept.setDeptId(deptId);
-        noticeDept.setStateTime(format.parse(stateTime));
-        noticeDept.setEndTime(format.parse(endTime));
+        if(StringUtils.isNotEmpty(endTime)){
+            noticeDept.setEndTime(format.parse(endTime));
+        }
+        if(StringUtils.isNotEmpty(stateTime)){
+            noticeDept.setStateTime(format.parse(stateTime));
+        }
         noticeDept.setOrgRange(orgRange);
         return new PageInfo<>(noticeService.selectNoticeDeptList(noticeDept,page));
     }
