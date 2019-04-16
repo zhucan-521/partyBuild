@@ -176,6 +176,6 @@ public interface TabSysUserMapper {
      * @author FanYanGen
      * @date 2019/4/15 9:32
      **/
-    int checkIsExistByUserId(Integer userId);
+    boolean checkIsExistByUserId(Integer userId);
 
 }
