@@ -120,7 +120,7 @@ public class TabSysDeptController {
     @ApiOperation(value = "组织信息修改", notes = "组织信息修改", httpMethod = "POST")
     @PostMapping("/update")
     public ReturnEntity update(@ApiParam(value = "组织实体") @RequestBody @Validated SysDeptDto sysDeptDto) {
-        //orgDataVerification(sysDeptDto);
+        orgDataVerification(sysDeptDto);
         int retVal = tabSysDeptService.updateWithAbout(sysDeptDto);
         return ReturnUtil.buildReturn(retVal);
     }
@@ -219,7 +219,7 @@ public class TabSysDeptController {
      */
     private void orgDataVerification(SysDeptDto sysDeptDto) {
         String deptName = sysDeptDto.getName();
-        if (sysDeptDto.getDeptId() == null && tabSysDeptService.checkOrgNameAvailability(deptName)) {
+        if (tabSysDeptService.checkOrgNameAvailability(deptName)) {
             throw new BusinessDataInvalidException("组织名称重复");
         }
         SysDept parentDept = tabSysDeptService.selectAloneByPrimaryKey(sysDeptDto.getParentId().longValue());
