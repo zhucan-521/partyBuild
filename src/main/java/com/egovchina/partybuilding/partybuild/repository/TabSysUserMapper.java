@@ -172,10 +172,20 @@ public interface TabSysUserMapper {
      * desc: 根据用户Id查询该用户是否存在
      *
      * @param userId 用户Id
-     * @return 受影响行数
+     * @return true or false
      * @author FanYanGen
      * @date 2019/4/15 9:32
      **/
     boolean checkIsExistByUserId(Integer userId);
+
+    /**
+     * desc: 根据身份证号码查询该用户是否存在
+     *
+     * @param idCard 身份证号码
+     * @return true or false
+     * @author FanYanGen
+     * @date 2019/4/17 9:32
+     **/
+    boolean checkIsExistByIdCard(String idCard);
 
 }

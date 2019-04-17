@@ -180,7 +180,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @PaddingBaseField(recursive = true)
     @Transactional(rollbackFor = Exception.class)
     public int saveSysUserInfo(SysUserDto sysUser) {
-        if (null == tabSysUserMapper.selectUserByIdCardNo(sysUser.getSysUser().getIdCardNo())) {
+        if (!tabSysUserMapper.checkIsExistByIdCard(sysUser.getSysUser().getIdCardNo())) {
             sysUser.getSysUser().setIdentityType(59423L);
             tabSysUserMapper.insertSelective(sysUser.getSysUser());
             SysUserDto sysUserDto = parseSysUserDto(sysUser, sysUser.getSysUser().getUserId());
@@ -214,7 +214,6 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         List<TabPbPartyEducation> educationList = sysUser.getEducationList();
         List<TabPbPartyJobTitle> jobTitleList = sysUser.getJobTitleList();
         List<TabPbPartyWork> workList = sysUser.getWorkList();
-
         educationList.forEach(education -> {
             education.setUserId(currentId);
         });
