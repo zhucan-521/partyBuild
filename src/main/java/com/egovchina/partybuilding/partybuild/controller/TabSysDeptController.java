@@ -219,8 +219,17 @@ public class TabSysDeptController {
      */
     private void orgDataVerification(SysDeptDto sysDeptDto) {
         String deptName = sysDeptDto.getName();
-        if (tabSysDeptService.checkOrgNameAvailability(deptName)) {
-            throw new BusinessDataInvalidException("组织名称重复");
+        if(sysDeptDto.getDeptId() != null){
+            SysDept dept = tabSysDeptService.selectByPrimaryKey(sysDeptDto.getDeptId().longValue());
+            if(dept != null && !dept.getName().equals(deptName)){
+                if (tabSysDeptService.checkOrgNameAvailability(deptName)) {
+                    throw new BusinessDataInvalidException("组织名称重复");
+                }
+            }
+        }else {
+            if (tabSysDeptService.checkOrgNameAvailability(deptName)) {
+                throw new BusinessDataInvalidException("组织名称重复");
+            }
         }
         SysDept parentDept = tabSysDeptService.selectAloneByPrimaryKey(sysDeptDto.getParentId().longValue());
         if (parentDept == null) {
