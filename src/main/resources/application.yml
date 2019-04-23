@@ -20,12 +20,12 @@ spring:
       probability: 1.0
   # rabbitmq配置
   rabbitmq:
-    addresses: 192.168.5.251:5672
+    addresses: 192.168.1.251:5672
     username: Yizheng
     password: Yizheng2017
   # redis
   redis:
-    host: 192.168.5.251
+    host: 192.168.1.251
   cloud:
     # consul
     consul:
@@ -149,5 +149,5 @@ egov-china:
     expireTime: 600
   # mysql 地址配置
   datasource:
-    ip: 192.168.4.102
+    ip: 192.168.1.251
     port: 8017

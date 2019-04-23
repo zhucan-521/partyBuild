@@ -14,6 +14,8 @@ import com.egovchina.partybuilding.partybuild.service.TabSysUserService;
 import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
+import com.egovchina.partybuilding.partybuild.v1.dto.MembershipDTO;
+import com.egovchina.partybuilding.partybuild.v1.dto.RegistryDTO;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -107,8 +109,14 @@ public class TabSysUserServiceImpl implements TabSysUserService {
         return user;
     }
 
+    /**
+     * 更新用户党籍信息
+     *
+     * @param sysUser
+     * @return
+     */
     @Override
-    public boolean updataUser(SysUser sysUser) {
+    public boolean updateUser(SysUser sysUser) {
         if (sysUser != null && !ObjectUtils.isEmpty(sysUser.getUserId())) {
             Integer userId = sysUser.getUserId();
             SysUser oldUser = sysUserMapper.selectByPrimaryKey(userId.longValue());
@@ -127,6 +135,7 @@ public class TabSysUserServiceImpl implements TabSysUserService {
         }
         return false;
     }
+
 
     @Override
     public List<RegistryDto> getRegistryList(Long userId) {
