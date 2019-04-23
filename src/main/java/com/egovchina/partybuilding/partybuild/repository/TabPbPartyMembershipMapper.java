@@ -2,6 +2,7 @@ package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyMembership;
 import com.egovchina.partybuilding.partybuild.v1.entity.MembershipQueryBean;
+import com.egovchina.partybuilding.partybuild.v1.vo.MembershipVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public interface TabPbPartyMembershipMapper {
      * @param membershipQueryBean
      * @return
      */
-    List<TabPbPartyMembership> getTabPbMembershipByIdentityTypeAndTypeList(MembershipQueryBean membershipQueryBean);
+    List<MembershipVO> getMembershipVOListByCondition(MembershipQueryBean membershipQueryBean);
 
     /**
      * 修改党籍信息
@@ -44,12 +45,12 @@ public interface TabPbPartyMembershipMapper {
      * @param userId
      * @return
      */
-    TabPbPartyMembership getTabPbPartyMembershipByUserId(Long userId);
+    List<MembershipVO> getMembershipVOByUserIdList(Long userId);
 
     /**
      * 获取党籍列表
      *
      * @return
      */
-    List<TabPbPartyMembership> getTabPbMembershipList();
+    List<MembershipVO> getMembershipVOList();
 }

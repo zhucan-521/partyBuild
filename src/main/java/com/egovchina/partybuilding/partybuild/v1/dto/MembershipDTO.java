@@ -23,7 +23,7 @@ public class MembershipDTO {
     @NotNull
     private Integer userId;
 
-    @ApiModelProperty(value = "出党时间")
+    @ApiModelProperty(value = "出党时间", example = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull

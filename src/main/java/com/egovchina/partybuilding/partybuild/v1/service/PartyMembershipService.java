@@ -4,6 +4,7 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyMembership;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.v1.entity.MembershipQueryBean;
+import com.egovchina.partybuilding.partybuild.v1.vo.MembershipVO;
 
 import java.util.List;
 
@@ -20,14 +21,14 @@ public interface PartyMembershipService {
      * @param page
      * @return
      */
-    List<TabPbPartyMembership> getTabPbMembershipByIdentityTypeAndTypeList(MembershipQueryBean membershipQueryBean, Page page);
+    List<MembershipVO> getMembershipVOListByCondition(MembershipQueryBean membershipQueryBean, Page page);
 
     /**
      * 根据用户id获取用户的党籍信息
      *
      * @return
      */
-    TabPbPartyMembership getTabPbPartyMembershipByUserId(Long userId);
+    List<MembershipVO> getMembershipVOListByUserId(Long userId);
 
     /**
      * 公共方法
@@ -35,7 +36,7 @@ public interface PartyMembershipService {
      * @param sysUser
      * @return
      */
-    TabPbPartyMembership utilMethod(SysUser sysUser);
+    TabPbPartyMembership toolMethod(SysUser sysUser);
 
     /**
      * 获取党籍列表
@@ -43,5 +44,5 @@ public interface PartyMembershipService {
      * @param page
      * @return
      */
-    List<TabPbPartyMembership> getTabPbMembershipList(Page page);
+    List<MembershipVO> getMembershipVOList(Page page);
 }

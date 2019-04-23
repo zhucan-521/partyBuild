@@ -7,6 +7,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbPartyMembershipMap
 import com.egovchina.partybuilding.partybuild.v1.entity.MembershipQueryBean;
 import com.egovchina.partybuilding.partybuild.v1.service.PartyMembershipService;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.v1.vo.MembershipVO;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,9 +32,9 @@ public class PartyMembershipServiceImpl implements PartyMembershipService {
      * @return
      */
     @Override
-    public List<TabPbPartyMembership> getTabPbMembershipByIdentityTypeAndTypeList(MembershipQueryBean membershipQueryBean, Page page) {
+    public List<MembershipVO> getMembershipVOListByCondition(MembershipQueryBean membershipQueryBean, Page page) {
         PageHelper.startPage(page);
-        List<TabPbPartyMembership> list = tabPbPartyMembershipMapper.getTabPbMembershipByIdentityTypeAndTypeList(membershipQueryBean);
+        List<MembershipVO> list = tabPbPartyMembershipMapper.getMembershipVOListByCondition(membershipQueryBean);
         return list;
     }
 
@@ -44,18 +45,18 @@ public class PartyMembershipServiceImpl implements PartyMembershipService {
      * @return
      */
     @Override
-    public TabPbPartyMembership getTabPbPartyMembershipByUserId(Long userId) {
-        return tabPbPartyMembershipMapper.getTabPbPartyMembershipByUserId(userId);
+    public List<MembershipVO> getMembershipVOListByUserId(Long userId) {
+        return tabPbPartyMembershipMapper.getMembershipVOByUserIdList(userId);
     }
 
     /**
-     * 党籍添加公用方法
+     * 党籍添加公共方法
      *
      * @param sysUser
      * @return
      */
     @Override
-    public TabPbPartyMembership utilMethod(SysUser sysUser) {
+    public TabPbPartyMembership toolMethod(SysUser sysUser) {
         TabPbPartyMembership tabPbPartyMembership = new TabPbPartyMembership();
         tabPbPartyMembership.setUserId(sysUser.getUserId().longValue());
         tabPbPartyMembership.setIdentityType(sysUser.getIdentityType());
@@ -71,9 +72,9 @@ public class PartyMembershipServiceImpl implements PartyMembershipService {
      * @return
      */
     @Override
-    public List<TabPbPartyMembership> getTabPbMembershipList(Page page) {
+    public List<MembershipVO> getMembershipVOList(Page page) {
         PageHelper.startPage(page);
-        List<TabPbPartyMembership> list = tabPbPartyMembershipMapper.getTabPbMembershipList();
+        List<MembershipVO> list = tabPbPartyMembershipMapper.getMembershipVOList();
         return list;
     }
 }

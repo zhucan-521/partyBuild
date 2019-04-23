@@ -24,7 +24,7 @@ public class UserTagController {
 
     @ApiOperation(value = "根据用户id和对应的用户标签id插入", notes = "根据用户id和对应的用户标签id插入", httpMethod = "POST")
     @PostMapping
-    public ReturnEntity addUserTag(@ApiParam("党员标记") @Valid UserTagDTO userTagDTO) {
+    public ReturnEntity addUserTag(@ApiParam("党员标记") @Valid @RequestBody UserTagDTO userTagDTO) {
         int retVal = userTagService.insertUserTag(userTagDTO);
         return ReturnUtil.buildReturn(retVal);
     }

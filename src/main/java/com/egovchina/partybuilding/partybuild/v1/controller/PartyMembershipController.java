@@ -9,6 +9,7 @@ import com.egovchina.partybuilding.partybuild.v1.dto.MembershipDTO;
 import com.egovchina.partybuilding.partybuild.v1.dto.RegistryDTO;
 import com.egovchina.partybuilding.partybuild.v1.entity.MembershipQueryBean;
 import com.egovchina.partybuilding.partybuild.v1.service.PartyMembershipService;
+import com.egovchina.partybuilding.partybuild.v1.vo.MembershipVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,8 @@ public class PartyMembershipController {
     @ApiOperation(value = "根据用户id获取用户党籍实体类信息", notes = "根据userId获取用户党籍实体类信息", httpMethod = "GET")
     @ApiImplicitParam(name = "userId", value = "用户id", paramType = "path", required = true, dataType = "long")
     @GetMapping("/{userId}")
-    public TabPbPartyMembership getTabPbPartyMembershipByUserId(@PathVariable(value = "userId") Long userId) {
-        return partyMembershipService.getTabPbPartyMembershipByUserId(userId);
+    public PageInfo<MembershipVO> getMembershipVOList(@PathVariable(value = "userId") Long userId, @ApiParam("分页信息") Page page) {
+        return new PageInfo<>(partyMembershipService.getMembershipVOListByUserId(userId));
     }
 
     /**
@@ -51,6 +52,7 @@ public class PartyMembershipController {
      * @param membershipDTO
      * @return
      */
+    @Deprecated
     @ApiOperation(value = "更新用户党籍信息", notes = "更新用户党籍信息", httpMethod = "PUT")
     @PutMapping
     public boolean updateMembership(@ApiParam(value = "党籍信息", required = true) @Valid @RequestBody MembershipDTO membershipDTO) {
@@ -58,28 +60,16 @@ public class PartyMembershipController {
     }
 
     /**
-     * 根据人员类别和党籍处理获取党籍实体类列表
+     * 获取党籍实体类列表（人员类别和党籍处理可选填）
      *
      * @param membershipQueryBean
      * @param page
      * @return
      */
-    @ApiOperation(value = "根据人员类别和党籍处理获取党籍实体类列表", notes = "根据identityType和type获取党籍实体类列表", httpMethod = "GET")
-    @GetMapping("/like")
-    public PageInfo<TabPbPartyMembership> getTabPbMembershipByIdentityTypeAndTypeList(@ApiParam(value = "党籍信息", required = true) @Valid MembershipQueryBean membershipQueryBean, @ApiParam("分页对象") Page page) {
-        return new PageInfo<>(partyMembershipService.getTabPbMembershipByIdentityTypeAndTypeList(membershipQueryBean, page));
-    }
-
-    /**
-     * 获取党籍实体类列表
-     *
-     * @param page
-     * @return
-     */
-    @ApiOperation(value = "获取党籍实体类列表", notes = "获取党籍实体类列表", httpMethod = "GET")
+    @ApiOperation(value = "获取党籍实体类列表（人员类别和党籍处理可选填）", notes = "获取党籍实体类列表（人员类别和党籍处理可选填）", httpMethod = "GET")
     @GetMapping
-    public PageInfo<TabPbPartyMembership> getTabPbMembershipList(@ApiParam("分页对象") Page page) {
-        return new PageInfo<>(partyMembershipService.getTabPbMembershipList(page));
+    public PageInfo<MembershipVO> getMembershipVOListByCondition(@ApiParam(value = "党籍信息") MembershipQueryBean membershipQueryBean, @ApiParam("分页对象") Page page) {
+        return new PageInfo<>(partyMembershipService.getMembershipVOListByCondition(membershipQueryBean, page));
     }
 
     /**
@@ -88,6 +78,7 @@ public class PartyMembershipController {
      * @param userId
      * @return
      */
+    @Deprecated
     @ApiOperation(value = "获取党籍列表", notes = "获取党籍列表", httpMethod = "GET")
     @ApiImplicitParam(name = "userId", value = "用户id", paramType = "query", required = true, dataType = "long")
     @GetMapping("/multiple")
@@ -101,6 +92,7 @@ public class PartyMembershipController {
      * @param userId
      * @return
      */
+    @Deprecated
     @ApiOperation(value = "获取用户党籍信息", notes = "获取用户党籍信息", httpMethod = "GET")
     @ApiImplicitParam(name = "userId", value = "用户id", paramType = "query", required = true, dataType = "long")
     @GetMapping("/single")

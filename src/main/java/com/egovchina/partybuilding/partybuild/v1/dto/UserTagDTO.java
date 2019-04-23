@@ -22,7 +22,7 @@ public class UserTagDTO {
     @NotNull
     private Long userId;
 
-    @ApiModelProperty(value = "用户标签字典Id")
+    @ApiModelProperty(value = "用户标签字典Id 码表值 USERTAG")
     @JsonSerialize(using = DictSerializer.class)
     @NotNull
     private Long tagType;

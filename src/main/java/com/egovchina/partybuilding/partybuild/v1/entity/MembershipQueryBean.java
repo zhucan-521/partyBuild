@@ -20,11 +20,9 @@ public class MembershipQueryBean {
 
     @ApiModelProperty(value = "人员类别 码表值 RYLB")
     @JsonSerialize(using = DictSerializer.class)
-    @NotNull
     private Long identityType;
 
-    @ApiModelProperty(value = "党籍处理")
+    @ApiModelProperty(value = "党籍处理 码表值 DJCL")
     @JsonSerialize(using = DictSerializer.class)
-    @NotNull
     private Long type;
 }
