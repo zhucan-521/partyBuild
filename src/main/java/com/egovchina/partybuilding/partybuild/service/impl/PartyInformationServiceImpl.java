@@ -180,17 +180,17 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @PaddingBaseField(recursive = true)
     @Transactional(rollbackFor = Exception.class)
     public int saveSysUserInfo(SysUserDto sysUser) {
-        if (null != tabSysUserMapper.selectUserByIdCardNo(sysUser.getSysUser().getIdCardNo())) {
-            throw new BusinessDataCheckFailException("该党员已存在!!!");
+        if (!tabSysUserMapper.checkIsExistByIdCard(sysUser.getSysUser().getIdCardNo())) {
+            sysUser.getSysUser().setIdentityType(59423L);
+            tabSysUserMapper.insertSelective(sysUser.getSysUser());
+            SysUserDto sysUserDto = parseSysUserDto(sysUser, sysUser.getSysUser().getUserId());
+            int effected = 0;
+            effected += tabPbPartyEducationMapper.batchInsert(sysUserDto.getEducationList());
+            effected += tabPbPartyJobTitleMapper.batchInsert(sysUserDto.getJobTitleList());
+            effected += tabPbPartyWorkMapper.batchInsert(sysUser.getWorkList());
+            return effected;
         }
-        sysUser.getSysUser().setIdentityType(59423L);
-        tabSysUserMapper.insertSelective(sysUser.getSysUser());
-        SysUserDto sysUserDto = parseSysUserDto(sysUser, sysUser.getSysUser().getUserId());
-        int effected = 0;
-        effected += tabPbPartyEducationMapper.batchInsert(sysUserDto.getEducationList());
-        effected += tabPbPartyJobTitleMapper.batchInsert(sysUserDto.getJobTitleList());
-        effected += tabPbPartyWorkMapper.batchInsert(sysUser.getWorkList());
-        return effected;
+        throw new BusinessDataCheckFailException("该党员已存在!!!");
     }
 
     @Override
@@ -214,7 +214,6 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         List<TabPbPartyEducation> educationList = sysUser.getEducationList();
         List<TabPbPartyJobTitle> jobTitleList = sysUser.getJobTitleList();
         List<TabPbPartyWork> workList = sysUser.getWorkList();
-
         educationList.forEach(education -> {
             education.setUserId(currentId);
         });

@@ -56,6 +56,7 @@ public class TabPbDeptSecretaryServiceImpl implements TabPbDeptSecretaryService 
 
     @Override
     @PaddingBaseField
+    @Transactional(rollbackFor = Exception.class)
     public int insertSelective(@NonNull TabPbDeptSecretary record) {
         if(record.getUser()== null){
             throw new BusinessDataIncompleteException("请传入党员参数");
@@ -278,6 +279,7 @@ public class TabPbDeptSecretaryServiceImpl implements TabPbDeptSecretaryService 
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updateOrderNum(Long oldId, Long oldNum, Long newId, Long newNum) {
         int retVal = deptSecretaryMapper.updateOrderNum(newNum,oldId);
         retVal += deptSecretaryMapper.updateOrderNum(oldNum,newId);

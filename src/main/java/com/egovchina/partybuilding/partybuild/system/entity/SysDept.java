@@ -40,6 +40,7 @@ public class SysDept extends Model<SysDept> {
     private String orgShortName;
 
     @ApiModelProperty(value = "组织编码")
+    @NotBlank(message = "组织编码不能为空")
     private String orgCode;
 
     @ApiModelProperty(value = "组织内部编码")

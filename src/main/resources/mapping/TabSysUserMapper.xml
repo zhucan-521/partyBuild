@@ -2004,5 +2004,8 @@
         SELECT COUNT(1) FROM sys_user WHERE user_id = #{userId}
     </select>
 
+    <select id="checkIsExistByIdCard" parameterType="java.lang.String" resultType="java.lang.Boolean">
+        SELECT COUNT(1) FROM sys_user WHERE id_card_no = #{idCard}
+    </select>
 
 </mapper>
