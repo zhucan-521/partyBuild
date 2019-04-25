@@ -42,7 +42,7 @@ spring:
         tags:
         - partybuilding
         service-name: partybuilding
-        instance-id: partybuilding
+        instance-id: partybuilding-${random.value}
 
 # mybatis-plus
 mybatis-plus:
@@ -131,23 +131,11 @@ egov-china:
   swagger:
     apiInfo:
       title: 党组织、党员、生活活动相关API
-      desc: "<h1 style=\"color:red;\">更新说明：\n</h1>
-      <h2 style=\"color:red;\">
-      前端相关：\n
-      \t1. 党组织活动相关接口全部迁移到生活服务中（右上角切换 life），当前党组织活动相关接口将于 2019-04-22 废弃 \n
-      \t2. 系统管理相关接口全部迁移到系统服务中（右上角切换 system），当前系统管理相关接口将于 2019-04-22 废弃 \n
-      \t3. 党员教育相关接口全部迁移到教育服务中（右上角切换 education），当前党员教育相关接口将于 2019-04-22 废弃 \n
-      \t调整方式：将要调整接口的前缀调整为对应的服务名，eg: 党组织活动接口前缀由 partybuilding 改为 life \n
-      后端相关：\n
-      \t1. 附件上传及回显统一使用一个集合（原来区分了图片、文档及视频），这个调整请在 2019-04-15 完成 \n
-      \t调整方式：实体中如 private List&lt;TabPbAttachment&gt; courseList; private List&lt;TabPbAttachment&gt; imgAttachments; private List&lt;TabPbAttachment&gt; videoAttachments;
-      这些附件字段删除后保留一个名称为 courseList 的字段
-      </h2>"
   # jwt token
   jwtToken:
     # 定义token的过期时间，单位分钟
     expireTime: 600
   # mysql 地址配置
   datasource:
-    ip: 192.168.1.251
+    ip: 119.23.215.202
     port: 8017
