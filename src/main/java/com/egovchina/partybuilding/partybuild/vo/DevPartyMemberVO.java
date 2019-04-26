@@ -1,21 +1,31 @@
-package com.egovchina.partybuilding.partybuild.entity;
+package com.egovchina.partybuilding.partybuild.vo;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
-import java.util.Date;
-
+/**
+ * desc: 党员发展步骤-视图对象
+ * Created by FanYanGen on 2019/4/23 11:23
+ */
 @Data
-@Accessors(chain = true)
-@ApiModel("党员发展信息")
-public class TabPbDevPartyMember {
+@ApiModel("党员发展步骤-视图对象")
+public class DevPartyMemberVO {
 
+    @ApiModelProperty(value = "发展主键")
     private Long dpId;
 
+    @ApiModelProperty(value = "发展ID")
+    private Long deptId;
+
+    @ApiModelProperty(value = "状态")
     private Long status;
 
+    @ApiModelProperty(value = "用户ID")
     private Long userId;
+
+    @ApiModelProperty(value = "用户ID")
+    private Long attachmentType;
 
     private Long hostId11;
 
@@ -66,17 +76,5 @@ public class TabPbDevPartyMember {
     private Long hostId56;
 
     private Long hostId57;
-
-    // ===============================
-
-    private Date createTime;
-
-    private Long createUserid;
-
-    private String createUsername;
-
-    private String delFlag;
-
-    private Long deptId;
 
 }

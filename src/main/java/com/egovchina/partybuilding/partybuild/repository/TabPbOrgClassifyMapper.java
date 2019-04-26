@@ -1,10 +1,13 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify;
+import com.egovchina.partybuilding.partybuild.vo.OrgClassifyVO;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public interface TabPbOrgClassifyMapper {
     int deleteByPrimaryKey(Long orgClassifyId);
 
@@ -22,5 +25,5 @@ public interface TabPbOrgClassifyMapper {
 
     int logicDeleteById(Long orgClassifyId);
 
-    List<TabPbOrgClassify> selectWithConditions(Map<String, Object> conditions);
+    List<OrgClassifyVO> selectWithConditions(Map<String, Object> conditions);
 }

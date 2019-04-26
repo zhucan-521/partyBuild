@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbDoubleCommentaryMapper">
+
     <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
         <id column="commentary_id" jdbcType="BIGINT" property="commentaryId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
@@ -24,32 +25,62 @@
         <result column="check_user" jdbcType="BIGINT" property="checkUser"/>
         <result column="check_user_name" jdbcType="VARCHAR" property="checkUserName"/>
         <result column="check_desc" jdbcType="VARCHAR" property="checkDesc"/>
-
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
     </resultMap>
+
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
                type="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
         <result column="commentary_content" jdbcType="LONGVARCHAR" property="commentaryContent"/>
     </resultMap>
-    <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithAttachments" type="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
+
+    <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithAttachments"
+               type="com.egovchina.partybuilding.partybuild.vo.CommentaryVO">
         <collection property="attachments"
                     select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=commentary_id,attachmentType=attachment_type}"/>
     </resultMap>
+
     <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithCount"
-               type="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
+               type="com.egovchina.partybuilding.partybuild.vo.CommentaryVO">
         <result column="video_num" jdbcType="INTEGER" property="videoNum"/>
         <result column="img_num" jdbcType="BIGINT" property="imgNum"/>
         <result column="doc_num" jdbcType="BIGINT" property="docNum"/>
     </resultMap>
+
+    <!-- 返回双述双评基本信息Vo数据集合 -->
+    <resultMap id="CommentaryVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.CommentaryVO">
+        <id column="commentary_id" jdbcType="BIGINT" property="commentaryId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="plan_year" jdbcType="BIGINT" property="planYear"/>
+        <result column="report_date" jdbcType="TIMESTAMP" property="reportDate"/>
+        <result column="check_date" jdbcType="TIMESTAMP" property="checkDate"/>
+        <result column="check_result" jdbcType="BIGINT" property="checkResult"/>
+        <result column="check_org" jdbcType="BIGINT" property="checkOrg"/>
+        <result column="check_org_name" jdbcType="VARCHAR" property="checkOrgName"/>
+        <result column="check_user" jdbcType="BIGINT" property="checkUser"/>
+        <result column="check_user_name" jdbcType="VARCHAR" property="checkUserName"/>
+        <result column="check_desc" jdbcType="VARCHAR" property="checkDesc"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="org_short_name" jdbcType="VARCHAR" property="orgShortName"/>
+        <result column="video_num" jdbcType="INTEGER" property="videoNum"/>
+        <result column="img_num" jdbcType="BIGINT" property="imgNum"/>
+        <result column="doc_num" jdbcType="BIGINT" property="docNum"/>
+        <collection property="attachments"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=commentary_id,attachmentType=attachment_type}"/>
+    </resultMap>
+
+
     <sql id="Base_Column_List">
     dc.commentary_id, dc.org_id, dc.plan_year, dc.report_date, dc.check_date, dc.check_result, dc.ebl_flag, dc.del_flag, dc.order_num,
     dc.description, dc.create_time, dc.create_userid, dc.create_username, dc.update_time, dc.update_userid,
     dc.update_username, dc.version, dc.check_org, dc.check_user, dc.check_desc
   </sql>
+
     <sql id="Blob_Column_List">
     dc.commentary_content
   </sql>
+
     <sql id="Base_WhereCase_List">
         <if test="orgId != null">
             AND dc.org_id = #{orgId}
@@ -132,12 +163,13 @@
             </otherwise>
         </choose>
     </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMapWithAttachments">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="CommentaryVOResultMap">
         select
         <include refid="Base_Column_List"/>
         ,
         <include refid="Blob_Column_List"/>
         , '5' as attachment_type,
+        d.org_short_name as org_short_name,
         d.name as org_name,
         d2.name as check_org_name,
         u.realname as check_user_name
@@ -145,7 +177,7 @@
         left join sys_dept d on dc.org_id = d.dept_id
         left join sys_dept d2 on dc.check_org = d2.dept_id
         left join sys_user u on dc.check_user = u.user_id
-        where dc.commentary_id = #{commentaryId,jdbcType=BIGINT}
+        where dc.commentary_id = #{commentaryId,jdbcType=BIGINT} AND dc.del_flag = 0
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tab_pb_double_commentary
@@ -304,12 +336,10 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
         update tab_pb_double_commentary
         <set>
-            <if test="orgId != null">
-                org_id = #{orgId,jdbcType=BIGINT},
-            </if>
             <if test="planYear != null">
                 plan_year = #{planYear,jdbcType=BIGINT},
             </if>
@@ -370,7 +400,8 @@
         </set>
         where commentary_id = #{commentaryId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
+    <update id="updateByPrimaryKeyWithBLOBs"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
     update tab_pb_double_commentary
     set org_id = #{orgId,jdbcType=BIGINT},
       plan_year = #{planYear,jdbcType=BIGINT},
@@ -394,6 +425,7 @@
       check_desc = #{checkDesc,jdbcType=VARCHAR}
     where commentary_id = #{commentaryId,jdbcType=BIGINT}
   </update>
+
     <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
     update tab_pb_double_commentary
     set org_id = #{orgId,jdbcType=BIGINT},
@@ -420,12 +452,15 @@
   </update>
 
     <!--根据条件查询-->
-    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="BaseResultMapWithCount">
+    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="CommentaryVOResultMap">
         select
         <include refid="Base_Column_List"/>
         ,
         <include refid="Blob_Column_List"/>
-        , d.name as org_name,
+        ,
+        d.name as org_name,
+        d.org_short_name as org_short_name,
+        '5' as attachment_type,
         ifnull(t.video_num, 0) video_num,
         ifnull(t.img_num, 0) img_num,
         ifnull(t.doc_num, 0) doc_num
@@ -441,4 +476,10 @@
     <update id="logicDeleteById">
         update tab_pb_double_commentary set del_flag = 1 where commentary_id = #{commentaryId}
     </update>
+
+    <!-- 检验数据是否存在 -->
+    <select id="isExist" parameterType="java.lang.Long" resultType="boolean">
+        SELECT COUNT(1) FROM tab_pb_double_commentary WHERE commentary_id = #{commentaryId}
+    </select>
+
 </mapper>
