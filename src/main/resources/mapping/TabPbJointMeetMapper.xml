@@ -18,13 +18,19 @@
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
 
+    <resultMap id="JointMeetVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.JointMeetVO">
+        <id column="joint_meet_id" jdbcType="BIGINT" property="jointMeetId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="founded_date" jdbcType="TIMESTAMP" property="foundedDate"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
     <sql id="Base_Column_List">
     joint_meet_id, org_id, founded_date, ebl_flag, del_flag, order_num, description, 
     create_time, create_userid, create_username, update_time, update_userid, update_username, 
     version
   </sql>
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectJointMeetByJointMeetId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from tab_pb_joint_meet
@@ -156,16 +162,16 @@
         where joint_meet_id = #{jointMeetId,jdbcType=BIGINT}
     </update>
 
-    <select id="selectByOrgId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectJointMeetByOrgId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from tab_pb_joint_meet
         where org_id = #{orgId,jdbcType=BIGINT} and del_flag = '0'
     </select>
 
-    <select id="select" resultMap="BaseResultMap">
+    <select id="selectJointMeetVOList" resultMap="JointMeetVOResultMap">
         select
-        a.*
+        a.joint_meet_id,a.org_id,a.founded_date,a.description
         from tab_pb_joint_meet a inner join sys_dept d on a.org_id=d.dept_id
         where a.del_flag = '0'
 
@@ -185,5 +191,4 @@
         </if>
 
     </select>
-
 </mapper>

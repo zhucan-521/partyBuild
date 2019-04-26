@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo;
+import com.egovchina.partybuilding.partybuild.vo.UnitInfoVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,4 +24,10 @@ public interface TabPbUnitInfoMapper {
     int batchLogicDeleteById(List<Long> pendingRemoveUnitIdList);
 
     List<TabPbUnitInfo> selectByUnitName(@Param("unitName") String unitName);
+
+    List<UnitInfoVO> selectUnitInfoByUnitName(@Param("unitName") String unitName);
+
+    UnitInfoVO selectUnitInfoByUnitId(Long unitId);
+
+    List<UnitInfoVO> selectUnitInfoByOrgId(Long orgId);
 }

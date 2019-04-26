@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange;
+import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -37,4 +38,11 @@ public interface TabPbOrgnizeChangeMapper {
      * @return
      */
     List<TabPbOrgnizeChange> selectCombination(@Param("deptId") Long deptId);
+
+    /**
+     * 查询组织变动记录
+     * @param deptId
+     * @return
+     */
+    List<OrgChangeVO> selectOrgChangeVOList(@Param("deptId") Long deptId);
 }

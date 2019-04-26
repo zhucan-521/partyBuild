@@ -23,6 +23,17 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
+
+    <resultMap id="JointMeetOrgVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.JointMeetOrgVO">
+        <id column="member_org_id" jdbcType="BIGINT" property="memberOrgId"/>
+        <result column="joint_meet_id" jdbcType="BIGINT" property="jointMeetId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="unit_id" jdbcType="BIGINT" property="unitId"/>
+        <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
+        <result column="join_date" jdbcType="TIMESTAMP" property="joinDate"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
     member_org_id, joint_meet_id, org_id, join_date, ebl_flag, del_flag, order_num, description, 
     create_time, create_userid, create_username, update_time, update_userid, update_username, 
@@ -33,7 +44,7 @@
         select
         <include refid="Base_Column_List"/>
         from tab_pb_joint_meet_org
-        where member_org_id = #{memberOrgId,jdbcType=BIGINT}
+        where member_org_id = #{memberOrgId,jdbcType=BIGINT} and del_flag = 0
     </select>
 
     <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbJointMeetOrg">
@@ -134,6 +145,17 @@
         </trim>
     </insert>
 
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into tab_pb_joint_meet_org (joint_meet_id, org_id, join_date, order_num, description,
+        create_time, create_userid, create_username, update_time, update_userid, update_username)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.jointMeetId}, #{item.orgId}, #{item.joinDate},#{item.orderNum}, #{item.description},
+            #{item.createTime}, #{item.createUserid}, #{item.createUsername},
+            #{item.updateTime}, #{item.updateUserid},#{item.updateUsername})
+        </foreach>
+    </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbJointMeetOrg">
         update tab_pb_joint_meet_org
         <set>
@@ -223,6 +245,27 @@
         </if>
     </update>
 
+    <select id="selectJointMeetOrgVOList"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.JointMeetOrgQueryBean"
+            resultMap="JointMeetOrgVOResultMap">
+        SELECT
+        B.member_org_id,B.joint_meet_id,B.org_id,B.join_date,
+        d.unit_id,
+        d.unit_name,
+        d.`name` AS org_name
+        FROM
+        tab_pb_joint_meet A
+        INNER JOIN tab_pb_joint_meet_org B ON A.joint_meet_id = B.joint_meet_id
+        LEFT JOIN sys_dept d ON B.org_id = d.dept_id
+        WHERE
+        B.del_flag = '0' AND A.org_id = #{orgId}
+        <if test="unitName != null and unitName != ''">
+            AND d.unit_name LIKE concat('%',#{unitName},'%')
+        </if>
+        <if test="jointMeetId != null">
+            AND B.joint_meet_id = #{jointMeetId}
+        </if>
+    </select>
 
     <select id="select" resultMap="BaseResultMap">
         SELECT

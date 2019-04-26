@@ -1,6 +1,8 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember;
+import com.egovchina.partybuilding.partybuild.vo.StreetCommitteeMemberVO;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -34,5 +36,17 @@ public interface TabPbGrantCommitteMemberMapper {
      * @param member
      * @return
      */
-    List<TabPbGrantCommitteMember> selectByGrantCommitteeId(TabPbGrantCommitteMember member);
+    List<StreetCommitteeMemberVO> selectStreetCommitteeMemberVOList(TabPbGrantCommitteMember member);
+
+    /**
+     * 根据大工委成员id查大工委成员信息
+     * @param grantCommitteeMemberId
+     * @return
+     */
+    StreetCommitteeMemberVO selectStreetCommitteeMemberVOById(Long grantCommitteeMemberId);
+
+    int verifyStreetCommitteeMembers(
+            @Param("leadTeamId") Long leadTeamId,
+            @Param("grantCommitteeId") Long grantCommitteeId,
+            @Param("userId") Long userId);
 }
