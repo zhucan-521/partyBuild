@@ -1,4 +1,4 @@
-package com.egovchina.partybuilding.partybuild.service;
+package com.egovchina.partybuilding.partybuild.v1.service;
 
 import com.egovchina.partybuilding.partybuild.dto.RegistryDto;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
@@ -9,9 +9,10 @@ import com.egovchina.partybuilding.partybuild.v1.dto.RegistryDTO;
 import java.util.List;
 
 /**
- * 党员--用户信息接口
+ * @author create by GuanYingxin on 2019/4/22 21:42
+ * @description
  */
-public interface TabSysUserService {
+public interface SysUserService {
 
     /**
      * 根据组织Id 获取党务工作者信息
@@ -36,6 +37,13 @@ public interface TabSysUserService {
 
     SysUser getRegistryId(Long userId);
 
+    /**
+     * 获取党籍列表
+     *
+     * @param userId
+     * @return
+     */
+    SysUser getRegistryByUserId(Long userId);
 
     /**
      * 更新用户党籍信息
@@ -45,7 +53,23 @@ public interface TabSysUserService {
      */
     boolean updateUser(SysUser sysUser);
 
+    /**
+     * 更新用户党籍信息
+     *
+     * @param membershipDTO
+     * @return
+     */
+    boolean updateMembership(MembershipDTO membershipDTO);
+
     List<RegistryDto> getRegistryList(Long userId);
+
+    /**
+     * 获取用户党籍信息
+     *
+     * @param userId
+     * @return
+     */
+    List<RegistryDTO> getRegistryV1List(Long userId);
 
     /**
      * 社区活动选人接口(通过组织主键来获取)

@@ -17,12 +17,12 @@ import java.util.Date;
 @Accessors(chain = true)
 @TableName("tab_pb_user_tag")
 @ApiModel(value = "user标签实体")
-public class TabPbUserTag{
+public class TabPbUserTag {
     private Long usertagId;
 
     private Long userId;
 
-    @ApiModelProperty(value = "用户标签字典Id")
+    @ApiModelProperty(value = "用户标签字典Id 码表值 USERTAG")
     @JsonSerialize(using = DictSerializer.class)
     private Long tagType;
 
@@ -30,11 +30,11 @@ public class TabPbUserTag{
     @TableField(exist = false)
     private Integer id;
 
-    @ApiModelProperty(value = "数据值",example = "AGE",required=true)
+    @ApiModelProperty(value = "数据值", example = "AGE", required = true)
     @TableField(exist = false)
     private String value;
 
-    @ApiModelProperty(value = "标签名",example = "过滤条件—年龄",required=true)
+    @ApiModelProperty(value = "标签名", example = "过滤条件—年龄", required = true)
     @TableField(exist = false)
     private String label;
 

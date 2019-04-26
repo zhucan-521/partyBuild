@@ -51,6 +51,6 @@ public class RegistryController {
     @ApiOperation(value = "更新用户党籍信息")
     @PutMapping("/updata")
     public boolean updata(@ApiParam(value = "党籍信息")@Valid @RequestBody SysUser sysUser){
-        return sysUserService.updataUser(sysUser);
+        return sysUserService.updateUser(sysUser);
     }
 }

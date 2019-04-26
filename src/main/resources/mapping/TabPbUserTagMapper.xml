@@ -33,9 +33,16 @@
     usertag_id, user_id, tag_type
   </sql>
     <select id="exist" resultType="java.lang.Boolean">
-    <![CDATA[ select count(1) from tab_pb_user_tag where user_id = #{userId} and tag_type = #{tagType}]]>
+    <![CDATA[
+
+
+                         select count(1) from tab_pb_user_tag where user_id = #{userId} and tag_type = #{tagType}
+
+
+        ]]>
   </select>
-    <select id="selectListSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbUserTag" resultMap="BaseResultMap">
+    <select id="selectListSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbUserTag"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from tab_pb_user_tag
@@ -47,7 +54,8 @@
             and tag_type = #{tagType}
         </if>
     </select>
-    <select id="selectAllListSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbUserTag" resultMap="DictBaseResultMap">
+    <select id="selectAllListSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbUserTag"
+            resultMap="DictBaseResultMap">
         SELECT t.usertag_id,if(usertag_id is not null,1,0) as tag_type,t.user_id,id, parent_id, value, label, type, description, sort, remarks
          from (SELECT * FROM sys_dict WHERE parent_id = 59381 and del_flag = 0 and remarks = '1') d
         left join tab_pb_user_tag t on d.id = t.tag_type and t.user_id = #{userId,jdbcType=BIGINT}
