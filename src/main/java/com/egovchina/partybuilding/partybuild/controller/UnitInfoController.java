@@ -54,7 +54,7 @@ public class UnitInfoController {
     }
 
     @ApiOperation(value = "添加一个单位信息", notes = "添加一个单位信息")
-    @PostMapping
+    @PostMapping("/units")
     public ReturnEntity addUnitInfo(@ApiParam("单位信息") @RequestBody @Validated UnitInfoDTO unitInfoDTO) {
         return ReturnUtil.buildReturn(unitInfoService.insertUnitInfo(unitInfoDTO));
     }
@@ -67,7 +67,7 @@ public class UnitInfoController {
     }
 
     @ApiOperation(value = "修改单位信息", notes = "修改单位信息")
-    @PutMapping
+    @PutMapping("/units")
     public ReturnEntity updateUnitInfo(@ApiParam("单位信息") @RequestBody @Validated UnitInfoDTO unitInfoDTO) {
         return ReturnUtil.buildReturn(unitInfoService.updateUnitInfo(unitInfoDTO));
     }
