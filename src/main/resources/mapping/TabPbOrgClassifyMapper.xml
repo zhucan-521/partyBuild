@@ -1,105 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbOrgClassifyMapper">
-  <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify">
-    <id column="org_classify_id" jdbcType="BIGINT" property="orgClassifyId" />
-    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
-    <result column="dept_name" jdbcType="BIGINT" property="deptName" />
-    <result column="org_level" jdbcType="BIGINT" property="orgLevel" />
-    <result column="level_date" jdbcType="TIMESTAMP" property="levelDate" />
-    <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag" />
-    <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
-    <result column="order_num" jdbcType="BIGINT" property="orderNum" />
-    <result column="description" jdbcType="VARCHAR" property="description" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="create_userid" jdbcType="BIGINT" property="createUserid" />
-    <result column="create_username" jdbcType="VARCHAR" property="createUsername" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="update_userid" jdbcType="BIGINT" property="updateUserid" />
-    <result column="update_username" jdbcType="VARCHAR" property="updateUsername" />
-    <result column="version" jdbcType="BIGINT" property="version" />
-  </resultMap>
-  <sql id="Base_Column_List">
+
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify">
+        <id column="org_classify_id" jdbcType="BIGINT" property="orgClassifyId"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="dept_name" jdbcType="BIGINT" property="deptName"/>
+        <result column="org_level" jdbcType="BIGINT" property="orgLevel"/>
+        <result column="level_date" jdbcType="TIMESTAMP" property="levelDate"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+    </resultMap>
+
+    <!-- 返回分类定等基本信息Vo数据集合 -->
+    <resultMap id="OrgClassifyVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.OrgClassifyVO">
+        <id column="org_classify_id" jdbcType="BIGINT" property="orgClassifyId"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="dept_name" jdbcType="BIGINT" property="deptName"/>
+        <result column="org_level" jdbcType="BIGINT" property="orgLevel"/>
+        <result column="level_date" jdbcType="TIMESTAMP" property="levelDate"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
     c.org_classify_id, c.dept_id, c.org_level, c.level_date, c.ebl_flag, c.del_flag, c.order_num, c.description,
     c.create_time, c.create_userid, c.create_username, c.update_time, c.update_userid, c.update_username,
     c.version
   </sql>
-  <sql id="Base_WhereCase_List">
-    <if test="orgClassifyId != null and orgClassifyId != ''">
-      AND c.org_classify_id = #{orgClassifyId}
-    </if>
-    <if test="deptId != null and deptId != ''">
-      AND c.dept_id = #{deptId}
-    </if>
-    <if test="orgLevel != null and orgLevel != ''">
-      AND c.org_level = #{orgLevel}
-    </if>
-    <!--定等日期-->
-    <if test="startDate != null and startDate != ''">
-      AND date_format(c.level_date, '%Y-%m-%d') >= #{startDate}
-    </if>
-    <if test="endDate != null and endDate != ''">
-      AND date_format(c.level_date, '%Y-%m-%d') &lt;= #{endDate}
-    </if>
-    <if test="eblFlag != null and eblFlag != ''">
-      AND c.ebl_flag = #{eblFlag}
-    </if>
-    <if test="delFlag != null and delFlag != ''">
-      AND c.del_flag = #{delFlag}
-    </if>
-    <if test="orderNum != null and orderNum != ''">
-      AND c.order_num = #{orderNum}
-    </if>
-    <if test="description != null and description != ''">
-      AND c.description like concat('%',#{description},'%')
-    </if>
-    <if test="createTime != null and createTime != ''">
-      AND c.create_time = #{createTime}
-    </if>
-    <if test="createUserid != null and createUserid != ''">
-      AND c.create_userid = #{createUserid}
-    </if>
-    <if test="createUsername != null and createUsername != ''">
-      AND c.create_username = #{createUsername}
-    </if>
-    <if test="updateTime != null and updateTime != ''">
-      AND c.update_time = #{updateTime}
-    </if>
-    <if test="updateUserid != null and updateUserid != ''">
-      AND c.update_userid = #{updateUserid}
-    </if>
-    <if test="updateUsername != null and updateUsername != ''">
-      AND c.update_username = #{udpateUsername}
-    </if>
-    <if test="version != null and version != ''">
-      AND c.version = #{version}
-    </if>
-    <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
-    <choose>
-      <when test="orgRange == 1">
-        AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
-      </when>
-      <when test="orgRange == 2">
-        AND find_in_set(#{rangeDeptId}, d.full_path)
-      </when>
-      <otherwise>
-        AND d.dept_id = #{rangeDeptId}
-      </otherwise>
-    </choose>
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    , d.name as dept_name
-    from tab_pb_org_classify c
-    left join sys_dept d using(dept_id)
-    where c.org_classify_id = #{orgClassifyId,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <sql id="Base_WhereCase_List">
+        <if test="orgClassifyId != null and orgClassifyId != ''">
+            AND c.org_classify_id = #{orgClassifyId}
+        </if>
+        <if test="deptId != null and deptId != ''">
+            AND c.dept_id = #{deptId}
+        </if>
+        <if test="orgLevel != null and orgLevel != ''">
+            AND c.org_level = #{orgLevel}
+        </if>
+        <!--定等日期-->
+        <if test="startDate != null and startDate != ''">
+            AND date_format(c.level_date, '%Y-%m-%d') >= #{startDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND date_format(c.level_date, '%Y-%m-%d') &lt;= #{endDate}
+        </if>
+        <if test="eblFlag != null and eblFlag != ''">
+            AND c.ebl_flag = #{eblFlag}
+        </if>
+        <if test="delFlag != null and delFlag != ''">
+            AND c.del_flag = #{delFlag}
+        </if>
+        <if test="orderNum != null and orderNum != ''">
+            AND c.order_num = #{orderNum}
+        </if>
+        <if test="description != null and description != ''">
+            AND c.description like concat('%',#{description},'%')
+        </if>
+        <if test="createTime != null and createTime != ''">
+            AND c.create_time = #{createTime}
+        </if>
+        <if test="createUserid != null and createUserid != ''">
+            AND c.create_userid = #{createUserid}
+        </if>
+        <if test="createUsername != null and createUsername != ''">
+            AND c.create_username = #{createUsername}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+            AND c.update_time = #{updateTime}
+        </if>
+        <if test="updateUserid != null and updateUserid != ''">
+            AND c.update_userid = #{updateUserid}
+        </if>
+        <if test="updateUsername != null and updateUsername != ''">
+            AND c.update_username = #{udpateUsername}
+        </if>
+        <if test="version != null and version != ''">
+            AND c.version = #{version}
+        </if>
+        <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <choose>
+            <when test="orgRange == 1">
+                AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+            </when>
+            <when test="orgRange == 2">
+                AND find_in_set(#{rangeDeptId}, d.full_path)
+            </when>
+            <otherwise>
+                AND d.dept_id = #{rangeDeptId}
+            </otherwise>
+        </choose>
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        , d.name as dept_name
+        from tab_pb_org_classify c
+        left join sys_dept d using(dept_id)
+        where c.org_classify_id = #{orgClassifyId,jdbcType=BIGINT} AND c.del_flag = 0
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tab_pb_org_classify
     where org_classify_id = #{orgClassifyId,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify">
     insert into tab_pb_org_classify (org_classify_id, dept_id, org_level, 
       level_date, ebl_flag, del_flag, 
       order_num, description, create_time, 
@@ -113,152 +126,144 @@
       #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify">
-    insert into tab_pb_org_classify
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="orgClassifyId != null">
-        org_classify_id,
-      </if>
-      <if test="deptId != null">
-        dept_id,
-      </if>
-      <if test="orgLevel != null">
-        org_level,
-      </if>
-      <if test="levelDate != null">
-        level_date,
-      </if>
-      <if test="eblFlag != null">
-        ebl_flag,
-      </if>
-      <if test="delFlag != null">
-        del_flag,
-      </if>
-      <if test="orderNum != null">
-        order_num,
-      </if>
-      <if test="description != null">
-        description,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-      <if test="createUserid != null">
-        create_userid,
-      </if>
-      <if test="createUsername != null">
-        create_username,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-      <if test="updateUserid != null">
-        update_userid,
-      </if>
-      <if test="updateUsername != null">
-        update_username,
-      </if>
-      <if test="version != null">
-        version,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="orgClassifyId != null">
-        #{orgClassifyId,jdbcType=BIGINT},
-      </if>
-      <if test="deptId != null">
-        #{deptId,jdbcType=BIGINT},
-      </if>
-      <if test="orgLevel != null">
-        #{orgLevel,jdbcType=BIGINT},
-      </if>
-      <if test="levelDate != null">
-        #{levelDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="eblFlag != null">
-        #{eblFlag,jdbcType=VARCHAR},
-      </if>
-      <if test="delFlag != null">
-        #{delFlag,jdbcType=VARCHAR},
-      </if>
-      <if test="orderNum != null">
-        #{orderNum,jdbcType=BIGINT},
-      </if>
-      <if test="description != null">
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createUserid != null">
-        #{createUserid,jdbcType=BIGINT},
-      </if>
-      <if test="createUsername != null">
-        #{createUsername,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateUserid != null">
-        #{updateUserid,jdbcType=BIGINT},
-      </if>
-      <if test="updateUsername != null">
-        #{updateUsername,jdbcType=VARCHAR},
-      </if>
-      <if test="version != null">
-        #{version,jdbcType=BIGINT},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify">
-    update tab_pb_org_classify
-    <set>
-      <if test="deptId != null">
-        dept_id = #{deptId,jdbcType=BIGINT},
-      </if>
-      <if test="orgLevel != null">
-        org_level = #{orgLevel,jdbcType=BIGINT},
-      </if>
-      <if test="levelDate != null">
-        level_date = #{levelDate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="eblFlag != null">
-        ebl_flag = #{eblFlag,jdbcType=VARCHAR},
-      </if>
-      <if test="delFlag != null">
-        del_flag = #{delFlag,jdbcType=VARCHAR},
-      </if>
-      <if test="orderNum != null">
-        order_num = #{orderNum,jdbcType=BIGINT},
-      </if>
-      <if test="description != null">
-        description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createUserid != null">
-        create_userid = #{createUserid,jdbcType=BIGINT},
-      </if>
-      <if test="createUsername != null">
-        create_username = #{createUsername,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateUserid != null">
-        update_userid = #{updateUserid,jdbcType=BIGINT},
-      </if>
-      <if test="updateUsername != null">
-        update_username = #{updateUsername,jdbcType=VARCHAR},
-      </if>
-      <if test="version != null">
-        version = #{version,jdbcType=BIGINT},
-      </if>
-    </set>
-    where org_classify_id = #{orgClassifyId,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify">
+        insert into tab_pb_org_classify
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">
+                dept_id,
+            </if>
+            <if test="orgLevel != null">
+                org_level,
+            </if>
+            <if test="levelDate != null">
+                level_date,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptId != null">
+                #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="orgLevel != null">
+                #{orgLevel,jdbcType=BIGINT},
+            </if>
+            <if test="levelDate != null">
+                #{levelDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify">
+        update tab_pb_org_classify
+        <set>
+            <if test="orgLevel != null">
+                org_level = #{orgLevel,jdbcType=BIGINT},
+            </if>
+            <if test="levelDate != null">
+                level_date = #{levelDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+        </set>
+        where org_classify_id = #{orgClassifyId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify">
     update tab_pb_org_classify
     set dept_id = #{deptId,jdbcType=BIGINT},
       org_level = #{orgLevel,jdbcType=BIGINT},
@@ -277,26 +282,27 @@
     where org_classify_id = #{orgClassifyId,jdbcType=BIGINT}
   </update>
 
-  <!--根据组织ID查询定等数据-->
-  <select id="selectByDeptId" resultMap="BaseResultMap">
+    <!--根据组织ID查询定等数据-->
+    <select id="selectByDeptId" resultMap="BaseResultMap">
     select * from tab_pb_org_classify where dept_id = #{deptId}
   </select>
 
-  <!--逻辑删除-->
-  <update id="logicDeleteById">
+    <!--逻辑删除-->
+    <update id="logicDeleteById">
     update tab_pb_org_classify set del_flag = 1 where org_classify_id = #{orgClassifyId}
   </update>
 
-  <!--根据条件查询-->
-  <select id="selectWithConditions" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    , d.name as dept_name
-    from tab_pb_org_classify c
-    left join sys_dept d using(dept_id)
-    <where>
-      <include refid="Base_WhereCase_List"/>
-    </where>
-    order by c.create_time
-  </select>
+    <!--根据条件查询-->
+    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="OrgClassifyVOResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        , d.name as dept_name
+        from tab_pb_org_classify c
+        left join sys_dept d using(dept_id)
+        <where>
+            <include refid="Base_WhereCase_List"/>
+        </where>
+        order by c.create_time
+    </select>
+
 </mapper>

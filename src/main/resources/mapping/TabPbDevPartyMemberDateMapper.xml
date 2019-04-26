@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbDevPartyMemberDateMapper">
+
     <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMemberDate">
         <id column="time_id" jdbcType="BIGINT" property="timeId"/>
         <result column="host_id" jdbcType="BIGINT" property="hostId"/>
@@ -9,27 +10,38 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
     </resultMap>
+
+    <resultMap id="DevPartyMemberDateResultMap" type="com.egovchina.partybuilding.partybuild.vo.DevPartyMemberDateVO">
+        <id column="time_id" jdbcType="BIGINT" property="timeId"/>
+        <result column="host_id" jdbcType="BIGINT" property="hostId"/>
+        <result column="dev_date" jdbcType="TIMESTAMP" property="devDate"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
-    time_id, host_id, dev_date, del_flag, create_time, create_userid
-  </sql>
+        time_id, host_id, dev_date, del_flag, create_time, create_userid
+    </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from tab_pb_dev_party_member_date
         where del_flag='0' and time_id = #{timeId,jdbcType=BIGINT}
     </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from tab_pb_dev_party_member_date
-    where time_id = #{timeId,jdbcType=BIGINT}
-  </delete>
+        delete from tab_pb_dev_party_member_date
+        where time_id = #{timeId,jdbcType=BIGINT}
+    </delete>
+
     <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMemberDate">
-    insert into tab_pb_dev_party_member_date (time_id, host_id, dev_date, 
-      del_flag, create_time, create_userid
-      )
-    values (#{timeId,jdbcType=BIGINT}, #{hostId,jdbcType=BIGINT}, #{devDate,jdbcType=TIMESTAMP}, 
-      #{delFlag,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}
-      )
-  </insert>
+        insert into tab_pb_dev_party_member_date (time_id, host_id, dev_date,
+          del_flag, create_time, create_userid
+          )
+        values (#{timeId,jdbcType=BIGINT}, #{hostId,jdbcType=BIGINT}, #{devDate,jdbcType=TIMESTAMP},
+          #{delFlag,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}
+          )
+    </insert>
+
     <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMemberDate">
         insert into tab_pb_dev_party_member_date
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -73,7 +85,9 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMemberDate">
+
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMemberDate">
         update tab_pb_dev_party_member_date
         <set>
             <if test="hostId != null">
@@ -94,21 +108,24 @@
         </set>
         where time_id = #{timeId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMemberDate">
-    update tab_pb_dev_party_member_date
-    set host_id = #{hostId,jdbcType=BIGINT},
-      dev_date = #{devDate,jdbcType=TIMESTAMP},
-      del_flag = #{delFlag,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_userid = #{createUserid,jdbcType=BIGINT}
-    where time_id = #{timeId,jdbcType=BIGINT}
-  </update>
+
+    <update id="updateByPrimaryKey"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMemberDate">
+        update tab_pb_dev_party_member_date
+        set host_id = #{hostId,jdbcType=BIGINT},
+          dev_date = #{devDate,jdbcType=TIMESTAMP},
+          del_flag = #{delFlag,jdbcType=VARCHAR},
+          create_time = #{createTime,jdbcType=TIMESTAMP},
+          create_userid = #{createUserid,jdbcType=BIGINT}
+        where time_id = #{timeId,jdbcType=BIGINT}
+    </update>
 
     <!--通过hostId查询时间-->
-    <select id="selectByHostId" resultMap="BaseResultMap">
+    <select id="selectByHostId" resultMap="DevPartyMemberDateResultMap">
         select
         <include refid="Base_Column_List"/>
         from tab_pb_dev_party_member_date
         where del_flag = '0' and host_id = #{hostId,jdbcType=BIGINT}
     </select>
+
 </mapper>
