@@ -1,7 +1,6 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.util.UserContextHolder;
-import com.egovchina.partybuilding.partybuild.dto.RegistryDto;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMemberAddList;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList;
@@ -10,15 +9,16 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbMemberReduceListMa
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
 import com.egovchina.partybuilding.partybuild.service.TabSysDeptService;
-import com.egovchina.partybuilding.partybuild.service.TabSysUserService;
-import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.SysDept;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
-import com.egovchina.partybuilding.partybuild.v1.dto.MembershipDTO;
-import com.egovchina.partybuilding.partybuild.v1.dto.RegistryDTO;
+import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
+import com.egovchina.partybuilding.partybuild.dto.RegistryDTO;
+import com.egovchina.partybuilding.partybuild.service.SysUserService;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
@@ -27,11 +27,11 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 党员--用户信息接口
+ * @author create by GuanYingxin on 2019/4/22 21:43
+ * @description
  */
 @Service
-public class TabSysUserServiceImpl implements TabSysUserService {
-
+public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private TabSysUserMapper sysUserMapper;
 
@@ -109,6 +109,30 @@ public class TabSysUserServiceImpl implements TabSysUserService {
         return user;
     }
 
+    @Transactional
+    @Override
+    public SysUser getRegistryByUserId(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+        SysUser user = sysUserMapper.selectByPrimaryKey(userId);
+        SysDept dept = sysDeptService.selectByPrimaryKey(user.getJoinOrgId());
+        TabPbMemberReduceList reduce = memberReduceListMapper.selectByUserId(userId);
+        if (reduce != null) {
+            user.setOutType(reduce.getOutType());
+            user.setReduceTime(reduce.getReduceTime());
+        }
+        TabPbMemberAddList add = memberAddListMapper.selectByUserId(userId);
+        if (add != null) {
+            user.setAddTime(add.getAddTime());
+        }
+        if (dept != null) {
+            user.setJoinOrgName(dept.getName());
+        }
+        setRegularTime(user);
+        return user;
+    }
+
     /**
      * 更新用户党籍信息
      *
@@ -136,30 +160,58 @@ public class TabSysUserServiceImpl implements TabSysUserService {
         return false;
     }
 
-
+    /**
+     * 更新用户党籍信息
+     *
+     * @param membershipDTO
+     * @return
+     */
+    @Transactional
     @Override
-    public List<RegistryDto> getRegistryList(Long userId) {
+    public boolean updateMembership(MembershipDTO membershipDTO) {
+        if (membershipDTO != null && !ObjectUtils.isEmpty(membershipDTO.getUserId())) {
+            Integer userId = membershipDTO.getUserId();
+            SysUser oldUser = sysUserMapper.selectByPrimaryKey(userId.longValue());
+            if (membershipDTO.getReduceTime() != null && membershipDTO.getOutType() != null && CommonConstant.STATUS_DEL.equals(oldUser.getDelFlag())) {
+                TabPbMemberReduceList reduce = new TabPbMemberReduceList();
+                reduce.setUserId(userId.longValue());
+                reduce.setOutType(membershipDTO.getOutType());
+                reduce.setReduceTime(membershipDTO.getReduceTime());
+                reduce.setDeptId(oldUser.getDeptId().longValue());
+                reduce.setRealName(oldUser.getUsername());
+                memberReduceListMapper.insertSelective(reduce);
+                oldUser.setRegistryStatus(reduce.getOutType());
+                oldUser.setDelFlag(CommonConstant.STATUS_DEL);
+            }
+            return sysUserMapper.updateByPrimaryKeySelective(oldUser) > 0;
+        }
+        return false;
+    }
+
+    @Transactional
+    @Override
+    public List<RegistryDTO> getRegistryList(Long userId) {
         SysUser user = sysUserMapper.selectByPrimaryKey(userId);
         if (user == null) {
             return null;
         }
-        List<RegistryDto> list = new ArrayList<>();
+        List<RegistryDTO> list = new ArrayList<>();
         //预备党员
         if (user.getJoinTime() != null) {
-            list.add(new RegistryDto(1L, user.getJoinTime(), user.getJoinTime(), user.getContactor()));
+            list.add(new RegistryDTO(1L, user.getJoinTime(), user.getJoinTime(), user.getContactor()));
         }
         //正式党员
         if (user.getRegularTime() != null) {
-            list.add(new RegistryDto(2L, user.getRegularTime(), user.getRegularTime(), user.getUpdateUsername()));
+            list.add(new RegistryDTO(2L, user.getRegularTime(), user.getRegularTime(), user.getUpdateUsername()));
         }
         //新增 和 减少
         List<TabPbMemberAddList> add = memberAddListMapper.selectListByUserId(userId);
         add.forEach(a -> {
-            list.add(new RegistryDto(a.getInType(), a.getCreateTime(), a.getCreateTime(), a.getCreateUsername()));
+            list.add(new RegistryDTO(a.getInType(), a.getCreateTime(), a.getCreateTime(), a.getCreateUsername()));
         });
         List<TabPbMemberReduceList> reduce = memberReduceListMapper.selectListByUserId(userId);
         reduce.forEach(r -> {
-            list.add(new RegistryDto(r.getOutType(), r.getCreateTime(), r.getCreateTime(), r.getCreateUsername()));
+            list.add(new RegistryDTO(r.getOutType(), r.getCreateTime(), r.getCreateTime(), r.getCreateUsername()));
         });
         return list;
     }

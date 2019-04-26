@@ -1,8 +1,8 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyMembership;
-import com.egovchina.partybuilding.partybuild.v1.entity.MembershipQueryBean;
-import com.egovchina.partybuilding.partybuild.v1.vo.MembershipVO;
+import com.egovchina.partybuilding.partybuild.entity.MembershipQueryBean;
+import com.egovchina.partybuilding.partybuild.vo.MembershipVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

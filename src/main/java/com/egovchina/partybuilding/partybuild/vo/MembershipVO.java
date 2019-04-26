@@ -1,4 +1,4 @@
-package com.egovchina.partybuilding.partybuild.v1.vo;
+package com.egovchina.partybuilding.partybuild.vo;
 
 import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -38,12 +38,10 @@ public class MembershipVO {
     private String reason;
 
     @ApiModelProperty(value = "创建时间")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date createTime;
 
     @ApiModelProperty(value = "创建人姓名")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private String createUsername;
 }

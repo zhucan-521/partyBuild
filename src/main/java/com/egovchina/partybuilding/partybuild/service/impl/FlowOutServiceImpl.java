@@ -11,7 +11,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbFlowInMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFlowOutMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.FlowOutService;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.var;

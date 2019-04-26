@@ -2,7 +2,7 @@ package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.github.pagehelper.PageInfo;
 
 

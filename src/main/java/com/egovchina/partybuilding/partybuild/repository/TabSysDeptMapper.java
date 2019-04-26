@@ -4,7 +4,7 @@ import com.egovchina.partybuilding.partybuild.dto.PartyBuildingWorkInfoDto;
 import com.egovchina.partybuilding.partybuild.dto.SysDeptDto;
 import com.egovchina.partybuilding.partybuild.dto.SysDeptDtoWithCountInfo;
 import com.egovchina.partybuilding.partybuild.dto.TabDeptPositionDto;
-import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
+import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

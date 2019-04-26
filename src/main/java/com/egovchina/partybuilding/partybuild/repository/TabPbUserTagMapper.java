@@ -1,7 +1,7 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +16,8 @@ public interface TabPbUserTagMapper {
     int insert(TabPbUserTag record);
 
     int insertSelective(TabPbUserTag record);
+
+    int insertUserTagDTOSelective(TabPbUserTag tabPbUserTag);
 
     TabPbUserTag selectByPrimaryKey(Long usertagId);
 

@@ -1,10 +1,11 @@
-package com.egovchina.partybuilding.partybuild.v1.service.impl;
+package com.egovchina.partybuilding.partybuild.service.impl;
 
+import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
 import com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper;
-import com.egovchina.partybuilding.partybuild.v1.dto.UserTagDTO;
-import com.egovchina.partybuilding.partybuild.v1.service.UserTagService;
+import com.egovchina.partybuilding.partybuild.dto.UserTagDTO;
+import com.egovchina.partybuilding.partybuild.service.UserTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +53,7 @@ public class UserTagServiceImpl implements UserTagService {
      */
     @Transactional
     @Override
-    public int insertUserTag(UserTagDTO userTagDTO) {
+    public int insertUserTagDTO(UserTagDTO userTagDTO) {
         boolean judge = ObjectUtils.isEmpty(userTagDTO.getUserId()) || ObjectUtils.isEmpty(userTagDTO.getTagType()) || tabPbUserTagMapper.exist(userTagDTO.getUserId(), userTagDTO.getTagType());
         if (judge) {
             return 0;
@@ -90,7 +91,7 @@ public class UserTagServiceImpl implements UserTagService {
         userTag.setUpdateTime(new Date());
         userTag.setUpdateUserid(UserContextHolder.getUserId().longValue());
         userTag.setUpdateUsername(UserContextHolder.getUserName());
-        return tabPbUserTagMapper.insertSelective(userTag);
+        return tabPbUserTagMapper.insertUserTagDTOSelective(userTag);
     }
 
     private int updateUserTag(TabPbUserTag userTag) {

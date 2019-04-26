@@ -11,7 +11,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify;
 import com.egovchina.partybuilding.partybuild.repository.TabPbOrgClassifyMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.service.OrgClassifyService;
-import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
+import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.vo.OrgClassifyVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

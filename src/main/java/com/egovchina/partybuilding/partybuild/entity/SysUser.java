@@ -1,4 +1,4 @@
-package com.egovchina.partybuilding.partybuild.system.entity;
+package com.egovchina.partybuilding.partybuild.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;

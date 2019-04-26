@@ -6,7 +6,7 @@ import com.egovchina.partybuilding.partybuild.dto.SysUseDto;
 import com.egovchina.partybuilding.partybuild.dto.SysUserCountDto;
 import com.egovchina.partybuilding.partybuild.dto.SysUserDto;
 import com.egovchina.partybuilding.partybuild.entity.OrganizationPeopleStatistics;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;

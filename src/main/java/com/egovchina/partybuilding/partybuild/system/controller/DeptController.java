@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.partybuild.system.dto.DeptTree;
-import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
+import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.system.service.SysDeptService;
 import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
 import io.swagger.annotations.*;

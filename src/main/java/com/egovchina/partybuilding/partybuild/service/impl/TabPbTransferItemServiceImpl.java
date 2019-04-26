@@ -9,11 +9,11 @@ import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
 import com.egovchina.partybuilding.partybuild.entity.TabPbTransfer;
 import com.egovchina.partybuilding.partybuild.entity.TabPbTransferItem;
 import com.egovchina.partybuilding.partybuild.repository.TabPbTransferItemMapper;
+import com.egovchina.partybuilding.partybuild.service.SysUserService;
 import com.egovchina.partybuilding.partybuild.service.TabPbTransferItemService;
 import com.egovchina.partybuilding.partybuild.service.TabPbTransferService;
 import com.egovchina.partybuilding.partybuild.service.TabSysDeptService;
-import com.egovchina.partybuilding.partybuild.service.TabSysUserService;
-import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
+import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.util.DeptStrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class TabPbTransferItemServiceImpl implements TabPbTransferItemService {
     @Autowired
     private TabSysDeptService tabSysDeptService;
     @Autowired
-    private TabSysUserService sysUserService;
+    private SysUserService sysUserService;
     @Autowired
     private TabPbTransferService transferService;
 

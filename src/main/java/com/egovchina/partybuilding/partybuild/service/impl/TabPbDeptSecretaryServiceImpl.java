@@ -15,7 +15,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.TabPbDeptSecretaryService;
 import com.egovchina.partybuilding.partybuild.service.TabPbFamilyService;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.mapper.SysUserMapper;
 import com.github.pagehelper.PageHelper;
 import lombok.NonNull;

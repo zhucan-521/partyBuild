@@ -10,7 +10,7 @@ import com.egovchina.partybuilding.partybuild.service.TabSysDeptService;
 import com.egovchina.partybuilding.partybuild.system.dto.UserAdminDTO;
 import com.egovchina.partybuilding.partybuild.system.dto.UserDTO;
 import com.egovchina.partybuilding.partybuild.system.entity.SysAccount;
-import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
+import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.system.entity.SysRole;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUserRole;
 import com.egovchina.partybuilding.partybuild.system.mapper.SysAccountMapper;

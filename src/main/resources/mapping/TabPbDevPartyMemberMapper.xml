@@ -39,7 +39,7 @@
     </resultMap>
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="UserResultMap" type="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
+    <resultMap id="UserResultMap" type="com.egovchina.partybuilding.partybuild.entity.SysUser">
         <id column="user_id" property="userId"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>

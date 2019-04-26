@@ -1,4 +1,4 @@
-package com.egovchina.partybuilding.partybuild.v1.entity;
+package com.egovchina.partybuilding.partybuild.entity;
 
 import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -14,15 +14,12 @@ import javax.validation.constraints.NotNull;
  * @description
  */
 @ApiModel("根据人员类别和党籍处理获取党籍列表")
-@Accessors(chain = true)
 @Data
 public class MembershipQueryBean {
 
     @ApiModelProperty(value = "人员类别 码表值 RYLB")
-    @JsonSerialize(using = DictSerializer.class)
     private Long identityType;
 
     @ApiModelProperty(value = "党籍处理 码表值 DJCL")
-    @JsonSerialize(using = DictSerializer.class)
     private Long type;
 }

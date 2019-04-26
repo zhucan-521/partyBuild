@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.egovchina.partybuilding.partybuild.dto.SysDeptDto;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

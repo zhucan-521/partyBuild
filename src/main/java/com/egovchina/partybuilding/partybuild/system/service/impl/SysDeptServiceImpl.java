@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.egovchina.partybuilding.partybuild.system.dto.DeptTree;
-import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
+import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.system.entity.SysDeptRelation;
 import com.egovchina.partybuilding.partybuild.system.mapper.SysDeptMapper;
 import com.egovchina.partybuilding.partybuild.system.mapper.SysDeptRelationMapper;
