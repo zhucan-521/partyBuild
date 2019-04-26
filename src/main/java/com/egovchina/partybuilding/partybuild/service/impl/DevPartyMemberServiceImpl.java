@@ -14,7 +14,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbDevPartyMemberDate
 import com.egovchina.partybuilding.partybuild.repository.TabPbDevPartyMemberMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.DevPartyMemberService;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.vo.CheckDevPartyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.DevPartyMemberDateVO;
 import com.egovchina.partybuilding.partybuild.vo.DevPartyMemberVO;

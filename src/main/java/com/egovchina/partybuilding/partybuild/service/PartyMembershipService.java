@@ -1,10 +1,10 @@
-package com.egovchina.partybuilding.partybuild.v1.service;
+package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyMembership;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
-import com.egovchina.partybuilding.partybuild.v1.entity.MembershipQueryBean;
-import com.egovchina.partybuilding.partybuild.v1.vo.MembershipVO;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.MembershipQueryBean;
+import com.egovchina.partybuilding.partybuild.vo.MembershipVO;
 
 import java.util.List;
 

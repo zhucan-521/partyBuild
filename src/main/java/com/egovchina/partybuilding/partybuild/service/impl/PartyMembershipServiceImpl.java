@@ -1,13 +1,13 @@
-package com.egovchina.partybuilding.partybuild.v1.service.impl;
+package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyMembership;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPartyMembershipMapper;
-import com.egovchina.partybuilding.partybuild.v1.entity.MembershipQueryBean;
-import com.egovchina.partybuilding.partybuild.v1.service.PartyMembershipService;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
-import com.egovchina.partybuilding.partybuild.v1.vo.MembershipVO;
+import com.egovchina.partybuilding.partybuild.entity.MembershipQueryBean;
+import com.egovchina.partybuilding.partybuild.service.PartyMembershipService;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.vo.MembershipVO;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

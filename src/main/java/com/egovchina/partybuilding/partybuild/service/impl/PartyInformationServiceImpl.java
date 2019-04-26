@@ -10,8 +10,8 @@ import com.egovchina.partybuilding.partybuild.dto.*;
 import com.egovchina.partybuilding.partybuild.entity.*;
 import com.egovchina.partybuilding.partybuild.repository.*;
 import com.egovchina.partybuilding.partybuild.service.PartyInformationService;
-import com.egovchina.partybuilding.partybuild.service.TabPbUserTagService;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.service.UserTagService;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.mapper.SysUserMapper;
 import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
 import com.github.pagehelper.PageHelper;
@@ -26,7 +26,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +48,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     TabPbFlowInMapper tabPbFlowInMapper;
 
     @Autowired
-    TabPbUserTagService tabPbUserTagService;
+    UserTagService tabPbUserTagService;
 
     @Autowired
     private TabPbMemberReduceListMapper reduceListMapper;

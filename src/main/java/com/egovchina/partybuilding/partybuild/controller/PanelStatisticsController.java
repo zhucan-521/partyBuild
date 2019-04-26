@@ -8,7 +8,7 @@ import com.egovchina.partybuilding.partybuild.entity.PanelStatistics;
 import com.egovchina.partybuilding.partybuild.entity.PanelStatisticsDetail;
 import com.egovchina.partybuilding.partybuild.service.PanelStatisticsService;
 import com.egovchina.partybuilding.partybuild.service.TabSysDeptService;
-import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
+import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import org.apache.commons.lang3.StringUtils;

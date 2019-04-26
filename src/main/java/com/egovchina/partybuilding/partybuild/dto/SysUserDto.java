@@ -3,7 +3,7 @@ package com.egovchina.partybuilding.partybuild.dto;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyEducation;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyJobTitle;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyWork;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

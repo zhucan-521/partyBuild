@@ -1,4 +1,4 @@
-package com.egovchina.partybuilding.partybuild.v1.dto;
+package com.egovchina.partybuilding.partybuild.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -25,7 +25,6 @@ public class MembershipDTO {
 
     @ApiModelProperty(value = "出党时间", example = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd")
     @NotNull
     private Date reduceTime;
 

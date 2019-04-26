@@ -36,7 +36,9 @@
     <![CDATA[
 
 
-                         select count(1) from tab_pb_user_tag where user_id = #{userId} and tag_type = #{tagType}
+
+                                 select count(1) from tab_pb_user_tag where user_id = #{userId} and tag_type = #{tagType}
+
 
 
         ]]>
@@ -146,6 +148,70 @@
             </if>
         </trim>
     </insert>
+
+
+    <insert id="insertUserTagDTOSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbUserTag">
+        insert into tab_pb_user_tag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="usertagId != null">
+                usertag_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="tagType != null">
+                tag_type,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="usertagId != null">
+                #{usertagId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="tagType != null">
+                #{tagType,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbUserTag">
         update tab_pb_user_tag
         <set>

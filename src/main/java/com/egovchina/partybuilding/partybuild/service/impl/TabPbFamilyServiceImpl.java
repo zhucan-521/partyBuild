@@ -10,7 +10,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbFamily;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFamilyMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.TabPbFamilyService;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.mapper.SysUserMapper;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;

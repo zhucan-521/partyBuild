@@ -17,15 +17,15 @@
     </update>
 
     <select id="getMembershipVOByUserIdList"
-            resultType="com.egovchina.partybuilding.partybuild.v1.vo.MembershipVO" parameterType="long">
+            resultType="com.egovchina.partybuilding.partybuild.vo.MembershipVO" parameterType="long">
         select * from tab_pb_party_membership where user_id = #{userId, jdbcType=BIGINT}
     </select>
     <select id="getMembershipVOList"
-            resultType="com.egovchina.partybuilding.partybuild.v1.vo.MembershipVO">
+            resultType="com.egovchina.partybuilding.partybuild.vo.MembershipVO">
         select * from tab_pb_party_membership ORDER BY create_time DESC
     </select>
     <select id="getMembershipVOListByCondition"
-            resultType="com.egovchina.partybuilding.partybuild.v1.vo.MembershipVO">
+            resultType="com.egovchina.partybuilding.partybuild.vo.MembershipVO">
         select * from tab_pb_party_membership
         <where>
             <if test="identityType != null and identityType != ''">

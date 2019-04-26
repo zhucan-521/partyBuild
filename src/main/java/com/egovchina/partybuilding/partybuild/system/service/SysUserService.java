@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.service.IService;
 import com.egovchina.partybuilding.common.entity.UserInfo;
 import com.egovchina.partybuilding.partybuild.system.dto.UserAdminDTO;
 import com.egovchina.partybuilding.partybuild.system.dto.UserDTO;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.vo.UserVO;
 
 import java.util.List;
