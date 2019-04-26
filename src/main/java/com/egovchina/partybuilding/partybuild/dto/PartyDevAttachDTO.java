@@ -4,20 +4,16 @@ import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.util.List;
 
 /**
- * @author chenshanlu
- * @version 1.0
- * @date 2019/01/04
+ * desc: 党员发展步骤附件-数据传输对象
+ * Created by FanYanGen on 2019/4/23 10:47
  */
-
 @Data
-@Accessors(chain = true)
-@ApiModel("党员发展步骤附件dto")
-public class PartyDevAttachDto {
+@ApiModel("党员发展步骤附件-数据传输对象")
+public class PartyDevAttachDTO {
 
     @ApiModelProperty(value = "主键id, 用于指定具体是哪一个发展步骤", required = true)
     private Long dpId;
@@ -30,4 +26,5 @@ public class PartyDevAttachDto {
 
     @ApiModelProperty(value = "扩展字段, 若附件业务变动, 可使用此字段传递具体的附件信息. 一般情况下该字段不使用")
     private List<TabPbAttachment> attachments;
+
 }
