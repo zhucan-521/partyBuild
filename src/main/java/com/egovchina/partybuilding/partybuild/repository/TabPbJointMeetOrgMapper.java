@@ -1,6 +1,8 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.partybuild.entity.JointMeetOrgQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbJointMeetOrg;
+import com.egovchina.partybuilding.partybuild.vo.JointMeetOrgVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +22,8 @@ public interface TabPbJointMeetOrgMapper {
     List<TabPbJointMeetOrg> select(TabPbJointMeetOrg org);
 
     Long selectCheck(@Param("orgId") Long orgId, @Param("orgOrgId") Long orgOrgId);
+
+    List<JointMeetOrgVO> selectJointMeetOrgVOList(JointMeetOrgQueryBean jointMeetOrgQueryBean);
+
+    int batchInsert(List<TabPbJointMeetOrg> tabPbJointMeetOrgList);
 }

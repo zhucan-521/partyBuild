@@ -39,6 +39,30 @@
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
     </resultMap>
 
+    <resultMap id="StreetCommitteeVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.StreetCommitteeVO">
+        <id column="grant_committee_id" jdbcType="BIGINT" property="grantCommitteeId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="current" jdbcType="TINYINT" property="current"/>
+        <result column="session_year" jdbcType="BIGINT" property="sessionYear"/>
+        <result column="change_date" jdbcType="TIMESTAMP" property="changeDate"/>
+        <result column="during_year" jdbcType="BIGINT" property="duringYear"/>
+        <result column="vote_type" jdbcType="BIGINT" property="voteType"/>
+        <result column="due_count" jdbcType="BIGINT" property="dueCount"/>
+        <result column="fact_count" jdbcType="BIGINT" property="factCount"/>
+        <result column="vote_count" jdbcType="BIGINT" property="voteCount"/>
+        <result column="valid_vote_count" jdbcType="BIGINT" property="validVoteCount"/>
+        <result column="elected_type" jdbcType="BIGINT" property="electedType"/>
+        <result column="elected_time" jdbcType="TIMESTAMP" property="electedTime"/>
+        <result column="comm_mem_num" jdbcType="BIGINT" property="commMemNum"/>
+        <result column="comm_num_parttime" jdbcType="BIGINT" property="commNumParttime"/>
+        <result column="parttime_comm_num" jdbcType="BIGINT" property="parttimeCommNum"/>
+        <result column="standing_mem_num" jdbcType="BIGINT" property="standingMemNum"/>
+        <result column="back_mem_num" jdbcType="BIGINT" property="backMemNum"/>
+        <result column="founded_date" jdbcType="TIMESTAMP" property="foundedDate"/>
+        <result column="vote_status" jdbcType="VARCHAR" property="voteStatus"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
     grant_committee_id, org_id, current, session_year, change_date, during_year, vote_type,
     due_count, fact_count, vote_count, valid_vote_count, elected_type, elected_time, 
@@ -388,4 +412,48 @@
         B.grant_committee_id
     </select>
 
+    <select id="selectStreetCommitteeVOList"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.StreetCommitteeQueryBean"
+            resultMap="StreetCommitteeVOResultMap">
+        SELECT
+        A.grant_committee_id,A.org_id,A.current,A.session_year,A.change_date,A.during_year,A.vote_type,
+        A.due_count,A.fact_count,A.vote_count,A.valid_vote_count,A.elected_type,A.elected_time,A.comm_mem_num,
+        A.comm_num_parttime,A.parttime_comm_num,A.standing_mem_num,A.back_mem_num,A.founded_date,A.vote_status,
+        d.name as  org_name
+        FROM
+        tab_pb_grant_committee A
+        LEFT JOIN tab_pb_grant_committe_member B ON A.grant_committee_id = B.grant_committee_id
+        INNER JOIN sys_dept d ON A.org_id = d.dept_id
+
+        WHERE
+        A.del_flag = '0'
+        <if test="(name != null and name != '') or (positiveName != null and positiveName !='')">
+            AND B.del_flag = '0'
+        </if>
+
+        <include refid="column_dept"/>
+
+        <if test="name != null and name != ''">
+            AND B.user_id IN (SELECT user_id FROM sys_user WHERE realname LIKE CONCAT('%',#{name},'%'))
+        </if>
+
+        <if test="positiveName != null and positiveName !=''  ">
+            AND B.positive_name = #{positiveName}
+        </if>
+        GROUP BY
+        B.grant_committee_id
+    </select>
+
+    <select id="selectStreetCommitteeVOById" parameterType="java.lang.Long" resultMap="StreetCommitteeVOResultMap">
+        SELECT
+        A.grant_committee_id,A.org_id,A.current,A.session_year,A.change_date,A.during_year,A.vote_type,
+        A.due_count,A.fact_count,A.vote_count,A.valid_vote_count,A.elected_type,A.elected_time,A.comm_mem_num,
+        A.comm_num_parttime,A.parttime_comm_num,A.standing_mem_num,A.back_mem_num,A.founded_date,A.vote_status,
+        d.name AS org_name
+        FROM
+            tab_pb_grant_committee A INNER JOIN sys_dept d ON A.org_id=d.dept_id
+        WHERE
+            A.del_flag = '0'
+            AND A.grant_committee_id = #{grantCommitteeId,jdbcType=BIGINT}
+    </select>
 </mapper>

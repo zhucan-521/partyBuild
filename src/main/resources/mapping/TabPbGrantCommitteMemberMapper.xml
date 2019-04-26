@@ -39,13 +39,42 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
+    <resultMap id="StreetCommitteeMemberVOResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.StreetCommitteeMemberVO">
+        <id column="grant_committee_member_id" jdbcType="BIGINT" property="grantCommitteeMemberId"/>
+        <result column="grant_committee_id" jdbcType="BIGINT" property="grantCommitteeId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="gender" jdbcType="BIGINT" property="gender"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="unit_id" jdbcType="BIGINT" property="unitId"/>
+        <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
+        <result column="current_org_id" jdbcType="BIGINT" property="currentOrgId"/>
+        <result column="current_org_name" jdbcType="VARCHAR" property="currentOrgName"/>
+
+        <result column="lead_team_id" jdbcType="BIGINT" property="leadTeamId"/>
+        <result column="party_member_id" jdbcType="BIGINT" property="partyMemberId"/>
+        <result column="person_name" jdbcType="VARCHAR" property="personName"/>
+        <result column="positive_id" jdbcType="BIGINT" property="positiveId"/>
+        <result column="positive_name" jdbcType="VARCHAR" property="positiveName"/>
+        <result column="tenure_mode" jdbcType="BIGINT" property="tenureMode"/>
+        <result column="tenure_begin" jdbcType="TIMESTAMP" property="tenureBegin"/>
+        <result column="tenure_duration" jdbcType="BIGINT" property="tenureDuration"/>
+        <result column="tenure_leave" jdbcType="TIMESTAMP" property="tenureLeave"/>
+        <result column="as_committee_member" jdbcType="TINYINT" property="asCommitteeMember"/>
+        <result column="as_committee_director" jdbcType="TINYINT" property="asCommitteeDirector"/>
+        <result column="lead_member_order" jdbcType="BIGINT" property="leadMemberOrder"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
     grant_committee_member_id, grant_committee_id, user_id, org_id, lead_team_id, party_member_id, 
     person_name, positive_id, positive_name, tenure_mode, tenure_begin, tenure_duration, 
     tenure_leave, as_committee_member, as_committee_director, lead_member_order, ebl_flag, 
     del_flag, order_num, description, create_time, create_userid, create_username, update_time, 
     update_userid, update_username, version
-  </sql>
+    </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     SELECT
         B.*,
@@ -218,7 +247,8 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember">
         update tab_pb_grant_committe_member
         <set>
             <if test="grantCommitteeId != null">
@@ -303,7 +333,8 @@
         where grant_committee_member_id = #{grantCommitteeMemberId,jdbcType=BIGINT}
     </update>
 
-    <select id="selectByCommitteeIdAndUserId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember"
+    <select id="selectByCommitteeIdAndUserId"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember"
             resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -312,10 +343,13 @@
         user_id=#{userId,jdbcType=BIGINT}
     </select>
 
-    <select id="selectByGrantCommitteeId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember"
-            resultMap="BaseResultMap">
+    <select id="selectStreetCommitteeMemberVOList"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember"
+            resultMap="StreetCommitteeMemberVOResultMap">
         SELECT
-        B.*,
+        B.grant_committee_member_id,B.grant_committee_id,B.user_id,B.org_id,B.lead_team_id,B.party_member_id,
+        B.person_name,B.positive_id,B.positive_name,B.tenure_mode,B.tenure_begin,B.tenure_duration,
+        B.tenure_leave,B.as_committee_member,B.as_committee_director,B.lead_member_order,
         U.gender,
         U.phone,
         d.unit_id,
@@ -425,4 +459,39 @@
         </set>
         where grant_committee_id = #{grantCommitteeId,jdbcType=BIGINT}
     </update>
+
+    <select id="selectStreetCommitteeMemberVOById" parameterType="java.lang.Long"
+            resultMap="StreetCommitteeMemberVOResultMap">
+        SELECT
+            B.grant_committee_member_id,B.grant_committee_id,B.user_id,B.org_id,B.lead_team_id,B.party_member_id,
+            B.person_name,B.positive_id,B.positive_name,B.tenure_mode,B.tenure_begin,B.tenure_duration,
+            B.tenure_leave,B.as_committee_member,B.as_committee_director,B.lead_member_order,
+            U.gender,
+            U.phone,
+            d.unit_id,
+            d.unit_name,
+            d.name AS org_name,
+            A.org_id AS current_org_id,
+            ( SELECT name FROM sys_dept WHERE dept_id = A.org_id ) AS current_org_name
+        FROM
+            tab_pb_grant_committee A
+            INNER JOIN tab_pb_grant_committe_member B ON A.grant_committee_id = B.grant_committee_id
+            INNER JOIN sys_user U ON B.user_id = U.user_id
+            INNER JOIN sys_dept d ON B.org_id = d.dept_id
+        WHERE
+            B.del_flag = '0'
+            AND B.grant_committee_member_id = #{grantCommitteeMemberId,jdbcType=BIGINT}
+    </select>
+
+    <select id="verifyStreetCommitteeMembers" resultType="java.lang.Integer">
+        SELECT
+            count(0)
+        FROM
+            tab_pb_grant_committe_member
+        WHERE
+            del_flag = 0
+            AND lead_team_id = #{leadTeamId,jdbcType=BIGINT}
+            AND grant_committee_id = #{grantCommitteeId,jdbcType=BIGINT}
+            AND user_id = #{userId,jdbcType=BIGINT}
+    </select>
 </mapper>

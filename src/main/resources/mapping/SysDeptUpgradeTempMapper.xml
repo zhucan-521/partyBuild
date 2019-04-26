@@ -20,7 +20,15 @@
                type="com.egovchina.partybuilding.partybuild.entity.SysDeptUpgradeTemp">
         <result column="dept_branchs" jdbcType="LONGVARCHAR" property="deptBranchs"/>
     </resultMap>
-    <resultMap extends="ResultMapWithBLOBs" id="orgUpgradeResultMap" type="com.egovchina.partybuilding.partybuild.dto.OrganizationUpgradeAndChangeDto">
+
+    <resultMap id="orgUpgradeVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.OrgUpgradeVO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="upgrade_dept_name" jdbcType="VARCHAR" property="upgradeDeptName"/>
+        <result column="upgrade_short_name" jdbcType="VARCHAR" property="upgradeShortName"/>
+        <result column="approve_org_name" jdbcType="VARCHAR" property="approveOrgName"/>
+        <result column="dept_branchs" jdbcType="LONGVARCHAR" property="deptBranchs"/>
         <result column="change_type" jdbcType="BIGINT" property="changeType"/>
         <result column="change_date" jdbcType="TIMESTAMP" property="changeDate"/>
         <result column="file_number" jdbcType="VARCHAR" property="fileNumber"/>
@@ -30,6 +38,7 @@
                      select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                      column="{hostId=id,attachmentType=attachment_type}" />
     </resultMap>
+
     <sql id="Base_Column_List">
     id, dept_id, dept_name, upgrade_dept_name, upgrade_short_name, del_flag, create_time, 
     create_userid, create_username, update_time, update_userid, update_username,approve_org_name
@@ -47,10 +56,12 @@
         AND del_flag = 0
     </select>
 
-    <select id="selectByDeptId" parameterType="java.lang.Long" resultMap="orgUpgradeResultMap">
+    <select id="selectOrgUpgradeVOByDeptId" parameterType="java.lang.Long" resultMap="orgUpgradeVOResultMap">
         select
         '51' as attachment_type,
-        up.*,
+        up.id,up.dept_id,up.dept_name,
+        up.upgrade_dept_name,up.upgrade_short_name,
+        up.approve_org_name,up.dept_branchs,
         ch.change_type,
         ch.change_date,
         ch.file_number,
@@ -60,7 +71,6 @@
         where up.dept_id = #{deptId,jdbcType=BIGINT}
         AND up.del_flag = 0
     </select>
-
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from sys_dept_upgrade_temp
