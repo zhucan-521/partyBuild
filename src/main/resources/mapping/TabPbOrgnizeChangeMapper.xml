@@ -30,6 +30,23 @@
         <result column="change_reason" jdbcType="LONGVARCHAR" property="changeReason"/>
         <result column="short_name" jdbcType="VARCHAR" property="shortName"/>
     </resultMap>
+    <resultMap id="OrgChangeVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.OrgChangeVO">
+        <id column="change_id" jdbcType="BIGINT" property="changeId"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="change_type" jdbcType="BIGINT" property="changeType"/>
+        <result column="old_superior_id" jdbcType="BIGINT" property="oldSuperiorId"/>
+        <result column="now_superior_id" jdbcType="BIGINT" property="nowSuperiorId"/>
+        <result column="old_superior_name" jdbcType="VARCHAR" property="oldSuperiorName"/>
+        <result column="now_superior_name" jdbcType="VARCHAR" property="nowSuperiorName"/>
+        <result column="orgnize_name" jdbcType="VARCHAR" property="orgnizeName"/>
+        <result column="orgnize_code" jdbcType="VARCHAR" property="orgnizeCode"/>
+        <result column="change_date" jdbcType="TIMESTAMP" property="changeDate"/>
+        <result column="file_number" jdbcType="VARCHAR" property="fileNumber"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="change_reason" jdbcType="LONGVARCHAR" property="changeReason"/>
+        <result column="short_name" jdbcType="VARCHAR" property="shortName"/>
+    </resultMap>
     <sql id="Base_Column_List">
     change_id, dept_id, change_type, old_superior_id, now_superior_id, orgnize_name, 
     orgnize_code, change_date, file_number, ebl_flag, del_flag, order_num, description, 
@@ -355,6 +372,43 @@
         order by change_date asc
     </select>
 
+    <select id="selectOrgChangeVOList" parameterType="java.lang.Long" resultMap="OrgChangeVOResultMap">
+          SELECT * FROM (SELECT
+            t.change_id,
+            t.dept_id,
+            d.`name` AS orgnize_name,
+            d.org_short_name AS short_name,
+            (select `name` from  sys_dept where dept_id = t.now_superior_id) now_superior_name,
+            t.change_type,
+            t.change_date,
+            t.file_number,
+            t.create_username,
+            t.description,
+            t.change_reason
+        FROM
+            tab_pb_orgnize_change t
+        JOIN sys_dept d ON t.dept_id = d.dept_id
+        WHERE
+            t.del_flag = 0
+            AND t.change_type != 59424
+            and t.dept_id = #{deptId}
+        UNION
+          select
+                ch.change_id,
+                ch.dept_id,
+                up.upgrade_dept_name AS `name`,
+                up.upgrade_short_name AS short_name,
+                (select `name` from  sys_dept where dept_id = ch.now_superior_id) now_superior_name,
+                ch.change_type,
+                ch.change_date,
+                ch.file_number,
+                up.create_username,
+                ch.description,
+                ch.change_reason
+                from sys_dept_upgrade_temp up
+                LEFT JOIN tab_pb_orgnize_change ch ON up.dept_id = ch.dept_id AND ch.change_type = 59424 AND ch.del_flag = 0
+                where up.del_flag = 0 and ch.dept_id = #{deptId}) a order by change_date asc
+    </select>
 
     <select id="selectCombination" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
           SELECT * FROM (SELECT

@@ -19,10 +19,19 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader">
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="LeaderDtoResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbLinkLeaderDto">
+
+    <resultMap id="LinkLeaderVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.LinkLeaderVO">
+        <id column="link_ledaer_id" jdbcType="BIGINT" property="linkLedaerId"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="link_start_date" jdbcType="TIMESTAMP" property="linkStartDate"/>
+        <result column="link_finished_date" jdbcType="TIMESTAMP" property="linkFinishedDate"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
         <result column="username" jdbcType="VARCHAR" property="realName"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <collection property="activitiesList" ofType="com.egovchina.partybuilding.partybuild.entity.TabPbActivities">
@@ -33,6 +42,7 @@
             <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
         </collection>
     </resultMap>
+
     <sql id="Base_Column_List">
     link_ledaer_id, dept_id, user_id, link_start_date, link_finished_date, ebl_flag, 
     del_flag, order_num, description, create_time, create_userid, create_username, update_time, 
@@ -176,7 +186,8 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader">
         update tab_pb_link_leader
         <set>
             <if test="deptId != null">
@@ -230,7 +241,8 @@
         </set>
         where link_ledaer_id = #{linkLedaerId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader">
+    <update id="updateByPrimaryKeyWithBLOBs"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader">
     update tab_pb_link_leader
     set dept_id = #{deptId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},
@@ -269,6 +281,7 @@
       version = #{version,jdbcType=BIGINT}
     where link_ledaer_id = #{linkLedaerId,jdbcType=BIGINT}
   </update>
+
     <select id="selectByUserIdAndDeptId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader"
             resultMap="BaseResultMap">
     select * from  tab_pb_link_leader
@@ -276,42 +289,45 @@
     and user_id = #{userId,jdbcType=BIGINT}
     and del_flag = 0;
   </select>
-    <select id="selectTabPbLinkLeaderDtoByDeptId" parameterType="java.lang.Long" resultMap="LeaderDtoResultMap">
-    SELECT
-        l.*,
-        users.realname AS username,
-        d.NAME,
-        ab.activities_id,
-        ab.activities_type,
-        ab.subject,
-        ab.start_time,
-        ab.org_id,
-        ab.org_name
-    FROM
-        sys_user users
-        LEFT JOIN tab_pb_link_leader l ON users.user_id = l.user_id
-        AND l.del_flag = 0
-        LEFT JOIN sys_dept d ON d.dept_id = users.dept_id
-        AND d.del_flag = 0
-        LEFT JOIN ((
-          SELECT
-            ac.activities_id,
-            ac.org_id,
-            ac.activities_type,
-            ac.subject,
-            ac.start_time,
-            d1.name as org_name,
-            pa.user_id
-            FROM
-            tab_pb_activities AS ac
-            left JOIN tab_pb_participant AS pa ON ac.activities_id = pa.activities_id
-            AND pa.del_flag = 0 AND pa.if_link_leader = 1
-            left join sys_dept as d1 on ac.org_id= d1.dept_id AND d1.del_flag = 0
-          WHERE
-            ac.del_flag = 0
-        ) as ab ) on ab.user_id = l.user_id
-    WHERE
-      l.dept_id = #{deptId}
-      AND users.del_flag = 0
-  </select>
+
+    <select id="selectLinkLeaderVoByDeptId" parameterType="java.lang.Long" resultMap="LinkLeaderVOResultMap">
+        SELECT
+            l.link_ledaer_id,l.dept_id,l.user_id,
+            l.link_start_date,l.link_finished_date,
+            l.description,l.comment,
+            users.realname AS username,
+            d.NAME,
+            ab.activities_id,
+            ab.activities_type,
+            ab.subject,
+            ab.start_time,
+            ab.org_id,
+            ab.org_name
+        FROM
+            sys_user users
+            LEFT JOIN tab_pb_link_leader l ON users.user_id = l.user_id
+            AND l.del_flag = 0
+            LEFT JOIN sys_dept d ON d.dept_id = users.dept_id
+            AND d.del_flag = 0
+            LEFT JOIN ((
+              SELECT
+                ac.activities_id,
+                ac.org_id,
+                ac.activities_type,
+                ac.subject,
+                ac.start_time,
+                d1.name as org_name,
+                pa.user_id
+                FROM
+                tab_pb_activities AS ac
+                left JOIN tab_pb_participant AS pa ON ac.activities_id = pa.activities_id
+                AND pa.del_flag = 0 AND pa.if_link_leader = 1
+                left join sys_dept as d1 on ac.org_id= d1.dept_id AND d1.del_flag = 0
+              WHERE
+                ac.del_flag = 0
+            ) as ab ) on ab.user_id = l.user_id
+        WHERE
+          l.dept_id = #{deptId}
+          AND users.del_flag = 0
+    </select>
 </mapper>
