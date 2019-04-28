@@ -111,7 +111,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             //新增用户信息
             tabSysUserMapper.insertSelective(sys);
             //新增或者删除标签信息
-            if(partyInfoDTO.getParty().getUserTags()!=null){
+            if(partyInfoDTO.getParty().getUserTags()!=null&&partyInfoDTO.getParty().getUserTags().size()>0){
                 this.userTagService.updateUserTagByTagType(BeanUtil.copyListPropertiesAndPaddingBaseField(partyInfoDTO.getParty().getUserTags(),TabPbUserTag.class,true,true));
             }
             int effected = 0;
