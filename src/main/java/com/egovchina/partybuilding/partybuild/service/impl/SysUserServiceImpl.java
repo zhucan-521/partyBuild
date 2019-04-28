@@ -13,7 +13,7 @@ import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
 import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
-import com.egovchina.partybuilding.partybuild.dto.RegistryDTO;
+import com.egovchina.partybuilding.partybuild.vo.RegistryVO;
 import com.egovchina.partybuilding.partybuild.service.SysUserService;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,13 +109,20 @@ public class SysUserServiceImpl implements SysUserService {
         return user;
     }
 
+    /**
+     * 获取用户党籍详细信息
+     * @param userId 用户id
+     * @return
+     */
     @Transactional
     @Override
     public SysUser getRegistryByUserId(Long userId) {
         if (userId == null) {
             return null;
         }
+        //获取用户信息
         SysUser user = sysUserMapper.selectByPrimaryKey(userId);
+        //获取用户所在的部门信息
         SysDept dept = sysDeptService.selectByPrimaryKey(user.getJoinOrgId());
         TabPbMemberReduceList reduce = memberReduceListMapper.selectByUserId(userId);
         if (reduce != null) {
@@ -190,29 +197,32 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Transactional
     @Override
-    public List<RegistryDTO> getRegistryList(Long userId) {
+    public List<RegistryVO> getRegistryList(Long userId) {
         SysUser user = sysUserMapper.selectByPrimaryKey(userId);
         if (user == null) {
             return null;
         }
-        List<RegistryDTO> list = new ArrayList<>();
+        List<RegistryVO> list = new ArrayList<>();
         //预备党员
         if (user.getJoinTime() != null) {
-            list.add(new RegistryDTO(1L, user.getJoinTime(), user.getJoinTime(), user.getContactor()));
+            list.add(new RegistryVO(1L, user.getJoinTime(), user.getJoinTime(), user.getContactor()));
         }
         //正式党员
         if (user.getRegularTime() != null) {
-            list.add(new RegistryDTO(2L, user.getRegularTime(), user.getRegularTime(), user.getUpdateUsername()));
+            list.add(new RegistryVO(2L, user.getRegularTime(), user.getRegularTime(), user.getUpdateUsername()));
         }
         //新增 和 减少
         List<TabPbMemberAddList> add = memberAddListMapper.selectListByUserId(userId);
         add.forEach(a -> {
-            list.add(new RegistryDTO(a.getInType(), a.getCreateTime(), a.getCreateTime(), a.getCreateUsername()));
+            list.add(new RegistryVO(a.getInType(), a.getCreateTime(), a.getCreateTime(), a.getCreateUsername()));
         });
         List<TabPbMemberReduceList> reduce = memberReduceListMapper.selectListByUserId(userId);
         reduce.forEach(r -> {
-            list.add(new RegistryDTO(r.getOutType(), r.getCreateTime(), r.getCreateTime(), r.getCreateUsername()));
+            list.add(new RegistryVO(r.getOutType(), r.getCreateTime(), r.getCreateTime(), r.getCreateUsername()));
         });
+
+
+
         return list;
     }
 

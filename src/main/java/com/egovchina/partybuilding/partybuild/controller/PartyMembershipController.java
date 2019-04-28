@@ -4,7 +4,7 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.service.SysUserService;
 import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
-import com.egovchina.partybuilding.partybuild.dto.RegistryDTO;
+import com.egovchina.partybuilding.partybuild.vo.RegistryVO;
 import com.egovchina.partybuilding.partybuild.entity.MembershipQueryBean;
 import com.egovchina.partybuilding.partybuild.service.PartyMembershipService;
 import com.egovchina.partybuilding.partybuild.vo.MembershipVO;
@@ -40,7 +40,7 @@ public class PartyMembershipController {
     @ApiOperation(value = "根据用户id获取用户党籍实体类信息", notes = "根据userId获取用户党籍实体类信息", httpMethod = "GET")
     @ApiImplicitParam(name = "userId", value = "用户id", paramType = "path", required = true, dataType = "long")
     @GetMapping("/{userId}")
-    public PageInfo<MembershipVO> getMembershipList(@PathVariable(value = "userId") Long userId, @ApiParam("分页信息") Page page) {
+    public PageInfo<MembershipVO> getMembershipList(@PathVariable(value = "userId") Long userId) {
         return new PageInfo<>(partyMembershipService.getMembershipVOListByUserId(userId));
     }
 
@@ -78,7 +78,7 @@ public class PartyMembershipController {
     @ApiOperation(value = "获取党籍列表", notes = "获取党籍列表", httpMethod = "GET")
     @ApiImplicitParam(name = "userId", value = "用户id", paramType = "query", required = true, dataType = "long")
     @GetMapping("/multiple")
-    public List<RegistryDTO> getRegistryList(Long userId) {
+    public List<RegistryVO> getRegistryList(Long userId, @ApiParam("分页参数") Page page) {
         return sysUserService.getRegistryList(userId);
     }
 
@@ -94,4 +94,5 @@ public class PartyMembershipController {
     public SysUser getRegistryByUserId(Long userId) {
         return sysUserService.getRegistryByUserId(userId);
     }
+
 }

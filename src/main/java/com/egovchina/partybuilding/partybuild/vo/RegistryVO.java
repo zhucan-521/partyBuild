@@ -1,4 +1,4 @@
-package com.egovchina.partybuilding.partybuild.dto;
+package com.egovchina.partybuilding.partybuild.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
@@ -18,17 +18,17 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RegistryDTO {
+public class RegistryVO {
 
     @ApiModelProperty(value = "党籍 0无、1刚入党、2转正、3出党、4停止党籍、5死亡、6其他")
     private Long registryStatus;
 
     @ApiModelProperty(value = "办理时间")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GTM+8")
     private Date handleTime;
 
     @ApiModelProperty(value = "操作时间")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GTM+8")
     private Date operatTime;
 
     @ApiModelProperty(value = "操作人")

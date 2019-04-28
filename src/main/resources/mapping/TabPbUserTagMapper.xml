@@ -37,7 +37,9 @@
 
 
 
-                                 select count(1) from tab_pb_user_tag where user_id = #{userId} and tag_type = #{tagType}
+
+                                         select count(1) from tab_pb_user_tag where user_id = #{userId} and tag_type = #{tagType}
+
 
 
 
@@ -212,6 +214,22 @@
         </trim>
     </insert>
 
+    <insert id="batchInsertUserTagDTO" parameterType="java.util.List">
+        insert into tab_pb_user_tag
+        (usertag_id, user_id, tag_type,
+        create_time, create_userid,create_username,update_time, update_userid,update_username)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.usertagId,jdbcType=BIGINT}, #{item.userId,jdbcType=BIGINT}, #{item.tagType,jdbcType=BIGINT},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.createUserid,jdbcType=BIGINT}, #{item.createUsername,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.updateUserid,jdbcType=BIGINT}, #{item.updateUsername,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbUserTag">
         update tab_pb_user_tag
         <set>
@@ -254,4 +272,6 @@
       update_username = #{updateUsername,jdbcType=VARCHAR}
     where usertag_id = #{usertagId,jdbcType=BIGINT}
   </update>
+
+
 </mapper>

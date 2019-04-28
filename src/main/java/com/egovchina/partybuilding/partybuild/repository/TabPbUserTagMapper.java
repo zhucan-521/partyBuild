@@ -11,7 +11,7 @@ import java.util.List;
 public interface TabPbUserTagMapper {
     int deleteByPrimaryKey(Long usertagId);
 
-    int deleteByUserIdAndTagType(@Param("userId") Long userId, @Param("tagType") Long tagType);
+    int deleteByUserIdAndTagType(@Param("userId") Long userId, @Param("tagTypes") Long tagType);
 
     int insert(TabPbUserTag record);
 
@@ -43,6 +43,12 @@ public interface TabPbUserTagMapper {
      */
     List<SysUser> selectUserByTagDict(Long tagDict);
 
-    boolean exist(@Param("userId") Long userId, @Param("tagType") Long tagType);
+    boolean exist(@Param("userId") Long userId, @Param("tagTypes") Long tagType);
 
+    /**
+     * 批量插入标记
+     * @param list
+     * @return
+     */
+    int batchInsertUserTagDTO(List<TabPbUserTag> list);
 }

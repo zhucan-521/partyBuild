@@ -59,4 +59,11 @@ public interface UserTagService {
      * @return
      */
     boolean updateUserTagByTagType(List<TabPbUserTag> userTags);
+
+    /**
+     * 批量插入标记
+     * @param userTagDTO
+     * @return
+     */
+    int batchInsertUserTagDTO(UserTagDTO userTagDTO);
 }
