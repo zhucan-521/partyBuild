@@ -11,8 +11,6 @@ import com.egovchina.partybuilding.partybuild.entity.*;
 import com.egovchina.partybuilding.partybuild.repository.*;
 import com.egovchina.partybuilding.partybuild.service.PartyInformationService;
 import com.egovchina.partybuilding.partybuild.service.UserTagService;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
-import com.egovchina.partybuilding.partybuild.system.mapper.SysUserMapper;
 import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

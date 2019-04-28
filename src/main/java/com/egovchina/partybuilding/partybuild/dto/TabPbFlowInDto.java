@@ -61,6 +61,9 @@ public class TabPbFlowInDto extends TabPbFlowIn {
     @ApiModelProperty(value = "流入党支部联系人")
     private String flowToOrgContactor;
 
+    @ApiModelProperty(value = "0流出日期大于当前日期，1流出日期小于等于当前日期")
+    private Long isEnableAccept;
+
 
 
 

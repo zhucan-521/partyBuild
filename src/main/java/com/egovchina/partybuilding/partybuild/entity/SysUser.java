@@ -40,7 +40,6 @@ public class SysUser implements Serializable {
     @TableId(value = "user_id", type = IdType.AUTO)
     private Integer userId;
 
-
     @ApiModelProperty(value = "身份证号")
     private String username;
 

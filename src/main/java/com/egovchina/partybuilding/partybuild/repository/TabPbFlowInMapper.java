@@ -2,6 +2,8 @@ package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.dto.TabPbFlowInDto;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowIn;
+import com.egovchina.partybuilding.partybuild.entity.FlowInMemberQueryBean;
+import com.egovchina.partybuilding.partybuild.vo.FlowInMemberVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,6 +32,14 @@ public interface TabPbFlowInMapper {
      */
     List<TabPbFlowInDto> selectListByFlowInDto(Map<String, Object> params);
 
+
+    /**
+     * 查询流入党员列表
+     * @param
+     * @return
+     */
+    List<FlowInMemberVO> selectListByFlowInVo(FlowInMemberQueryBean flowInMemberQueryBean);
+
     /**
      * 流入党员详情查询
      * @param flowInId
@@ -39,7 +49,12 @@ public interface TabPbFlowInMapper {
 
 
 
-
+    /**
+     * 流入党员详情查询
+     * @param flowInId
+     * @return
+     */
+    FlowInMemberVO selectFlowInVoByFlowId(Long flowInId);
 
 
 }

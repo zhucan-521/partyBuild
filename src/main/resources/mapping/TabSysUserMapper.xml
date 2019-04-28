@@ -323,7 +323,7 @@
             AND realname like concat('%', #{username}, '%')
         </if>
         <!--<if test="deptId != null and deptId != 12733">
-            AND exists(select dept_id from sys_dept dept where u.dept_id = dept.dept_id and
+            AND exists(getFlowInMemberList dept_id from sys_dept dept where u.dept_id = dept.dept_id and
             FIND_IN_SET(#{deptId},full_path))
         </if>
         <if test="deptId == null">

@@ -28,6 +28,7 @@
         <result column="positive" property="positive"/>
         <result column="birthday" property="birthday"/>
     </resultMap>
+    <resultMap id="BaseResultVoMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.vo.FamilyMemberVO" />
     <sql id="Base_Column_List">
     relation_id, user_id, relation, ebl_flag, del_flag, order_num, description, create_time,
     create_userid, create_username, update_time, update_userid, update_username, version,whether_abroad,abroad
@@ -39,26 +40,62 @@
     <!--查询list数据-->
     <select id="selectListPrimary" resultMap="BaseResultMap" parameterType="java.lang.Long" flushCache="true">
         SELECT
-	family.relation,
-	family.whether_abroad,
-	family.abroad,
-	family.relation_id,
-	family.relation_user_id,
-	users.realname AS username,
-	users.gender,
-	users.id_card_no,
-	users.nation,
-	users.policy_face,
-	users.phone,
-	users.positive,
-	users.birthday
-FROM
-	tab_pb_family family
-JOIN sys_user users ON family.relation_user_id = users.user_id AND users.del_flag = 0
-WHERE
-	family.user_id = #{userId,jdbcType=BIGINT} AND family.del_flag = 0
-;
+        family.relation,
+        family.whether_abroad,
+        family.abroad,
+        family.relation_id,
+        family.relation_user_id,
+        users.realname AS username,
+        users.gender,
+        users.id_card_no,
+        users.nation,
+        users.policy_face,
+        users.phone,
+        users.positive,
+        users.birthday
+        FROM
+	    tab_pb_family family
+        JOIN sys_user users ON family.relation_user_id = users.user_id AND users.del_flag = 0
+        WHERE
+	    family.user_id = #{userId,jdbcType=BIGINT} AND family.del_flag = 0
     </select>
+
+
+    <!--查询listVo数据-->
+    <select id="selectListVoPrimary" resultMap="BaseResultVoMap" parameterType="java.lang.Long" flushCache="true">
+        SELECT
+        family.relation,
+        family.whether_abroad,
+        family.abroad,
+        family.relation_id,
+        family.relation_user_id,
+        users.realname AS username,
+        users.gender,
+        users.id_card_no,
+        users.nation,
+        users.policy_face,
+        users.phone,
+        users.positive,
+        users.birthday
+        FROM
+	    tab_pb_family family
+        JOIN sys_user users ON family.relation_user_id = users.user_id AND users.del_flag = 0
+        WHERE
+	    family.user_id = #{userId,jdbcType=BIGINT} AND family.del_flag = 0
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!--查询根据主键查询单条数据-->
     <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
@@ -77,7 +114,7 @@ WHERE
 	users.realname as username ,users.gender,users.id_card_no,users.nation,
         users.policy_face,users.phone,users.positive,users.birthday from tab_pb_family family
         join sys_user users on family.relation_user_id = users.user_id
-        where family.relation_id = #{relationId,jdbcType=BIGINT};
+        where family.relation_id = #{relationId,jdbcType=BIGINT} and family.del_flag = 0;
     </select>
 
     <insert id="insertSelective"  parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbFamily">
@@ -257,4 +294,27 @@ WHERE
         </set>
         where user_id = #{userId}
     </update>
+    
+    <select id="selectFamilyByUserId" parameterType="Long" resultMap="BaseResultMap">
+        SELECT
+        *
+        FROM
+	    tab_pb_family
+        WHERE
+	    user_id = #{userId} AND del_flag = 0
+    </select>
+
+    <!--批量插入家庭-->
+    <insert id="batchInsertFamilyList" parameterType="List">
+        insert into tab_pb_family
+       (user_id,relation,whether_abroad,abroad, relation_user_id,
+        ebl_flag,del_flag,order_num,create_time, create_userid) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.userId},#{item.relation},#{item.whetherAbroad},#{item.abroad},#{item.relationUserId},#{item.eblFlag},
+            #{item.delFlag},#{item.orderNum},#{item.createTime},#{item.createUserid})
+        </foreach>
+    </insert>
+
+
+
 </mapper>

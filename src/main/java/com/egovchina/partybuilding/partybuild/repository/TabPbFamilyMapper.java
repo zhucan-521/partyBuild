@@ -2,6 +2,7 @@ package com.egovchina.partybuilding.partybuild.repository;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFamily;
+import com.egovchina.partybuilding.partybuild.vo.FamilyMemberVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,6 +20,8 @@ public interface TabPbFamilyMapper extends BaseMapper<TabPbFamily> {
 
     List<TabPbFamily> selectListPrimary(Long partyMemberId);
 
+    List<FamilyMemberVO> selectListVoPrimary(Long partyMemberId);
+
     TabPbFamily findById(Long relationId);
 
     /**
@@ -27,4 +30,20 @@ public interface TabPbFamilyMapper extends BaseMapper<TabPbFamily> {
      * @return
      */
     int tombstoneUser(Long userId);
+
+
+    /**
+     * 根据用户id查找用户家人
+     * @param userId
+     * @return
+     */
+    List<TabPbFamily> selectFamilyByUserId(Long userId);
+
+
+    /**
+     * 批量插入家庭
+     * @param tabPbFamilyList
+     * @return
+     */
+    int batchInsertFamilyList(List<TabPbFamily> tabPbFamilyList);
 }

@@ -2,6 +2,8 @@ package com.egovchina.partybuilding.partybuild.repository;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist;
+import com.egovchina.partybuilding.partybuild.entity.PositiveRegistMemberQueryBean;
+import com.egovchina.partybuilding.partybuild.vo.PositiveRegistMemberVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,6 +27,16 @@ public interface TabPbPositiveRegistMapper extends BaseMapper<TabPbPositiveRegis
      */
     List<TabPbPositiveRegist> selectListPage(TabPbPositiveRegist positiveRegist);
 
+
+    /**
+     * 查询list数据(分页)
+     * @param positiveRegist
+     * @return
+     */
+    List<PositiveRegistMemberVO> selectListVoPage(PositiveRegistMemberQueryBean positiveRegist);
+
+
+
     /**
      * 修改报到状态
      * @param positiveRegist
@@ -39,11 +51,15 @@ public interface TabPbPositiveRegistMapper extends BaseMapper<TabPbPositiveRegis
 
     TabPbPositiveRegist findById(Long userId);
 
+    TabPbPositiveRegist findByVoId(Long userId);
+
     /**
      * 根据主键id查询单条数据
      * @param positiveRegistId
      * @return
      */
     TabPbPositiveRegist editFindById(Long positiveRegistId);
+
+    PositiveRegistMemberVO findPositiveRegistMemberById(Long positiveRegistId);
 
 }
