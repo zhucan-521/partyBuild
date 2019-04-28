@@ -1,14 +1,12 @@
-package com.egovchina.partybuilding.partybuild.dto;
+package com.egovchina.partybuilding.partybuild.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-@ApiModel(value = "社区")
-public class CommunityDto {
-
-
+@ApiModel(value = "社区返回实体")
+public class CommunityVO {
     @ApiModelProperty(value = "id")
     private Long id;
 
@@ -17,5 +15,4 @@ public class CommunityDto {
 
     @ApiModelProperty(value = "社区名称")
     private String label;
-
 }

@@ -215,23 +215,23 @@
 
     <!-- custom method -->
 
-    <select id="findAllByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="findAllByUserId" parameterType="java.lang.Long" resultType="com.egovchina.partybuilding.partybuild.vo.PartyWorkVO">
         select
         <include refid="Base_Column_List"/>
         from tab_pb_party_work
         where user_id = #{userId,jdbcType=BIGINT}
     </select>
-
+    <!--批量新增工作信息-->
     <insert id="batchInsert" parameterType="java.util.List">
         insert into tab_pb_party_work
         (
-        work_id, user_id, unit, post, front_line, stratum, start_date, end_date,
+       user_id, unit, post, front_line, stratum, start_date, end_date,
         create_time, create_userid,create_username, update_time, update_userid,update_username
         )
         values
         <foreach collection="list" item="item" separator=",">
             (
-            #{item.workId,jdbcType=BIGINT}, #{item.userId,jdbcType=BIGINT}, #{item.unit,jdbcType=VARCHAR},
+             #{item.userId,jdbcType=BIGINT}, #{item.unit,jdbcType=VARCHAR},
             #{item.post,jdbcType=VARCHAR}, #{item.frontLine,jdbcType=BIGINT}, #{item.stratum,jdbcType=BIGINT},
             #{item.startDate,jdbcType=DATE}, #{item.endDate,jdbcType=DATE}, #{item.createTime,jdbcType=TIMESTAMP},
             #{item.createUserid,jdbcType=BIGINT}, #{item.createUsername,jdbcType=VARCHAR},
@@ -241,6 +241,7 @@
         </foreach>
     </insert>
 
+    <!--批量更新工作信息-->
     <update id="batchUpdate" parameterType="java.util.List">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
             update tab_pb_party_work

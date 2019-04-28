@@ -190,21 +190,22 @@
   </update>
 
     <!-- custom method -->
-    <select id="findAllByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="findAllByUserId"  resultType="com.egovchina.partybuilding.partybuild.vo.PartyEducationVO">
         select
         <include refid="Base_Column_List"/>
         from tab_pb_party_education
         where user_id = #{userId,jdbcType=BIGINT}
     </select>
 
+    <!--批量新增学历信息-->
     <insert id="batchInsert" parameterType="java.util.List">
         insert into tab_pb_party_education
-        (education_id, user_id, level,degree, graduated_school, spec,
+        (user_id, level,degree, graduated_school, spec,
         create_time, create_userid,create_username, update_time, update_userid,update_username)
         values
         <foreach collection="list" item="item" separator=",">
             (
-            #{item.educationId,jdbcType=BIGINT}, #{item.userId,jdbcType=BIGINT}, #{item.level,jdbcType=BIGINT},
+            #{item.userId,jdbcType=BIGINT}, #{item.level,jdbcType=BIGINT},
             #{item.degree,jdbcType=BIGINT}, #{item.graduatedSchool,jdbcType=VARCHAR}, #{item.spec,jdbcType=VARCHAR},
             #{item.createTime,jdbcType=TIMESTAMP},
             #{item.createUserid,jdbcType=BIGINT}, #{item.createUsername,jdbcType=VARCHAR},
@@ -214,6 +215,7 @@
         </foreach>
     </insert>
 
+    <!--批量更新学历信息-->
     <update id="batchUpdate" parameterType="java.util.List">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
             update tab_pb_party_education

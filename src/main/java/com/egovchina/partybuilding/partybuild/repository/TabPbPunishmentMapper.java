@@ -1,6 +1,8 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbPunishment;
+import com.egovchina.partybuilding.partybuild.vo.PunishmentVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,4 +25,7 @@ public interface TabPbPunishmentMapper {
 
     List<TabPbPunishment> selectList(TabPbPunishment punishment);
 
+    PunishmentVO selectByPrimaryKeyAndFiles(Long punishmentId);
+
+    List<PunishmentVO> selectListAndFileVO(@Param("userId") Long userId);
 }

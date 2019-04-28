@@ -5,13 +5,12 @@ import com.egovchina.partybuilding.partybuild.dto.Personnel;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
 import com.egovchina.partybuilding.partybuild.dto.UserDeptPositiveDto;
 import com.egovchina.partybuilding.partybuild.entity.SysUser;
-import com.egovchina.partybuilding.partybuild.vo.DirectPartyMemberVO;
-import com.egovchina.partybuilding.partybuild.vo.UserDeptPositionVO;
+import com.egovchina.partybuilding.partybuild.entity.SysUserQueryBean;
+import com.egovchina.partybuilding.partybuild.vo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface TabSysUserMapper {
@@ -33,7 +32,7 @@ public interface TabSysUserMapper {
 
     List<SysUser> selectPage(SysUser sysUser);
 
-    List<SysUser> selectPageByMap(Map<String, Object> map);
+    List<PartyMemberInformationVO> selectPageByMap(SysUserQueryBean sysUserQueryBean);
 
     /**
      * 根据身份证查询人员ID
@@ -53,7 +52,7 @@ public interface TabSysUserMapper {
     SysUser selectUserByIdCardNo(String idCardNo);
 
 
-    List<SysUser> selectPartyByIdCardNoOrUserName(SysUser sysUser);
+    List<SysUserVO> selectPartyByIdCardNoOnUserName(@Param("idCardNo") String idCardNo ,@Param("username") String username);
 
     //根据组织Id 获取党务工作者信息
     TransferUserDeptInfo getDWRoleUserInfoByDeptId(Long deptId);
@@ -120,7 +119,7 @@ public interface TabSysUserMapper {
 
     void updateNoPoor(Long userId);
 
-    List<SysUser> partyIdentityVerification(@Param("username") String username, @Param("idCardNo") String idCardNo, @Param("phone") String phone);
+    List<PersonnelVO> partyIdentityVerification(@Param("username") String username, @Param("idCardNo") String idCardNo, @Param("phone") String phone);
 
     /**
      * 选人接口(根据主键id或者报到组织id进行筛选必填其中一项)
@@ -190,4 +189,10 @@ public interface TabSysUserMapper {
      **/
     boolean checkIsExistByIdCard(String idCard);
 
+    /**
+     * 查询附带 工作 学历信息
+     * @param userId
+     * @return
+     */
+    PartyMemberVO selectByPrimaryKeyToAll(Long userId);
 }

@@ -19,7 +19,7 @@ import java.util.Map;
  * Date: 2018/11/30
  */
 @Service("tabPbPositivesService")
-public class TabPbPositivesServiceImpl implements TabPbPositivesService {
+public class TabPbTabPbPositivesServiceImpl implements TabPbPositivesService {
 
     @Autowired
     TabPbPositivesMapper tabPbPositivesMapper;
