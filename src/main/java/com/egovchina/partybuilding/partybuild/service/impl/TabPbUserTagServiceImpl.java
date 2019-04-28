@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
+import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
 import com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper;
@@ -49,17 +50,11 @@ public class TabPbUserTagServiceImpl implements TabPbUserTagService {
         return userTagMapper.deleteByUserIdAndTagType(userId,tagType);
     }
 
-
+    @PaddingBaseField
     private int addUserTag(TabPbUserTag userTag){
         if(!ObjectUtils.isEmpty(userTag.getUsertagId())){
             return 0;
         }
-        userTag.setCreateTime(new Date());
-        userTag.setCreateUserid(UserContextHolder.getUserId().longValue());
-        userTag.setCreateUsername(UserContextHolder.getUserName());
-        userTag.setUpdateTime(new Date());
-        userTag.setUpdateUserid(UserContextHolder.getUserId().longValue());
-        userTag.setUpdateUsername(UserContextHolder.getUserName());
         return userTagMapper.insertSelective(userTag);
     }
 

@@ -1,77 +1,32 @@
 package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.partybuild.dto.CommunityDto;
-import com.egovchina.partybuilding.partybuild.dto.SysUseDto;
-import com.egovchina.partybuilding.partybuild.dto.SysUserCountDto;
-import com.egovchina.partybuilding.partybuild.dto.SysUserDto;
-import com.egovchina.partybuilding.partybuild.entity.OrganizationPeopleStatistics;
+import com.egovchina.partybuilding.partybuild.dto.CommunityDTO;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.dto.PartyInfoDTO;
+import com.egovchina.partybuilding.partybuild.entity.SysUserQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean;
+import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author zhucan
  */
 public interface PartyInformationService {
 
-    /**
-     * 补录党员基本信息
-     *
-     * @param sysUser
-     * @return
-     */
-    int insert(SysUser sysUser);
-
-    /**
-     * 党员列表
-     *
-     * @param params
-     * @return
-     */
-    PageInfo<SysUser> selectPage(Map<String, Object> params);
-
-    /**
-     * 修改党员基本信息
-     *
-     * @param sysUser
-     * @return
-     */
-    int updateSysUser(SysUser sysUser);
-
-    /***
-     * 根据id查找党员基本信息
-     * @param userId
-     * @return
-     */
-    SysUseDto getSysUserById(Integer userId);
 
     /**
      * 根据社区名字模糊获取社区信息
      *
      * @return
      */
-    List<CommunityDto> selectCommunityDto(CommunityDto dto);
+    List<CommunityVO> selectCommunityVO(CommunityDTO communityDTO);
 
-    /**
-     * 分页查询党员信息
-     *
-     * @param params 分页对象
-     * @return 分页对象
-     */
-    PageInfo<SysUser> historyPartyPage(Map<String, Object> params);
 
-    SysUserCountDto getTaskPartyCount(Long deptId);
+    PageInfo<HistoryPartyVO> historyPartyPage(HistoricalPartyMemberQueryBean queryBean, Page page);
 
-    /**
-     * 统计指定组织下各类型人数
-     *
-     * @param orgId
-     * @return
-     */
-    OrganizationPeopleStatistics selectPeopleCountingByOrgId(Long orgId);
 
     /**
      * 查询党员根据姓名或身份证
@@ -82,26 +37,39 @@ public interface PartyInformationService {
      * @param page
      * @return
      */
-    List<SysUser> partyIdentityVerification(String username, String searchVal, String phone, Page page);
+    List<PersonnelVO> partyIdentityVerification(String username, String searchVal, String phone, Page page);
+
 
     /**
-     * desc: 补录党员基本信息v2
+     * desc: 补录党员基本信息
      *
-     * @param sysUser 用户数据传输对象
+     * @param partyInfoDTO 党员信息数据传输对象
      * @return int
      * @author FanYanGen
      * @date 2019/4/12 14:40
      **/
-    int saveSysUserInfo(SysUserDto sysUser);
+    int savePartyInfo(PartyInfoDTO partyInfoDTO);
 
     /**
-     * desc: 修改党员基本信息v2
+     * desc: 修改党员基本信息
      *
-     * @param sysUser 用户数据传输对象
+     * @param partyInfoDTO 党员信息数据传输对象
      * @return int
      * @author FanYanGen
      * @date 2019/4/12 14:40
      **/
-    int updateSysUserInfo(SysUserDto sysUser);
+    int updatePartyInfo(PartyInfoDTO partyInfoDTO);
 
+    /**
+     * 党员列表
+     *
+     * @return
+     */
+    PageInfo<PartyMemberInformationVO> getPartyList(SysUserQueryBean queryBean, Page page);
+
+    /**
+     * 获取当前用户信息
+     */
+
+    UserInfoVO getUserInfoVO();
 }

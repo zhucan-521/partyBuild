@@ -29,12 +29,26 @@
         <result column="img_tool" jdbcType="BIGINT" property="imgTool"/>
         <result column="file_tool" jdbcType="BIGINT" property="fileTool"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbPunishment">
+    <resultMap id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbPunishment">
         <result column="base_status" jdbcType="LONGVARCHAR" property="baseStatus"/>
         <result column="mistake" jdbcType="LONGVARCHAR" property="mistake"/>
         <result column="follow_up" jdbcType="LONGVARCHAR" property="followUp"/>
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
     </resultMap>
+    <resultMap id="ResultMapWithMoreBLOB" type="com.egovchina.partybuilding.partybuild.vo.PunishmentVO">
+        <id column="punishment_id" jdbcType="BIGINT" property="punishmentId"/>
+        <result column="punish_date" jdbcType="TIMESTAMP" property="punishDate"/>
+        <result column="punish_org" jdbcType="VARCHAR" property="punishOrg"/>
+        <result column="punish_org_id" jdbcType="BIGINT" property="punishOrgId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="punish_name" jdbcType="VARCHAR" property="punishName"/>
+        <result column="judiciary_flag" jdbcType="VARCHAR" property="judiciaryFlag"/>
+        <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
+        <collection property="attachments"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="hostId=punishment_id,attachmentType=attachment_type"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
     punishment_id, punish_date, punish_org, punish_org_id, user_id, approved_level, punish_reason, 
     punish_result, revoke_date, ebl_flag, del_flag, order_num, description, create_time,
@@ -44,10 +58,10 @@
     <sql id="Blob_Column_List">
     base_status, mistake, follow_up, comment
   </sql>
-<sql id="atta_result">
+    <sql id="atta_result">
     img_tool, file_tool
   </sql>
-<sql id="attachment">
+    <sql id="attachment">
         SELECT
 	a.host_id,
 	max( a.attachment_type ) AS attachment_type,
@@ -64,10 +78,38 @@ GROUP BY
         <include refid="Base_Column_List"/>
         ,
         <include refid="Blob_Column_List"/>
+
         from tab_pb_punishment
         where punishment_id = #{punishmentId,jdbcType=BIGINT}
     </select>
-    <select id="selectList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPunishment" resultMap="ResultMapWithBLOBs">
+    <!--通过处分id查询处分,返回附带附件-->
+    <select id="selectByPrimaryKeyAndFiles" parameterType="java.lang.Long" resultMap="ResultMapWithMoreBLOB">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        ,12 as attachment_type
+        from tab_pb_punishment
+        where punishment_id = #{punishmentId,jdbcType=BIGINT}
+        and del_flag='0'
+    </select>
+
+    <!--通过用户id或者机构查询处分,返回附带附件-->
+    <select id="selectListAndFileVO" resultMap="ResultMapWithMoreBLOB">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        ,12 as attachment_type
+        from tab_pb_punishment
+        where del_flag = '0'
+        <if test="userId != null">
+            and user_id = #{userId}
+        </if>
+    </select>
+
+    <select id="selectList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPunishment"
+            resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
         ,
@@ -78,7 +120,8 @@ GROUP BY
         </if>
         from tab_pb_punishment
         <if test="attachmentType != null">
-            left join (<include refid="attachment"/>) atta on atta.host_id =  punishment_id and atta.attachment_type = #{attachmentType}
+            left join (<include refid="attachment"/>) atta on atta.host_id = punishment_id and atta.attachment_type =
+            #{attachmentType}
         </if>
         where del_flag = 0
         <if test="userId != null">
@@ -117,7 +160,8 @@ GROUP BY
         #{punishName,jdbcType=VARCHAR},#{judiciaryFlag,jdbcType=VARCHAR}, #{punishType,jdbcType=BIGINT}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPunishment" useGeneratedKeys="true" keyProperty="punishmentId">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPunishment"
+            useGeneratedKeys="true" keyProperty="punishmentId">
         insert into tab_pb_punishment
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="punishmentId != null">
@@ -286,7 +330,8 @@ GROUP BY
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPunishment">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPunishment">
         update tab_pb_punishment
         <set>
             <if test="punishDate != null">
@@ -370,7 +415,8 @@ GROUP BY
         </set>
         where punishment_id = #{punishmentId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPunishment">
+    <update id="updateByPrimaryKeyWithBLOBs"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPunishment">
     update tab_pb_punishment
     set punish_date = #{punishDate,jdbcType=TIMESTAMP},
       punish_org = #{punishOrg,jdbcType=VARCHAR},

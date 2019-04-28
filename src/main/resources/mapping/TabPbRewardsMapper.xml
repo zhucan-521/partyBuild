@@ -33,6 +33,28 @@
         <result column="deed" jdbcType="LONGVARCHAR" property="deed"/>
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
     </resultMap>
+    <resultMap id="ResultMapWithMoreBLOB" type="com.egovchina.partybuilding.partybuild.vo.RewardsVO">
+        <id column="rewards_id" jdbcType="BIGINT" property="rewardsId"/>
+        <result column="rewards_date" jdbcType="TIMESTAMP" property="rewardsDate"/>
+        <result column="rewards_orgnize" jdbcType="VARCHAR" property="rewardsOrgnize"/>
+        <result column="rewards_orgnize_id" jdbcType="BIGINT" property="rewardsOrgnizeId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="rewards" jdbcType="BIGINT" property="rewards"/>
+        <result column="rewards_reason" jdbcType="BIGINT" property="rewardsReason"/>
+        <result column="approved_level" jdbcType="BIGINT" property="approvedLevel"/>
+        <result column="revoke_date" jdbcType="TIMESTAMP" property="revokeDate"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="rewards_name" jdbcType="VARCHAR" property="rewardsName"/>
+        <result column="rewards_type" jdbcType="VARCHAR" property="rewardsType"/>
+        <result column="base_status" jdbcType="LONGVARCHAR" property="baseStatus"/>
+        <result column="deed" jdbcType="LONGVARCHAR" property="deed"/>
+        <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
+        <result column="img_tool" jdbcType="BIGINT" property="imgTool"/>
+        <result column="file_tool" jdbcType="BIGINT" property="fileTool"/>
+        <collection property="attachments"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="hostId=rewards_id,attachmentType=attachment_type"/>
+    </resultMap>
     <sql id="Base_Column_List">
         rewards_id, rewards_date, rewards_orgnize, rewards_orgnize_id, user_id, rewards,
         rewards_reason, approved_level, revoke_date, ebl_flag, del_flag, order_num, description,
@@ -67,29 +89,54 @@ GROUP BY
         from tab_pb_rewards
         where rewards_id = #{rewardsId,jdbcType=BIGINT}
     </select>
-    <select id="selectList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbRewards" resultMap="ResultMapWithBLOBs">
+    <!--通过奖励ID查询奖励,返回附带附件-->
+    <select id="selectByPrimaryKeyAndFiles" parameterType="java.lang.Long" resultMap="ResultMapWithMoreBLOB">
         select
         <include refid="Base_Column_List"/>
         ,
         <include refid="Blob_Column_List"/>
-        <if test="attachmentType != null">
-            ,
-            <include refid="atta_result"/>
-        </if>
+        ,11  as attachment_type
         from tab_pb_rewards
-        <if test="attachmentType != null">
-            left join (<include refid="attachment"/>) atta on atta.host_id =  rewards_id and atta.attachment_type = #{attachmentType}
-        </if>
-        where del_flag = 0
+        where rewards_id = #{rewardsId,jdbcType=BIGINT}
+        and del_flag='0'
+    </select>
+    <select id="selectList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbRewards" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List"/>
+    ,
+    <include refid="Blob_Column_List"/>
+    <if test="attachmentType != null">
+        ,
+        <include refid="atta_result"/>
+    </if>
+    from tab_pb_rewards
+    <if test="attachmentType != null">
+        left join (<include refid="attachment"/>) atta on atta.host_id =  rewards_id and atta.attachment_type = #{attachmentType}
+    </if>
+    where del_flag = 0
+    <if test="userId != null">
+        and user_id = #{userId}
+    </if>
+    <if test="rewardsOrgnize != null">
+        and rewards_orgnize = #{rewardsOrgnize}
+    </if>
+    <if test="rewardsOrgnizeId != null">
+        and rewards_orgnize_id = #{rewardsOrgnizeId}
+    </if>
+</select>
+    <!--通过用户id或者机构查询奖励,返回附带附件-->
+    <select id="selectListAndFile" resultMap="ResultMapWithMoreBLOB">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        ,11  as attachment_type
+        from tab_pb_rewards
+        where del_flag = '0'
         <if test="userId != null">
             and user_id = #{userId}
         </if>
-        <if test="rewardsOrgnize != null">
-            and rewards_orgnize = #{rewardsOrgnize}
-        </if>
-        <if test="rewardsOrgnizeId != null">
-            and rewards_orgnize_id = #{rewardsOrgnizeId}
-        </if>
+
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tab_pb_rewards
