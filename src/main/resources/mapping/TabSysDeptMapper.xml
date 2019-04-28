@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper">
-    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.SysDept">
         <id column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="org_short_name" jdbcType="VARCHAR" property="orgShortName"/>
@@ -47,16 +47,19 @@
         <result column="is_parent" jdbcType="TINYINT" property="isParent"/>
         <result column="is_branch" jdbcType="TINYINT" property="isBranch"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.egovchina.partybuilding.partybuild.entity.SysDept">
         <result column="position" jdbcType="LONGVARCHAR" property="position"/>
         <result column="position_range" jdbcType="LONGVARCHAR" property="positionRange"/>
         <result column="founded_reason" jdbcType="LONGVARCHAR" property="foundedReason"/>
     </resultMap>
     <!--包含组织关联信息的ResultMap-->
-    <resultMap extends="ResultMapWithBLOBs" id="ResultMapWithAboutInfo" type="com.egovchina.partybuilding.partybuild.dto.SysDeptDto">
+    <resultMap extends="ResultMapWithBLOBs" id="ResultMapWithAboutInfo"
+               type="com.egovchina.partybuilding.partybuild.dto.SysDeptDto">
         <result column="parent_name" jdbcType="VARCHAR" property="parentName"/>
         <collection property="tabPbUnitInfos"
-                    select="com.egovchina.partybuilding.partybuild.repository.TabPbUnitInfoMapper.selectByOrgId" column="dept_id"/>
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbUnitInfoMapper.selectByOrgId"
+                    column="dept_id"/>
     </resultMap>
     <!--组织阵地BaseResultMap-->
     <resultMap id="BasePositionResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabDeptPositionDto">
@@ -671,7 +674,7 @@
     where d.dept_id = #{deptId,jdbcType=BIGINT}
   </delete>
     <insert id="insert" useGeneratedKeys="true" keyProperty="deptId"
-            parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.SysDept">
     insert into sys_dept (name, org_short_name,
       org_code, org_inner_code, parent_id,
       is_team, org_level, level_date,
@@ -704,14 +707,15 @@
       )
   </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="deptId"
-            parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.SysDept">
         insert into sys_dept
         <include refid="Selective_Column_List"/>
         values
         <include refid="Selective_Values_List"/>
     </insert>
     <!--根据主键修改选择的字段-->
-    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.SysDept">
         update sys_dept d
         <set>
             <include refid="Base_Set_Column_List"/>
@@ -719,7 +723,7 @@
         where d.dept_id = #{deptId,jdbcType=BIGINT}
     </update>
     <!--根据主键修改-->
-    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.SysDept">
     update sys_dept
     set name = #{name,jdbcType=VARCHAR},
       org_short_name = #{orgShortName,jdbcType=VARCHAR},
@@ -762,7 +766,7 @@
   </update>
 
     <!--判断组织机构名称合法性-->
-    <select id="checkOrgNameAvailability" resultType="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
+    <select id="checkOrgNameAvailability" resultType="com.egovchina.partybuilding.partybuild.entity.SysDept">
     SELECT dept_id as deptId, `name` FROM sys_dept WHERE `name` = #{deptName}
   </select>
 
@@ -845,7 +849,7 @@
         SELECT host_id, count( 1 ) img_annex_num
         FROM tab_pb_attachment
         WHERE attachment_type = 3  <!--3 组织阵地-->
-          AND del_flag = 0
+        AND del_flag = 0
         GROUP BY host_id
         ) t ON d.dept_id = t.host_id
         <where>
@@ -884,7 +888,7 @@
 
     <!--修改组织信息的同时修改 relation 表-->
     <update id="updateWithRelationByPrimaryKeySelective"
-            parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
+            parameterType="com.egovchina.partybuilding.partybuild.entity.SysDept">
         update sys_dept d
         inner join sys_dept_relation dr on d.dept_id = dr.descendant
         <set>
@@ -915,55 +919,58 @@
     <!--统计组织和党员信息-->
     <select id="countOrgWithPartyManInfo" parameterType="java.lang.Integer" resultType="SysDeptDtoWithCountInfo">
         SELECT
-          *
+        *
         FROM
         (
-            SELECT
-                count( CASE WHEN u.identity_type = 223 THEN 1 ELSE NULL END ) formal,
-                count( CASE WHEN u.identity_type = 224 THEN 1 ELSE NULL END ) prep,
-                count( CASE WHEN u.nation != 868 THEN 1 ELSE NULL END ) minority,
-                count( CASE WHEN u.education >= 71 AND u.education &lt;= 85 THEN 1 ELSE NULL END ) collegeAndAbove,
-                count( CASE WHEN u.gender = 95 THEN 1 ELSE NULL END ) man,
-                count( CASE WHEN u.gender = 96 THEN 1 ELSE NULL END ) woman,
-                count( CASE WHEN dpm.host_id2_1 > 0 AND dpm.host_id3_1 IS NULL THEN 1 ELSE NULL END ) activity,
-                count( CASE WHEN dpm.host_id3_1 > 0 AND dpm.host_id4_1 IS NULL THEN 1 ELSE NULL END ) growing,
-                count( ut.usertag_id ) decommissioning,
-                count( CASE WHEN ui.unit_property IN ( 388, 391 ) THEN 1 ELSE NULL END ) twoNew
-            FROM
-            <choose>
-                <when test="orgId != 14307">
-                    ( SELECT dept_id AS org_id FROM sys_dept dept WHERE dept.del_flag = 0 AND find_in_set( #{orgId}, dept.full_path ) ) d
-                    INNER JOIN sys_user u ON u.dept_id = d.org_id
-                </when>
-                <otherwise>
-                    sys_user u
-                </otherwise>
-            </choose>
-            LEFT JOIN tab_pb_dev_party_member dpm ON u.user_id = dpm.user_id AND dpm.del_flag = 0
-            LEFT JOIN tab_pb_user_tag ut ON u.user_id = ut.user_id AND ut.tag_type = 59386
-            LEFT JOIN tab_pb_unit_info ui ON u.dept_id = ui.org_id AND ui.del_flag = 0
-            WHERE u.del_flag = 0
+        SELECT
+        count( CASE WHEN u.identity_type = 223 THEN 1 ELSE NULL END ) formal,
+        count( CASE WHEN u.identity_type = 224 THEN 1 ELSE NULL END ) prep,
+        count( CASE WHEN u.nation != 868 THEN 1 ELSE NULL END ) minority,
+        count( CASE WHEN u.education >= 71 AND u.education &lt;= 85 THEN 1 ELSE NULL END ) collegeAndAbove,
+        count( CASE WHEN u.gender = 95 THEN 1 ELSE NULL END ) man,
+        count( CASE WHEN u.gender = 96 THEN 1 ELSE NULL END ) woman,
+        count( CASE WHEN dpm.host_id2_1 > 0 AND dpm.host_id3_1 IS NULL THEN 1 ELSE NULL END ) activity,
+        count( CASE WHEN dpm.host_id3_1 > 0 AND dpm.host_id4_1 IS NULL THEN 1 ELSE NULL END ) growing,
+        count( ut.usertag_id ) decommissioning,
+        count( CASE WHEN ui.unit_property IN ( 388, 391 ) THEN 1 ELSE NULL END ) twoNew
+        FROM
+        <choose>
+            <when test="orgId != 14307">
+                ( SELECT dept_id AS org_id FROM sys_dept dept WHERE dept.del_flag = 0 AND find_in_set( #{orgId},
+                dept.full_path ) ) d
+                INNER JOIN sys_user u ON u.dept_id = d.org_id
+            </when>
+            <otherwise>
+                sys_user u
+            </otherwise>
+        </choose>
+        LEFT JOIN tab_pb_dev_party_member dpm ON u.user_id = dpm.user_id AND dpm.del_flag = 0
+        LEFT JOIN tab_pb_user_tag ut ON u.user_id = ut.user_id AND ut.tag_type = 59386
+        LEFT JOIN tab_pb_unit_info ui ON u.dept_id = ui.org_id AND ui.del_flag = 0
+        WHERE u.del_flag = 0
         ) t1,
         (
-            SELECT
-                count( CASE WHEN d.orgnize_property IN ( 986, 987, 990, 993, 997, 998, 1000, 1005 ) THEN 1 ELSE NULL END ) partyWei,
-                count( CASE WHEN d.orgnize_property IN ( 988, 991, 994, 1001, 1006 ) THEN 1 ELSE NULL END ) partyZBranch,
-                count( CASE WHEN d.orgnize_property IN ( 989, 992, 995, 1002, 1003, 1007, 1008 ) THEN 1 ELSE NULL END ) partyBranch,
-                count( CASE WHEN ui.unit_property IN ( 379, 380 ) THEN 1 ELSE NULL END ) streetOrg,
-                count( CASE WHEN ui.unit_property IN ( 381, 383 ) THEN 1 ELSE NULL END ) communityOrg,
-                count( CASE WHEN ui.unit_property = 382 THEN 1 ELSE NULL END ) townshipOrg,
-                count( CASE WHEN ui.unit_property = 384 THEN 1 ELSE NULL END ) villageOrg,
-                count( CASE WHEN ui.unit_property IN ( 386, 387 ) THEN 1 ELSE NULL END ) commonEconomyOrg,
-                count( CASE WHEN ui.unit_property = 388 THEN 1 ELSE NULL END ) unCommonEconomyOrg,
-                count( CASE WHEN ui.unit_property = 389 THEN 1 ELSE NULL END ) causeLegalEntityOrg,
-                0 AS privateNonPublicOrg,
-                count( CASE WHEN ui.unit_property = 390 THEN 1 ELSE NULL END ) organLegalEntityOrg,
-                count( CASE WHEN ui.unit_property = 391 THEN 1 ELSE NULL END ) societyOrg,
-                0 AS societyNonEntityOrg
-            FROM
-            sys_dept d
-            LEFT JOIN tab_pb_unit_info ui ON d.dept_id = ui.org_id AND ui.del_flag = 0
-            WHERE d.del_flag = 0 AND find_in_set( #{orgId}, d.full_path )
+        SELECT
+        count( CASE WHEN d.orgnize_property IN ( 986, 987, 990, 993, 997, 998, 1000, 1005 ) THEN 1 ELSE NULL END )
+        partyWei,
+        count( CASE WHEN d.orgnize_property IN ( 988, 991, 994, 1001, 1006 ) THEN 1 ELSE NULL END ) partyZBranch,
+        count( CASE WHEN d.orgnize_property IN ( 989, 992, 995, 1002, 1003, 1007, 1008 ) THEN 1 ELSE NULL END )
+        partyBranch,
+        count( CASE WHEN ui.unit_property IN ( 379, 380 ) THEN 1 ELSE NULL END ) streetOrg,
+        count( CASE WHEN ui.unit_property IN ( 381, 383 ) THEN 1 ELSE NULL END ) communityOrg,
+        count( CASE WHEN ui.unit_property = 382 THEN 1 ELSE NULL END ) townshipOrg,
+        count( CASE WHEN ui.unit_property = 384 THEN 1 ELSE NULL END ) villageOrg,
+        count( CASE WHEN ui.unit_property IN ( 386, 387 ) THEN 1 ELSE NULL END ) commonEconomyOrg,
+        count( CASE WHEN ui.unit_property = 388 THEN 1 ELSE NULL END ) unCommonEconomyOrg,
+        count( CASE WHEN ui.unit_property = 389 THEN 1 ELSE NULL END ) causeLegalEntityOrg,
+        0 AS privateNonPublicOrg,
+        count( CASE WHEN ui.unit_property = 390 THEN 1 ELSE NULL END ) organLegalEntityOrg,
+        count( CASE WHEN ui.unit_property = 391 THEN 1 ELSE NULL END ) societyOrg,
+        0 AS societyNonEntityOrg
+        FROM
+        sys_dept d
+        LEFT JOIN tab_pb_unit_info ui ON d.dept_id = ui.org_id AND ui.del_flag = 0
+        WHERE d.del_flag = 0 AND find_in_set( #{orgId}, d.full_path )
         ) t2
     </select>
 
@@ -1021,6 +1028,11 @@
         LEFT JOIN tab_pb_unit_info ui ON d.dept_id = ui.org_id
         LEFT JOIN tab_pb_org_classify oc ON d.dept_id = oc.dept_id AND oc.del_flag = 0
         WHERE d.dept_id = #{deptId}
+    </select>
+
+    <!-- 检查数据是否存在 -->
+    <select id="isExist" parameterType="java.lang.Long" resultType="boolean">
+        SELECT COUNT(1) FROM sys_dept WHERE dept_id = #{deptId}
     </select>
 
 </mapper>

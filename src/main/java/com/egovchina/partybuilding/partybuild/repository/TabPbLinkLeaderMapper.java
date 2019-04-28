@@ -1,7 +1,7 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
-import com.egovchina.partybuilding.partybuild.dto.TabPbLinkLeaderDto;
 import com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader;
+import com.egovchina.partybuilding.partybuild.vo.LinkLeaderVO;
 
 import java.util.List;
 
@@ -22,5 +22,5 @@ public interface TabPbLinkLeaderMapper {
 
     List<TabPbLinkLeader> selectByUserIdAndDeptId(TabPbLinkLeader record);
 
-    List<TabPbLinkLeaderDto> selectTabPbLinkLeaderDtoByDeptId(Long detpId);
+    List<LinkLeaderVO> selectLinkLeaderVoByDeptId(Long detpId);
 }

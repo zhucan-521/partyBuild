@@ -12,9 +12,9 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbPositiveRegistMapp
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.TabPbPositiveRegistService;
-import com.egovchina.partybuilding.partybuild.service.TabPbUserTagService;
-import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.service.UserTagService;
+import com.egovchina.partybuilding.partybuild.entity.SysDept;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.mapper.SysDeptMapper;
 import com.egovchina.partybuilding.partybuild.system.util.UserTagType;
 import com.github.pagehelper.PageHelper;
@@ -43,7 +43,7 @@ public class TabPbPositiveRegistServiceImpl extends ServiceImpl<TabPbPositiveReg
     private SysDeptMapper deptMapper;
 
     @Autowired
-    private TabPbUserTagService tabPbUserTagService;
+    private UserTagService tabPbUserTagService;
 
     @Autowired
     private ITabPbAttachmentService iTabPbAttachmentService;

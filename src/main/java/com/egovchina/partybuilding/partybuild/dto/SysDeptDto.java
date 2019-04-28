@@ -1,7 +1,7 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo;
-import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
+import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

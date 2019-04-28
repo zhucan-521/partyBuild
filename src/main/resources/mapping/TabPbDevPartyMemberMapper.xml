@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbDevPartyMemberMapper">
+
     <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMember">
         <id column="dp_id" jdbcType="BIGINT" property="dpId"/>
         <result column="status" jdbcType="BIGINT" property="status"/>
@@ -37,15 +38,37 @@
         <result column="dept_id" property="deptId"/>
     </resultMap>
 
+    <!-- 通用查询映射结果 -->
+    <resultMap id="UserResultMap" type="com.egovchina.partybuilding.partybuild.entity.SysUser">
+        <id column="user_id" property="userId"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="phone" property="phone"/>
+        <result column="avatar" property="avatar"/>
+        <result column="salt" property="salt"/>
+        <result column="dept_id" property="deptId"/>
+        <result column="manage_dept_id" property="manageDeptId"/>
+        <result column="wx_openid" property="wxOpenid"/>
+        <result column="qq_openid" property="qqOpenid"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="report_org_id" property="reportOrgId"/>
+        <result column="report_org_name" property="reportOrgName"/>
+        <result column="report_org_contactor" property="reportOrgContactor"/>
+        <result column="report_org_phone" property="reportOrgPhone"/>
+        <result column="identity_type" property="identityType"/>
+        <result column="hardship_type" property="hardshipType"/>
+    </resultMap>
+
     <resultMap id="UserIdMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMember">
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
     </resultMap>
 
     <!--发展党员信息-->
-    <resultMap id="PartyUserMap" type="com.egovchina.partybuilding.partybuild.dto.DevPartyUserDto">
+    <resultMap id="PartyUserMap" type="com.egovchina.partybuilding.partybuild.vo.DevPartyVO">
         <result column="dp_id" jdbcType="BIGINT" property="dpId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
-        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="username" jdbcType="VARCHAR" property="userName"/>
         <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
         <result column="gender" jdbcType="BIGINT" property="gender"/>
@@ -67,21 +90,26 @@
     create_userid, create_username, del_flag
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        select
+        SELECT
         <include refid="Base_Column_List"/>
-        from tab_pb_dev_party_member
-        where del_flag='0' and dp_id = #{dpId,jdbcType=BIGINT}
+        FROM
+        tab_pb_dev_party_member
+        WHERE
+        del_flag = '0'
+        AND dp_id = #{dpId,jdbcType=BIGINT}
     </select>
 
     <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
-                SELECT
-            m.*,IFNULL(u.dept_id,u.manage_dept_id) AS dept_id
-            FROM
-                tab_pb_dev_party_member m
+        SELECT
+            m.*,
+            IFNULL( u.dept_id, u.manage_dept_id ) AS dept_id
+        FROM
+            tab_pb_dev_party_member m
             INNER JOIN sys_user u ON m.user_id = u.user_id
             AND u.del_flag = 0
-            WHERE
-            m.del_flag = 0 and m.user_id = #{userId,jdbcType=BIGINT}
+        WHERE
+            m.del_flag = 0
+            AND m.user_id = #{userId,jdbcType=BIGINT}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -270,7 +298,8 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMember">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMember">
         update tab_pb_dev_party_member
         <set>
             <if test="delFlag != null">
@@ -282,26 +311,46 @@
         </set>
         where dp_id = #{dpId,jdbcType=BIGINT}
     </update>
+
     <select id="checkUser" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select user_id from tab_pb_dev_party_member where del_flag= '0' and user_id=#{userId}
     </select>
 
-    <select id="list" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectUserByIdCardNo" parameterType="java.lang.String" resultMap="UserResultMap">
+        select * from sys_user where id_card_no = #{idCardNo} and del_flag = 0 limit 1
+    </select>
+
+    <select id="selectList" parameterType="com.egovchina.partybuilding.partybuild.dto.DevPartyMemberDTO"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from tab_pb_dev_party_member where del_flag=0
+        from tab_pb_dev_party_member where del_flag= 0
         <if test="dpId != null">
-            and dp_id=#{dpId}
+            and dp_id = #{dpId}
         </if>
         <if test="userId != null">
-            and user_id=#{userId}
+            and user_id = #{userId}
         </if>
         <if test="status != null">
-            and status=#{status}
+            and status = #{status}
         </if>
     </select>
 
-    <select id="selectByUserAndStatus" resultMap="UserIdMap" >
+    <update id="deleteByDeptId" parameterType="java.lang.Long">
+        UPDATE tab_pb_dev_party_member SET del_flag='1' WHERE dp_id = #{dpId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateDevStep" parameterType="com.egovchina.partybuilding.partybuild.dto.DevPartyMemberDTO">
+        update tab_pb_dev_party_member
+        <set>
+            <if test="status != null">
+                status = #{status,jdbcType=BIGINT},
+            </if>
+        </set>
+        where dp_id = #{dpId,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByUserAndStatus" resultMap="UserIdMap">
         SELECT
         M.user_id
         FROM
@@ -378,4 +427,5 @@
         M.status DESC,
         M.dp_id DESC
     </select>
+
 </mapper>

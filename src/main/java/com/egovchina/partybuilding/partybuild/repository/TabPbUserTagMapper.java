@@ -1,7 +1,7 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -11,11 +11,13 @@ import java.util.List;
 public interface TabPbUserTagMapper {
     int deleteByPrimaryKey(Long usertagId);
 
-    int deleteByUserIdAndTagType(@Param("userId")Long userId,@Param("tagType") Long tagType);
+    int deleteByUserIdAndTagType(@Param("userId") Long userId, @Param("tagType") Long tagType);
 
     int insert(TabPbUserTag record);
 
     int insertSelective(TabPbUserTag record);
+
+    int insertUserTagDTOSelective(TabPbUserTag tabPbUserTag);
 
     TabPbUserTag selectByPrimaryKey(Long usertagId);
 
@@ -27,6 +29,7 @@ public interface TabPbUserTagMapper {
 
     /**
      * 以字典为主的返回
+     *
      * @param userTag 只有userId有用
      * @return
      */
@@ -34,11 +37,12 @@ public interface TabPbUserTagMapper {
 
     /**
      * 对应的dictId可通过系统-字典管理-用户标签查看对应的标签
+     *
      * @param tagDict 用户标签查看对应的标签
      * @return
      */
     List<SysUser> selectUserByTagDict(Long tagDict);
 
-    boolean exist(@Param("userId")Long userId,@Param("tagType") Long tagType);
+    boolean exist(@Param("userId") Long userId, @Param("tagType") Long tagType);
 
 }

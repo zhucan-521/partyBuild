@@ -1,7 +1,7 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
-import com.egovchina.partybuilding.partybuild.dto.OrganizationUpgradeAndChangeDto;
 import com.egovchina.partybuilding.partybuild.entity.SysDeptUpgradeTemp;
+import com.egovchina.partybuilding.partybuild.vo.OrgUpgradeVO;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -20,5 +20,5 @@ public interface SysDeptUpgradeTempMapper {
 
     int updateByPrimaryKey(SysDeptUpgradeTemp record);
 
-    OrganizationUpgradeAndChangeDto selectByDeptId(Long deptId);
+    OrgUpgradeVO selectOrgUpgradeVOByDeptId(Long deptId);
 }

@@ -12,7 +12,7 @@ import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.system.dto.UserAdminDTO;
 import com.egovchina.partybuilding.partybuild.system.dto.UserDTO;
 import com.egovchina.partybuilding.partybuild.system.entity.SysAccount;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.service.LoginService;
 import com.egovchina.partybuilding.partybuild.system.service.SysAccountService;
 import com.egovchina.partybuilding.partybuild.system.service.SysUserService;

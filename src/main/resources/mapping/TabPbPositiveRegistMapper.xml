@@ -30,7 +30,7 @@
     <result column="version" jdbcType="BIGINT" property="version" />
     <result column="attachment_instance" property="attachmentInstance"/>
     <result column="attachment_description" property="attachmentDescription"/>
-    <collection property="sysUserList" ofType="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
+    <collection property="sysUserList" ofType="com.egovchina.partybuilding.partybuild.entity.SysUser">
       <id column="user_id" property="userId"></id>
       <result column="username" property="username"/>
       <result column="gender" property="gender"/>

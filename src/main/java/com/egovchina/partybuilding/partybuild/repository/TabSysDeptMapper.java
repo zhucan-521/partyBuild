@@ -4,7 +4,7 @@ import com.egovchina.partybuilding.partybuild.dto.PartyBuildingWorkInfoDto;
 import com.egovchina.partybuilding.partybuild.dto.SysDeptDto;
 import com.egovchina.partybuilding.partybuild.dto.SysDeptDtoWithCountInfo;
 import com.egovchina.partybuilding.partybuild.dto.TabDeptPositionDto;
-import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
+import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -90,6 +90,7 @@ public interface TabSysDeptMapper {
 
     /**
      * 统计组织和党员信息
+     *
      * @param orgId
      * @return
      */
@@ -97,8 +98,20 @@ public interface TabSysDeptMapper {
 
     /**
      * 统计党建工作信息
+     *
      * @param deptId
      * @return
      */
     PartyBuildingWorkInfoDto countPartyBuildingWorkInfo(Long deptId);
+
+    /**
+     * desc: 判断数据是否存在
+     *
+     * @param deptId 主键ID
+     * @return boolean
+     * @author FanYanGen
+     * @date 2019/4/24 11:37
+     **/
+    boolean isExist(Long deptId);
+
 }

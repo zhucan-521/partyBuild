@@ -2,7 +2,7 @@ package com.egovchina.partybuilding.partybuild.system.mapper;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.egovchina.partybuilding.partybuild.system.dto.UserAdminDTO;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.vo.UserVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

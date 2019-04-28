@@ -139,7 +139,7 @@
   </delete>-->
 
   <!--根据id修改密码-->
-  <update id="updatePwdById" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysUser">
+  <update id="updatePwdById" parameterType="com.egovchina.partybuilding.partybuild.entity.SysUser">
     update sys_account set password = #{password}, update_userid = #{updateUserid}, update_username = #{updateUsername},
     update_time = #{updateTime} where user_id = #{userId}
   </update>

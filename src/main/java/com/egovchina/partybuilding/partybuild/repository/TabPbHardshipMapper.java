@@ -1,17 +1,21 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbHardship;
+import com.egovchina.partybuilding.partybuild.vo.HardshipPartyVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Created by FanYanGen on 2019/4/22 17:26
+ */
 @Repository
 public interface TabPbHardshipMapper {
+
     int deleteByPrimaryKey(Long hardshipId);
 
     int insert(TabPbHardship record);
-
 
     int insertSelective(TabPbHardship record);
 
@@ -23,13 +27,16 @@ public interface TabPbHardshipMapper {
 
     int updateByPrimaryKey(TabPbHardship record);
 
-    List<TabPbHardship>selectWithConditions(Map<String,Object>conditions);
+    List<HardshipPartyVO> selectWithConditions(Map<String, Object> conditions);
 
-    int updateUsernameById(TabPbHardship userId);
+    int updateUserNameById(TabPbHardship userId);
 
-    TabPbHardship  selectAndDeleteId(Long hardshipId);
+    HardshipPartyVO findByHardshipId(Long hardshipId);
 
-    int deleteId(Long hardshipId);
+    int deleteByHardshipId(Long hardshipId);
 
-    TabPbHardship selectByUserId(Long userId);
+    HardshipPartyVO findByUserId(Long userId);
+
+    int logicDelete(TabPbHardship record);
+
 }

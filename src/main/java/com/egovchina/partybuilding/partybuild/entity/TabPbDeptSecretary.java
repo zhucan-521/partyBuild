@@ -2,7 +2,6 @@ package com.egovchina.partybuilding.partybuild.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.egovchina.partybuilding.partybuild.dto.PunishmentRewardsDto;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

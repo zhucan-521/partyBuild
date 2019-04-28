@@ -4,7 +4,7 @@
 <mapper namespace="com.egovchina.partybuilding.partybuild.system.mapper.SysDeptMapper">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
+	<resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.SysDept">
 		<id column="dept_id" property="deptId"/>
 		<result column="name" property="name"/>
 		<result column="order_num" property="orderNum"/>
@@ -19,7 +19,7 @@
     </sql>
 
 	<!--关联查询组织列表-->
-	<select id="selectDeptDtoList" resultType="com.egovchina.partybuilding.partybuild.system.entity.SysDept">
+	<select id="selectDeptDtoList" resultType="com.egovchina.partybuilding.partybuild.entity.SysDept">
 		SELECT
 			t.*
 		FROM

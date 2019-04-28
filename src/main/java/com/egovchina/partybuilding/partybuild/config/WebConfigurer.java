@@ -2,13 +2,18 @@ package com.egovchina.partybuilding.partybuild.config;
 
 import com.egovchina.partybuilding.common.config.AuthInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,7 +25,6 @@ public class WebConfigurer implements WebMvcConfigurer {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    //添加拦截器
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor(redisTemplate)).excludePathPatterns(getExcludePath()).order(1);
@@ -34,24 +38,24 @@ public class WebConfigurer implements WebMvcConfigurer {
     private List<String> getExcludePath() {
         List<String> excludeList = new ArrayList<>();
         excludeList.add("/error");
-        excludeList.add("/user/login");
-        excludeList.add("/account/login");
-        excludeList.add("/Party/sign");
-        excludeList.add("/teachers/export");
+        excludeList.add("/actuator/**");
         excludeList.add("/v2/api-docs/**");
         return excludeList;
     }
 
-    /**
-     * 设置支持跨域
-     * @param registry
-     */
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowCredentials(true)
-                .allowedMethods("GET", "POST", "DELETE", "PUT","PATCH")
-                .maxAge(3600);
+    private CorsConfiguration addCorsConfig() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedOrigins(Collections.singletonList("*"));
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        return corsConfiguration;
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource uccs = new UrlBasedCorsConfigurationSource();
+        uccs.registerCorsConfiguration("/**", addCorsConfig());
+        return new CorsFilter(uccs);
     }
 }

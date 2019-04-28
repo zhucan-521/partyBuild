@@ -11,8 +11,7 @@ import com.egovchina.partybuilding.partybuild.dto.*;
 import com.egovchina.partybuilding.partybuild.entity.*;
 import com.egovchina.partybuilding.partybuild.repository.*;
 import com.egovchina.partybuilding.partybuild.service.PartyInformationService;
-import com.egovchina.partybuilding.partybuild.service.TabPbUserTagService;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.service.UserTagService;
 import com.egovchina.partybuilding.partybuild.system.mapper.SysUserMapper;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageHelper;
@@ -48,7 +47,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     TabPbFlowInMapper tabPbFlowInMapper;
 
     @Autowired
-    TabPbUserTagService tabPbUserTagService;
+    UserTagService userTagService;
 
     @Autowired
     private TabPbMemberReduceListMapper reduceListMapper;
@@ -113,7 +112,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             tabSysUserMapper.insertSelective(sys);
             //新增或者删除标签信息
             if(partyInfoDTO.getParty().getUserTags()!=null){
-                this.tabPbUserTagService.updateUserTagByTagType(parseTabPbUserTag(partyInfoDTO.getParty().getUserTags()));
+                this.userTagService.updateUserTagByTagType(parseTabPbUserTag(partyInfoDTO.getParty().getUserTags()));
             }
             int effected = 0;
             if(partyInfoDTO.getEducations()!=null&& partyInfoDTO.getEducations().size()>0){
@@ -165,7 +164,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             effected += tabSysUserMapper.updateByPrimaryKeySelective(sys);
             //新增或者删除标签信息
             if(partyInfoDTO.getParty().getUserTags()!=null){
-                this.tabPbUserTagService.updateUserTagByTagType(parseTabPbUserTag(partyInfoDTO.getParty().getUserTags()));
+                this.userTagService.updateUserTagByTagType(parseTabPbUserTag(partyInfoDTO.getParty().getUserTags()));
             }
 
             //新增学历信息

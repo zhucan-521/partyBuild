@@ -79,6 +79,75 @@
         <result column="party_buiding_status" jdbcType="BIGINT" property="partyBuidingStatus"/>
         <result column="party_member_count" jdbcType="BIGINT" property="partyMemberCount"/>
     </resultMap>
+    <resultMap id="UnitInfoVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.UnitInfoVO">
+        <id column="unit_id" jdbcType="BIGINT" property="unitId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
+        <result column="unit_code" jdbcType="VARCHAR" property="unitCode"/>
+        <result column="belong_relation" jdbcType="BIGINT" property="belongRelation"/>
+        <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
+        <result column="industry" jdbcType="BIGINT" property="industry"/>
+        <result column="economic_type" jdbcType="BIGINT" property="economicType"/>
+        <result column="ent_scale" jdbcType="BIGINT" property="entScale"/>
+        <result column="ent_type" jdbcType="BIGINT" property="entType"/>
+        <result column="unit_address" jdbcType="VARCHAR" property="unitAddress"/>
+        <result column="if_create_service" jdbcType="TINYINT" property="ifCreateService"/>
+        <result column="if_create_volunt_team" jdbcType="TINYINT" property="ifCreateVoluntTeam"/>
+        <result column="if_instruction_contact" jdbcType="TINYINT" property="ifInstructionContact"/>
+        <result column="instructor_count" jdbcType="BIGINT" property="instructorCount"/>
+        <result column="if_reorganization" jdbcType="TINYINT" property="ifReorganization"/>
+        <result column="corp_is_party_member" jdbcType="TINYINT" property="corpIsPartyMember"/>
+        <result column="corp_as_group_secretary" jdbcType="TINYINT" property="corpAsGroupSecretary"/>
+        <result column="corp_orgnize_status" jdbcType="BIGINT" property="corpOrgnizeStatus"/>
+        <result column="gover_orgnize_status" jdbcType="BIGINT" property="goverOrgnizeStatus"/>
+        <result column="city_street_type" jdbcType="BIGINT" property="cityStreetType"/>
+        <result column="intermediary_type" jdbcType="BIGINT" property="intermediaryType"/>
+        <result column="positive_count" jdbcType="BIGINT" property="positiveCount"/>
+        <result column="positive_count_35" jdbcType="BIGINT" property="positiveCount35"/>
+        <result column="work_positive_count" jdbcType="BIGINT" property="workPositiveCount"/>
+        <result column="tech_positive_count" jdbcType="BIGINT" property="techPositiveCount"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="contact_number" jdbcType="VARCHAR" property="contactNumber"/>
+        <result column="number_of_household" jdbcType="BIGINT" property="numberOfHousehold"/>
+        <result column="household_population" jdbcType="BIGINT" property="householdPopulation"/>
+        <result column="permanent_population" jdbcType="BIGINT" property="permanentPopulation"/>
+        <result column="first_master_name" jdbcType="VARCHAR" property="firstMasterName"/>
+        <result column="first_master_id_card" jdbcType="VARCHAR" property="firstMasterIdCard"/>
+        <result column="first_master_hold_start_time" jdbcType="TIMESTAMP" property="firstMasterHoldStartTime"/>
+        <result column="first_master_term_of_office" jdbcType="BIGINT" property="firstMasterTermOfOffice"/>
+        <result column="if_superior_connection" jdbcType="TINYINT" property="ifSuperiorConnection"/>
+        <result column="if_frontier_ethnic_area" jdbcType="TINYINT" property="ifFrontierEthnicArea"/>
+        <result column="work_count" jdbcType="BIGINT" property="workCount"/>
+        <result column="if_has_two_db_one_wy" jdbcType="TINYINT" property="ifHasTwoDbOneWy"/>
+        <result column="if_builded_union" jdbcType="TINYINT" property="ifBuildedUnion"/>
+        <result column="union_principal_is_party_member" jdbcType="TINYINT" property="unionPrincipalIsPartyMember"/>
+        <result column="if_builded_gqt" jdbcType="TINYINT" property="ifBuildedGqt"/>
+        <result column="gqt_principal_is_party_member" jdbcType="TINYINT" property="gqtPrincipalIsPartyMember"/>
+        <result column="if_builded_women_group" jdbcType="TINYINT" property="ifBuildedWomenGroup"/>
+        <result column="women_group_principal_is_party_member" jdbcType="TINYINT"
+                property="womenGroupPrincipalIsPartyMember"/>
+        <result column="natural_village_count" jdbcType="BIGINT" property="naturalVillageCount"/>
+        <result column="group_annual_income" jdbcType="BIGINT" property="groupAnnualIncome"/>
+        <result column="if_build_card_poor_village" jdbcType="TINYINT" property="ifBuildCardPoorVillage"/>
+        <result column="if_builded_village_committee" jdbcType="TINYINT" property="ifBuildedVillageCommittee"/>
+        <result column="structure_village_count" jdbcType="BIGINT" property="structureVillageCount"/>
+        <result column="community_village_count" jdbcType="BIGINT" property="communityVillageCount"/>
+        <result column="last_year_village_per_capita_income" jdbcType="BIGINT"
+                property="lastYearVillagePerCapitaIncome"/>
+        <result column="last_year_avg_social_wage" jdbcType="BIGINT" property="lastYearAvgSocialWage"/>
+        <result column="unit_party_count" jdbcType="BIGINT" property="unitPartyCount"/>
+        <result column="legal_person_is_party_member" jdbcType="TINYINT" property="legalPersonIsPartyMember"/>
+        <result column="unit_legal_person" jdbcType="BIGINT" property="unitLegalPerson"/>
+        <result column="unit_phone" jdbcType="VARCHAR" property="unitPhone"/>
+        <result column="if_legal_unit" jdbcType="TINYINT" property="ifLegalUnit"/>
+        <result column="unit_register_type" jdbcType="BIGINT" property="unitRegisterType"/>
+        <result column="social_org_type" jdbcType="BIGINT" property="socialOrgType"/>
+        <result column="cause_unit_type" jdbcType="BIGINT" property="causeUnitType"/>
+        <result column="organ_unit_type" jdbcType="BIGINT" property="organUnitType"/>
+        <result column="party_buiding_status" jdbcType="BIGINT" property="partyBuidingStatus"/>
+        <result column="party_member_count" jdbcType="BIGINT" property="partyMemberCount"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
         unit_id, org_id, unit_name, unit_code, belong_relation, unit_property, industry,
         economic_type, ent_scale, ent_type, unit_address, if_create_service, if_create_volunt_team,
@@ -96,7 +165,26 @@
         last_year_avg_social_wage, unit_party_count, legal_person_is_party_member, unit_legal_person,
         unit_phone, if_legal_unit, unit_register_type, social_org_type, cause_unit_type, organ_unit_type,
         party_buiding_status,party_member_count
-  </sql>
+    </sql>
+
+    <sql id="Unit_Info_VO_Column_List">
+        unit_id, org_id, unit_name, unit_code, belong_relation, unit_property, industry,
+        economic_type, ent_scale, ent_type, unit_address, if_create_service, if_create_volunt_team,
+        if_instruction_contact, instructor_count, if_reorganization, corp_is_party_member,
+        corp_as_group_secretary, corp_orgnize_status, gover_orgnize_status, city_street_type,
+        intermediary_type, positive_count, positive_count_35, work_positive_count, tech_positive_count,
+        description,contact_number, number_of_household,
+        household_population, permanent_population, first_master_name, first_master_id_card,
+        first_master_hold_start_time, first_master_term_of_office, if_superior_connection,
+        if_frontier_ethnic_area, work_count, if_has_two_db_one_wy, if_builded_union, union_principal_is_party_member,
+        if_builded_gqt, gqt_principal_is_party_member, if_builded_women_group, women_group_principal_is_party_member,
+        natural_village_count, group_annual_income, if_build_card_poor_village, if_builded_village_committee,
+        structure_village_count, community_village_count, last_year_village_per_capita_income,
+        last_year_avg_social_wage, unit_party_count, legal_person_is_party_member, unit_legal_person,
+        unit_phone, if_legal_unit, unit_register_type, social_org_type, cause_unit_type, organ_unit_type,
+        party_buiding_status,party_member_count
+    </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -926,6 +1014,13 @@
         select * from tab_pb_unit_info where org_id = #{orgId} and del_flag = 0
     </select>
 
+    <!--根据组织ID查询-->
+    <select id="selectUnitInfoByOrgId" parameterType="java.lang.Long" resultMap="UnitInfoVOResultMap">
+        select
+        <include refid="Unit_Info_VO_Column_List"/>
+        from tab_pb_unit_info where org_id = #{orgId} and del_flag = 0
+    </select>
+
     <!--批量逻辑删除-->
     <update id="batchLogicDeleteById" parameterType="java.util.List">
         update tab_pb_unit_info set del_flag = 1 where unit_id in
@@ -935,6 +1030,23 @@
     </update>
 
     <select id="selectByUnitName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Unit_Info_VO_Column_List"/>
+        from tab_pb_unit_info
+        where del_flag = 0
+        <if test="unitName != null and unitName != ''">
+            AND unit_name like concat(concat('%',#{unitName,jdbcType=VARCHAR}),'%')
+        </if>
+    </select>
+
+    <select id="selectUnitInfoByUnitId" parameterType="java.lang.Long" resultMap="UnitInfoVOResultMap">
+        select
+        <include refid="Unit_Info_VO_Column_List"/>
+        from tab_pb_unit_info
+        where unit_id = #{unitId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectUnitInfoByUnitName" parameterType="java.lang.String" resultMap="UnitInfoVOResultMap">
         select * from tab_pb_unit_info
         where del_flag = 0
         <if test="unitName != null and unitName != ''">

@@ -2,7 +2,7 @@ package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.dto.TabPbMsgUpInfoDto;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 
 import java.util.List;
 

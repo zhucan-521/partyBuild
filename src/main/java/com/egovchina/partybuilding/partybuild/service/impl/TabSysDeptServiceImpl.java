@@ -15,9 +15,9 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbOrgClassifyMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbUnitInfoMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
-import com.egovchina.partybuilding.partybuild.service.TabPbOrgnizeChangeService;
+import com.egovchina.partybuilding.partybuild.service.OrgChangeService;
 import com.egovchina.partybuilding.partybuild.service.TabSysDeptService;
-import com.egovchina.partybuilding.partybuild.system.entity.SysDept;
+import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class TabSysDeptServiceImpl implements TabSysDeptService {
     @Autowired
     private TabPbOrgClassifyMapper tabPbOrgClassifyMapper;
     @Autowired
-    private TabPbOrgnizeChangeService tabPbOrgnizeChangeService;
+    private OrgChangeService OrgChangeService;
     @Autowired
     private ITabPbAttachmentService iTabPbAttachmentService;
 
@@ -137,7 +137,8 @@ public class TabSysDeptServiceImpl implements TabSysDeptService {
         tabPbOrgnizeChange.setOrgnizeName(sysDeptDto.getName());
         tabPbOrgnizeChange.setFileNumber(sysDeptDto.getFoundedFileNumber());
         tabPbOrgnizeChange.setChangeType(59525L);
-        tabPbOrgnizeChangeService.insertSelective(tabPbOrgnizeChange);
+        PaddingBaseFieldUtil.paddingBaseFiled(tabPbOrgnizeChange);
+        OrgChangeService.insertSelective(tabPbOrgnizeChange);
     }
 
     @PaddingBaseField

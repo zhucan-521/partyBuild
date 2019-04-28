@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbHardshipMapper">
+
     <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
         <id column="hardship_id" jdbcType="BIGINT" property="hardshipId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
@@ -25,17 +26,39 @@
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
         <result column="health" jdbcType="BIGINT" property="health"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
+
+    <!-- 返回Vo数据集合 -->
+    <resultMap id="HardshipPartyResultMap" type="com.egovchina.partybuilding.partybuild.vo.HardshipPartyVO">
+        <id column="hardship_id" jdbcType="BIGINT" property="hardshipId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="hardship_type" jdbcType="VARCHAR" property="hardshipType"/>
+        <result column="if_allowances" jdbcType="BIGINT" property="ifAllowances"/>
+        <result column="if_pension" jdbcType="BIGINT" property="ifPension"/>
+        <result column="if_old_member" jdbcType="TINYINT" property="ifOldMember"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="difficulty_level" jdbcType="BIGINT" property="difficultyLevel"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="health" jdbcType="BIGINT" property="health"/>
         <result column="implementation" jdbcType="LONGVARCHAR" property="implementation"/>
     </resultMap>
+
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
+        <result column="implementation" jdbcType="LONGVARCHAR" property="implementation"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
-    h.hardship_id, h.org_id, h.user_id, h.hardship_type, h.if_allowances, h.if_pension, h.if_old_member,
-    h.ebl_flag, h.del_flag, h.order_num, h.description, h.create_time, h.create_userid, h.create_username, h.
-    update_time, h.update_userid, h.update_username, h.version, h.health
-  </sql>
+        h.hardship_id, h.org_id, h.user_id, h.hardship_type, h.if_allowances, h.if_pension, h.if_old_member,
+        h.ebl_flag, h.del_flag, h.order_num, h.description, h.create_time, h.create_userid, h.create_username, h.
+        update_time, h.update_userid, h.update_username, h.version, h.health
+    </sql>
+
     <sql id="Blob_Column_List">
-    h.implementation
-  </sql>
+        h.implementation
+    </sql>
+
     <sql id="Base_WhereCase_List">
         <if test="hardshipId != null">
             AND h.hardship_id = #{hardshipId}
@@ -44,7 +67,7 @@
             AND h.org_id = #{orgId}
         </if>
         <if test="userId != null">
-            AND  h.user_id = #{userId}
+            AND h.user_id = #{userId}
         </if>
         <if test="hardshipType != null">
             AND h.hardship_type = #{hardshipType}
@@ -65,10 +88,10 @@
             AND h.del_flag = #{delFlag}
         </if>
         <if test="orderNum != null">
-            AND  h.order_num = #{orderNum}
+            AND h.order_num = #{orderNum}
         </if>
         <if test="description != null">
-            AND  h.description = #{description}
+            AND h.description = #{description}
         </if>
         <if test="createTime != null">
             AND h.create_time = #{createTime}
@@ -95,6 +118,7 @@
             AND h.implementation = #{implementation}
         </if>
     </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
@@ -107,27 +131,31 @@
         left join sys_dept d on h.org_id = d.dept_id
         where h.hardship_id = #{hardshipId,jdbcType=BIGINT}
     </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from tab_pb_hardship
-    where hardship_id = #{hardshipId,jdbcType=BIGINT}
-  </delete>
+        delete from tab_pb_hardship
+        where hardship_id = #{hardshipId,jdbcType=BIGINT}
+    </delete>
+
     <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
-    insert into tab_pb_hardship (hardship_id, org_id, user_id, 
-      hardship_type, if_allowances, if_pension, 
-      if_old_member, ebl_flag, del_flag, 
-      order_num, description, create_time, 
-      create_userid, create_username, update_time, 
-      update_userid, update_username, version, 
-      implementation)
-    values (#{hardshipId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
-      #{hardshipType,jdbcType=VARCHAR}, #{ifAllowances,jdbcType=BIGINT}, #{ifPension,jdbcType=BIGINT},
-      #{ifOldMember,jdbcType=TINYINT}, #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, 
-      #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, 
-      #{implementation,jdbcType=LONGVARCHAR})
-  </insert>
-    <insert id="insertSelective"  useGeneratedKeys="true" keyProperty="hardshipId"  parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
+        insert into tab_pb_hardship (hardship_id, org_id, user_id,
+          hardship_type, if_allowances, if_pension,
+          if_old_member, ebl_flag, del_flag,
+          order_num, description, create_time,
+          create_userid, create_username, update_time,
+          update_userid, update_username, version,
+          implementation)
+        values (#{hardshipId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
+          #{hardshipType,jdbcType=VARCHAR}, #{ifAllowances,jdbcType=BIGINT}, #{ifPension,jdbcType=BIGINT},
+          #{ifOldMember,jdbcType=TINYINT}, #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR},
+          #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+          #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+          #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT},
+          #{implementation,jdbcType=LONGVARCHAR})
+    </insert>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="hardshipId"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
         insert into tab_pb_hardship
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="hardshipId != null">
@@ -190,7 +218,7 @@
             <if test="difficultyLevel !=null">
                 difficulty_level,
             </if>
-            <if test="health != null " >
+            <if test="health != null ">
                 health
             </if>
         </trim>
@@ -253,22 +281,18 @@
                 #{implementation,jdbcType=LONGVARCHAR},
             </if>
             <if test="difficultyLevel != null">
-                 #{difficultyLevel,jdbcType=BIGINT},
+                #{difficultyLevel,jdbcType=BIGINT},
             </if>
-            <if test="health != null " >
-               #{health,jdbcType=BIGINT}
+            <if test="health != null ">
+                #{health,jdbcType=BIGINT}
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
+
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
         update tab_pb_hardship
         <set>
-            <if test="orgId != null">
-                org_id = #{orgId,jdbcType=BIGINT},
-            </if>
-            <if test="userId != null">
-                user_id = #{userId,jdbcType=BIGINT},
-            </if>
             <if test="hardshipType != null">
                 hardship_type = #{hardshipType,jdbcType=VARCHAR},
             </if>
@@ -318,94 +342,99 @@
                 implementation = #{implementation,jdbcType=LONGVARCHAR},
             </if>
             <if test="difficultyLevel !=null">
-                difficulty_level=#{difficultyLevel,jdbcType=BIGINT},
+                difficulty_level= #{difficultyLevel,jdbcType=BIGINT},
             </if>
-            <if test="health != null " >
-                health=#{health,jdbcType=BIGINT}
+            <if test="health != null ">
+                health= #{health,jdbcType=BIGINT}
             </if>
         </set>
         where hardship_id = #{hardshipId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
-    update tab_pb_hardship
-    set org_id = #{orgId,jdbcType=BIGINT},
-      user_id = #{userId,jdbcType=BIGINT},
-      hardship_type = #{hardshipType,jdbcType=VARCHAR},
-      if_allowances = #{ifAllowances,jdbcType=BIGINT},
-      if_pension = #{ifPension,jdbcType=BIGINT},
-      if_old_member = #{ifOldMember,jdbcType=TINYINT},
-      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
-      del_flag = #{delFlag,jdbcType=VARCHAR},
-      order_num = #{orderNum,jdbcType=BIGINT},
-      description = #{description,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_userid = #{createUserid,jdbcType=BIGINT},
-      create_username = #{createUsername,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_userid = #{updateUserid,jdbcType=BIGINT},
-      update_username = #{updateUsername,jdbcType=VARCHAR},
-      version = #{version,jdbcType=BIGINT},
-      implementation = #{implementation,jdbcType=LONGVARCHAR}
-      health =#{health}
-    where hardship_id = #{hardshipId,jdbcType=BIGINT}
+
+    <update id="updateByPrimaryKeyWithBLOBs"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
+        update tab_pb_hardship
+        set org_id = #{orgId,jdbcType=BIGINT},
+          user_id = #{userId,jdbcType=BIGINT},
+          hardship_type = #{hardshipType,jdbcType=VARCHAR},
+          if_allowances = #{ifAllowances,jdbcType=BIGINT},
+          if_pension = #{ifPension,jdbcType=BIGINT},
+          if_old_member = #{ifOldMember,jdbcType=TINYINT},
+          ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+          del_flag = #{delFlag,jdbcType=VARCHAR},
+          order_num = #{orderNum,jdbcType=BIGINT},
+          description = #{description,jdbcType=VARCHAR},
+          create_time = #{createTime,jdbcType=TIMESTAMP},
+          create_userid = #{createUserid,jdbcType=BIGINT},
+          create_username = #{createUsername,jdbcType=VARCHAR},
+          update_time = #{updateTime,jdbcType=TIMESTAMP},
+          update_userid = #{updateUserid,jdbcType=BIGINT},
+          update_username = #{updateUsername,jdbcType=VARCHAR},
+          version = #{version,jdbcType=BIGINT},
+          implementation = #{implementation,jdbcType=LONGVARCHAR}
+          health =#{health}
+        where hardship_id = #{hardshipId,jdbcType=BIGINT}
   </update>
+
     <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
-    update tab_pb_hardship
-    set org_id = #{orgId,jdbcType=BIGINT},
-      user_id = #{userId,jdbcType=BIGINT},
-      hardship_type = #{hardshipType,jdbcType=VARCHAR},
-      if_allowances = #{ifAllowances,jdbcType=BIGINT},
-      if_pension = #{ifPension,jdbcType=BIGINT},
-      if_old_member = #{ifOldMember,jdbcType=TINYINT},
-      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
-      del_flag = #{delFlag,jdbcType=VARCHAR},
-      order_num = #{orderNum,jdbcType=BIGINT},
-      description = #{description,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_userid = #{createUserid,jdbcType=BIGINT},
-      create_username = #{createUsername,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_userid = #{updateUserid,jdbcType=BIGINT},
-      update_username = #{updateUsername,jdbcType=VARCHAR},
-      version = #{version,jdbcType=BIGINT}
-    where hardship_id = #{hardshipId,jdbcType=BIGINT}
-  </update>
-    <!--根据条件查询-->
-    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="ResultMapWithBLOBs">
+        update tab_pb_hardship
+        set org_id = #{orgId,jdbcType=BIGINT},
+          user_id = #{userId,jdbcType=BIGINT},
+          hardship_type = #{hardshipType,jdbcType=VARCHAR},
+          if_allowances = #{ifAllowances,jdbcType=BIGINT},
+          if_pension = #{ifPension,jdbcType=BIGINT},
+          if_old_member = #{ifOldMember,jdbcType=TINYINT},
+          ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+          del_flag = #{delFlag,jdbcType=VARCHAR},
+          order_num = #{orderNum,jdbcType=BIGINT},
+          description = #{description,jdbcType=VARCHAR},
+          create_time = #{createTime,jdbcType=TIMESTAMP},
+          create_userid = #{createUserid,jdbcType=BIGINT},
+          create_username = #{createUsername,jdbcType=VARCHAR},
+          update_time = #{updateTime,jdbcType=TIMESTAMP},
+          update_userid = #{updateUserid,jdbcType=BIGINT},
+          update_username = #{updateUsername,jdbcType=VARCHAR},
+          version = #{version,jdbcType=BIGINT}
+        where hardship_id = #{hardshipId,jdbcType=BIGINT}
+    </update>
+
+    <!-- 根据条件组合查询 -->
+    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="HardshipPartyResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         ,
-        <include refid="Blob_Column_List" />
+        <include refid="Blob_Column_List"/>
         , u.realname AS username
         ,u.user_id
         ,d.name as org_name
         ,h.difficulty_level
         from tab_pb_hardship h left join sys_user u on h.user_id = u.user_id
-               left join sys_dept d on h.org_id =d.dept_id
-       <where>
-              h.del_flag=0
-           <if test="username != null and username != ''">
-             and u.realname LIKE CONCAT('%',#{username},'%')
-           </if>
-           <if test="hardshipType !=null and hardshipType !=''">
-               and hardship_type  like CONCAT('%',#{hardshipType},'%')
-           </if>
-           <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
-           <choose>
-               <when test="orgRange == 1">
-                   AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
-               </when>
-               <when test="orgRange == 2">
-                   AND find_in_set(#{rangeDeptId}, d.full_path)
-               </when>
-               <otherwise>
-                   AND d.dept_id = #{rangeDeptId}
-               </otherwise>
-           </choose>
-       </where>
+        left join sys_dept d on h.org_id = d.dept_id
+        <where>
+            h.del_flag=0
+            <if test="username != null and username != ''">
+                and u.realname LIKE CONCAT('%',#{username},'%')
+            </if>
+            <if test="hardshipType !=null and hardshipType !=''">
+                and hardship_type like CONCAT('%',#{hardshipType},'%')
+            </if>
+            <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+            <choose>
+                <when test="orgRange == 1">
+                    AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{rangeDeptId}, d.full_path)
+                </when>
+                <otherwise>
+                    AND d.dept_id = #{rangeDeptId}
+                </otherwise>
+            </choose>
+        </where>
     </select>
-    
-    <select id="selectAndDeleteId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+
+    <!-- 根据主键ID查询 -->
+    <select id="findByHardshipId" parameterType="java.lang.Long" resultMap="HardshipPartyResultMap">
      select
       h.* ,
       u.realname AS username,
@@ -413,22 +442,33 @@
       from tab_pb_hardship h
       left join sys_user u on h.user_id = u.user_id
       left join sys_dept d on h.org_id = d.dept_id
-      where h.hardship_Id = #{hardshipId} AND h.del_flag=0
+      where h.hardship_Id = #{hardshipId} AND h.del_flag = 0
     </select>
 
-    <!--修改用户表的用户名-->
-    <update id="updateUsernameById" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
+    <!-- 根据用户ID修改用户名 -->
+    <update id="updateUserNameById" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
         update sys_user set username = #{username} where user_id = #{userId}
     </update>
 
-
-    <update id="deleteId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship" >
-        update tab_pb_hardship set del_flag=1 where hardship_id = #{hardshipId,jdbcType=BIGINT}
+    <!-- 根据主键ID逻辑删除 -->
+    <update id="deleteByHardshipId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
+        update tab_pb_hardship set del_flag= 1 where hardship_id = #{hardshipId,jdbcType=BIGINT}
     </update>
 
-
-    <!--根据userid查询用户是否存在-->
-    <select id="selectByUserId"  parameterType="java.lang.Long" resultMap="BaseResultMap">
-         select *from tab_pb_hardship where user_id= #{userId,jdbcType=BIGINT} and  del_flag =0
+    <!-- 根据用户ID查询实体 -->
+    <select id="findByUserId" parameterType="java.lang.Long" resultMap="HardshipPartyResultMap">
+         select * from tab_pb_hardship where user_id= #{userId,jdbcType=BIGINT} and del_flag = 0
     </select>
+
+    <!-- 逻辑删除数据 -->
+    <update id="logicDelete" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
+        update tab_pb_hardship
+        set del_flag = #{delFlag,jdbcType=VARCHAR},
+          update_time = #{updateTime,jdbcType=TIMESTAMP},
+          update_userid = #{updateUserid,jdbcType=BIGINT},
+          update_username = #{updateUsername,jdbcType=VARCHAR},
+          version = #{version,jdbcType=BIGINT}
+        where hardship_id = #{hardshipId,jdbcType=BIGINT}
+    </update>
+
 </mapper>

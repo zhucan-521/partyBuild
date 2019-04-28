@@ -1,28 +1,52 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
-@ApiModel("标签DTO实体")
+/**
+ * @author create by GuanYingxin on 2019/4/22 20:40
+ * @description
+ */
+@ApiModel("党员标记")
 @Data
+@Accessors(chain = true)
 public class UserTagDTO {
 
-    @ApiModelProperty(value = "字典id")
-    @TableField(exist = false)
-    private Integer id;
-
+    @ApiModelProperty
     private Long usertagId;
 
-    @NotNull(message = "标签用户主键不能为空!")
+    @ApiModelProperty("用户ID")
+    @NotNull
     private Long userId;
 
-    @NotNull(message = "标签类型不能为空!")
-    @ApiModelProperty(value = "用户标签字典Id")
+    @ApiModelProperty(value = "用户标签字典Id 码表值 USERTAG")
+    @NotNull
     private Long tagType;
+
+    @ApiModelProperty("创建时间")
+    private Date createTime;
+
+    @ApiModelProperty("创建者id")
+    private Long createUserid;
+
+    @ApiModelProperty("创建者名称")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private String createUsername;
+
+    @ApiModelProperty("更新时间")
+    private Date updateTime;
+
+    @ApiModelProperty("更新用户id")
+    private Long updateUserid;
+
+    @ApiModelProperty("更新用户名称")
+    private String updateUsername;
 }

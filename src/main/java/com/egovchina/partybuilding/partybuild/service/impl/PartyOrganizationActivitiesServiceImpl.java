@@ -16,7 +16,7 @@ import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.PartyOrganizationActivitiesService;
 import com.egovchina.partybuilding.partybuild.service.TabPbActivitiesService;
 import com.egovchina.partybuilding.partybuild.service.TabSysDeptService;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.github.pagehelper.PageHelper;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;

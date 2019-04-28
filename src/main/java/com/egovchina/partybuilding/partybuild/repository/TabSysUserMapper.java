@@ -4,12 +4,9 @@ package com.egovchina.partybuilding.partybuild.repository;
 import com.egovchina.partybuilding.partybuild.dto.Personnel;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
 import com.egovchina.partybuilding.partybuild.dto.UserDeptPositiveDto;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.entity.SysUserQueryBean;
-import com.egovchina.partybuilding.partybuild.vo.PartyMemberInformationVO;
-import com.egovchina.partybuilding.partybuild.vo.PartyMemberVO;
-import com.egovchina.partybuilding.partybuild.vo.PersonnelVO;
-import com.egovchina.partybuilding.partybuild.vo.SysUserVO;
+import com.egovchina.partybuilding.partybuild.vo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -72,7 +69,7 @@ public interface TabSysUserMapper {
      * @param userId
      * @return
      */
-    UserDeptPositiveDto selectUserDeptPositiveByUserId(Long userId);
+    UserDeptPositionVO selectUserDeptPositionVOByUserId(Long userId);
 
     /**
      * 根据组织id 获得该组织连接领导列表
@@ -118,7 +115,7 @@ public interface TabSysUserMapper {
      * @param deptId
      * @return
      */
-    List<Personnel> getAllUserByDeptId(@Param("deptId") Long deptId);
+    List<DirectPartyMemberVO> selectDirectPartyMemberVOByDeptId(@Param("deptId") Long deptId);
 
     void updateNoPoor(Long userId);
 
