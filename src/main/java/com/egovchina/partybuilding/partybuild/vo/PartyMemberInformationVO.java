@@ -46,7 +46,7 @@ public class PartyMemberInformationVO {
     private String idCardNo;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     @ApiModelProperty(value = "入党时间、预备党员时间")
     private Date joinTime;
 

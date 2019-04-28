@@ -25,6 +25,7 @@ public class PartyDTO {
     private Integer userId;
 
     @ApiModelProperty(value = "人员类别 码表值 RYLB",required = true)
+    @NotNull(message = "人员类别不能为空")
     private Long identityType;
 
     @ApiModelProperty(value = "申请人姓名",required = true)

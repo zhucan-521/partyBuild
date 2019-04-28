@@ -49,7 +49,6 @@ public class PbRewardsAndPunishmentsServiceImpl implements RewardsAndPunishments
         TabPbPunishment tabPbPunishment =BeanUtil.copyPropertiesAndPaddingBaseField(punishmentDTO,TabPbPunishment.class,true,false);
         int insertRow = tabPbPunishmentMapper.insertSelective(tabPbPunishment);
         if (insertRow > 0) {
-            PaddingBaseFieldUtil.paddingBaseFiled(punishmentDTO.getAttachments());
             insertRow += tabPbAttachmentService.intelligentOperation( punishmentDTO.getAttachments(), tabPbPunishment.getPunishmentId(), AttachmentType.PUNISHMENT);
         }
         return insertRow;

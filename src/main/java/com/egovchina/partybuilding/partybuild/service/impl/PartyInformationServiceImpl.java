@@ -112,7 +112,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             tabSysUserMapper.insertSelective(sys);
             //新增或者删除标签信息
             if(partyInfoDTO.getParty().getUserTags()!=null){
-                this.userTagService.updateUserTagByTagType(parseTabPbUserTag(partyInfoDTO.getParty().getUserTags()));
+                this.userTagService.updateUserTagByTagType(BeanUtil.copyListPropertiesAndPaddingBaseField(partyInfoDTO.getParty().getUserTags(),TabPbUserTag.class,true,true));
             }
             int effected = 0;
             if(partyInfoDTO.getEducations()!=null&& partyInfoDTO.getEducations().size()>0){
@@ -120,39 +120,27 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 partyInfoDTO.getEducations().forEach(education -> {
                     education.setUserId(sys.getUserId().longValue());
                 });
-                effected += tabPbPartyEducationMapper.batchInsert(parseObject(partyInfoDTO.getEducations(),TabPbPartyEducation.class,false));
+                effected += tabPbPartyEducationMapper.batchInsert(BeanUtil.copyListPropertiesAndPaddingBaseField(partyInfoDTO.getEducations(),TabPbPartyEducation.class,true,false));
             }
             if(partyInfoDTO.getJobTitles()!=null&& partyInfoDTO.getJobTitles().size()>0){
                 //赋值主键
                 partyInfoDTO.getJobTitles().forEach(job -> {
                     job.setUserId(sys.getUserId().longValue());
                 });
-                effected += tabPbPartyJobTitleMapper.batchInsert(parseObject(partyInfoDTO.getJobTitles(),TabPbPartyJobTitle.class,false));
+                effected += tabPbPartyJobTitleMapper.batchInsert(BeanUtil.copyListPropertiesAndPaddingBaseField(partyInfoDTO.getJobTitles(),TabPbPartyJobTitle.class,true,false));
             }
              if(partyInfoDTO.getWorks()!=null&& partyInfoDTO.getWorks().size()>0){
                  //赋值主键
                  partyInfoDTO.getWorks().forEach(work -> {
                      work.setUserId(sys.getUserId().longValue());
                  });
-              effected += tabPbPartyWorkMapper.batchInsert(parseObject(partyInfoDTO.getWorks(),TabPbPartyWork.class,false));
+              effected += tabPbPartyWorkMapper.batchInsert(BeanUtil.copyListPropertiesAndPaddingBaseField(partyInfoDTO.getWorks(),TabPbPartyWork.class,true,false));
             }
 
             return effected;
         }
         throw new BusinessDataCheckFailException("该党员已存在!!!");
     }
-    //转换实体
-    private List<TabPbUserTag> parseTabPbUserTag(List<UserTagDTO>p1){
-        List<TabPbUserTag> tabPbUserTag =new ArrayList<TabPbUserTag>();
-        p1.forEach(education->{
-            TabPbUserTag tab =new TabPbUserTag();
-            BeanUtils.copyProperties(education,tab);
-            PaddingBaseFieldUtil.paddingBaseFiled(tab);
-            tabPbUserTag.add(tab);
-        });
-        return tabPbUserTag;
-    }
-
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -163,8 +151,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             SysUser  sys = BeanUtil.copyPropertiesAndPaddingBaseField(partyInfoDTO.getParty(),SysUser.class,true,true);
             effected += tabSysUserMapper.updateByPrimaryKeySelective(sys);
             //新增或者删除标签信息
-            if(partyInfoDTO.getParty().getUserTags()!=null){
-                this.userTagService.updateUserTagByTagType(parseTabPbUserTag(partyInfoDTO.getParty().getUserTags()));
+            if(partyInfoDTO.getParty().getUserTags()!=null&&partyInfoDTO.getParty().getUserTags().size()>0){
+                this.userTagService.updateUserTagByTagType(BeanUtil.copyListPropertiesAndPaddingBaseField(partyInfoDTO.getParty().getUserTags(),TabPbUserTag.class,true,true));
             }
 
             //新增学历信息
@@ -182,11 +170,11 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 }
                 //新增处理
                 if(inserts.size()>0){
-                    effected += tabPbPartyEducationMapper.batchInsert(parseObject(inserts,TabPbPartyEducation.class,false));
+                    effected += tabPbPartyEducationMapper.batchInsert(BeanUtil.copyListPropertiesAndPaddingBaseField(inserts,TabPbPartyEducation.class,true,false));
                 }
                 //修改处理
                if(updates.size()>0) {
-                   effected += tabPbPartyEducationMapper.batchUpdate(parseObject(updates, TabPbPartyEducation.class, true));
+                   effected += tabPbPartyEducationMapper.batchUpdate(BeanUtil.copyListPropertiesAndPaddingBaseField(updates,TabPbPartyEducation.class,true,true));
                }
             }
             //新增技术信息
@@ -204,11 +192,11 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 }
                 //新增处理
                 if(inserts.size()>0){
-                    effected += tabPbPartyJobTitleMapper.batchInsert(parseObject(inserts, TabPbPartyJobTitle.class,false));
+                    effected += tabPbPartyJobTitleMapper.batchInsert(BeanUtil.copyListPropertiesAndPaddingBaseField(inserts,TabPbPartyJobTitle.class,true,false));
                 }
                 //修改处理
                 if(updates.size()>0) {
-                    effected += tabPbPartyJobTitleMapper.batchUpdate(parseObject(updates,  TabPbPartyJobTitle.class,true));
+                    effected += tabPbPartyJobTitleMapper.batchUpdate(BeanUtil.copyListPropertiesAndPaddingBaseField(updates,TabPbPartyJobTitle.class,true,true));
                 }
 
             }
@@ -226,35 +214,16 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                     }
                 }
                 if(inserts.size()>0){
-                    effected += tabPbPartyWorkMapper.batchInsert(parseObject(inserts,TabPbPartyWork.class ,false));
+                    effected += tabPbPartyWorkMapper.batchInsert(BeanUtil.copyListPropertiesAndPaddingBaseField(inserts,TabPbPartyWork.class,true,false));
                 }
                 if(updates.size()>0){
-                    effected += tabPbPartyWorkMapper.batchUpdate(parseObject(updates, TabPbPartyWork.class,true));
+                    effected += tabPbPartyWorkMapper.batchUpdate(BeanUtil.copyListPropertiesAndPaddingBaseField(updates,TabPbPartyWork.class,true,true));
                 }
             }
             return effected;
         }
         throw new BusinessDataIncompleteException("用户ID不存在!!!");
     }
-
-    //转换实体
-    private static <T> List<T> parseObject(List<?> source, Class<T> clazz, Boolean isupdate){
-        return source.stream().map(s -> {
-            T target = null;
-            try {
-                target = clazz.newInstance();
-            } catch (Exception ignored) {
-            }
-            BeanUtils.copyProperties(s,target);
-            if(isupdate){
-                PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(target);
-            }else {
-                PaddingBaseFieldUtil.paddingBaseFiled(target);
-            }
-            return (T)target;
-        }).collect(Collectors.toList());
-    }
-
 
     @Override
     public PageInfo<PartyMemberInformationVO> getPartyList(SysUserQueryBean queryBean, Page page) {

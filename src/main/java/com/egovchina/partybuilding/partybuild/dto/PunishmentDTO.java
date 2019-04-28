@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
@@ -34,8 +35,9 @@ public class PunishmentDTO {
     @NotNull(message = "处分名称不能为空!")
     private String punishName;
 
-    @ApiModelProperty(value = "是否移交司法机关：1 是;0 否(字符串只能有一个长度哟)", required = true,example = "0")
-    @NotNull(message = "是否移交司法机关不能为空! 1 是;0 否(字符串只能有一个长度哟)")
+    @ApiModelProperty(value = "是否移交司法机关：1 是;0 否(字符串只能有一个长度)", required = true,example = "0")
+    @NotNull(message = "是否移交司法机关不能为空! 1 是;0 否(字符串只能有一个长度)")
+    @Length(max=1)
     private String judiciaryFlag;
 
     @ApiModelProperty(value = "处分机构", required = true)
