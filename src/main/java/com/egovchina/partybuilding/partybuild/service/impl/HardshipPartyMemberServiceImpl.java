@@ -65,11 +65,7 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
         // 新增困难党员时 修改党员困难标识
         int result = hardshipMapper.insertSelective(tabPbHardship);
         if (0 < result) {
-            SysUser user = new SysUser();
-            byte poorNum = 1;
-            user.setUserId(hardshipPartyMemberDTO.getUserId().intValue());
-            user.setIsPoor(poorNum);
-            result += sysUserMapper.updateByPrimaryKeySelective(user);
+            result += sysUserMapper.updateUserIsPoorByHardshipId(1, hardshipPartyMemberDTO.getHardshipId());
         }
         return result;
     }
@@ -83,11 +79,7 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
         int result = hardshipMapper.updateByPrimaryKeySelective(hardship);
         // 困难党员删除时 党员困难标识也随之被修改
         if (0 < result) {
-            SysUser user = new SysUser();
-            byte poorNum = 0;
-            user.setUserId(hardshipMapper.selectByPrimaryKey(hardshipId).getUserId().intValue());
-            user.setIsPoor(poorNum);
-            result += sysUserMapper.updateByPrimaryKeySelective(user);
+            result += sysUserMapper.updateUserIsPoorByHardshipId(0, hardshipId);
         }
         return result;
     }
@@ -119,7 +111,7 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
      **/
     private void verification(HardshipPartyMemberDTO hardshipPartyMemberDTO) {
         Integer userId = hardshipPartyMemberDTO.getUserId().intValue();
-        if (!deptMapper.isExist(hardshipPartyMemberDTO.getOrgId())) {
+        if (!deptMapper.checkIsExistByOrgId(hardshipPartyMemberDTO.getOrgId())) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
         if (!sysUserMapper.checkIsExistByUserId(userId)) {
