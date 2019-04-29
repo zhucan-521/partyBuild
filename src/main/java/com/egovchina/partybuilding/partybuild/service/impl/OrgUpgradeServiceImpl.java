@@ -24,6 +24,7 @@ import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.OrgUpgradeService;
 import com.egovchina.partybuilding.partybuild.service.TabSysDeptService;
 import com.egovchina.partybuilding.partybuild.vo.DirectPartyMemberVO;
+import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
 import com.egovchina.partybuilding.partybuild.vo.OrgUpgradeVO;
 import com.github.pagehelper.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -226,10 +227,10 @@ public class OrgUpgradeServiceImpl implements OrgUpgradeService {
         tabPbOrgnizeChange.setChangeDate(orgUpgradeDto.getChangeDate());
         tabPbOrgnizeChange.setOrgnizeName(orgUpgradeDto.getDeptName());
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbOrgnizeChange);
-        TabPbOrgnizeChange pbOrgnizeChange = tabPbOrgnizeChangeMapper.selectOrgChangeByDeptIdOrderTime(
+        OrgChangeVO orgChangeVO = tabPbOrgnizeChangeMapper.selectOrgChangeByDeptIdOrderTime(
                 orgUpgradeDto.getDeptId(), 59424L);
-        if(pbOrgnizeChange != null){
-            tabPbOrgnizeChange.setChangeId(pbOrgnizeChange.getChangeId());
+        if(orgChangeVO != null){
+            tabPbOrgnizeChange.setChangeId(orgChangeVO.getChangeId());
             count += tabPbOrgnizeChangeMapper.updateByPrimaryKeySelective(tabPbOrgnizeChange);
         }else {
             count += tabPbOrgnizeChangeMapper.insertSelective(tabPbOrgnizeChange);

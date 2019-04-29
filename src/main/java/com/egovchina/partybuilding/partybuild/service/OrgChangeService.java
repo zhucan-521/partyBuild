@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface OrgChangeService {
 
-    TabPbOrgnizeChange selectOrgChangeByDeptIdOrderTime(Long deptId, Long changeType);
+    OrgChangeVO selectOrgChangeByDeptIdOrderTime(Long deptId, Long changeType);
 
     int addOrgChange(OrgChangeDTO change);
 

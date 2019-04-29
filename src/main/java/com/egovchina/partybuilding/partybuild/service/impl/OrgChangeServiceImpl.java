@@ -4,14 +4,18 @@ import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataInvalidException;
+import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.partybuild.dto.OrgChangeDTO;
 import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange;
 import com.egovchina.partybuilding.partybuild.repository.TabPbOrgnizeChangeMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
+import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
+import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.ITabSysDictService;
 import com.egovchina.partybuilding.partybuild.service.OrgChangeService;
 import com.egovchina.partybuilding.partybuild.service.TabSysDeptService;
+import com.egovchina.partybuilding.partybuild.vo.DirectPartyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
 import com.github.pagehelper.PageHelper;
 import lombok.var;
@@ -49,8 +53,14 @@ public class OrgChangeServiceImpl implements OrgChangeService {
     @Autowired
     private TabSysDeptService tabSysDeptService;
 
+    @Autowired
+    private TabSysUserMapper tabSysUserMapper;
+
+    @Autowired
+    private ITabPbAttachmentService iTabPbAttachmentService;
+
     @Override
-    public TabPbOrgnizeChange selectOrgChangeByDeptIdOrderTime(Long deptId, Long changeType) {
+    public OrgChangeVO selectOrgChangeByDeptIdOrderTime(Long deptId, Long changeType) {
         return tabPbOrgnizeChangeMapper.selectOrgChangeByDeptIdOrderTime(deptId, changeType);
     }
 
@@ -130,14 +140,18 @@ public class OrgChangeServiceImpl implements OrgChangeService {
         if (dict.getValue().equals("ZZGM")) {
             this.orgRename(tabPbOrgnizeChange);
         } else if (dict.getValue().equals("ZZCX")) {
-            this.orgRestoreOrRevoke(tabPbOrgnizeChange, "0", 59123L);
+            this.orgRestoreOrRevoke(tabPbOrgnizeChange ,"0" , 59123L);
         } else if (dict.getValue().equals("ZZHF")) {
-            this.orgRestoreOrRevoke(tabPbOrgnizeChange, "1", 59122L);
+            this.orgRestoreOrRevoke(tabPbOrgnizeChange ,"1" , 59122L);
         } else if (dict.getValue().equals("ZZTZ")) {
             this.insertOrgChange(tabPbOrgnizeChange);
         }
         paddingBaseFiled(tabPbOrgnizeChange);
-        return this.tabPbOrgnizeChangeMapper.insertSelective(tabPbOrgnizeChange);
+        int count = 0;
+        count += this.tabPbOrgnizeChangeMapper.insertSelective(tabPbOrgnizeChange);
+        count += this.iTabPbAttachmentService.intelligentOperation(orgChangeDTO.getAttachments(),
+                tabPbOrgnizeChange.getChangeId(), AttachmentType.ORG_CHANGE);
+        return count;
     }
 
     /**
@@ -170,10 +184,20 @@ public class OrgChangeServiceImpl implements OrgChangeService {
      * @param org 变更信息
      * @return
      */
-    private int orgRestoreOrRevoke(TabPbOrgnizeChange org, String flag, Long orgStatus) {
+    private int orgRestoreOrRevoke(TabPbOrgnizeChange org, String eblFlag ,Long orgStatus) {
+        if(orgStatus == 59123L){
+            SysDept sysDept = this.tabSysDeptMapper.selectByPrimaryKey(org.getDeptId());
+            if(sysDept.getIsParent() == 1){
+                throw new BusinessDataInvalidException("该组织存在下级组织，撤消失败");
+            }
+            List<DirectPartyMemberVO> directPartyMemberVOS = tabSysUserMapper.selectDirectPartyMemberVOByDeptId(org.getDeptId());
+            if(directPartyMemberVOS.size() > 0){
+                throw new BusinessDataInvalidException("该组织存在党员，撤消失败");
+            }
+        }
         var newDept = new SysDept();
         newDept.setDeptId(org.getDeptId().intValue());
-        newDept.setEblFlag(flag);
+        newDept.setEblFlag(eblFlag);
         newDept.setOrgStatus(orgStatus);
         return this.tabSysDeptMapper.updateByPrimaryKeySelective(newDept);
     }

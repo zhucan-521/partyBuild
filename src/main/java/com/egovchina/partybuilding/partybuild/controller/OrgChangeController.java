@@ -3,7 +3,6 @@ package com.egovchina.partybuilding.partybuild.controller;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
-import com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange;
 import com.egovchina.partybuilding.partybuild.dto.OrgChangeDTO;
 import com.egovchina.partybuilding.partybuild.service.OrgChangeService;
 import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
@@ -33,7 +32,7 @@ public class OrgChangeController {
             @ApiImplicitParam(name = "changeType", value = "变动类型", paramType = "query" ,dataType = "Long",required = true)
             })
     @GetMapping("/newest")
-    public TabPbOrgnizeChange getOrgChange(Long deptId , Long changeType) {
+    public OrgChangeVO getOrgChange(Long deptId , Long changeType) {
         return orgChangeService.selectOrgChangeByDeptIdOrderTime(deptId,changeType);
     }
 
