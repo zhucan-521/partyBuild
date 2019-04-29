@@ -3,7 +3,8 @@ package com.egovchina.partybuilding.partybuild.controller;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
-import com.egovchina.partybuilding.partybuild.dto.AbroadDTO;
+import com.egovchina.partybuilding.partybuild.dto.GoAbroadDTO;
+import com.egovchina.partybuilding.partybuild.dto.ReturnAbroadDTO;
 import com.egovchina.partybuilding.partybuild.entity.AbroadQueryBean;
 import com.egovchina.partybuilding.partybuild.service.AbroadService;
 import com.egovchina.partybuilding.partybuild.vo.AbroadDetailsVO;
@@ -29,23 +30,29 @@ public class AbroadController {
     @Autowired
     private AbroadService abroadService;
 
-    @ApiOperation(value = "添加出国出境信息", notes = "添加出国出境信息", httpMethod = "POST")
+    @ApiOperation(value = "添加出国信息", notes = "添加出国信息", httpMethod = "POST")
     @PostMapping
-    public ReturnEntity insert(@ApiParam("出国出境信息") @RequestBody @Validated AbroadDTO abroadDTO) {
-        return ReturnUtil.buildReturn(abroadService.insert(abroadDTO));
+    public ReturnEntity insertGoAbroad(@RequestBody @Validated @ApiParam("出国信息") GoAbroadDTO goAbroadDTO) {
+        return ReturnUtil.buildReturn(abroadService.insertGoAbroad(goAbroadDTO));
     }
 
-    @ApiOperation(value = "更新出国出境信息列表", notes = "更新出国出境信息列表", httpMethod = "PUT")
+    @ApiOperation(value = "更新出国信息", notes = "更新出国信息", httpMethod = "PUT")
     @PutMapping
-    public ReturnEntity update(@ApiParam("出国出境信息") @RequestBody @Validated AbroadDTO abroadDTO) {
-        return ReturnUtil.buildReturn(abroadService.update(abroadDTO));
+    public ReturnEntity updateGoAbroad(@RequestBody @Validated @ApiParam("出国信息") GoAbroadDTO goAbroadDTO) {
+        return ReturnUtil.buildReturn(abroadService.updateGoAbroad(goAbroadDTO));
+    }
+
+    @ApiOperation(value = "更新（添加）回国信息 - 用作出国信息添加和更新", notes = "更新（添加）回国信息 - 用作出国信息添加和更新", httpMethod = "PUT")
+    @PutMapping("/return")
+    public ReturnEntity updateReturnAbroad(@RequestBody @Validated @ApiParam("回国信息") ReturnAbroadDTO returnAbroadDTO) {
+        return ReturnUtil.buildReturn(abroadService.updateReturnAbroad(returnAbroadDTO));
     }
 
     @ApiOperation(value = "删除指定的出国出境信息", notes = "删除指定的出国出境信息", httpMethod = "DELETE")
     @ApiImplicitParam(name = "abroadId", value = "出国出境ID", paramType = "path", required = true)
     @DeleteMapping(value = "/{abroadId}")
-    public ReturnEntity delete(@PathVariable Long abroadId) {
-        return ReturnUtil.buildReturn(abroadService.delete(abroadId));
+    public ReturnEntity deleteAbroad(@PathVariable Long abroadId) {
+        return ReturnUtil.buildReturn(abroadService.deleteAbroad(abroadId));
     }
 
     @ApiOperation(value = "根据出国出境ID获取详情", notes = "根据出国出境ID获取详情", httpMethod = "GET")
