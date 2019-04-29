@@ -32,29 +32,30 @@ public class JointPointInfoController {
     @Autowired
     private JointPointInfoService jointPointInfoService;
 
-    @ApiOperation(value = "跟据党员id查看联点领导信息",notes = "跟据党员id查看联点领导信息")
-    @ApiImplicitParam(value = "党员id",name = "userId" ,paramType = "path" , required = true)
+    @ApiOperation(value = "跟据党员id查看联点领导信息", notes = "跟据党员id查看联点领导信息")
+    @ApiImplicitParam(value = "党员id", name = "userId", paramType = "path", required = true)
     @GetMapping("/positives/{userId}")
-    public UserDeptPositionVO getJointPointInfoByUserId(@PathVariable Long userId){
+    public UserDeptPositionVO getJointPointInfoByUserId(@PathVariable Long userId) {
         return jointPointInfoService.selectJointByUserId(userId);
     }
 
-    @ApiOperation(value = "查看联点领导列表详情",notes = "查看联点领导列表详情")
-    @ApiImplicitParam(value = "组织ID",name = "deptId" ,paramType = "path" , required = true)
+    @ApiOperation(value = "查看联点领导列表详情", notes = "查看联点领导列表详情")
+    @ApiImplicitParam(value = "组织ID", name = "deptId", paramType = "path", required = true)
     @GetMapping("/{deptId}")
-    public List<LinkLeaderVO> getJointPointInfoByDeptIdList(@PathVariable Long deptId){
+    public List<LinkLeaderVO> getJointPointInfoByDeptIdList(@PathVariable Long deptId) {
         return jointPointInfoService.selectUserDeptByDeptId(deptId);
     }
 
-    @ApiOperation(value = "删除联点领导",notes = "删除联点领导")
-    @ApiImplicitParam(value = "组织联点领导联点主键",name = "linkLedaerId" ,paramType = "path" , required = true)
+    @ApiOperation(value = "删除联点领导", notes = "删除联点领导")
+    @ApiImplicitParam(value = "组织联点领导联点主键", name = "linkLedaerId", paramType = "path", required = true)
     @DeleteMapping("/{linkLedaerId}")
-    public ReturnEntity deleteJointPointInfo(@PathVariable Long linkLedaerId){
+    public ReturnEntity deleteJointPointInfo(@PathVariable Long linkLedaerId) {
         return ReturnUtil.buildReturn(jointPointInfoService.delJointPointInfoByLinkLedaerId(linkLedaerId));
     }
-    @ApiOperation(value = "保存联点信息",notes = "保存联点信息")
+
+    @ApiOperation(value = "保存联点信息", notes = "保存联点信息")
     @PostMapping
-    public ReturnEntity addJointPointInfo(@ApiParam("联点领导和联点活动信息") @RequestBody @Validated LinkLeaderDTO linkLeaderDTO){
+    public ReturnEntity addJointPointInfo(@ApiParam("联点领导和联点活动信息") @RequestBody @Validated LinkLeaderDTO linkLeaderDTO) {
         return ReturnUtil.buildReturn(jointPointInfoService.saveJointPointInfo(linkLeaderDTO));
     }
 }

@@ -33,7 +33,7 @@ public class StreetCommitteeController {
 
     @ApiOperation(value = "添加街道大公委", notes = "街道大公委对象, 如果orgId存在则更新, 否则新增街道大公委数据")
     @PostMapping
-    public ReturnEntity addStreetCommittee(@ApiParam("街道大公委和成员集合信息") @RequestBody @Validated  StreetCommitteeDTO streetCommitteeDTO) {
+    public ReturnEntity addStreetCommittee(@ApiParam("街道大公委和成员集合信息") @RequestBody @Validated StreetCommitteeDTO streetCommitteeDTO) {
         return ReturnUtil.buildReturn(this.streetCommitteeService.saveStreetCommittee(streetCommitteeDTO));
     }
 
@@ -55,14 +55,14 @@ public class StreetCommitteeController {
     }
 
     @ApiOperation(value = "删除街道大公委数据", notes = "删除街道大公委将同时删除该街道大公委的成员")
-    @ApiImplicitParam(value = "大工委id",name = "grantCommitteeId",paramType = "path" , required = true)
+    @ApiImplicitParam(value = "大工委id", name = "grantCommitteeId", paramType = "path", required = true)
     @DeleteMapping("/{grantCommitteeId}")
     public ReturnEntity deleteStreetCommittee(@PathVariable Long grantCommitteeId) {
         return ReturnUtil.buildReturn(this.streetCommitteeService.deleteStreetCommittee(grantCommitteeId));
     }
 
     @ApiOperation(value = "获取街道大公委数据", notes = "通过街道大公委主键grantCommitteeId查询")
-    @ApiImplicitParam(value = "大工委id",name = "grantCommitteeId", paramType = "path" ,required = true)
+    @ApiImplicitParam(value = "大工委id", name = "grantCommitteeId", paramType = "path", required = true)
     @GetMapping("/{grantCommitteeId}")
     public StreetCommitteeVO getStreetCommitteeById(@PathVariable Long grantCommitteeId) {
         return this.streetCommitteeService.getStreetCommitteeById(grantCommitteeId);
@@ -72,19 +72,19 @@ public class StreetCommitteeController {
     @ApiOperation(value = "添加街道大公委成员", notes = "grantCommitteeId 和userId 必须存在")
     @PostMapping("/one-members")
     public ReturnEntity addStreetCommitteeMember(@ApiParam("成员信息")
-            @RequestBody @Validated StreetCommitteeMemberDTO streetCommitteeMemberDTO) {
+                                                 @RequestBody @Validated StreetCommitteeMemberDTO streetCommitteeMemberDTO) {
         return ReturnUtil.buildReturn(this.streetCommitteeService.addStreetCommitteeMember(streetCommitteeMemberDTO));
     }
 
     @ApiOperation(value = "添加街道大公委成员数据", notes = "grantCommitteeId 和userId 必须存在")
     @PostMapping("/members")
     public ReturnEntity addStreetCommitteeMemberList(@ApiParam("成员集合信息")
-            @RequestBody @Validated List<StreetCommitteeMemberDTO> streetCommitteeMemberDTOList) {
+                                                     @RequestBody @Validated List<StreetCommitteeMemberDTO> streetCommitteeMemberDTOList) {
         return ReturnUtil.buildReturn(this.streetCommitteeService.addStreetCommitteeMembers(streetCommitteeMemberDTOList));
     }
 
     @ApiOperation(value = "获取大公委成员数据", notes = "grantCommitteeMemberId为街道大公委成员明细表的主键")
-    @ApiImplicitParam(value = "大工委人员id",name = "grantCommitteeMemberId" ,paramType = "path" , required = true)
+    @ApiImplicitParam(value = "大工委人员id", name = "grantCommitteeMemberId", paramType = "path", required = true)
     @GetMapping("/members/{grantCommitteeMemberId}")
     public StreetCommitteeMemberVO getStreetCommitteeMemberById(
             @PathVariable Long grantCommitteeMemberId) {
@@ -92,7 +92,7 @@ public class StreetCommitteeController {
     }
 
     @ApiOperation(value = "通过成员id删除成员", notes = "grantCommitteeMemberId为街道大公委成员明细表的主键")
-    @ApiImplicitParam(value = "大工委人员id" ,name = "grantCommitteeMemberId" ,paramType = "path", required = true)
+    @ApiImplicitParam(value = "大工委人员id", name = "grantCommitteeMemberId", paramType = "path", required = true)
     @DeleteMapping("/members/{grantCommitteeMemberId}")
     public ReturnEntity deleteStreetCommitteeMemberById(
             @PathVariable Long grantCommitteeMemberId) {
@@ -101,14 +101,14 @@ public class StreetCommitteeController {
 
     @ApiOperation(value = "条件查询成员列表", notes = "grantCommitteeId为街道大公委成员明细表的主键")
     @ApiImplicitParams({
-            @ApiImplicitParam(value = "大公委主键", name = "grantCommitteeId",dataType = "Long"),
-            @ApiImplicitParam(value = "人员名称", name = "personName",dataType = "String"),
-            @ApiImplicitParam(value = "职务名称", name = "positiveName",dataType = "String"),
+            @ApiImplicitParam(value = "大公委主键", name = "grantCommitteeId", dataType = "Long"),
+            @ApiImplicitParam(value = "人员名称", name = "personName", dataType = "String"),
+            @ApiImplicitParam(value = "职务名称", name = "positiveName", dataType = "String"),
     })
     @GetMapping("/members")
     public PageInfo<StreetCommitteeMemberVO> getStreetCommitteeMemberList(
-            Long grantCommitteeId,String personName, String positiveName, Page page) {
-        return this.streetCommitteeService.getStreetCommitteeMemberList(grantCommitteeId,personName, positiveName, page);
+            Long grantCommitteeId, String personName, String positiveName, Page page) {
+        return this.streetCommitteeService.getStreetCommitteeMemberList(grantCommitteeId, personName, positiveName, page);
     }
 
 }

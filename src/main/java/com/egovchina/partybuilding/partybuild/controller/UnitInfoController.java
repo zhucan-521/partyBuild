@@ -40,14 +40,14 @@ public class UnitInfoController {
     }
 
     @ApiOperation(value = "根据单位id查询单位信息", notes = "根据单位id查询单位信息")
-    @ApiImplicitParam(value = "单位id",name = "unitId" ,paramType = "path" , required = true)
+    @ApiImplicitParam(value = "单位id", name = "unitId", paramType = "path", required = true)
     @GetMapping("/units/{unitId}")
     public UnitInfoVO getUnitInfoById(@PathVariable Long unitId) {
         return unitInfoService.selectUnitInfoByUnitId(unitId);
     }
 
     @ApiOperation(value = "根据组织id查询单位信息", notes = "根据组织id查询单位信息")
-    @ApiImplicitParam(value = "组织id",name = "orgId" ,paramType = "path" , required = true)
+    @ApiImplicitParam(value = "组织id", name = "orgId", paramType = "path", required = true)
     @GetMapping("/organizations/{orgId}/units")
     public List<UnitInfoVO> getUnitListByOrgId(@PathVariable Long orgId) {
         return unitInfoService.selectUnitInfoByOrgId(orgId);
@@ -60,7 +60,7 @@ public class UnitInfoController {
     }
 
     @ApiOperation(value = "删除单位", notes = "删除单位")
-    @ApiImplicitParam(value = "单位Id",name = "unitId",paramType = "path" , required = true)
+    @ApiImplicitParam(value = "单位Id", name = "unitId", paramType = "path", required = true)
     @DeleteMapping("/units/{unitId}")
     public ReturnEntity deleteUnitInfo(@PathVariable Long unitId) {
         return ReturnUtil.buildReturn(unitInfoService.deleteUnitInfo(unitId));

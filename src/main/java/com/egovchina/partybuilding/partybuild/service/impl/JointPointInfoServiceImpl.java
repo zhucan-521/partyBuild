@@ -78,6 +78,7 @@ public class JointPointInfoServiceImpl implements JointPointInfoService {
 
     /**
      * 根据联点领导id删除联点信息
+     *
      * @param linkLedaerId
      * @return
      */
@@ -92,6 +93,7 @@ public class JointPointInfoServiceImpl implements JointPointInfoService {
 
     /**
      * 保存联点信息
+     *
      * @param linkLeaderDTO
      * @return
      */
@@ -100,7 +102,7 @@ public class JointPointInfoServiceImpl implements JointPointInfoService {
     @PaddingBaseField
     public int saveJointPointInfo(LinkLeaderDTO linkLeaderDTO) {
         TabPbLinkLeader tabPbLinkLeader = new TabPbLinkLeader();
-        BeanUtil.copyPropertiesIgnoreNull(linkLeaderDTO,tabPbLinkLeader);
+        BeanUtil.copyPropertiesIgnoreNull(linkLeaderDTO, tabPbLinkLeader);
         int count = 0;
         if (deptMapper.selectByPrimaryKey(linkLeaderDTO.getDeptId()) != null
                 && tabSysUserMapper.selectByPrimaryKey(linkLeaderDTO.getUserId()) != null) {
@@ -124,12 +126,12 @@ public class JointPointInfoServiceImpl implements JointPointInfoService {
             List<ActivitiesDTO> activitiesList = linkLeaderDTO.getActivitiesList();
             TabPbParticipant pbParticipant = new TabPbParticipant();
             pbParticipant.setUserId(linkLeaderDTO.getUserId());
-            pbParticipant.setIfLinkLeader((byte)1);
+            pbParticipant.setIfLinkLeader((byte) 1);
             for (ActivitiesDTO activitiesDTO : activitiesList) {
                 if (tabPbActivitiesMapper.selectByActivitiesId(activitiesDTO.getActivitiesId()) != null) {
-                    activitiesDTO.setInviteLinkLeader((byte)1);
+                    activitiesDTO.setInviteLinkLeader((byte) 1);
                     TabPbActivities tabPbActivities =
-                            copyPropertiesAndPaddingBaseField(activitiesDTO, TabPbActivities.class, true,true);
+                            copyPropertiesAndPaddingBaseField(activitiesDTO, TabPbActivities.class, true, true);
                     tabPbActivitiesMapper.updateByPrimaryKeySelective(tabPbActivities);
                     pbParticipant.setActivitiesId(activitiesDTO.getActivitiesId());
                     pbParticipant.setRealName(tabSysUserMapper.selectByPrimaryKey(linkLeaderDTO.getUserId()).getUsername());

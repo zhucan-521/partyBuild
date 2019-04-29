@@ -46,7 +46,7 @@ public class UnitInfoServiceImpl implements UnitInfoService {
     public int insertUnitInfo(UnitInfoDTO unitInfoDTO) {
         TabPbUnitInfo tabPbUnitInfo =
                 copyPropertiesAndPaddingBaseField(
-                        unitInfoDTO,TabPbUnitInfo.class,true,false);
+                        unitInfoDTO, TabPbUnitInfo.class, true, false);
         return tabPbUnitInfoMapper.insertSelective(tabPbUnitInfo);
     }
 
@@ -65,7 +65,7 @@ public class UnitInfoServiceImpl implements UnitInfoService {
         if (tabPbUnitInfoMapper.selectByPrimaryKey(unitInfoDTO.getUnitId()) != null) {
             TabPbUnitInfo tabPbUnitInfo =
                     copyPropertiesAndPaddingBaseField(
-                            unitInfoDTO,TabPbUnitInfo.class,true,true);
+                            unitInfoDTO, TabPbUnitInfo.class, true, true);
             count += tabPbUnitInfoMapper.updateByPrimaryKeySelective(tabPbUnitInfo);
         } else {
             throw new BusinessDataNotFoundException("该单位不存在");

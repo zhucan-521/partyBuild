@@ -70,7 +70,7 @@ public class JointMeetServiceImpl implements JointMeetService {
         var jointMeet = this.tabPbJointMeetMapper.selectJointMeetByOrgId(jointMeetDto.getOrgId());
         if (isEmpty(jointMeet)) {
             TabPbJointMeet tabPbJointMeet =
-                    copyPropertiesAndPaddingBaseField(jointMeetDto,TabPbJointMeet.class,true,false);
+                    copyPropertiesAndPaddingBaseField(jointMeetDto, TabPbJointMeet.class, true, false);
             this.tabPbJointMeetMapper.insertSelective(tabPbJointMeet);
             jointMeetDto.setJointMeetId(tabPbJointMeet.getJointMeetId());
         } else {
@@ -79,10 +79,10 @@ public class JointMeetServiceImpl implements JointMeetService {
         jointMeetDto.getJointMeetOrgs().forEach(jointMeetOrgDTO -> {
             jointMeetOrgDTO.setJointMeetId(jointMeetDto.getJointMeetId());
             jointMeetOrgDTO.setJoinDate(isEmpty(jointMeetOrgDTO.getJoinDate()) ? new Date() : jointMeetOrgDTO.getJoinDate());
-            Long check = this.tabPbJointMeetOrgMapper.selectCheck(jointMeetDto.getOrgId(),jointMeetOrgDTO.getOrgId());
+            Long check = this.tabPbJointMeetOrgMapper.selectCheck(jointMeetDto.getOrgId(), jointMeetOrgDTO.getOrgId());
             if (check == 0L) {
                 TabPbJointMeetOrg tabPbJointMeetOrg =
-                        copyPropertiesAndPaddingBaseField(jointMeetOrgDTO, TabPbJointMeetOrg.class, true,false);
+                        copyPropertiesAndPaddingBaseField(jointMeetOrgDTO, TabPbJointMeetOrg.class, true, false);
                 this.tabPbJointMeetOrgMapper.insertSelective(tabPbJointMeetOrg);
             }
         });
@@ -152,7 +152,7 @@ public class JointMeetServiceImpl implements JointMeetService {
             throw new BusinessDataIncompleteException("jointMeetId不可为null");
         }
         TabPbJointMeet tabPbJointMeet =
-                copyPropertiesAndPaddingBaseField(jointMeetDto,TabPbJointMeet.class,true,true);
+                copyPropertiesAndPaddingBaseField(jointMeetDto, TabPbJointMeet.class, true, true);
         return this.tabPbJointMeetMapper.updateByPrimaryKeySelective(tabPbJointMeet);
     }
 
@@ -163,7 +163,7 @@ public class JointMeetServiceImpl implements JointMeetService {
             throw new BusinessDataIncompleteException("memberOrg不可为null");
         }
         TabPbJointMeetOrg tabPbJointMeetOrg =
-                copyPropertiesAndPaddingBaseField(jointMeetOrgDTO,TabPbJointMeetOrg.class,true,true);
+                copyPropertiesAndPaddingBaseField(jointMeetOrgDTO, TabPbJointMeetOrg.class, true, true);
         return this.tabPbJointMeetOrgMapper.updateByPrimaryKeySelective(tabPbJointMeetOrg);
     }
 

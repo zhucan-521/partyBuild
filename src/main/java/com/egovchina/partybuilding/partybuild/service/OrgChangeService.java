@@ -1,8 +1,8 @@
 package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange;
 import com.egovchina.partybuilding.partybuild.dto.OrgChangeDTO;
+import com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange;
 import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
 
 import java.util.List;

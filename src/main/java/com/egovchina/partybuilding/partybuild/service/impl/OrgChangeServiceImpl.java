@@ -86,8 +86,8 @@ public class OrgChangeServiceImpl implements OrgChangeService {
             throw new BusinessDataCheckFailException("上级组织未改变");
         }
         SysDept dept = tabSysDeptMapper.selectByPrimaryKey(tabPbOrgnizeChange.getDeptId());
-        if(dept != null ){
-            if(dept.getUnitState() != null && dept.getUnitState() == 59139L){
+        if (dept != null) {
+            if (dept.getUnitState() != null && dept.getUnitState() == 59139L) {
                 sysDept.setUnitId(superiorOrganization.getUnitId());
                 sysDept.setUnitName(superiorOrganization.getUnitName());
             }
@@ -116,11 +116,11 @@ public class OrgChangeServiceImpl implements OrgChangeService {
     @PaddingBaseField
     public int addOrgChange(OrgChangeDTO orgChangeDTO) {
         // 我改不了, 只能转int了
-        if(Objects.requireNonNull(currentUser()).getDeptId() != null ){
+        if (Objects.requireNonNull(currentUser()).getDeptId() != null) {
             if (orgChangeDTO.getDeptId() == Objects.requireNonNull(currentUser()).getDeptId().longValue()) {
                 throw new BusinessDataCheckFailException("当前组织不可调整自身组织");
             }
-        }else {
+        } else {
             if (orgChangeDTO.getDeptId() == Objects.requireNonNull(currentUser()).getManageDeptId().longValue()) {
                 throw new BusinessDataCheckFailException("当前组织不可调整自身组织");
             }
@@ -136,13 +136,13 @@ public class OrgChangeServiceImpl implements OrgChangeService {
         }
         //restful 属性拷贝，填充基本字段
         TabPbOrgnizeChange tabPbOrgnizeChange = new TabPbOrgnizeChange();
-        copyPropertiesIgnoreNullAndPaddingBaseField(orgChangeDTO,tabPbOrgnizeChange,true);
+        copyPropertiesIgnoreNullAndPaddingBaseField(orgChangeDTO, tabPbOrgnizeChange, true);
         if (dict.getValue().equals("ZZGM")) {
             this.orgRename(tabPbOrgnizeChange);
         } else if (dict.getValue().equals("ZZCX")) {
-            this.orgRestoreOrRevoke(tabPbOrgnizeChange ,"0" , 59123L);
+            this.orgRestoreOrRevoke(tabPbOrgnizeChange, "0", 59123L);
         } else if (dict.getValue().equals("ZZHF")) {
-            this.orgRestoreOrRevoke(tabPbOrgnizeChange ,"1" , 59122L);
+            this.orgRestoreOrRevoke(tabPbOrgnizeChange, "1", 59122L);
         } else if (dict.getValue().equals("ZZTZ")) {
             this.insertOrgChange(tabPbOrgnizeChange);
         }
@@ -184,14 +184,14 @@ public class OrgChangeServiceImpl implements OrgChangeService {
      * @param org 变更信息
      * @return
      */
-    private int orgRestoreOrRevoke(TabPbOrgnizeChange org, String eblFlag ,Long orgStatus) {
-        if(orgStatus == 59123L){
+    private int orgRestoreOrRevoke(TabPbOrgnizeChange org, String eblFlag, Long orgStatus) {
+        if (orgStatus == 59123L) {
             SysDept sysDept = this.tabSysDeptMapper.selectByPrimaryKey(org.getDeptId());
-            if(sysDept.getIsParent() == 1){
+            if (sysDept.getIsParent() == 1) {
                 throw new BusinessDataInvalidException("该组织存在下级组织，撤消失败");
             }
             List<DirectPartyMemberVO> directPartyMemberVOS = tabSysUserMapper.selectDirectPartyMemberVOByDeptId(org.getDeptId());
-            if(directPartyMemberVOS.size() > 0){
+            if (directPartyMemberVOS.size() > 0) {
                 throw new BusinessDataInvalidException("该组织存在党员，撤消失败");
             }
         }
@@ -203,7 +203,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
     }
 
     @Override
-    public List<OrgChangeVO> selectOrgChangeList(Long deptId, Page page){
+    public List<OrgChangeVO> selectOrgChangeList(Long deptId, Page page) {
         PageHelper.startPage(page);
         return tabPbOrgnizeChangeMapper.selectOrgChangeVOList(deptId);
     }
