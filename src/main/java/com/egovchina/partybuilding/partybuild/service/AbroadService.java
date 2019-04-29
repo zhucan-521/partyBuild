@@ -1,7 +1,8 @@
 package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.partybuild.dto.AbroadDTO;
+import com.egovchina.partybuilding.partybuild.dto.GoAbroadDTO;
+import com.egovchina.partybuilding.partybuild.dto.ReturnAbroadDTO;
 import com.egovchina.partybuilding.partybuild.entity.AbroadQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.AbroadDetailsVO;
 import com.egovchina.partybuilding.partybuild.vo.AbroadVO;
@@ -14,14 +15,14 @@ import com.github.pagehelper.PageInfo;
 public interface AbroadService {
 
     /**
-     * desc: 新增出国出境记录
+     * desc: 新增出国记录
      *
-     * @param abroadDTO 数据传输对象
+     * @param goAbroadDTO 回国信息dto
      * @return int
      * @author FanYanGen
      * @date 2019/4/22 17:00
      **/
-    int insert(AbroadDTO abroadDTO);
+    int insertGoAbroad(GoAbroadDTO goAbroadDTO);
 
     /**
      * desc: 根据条件分页查询出国出境记录
@@ -42,17 +43,27 @@ public interface AbroadService {
      * @author FanYanGen
      * @date 2019/4/22 17:02
      **/
-    int delete(Long abroadId);
+    int deleteAbroad(Long abroadId);
 
     /**
-     * desc: 更新出国出境记录
+     * desc: 更新出国记录
      *
-     * @param abroadDTO 数据传输对象
+     * @param goAbroadDTO 出国信息dto
      * @return int
      * @author FanYanGen
      * @date 2019/4/22 17:03
      **/
-    int update(AbroadDTO abroadDTO);
+    int updateGoAbroad(GoAbroadDTO goAbroadDTO);
+
+    /**
+     * desc: 更新（添加）回国记录
+     *
+     * @param returnAbroadDTO 回国信息dto
+     * @return int
+     * @author FanYanGen
+     * @date 2019/4/22 17:03
+     **/
+    int updateReturnAbroad(ReturnAbroadDTO returnAbroadDTO);
 
     /**
      * desc: 根据主键ID查询详情
