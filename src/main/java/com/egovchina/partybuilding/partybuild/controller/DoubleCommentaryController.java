@@ -4,7 +4,7 @@ import com.egovchina.partybuilding.common.entity.OrgRange;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
-import com.egovchina.partybuilding.partybuild.dto.CommentaryDTO;
+import com.egovchina.partybuilding.partybuild.dto.DoubleCommentaryDTO;
 import com.egovchina.partybuilding.partybuild.entity.CommentaryQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.DoubleCommentaryQueryBean;
 import com.egovchina.partybuilding.partybuild.service.DoubleCommentaryService;
@@ -32,20 +32,20 @@ public class DoubleCommentaryController {
 
     @ApiOperation(value = "新增双述双评", notes = "新增双述双评", httpMethod = "POST")
     @PostMapping
-    public ReturnEntity insert(@ApiParam("双述双评信息") @RequestBody @Validated CommentaryDTO commentaryDTO) {
-        return ReturnUtil.buildReturn(commentaryService.insertCommentary(commentaryDTO));
+    public ReturnEntity insertCommentary(@RequestBody @Validated @ApiParam("双述双评信息") DoubleCommentaryDTO doubleCommentaryDTO) {
+        return ReturnUtil.buildReturn(commentaryService.insertCommentary(doubleCommentaryDTO));
     }
 
     @ApiOperation(value = "更新双述双评", notes = "更新双述双评", httpMethod = "PUT")
     @PutMapping
-    public ReturnEntity update(@ApiParam("双述双评信息") @RequestBody @Validated CommentaryDTO commentaryDTO) {
-        return ReturnUtil.buildReturn(commentaryService.updateCommentary(commentaryDTO));
+    public ReturnEntity updateCommentary(@RequestBody @Validated @ApiParam("双述双评信息") DoubleCommentaryDTO doubleCommentaryDTO) {
+        return ReturnUtil.buildReturn(commentaryService.updateCommentary(doubleCommentaryDTO));
     }
 
     @ApiOperation(value = "删除双述双评", notes = "双述双评删除", httpMethod = "DELETE")
     @ApiImplicitParam(name = "commentaryId", value = "双述双评ID", paramType = "path", required = true)
     @DeleteMapping("/{commentaryId}")
-    public ReturnEntity delete(@PathVariable Long commentaryId) {
+    public ReturnEntity deleteCommentary(@PathVariable Long commentaryId) {
         return ReturnUtil.buildReturn(commentaryService.deleteCommentary(commentaryId));
     }
 

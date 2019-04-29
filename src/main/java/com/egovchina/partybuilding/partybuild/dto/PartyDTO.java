@@ -22,7 +22,7 @@ import java.util.List;
 public class PartyDTO {
 
     @ApiModelProperty(value = "用户ID")
-    private Integer userId;
+    private Long userId;
 
     @ApiModelProperty(value = "人员类别 码表值 RYLB",required = true)
     @NotNull(message = "人员类别不能为空")

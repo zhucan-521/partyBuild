@@ -105,7 +105,6 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         if (!tabSysUserMapper.checkIsExistByIdCard(partyInfoDTO.getParty().getIdCardNo())) {
             partyInfoDTO.getParty().setIdentityType(59423L);
             SysUser sys = BeanUtil.copyPropertiesAndPaddingBaseField(partyInfoDTO.getParty(), SysUser.class, true, false);
-
             //新增用户信息
             tabSysUserMapper.insertSelective(sys);
             //新增或者删除标签信息
@@ -137,13 +136,13 @@ public class PartyInformationServiceImpl implements PartyInformationService {
 
             return effected;
         }
-        throw new BusinessDataCheckFailException("该党员已存在!!!");
+        throw new BusinessDataCheckFailException("该党员已存在");
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int updatePartyInfo(PartyInfoDTO partyInfoDTO) {
-        Integer id = partyInfoDTO.getParty().getUserId();
+        Long id = partyInfoDTO.getParty().getUserId();
         if (tabSysUserMapper.checkIsExistByUserId(id)) {
             int effected = 0;
             SysUser sys = BeanUtil.copyPropertiesAndPaddingBaseField(partyInfoDTO.getParty(), SysUser.class, true, true);
@@ -159,7 +158,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 List<PartyEducationDTO> inserts = new ArrayList<PartyEducationDTO>();
                 List<PartyEducationDTO> updates = new ArrayList<PartyEducationDTO>();
                 for (int i = 0; i < partyInfoDTO.getEducations().size(); i++) {
-                    partyInfoDTO.getEducations().get(i).setUserId(id.longValue());
+                    partyInfoDTO.getEducations().get(i).setUserId(id);
                     if (partyInfoDTO.getEducations().get(i).getEducationId() == null) {
                         inserts.add(partyInfoDTO.getEducations().get(i));
                     } else {

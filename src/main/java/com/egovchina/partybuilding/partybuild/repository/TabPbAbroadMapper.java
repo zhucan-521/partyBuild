@@ -3,6 +3,8 @@ package com.egovchina.partybuilding.partybuild.repository;
 import com.egovchina.partybuilding.partybuild.entity.TabPbAbroad;
 import com.egovchina.partybuilding.partybuild.vo.AbroadDetailsVO;
 import com.egovchina.partybuilding.partybuild.vo.AbroadVO;
+import com.egovchina.partybuilding.partybuild.vo.BackAbroadDetailsVO;
+import com.egovchina.partybuilding.partybuild.vo.GoAbroadDetailsVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,6 +23,6 @@ public interface TabPbAbroadMapper {
 
     List<AbroadVO> selectByConditions(TabPbAbroad record);
 
-    AbroadDetailsVO findByAbroadId(Long abroadId);
+    AbroadDetailsVO findAbroadDetailsVOByAbroadId(Long abroadId);
 
 }

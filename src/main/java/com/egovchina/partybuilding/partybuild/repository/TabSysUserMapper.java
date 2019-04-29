@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface TabSysUserMapper {
@@ -177,7 +178,7 @@ public interface TabSysUserMapper {
      * @author FanYanGen
      * @date 2019/4/15 9:32
      **/
-    boolean checkIsExistByUserId(Integer userId);
+    boolean checkIsExistByUserId(Long userId);
 
     /**
      * desc: 根据身份证号码查询该用户是否存在
@@ -196,4 +197,16 @@ public interface TabSysUserMapper {
      * @return
      */
     PartyMemberVO selectByPrimaryKeyToAll(Long userId);
+
+    /**
+     * desc: 修改党员困难标识
+     *
+     * @param isPoor     贫困标识
+     * @param hardshipId 困难ID
+     * @return int
+     * @author FanYanGen
+     * @date 2019/4/29 10:47
+     **/
+    int updateUserIsPoorByHardshipId(Integer isPoor, Long hardshipId);
+
 }
