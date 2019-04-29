@@ -47,7 +47,7 @@ public class PartyInformationController {
 
     @ApiOperation(value = "党员身份核查", notes = "党员身份核查", httpMethod = "GET")
     @GetMapping("/party-members/identities")
-    public PageInfo<PersonnelVO> FindUserByCondition(@RequestParam(required = false) @ApiParam(value = "姓名") String username,
+    public PageInfo<PersonnelVO> findUserByCondition(@RequestParam(required = false) @ApiParam(value = "姓名") String username,
                                                      @RequestParam(required = false) @ApiParam(value = "身份证") String idCardNo,
                                                      @RequestParam(required = false) @ApiParam(value = "手机号") String phone,
                                                      Page page) {

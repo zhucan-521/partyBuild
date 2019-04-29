@@ -5,6 +5,7 @@ import com.egovchina.partybuilding.common.entity.UserLoginDto;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
+import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.*;
 import com.egovchina.partybuilding.partybuild.entity.*;
@@ -146,6 +147,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         if (tabSysUserMapper.checkIsExistByUserId(id)) {
             int effected = 0;
             SysUser sys = BeanUtil.copyPropertiesAndPaddingBaseField(partyInfoDTO.getParty(), SysUser.class, true, true);
+            sys.setUserId(id.intValue());
             effected += tabSysUserMapper.updateByPrimaryKeySelective(sys);
             //新增或者删除标签信息
             if (partyInfoDTO.getParty().getUserTags() != null && partyInfoDTO.getParty().getUserTags().size() > 0) {
@@ -157,12 +159,25 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 //分别判断新增或者修改
                 List<PartyEducationDTO> inserts = new ArrayList<PartyEducationDTO>();
                 List<PartyEducationDTO> updates = new ArrayList<PartyEducationDTO>();
+                //考虑删除  获取原先所有数据
+                List<PartyEducationVO> delete = tabPbPartyEducationMapper.findAllByUserId(id);
                 for (int i = 0; i < partyInfoDTO.getEducations().size(); i++) {
                     partyInfoDTO.getEducations().get(i).setUserId(id);
                     if (partyInfoDTO.getEducations().get(i).getEducationId() == null) {
                         inserts.add(partyInfoDTO.getEducations().get(i));
                     } else {
+                        //储存修改数据
                         updates.add(partyInfoDTO.getEducations().get(i));
+                        if (delete != null && delete.size() > 0) {
+                            //剔除不用删除的
+                            for (int j = 0; j < delete.size(); j++) {
+                                if (delete.get(j).getEducationId().equals(partyInfoDTO.getEducations().get(i).getEducationId())) {
+                                    delete.remove(delete.get(j));
+                                    break;
+                                }
+                            }
+
+                        }
                     }
                 }
                 //新增处理
@@ -173,18 +188,47 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 if (updates.size() > 0) {
                     effected += tabPbPartyEducationMapper.batchUpdate(BeanUtil.copyListPropertiesAndPaddingBaseField(updates, TabPbPartyEducation.class, true, true));
                 }
+                //删除处理
+                if (delete != null && delete.size() > 0) {
+                    List<TabPbPartyEducation> deleteSource = BeanUtil.copyListPropertiesAndPaddingBaseField(delete, TabPbPartyEducation.class, true, true);
+                    //设置删除状态
+                    for (int i = 0; i < deleteSource.size(); i++) {
+                        deleteSource.get(i).setDelFlag(true);
+                    }
+                    effected += tabPbPartyEducationMapper.batchUpdate(deleteSource);
+                }
+            } else {
+                //没有直接删除
+                List<TabPbPartyEducation> deleteSource = BeanUtil.copyListPropertiesAndPaddingBaseField(tabPbPartyEducationMapper.findAllByUserId(id), TabPbPartyEducation.class, true, true);
+                //设置删除状态
+                for (int i = 0; i < deleteSource.size(); i++) {
+                    deleteSource.get(i).setDelFlag(true);
+                }
+                effected += tabPbPartyEducationMapper.batchUpdate(deleteSource);
             }
             //新增技术信息
             if (partyInfoDTO.getJobTitles() != null) {
                 //分别判断新增或者修改
                 List<PartyJobTitleDTO> inserts = new ArrayList<PartyJobTitleDTO>();
                 List<PartyJobTitleDTO> updates = new ArrayList<PartyJobTitleDTO>();
+                //考虑删除  获取原先所有数据
+                List<PartyJobTitleVO> delete = tabPbPartyJobTitleMapper.findAllByUserId(id);
                 for (int i = 0; i < partyInfoDTO.getJobTitles().size(); i++) {
                     partyInfoDTO.getJobTitles().get(i).setUserId(id.longValue());
                     if (partyInfoDTO.getJobTitles().get(i).getJobTitleId() == null) {
                         inserts.add(partyInfoDTO.getJobTitles().get(i));
                     } else {
                         updates.add(partyInfoDTO.getJobTitles().get(i));
+                        if (delete != null && delete.size() > 0) {
+                            //剔除不用删除的
+                            for (int j = 0; j < delete.size(); j++) {
+                                if (partyInfoDTO.getJobTitles().get(i).getJobTitleId().equals(delete.get(j).getJobTitleId())) {
+                                    delete.remove(delete.get(j));
+                                    break;
+                                }
+                            }
+
+                        }
                     }
                 }
                 //新增处理
@@ -195,27 +239,72 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 if (updates.size() > 0) {
                     effected += tabPbPartyJobTitleMapper.batchUpdate(BeanUtil.copyListPropertiesAndPaddingBaseField(updates, TabPbPartyJobTitle.class, true, true));
                 }
-
+                //删除处理
+                if (delete != null && delete.size() > 0) {
+                    List<TabPbPartyJobTitle> deleteSource = BeanUtil.copyListPropertiesAndPaddingBaseField(tabPbPartyJobTitleMapper.findAllByUserId(id), TabPbPartyJobTitle.class, true, true);
+                    //设置删除状态
+                    for (int i = 0; i < deleteSource.size(); i++) {
+                        deleteSource.get(i).setDelFlag(true);
+                    }
+                    effected += tabPbPartyJobTitleMapper.batchUpdate(deleteSource);
+                }
+            } else {
+                //没有直接删除
+                List<TabPbPartyJobTitle> deleteSource = BeanUtil.copyListPropertiesAndPaddingBaseField(tabPbPartyJobTitleMapper.findAllByUserId(id), TabPbPartyJobTitle.class, true, true);
+                //设置删除状态
+                for (int i = 0; i < deleteSource.size(); i++) {
+                    deleteSource.get(i).setDelFlag(true);
+                }
+                effected += tabPbPartyJobTitleMapper.batchUpdate(deleteSource);
             }
             //新增工作信息
             if (partyInfoDTO.getWorks() != null) {
                 //分别判断新增或者修改
                 List<PartyWorkDTO> inserts = new ArrayList<PartyWorkDTO>();
                 List<PartyWorkDTO> updates = new ArrayList<PartyWorkDTO>();
+                //考虑删除
+                List<PartyWorkVO> delete = tabPbPartyWorkMapper.findAllByUserId(id);
                 for (int i = 0; i < partyInfoDTO.getWorks().size(); i++) {
                     partyInfoDTO.getWorks().get(i).setUserId(id.longValue());
                     if (partyInfoDTO.getWorks().get(i).getWorkId() == null) {
                         inserts.add(partyInfoDTO.getWorks().get(i));
                     } else {
                         updates.add(partyInfoDTO.getWorks().get(i));
+                        //剔除不用删除的
+                        for (int j = 0; j < delete.size(); j++) {
+                            if (delete.get(j).getWorkId().equals(partyInfoDTO.getWorks().get(i).getWorkId())) {
+                                delete.remove(delete.get(j));
+                                break;
+                            }
+                        }
                     }
                 }
+                //新增处理
                 if (inserts.size() > 0) {
                     effected += tabPbPartyWorkMapper.batchInsert(BeanUtil.copyListPropertiesAndPaddingBaseField(inserts, TabPbPartyWork.class, true, false));
                 }
+                //修改处理
                 if (updates.size() > 0) {
                     effected += tabPbPartyWorkMapper.batchUpdate(BeanUtil.copyListPropertiesAndPaddingBaseField(updates, TabPbPartyWork.class, true, true));
                 }
+                //删除处理
+                if (delete != null && delete.size() > 0) {
+                    List<TabPbPartyWork> deleteSource = BeanUtil.copyListPropertiesAndPaddingBaseField(tabPbPartyWorkMapper.findAllByUserId(id), TabPbPartyWork.class, true, true);
+                    //设置删除状态
+                    for (int i = 0; i < deleteSource.size(); i++) {
+                        deleteSource.get(i).setDelFlag(true);
+                    }
+                    effected += tabPbPartyWorkMapper.batchUpdate(deleteSource);
+                }
+            } else {
+                //没有直接删除
+                List<TabPbPartyWork> deleteSource = BeanUtil.copyListPropertiesAndPaddingBaseField(tabPbPartyWorkMapper.findAllByUserId(id), TabPbPartyWork.class, true, true);
+                //设置删除状态
+                for (int i = 0; i < deleteSource.size(); i++) {
+                    deleteSource.get(i).setDelFlag(true);
+                }
+                effected += tabPbPartyWorkMapper.batchUpdate(deleteSource);
+
             }
             return effected;
         }
