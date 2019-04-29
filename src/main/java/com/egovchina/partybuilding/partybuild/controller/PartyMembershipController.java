@@ -68,8 +68,8 @@ public class PartyMembershipController {
      */
     @ApiOperation(value = "更新用户党籍信息", notes = "更新用户党籍信息", httpMethod = "PUT")
     @PutMapping
-    public boolean updateMembership(@ApiParam(value = "党籍信息", required = true) @Valid @RequestBody RegistryDTO registryDTO) {
-        return sysUserService.updateMembership(registryDTO);
+    public ReturnEntity updateMembership(@ApiParam(value = "党籍信息", required = true) @Valid @RequestBody RegistryDTO registryDTO) {
+        return ReturnUtil.buildReturn(sysUserService.updateMembership(registryDTO));
     }
 
     /**

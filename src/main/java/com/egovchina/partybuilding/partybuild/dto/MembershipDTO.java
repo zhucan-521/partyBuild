@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -20,10 +21,8 @@ import java.util.Date;
 @Data
 public class MembershipDTO {
 
-    @ApiModelProperty(value = "党籍id", hidden = true)
-    private Long membershipId;
-
     @ApiModelProperty(value = "党员id", required = true)
+    @NotNull(message = "党员id不能为空")
     private Long userId;
 
     @ApiModelProperty(value = "人员类别 码表值 RYLB")

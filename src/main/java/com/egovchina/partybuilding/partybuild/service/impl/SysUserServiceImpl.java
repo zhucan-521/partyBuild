@@ -172,10 +172,10 @@ public class SysUserServiceImpl implements SysUserService {
      */
     @Transactional
     @Override
-    public boolean updateMembership(RegistryDTO registryDTO) {
+    public int updateMembership(RegistryDTO registryDTO) {
         if (registryDTO != null && !ObjectUtils.isEmpty(registryDTO.getUserId())) {
-            Integer userId = registryDTO.getUserId();
-            SysUser oldUser = sysUserMapper.selectByPrimaryKey(userId.longValue());
+            Long userId = registryDTO.getUserId();
+            SysUser oldUser = sysUserMapper.selectByPrimaryKey(userId);
             if (registryDTO.getReduceTime() != null && registryDTO.getOutType() != null && CommonConstant.STATUS_DEL.equals(oldUser.getDelFlag())) {
                 TabPbMemberReduceList reduce = new TabPbMemberReduceList();
                 reduce.setUserId(userId.longValue());
@@ -187,9 +187,9 @@ public class SysUserServiceImpl implements SysUserService {
                 oldUser.setRegistryStatus(reduce.getOutType());
                 oldUser.setDelFlag(CommonConstant.STATUS_DEL);
             }
-            return sysUserMapper.updateByPrimaryKeySelective(oldUser) > 0;
+            return sysUserMapper.updateByPrimaryKeySelective(oldUser);
         }
-        return false;
+        return 0;
     }
 
     @Transactional

@@ -58,7 +58,7 @@ public interface SysUserService {
      * @param registryDTO
      * @return
      */
-    boolean updateMembership(RegistryDTO registryDTO);
+    int updateMembership(RegistryDTO registryDTO);
 
     /**
      * 获取党籍列表

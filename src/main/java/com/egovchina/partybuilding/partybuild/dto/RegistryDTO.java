@@ -21,7 +21,7 @@ public class RegistryDTO {
 
     @ApiModelProperty("用户ID")
     @NotNull(message = "用户Id不允许为空")
-    private Integer userId;
+    private Long userId;
 
     @ApiModelProperty(value = "出党时间", example = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

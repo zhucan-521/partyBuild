@@ -37,5 +37,4 @@ public class UserTagDTO {
     @ApiModelProperty(value = "用户标签字典Id 码表值 USERTAG")
     @NotNull(message = "标签不能为空")
     private List<Long> tagTypes;
-
 }
