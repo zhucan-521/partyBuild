@@ -22,12 +22,7 @@ public interface  TabPbFlowOutMapper {
 
     int updateByPrimaryKey(TabPbFlowOut record);
 
-    /**
-     * 条件查询流出党员列表
-     * @param dto
-     * @return
-     */
-    List<TabPbFlowOutDto> selectActiveTabPbFlowOutDto(TabPbFlowOutDto dto);
+
 
 
     /**
@@ -72,14 +67,6 @@ public interface  TabPbFlowOutMapper {
      * @return
      */
     String CommunityNameById(Long id);
-
-    /**
-     * 单个查询根据id
-     * @param id
-     * @return
-     */
-    TabPbFlowOutDto findTabPbFlowOutDtoById(Long id);
-
 
     /**
      * 单个查询根据id

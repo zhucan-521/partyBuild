@@ -78,16 +78,25 @@ public class SecretaryServiceImpl implements SecretaryService {
         if (flag > 0) {
             List<TabPbFamily> familyList = secretaryMemberDTO.getFamilyList();
             List<TabPbPositives> positivesList = secretaryMemberDTO.getPositivesList();
-            for (TabPbFamily tabPbFamily : familyList) {
-                tabPbFamily.setUserId(userId);
-            }
-            for (TabPbPositives tabPbPositives : positivesList) {
-                tabPbPositives.setUserId(userId);
-            }
             if (CollectionUtil.isNotEmpty(familyList)) {
+                for (TabPbFamily tabPbFamily : familyList) {
+                    Long relationUserId=tabSysUserMapper.SelectUserIdByIDcard(tabPbFamily.getIdCardNo());
+                    if(null==relationUserId){
+                        SysUser sysUser=new SysUser();
+                        BeanUtil.copyPropertiesIgnoreNull(tabPbFamily,sysUser);
+                        sysUser.setUserId(null);
+                        tabSysUserMapper.insertSelective(sysUser);
+                        relationUserId=sysUser.getUserId().longValue();
+                    }
+                    tabPbFamily.setRelationId(relationUserId);
+                    tabPbFamily.setUserId(userId);
+                }
                 tabPbFamilyMapper.batchInsertFamilyList(familyList);
             }
             if (CollectionUtil.isNotEmpty(secretaryMemberDTO.getPositivesList())) {
+                for (TabPbPositives tabPbPositives : positivesList) {
+                    tabPbPositives.setUserId(userId);
+                }
                 tabPbPositivesMapper.batchInsertPositivesList(positivesList);
             }
         }
@@ -113,6 +122,16 @@ public class SecretaryServiceImpl implements SecretaryService {
             if (tabPbFamily.getRelationId() != null) {
                 tabPbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
             } else {
+                Long relationUserId=tabSysUserMapper.SelectUserIdByIDcard(tabPbFamily.getIdCardNo());
+                if(null==relationUserId){
+                    SysUser sysUser=new SysUser();
+                    BeanUtil.copyPropertiesIgnoreNull(tabPbFamily,sysUser);
+                    sysUser.setUserId(null);
+                    tabSysUserMapper.insertSelective(sysUser);
+                    relationUserId=sysUser.getUserId().longValue();
+                }
+                tabPbFamily.setRelationId(relationUserId);
+                tabPbFamily.setUserId(secretaryMemberDTO.getUserId());
                 tabPbFamilyMapper.insertSelective(tabPbFamily);
             }
         }

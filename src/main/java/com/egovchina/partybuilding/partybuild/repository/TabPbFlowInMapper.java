@@ -26,26 +26,10 @@ public interface TabPbFlowInMapper {
 
     /**
      * 查询流入党员列表
-     * @param params
-     * @return
-     */
-    List<TabPbFlowInDto> selectListByFlowInDto(Map<String, Object> params);
-
-
-    /**
-     * 查询流入党员列表
      * @param
      * @return
      */
     List<FlowInMemberVO> selectListByFlowInVo(FlowInMemberQueryBean flowInMemberQueryBean);
-
-    /**
-     * 流入党员详情查询
-     * @param flowInId
-     * @return
-     */
-    TabPbFlowInDto selectFlowInByFlowId(Long flowInId);
-
 
 
     /**

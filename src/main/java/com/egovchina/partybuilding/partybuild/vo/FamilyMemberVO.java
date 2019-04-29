@@ -35,43 +35,34 @@ public class FamilyMemberVO implements Serializable {
     @ApiModelProperty(value = "姓名")
     private String username;
 
-
     @ApiModelProperty(value = "性别 码表值 XB")
     @JsonSerialize(using = DictSerializer.class)
     private Long gender;
 
-
     @ApiModelProperty(value = "身份证号码")
     private String idCardNo;
-
 
     @ApiModelProperty(value = "民族 码表值 MZ")
     @JsonSerialize(using = DictSerializer.class)
     private Long nation;
 
-
     @ApiModelProperty(value = "政治面貌 码表值 ZZMM")
     @JsonSerialize(using = DictSerializer.class)
     private Long policyFace;
 
-
     @ApiModelProperty(value = "手机号码")
     private String phone;
-
 
     @JsonSerialize(using = DictSerializer.class)
     @ApiModelProperty(value = "职务级别 码表值 HZZW")
     private Long positive;
 
-
     @ApiModelProperty(value = "出生日期")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date birthday;
 
-
     @ApiModelProperty(value = "是否出国 1否，2是")
     private String whetherAbroad;
-
 
     @JsonSerialize(using = DictSerializer.class)
     @ApiModelProperty(value = " 地区名称 码表值 CGCJ")
@@ -79,8 +70,4 @@ public class FamilyMemberVO implements Serializable {
 
     @ApiModelProperty(value = " 排序码")
     private Long orderNum;
-
-
-
-
 }

@@ -36,7 +36,7 @@
         <result column="lost_time" jdbcType="TIMESTAMP" property="lostTime"/>
         <result column="link_status" jdbcType="BIGINT" property="linkStatus"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="TabPbFlowInDtoResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbFlowInDto">
+    <resultMap extends="BaseResultMap" id="TabPbFlowInDtoResultMap" type="com.egovchina.partybuilding.partybuild.dto.FamilyMemberDTO">
         <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
         <result column="gender" jdbcType="BIGINT" property="gender"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>

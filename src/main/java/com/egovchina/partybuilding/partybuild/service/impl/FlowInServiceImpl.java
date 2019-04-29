@@ -131,7 +131,7 @@ public class FlowInServiceImpl implements FlowInService {
         sysUser.setUserId(userId.intValue());
         BeanUtil.copyPropertiesIgnoreNull(flowInMemberDto, sysUser);
         TabPbFlowIn tabPbFlowIn=tabPbFlowInMapper.selectByPrimaryKey(flowInMemberDto.getFlowInId());
-        TabPbFlowOutDto tabPbFlowOutDto=new TabPbFlowOutDto();
+        TabPbFlowOut tabPbFlowOutDto=new TabPbFlowOut();
         BeanUtil.copyPropertiesIgnoreNull(flowInMemberDto,tabPbFlowOutDto);
         tabPbFlowOutDto.setFlowOutId(tabPbFlowIn.getFlowOutId());
         tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOutDto);
