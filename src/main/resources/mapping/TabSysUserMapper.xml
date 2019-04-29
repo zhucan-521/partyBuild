@@ -552,7 +552,7 @@
         <where>
             <include refid="selectPageByMapWhereCaseList"/>
         </where>
-        ORDER BY u.user_id
+        ORDER BY u.dept_id asc, u.join_time desc
 
     </select>
 
