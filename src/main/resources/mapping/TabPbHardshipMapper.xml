@@ -460,15 +460,4 @@
          select * from tab_pb_hardship where user_id= #{userId,jdbcType=BIGINT} and del_flag = 0
     </select>
 
-    <!-- 逻辑删除数据 -->
-    <update id="logicDelete" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
-        update tab_pb_hardship
-        set del_flag = #{delFlag,jdbcType=VARCHAR},
-          update_time = #{updateTime,jdbcType=TIMESTAMP},
-          update_userid = #{updateUserid,jdbcType=BIGINT},
-          update_username = #{updateUsername,jdbcType=VARCHAR},
-          version = #{version,jdbcType=BIGINT}
-        where hardship_id = #{hardshipId,jdbcType=BIGINT}
-    </update>
-
 </mapper>

@@ -1,18 +1,18 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
-import com.egovchina.partybuilding.partybuild.dto.HardshipPartyDTO;
+import com.egovchina.partybuilding.partybuild.dto.HardshipPartyMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.HardshipQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.entity.TabPbHardship;
 import com.egovchina.partybuilding.partybuild.repository.TabPbHardshipMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
-import com.egovchina.partybuilding.partybuild.service.HardshipService;
+import com.egovchina.partybuilding.partybuild.service.HardshipPartyMemberService;
 import com.egovchina.partybuilding.partybuild.vo.HardshipPartyVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -31,7 +31,7 @@ import static com.egovchina.partybuilding.common.util.BeanUtil.copyPropertiesAnd
  */
 @Transactional(rollbackFor = Exception.class)
 @Service("hardshipService")
-public class HardshipServiceImpl implements HardshipService {
+public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberService {
 
     @Autowired
     private TabPbHardshipMapper hardshipMapper;
@@ -59,10 +59,19 @@ public class HardshipServiceImpl implements HardshipService {
     }
 
     @Override
-    public int insertHardshipParty(HardshipPartyDTO hardshipPartyDTO) {
-        verification(hardshipPartyDTO);
-        TabPbHardship tabPbHardship = copyPropertiesAndPaddingBaseField(hardshipPartyDTO, TabPbHardship.class, false, false);
-        return hardshipMapper.insertSelective(tabPbHardship);
+    public int insertHardshipPartyMember(HardshipPartyMemberDTO hardshipPartyMemberDTO) {
+        verification(hardshipPartyMemberDTO);
+        TabPbHardship tabPbHardship = copyPropertiesAndPaddingBaseField(hardshipPartyMemberDTO, TabPbHardship.class, false, false);
+        // 新增困难党员时 修改党员困难标识
+        int result = hardshipMapper.insertSelective(tabPbHardship);
+        if (0 < result) {
+            SysUser user = new SysUser();
+            byte poorNum = 1;
+            user.setUserId(hardshipPartyMemberDTO.getUserId().intValue());
+            user.setIsPoor(poorNum);
+            result += sysUserMapper.updateByPrimaryKeySelective(user);
+        }
+        return result;
     }
 
     @Override
@@ -71,13 +80,22 @@ public class HardshipServiceImpl implements HardshipService {
         hardship.setDelFlag(CommonConstant.STATUS_DEL);
         hardship.setHardshipId(hardshipId);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(hardship);
-        return hardshipMapper.logicDelete(hardship);
+        int result = hardshipMapper.updateByPrimaryKeySelective(hardship);
+        // 困难党员删除时 党员困难标识也随之被修改
+        if (0 < result) {
+            SysUser user = new SysUser();
+            byte poorNum = 0;
+            user.setUserId(hardshipMapper.selectByPrimaryKey(hardshipId).getUserId().intValue());
+            user.setIsPoor(poorNum);
+            result += sysUserMapper.updateByPrimaryKeySelective(user);
+        }
+        return result;
     }
 
     @Override
-    public int updateHardshipParty(HardshipPartyDTO hardshipPartyDTO) {
-        verification(hardshipPartyDTO);
-        TabPbHardship tabPbHardship = copyPropertiesAndPaddingBaseField(hardshipPartyDTO, TabPbHardship.class, false, true);
+    public int updateHardshipPartyMember(HardshipPartyMemberDTO hardshipPartyMemberDTO) {
+        verification(hardshipPartyMemberDTO);
+        TabPbHardship tabPbHardship = copyPropertiesAndPaddingBaseField(hardshipPartyMemberDTO, TabPbHardship.class, false, true);
         return hardshipMapper.updateByPrimaryKeySelective(tabPbHardship);
     }
 
@@ -94,14 +112,14 @@ public class HardshipServiceImpl implements HardshipService {
     /**
      * desc: 数据校验提示
      *
-     * @param hardshipPartyDTO dto
+     * @param hardshipPartyMemberDTO dto
      * @return void
      * @author FanYanGen
      * @date 2019/4/24 21:02
      **/
-    private void verification(HardshipPartyDTO hardshipPartyDTO) {
-        Integer userId = hardshipPartyDTO.getUserId().intValue();
-        if (!deptMapper.isExist(hardshipPartyDTO.getOrgId())) {
+    private void verification(HardshipPartyMemberDTO hardshipPartyMemberDTO) {
+        Integer userId = hardshipPartyMemberDTO.getUserId().intValue();
+        if (!deptMapper.isExist(hardshipPartyMemberDTO.getOrgId())) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
         if (!sysUserMapper.checkIsExistByUserId(userId)) {
