@@ -12,7 +12,7 @@ import com.egovchina.partybuilding.partybuild.service.TabSysDeptService;
 import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
-import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
+import com.egovchina.partybuilding.partybuild.dto.RegistryDTO;
 import com.egovchina.partybuilding.partybuild.vo.RegistryVO;
 import com.egovchina.partybuilding.partybuild.service.SysUserService;
 import lombok.var;
@@ -170,20 +170,20 @@ public class SysUserServiceImpl implements SysUserService {
     /**
      * 更新用户党籍信息
      *
-     * @param membershipDTO
+     * @param registryDTO
      * @return
      */
     @Transactional
     @Override
-    public boolean updateMembership(MembershipDTO membershipDTO) {
-        if (membershipDTO != null && !ObjectUtils.isEmpty(membershipDTO.getUserId())) {
-            Integer userId = membershipDTO.getUserId();
+    public boolean updateMembership(RegistryDTO registryDTO) {
+        if (registryDTO != null && !ObjectUtils.isEmpty(registryDTO.getUserId())) {
+            Integer userId = registryDTO.getUserId();
             SysUser oldUser = sysUserMapper.selectByPrimaryKey(userId.longValue());
-            if (membershipDTO.getReduceTime() != null && membershipDTO.getOutType() != null && CommonConstant.STATUS_DEL.equals(oldUser.getDelFlag())) {
+            if (registryDTO.getReduceTime() != null && registryDTO.getOutType() != null && CommonConstant.STATUS_DEL.equals(oldUser.getDelFlag())) {
                 TabPbMemberReduceList reduce = new TabPbMemberReduceList();
                 reduce.setUserId(userId.longValue());
-                reduce.setOutType(membershipDTO.getOutType());
-                reduce.setReduceTime(membershipDTO.getReduceTime());
+                reduce.setOutType(registryDTO.getOutType());
+                reduce.setReduceTime(registryDTO.getReduceTime());
                 reduce.setDeptId(oldUser.getDeptId().longValue());
                 reduce.setRealName(oldUser.getUsername());
                 memberReduceListMapper.insertSelective(reduce);

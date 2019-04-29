@@ -436,9 +436,9 @@ public class SysUser implements Serializable {
     @ApiModelProperty(value = "加入党组织类别")
     private Long joinOrgType;
 
-//    @ApiModelProperty(value = "加入党组织时间")
-//    @JsonFormat(pattern = "yyyy-MM-dd")
-//    private Long joinOrgTime;
+    @ApiModelProperty(value = "加入党组织时间")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Long joinOrgTime;
 
     @ApiModelProperty(value = "入党组织联系人")
     private String joinOrgContactor;

@@ -2,7 +2,7 @@ package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
 import com.egovchina.partybuilding.partybuild.entity.SysUser;
-import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
+import com.egovchina.partybuilding.partybuild.dto.RegistryDTO;
 import com.egovchina.partybuilding.partybuild.vo.RegistryVO;
 
 import java.util.List;
@@ -55,10 +55,10 @@ public interface SysUserService {
     /**
      * 更新用户党籍信息
      *
-     * @param membershipDTO
+     * @param registryDTO
      * @return
      */
-    boolean updateMembership(MembershipDTO membershipDTO);
+    boolean updateMembership(RegistryDTO registryDTO);
 
     /**
      * 获取党籍列表

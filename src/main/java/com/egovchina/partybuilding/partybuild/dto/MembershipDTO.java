@@ -1,42 +1,45 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
+import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * @author create by GuanYingxin on 2019/4/22 17:44
+ * @author create by GuanYingxin on 2019/4/29 9:30
  * @description
  */
-@ApiModel("更新党籍")
+@ApiModel("党籍实体类DTO")
 @Accessors(chain = true)
 @Data
 public class MembershipDTO {
 
-    @ApiModelProperty("用户ID")
-    @NotNull
-    private Integer userId;
+    @ApiModelProperty(value = "党籍id", hidden = true)
+    private Long membershipId;
 
-    @ApiModelProperty(value = "出党时间", example = "yyyy-MM-dd")
+    @ApiModelProperty(value = "党员id", required = true)
+    private Long userId;
+
+    @ApiModelProperty(value = "人员类别 码表值 RYLB")
+    private Long identityType;
+
+    @ApiModelProperty(value = "党籍处理 码表值 DJCL")
+    private Long type;
+
+    @ApiModelProperty(value = "处理原因")
+    private String reason;
+
+    @ApiModelProperty(value = "创建时间")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull
-    private Date reduceTime;
+    private Date createTime;
 
-    @ApiModelProperty(value = "出党方式 3出党、4停止党籍、5死亡、6其他")
-    @NotNull
-    private Long outType;
-
-    @ApiModelProperty(value = "组织ID ,党支部Id")
-    @NotNull
-    private Integer deptId;
-
-    @ApiModelProperty(value = "身份证号")
-    @NotNull
-    private String username;
+    @ApiModelProperty(value = "创建人姓名")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private String createUsername;
 }

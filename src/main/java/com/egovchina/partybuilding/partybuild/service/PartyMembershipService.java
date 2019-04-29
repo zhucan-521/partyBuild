@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyMembership;
 import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.entity.MembershipQueryBean;
@@ -13,6 +14,13 @@ import java.util.List;
  * @description 党籍service
  */
 public interface PartyMembershipService {
+
+    /**
+     * 插入党籍信息
+     * @param membershipDTO dto
+     * @return
+     */
+    int insertMembershipDTO(MembershipDTO membershipDTO);
 
     /**
      * 根据人员类别和党籍类型查询党籍列表

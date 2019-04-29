@@ -14,7 +14,7 @@ import java.util.Date;
  * @author: huang
  * Date: 2018/12/13
  */
-@ApiModel(value = "党籍列表信息")
+@ApiModel(value = "党籍列表VO")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -24,11 +24,11 @@ public class RegistryVO {
     private Long registryStatus;
 
     @ApiModelProperty(value = "办理时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GTM+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date handleTime;
 
     @ApiModelProperty(value = "操作时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GTM+8")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date operatTime;
 
     @ApiModelProperty(value = "操作人")

@@ -2,13 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbPartyMembershipMapper">
-    <insert id="insertPartyMembership"
+
+    <insert id="insertPartyMembershipDTO"
             parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMembership">
         insert into tab_pb_party_membership (membership_id, user_id, identity_type, type, reason, create_time, create_userid, create_username)
         values (#{membershipId, jdbcType=BIGINT}, #{userId, jdbcType=BIGINT}, #{identityType, jdbcType=BIGINT}, #{type, jdbcType=BIGINT},
             #{reason, jdbcType=VARCHAR}, #{createTime, jdbcType=TIMESTAMP}, #{createUserid, jdbcType=BIGINT},
             #{createUsername, jdbcType=VARCHAR})
     </insert>
+
     <update id="updatePartyMembership"
             parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMembership">
         update tab_pb_party_membership(identity_type, type, reason, create_time, create_userid, create_username)

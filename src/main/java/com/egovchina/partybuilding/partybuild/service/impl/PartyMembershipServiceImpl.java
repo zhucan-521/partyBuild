@@ -1,7 +1,9 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
+import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyMembership;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPartyMembershipMapper;
 import com.egovchina.partybuilding.partybuild.entity.MembershipQueryBean;
@@ -11,6 +13,7 @@ import com.egovchina.partybuilding.partybuild.vo.MembershipVO;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -23,6 +26,20 @@ public class PartyMembershipServiceImpl implements PartyMembershipService {
 
     @Autowired
     private TabPbPartyMembershipMapper tabPbPartyMembershipMapper;
+
+    @Transactional
+    @PaddingBaseField(recursive = true)
+    @Override
+    public int insertMembershipDTO(MembershipDTO membershipDTO) {
+        TabPbPartyMembership tabPbPartyMembership = new TabPbPartyMembership();
+        tabPbPartyMembership.setUserId(membershipDTO.getUserId());
+        tabPbPartyMembership.setType(membershipDTO.getType());
+        tabPbPartyMembership.setIdentityType(membershipDTO.getIdentityType());
+        tabPbPartyMembership.setReason(membershipDTO.getReason());
+        tabPbPartyMembership.setCreateTime(membershipDTO.getCreateTime());
+        tabPbPartyMembership.setCreateUsername(membershipDTO.getCreateUsername());
+        return tabPbPartyMembershipMapper.insertPartyMembershipDTO(tabPbPartyMembership);
+    }
 
     /**
      * 查询党籍信息列表实现方法

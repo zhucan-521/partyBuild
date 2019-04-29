@@ -1,9 +1,12 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.util.ReturnEntity;
+import com.egovchina.partybuilding.common.util.ReturnUtil;
+import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
+import com.egovchina.partybuilding.partybuild.dto.RegistryDTO;
 import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.service.SysUserService;
-import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
 import com.egovchina.partybuilding.partybuild.vo.RegistryVO;
 import com.egovchina.partybuilding.partybuild.entity.MembershipQueryBean;
 import com.egovchina.partybuilding.partybuild.service.PartyMembershipService;
@@ -60,13 +63,13 @@ public class PartyMembershipController {
     /**
      * 更新用户党籍信息
      *
-     * @param membershipDTO
+     * @param registryDTO
      * @return
      */
     @ApiOperation(value = "更新用户党籍信息", notes = "更新用户党籍信息", httpMethod = "PUT")
     @PutMapping
-    public boolean updateMembership(@ApiParam(value = "党籍信息", required = true) @Valid @RequestBody MembershipDTO membershipDTO) {
-        return sysUserService.updateMembership(membershipDTO);
+    public boolean updateMembership(@ApiParam(value = "党籍信息", required = true) @Valid @RequestBody RegistryDTO registryDTO) {
+        return sysUserService.updateMembership(registryDTO);
     }
 
     /**
