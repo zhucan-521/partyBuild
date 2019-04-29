@@ -4,6 +4,7 @@ import com.egovchina.partybuilding.partybuild.dto.CommunityDTO;
 import com.egovchina.partybuilding.partybuild.dto.TabPbFlowOutDto;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowOut;
 import com.egovchina.partybuilding.partybuild.vo.CommunityVO;
+import com.egovchina.partybuilding.partybuild.vo.CommunityVO;
 import com.egovchina.partybuilding.partybuild.entity.FlowOutMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.FlowOutMemberVO;
 import org.springframework.stereotype.Repository;
