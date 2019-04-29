@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @ApiModel(value = "系统用户查询实体")
@@ -14,7 +15,8 @@ public class SysUserQueryBean {
     @ApiModelProperty(value = "用户名")
     private String username;
 
-    @ApiModelProperty(value = "组织ID ,党支部Id")
+    @ApiModelProperty(value = "组织id")
+    @NotNull(message = "组织id不能为空")
     private Integer deptId;
 
     @ApiModelProperty(value = "人员类别")
@@ -23,7 +25,7 @@ public class SysUserQueryBean {
     @ApiModelProperty(value = "身份证号码")
     private String idCardNo;
 
-    @ApiModelProperty(value = "性别多个逗号隔开")
+    @ApiModelProperty(value = "性别")
     private Long gender;
 
     @ApiModelProperty(value = "民族多个逗号隔开")

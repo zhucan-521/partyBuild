@@ -8,12 +8,12 @@ import lombok.Data;
 @Data
 public class UserInfoVO {
     @ApiModelProperty(value = "后台用户ID，后台用户一定有值，党员不一定有值")
-    private Integer userId;
+    private Long userId;
     /**
      * 后台用户没有ci此组织id，只有管理组织id
      */
     @ApiModelProperty(value = "组织ID ,党支部Id")
-    private Integer deptId;
+    private Long deptId;
 
     @ApiModelProperty(value = "电话号码")
     private String phone;

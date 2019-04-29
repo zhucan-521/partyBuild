@@ -5,7 +5,6 @@ import com.egovchina.partybuilding.common.entity.UserLoginDto;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
-import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.*;
 import com.egovchina.partybuilding.partybuild.entity.*;
@@ -16,7 +15,6 @@ import com.egovchina.partybuilding.partybuild.system.mapper.SysUserMapper;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +22,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author zhucan
@@ -69,8 +66,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     public UserInfoVO getUserInfoVO() {
         UserLoginDto userLoginDto = UserContextHolder.currentUser();
         UserInfoVO sysUser = new UserInfoVO();
-        sysUser.setUserId(userLoginDto.getUserId());
-        sysUser.setDeptId(userLoginDto.getDeptId());
+        sysUser.setUserId(UserContextHolder.getUserIdLong());
+        sysUser.setDeptId(UserContextHolder.getOrgId());
         sysUser.setPhone(userLoginDto.getPhone());
         sysUser.setUsername(userLoginDto.getRealname());
         sysUser.setAvatar(userLoginDto.getAvatar());
@@ -222,41 +219,22 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             }
             return effected;
         }
-        throw new BusinessDataIncompleteException("用户ID不存在!!!");
+        throw new BusinessDataIncompleteException("用户ID不存在");
     }
 
     @Override
     public PageInfo<PartyMemberInformationVO> getPartyList(SysUserQueryBean queryBean, Page page) {
-        if (queryBean.getDeptId()!=null) {
-            String deptId = String.valueOf(queryBean.getDeptId());
-            String orgRange = String.valueOf(queryBean.getOrgRange()); // 2 包含所有下级
-            if (!"14307".equals(deptId)) {
-                //判断是否属于此节点
-                if (!tabSysUserMapper.verification(UserContextHolder.getOrgId(), Long.parseLong(deptId))) {
-                    //不属于改变deptId的值
-                    queryBean.setDeptId(UserContextHolder.getOrgId().intValue());
-                    queryBean.setOrgRange("2");
-                }
-            } else if ("14307".equals(deptId) && "2".equals(orgRange)) {
-                queryBean.setOrgRange("0");
-            }
-        } else {
-            queryBean.setDeptId(UserContextHolder.getOrgId().intValue());
-            if (14307 == UserContextHolder.getOrgId()) {
-                queryBean.setOrgRange("0");
-            } else {
-                queryBean.setOrgRange("2");
-            }
+        String deptId = String.valueOf(queryBean.getDeptId());
+        String orgRange = String.valueOf(queryBean.getOrgRange()); // 2 包含所有下级
+        if ("14307".equals(deptId) && "2".equals(orgRange)) {
+            queryBean.setOrgRange("0");
         }
         PageHelper.startPage(page);
         List<PartyMemberInformationVO> partyMemberInformationVO=tabSysUserMapper.selectPageByMap(queryBean);
-        calculationComplete(partyMemberInformationVO);
-        return new PageInfo<> (partyMemberInformationVO);
+        return new PageInfo<>(calculationComplete(partyMemberInformationVO));
     }
 
-
-
-    public void calculationComplete(List<PartyMemberInformationVO> userList) {
+    public List<PartyMemberInformationVO> calculationComplete(List<PartyMemberInformationVO> userList) {
         userList.forEach(user -> {
             int tool = 100;
             if (ObjectUtils.isEmpty(user.getGender())) {
@@ -324,6 +302,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             }
             user.setComplete(tool);
         });
+        return userList;
     }
 
 }
