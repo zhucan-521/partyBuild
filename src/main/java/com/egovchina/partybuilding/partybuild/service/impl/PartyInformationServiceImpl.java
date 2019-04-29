@@ -235,8 +235,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 if (!tabSysUserMapper.verification(UserContextHolder.getOrgId(), Long.parseLong(deptId))) {
                     //不属于改变deptId的值
                     queryBean.setDeptId(UserContextHolder.getOrgId().intValue());
+                    queryBean.setOrgRange("2");
                 }
-                queryBean.setOrgRange("2");
             } else if ("14307".equals(deptId) && "2".equals(orgRange)) {
                 queryBean.setOrgRange("0");
             }

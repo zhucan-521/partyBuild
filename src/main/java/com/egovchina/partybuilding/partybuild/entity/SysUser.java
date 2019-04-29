@@ -381,7 +381,7 @@ public class SysUser implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "加入时间")
-    private Date joinTime2;
+    private Date joinOrgTime;
 
     @ApiModelProperty(value = "曾任职务")
     private String positived;

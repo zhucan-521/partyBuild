@@ -84,6 +84,10 @@ public class SysUserVO {
     @ApiModelProperty(value = "入党时间、预备党员时间")
     private Date joinTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "加入党组织时间")
+    private Date joinOrgTime;
+
     @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     @ApiModelProperty(value = "转正时间、正式党员时间")
     private Date regularTime;

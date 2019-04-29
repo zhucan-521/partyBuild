@@ -68,7 +68,7 @@
         <result column="flow_to_org_contactor" jdbcType="VARCHAR" property="flowToOrgContactor"/>
         <result column="flow_to_org_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
         <result column="policy_face" jdbcType="BIGINT" property="policyFace"/>
-        <result column="join_time2" jdbcType="TIMESTAMP" property="joinTime2"/>
+        <result column="join_org_time" jdbcType="TIMESTAMP" property="joinOrgTime"/>
         <result column="positived" jdbcType="VARCHAR" property="positived"/>
         <result column="join_contact_id" jdbcType="BIGINT" property="joinContactId"/>
         <result column="contactor" jdbcType="VARCHAR" property="contactor"/>
