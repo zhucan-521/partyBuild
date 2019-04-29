@@ -25,7 +25,7 @@ public class GoAbroadDTO {
 
     @ApiModelProperty(value = "人员Id")
     @NotNull(message = "人员ID不能为空")
-    private Integer userId;
+    private Long userId;
 
     @ApiModelProperty(value = "前往国家地区 字典:CGCJ", notes = "字典CGCJ")
     @NotNull(message = "出境国家不能为空")

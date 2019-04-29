@@ -14,8 +14,9 @@ import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.AbroadService;
 import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
-import com.egovchina.partybuilding.partybuild.vo.*;
-import com.fasterxml.jackson.databind.util.BeanUtil;
+import com.egovchina.partybuilding.partybuild.vo.AbroadVO;
+import com.egovchina.partybuilding.partybuild.vo.BackAbroadDetailsVO;
+import com.egovchina.partybuilding.partybuild.vo.GoAbroadDetailsVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,14 +47,14 @@ public class AbroadServiceImpl implements AbroadService {
 
     @Override
     public int insertGoAbroad(GoAbroadDTO goAbroadDTO) {
-        Integer userId = goAbroadDTO.getUserId();
+        Long userId = goAbroadDTO.getUserId();
         verification(goAbroadDTO.getOrgId(), userId);
         TabPbAbroad tabPbAbroad = copyPropertiesAndPaddingBaseField(goAbroadDTO, TabPbAbroad.class, false, false);
         int result = abroadMapper.insertSelective(tabPbAbroad);
         // 党员出国后将该党员移至历史党员
         if (0 < result) {
             DeletePartyMemberDTO deletePartyMemberDTO = new DeletePartyMemberDTO();
-            deletePartyMemberDTO.setUserId(userId.longValue());
+            deletePartyMemberDTO.setUserId(userId);
             deletePartyMemberDTO.setOutType(6L);
             extendedInfoService.updateByUserId(deletePartyMemberDTO);
         }
@@ -108,7 +109,7 @@ public class AbroadServiceImpl implements AbroadService {
      * @author FanYanGen
      * @date 2019/4/24 21:02
      **/
-    private void verification(Long orgId, Integer userId) {
+    private void verification(Long orgId, Long userId) {
         if (!deptMapper.checkIsExistByOrgId(orgId)) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }

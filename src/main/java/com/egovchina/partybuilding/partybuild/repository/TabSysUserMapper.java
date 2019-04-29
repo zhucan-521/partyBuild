@@ -178,7 +178,7 @@ public interface TabSysUserMapper {
      * @author FanYanGen
      * @date 2019/4/15 9:32
      **/
-    boolean checkIsExistByUserId(Integer userId);
+    boolean checkIsExistByUserId(Long userId);
 
     /**
      * desc: 根据身份证号码查询该用户是否存在

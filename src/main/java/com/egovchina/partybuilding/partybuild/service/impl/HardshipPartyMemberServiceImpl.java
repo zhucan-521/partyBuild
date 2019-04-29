@@ -110,7 +110,7 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
      * @date 2019/4/24 21:02
      **/
     private void verification(HardshipPartyMemberDTO hardshipPartyMemberDTO) {
-        Integer userId = hardshipPartyMemberDTO.getUserId().intValue();
+        Long userId = hardshipPartyMemberDTO.getUserId();
         if (!deptMapper.checkIsExistByOrgId(hardshipPartyMemberDTO.getOrgId())) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
