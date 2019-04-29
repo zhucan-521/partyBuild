@@ -75,6 +75,9 @@ public class FamilyMemberVO implements Serializable {
     @ApiModelProperty(value = " 地区名称 码表值 CGCJ")
     private Long abroad;
 
+    @ApiModelProperty(value = " 排序码")
+    private Long orderNum;
+
 
 
 

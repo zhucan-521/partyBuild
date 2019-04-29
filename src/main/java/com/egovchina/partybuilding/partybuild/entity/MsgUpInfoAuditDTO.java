@@ -7,7 +7,7 @@ import lombok.Data;
  * @author zhucan
  */
 @Data
-public class MsgUpInfoAuditQueryBean {
+public class MsgUpInfoAuditDTO {
 
     @ApiModelProperty(value = "数据ID" ,required = true)
     private Long id;

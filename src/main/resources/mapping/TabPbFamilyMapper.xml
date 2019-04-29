@@ -79,9 +79,15 @@
         users.birthday
         FROM
 	    tab_pb_family family
-        JOIN sys_user users ON family.relation_user_id = users.user_id AND users.del_flag = 0
+        JOIN
+        sys_user users
+         ON
+         family.relation_user_id = users.user_id
+        AND users.del_flag = 0
         WHERE
-	    family.user_id = #{userId,jdbcType=BIGINT} AND family.del_flag = 0
+	    family.user_id = #{userId,jdbcType=BIGINT}
+	    AND
+	    family.del_flag = 0
     </select>
 
 
@@ -100,19 +106,20 @@
     <!--查询根据主键查询单条数据-->
     <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select family.relation,
-	(
-		CASE family.whether_abroad
-		WHEN 1 THEN
-			'否'
-		ELSE
-			'是'
-		END
-	) AS `whether_abroad`,
-	family.abroad,
-	family.relation_id,
-	family.relation_user_id,
-	users.realname as username ,users.gender,users.id_card_no,users.nation,
-        users.policy_face,users.phone,users.positive,users.birthday from tab_pb_family family
+        (CASE family.whether_abroad WHEN 1 THEN '否' ELSE '是' END) AS `whether_abroad`,
+        family.abroad,
+        family.relation_id,
+        family.relation_user_id,
+        family.order_num,
+        users.realname as username ,
+        users.gender,
+        users.id_card_no,
+        users.nation,
+        users.policy_face,
+        users.phone,
+        users.positive,
+        users.birthday
+        from tab_pb_family family
         join sys_user users on family.relation_user_id = users.user_id
         where family.relation_id = #{relationId,jdbcType=BIGINT} and family.del_flag = 0;
     </select>
@@ -221,8 +228,6 @@
         </trim>
     </insert>
 
-
-
     <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbFamily">
         update tab_pb_family
         <set>
@@ -314,7 +319,5 @@
             #{item.delFlag},#{item.orderNum},#{item.createTime},#{item.createUserid})
         </foreach>
     </insert>
-
-
 
 </mapper>

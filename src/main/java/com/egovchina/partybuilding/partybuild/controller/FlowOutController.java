@@ -63,7 +63,7 @@ public class FlowOutController {
         return ReturnUtil.buildReturn(flowOutVoService.delete(flowOutId));
     }
 
-    @ApiOperation(value = "修改流出党员（附带flowOutId）",  httpMethod = "PUT")
+    @ApiOperation(value = "修改流出党员",  httpMethod = "PUT")
     @PutMapping
     public ReturnEntity updateFlowOutMember(@Validated @RequestBody  @ApiParam(value = "流出党员")  FlowOutMemberDTO flowOutMemberDTO) {
        return ReturnUtil.buildReturn(flowOutVoService.updateFlowOutMember(flowOutMemberDTO));

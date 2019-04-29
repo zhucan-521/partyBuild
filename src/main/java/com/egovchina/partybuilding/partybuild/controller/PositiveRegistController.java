@@ -34,7 +34,7 @@ public class PositiveRegistController {
     }
 
 
-    @ApiOperation(value = "获取社区报到信息列表", notes = "可指定条件查询")
+    @ApiOperation(value = "获取社区报到信息列表", notes = "可指定条件查询", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(value = "党员名称", name = "userName", paramType = "query"),
             @ApiImplicitParam(value = "状态", name = "revokeTag", paramType = "query"),
@@ -47,7 +47,7 @@ public class PositiveRegistController {
         return new PageInfo<>(positiveRegistService.selectRegistMemberVOList(positiveRegistMemberQueryBean, page));
     }
 
-    @ApiOperation(value = "改变登记状态", notes = "1为已报到,2为已返回")
+    @ApiOperation(value = "改变登记状态", notes = "1为已报到,2为已返回", httpMethod = "PUT")
     @ApiImplicitParams({
             @ApiImplicitParam(value = "状态", name = "revokeTag", dataType = "Byte", required = true),
             @ApiImplicitParam(value = "主键Id", name = "positiveRegistId", dataType = "Long", required = true),
@@ -57,7 +57,7 @@ public class PositiveRegistController {
         return ReturnUtil.buildReturn(positiveRegistService.ChangeStatus(positiveRegistId, revokeTag));
     }
 
-    @ApiOperation(value = "根据主键ID删除信息", notes = "主键ID为必填")
+    @ApiOperation(value = "根据主键ID删除信息", notes = "主键ID为必填", httpMethod = "DELETE")
     @ApiImplicitParam(name = "positiveRegistId", value = "主键ID", required = true, paramType = "path")
     @DeleteMapping("/{positiveRegistId}")
     public ReturnEntity deleteRegistMember(@PathVariable Long positiveRegistId) {
@@ -65,7 +65,7 @@ public class PositiveRegistController {
         return ReturnUtil.buildReturn(delete);
     }
 
-    @ApiOperation(value = "根据userId取消报到标识", notes = "userId为必填")
+    @ApiOperation(value = "根据userId取消报到标识", notes = "userId为必填", httpMethod = "DELETE")
     @ApiImplicitParam(name = "userId", value = "主键ID", required = true, paramType = "path")
     @DeleteMapping("{userId}/status")
     public ReturnEntity delectRegistStatus(@PathVariable Long userId) {
@@ -74,7 +74,7 @@ public class PositiveRegistController {
     }
 
 
-    @ApiOperation(value = "查看报到党员信息")
+    @ApiOperation(value = "查看报到党员信息", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(value = "主键id", name = "positiveRegistId",paramType = "path",required = true),
     })

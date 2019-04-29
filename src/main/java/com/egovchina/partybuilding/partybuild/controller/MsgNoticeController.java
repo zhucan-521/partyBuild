@@ -55,48 +55,43 @@ public class MsgNoticeController {
     @ApiOperation(value = "添加文件",httpMethod = "POST")
     @PostMapping
     public ReturnEntity addMsgNotice(@ApiParam(name = "保存信息")@RequestBody MsgNoticeDTO msgNoticeDTO){
-        int add = noticeService.addMsgNotice(msgNoticeDTO);
-        return ReturnUtil.buildReturn(add);
+        return ReturnUtil.buildReturn(noticeService.addMsgNotice(msgNoticeDTO));
     }
 
-    @ApiOperation(value = "修改文件信息",notes = "修改除了主键Id都不是必填")
+    @ApiOperation(value = "修改文件信息",notes = "修改除了主键Id都不是必填", httpMethod = "PUT")
     @PutMapping
     public ReturnEntity editMsgNotice(@ApiParam(name = "文件信息") @RequestBody @Validated MsgNoticeDTO msgNoticeDTO){
-        int edit = noticeService.editMsgNoticeById(msgNoticeDTO);
-        return ReturnUtil.buildReturn(edit);
+        return ReturnUtil.buildReturn(noticeService.editMsgNoticeById(msgNoticeDTO));
     }
 
 
-    @ApiOperation(value = "改变文件状态")
+    @ApiOperation(value = "改变文件状态", httpMethod = "PUT")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键id", paramType = "path" ,required = true),
             @ApiImplicitParam(name = "state", value = "状态值 0.未发布、1.已发布(发布后可以取消)",paramType = "query"),
     })
     @PutMapping("{id}/state")
     public ReturnEntity editMsgNoticeState(@PathVariable Long id,String state){
-        MsgNoticeDTO notice=new MsgNoticeDTO();
-        notice.setId(id);
-        notice.setState(state);
-        int retVal = noticeService.editMsgNoticeState(notice);
-        return ReturnUtil.buildReturn(retVal);
+        MsgNoticeDTO msgNoticeDTO=new MsgNoticeDTO();
+        msgNoticeDTO.setId(id);
+        msgNoticeDTO.setState(state);
+        return ReturnUtil.buildReturn(noticeService.editMsgNoticeState(msgNoticeDTO));
     }
 
-    @ApiOperation(value = "文件签收")
+    @ApiOperation(value = "文件签收", httpMethod = "PUT")
     @ApiImplicitParam(name = "id",required = true,value = "签收需要传主键id",paramType = "path")
     @PutMapping ("/{id}")
     public ReturnEntity signNotice(@PathVariable Long id){
         MsgNoticeDeptDTO noticeDept=new MsgNoticeDeptDTO();
         noticeDept.setId(id);
-        int retVal = noticeService.signNotice(noticeDept);
-        return ReturnUtil.buildReturn(retVal);
+        return ReturnUtil.buildReturn(noticeService.signNotice(noticeDept));
     }
 
-    @ApiOperation(value = "删除文件")
+    @ApiOperation(value = "删除文件", httpMethod = "DELETE")
     @ApiImplicitParam(name = "id",required = true,value = "主键id",paramType = "path")
     @DeleteMapping("/{id}")
     public ReturnEntity deleteMsgNotice(@PathVariable Long id ){
-        int retVal = noticeService.deleteMsgNotice(id);
-        return ReturnUtil.buildReturn(retVal);
+        return ReturnUtil.buildReturn(noticeService.deleteMsgNotice(id));
     }
 
 

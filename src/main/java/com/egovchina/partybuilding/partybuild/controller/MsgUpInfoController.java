@@ -8,7 +8,7 @@ import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.MsgUpInfoDTO;
-import com.egovchina.partybuilding.partybuild.entity.MsgUpInfoAuditQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.MsgUpInfoAuditDTO;
 import com.egovchina.partybuilding.partybuild.entity.MsgUpInfoQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo;
 import com.egovchina.partybuilding.partybuild.service.MsgUpInfoSerivce;
@@ -28,9 +28,9 @@ public class MsgUpInfoController {
     @Autowired
     MsgUpInfoSerivce msgUpInfoSerivce;
 
-    @ApiOperation(value = "上报条件查询信息列表", notes = "", httpMethod = "GET")
+    @ApiOperation(value = "上报条件查询信息列表", httpMethod = "GET")
     @GetMapping("/report")
-    public PageInfo<MsgUpInfoVO> selectReportMsgUpInfoList( MsgUpInfoQueryBean msgUpInfoQueryBean, Page page) {
+    public PageInfo<MsgUpInfoVO> selectReportMsgUpInfoList(MsgUpInfoQueryBean msgUpInfoQueryBean, Page page) {
         Long rangeDeptId = msgUpInfoQueryBean.getRangeDeptId();
         if (rangeDeptId == null || rangeDeptId == 0) {
             msgUpInfoQueryBean.setRangeDeptId(UserContextHolder.getOrgId());
@@ -40,7 +40,7 @@ public class MsgUpInfoController {
 
     @ApiOperation(value = "收到条件查询信息报送列表", httpMethod = "GET")
     @GetMapping("/receive")
-    public PageInfo<MsgUpInfoVO> receiveMsgUpInfoList( MsgUpInfoQueryBean msgUpInfoQueryBean, Page page) {
+    public PageInfo<MsgUpInfoVO> receiveMsgUpInfoList(MsgUpInfoQueryBean msgUpInfoQueryBean, Page page) {
         Long rangeDeptId = msgUpInfoQueryBean.getRangeDeptId();
         if (rangeDeptId == null || rangeDeptId == 0) {
             msgUpInfoQueryBean.setRangeDeptId(UserContextHolder.getOrgId());
@@ -56,7 +56,7 @@ public class MsgUpInfoController {
     }
 
     @ApiOperation(value = "根据主键查询信息详情", notes = "根据主键查询单个详情", httpMethod = "GET")
-    @ApiImplicitParam(name = "id",value = "主键",paramType = "path")
+    @ApiImplicitParam(name = "id", value = "主键", paramType = "path")
     @GetMapping("/{id}")
     public MsgUpInfoVO msgUpInfodetail(@PathVariable Long id) {
         return msgUpInfoSerivce.getMsgUpInfoById(id);
@@ -64,34 +64,34 @@ public class MsgUpInfoController {
 
     @ApiOperation(value = "添加信息", notes = "信息添加", httpMethod = "POST")
     @PostMapping
-    public ReturnEntity insertMsgUpInfo(@RequestBody  @ApiParam(name = "信息")  MsgUpInfoDTO msgUpInfoDTO) {
+    public ReturnEntity insertMsgUpInfo(@RequestBody @ApiParam(name = "信息") MsgUpInfoDTO msgUpInfoDTO) {
         return ReturnUtil.buildReturn(msgUpInfoSerivce.insertMsgUpInfo(msgUpInfoDTO));
     }
 
     @ApiOperation(value = "删除信息", notes = "根据主键删除", httpMethod = "DELETE")
     @DeleteMapping("/{id}")
-    @ApiImplicitParam(value = "信息主键id",name = "ID",paramType = "path",required = true)
+    @ApiImplicitParam(value = "信息主键id", name = "ID", paramType = "path", required = true)
     public ReturnEntity deleteMsgUpInfo(@PathVariable Long id) {
         return ReturnUtil.buildReturn(msgUpInfoSerivce.deleteMsgUpInfo(id));
     }
 
     @ApiOperation(value = "修改信息", httpMethod = "PUT")
     @PutMapping
-    public ReturnEntity editMsgUpInfo(@RequestBody @Validated  @ApiParam(value = "信息")  MsgUpInfoDTO msgUpInfoDTO) {
+    public ReturnEntity editMsgUpInfo(@RequestBody @Validated @ApiParam(value = "信息") MsgUpInfoDTO msgUpInfoDTO) {
         return ReturnUtil.buildReturn(msgUpInfoSerivce.editMsgUpInfo(msgUpInfoDTO));
     }
 
     @ApiOperation(value = "信息审核", notes = "提供审核结果，审核说明,主键id", httpMethod = "PUT")
     @PutMapping("/audit")
-    public ReturnEntity auditMsgUpInfo(MsgUpInfoAuditQueryBean msgUpInfoAuditQueryBean) {
-        MsgUpInfoVO dbMsgUpInfo = msgUpInfoSerivce.getMsgUpInfoById(msgUpInfoAuditQueryBean.getId());
+    public ReturnEntity auditMsgUpInfo(MsgUpInfoAuditDTO msgUpInfoAuditDTO) {
+        MsgUpInfoVO dbMsgUpInfo = msgUpInfoSerivce.getMsgUpInfoById(msgUpInfoAuditDTO.getId());
         if (dbMsgUpInfo == null) {
             throw new BusinessDataNotFoundException("数据不存在");
         }
-        dbMsgUpInfo.setAuditAssess(msgUpInfoAuditQueryBean.getAuditAssess());
-        dbMsgUpInfo.setAuditComment(msgUpInfoAuditQueryBean.getAuditComment());
-        MsgUpInfoDTO tabPbMsgUpInfoDto=new MsgUpInfoDTO();
-        BeanUtil.copyPropertiesIgnoreNull(dbMsgUpInfo,tabPbMsgUpInfoDto);
+        dbMsgUpInfo.setAuditAssess(msgUpInfoAuditDTO.getAuditAssess());
+        dbMsgUpInfo.setAuditComment(msgUpInfoAuditDTO.getAuditComment());
+        MsgUpInfoDTO tabPbMsgUpInfoDto = new MsgUpInfoDTO();
+        BeanUtil.copyPropertiesIgnoreNull(dbMsgUpInfo, tabPbMsgUpInfoDto);
         return ReturnUtil.buildReturn(msgUpInfoSerivce.auditMsgUpInfo(tabPbMsgUpInfoDto));
     }
 
