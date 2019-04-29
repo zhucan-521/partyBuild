@@ -1,8 +1,9 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
-import com.egovchina.partybuilding.partybuild.dto.CommunityDto;
+import com.egovchina.partybuilding.partybuild.dto.CommunityDTO;
 import com.egovchina.partybuilding.partybuild.dto.TabPbFlowOutDto;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowOut;
+import com.egovchina.partybuilding.partybuild.vo.CommunityVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -54,7 +55,7 @@ public interface  TabPbFlowOutMapper {
      * @param dto
      * @return
      */
-    List<CommunityDto> selectCommuntiyDto(CommunityDto dto);
+    List<CommunityVO> selectCommuntiyDto(CommunityDTO dto);
 
     /**
      * 根据社区id查询社区名称

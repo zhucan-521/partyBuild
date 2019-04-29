@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 @ApiModel(value = "减少党员")
-public class TabPbMemberReduceList {
+public class  TabPbMemberReduceList {
     private Long memberReduceId;
 
     private Long deptId;
@@ -19,9 +19,6 @@ public class TabPbMemberReduceList {
     private Long userId;
 
     private String realName;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date reduceTime;
 
     private Long outType;

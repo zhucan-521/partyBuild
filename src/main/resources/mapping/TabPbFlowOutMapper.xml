@@ -541,7 +541,7 @@
         select unit_name from  tab_pb_unit_info where unit_id=#{filesManageUnitId}
     </select>
 
-    <select id="selectCommuntiyDto" parameterType="com.egovchina.partybuilding.partybuild.dto.CommunityDto" resultType="com.egovchina.partybuilding.partybuild.dto.CommunityDto">
+    <select id="selectCommuntiyDto" parameterType="com.egovchina.partybuilding.partybuild.dto.CommunityDTO" resultType="com.egovchina.partybuilding.partybuild.vo.CommunityVO">
         select id ,label ,value from sys_dict
         <where>
             <if test="label !=null and ''!=label">

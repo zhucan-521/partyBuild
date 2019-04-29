@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
+import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.HardshipPartyDTO;
 import com.egovchina.partybuilding.partybuild.entity.SysUser;
@@ -50,6 +51,7 @@ public class UserTagServiceImpl implements UserTagService {
             return 0;
         }
         TabPbUserTag userTag = new TabPbUserTag();
+        PaddingBaseFieldUtil.paddingBaseFiled(userTag);
         userTag.setTagType(tagType);
         userTag.setUserId(userId);
         return addUserTag(userTag);
@@ -130,6 +132,7 @@ public class UserTagServiceImpl implements UserTagService {
         }
         return userTags;
     }
+
 
     @Override
     public boolean updateUserTagByTagType(List<TabPbUserTag> userTags) {
