@@ -3,7 +3,6 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
-import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.HardshipPartyDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
 import com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper;
@@ -17,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,33 +42,13 @@ public class UserTagServiceImpl implements UserTagService {
     @Transactional
     @Override
     public int addUserTag(Long userId, Long tagType) {
-        boolean judge = ObjectUtils.isEmpty(userId) || ObjectUtils.isEmpty(tagType) || tabPbUserTagMapper.exist(userId, tagType);
-        if (judge) {
-            return 0;
+        if (tabPbUserTagMapper.exist(userId, tagType)) {
+            return 1;
         }
         TabPbUserTag userTag = new TabPbUserTag();
         PaddingBaseFieldUtil.paddingBaseFiled(userTag);
         userTag.setTagType(tagType);
         userTag.setUserId(userId);
-        return addUserTag(userTag);
-    }
-
-    /**
-     * 根据用户id和标签id添加用户标记
-     *
-     * @param userTagDTO
-     * @return
-     */
-    @Transactional
-    @Override
-    public int insertUserTagDTO(UserTagDTO userTagDTO) {
-        boolean judge = ObjectUtils.isEmpty(userTagDTO.getUserId()) || ObjectUtils.isEmpty(userTagDTO.getTagTypes()) || tabPbUserTagMapper.exist(userTagDTO.getUserId(), userTagDTO.getTagTypes().get(0));
-        if (judge) {
-            return 0;
-        }
-        TabPbUserTag userTag = new TabPbUserTag();
-        userTag.setTagType(userTagDTO.getTagTypes().get(0));
-        userTag.setUserId(userTagDTO.getUserId());
         return addUserTag(userTag);
     }
 
@@ -112,15 +90,6 @@ public class UserTagServiceImpl implements UserTagService {
         return tabPbUserTagMapper.updateByPrimaryKeySelective(userTag);
     }
 
-    @Override
-    public List<TabPbUserTag> selectTagByUserId(Long userId) {
-        List<TabPbUserTag> userTags = new ArrayList<>();
-        if (!ObjectUtils.isEmpty(userId)) {
-            userTags = tabPbUserTagMapper.selectListSelective(new TabPbUserTag().setUserId(userId));
-        }
-        return userTags;
-    }
-
 
     @Override
     public boolean updateUserTagByTagType(List<TabPbUserTag> userTags) {
@@ -153,7 +122,10 @@ public class UserTagServiceImpl implements UserTagService {
     public int batchInsertUserTagDTO(UserTagDTO userTagDTO) {
         int value = 0;
 
+        //从前端传过来的tagType标签集合
         List<Long> tagTypes = userTagDTO.getTagTypes();
+
+        //如果从前端传过来的tagType标签集合为空则批量删除.
         if (CollectionUtil.isEmpty(tagTypes)) {
             return tabPbUserTagMapper.batchDeleteByUserId(userTagDTO.getUserId());
         }
@@ -174,9 +146,10 @@ public class UserTagServiceImpl implements UserTagService {
             return tabPbUserTag;
         }).collect(Collectors.toList());
 
-        //获取原有用户的tagType集合
+        //获取数据库中原有用户的tagType标签集合(集合中也包含了usertagId)
         List<TabPbUserTag> dbTagList = tabPbUserTagMapper.selectTagTypesList(userTagDTO.getUserId());
 
+        //如果数据库中原有用户的tagType集合为空，则批量增加
         if (CollectionUtil.isEmpty(dbTagList)) {
             return tabPbUserTagMapper.batchInsertUserTagDTO(list);
         }
@@ -185,7 +158,7 @@ public class UserTagServiceImpl implements UserTagService {
         List<TabPbUserTag> insertList = new ArrayList<>();
         List<Long> dbUserTagList = new ArrayList<>();
         for (TabPbUserTag tabPbUserTag : dbTagList) {
-            //前端没有数据库有的，删除
+            //前端没有但是数据库有的，删除
             if (!tagTypes.contains(tabPbUserTag.getTagType())) {
                 deleteIds.add(tabPbUserTag.getUsertagId());
                 if (tabPbUserTag.getTagType() == 59428L) {
@@ -194,6 +167,7 @@ public class UserTagServiceImpl implements UserTagService {
             }
             dbUserTagList.add(tabPbUserTag.getTagType());
         }
+        //前端有但是数据库里面没有的，增加
         for (Long tagType : tagTypes) {
             if (!dbUserTagList.contains(tagType)) {
                 TabPbUserTag userTag = new TabPbUserTag();

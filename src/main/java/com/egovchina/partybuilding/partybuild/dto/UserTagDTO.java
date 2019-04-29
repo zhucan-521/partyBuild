@@ -38,22 +38,4 @@ public class UserTagDTO {
     @NotNull(message = "标签不能为空")
     private List<Long> tagTypes;
 
-//    @ApiModelProperty(value = "创建时间", hidden = true)
-//    private Date createTime;
-//
-//    @ApiModelProperty(value = "创建者id", hidden = true)
-//    private Long createUserid;
-//
-//    @ApiModelProperty(value = "创建者名称", hidden = true)
-//    @DateTimeFormat(pattern = "yyyy-MM-dd")
-//    private String createUsername;
-//
-//    @ApiModelProperty(value = "更新时间", hidden = true)
-//    private Date updateTime;
-//
-//    @ApiModelProperty(value = "更新用户id", hidden = true)
-//    private Long updateUserid;
-//
-//    @ApiModelProperty(value = "更新用户名称", hidden = true)
-//    private String updateUsername;
 }

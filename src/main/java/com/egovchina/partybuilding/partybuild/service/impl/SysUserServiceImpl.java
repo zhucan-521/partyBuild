@@ -117,9 +117,6 @@ public class SysUserServiceImpl implements SysUserService {
     @Transactional
     @Override
     public SysUser getRegistryByUserId(Long userId) {
-        if (userId == null) {
-            return null;
-        }
         //获取用户信息
         SysUser user = sysUserMapper.selectByPrimaryKey(userId);
         //获取用户所在的部门信息
