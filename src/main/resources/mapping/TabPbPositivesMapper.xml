@@ -427,10 +427,6 @@
         </foreach>
     </insert>
 
-
-
-
-
     <update id="tombstone" parameterType="java.util.List">
       <foreach collection="list" item="item" separator=";">
           update tab_pb_positives
@@ -457,8 +453,27 @@
         where user_id = #{userId}
     </update>
 
+    <!--根据用户Id查找用户相应的职位-->
     <select id="selectTabPbPositivesByUserId" parameterType="Long" resultMap="BaseResultMap">
-        select * from  tab_pb_positives where user_id=#{userId} and del_flag=0
+          select
+          positive_id,
+          user_id,
+          positive_type,
+          positive_org_id,
+          positive_org,
+          positive_name,
+          positive_level,
+          positive_start,
+          positive_finished,
+          order_num,
+          description,
+          left_type
+         from
+         tab_pb_positives
+         where
+         user_id=#{userId}
+         and
+         del_flag=0
     </select>
 
     <!--批量新增职务-->

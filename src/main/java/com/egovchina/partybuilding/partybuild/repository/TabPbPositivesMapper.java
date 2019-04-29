@@ -69,4 +69,10 @@ public interface TabPbPositivesMapper {
 
     List<PositivesVO> selectByIdToAllPositivesVO(@Param("userId") Long userId,@Param("positiveType") String positiveType);
 
+    /**
+     * 根据人员id获取他的职位
+     * @param userId
+     * @return
+     */
+    List<PositivesVO> selectTabPbPositivesByUserId(Long userId);
 }

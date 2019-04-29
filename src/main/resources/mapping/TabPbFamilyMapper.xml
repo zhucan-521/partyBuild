@@ -62,7 +62,7 @@
 
 
     <!--查询listVo数据-->
-    <select id="selectListVoPrimary" resultMap="BaseResultVoMap" parameterType="java.lang.Long" flushCache="true">
+    <select id="getFamilyMemberVoByUserId" resultMap="BaseResultVoMap" parameterType="java.lang.Long" flushCache="true">
         SELECT
         family.relation,
         family.whether_abroad,
@@ -313,10 +313,10 @@
     <insert id="batchInsertFamilyList" parameterType="List">
         insert into tab_pb_family
        (user_id,relation,whether_abroad,abroad, relation_user_id,
-        ebl_flag,del_flag,order_num,create_time, create_userid) values
+        ebl_flag,order_num,create_time, create_userid,del_flag) values
         <foreach collection="list" item="item" separator=",">
             (#{item.userId},#{item.relation},#{item.whetherAbroad},#{item.abroad},#{item.relationUserId},#{item.eblFlag},
-            #{item.delFlag},#{item.orderNum},#{item.createTime},#{item.createUserid})
+            #{item.orderNum},#{item.createTime},#{item.createUserid},'0')
         </foreach>
     </insert>
 

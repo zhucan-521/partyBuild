@@ -15,6 +15,8 @@ import java.util.List;
 @Data
 public class SecretaryMemberDTO {
 
+    @ApiModelProperty(value = "id主键")
+    private Long secretaryId;
 
     @ApiModelProperty(value = "用户ID")
     private Long userId;
@@ -71,8 +73,6 @@ public class SecretaryMemberDTO {
     private List<TabPbFamily> familyList;
 
     //----------
-    @ApiModelProperty(value = "id主键")
-    private Long secretaryId;
 
     @ApiModelProperty(value = "学历学位-全日制教育")
     private String fullTimeSchooling;

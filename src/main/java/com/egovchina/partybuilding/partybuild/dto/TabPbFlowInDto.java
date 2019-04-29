@@ -1,9 +1,7 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
-import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowIn;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -26,7 +24,6 @@ public class TabPbFlowInDto extends TabPbFlowIn {
     private String idCardNo;
 
     @ApiModelProperty(value = "性别")
-    @JsonSerialize(using = DictSerializer.class)
     private Long gender;
 
     @ApiModelProperty(value = "姓名")
@@ -40,7 +37,6 @@ public class TabPbFlowInDto extends TabPbFlowIn {
 
 
     @ApiModelProperty(value = "原职业 码表ZY")
-    @JsonSerialize(using = DictSerializer.class)
     private Long outProfession;
 
 

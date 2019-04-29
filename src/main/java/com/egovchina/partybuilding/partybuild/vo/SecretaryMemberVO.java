@@ -1,13 +1,10 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
 import com.egovchina.partybuilding.common.config.DictSerializer;
-import com.egovchina.partybuilding.partybuild.entity.TabPbFamily;
-import com.egovchina.partybuilding.partybuild.entity.TabPbPositives;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -45,17 +42,17 @@ public class SecretaryMemberVO {
     @ApiModelProperty(value = "出生地")
     private String bornPlace;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "出生日期")
     private Date birthday;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "入党时间、预备党员时间")
     private Date joinTime;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "工作时间",example = "yyyy-hh-dd")
     private Date workDate;
@@ -72,16 +69,15 @@ public class SecretaryMemberVO {
     private String rewards;
 
     @ApiModelProperty(value = "党内职务")
-    private List<TabPbPositives> positivesList;
+    private List<PositivesVO> positivesList;
 
     @ApiModelProperty(value = "家庭成员")
-    private List<TabPbFamily> familyList;
+    private List<FamilyMemberVO> familyList;
 
     @ApiModelProperty(value = "职务，手动录入：如：中共长沙市委基层党建工作领导小组办公室常务副主任")
     private String postive;
 
     //----------
-
 
     @ApiModelProperty(value = "学历学位-全日制教育")
     private String fullTimeSchooling;

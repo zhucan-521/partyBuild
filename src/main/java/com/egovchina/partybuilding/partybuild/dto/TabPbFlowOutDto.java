@@ -25,7 +25,7 @@ public class TabPbFlowOutDto extends TabPbFlowOut {
     private String idCardNo;
 
     @ApiModelProperty(value = "性别")
-    @JsonSerialize(using = DictSerializer.class)
+
     private Long gender;
 
     @ApiModelProperty(value = "电话号码")

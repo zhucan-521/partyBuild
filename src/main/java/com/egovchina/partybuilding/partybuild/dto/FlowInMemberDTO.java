@@ -73,7 +73,6 @@ public class FlowInMemberDTO {
     private Date flowInDate;
 
     @ApiModelProperty(value = "流入类别 码表值 LDQK")
-    @JsonSerialize(using = DictSerializer.class)
     private Long flowInType;
 
     @ApiModelProperty(value = "流动范围 码表LRFW")

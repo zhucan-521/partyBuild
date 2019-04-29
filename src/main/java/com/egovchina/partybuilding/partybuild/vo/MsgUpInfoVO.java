@@ -32,7 +32,6 @@ public class MsgUpInfoVO {
     private List<TabPbAttachment> attachments;
 
     @ApiModelProperty(value = "上报日期(结束)")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date upTimeOver;
 
@@ -68,36 +67,12 @@ public class MsgUpInfoVO {
     private String title;
 
     @ApiModelProperty(value = "上报日期（开始）")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date upTime;
 
     @ApiModelProperty(value = "主题、专题标签 码表ZTZT")
     @JsonSerialize(using = DictSerializer.class)
     private String titleLabel;
-
-//    @JsonIgnore
-//    private String delFlag;
-//
-//    @JsonIgnore
-//    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-//    private Date createTime;
-//
-//    @JsonIgnore
-//    private Long createUserid;
-//
-//    @JsonIgnore
-//    private String createUsername;
-//
-//    @JsonIgnore
-//    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-//    private Date updateTime;
-//
-//    @JsonIgnore
-//    private Long updateUserid;
-//
-//    @JsonIgnore
-//    private String updateUsername;
 
     @ApiModelProperty(value = "报送内容")
     private String content;
@@ -115,7 +90,6 @@ public class MsgUpInfoVO {
     private String auditUsername;
 
     @ApiModelProperty(value = "审核时间")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date auditTime;
 

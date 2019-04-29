@@ -20,7 +20,14 @@ public interface TabPbFamilyMapper extends BaseMapper<TabPbFamily> {
 
     List<TabPbFamily> selectListPrimary(Long partyMemberId);
 
-    List<FamilyMemberVO> selectListVoPrimary(Long partyMemberId);
+    /**
+     * 根据用户id去查找用户的家庭成员
+     * @param userId
+     * @return
+     */
+    List<FamilyMemberVO> getFamilyMemberVoByUserId(Long userId);
+
+
 
     TabPbFamily findById(Long relationId);
 

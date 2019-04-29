@@ -5,12 +5,12 @@ import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteExcept
 import com.egovchina.partybuilding.common.exception.BusinessException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.partybuild.dto.FamilyMemberDTO;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFamily;
+import com.egovchina.partybuilding.partybuild.repository.SysUserMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFamilyMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
-import com.egovchina.partybuilding.partybuild.repository.SysUserMapper;
-import com.egovchina.partybuilding.partybuild.dto.FamilyMemberDTO;
 import com.egovchina.partybuilding.partybuild.service.FamilyService;
 import com.egovchina.partybuilding.partybuild.vo.FamilyMemberVO;
 import lombok.var;
@@ -20,10 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil.paddingBaseFiled;
-
 /**
- * @author YangYingXiang on 2018/11/26
+ * @author zhucan on 2018/11/26
  */
 @Service
 @Transactional(rollbackFor = BusinessException.class)
@@ -46,7 +44,7 @@ public class FamilyServiceImpl implements FamilyService {
      */
     @Override
     public List<FamilyMemberVO> selectFamilyMemberList(Long partyMemberId) {
-        List<FamilyMemberVO> list = pbFamilyMapper.selectListVoPrimary(partyMemberId);
+        List<FamilyMemberVO> list = pbFamilyMapper.getFamilyMemberVoByUserId(partyMemberId);
         return list;
     }
 

@@ -26,7 +26,6 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class SecretaryServiceImpl implements SecretaryService {
 
-
     @Autowired
     TabPbDeptSecretaryMapper tabPbDeptSecretaryMapper;
 

@@ -2,6 +2,7 @@ package com.egovchina.partybuilding.partybuild.vo;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.egovchina.partybuilding.common.config.DictSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,7 +12,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author YangYingXiang
+ * @author zhucan
  */
 @ApiModel(value = "家庭成员对象",description = "家庭成员实体类")
 @Data
@@ -64,6 +65,7 @@ public class FamilyMemberVO implements Serializable {
 
 
     @ApiModelProperty(value = "出生日期")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date birthday;
 
 
