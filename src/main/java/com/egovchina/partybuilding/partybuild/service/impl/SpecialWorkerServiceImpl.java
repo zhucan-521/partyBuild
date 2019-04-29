@@ -4,7 +4,6 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
-import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.partybuild.dto.SpecialWorkerDTO;
 import com.egovchina.partybuilding.partybuild.entity.SpecialWorkerQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker;
@@ -12,6 +11,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbSpcialWorkerMapper
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.SpecialWorkerService;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUserRole;
 import com.egovchina.partybuilding.partybuild.system.mapper.SysUserRoleMapper;
 import com.egovchina.partybuilding.partybuild.vo.SpecialWorkerVO;
@@ -53,7 +53,13 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
                tabSysDeptMapper.selectByPrimaryKey(specialWorkerDto.getDeptId()) == null ){
            throw new BusinessDataCheckFailException("根据传入的deptId或者mangerOrgId查找不到对应的组织部门");
        }
-        Long userId = tabSysUserMapper.selectUserByIdCardNo(specialWorkerDto.getIdCardNo()).getUserId().longValue();
+        SysUser sysUser = tabSysUserMapper.selectUserByIdCardNo(specialWorkerDto.getIdCardNo());
+        Long userId ;
+        if(sysUser != null){
+            userId = sysUser.getUserId().longValue();
+       }else {
+            throw new BusinessDataCheckFailException("该身份证号码不存在");
+        }
         specialWorkerDto.setUserId(userId);
         //设置专干角色为44，并且插入sys_user_role
         SysUserRole role = tabPbSpcialWorkerMapper.selectSysUserRoleByUserId(userId);

@@ -355,6 +355,7 @@
         u.gender,
         u.realname AS username,
         u.phone,
+        u.user_id,
         sw.arrive_time,
         sw.manage_org_id,
         (case WHEN NOW() > sw.left_time THEN -1

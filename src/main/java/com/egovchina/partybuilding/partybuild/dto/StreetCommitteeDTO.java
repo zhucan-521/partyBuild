@@ -29,9 +29,11 @@ public class StreetCommitteeDTO{
     private Long orgId;
 
     @ApiModelProperty(value = "组织名称")
+    @NotNull(message = "组织名称不能为空")
     private String orgName;
 
     @ApiModelProperty(value = "当届标识")
+    @NotNull(message = "组织名称不能为空")
     private Byte current;
 
     @ApiModelProperty(value = "年届")
@@ -42,21 +44,27 @@ public class StreetCommitteeDTO{
     private Date changeDate;
 
     @ApiModelProperty(value = "任期年限")
+    @NotNull(message = "组织名称不能为空")
     private Long duringYear;
 
     @ApiModelProperty(value = "选举类型 FJXJ")
+    @NotNull(message = "组织名称不能为空")
     private Long voteType;
 
     @ApiModelProperty(value = "应到人数")
+    @NotNull(message = "组织名称不能为空")
     private Long dueCount;
 
     @ApiModelProperty(value = "实到人数")
+    @NotNull(message = "组织名称不能为空")
     private Long factCount;
 
     @ApiModelProperty(value = "总票数")
+    @NotNull(message = "组织名称不能为空")
     private Long voteCount;
 
     @ApiModelProperty(value = "有效票数")
+    @NotNull(message = "组织名称不能为空")
     private Long validVoteCount;
 
     @ApiModelProperty(value = "当选方式 XJFS")

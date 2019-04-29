@@ -1,8 +1,5 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
-import com.egovchina.partybuilding.common.config.DictSerializer;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -69,26 +66,4 @@ public class StreetCommitteeMemberDTO {
     @ApiModelProperty(value = "班子职务排序")
     private Long leadMemberOrder;
 
-    // 补全字段
-    @ApiModelProperty(value = "组织名称")
-    private String orgName;
-
-    @ApiModelProperty(value = "性别 码表值 XB")
-    private String gender;
-
-    @ApiModelProperty(value = "联系方式")
-    private String phone;
-
-    @ApiModelProperty(value = "单位id")
-    private Long unitId;
-
-    @ApiModelProperty(value = "单位名称")
-    private String unitName;
-
-
-    @ApiModelProperty(value = "组织当前大公委组织id")
-    private Long currentOrgId;
-
-    @ApiModelProperty(value = "当前大公委名称")
-    private String currentOrgName;
 }
