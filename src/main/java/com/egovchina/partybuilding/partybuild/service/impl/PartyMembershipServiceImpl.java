@@ -28,7 +28,7 @@ public class PartyMembershipServiceImpl implements PartyMembershipService {
     private TabPbPartyMembershipMapper tabPbPartyMembershipMapper;
 
     @Transactional
-    @PaddingBaseField(recursive = true)
+    @PaddingBaseField
     @Override
     public int insertMembershipDTO(MembershipDTO membershipDTO) {
         TabPbPartyMembership tabPbPartyMembership = new TabPbPartyMembership();
@@ -36,8 +36,6 @@ public class PartyMembershipServiceImpl implements PartyMembershipService {
         tabPbPartyMembership.setType(membershipDTO.getType());
         tabPbPartyMembership.setIdentityType(membershipDTO.getIdentityType());
         tabPbPartyMembership.setReason(membershipDTO.getReason());
-        tabPbPartyMembership.setCreateTime(membershipDTO.getCreateTime());
-        tabPbPartyMembership.setCreateUsername(membershipDTO.getCreateUsername());
         return tabPbPartyMembershipMapper.insertPartyMembershipDTO(tabPbPartyMembership);
     }
 

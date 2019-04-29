@@ -39,6 +39,9 @@ public class MembershipDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date createTime;
 
+    @ApiModelProperty(value = "创建人id")
+    private Long createId;
+
     @ApiModelProperty(value = "创建人姓名")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private String createUsername;
