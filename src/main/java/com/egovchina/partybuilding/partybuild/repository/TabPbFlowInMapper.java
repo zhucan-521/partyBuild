@@ -1,6 +1,5 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
-import com.egovchina.partybuilding.partybuild.dto.TabPbFlowInDto;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowIn;
 import com.egovchina.partybuilding.partybuild.entity.FlowInMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.FlowInMemberVO;
