@@ -210,7 +210,7 @@
     </select>
 
     <!--统计指定组织下各类型党员人数-->
-    <select id="selectPeopleCountingByOrgId" parameterType="java.lang.Long" resultType="com.egovchina.partybuilding.partybuild.entity.OrganizationPeopleStatistics">
+    <select id="selectPeopleCountingByOrgId" parameterType="java.lang.Long" resultType="com.egovchina.partybuilding.partybuild.vo.OrganizationPeopleStatisticsVO">
         SELECT
             d.dept_id AS orgId,
             d.NAME AS orgName,

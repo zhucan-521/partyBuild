@@ -1,6 +1,8 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbRewards;
+import com.egovchina.partybuilding.partybuild.vo.RewardsVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,4 +25,8 @@ public interface TabPbRewardsMapper {
     int updateByPrimaryKey(TabPbRewards record);
 
     List<TabPbRewards> selectList(TabPbRewards rewards);
+
+    RewardsVO selectByPrimaryKeyAndFiles(Long rewardsId);
+
+    List<RewardsVO> selectListAndFile(@Param("userId") Long userId);
 }

@@ -1,9 +1,12 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbPositives;
+import com.egovchina.partybuilding.partybuild.vo.PositivesVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface TabPbPositivesMapper {
@@ -52,6 +55,11 @@ public interface TabPbPositivesMapper {
      * @return
      */
     int tombstoneUser(Long userId);
+
+    PositivesVO selectByIdToPositivesVO(Integer positiveId);
+
+    List<PositivesVO> selectByIdToAllPositivesVO(@Param("userId") Long userId,@Param("positiveType") String positiveType);
+
 
     /**
      * 根据用户id查找他的职务

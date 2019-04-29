@@ -1,7 +1,7 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.dto.BaseDataAnalysisDto;
-import com.egovchina.partybuilding.partybuild.entity.OrganizationPeopleStatistics;
+import com.egovchina.partybuilding.partybuild.vo.OrganizationPeopleStatisticsVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -59,7 +59,7 @@ public interface SysUserCountDtoMapper {
      * @param orgId 组织id
      * @return
      */
-    OrganizationPeopleStatistics selectPeopleCountingByOrgId(@Param("orgId") Long orgId);
+    OrganizationPeopleStatisticsVO selectPeopleCountingByOrgId(@Param("orgId") Long orgId);
 
     List<BaseDataAnalysisDto<Long>> selectCountUser(@Param(value="deptId")Long deptId);
 }

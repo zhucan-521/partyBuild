@@ -28,6 +28,20 @@
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
         <result column="left_reason" jdbcType="BIGINT" property="leftReason"/>
     </resultMap>
+
+    <resultMap id="BaseMoreResultMap" type="com.egovchina.partybuilding.partybuild.vo.PositivesVO">
+        <id column="positive_id" jdbcType="INTEGER" property="positiveId"/>
+        <result column="positive_type" jdbcType="INTEGER" property="positiveType"/>
+        <result column="left_type" jdbcType="INTEGER" property="leftType"/>
+        <result column="positive_org_id" jdbcType="INTEGER" property="positiveOrgId"/>
+        <result column="positive_org" jdbcType="VARCHAR" property="positiveOrg"/>
+        <result column="positive_name" jdbcType="INTEGER" property="positiveName"/>
+        <result column="positive_level" jdbcType="INTEGER" property="positiveLevel"/>
+        <result column="positive_start" jdbcType="TIMESTAMP" property="positiveStart"/>
+        <result column="positive_finished" jdbcType="TIMESTAMP" property="positiveFinished"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="left_reason" jdbcType="BIGINT" property="leftReason"/>
+    </resultMap>
     <sql id="Base_Column_List">
     positive_id, user_id, positive_type, positive_org_id, positive_org, positive_name, 
     positive_level, positive_start, positive_finished, ebl_flag, del_flag, order_num, 
@@ -44,6 +58,13 @@
     left_reason
   </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="P_Base_Column_List"/>
+        ,d.label as positive_name_dict
+        from tab_pb_positives p left join sys_dict d on d.id = p.positive_name
+        where p.positive_id = #{positiveId,jdbcType=INTEGER}
+    </select>
+    <select id="selectByIdToPositivesVO" parameterType="java.lang.Integer" resultMap="BaseMoreResultMap">
         select
         <include refid="P_Base_Column_List"/>
         ,d.label as positive_name_dict
@@ -68,11 +89,36 @@
     <!--查询党员职务，党员信息列表使用-->
     <select id="selectPositives" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives" resultMap="ResultMapWithBLOBs">
         select
+        <include refid="P_Base_Column_List"/>,
         p.positive_name,p.positive_id,d.label AS positive_name_dict
         from tab_pb_positives p
         join sys_dict d on p.positive_name = d.id and d.type='DNZW'
         where p.del_flag = 0
         and p.user_id = #{userId}
+    </select>
+
+
+
+    <select id="selectByIdToAllPositivesVO" parameterType="java.util.Map" resultMap="BaseMoreResultMap">
+        select
+        <include refid="P_Base_Column_List"/>,
+        p.positive_name,p.positive_id,d.label AS positive_name_dict
+        from tab_pb_positives p
+        join sys_dict d on p.positive_name = d.id
+
+        where p.del_flag = 0
+        <choose>
+            <when test="positiveType!=null">
+                and d.type=#{positiveType}
+            </when>
+            <otherwise>
+                and d.type='DNZW'
+            </otherwise>
+        </choose>
+        <if test="userId != null">
+            and p.user_id = #{userId}
+        </if>
+
     </select>
     <select id="verifyDuplicateDuties" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives" resultMap="ResultMapWithBLOBs">
         select

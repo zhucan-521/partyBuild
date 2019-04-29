@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @ApiModel(value = "社区")
-public class CommunityDto {
+public class CommunityDTO {
 
 
     @ApiModelProperty(value = "id")
