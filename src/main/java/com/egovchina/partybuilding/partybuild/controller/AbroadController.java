@@ -3,6 +3,7 @@ package com.egovchina.partybuilding.partybuild.controller;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
+import com.egovchina.partybuilding.partybuild.dto.AbroadDTO;
 import com.egovchina.partybuilding.partybuild.dto.GoAbroadDTO;
 import com.egovchina.partybuilding.partybuild.dto.ReturnAbroadDTO;
 import com.egovchina.partybuilding.partybuild.entity.AbroadQueryBean;
@@ -36,8 +37,14 @@ public class AbroadController {
         return ReturnUtil.buildReturn(abroadService.insertGoAbroad(goAbroadDTO));
     }
 
-    @ApiOperation(value = "更新出国信息", notes = "更新出国信息", httpMethod = "PUT")
+    @ApiOperation(value = "更新出国回国信息", notes = "更新出国回国信息", httpMethod = "PUT")
     @PutMapping
+    public ReturnEntity updateGoAbroad(@RequestBody @Validated @ApiParam("出国回国信息") AbroadDTO abroadDTO) {
+        return ReturnUtil.buildReturn(abroadService.updateAbroad(abroadDTO));
+    }
+
+    @ApiOperation(value = "更新出国信息", notes = "更新出国信息", httpMethod = "PUT")
+    @PutMapping("/leave")
     public ReturnEntity updateGoAbroad(@RequestBody @Validated @ApiParam("出国信息") GoAbroadDTO goAbroadDTO) {
         return ReturnUtil.buildReturn(abroadService.updateGoAbroad(goAbroadDTO));
     }

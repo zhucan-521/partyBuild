@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.partybuild.dto.AbroadDTO;
 import com.egovchina.partybuilding.partybuild.dto.GoAbroadDTO;
 import com.egovchina.partybuilding.partybuild.dto.ReturnAbroadDTO;
 import com.egovchina.partybuilding.partybuild.entity.AbroadQueryBean;
@@ -54,6 +55,16 @@ public interface AbroadService {
      * @date 2019/4/22 17:03
      **/
     int updateGoAbroad(GoAbroadDTO goAbroadDTO);
+
+    /**
+     * desc: 更新出国回国信息
+     *
+     * @param abroadDTO 出国回国信息dto
+     * @return int
+     * @author FanYanGen
+     * @date 2019/4/29 9:49
+     **/
+    int updateAbroad(AbroadDTO abroadDTO);
 
     /**
      * desc: 更新（添加）回国记录
