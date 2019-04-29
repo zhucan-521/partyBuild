@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Data
 @ApiModel("双述双评论-数据传输对象")
-public class CommentaryDTO {
+public class DoubleCommentaryDTO {
 
     @ApiModelProperty(value = "ID")
     private Long commentaryId;

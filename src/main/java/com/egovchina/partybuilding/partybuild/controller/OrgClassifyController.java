@@ -30,20 +30,20 @@ public class OrgClassifyController {
 
     @ApiOperation(value = "新增分类定等", notes = "新增分类定等", httpMethod = "POST")
     @PostMapping
-    public ReturnEntity insert(@ApiParam("分类定等信息") @RequestBody @Validated OrgClassifyDTO orgClassifyDTO) {
+    public ReturnEntity insertOrgClassify(@RequestBody @Validated @ApiParam("分类定等信息") OrgClassifyDTO orgClassifyDTO) {
         return ReturnUtil.buildReturn(orgClassifyService.insertOrgClassify(orgClassifyDTO));
     }
 
     @ApiOperation(value = "更新定等计划", notes = "更新定等计划", httpMethod = "PUT")
     @PutMapping
-    public ReturnEntity update(@ApiParam("分类定等信息") @RequestBody @Validated OrgClassifyDTO orgClassifyDTO) {
+    public ReturnEntity updateOrgClassify(@RequestBody @Validated @ApiParam("分类定等信息") OrgClassifyDTO orgClassifyDTO) {
         return ReturnUtil.buildReturn(orgClassifyService.updateOrgClassify(orgClassifyDTO));
     }
 
     @ApiOperation(value = "删除定等数据", notes = "定等数据删除", httpMethod = "DELETE")
     @ApiImplicitParam(name = "orgClassifyId", value = "定等数据ID", paramType = "path", required = true)
     @DeleteMapping("/{orgClassifyId}")
-    public ReturnEntity delete(@PathVariable Long orgClassifyId) {
+    public ReturnEntity deleteOrgClassify(@PathVariable Long orgClassifyId) {
         return ReturnUtil.buildReturn(orgClassifyService.deleteOrgClassify(orgClassifyId));
     }
 

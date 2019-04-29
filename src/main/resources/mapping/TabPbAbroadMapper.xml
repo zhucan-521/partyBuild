@@ -439,7 +439,7 @@
     </select>
 
     <!-- 根据主键ID查询详情 -->
-    <select id="findByAbroadId" parameterType="java.lang.Long" resultMap="AbroadDetailsResultMap">
+    <select id="findAbroadDetailsVOByAbroadId" parameterType="java.lang.Long" resultMap="AbroadDetailsResultMap">
         SELECT
         <include refid="Simplify_Column_List"/>,
         dept.`name`,

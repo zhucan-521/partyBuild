@@ -25,10 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 分类定等service实现类
- *
- * @Author Zhang Fan
- **/
+ * desc: 分类定等-服务接口实现
+ * Created by FanYanGen on 2019/4/22 15:58
+ */
 @Transactional(rollbackFor = Exception.class)
 @Service("tabPbOrgClassifyService")
 public class OrgClassifyServiceImpl implements OrgClassifyService {
@@ -185,7 +184,7 @@ public class OrgClassifyServiceImpl implements OrgClassifyService {
      * @date 2019/4/25 9:54
      **/
     private void verification(OrgClassifyDTO orgClassifyDTO) {
-        if (!deptMapper.isExist(orgClassifyDTO.getDeptId())) {
+        if (!deptMapper.checkIsExistByOrgId(orgClassifyDTO.getDeptId())) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
     }

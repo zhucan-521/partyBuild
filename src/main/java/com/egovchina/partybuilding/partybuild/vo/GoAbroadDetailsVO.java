@@ -10,12 +10,12 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * desc: 出国出境(详情)-视图对象
- * Created by FanYanGen on 2019/4/24 15:58
+ * desc: 出国信息-视图对象
+ * Created by FanYanGen on 2019/4/29 11:01
  */
 @Data
-@ApiModel("出国出境(详情)-视图对象")
-public class AbroadDetailsVO {
+@ApiModel("出国信息-视图对象")
+public class GoAbroadDetailsVO {
 
     @ApiModelProperty(value = "出国Id")
     private Long abroadId;
@@ -68,35 +68,5 @@ public class AbroadDetailsVO {
     @ApiModelProperty(value = "出国境定居时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date settleTime;
-
-    @ApiModelProperty(value = "回国情况 HGQK", notes = "字典")
-    @JsonSerialize(using = DictSerializer.class)
-    private Long returnStatus;
-
-    @ApiModelProperty(value = "应归时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date planReturn;
-
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "实归时间")
-    private Date returnDate;
-
-    @ApiModelProperty(value = "恢复组织生活情况 HFZZSHQK")
-    @JsonSerialize(using = DictSerializer.class)
-    private Long returnActivitiesStatus;
-
-    @ApiModelProperty(value = "申请恢复组织生活日期")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date applyActivitiesDate;
-
-    @ApiModelProperty(value = "批准恢复组织生活日期")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date allowActivitiesDate;
-
-    @ApiModelProperty(value = "组织关系出境时是否转往国外")
-    private Byte isTransOut;
-
-    @ApiModelProperty(value = "备注")
-    private String comment;
 
 }
