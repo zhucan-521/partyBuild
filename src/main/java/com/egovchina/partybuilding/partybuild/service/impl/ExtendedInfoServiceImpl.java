@@ -69,8 +69,8 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
     @Transactional(rollbackFor = Exception.class)
     public Boolean restoreUser(Long userId) {
         TabPbMemberReduceList reduceList = reduceListMapper.selectByUserId(userId);
-        if(reduceList==null){
-            throw  new BusinessDataNotFoundException("查不到该党员减少记录");
+        if (reduceList == null) {
+            throw new BusinessDataNotFoundException("查不到该党员减少记录");
         }
         reduceList.setDelFlag(CommonConstant.STATUS_DEL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(reduceList);

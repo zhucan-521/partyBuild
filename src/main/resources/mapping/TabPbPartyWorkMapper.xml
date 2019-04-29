@@ -146,7 +146,8 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyWork">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyWork">
         update tab_pb_party_work
         <set>
             <if test="userId != null">
@@ -215,7 +216,8 @@
 
     <!-- custom method -->
 
-    <select id="findAllByUserId" parameterType="java.lang.Long" resultType="com.egovchina.partybuilding.partybuild.vo.PartyWorkVO">
+    <select id="findAllByUserId" parameterType="java.lang.Long"
+            resultType="com.egovchina.partybuilding.partybuild.vo.PartyWorkVO">
         select
         <include refid="Base_Column_List"/>
         from tab_pb_party_work
@@ -225,13 +227,13 @@
     <insert id="batchInsert" parameterType="java.util.List">
         insert into tab_pb_party_work
         (
-       user_id, unit, post, front_line, stratum, start_date, end_date,
+        user_id, unit, post, front_line, stratum, start_date, end_date,
         create_time, create_userid,create_username, update_time, update_userid,update_username
         )
         values
         <foreach collection="list" item="item" separator=",">
             (
-             #{item.userId,jdbcType=BIGINT}, #{item.unit,jdbcType=VARCHAR},
+            #{item.userId,jdbcType=BIGINT}, #{item.unit,jdbcType=VARCHAR},
             #{item.post,jdbcType=VARCHAR}, #{item.frontLine,jdbcType=BIGINT}, #{item.stratum,jdbcType=BIGINT},
             #{item.startDate,jdbcType=DATE}, #{item.endDate,jdbcType=DATE}, #{item.createTime,jdbcType=TIMESTAMP},
             #{item.createUserid,jdbcType=BIGINT}, #{item.createUsername,jdbcType=VARCHAR},

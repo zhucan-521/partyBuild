@@ -1,31 +1,26 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
-import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
-import com.egovchina.partybuilding.partybuild.entity.TabPbPositives;
+import com.egovchina.partybuilding.partybuild.dto.PunishmentDTO;
+import com.egovchina.partybuilding.partybuild.dto.RewardsDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPunishment;
 import com.egovchina.partybuilding.partybuild.entity.TabPbRewards;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPunishmentMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbRewardsMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
-import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
-import com.egovchina.partybuilding.partybuild.dto.PunishmentDTO;
-import com.egovchina.partybuilding.partybuild.dto.RewardsDTO;
 import com.egovchina.partybuilding.partybuild.service.RewardsAndPunishmentsService;
+import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
 import com.egovchina.partybuilding.partybuild.vo.PunishmentVO;
 import com.egovchina.partybuilding.partybuild.vo.RewardsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author: huang
@@ -46,10 +41,10 @@ public class PbRewardsAndPunishmentsServiceImpl implements RewardsAndPunishments
 
     @Override
     public int insertPunishment(PunishmentDTO punishmentDTO) {
-        TabPbPunishment tabPbPunishment =BeanUtil.copyPropertiesAndPaddingBaseField(punishmentDTO,TabPbPunishment.class,true,false);
+        TabPbPunishment tabPbPunishment = BeanUtil.copyPropertiesAndPaddingBaseField(punishmentDTO, TabPbPunishment.class, true, false);
         int insertRow = tabPbPunishmentMapper.insertSelective(tabPbPunishment);
         if (insertRow > 0) {
-            insertRow += tabPbAttachmentService.intelligentOperation( punishmentDTO.getAttachments(), tabPbPunishment.getPunishmentId(), AttachmentType.PUNISHMENT);
+            insertRow += tabPbAttachmentService.intelligentOperation(punishmentDTO.getAttachments(), tabPbPunishment.getPunishmentId(), AttachmentType.PUNISHMENT);
         }
         return insertRow;
     }
@@ -68,7 +63,7 @@ public class PbRewardsAndPunishmentsServiceImpl implements RewardsAndPunishments
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int updatePunishmentById(PunishmentDTO punishmentDTO) {
-        TabPbPunishment tabPbPunishment =BeanUtil.copyPropertiesAndPaddingBaseField(punishmentDTO,TabPbPunishment.class,true,true);
+        TabPbPunishment tabPbPunishment = BeanUtil.copyPropertiesAndPaddingBaseField(punishmentDTO, TabPbPunishment.class, true, true);
         PaddingBaseFieldUtil.paddingBaseFiled(punishmentDTO.getAttachments());
         tabPbAttachmentService.intelligentOperation(punishmentDTO.getAttachments(), tabPbPunishment.getPunishmentId(), AttachmentType.PUNISHMENT);
         return tabPbPunishmentMapper.updateByPrimaryKeySelective(tabPbPunishment);
@@ -83,7 +78,7 @@ public class PbRewardsAndPunishmentsServiceImpl implements RewardsAndPunishments
     @PaddingBaseField(recursive = true)
     @Override
     public int insertRewards(RewardsDTO rewards) {
-        TabPbRewards tabPbRewards =BeanUtil.copyPropertiesAndPaddingBaseField(rewards,TabPbRewards.class,true,false);
+        TabPbRewards tabPbRewards = BeanUtil.copyPropertiesAndPaddingBaseField(rewards, TabPbRewards.class, true, false);
         int insertRow = tabPbRewardsMapper.insertSelective(tabPbRewards);
         if (insertRow > 0) {
             tabPbAttachmentService.intelligentOperation(rewards.getAttachments(), tabPbRewards.getRewardsId(), AttachmentType.REWARDS);
@@ -106,7 +101,7 @@ public class PbRewardsAndPunishmentsServiceImpl implements RewardsAndPunishments
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int updateRewardsById(RewardsDTO rewards) {
-        TabPbRewards tabPbRewards =BeanUtil.copyPropertiesAndPaddingBaseField(rewards,TabPbRewards.class,true,false);
+        TabPbRewards tabPbRewards = BeanUtil.copyPropertiesAndPaddingBaseField(rewards, TabPbRewards.class, true, false);
         tabPbAttachmentService.intelligentOperation(rewards.getAttachments(), tabPbRewards.getRewardsId(), AttachmentType.REWARDS);
         return tabPbRewardsMapper.updateByPrimaryKeySelective(tabPbRewards);
     }

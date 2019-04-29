@@ -292,7 +292,7 @@
     pm_code, join_time, regular_time, regular_status, develop_type, reference, fee_ratio,
     join_after_august, is_poor, is_llost, flow_status, flow_from_org_id, flow_from_org_name,
     flow_from_org_contactor, flow_from_org_phone, flow_to_org_id, flow_to_org_name, flow_to_org_contactor,
-    flow_to_org_phone, policy_face, join_time2, positived, join_contact_id, contactor,
+    flow_to_org_phone, policy_face, join_org_time, positived, join_contact_id, contactor,
     app_date, exp_activist_date, activist_date, exp_dev_date, dev_date, dev_stage, ebl_flag,
     del_flag, order_num, description, create_time, create_userid, create_username, update_time,
     update_userid, update_username, version ,files_manage_unit_id,join_org_id,join_org_name,
@@ -609,7 +609,7 @@
       flow_from_org_id, flow_from_org_name, flow_from_org_contactor,
       flow_from_org_phone, flow_to_org_id, flow_to_org_name,
       flow_to_org_contactor, flow_to_org_phone, policy_face,
-      join_time2, positived, join_contact_id,
+      join_org_time, positived, join_contact_id,
       contactor, app_date, exp_activist_date,
       activist_date, exp_dev_date, dev_date,
       dev_stage, ebl_flag, del_flag,
@@ -641,7 +641,7 @@
       #{flowFromOrgId,jdbcType=BIGINT}, #{flowFromOrgName,jdbcType=VARCHAR}, #{flowFromOrgContactor,jdbcType=VARCHAR},
       #{flowFromOrgPhone,jdbcType=VARCHAR}, #{flowToOrgId,jdbcType=BIGINT}, #{flowToOrgName,jdbcType=VARCHAR},
       #{flowToOrgContactor,jdbcType=VARCHAR}, #{flowToOrgPhone,jdbcType=VARCHAR}, #{policyFace,jdbcType=BIGINT},
-      #{joinTime2,jdbcType=TIMESTAMP}, #{positived,jdbcType=VARCHAR}, #{joinContactId,jdbcType=BIGINT},
+      #{joinOrgTime,jdbcType=TIMESTAMP}, #{positived,jdbcType=VARCHAR}, #{joinContactId,jdbcType=BIGINT},
       #{contactor,jdbcType=VARCHAR}, #{appDate,jdbcType=TIMESTAMP}, #{expActivistDate,jdbcType=TIMESTAMP},
       #{activistDate,jdbcType=TIMESTAMP}, #{expDevDate,jdbcType=TIMESTAMP}, #{devDate,jdbcType=TIMESTAMP},
       #{devStage,jdbcType=BIGINT}, #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR},
@@ -855,8 +855,8 @@
             <if test="policyFace != null">
                 policy_face,
             </if>
-            <if test="joinTime2 != null">
-                join_time2,
+            <if test="joinOrgTime != null">
+                join_org_time,
             </if>
             <if test="positived != null">
                 positived,
@@ -1145,8 +1145,8 @@
             <if test="policyFace != null">
                 #{policyFace,jdbcType=BIGINT},
             </if>
-            <if test="joinTime2 != null">
-                #{joinTime2,jdbcType=TIMESTAMP},
+            <if test="joinOrgTime != null">
+                #{joinOrgTime,jdbcType=TIMESTAMP},
             </if>
             <if test="positived != null">
                 #{positived,jdbcType=VARCHAR},
@@ -1447,8 +1447,8 @@
             <if test="policyFace != null">
                 policy_face = #{policyFace,jdbcType=BIGINT},
             </if>
-            <if test="joinTime2 != null">
-                join_time2 = #{joinTime2,jdbcType=TIMESTAMP},
+            <if test="joinOrgTime != null">
+                join_org_time = #{joinOrgTime,jdbcType=TIMESTAMP},
             </if>
             <if test="positived != null">
                 positived = #{positived,jdbcType=VARCHAR},
@@ -1628,7 +1628,7 @@
       flow_to_org_contactor = #{flowToOrgContactor,jdbcType=VARCHAR},
       flow_to_org_phone = #{flowToOrgPhone,jdbcType=VARCHAR},
       policy_face = #{policyFace,jdbcType=BIGINT},
-      join_time2 = #{joinTime2,jdbcType=TIMESTAMP},
+      join_org_time = #{joinOrgTime,jdbcType=TIMESTAMP},
       positived = #{positived,jdbcType=VARCHAR},
       join_contact_id = #{joinContactId,jdbcType=BIGINT},
       contactor = #{contactor,jdbcType=VARCHAR},
@@ -1726,7 +1726,7 @@
       flow_to_org_contactor = #{flowToOrgContactor,jdbcType=VARCHAR},
       flow_to_org_phone = #{flowToOrgPhone,jdbcType=VARCHAR},
       policy_face = #{policyFace,jdbcType=BIGINT},
-      join_time2 = #{joinTime2,jdbcType=TIMESTAMP},
+      join_org_time = #{joinOrgTime,jdbcType=TIMESTAMP},
       positived = #{positived,jdbcType=VARCHAR},
       join_contact_id = #{joinContactId,jdbcType=BIGINT},
       contactor = #{contactor,jdbcType=VARCHAR},

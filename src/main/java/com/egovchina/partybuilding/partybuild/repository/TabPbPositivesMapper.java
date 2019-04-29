@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface TabPbPositivesMapper {
@@ -28,6 +27,7 @@ public interface TabPbPositivesMapper {
 
     /**
      * 根据userId查询党内职务，党员信息列表使用
+     *
      * @param tabPbPositives
      * @return
      */
@@ -37,6 +37,7 @@ public interface TabPbPositivesMapper {
 
     /**
      * 批量保存职务
+     *
      * @param pbPositivesList
      * @return
      */
@@ -44,6 +45,7 @@ public interface TabPbPositivesMapper {
 
     /**
      * 批量逻辑删除
+     *
      * @param pbPositivesList
      * @return
      */
@@ -51,6 +53,7 @@ public interface TabPbPositivesMapper {
 
     /**
      * 根据userId删除所有职务
+     *
      * @param userId
      * @return
      */
@@ -58,6 +61,6 @@ public interface TabPbPositivesMapper {
 
     PositivesVO selectByIdToPositivesVO(Integer positiveId);
 
-    List<PositivesVO> selectByIdToAllPositivesVO(@Param("userId") Long userId,@Param("positiveType") String positiveType);
+    List<PositivesVO> selectByIdToAllPositivesVO(@Param("userId") Long userId, @Param("positiveType") String positiveType);
 
 }

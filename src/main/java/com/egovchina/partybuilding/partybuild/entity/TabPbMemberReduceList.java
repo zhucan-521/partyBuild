@@ -19,6 +19,7 @@ public class  TabPbMemberReduceList {
     private Long userId;
 
     private String realName;
+
     private Date reduceTime;
 
     private Long outType;

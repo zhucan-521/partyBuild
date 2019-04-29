@@ -30,7 +30,7 @@ public class PunishmentVO {
     @JsonSerialize(using = DictSerializer.class)
     private String punishName;
 
-    @ApiModelProperty(value = "是否移交司法机关：1 是;0 否(字符串只能有一个长度哟)", required = true,example = "0")
+    @ApiModelProperty(value = "是否移交司法机关：1 是;0 否(字符串只能有一个长度哟)", required = true, example = "0")
     private String judiciaryFlag;
 
     @ApiModelProperty(value = "处分机构", required = true)

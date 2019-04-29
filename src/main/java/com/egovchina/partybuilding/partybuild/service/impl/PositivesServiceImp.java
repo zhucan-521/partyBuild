@@ -1,7 +1,5 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class PositivesServiceImp implements PositivesService {
@@ -55,7 +52,7 @@ public class PositivesServiceImp implements PositivesService {
     }
 
     @Override
-    public List<PositivesVO> selectPositives(Long userId ,String positiveType) {
+    public List<PositivesVO> selectPositives(Long userId, String positiveType) {
         return tabPbPositivesMapper.selectByIdToAllPositivesVO(userId, positiveType);
     }
 

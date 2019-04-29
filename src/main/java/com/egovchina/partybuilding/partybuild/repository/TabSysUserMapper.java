@@ -52,7 +52,7 @@ public interface TabSysUserMapper {
     SysUser selectUserByIdCardNo(String idCardNo);
 
 
-    List<SysUserVO> selectPartyByIdCardNoOnUserName(@Param("idCardNo") String idCardNo ,@Param("username") String username);
+    List<SysUserVO> selectPartyByIdCardNoOnUserName(@Param("idCardNo") String idCardNo, @Param("username") String username);
 
     //根据组织Id 获取党务工作者信息
     TransferUserDeptInfo getDWRoleUserInfoByDeptId(Long deptId);
@@ -191,6 +191,7 @@ public interface TabSysUserMapper {
 
     /**
      * 查询附带 工作 学历信息
+     *
      * @param userId
      * @return
      */

@@ -9,11 +9,11 @@ import com.github.pagehelper.PageInfo;
 
 public interface ExtendedInfoService {
 
-    PageInfo<SysUserVO> selectPartyByIdCardNoOrUserName( String idCardNo, String username, Page page);
+    PageInfo<SysUserVO> selectPartyByIdCardNoOrUserName(String idCardNo, String username, Page page);
 
     Boolean restoreUser(Long userId);
 
     PartyMemberVO selectPartyMemberVOById(Long userId);
 
-    Boolean updateByUserId(DeletePartyMemberDTO reduce );
+    Boolean updateByUserId(DeletePartyMemberDTO reduce);
 }

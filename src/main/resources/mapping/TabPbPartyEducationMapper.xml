@@ -130,7 +130,8 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyEducation">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyEducation">
         update tab_pb_party_education
         <set>
             <if test="userId != null">
@@ -190,7 +191,7 @@
   </update>
 
     <!-- custom method -->
-    <select id="findAllByUserId"  resultType="com.egovchina.partybuilding.partybuild.vo.PartyEducationVO">
+    <select id="findAllByUserId" resultType="com.egovchina.partybuilding.partybuild.vo.PartyEducationVO">
         select
         <include refid="Base_Column_List"/>
         from tab_pb_party_education

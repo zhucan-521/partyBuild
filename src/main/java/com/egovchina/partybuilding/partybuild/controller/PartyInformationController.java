@@ -119,7 +119,7 @@ public class PartyInformationController {
 
     @ApiOperation(value = "更新党员信息", notes = "更新党员信息", httpMethod = "PUT")
     @PutMapping("/party-members")
-    public ReturnEntity updateParty(@RequestBody @Validated @ApiParam("党员基本信息")PartyInfoDTO partyInfoDTO) {
+    public ReturnEntity updateParty(@RequestBody @Validated @ApiParam("党员基本信息") PartyInfoDTO partyInfoDTO) {
         return ReturnUtil.buildReturn(partyInformationService.updatePartyInfo(partyInfoDTO));
     }
 }
