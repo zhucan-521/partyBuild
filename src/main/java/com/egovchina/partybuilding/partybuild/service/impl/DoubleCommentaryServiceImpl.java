@@ -154,7 +154,7 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
      * @date 2019/4/24 21:02
      **/
     private void verificationInsert(DoubleCommentaryDTO doubleCommentaryDTO, Map map) {
-        if (!deptMapper.isExist(doubleCommentaryDTO.getOrgId())) {
+        if (!deptMapper.checkIsExistByOrgId(doubleCommentaryDTO.getOrgId())) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
         if (0 < doubleCommentaryMapper.selectWithConditions(map).size()) {
@@ -163,7 +163,7 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
     }
 
     private void verificationUpdate(DoubleCommentaryDTO doubleCommentaryDTO) {
-        if (!deptMapper.isExist(doubleCommentaryDTO.getOrgId())) {
+        if (!deptMapper.checkIsExistByOrgId(doubleCommentaryDTO.getOrgId())) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
         if (!doubleCommentaryMapper.isExist(doubleCommentaryDTO.getCommentaryId())) {
