@@ -102,15 +102,14 @@
     <select id="selectByIdToAllPositivesVO" parameterType="java.util.Map" resultMap="BaseMoreResultMap">
         select
         <include refid="P_Base_Column_List"/>
-        from tab_pb_positives
-        where p.del_flag = 0
+        from tab_pb_positives p
+        where del_flag = 0
         <if test="positiveType!=null">
             and positive_type=#{positiveType}
         </if>
         <if test="userId != null">
-            and p.user_id = #{userId}
+            and user_id = #{userId}
         </if>
-
 
     </select>
     <select id="verifyDuplicateDuties" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives" resultMap="ResultMapWithBLOBs">
