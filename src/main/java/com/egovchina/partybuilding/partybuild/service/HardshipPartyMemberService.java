@@ -1,7 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.partybuild.dto.HardshipPartyDTO;
+import com.egovchina.partybuilding.partybuild.dto.HardshipPartyMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.HardshipQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.HardshipPartyVO;
 import com.github.pagehelper.PageInfo;
@@ -10,17 +10,17 @@ import com.github.pagehelper.PageInfo;
  * desc: 困难党员-服务接口
  * Created by FanYanGen on 2019/4/20 17:21
  */
-public interface HardshipService {
+public interface HardshipPartyMemberService {
 
     /**
      * desc: 添加党员信息
      *
-     * @param hardshipPartyDTO 困难党员数据传输对象
+     * @param hardshipPartyMemberDTO 困难党员数据传输对象
      * @return int
      * @author FanYanGen
      * @date 2019/4/22 21:08
      **/
-    int insertHardshipParty(HardshipPartyDTO hardshipPartyDTO);
+    int insertHardshipPartyMember(HardshipPartyMemberDTO hardshipPartyMemberDTO);
 
     /**
      * desc: 根据困难ID逻辑删除
@@ -45,12 +45,12 @@ public interface HardshipService {
     /**
      * desc: 更新困难党员信息
      *
-     * @param hardshipPartyDTO 困难党员数据传输对象
+     * @param hardshipPartyMemberDTO 困难党员数据传输对象
      * @return int
      * @author FanYanGen
      * @date 2019/4/22 20:38
      **/
-    int updateHardshipParty(HardshipPartyDTO hardshipPartyDTO);
+    int updateHardshipPartyMember(HardshipPartyMemberDTO hardshipPartyMemberDTO);
 
     /**
      * desc: 根据userId查询详情

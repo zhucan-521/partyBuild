@@ -112,6 +112,6 @@ public interface TabSysDeptMapper {
      * @author FanYanGen
      * @date 2019/4/24 11:37
      **/
-    boolean isExist(Long deptId);
+    boolean checkIsExistByOrgId(Long deptId);
 
 }
