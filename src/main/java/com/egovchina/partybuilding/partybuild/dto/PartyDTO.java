@@ -63,7 +63,7 @@ public class PartyDTO {
     @NotNull(message ="加入党组织时间不能为空!")
     private Date joinTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "加入党组织时间", required = true, example = "yyyy-MM-dd")
     private Date joinOrgTime;
 

@@ -24,7 +24,6 @@ import java.util.List;
 
 @ApiModel(value = "系统用户实体")
 @Data
-@TableName("sys_user")
 @Accessors(chain = true)
 @Alias("sysUserPartyInfo")
 public class SysUser implements Serializable {

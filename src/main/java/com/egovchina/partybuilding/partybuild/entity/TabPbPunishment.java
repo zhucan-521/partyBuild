@@ -11,7 +11,6 @@ import java.util.Date;
  */
 @ApiModel(value = "处分")
 @Data
-@TableName("tab_pb_punishment")
 public class TabPbPunishment {
 
     private static final long serialVersionUID = 1L;
