@@ -25,7 +25,7 @@ public class ReturnAbroadDTO {
 
     @ApiModelProperty(value = "人员Id")
     @NotNull(message = "人员ID不能为空")
-    private Long userId;
+    private Integer userId;
 
     @ApiModelProperty(value = "回国情况 HGQK", notes = "字典")
     private Long returnStatus;

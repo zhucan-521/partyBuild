@@ -4,7 +4,6 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
-import com.egovchina.partybuilding.partybuild.dto.AbroadDTO;
 import com.egovchina.partybuilding.partybuild.dto.DeletePartyMemberDTO;
 import com.egovchina.partybuilding.partybuild.dto.GoAbroadDTO;
 import com.egovchina.partybuilding.partybuild.dto.ReturnAbroadDTO;
@@ -15,8 +14,8 @@ import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.AbroadService;
 import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
-import com.egovchina.partybuilding.partybuild.vo.AbroadDetailsVO;
-import com.egovchina.partybuilding.partybuild.vo.AbroadVO;
+import com.egovchina.partybuilding.partybuild.vo.*;
+import com.fasterxml.jackson.databind.util.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,14 +46,14 @@ public class AbroadServiceImpl implements AbroadService {
 
     @Override
     public int insertGoAbroad(GoAbroadDTO goAbroadDTO) {
-        Integer userId = goAbroadDTO.getUserId().intValue();
+        Integer userId = goAbroadDTO.getUserId();
         verification(goAbroadDTO.getOrgId(), userId);
         TabPbAbroad tabPbAbroad = copyPropertiesAndPaddingBaseField(goAbroadDTO, TabPbAbroad.class, false, false);
         int result = abroadMapper.insertSelective(tabPbAbroad);
         // 党员出国后将该党员移至历史党员
         if (0 < result) {
             DeletePartyMemberDTO deletePartyMemberDTO = new DeletePartyMemberDTO();
-            deletePartyMemberDTO.setUserId(goAbroadDTO.getUserId());
+            deletePartyMemberDTO.setUserId(userId.longValue());
             deletePartyMemberDTO.setOutType(6L);
             extendedInfoService.updateByUserId(deletePartyMemberDTO);
         }
@@ -78,29 +77,27 @@ public class AbroadServiceImpl implements AbroadService {
     }
 
     @Override
-    public int updateAbroad(AbroadDTO abroadDTO) {
-        verification(abroadDTO.getOrgId(), abroadDTO.getUserId().intValue());
-        TabPbAbroad tabPbAbroad = copyPropertiesAndPaddingBaseField(abroadDTO, TabPbAbroad.class, false, true);
-        return abroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
-    }
-
-    @Override
     public int updateGoAbroad(GoAbroadDTO goAbroadDTO) {
-        verification(goAbroadDTO.getOrgId(), goAbroadDTO.getUserId().intValue());
+        verification(goAbroadDTO.getOrgId(), goAbroadDTO.getUserId());
         TabPbAbroad tabPbAbroad = copyPropertiesAndPaddingBaseField(goAbroadDTO, TabPbAbroad.class, false, true);
         return abroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
     }
 
     @Override
     public int updateReturnAbroad(ReturnAbroadDTO returnAbroadDTO) {
-        verification(returnAbroadDTO.getOrgId(), returnAbroadDTO.getUserId().intValue());
+        verification(returnAbroadDTO.getOrgId(), returnAbroadDTO.getUserId());
         TabPbAbroad tabPbAbroad = copyPropertiesAndPaddingBaseField(returnAbroadDTO, TabPbAbroad.class, false, true);
         return abroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
     }
 
     @Override
-    public AbroadDetailsVO findAbroadVOByAbroadId(Long abroadId) {
-        return abroadMapper.findByAbroadId(abroadId);
+    public GoAbroadDetailsVO findGoAbroadDetailsVOByAbroadId(Long abroadId) {
+        return copyPropertiesAndPaddingBaseField(abroadMapper.findAbroadDetailsVOByAbroadId(abroadId), GoAbroadDetailsVO.class, false, false);
+    }
+
+    @Override
+    public BackAbroadDetailsVO findBackAbroadDetailsVOByAbroadId(Long abroadId) {
+        return copyPropertiesAndPaddingBaseField(abroadMapper.findAbroadDetailsVOByAbroadId(abroadId), BackAbroadDetailsVO.class, false, false);
     }
 
     /**
@@ -111,8 +108,8 @@ public class AbroadServiceImpl implements AbroadService {
      * @author FanYanGen
      * @date 2019/4/24 21:02
      **/
-    private void verification(long orgId, Integer userId) {
-        if (!deptMapper.isExist(orgId)) {
+    private void verification(Long orgId, Integer userId) {
+        if (!deptMapper.checkIsExistByOrgId(orgId)) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
         if (!sysUserMapper.checkIsExistByUserId(userId)) {
