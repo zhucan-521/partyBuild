@@ -97,5 +97,4 @@ public class PartyMembershipController {
     public SysUser getRegistryByUserId(Long userId) {
         return sysUserService.getRegistryByUserId(userId);
     }
-
 }

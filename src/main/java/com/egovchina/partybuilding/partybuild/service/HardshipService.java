@@ -73,4 +73,10 @@ public interface HardshipService {
      **/
     PageInfo<HardshipPartyVO> findHardshipPartyVOWithConditions(HardshipQueryBean hardshipQueryBean, Page page);
 
+    /**
+     * 根据用户id删除困难数据
+     * @param userId 用户id
+     * @return
+     */
+    int logicDeleteByUserId(Long userId);
 }

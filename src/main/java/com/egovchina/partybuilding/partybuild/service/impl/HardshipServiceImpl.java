@@ -59,6 +59,14 @@ public class HardshipServiceImpl implements HardshipService {
     }
 
     @Override
+    public int logicDeleteByUserId(Long userId) {
+        TabPbHardship delete = new TabPbHardship();
+        delete.setDelFlag(CommonConstant.STATUS_DEL);
+        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(delete);
+        return hardshipMapper.logicDeleteByUserId(delete);
+    }
+
+    @Override
     public int insertHardshipParty(HardshipPartyDTO hardshipPartyDTO) {
         verification(hardshipPartyDTO);
         TabPbHardship tabPbHardship = copyPropertiesAndPaddingBaseField(hardshipPartyDTO, TabPbHardship.class, false, false);

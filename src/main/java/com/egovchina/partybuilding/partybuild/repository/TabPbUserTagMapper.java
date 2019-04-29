@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.partybuild.dto.UserTagDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
 import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import org.apache.ibatis.annotations.Param;
@@ -51,4 +52,26 @@ public interface TabPbUserTagMapper {
      * @return
      */
     int batchInsertUserTagDTO(List<TabPbUserTag> list);
+
+    List<TabPbUserTag> selectTagTypesList(Long userId);
+
+    List selectUsertagIdList(Long userId);
+
+    List<TabPbUserTag> selectTabPbUserTagListByUserId(Long userId);
+
+    int insertUserTagDTO(TabPbUserTag tabPbUserTag);
+
+    /**
+     * 根据用户id删除用户所有标签
+     * @param userId 用户id
+     * @return
+     */
+    int batchDeleteByUserId(Long userId);
+
+    /**
+     * 批量删除根据id
+     * @param deleteIds ids
+     * @return
+     */
+    int batchDeleteById(List<Long> deleteIds);
 }

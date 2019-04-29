@@ -4,6 +4,7 @@ import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 import lombok.Value;
 import lombok.experimental.Accessors;
@@ -17,10 +18,13 @@ import java.util.List;
  * @author create by GuanYingxin on 2019/4/22 20:40
  * @description
  */
-@ApiModel("党员标记DTO")
+@ApiModel("党员标记集合DTO")
 @Data
 @Accessors(chain = true)
 public class UserTagDTO {
+
+    @ApiModelProperty(value = "党员标记id", hidden = true)
+    private Long usertagId;
 
     @ApiModelProperty(value = "用户ID", required = true)
     @NotNull(message = "用户id不能为空")
