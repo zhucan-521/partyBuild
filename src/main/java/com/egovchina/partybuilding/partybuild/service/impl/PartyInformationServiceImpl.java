@@ -203,8 +203,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 //分别判断新增或者修改
                 List<PartyWorkDTO> inserts = new ArrayList<PartyWorkDTO>();
                 List<PartyWorkDTO> updates = new ArrayList<PartyWorkDTO>();
-                for (int i = 0; i < partyInfoDTO.getEducations().size(); i++) {
-                    partyInfoDTO.getEducations().get(i).setUserId(id.longValue());
+                for (int i = 0; i < partyInfoDTO.getWorks().size(); i++) {
+                    partyInfoDTO.getWorks().get(i).setUserId(id.longValue());
                     if (partyInfoDTO.getWorks().get(i).getWorkId() == null) {
                         inserts.add(partyInfoDTO.getWorks().get(i));
                     } else {

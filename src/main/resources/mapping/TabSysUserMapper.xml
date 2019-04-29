@@ -311,7 +311,7 @@
     <sql id="Base_users_info">
         user_id,realname,gender,TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age,nation,id_card_no,join_time,regular_time,report_org_name,phone,identity_type,marital_status,
         education,unit_id,flow_status,is_llost,is_taiwaner,dept_id,birthday,migrant,stratum,front_line,work_date,ancestor_place,registry_status,family_address,community_addr,
-        job_position
+        job_position,join_org_time
     </sql>
     <sql id="dept_name_result">
     subordinate_dept_name,in_where_dept_name
