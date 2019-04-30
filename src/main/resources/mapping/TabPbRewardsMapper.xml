@@ -39,18 +39,8 @@
         <result column="rewards_orgnize" jdbcType="VARCHAR" property="rewardsOrgnize"/>
         <result column="rewards_orgnize_id" jdbcType="BIGINT" property="rewardsOrgnizeId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
-        <result column="rewards" jdbcType="BIGINT" property="rewards"/>
-        <result column="rewards_reason" jdbcType="BIGINT" property="rewardsReason"/>
-        <result column="approved_level" jdbcType="BIGINT" property="approvedLevel"/>
-        <result column="revoke_date" jdbcType="TIMESTAMP" property="revokeDate"/>
-        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
         <result column="rewards_name" jdbcType="VARCHAR" property="rewardsName"/>
-        <result column="rewards_type" jdbcType="VARCHAR" property="rewardsType"/>
-        <result column="base_status" jdbcType="LONGVARCHAR" property="baseStatus"/>
-        <result column="deed" jdbcType="LONGVARCHAR" property="deed"/>
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
-        <result column="img_tool" jdbcType="BIGINT" property="imgTool"/>
-        <result column="file_tool" jdbcType="BIGINT" property="fileTool"/>
         <collection property="attachments"
                     select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="hostId=rewards_id,attachmentType=attachment_type"/>
