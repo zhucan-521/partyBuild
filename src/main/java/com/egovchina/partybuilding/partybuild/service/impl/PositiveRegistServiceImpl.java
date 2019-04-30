@@ -46,7 +46,7 @@ public class PositiveRegistServiceImpl implements PositiveRegistService {
     private SysDeptMapper deptMapper;
 
     @Autowired
-    private UserTagService tabPbUserTagService;
+    private UserTagService userTagService;
 
     @Autowired
     private ITabPbAttachmentService iTabPbAttachmentService;
@@ -154,10 +154,10 @@ public class PositiveRegistServiceImpl implements PositiveRegistService {
                 user.setReportOrgPhone(dept.getContactNumber());
                 user.setReportOrgContactor(dept.getContactor());
                 //添加标签
-                tabPbUserTagService.addUserTag(userId.longValue(), UserTagType.REPORT);
+                userTagService.addUserTag(userId.longValue(), UserTagType.REPORT);
             }else{
                 //删除标签
-                tabPbUserTagService.delete(userId.longValue(), UserTagType.REPORT);
+                userTagService.delete(userId.longValue(), UserTagType.REPORT);
             }
             sysUserMapper.editUserRegister(user);
 
