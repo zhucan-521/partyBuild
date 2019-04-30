@@ -154,7 +154,16 @@
             <result column="positive_name_dict" property="positiveNameDict"/>
         </collection>
     </resultMap>
-
+    <!-- 带标记的结果集 -->
+    <resultMap extends="BaseResultMap" id="BaseResultMapExtendsTags"
+               type="com.egovchina.partybuilding.partybuild.entity.SysUser">
+        <collection property="tabPbUserTags"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper.selectAllListSelective"
+                    column="{userId=user_id}"/>
+        <collection property="positiveList"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper.selectPositives"
+                    column="{userId=user_id}"/>
+    </resultMap>
 
     <!--用于分页查询党员信息-->
     <resultMap id="UserInFo" type="com.egovchina.partybuilding.partybuild.vo.PartyMemberInformationVO">
@@ -204,10 +213,9 @@
             <result column="community_addr" jdbcType="BIGINT" property="communityAddr"/>
             <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
             <result column="phone" jdbcType="VARCHAR" property="phone"/>
+            <result column="age" jdbcType="VARCHAR" property="age"/>
             <result column="fix_phone" jdbcType="VARCHAR" property="fixPhone"/>
             <result column="family_address" jdbcType="VARCHAR" property="familyAddress"/>
-            <result column="join_org_name" jdbcType="VARCHAR" property="joinOrgName"/>
-            <result column="join_org_id" jdbcType="BIGINT" property="joinOrgId"/>
             <result column="positived" jdbcType="VARCHAR" property="positived"/>
             <result column="identity_type" jdbcType="BIGINT" property="identityType"/>
             <result column="files_manage_unit" jdbcType="VARCHAR" property="filesManageUnit"/>
@@ -224,6 +232,9 @@
             <result column="work_date" jdbcType="TIMESTAMP" property="workDate"/>
             <collection property="tabPbUserTags" select="com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper.selectAllListSelective"
                         column="{userId=user_id}"/>
+            <collection property="joinOrgName"
+                        select="com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper.selectDeptNameByPrimaryKey"
+                        column="dept_id"/>
         </association>
         <collection property="educations" select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyEducationMapper.findAllByUserId" column="user_id"/>
         <collection property="jobTitles" select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyJobTitleMapper.findAllByUserId" column="user_id"/>
@@ -286,7 +297,7 @@
     <sql id="Blob_Column_List">
     post_reason, work_resumes, comment, content, rewards, present_perform
     </sql>
-    <!---查询党员信息列表-->
+    <!---分页查询党员信息列表-->
     <sql id="Base_users_info">
         user_id,realname,gender,TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age,nation,id_card_no,join_time,regular_time,report_org_name,phone,identity_type,marital_status,
         education,unit_id,flow_status,is_llost,is_taiwaner,dept_id,birthday,migrant,stratum,front_line,work_date,ancestor_place,registry_status,family_address,community_addr,

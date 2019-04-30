@@ -25,6 +25,9 @@ public class PartyDTO {
     @NotNull(message = "人员类别不能为空")
     private Long identityType;
 
+    @ApiModelProperty(value = "头像")
+    private String avatar;
+
     @ApiModelProperty(value = "申请人姓名",required = true)
     @NotNull(message = "申请人姓名不能为空")
 

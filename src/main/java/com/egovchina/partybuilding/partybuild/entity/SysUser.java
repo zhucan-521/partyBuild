@@ -1,13 +1,26 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableLogic;
+import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+import com.egovchina.partybuilding.common.config.DictSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.apache.ibatis.type.Alias;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Accessors(chain = true)
@@ -275,6 +288,8 @@ public class SysUser implements Serializable {
 
     private String registryStatusName;
 
+    private List<Long> status;
+
     private Date reduceTime;
 
     private Long outType;
@@ -299,11 +314,15 @@ public class SysUser implements Serializable {
 
     private String jobPositionName;
 
+    private List<TabPbUserTag> tabPbUserTags;
+
     private String inWhereDeptName;
 
     private Integer age;
 
     private Integer complete;
+
+    private List<TabPbPositives> positiveList;
 
     private Long orderNumUser;
 }

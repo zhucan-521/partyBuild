@@ -886,6 +886,11 @@
         select * from sys_dept where dept_id = #{deptId}
     </select>
 
+    <!--根据 ID 查询组织名称（不查关联数据）用于党员详情信息显示-->
+    <select id="selectDeptNameByPrimaryKey" parameterType="java.lang.Long">
+        select name from sys_dept where dept_id = #{deptId}
+    </select>
+
     <!--修改组织信息的同时修改 relation 表-->
     <update id="updateWithRelationByPrimaryKeySelective"
             parameterType="com.egovchina.partybuilding.partybuild.entity.SysDept">

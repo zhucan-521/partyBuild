@@ -46,7 +46,6 @@ public class SysUserVO {
     @JsonSerialize(using = DictSerializer.class)
     private Long communityAddr;
 
-
     @ApiModelProperty(value = "头像")
     private String avatar;
 
@@ -61,9 +60,6 @@ public class SysUserVO {
 
     @ApiModelProperty(value = "入党所在支部名称")
     private String joinOrgName;
-
-    @ApiModelProperty(value = "入党所在支部主键")
-    private Long joinOrgId;
 
     @ApiModelProperty(value = "曾任职务")
     private String positived;
@@ -104,7 +100,6 @@ public class SysUserVO {
     @TableField(exist = false)
     @ApiModelProperty(value = "用户标签列表")
     private List<TabPbUserTag> tabPbUserTags;
-
 
     @ApiModelProperty(value = "婚姻状况 码表值 FYZK")
     @JsonSerialize(using = DictSerializer.class)
