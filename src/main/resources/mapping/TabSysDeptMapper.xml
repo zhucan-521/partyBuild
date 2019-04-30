@@ -887,7 +887,7 @@
     </select>
 
     <!--根据 ID 查询组织名称（不查关联数据）用于党员详情信息显示-->
-    <select id="selectDeptNameByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectDeptNameByPrimaryKey" parameterType="java.lang.Long" resultType="string">
         select name from sys_dept where dept_id = #{deptId}
     </select>
 
