@@ -36,7 +36,21 @@
         <result column="lost_time" jdbcType="TIMESTAMP" property="lostTime"/>
         <result column="link_status" jdbcType="BIGINT" property="linkStatus"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="TabPbFlowInDtoResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbFlowInDto">
+    <resultMap extends="BaseResultMap" id="TabPbFlowInDtoResultMap" type="com.egovchina.partybuilding.partybuild.dto.FamilyMemberDTO">
+        <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
+        <result column="gender" jdbcType="BIGINT" property="gender"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="flow_to_org_name" jdbcType="VARCHAR" property="flowToOrgName"/>
+        <result column="flow_out_date" jdbcType="TIMESTAMP" property="flowOutDate"/>
+        <result column="outProfession" jdbcType="VARCHAR" property="outProfession"/>
+        <result column="flow_from_org_phone" jdbcType="VARCHAR" property="flowFromOrgPhone"/>
+        <result column="flow_from_org_contactor" jdbcType="VARCHAR" property="flowFromOrgContactor"/>
+        <result column="flow_to_org_contactor" jdbcType="VARCHAR" property="flowToOrgContactor"/>
+        <result column="flow_to_org_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
+        <result column="out_profession" jdbcType="BIGINT" property="outProfession"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="TabPbFlowInDtoResultVoMap" type="com.egovchina.partybuilding.partybuild.vo.FlowInMemberVO">
         <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
         <result column="gender" jdbcType="BIGINT" property="gender"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
@@ -77,20 +91,7 @@
 		t.old_orgnize_contactor,
 		t.old_contact_phone,
 		t.old_unit_postcode,
-		t.return_date,
-		t.return_tag,
 		t.flow_out_id,
-		t.ebl_flag,
-		t.del_flag,
-		t.order_num,
-		t.description,
-		t.create_time,
-		t.create_userid,
-		t.create_username,
-		t.update_time,
-		t.update_userid,
-		t.update_username,
-		t.version,
 		t.flow_in_state,
 		s.username,
 		s.id_card_no,
@@ -104,6 +105,7 @@
         s.flow_from_org_contactor,
         s.flow_from_org_phone,
         f.flow_out_date ,
+        (case  when f.flow_out_date &lt;= now() then 1 else 0 end) as isEnableAccept,
 		f.out_profession
     </sql>
 
@@ -566,6 +568,47 @@
   </update>
 
 
+
+    <!--流入党员列表查询vo-->
+    <select id="selectListByFlowInVo" parameterType="com.egovchina.partybuilding.partybuild.entity.FlowInMemberQueryBean" resultMap="TabPbFlowInDtoResultVoMap">
+        SELECT
+        <include refid="Base_FlowIn_List" />
+        FROM
+        tab_pb_flow_in AS t
+        LEFT JOIN sys_user AS s ON t.user_id = s.user_id
+        LEFT JOIN sys_dept d ON t.org_id = d.dept_id
+        LEFT JOIN tab_pb_flow_out f on t.flow_out_id=f.flow_out_id
+        AND d.del_flag = '0'
+        where
+        1=1
+        <if test="username != null and username != ''">
+            AND s.username like CONCAT('%',#{username},'%')
+        </if>
+        <if test="flowInState != null and flowInState != ''">
+            AND t.flow_in_state = #{flowInState}
+        </if>
+        <if test="idCardNo != null and idCardNo != ''">
+            AND s.id_card_no = #{idCardNo}
+        </if>
+        <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <choose>
+            <when test="orgRange == 1">
+                AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+            </when>
+            <when test="orgRange == 2">
+                AND find_in_set(#{rangeDeptId}, d.full_path)
+            </when>
+            <otherwise>
+                AND d.dept_id = #{rangeDeptId}
+            </otherwise>
+        </choose>
+        AND t.del_flag = '0'
+        order by
+        t.flow_in_id
+        desc
+    </select>
+
+
     <!--流入党员列表查询-->
     <select id="selectListByFlowInDto" parameterType="java.util.Map" resultMap="TabPbFlowInDtoResultMap">
         SELECT
@@ -580,6 +623,9 @@
         1=1
         <if test="username != null and username != ''">
             AND s.username like CONCAT('%',#{username},'%')
+        </if>
+        <if test="flowInState != null and flowInState != ''">
+            AND t.flow_in_state = #{flowInState}
         </if>
         <if test="idCardNo != null and idCardNo != ''">
             AND s.id_card_no = #{idCardNo}
@@ -611,6 +657,20 @@
 		LEFT JOIN sys_user AS s ON t.user_id = s.user_id
 		LEFT JOIN sys_dept d ON t.org_id = d.dept_id
 		LEFT JOIN tab_pb_flow_out f on t.flow_out_id=f.flow_out_id
+        where
+        t.flow_in_id = #{flowInId,jdbcType=BIGINT}
+    </select>
+
+
+    <!--单个流入vo党员详情查询-->
+    <select id="selectFlowInVoByFlowId" parameterType="java.lang.Long" resultMap="TabPbFlowInDtoResultVoMap">
+        SELECT
+        <include refid="Base_FlowIn_List" />
+        FROM
+        tab_pb_flow_in AS t
+        LEFT JOIN sys_user AS s ON t.user_id = s.user_id
+        LEFT JOIN sys_dept d ON t.org_id = d.dept_id
+        LEFT JOIN tab_pb_flow_out f on t.flow_out_id=f.flow_out_id
         where
         t.flow_in_id = #{flowInId,jdbcType=BIGINT}
     </select>

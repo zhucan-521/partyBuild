@@ -1,9 +1,9 @@
 package com.egovchina.partybuilding.partybuild.service;
 
-import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
 import com.egovchina.partybuilding.partybuild.dto.RegistryDTO;
+import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
+import com.egovchina.partybuilding.partybuild.entity.SysUser;
 
 import java.util.List;
 

@@ -69,7 +69,7 @@ public interface SecurityConstants {
     /**
      * JdbcClientDetailsService 查询语句
      */
-    String BASE_FIND_STATEMENT = "select " + CLIENT_FIELDS
+    String BASE_FIND_STATEMENT = "getFlowInMemberList " + CLIENT_FIELDS
             + " from sys_oauth_client_details";
 
     /**
