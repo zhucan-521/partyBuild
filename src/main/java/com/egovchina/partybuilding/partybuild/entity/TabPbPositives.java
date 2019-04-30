@@ -6,7 +6,6 @@ import lombok.Data;
 
 import java.util.Date;
 
-@ApiModel(value = "职务")
 @Data
 @TableName("tab_pb_positives")
 public class TabPbPositives {

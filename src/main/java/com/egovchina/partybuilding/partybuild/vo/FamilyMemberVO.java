@@ -18,7 +18,7 @@ import java.util.Date;
 @Data
 public class FamilyMemberVO implements Serializable {
 
-    @ApiModelProperty(value = "家庭成员主键ID",required = true)
+    @ApiModelProperty(value = "家庭成员主键ID")
     private Long relationId;
 
     @ApiModelProperty(value = "人员主键ID")

@@ -44,8 +44,7 @@ public class FamilyServiceImpl implements FamilyService {
      */
     @Override
     public List<FamilyMemberVO> selectFamilyMemberList(Long partyMemberId) {
-        List<FamilyMemberVO> list = pbFamilyMapper.getFamilyMemberVoByUserId(partyMemberId);
-        return list;
+        return pbFamilyMapper.getFamilyMemberVoByUserId(partyMemberId);
     }
 
     /**
@@ -99,8 +98,7 @@ public class FamilyServiceImpl implements FamilyService {
         if(user != null) {
             tabPbFamily.setRelationUserId(user.getUserId().longValue());
             PaddingBaseFieldUtil.paddingBaseFiled(tabPbFamily);
-            int retVal = pbFamilyMapper.insertSelective(tabPbFamily);
-            return retVal;
+            return pbFamilyMapper.insertSelective(tabPbFamily);
         }else {
             SysUser sysUser = new SysUser();
             BeanUtil.copyPropertiesIgnoreNull(tabPbFamily, sysUser);

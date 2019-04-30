@@ -37,7 +37,7 @@
         <result column="flow_to_orgnize_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
         <result column="flow_out_state" jdbcType="BIGINT" property="flowOutState"/>
     </resultMap>
-    <resultMap id="selectActiveTabPbFlowOutDtoMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbFlowOutDto">
+    <resultMap id="selectActiveTabPbFlowOutDtoMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.dto.FlowOutMemberDTO">
         <id column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
@@ -656,49 +656,6 @@
         tab_pb_flow_out.flow_out_id
         desc
     </select>
-
-    <!--流出党员dto查询-->
-    <select id="selectActiveTabPbFlowOutDto" parameterType="com.egovchina.partybuilding.partybuild.dto.TabPbFlowOutDto" resultMap="selectActiveTabPbFlowOutDtoMap">
-        SELECT
-        <include refid="Base_FlowOut_List" />
-        FROM
-        tab_pb_flow_out
-        left JOIN sys_user ON tab_pb_flow_out.user_id = sys_user.user_id
-        left JOIN sys_dept ON tab_pb_flow_out.org_id = sys_dept.dept_id
-        <where>
-            tab_pb_flow_out.del_flag='0'
-            <if test="flowOutId!=null and ''!=flowOutId">
-              and tab_pb_flow_out.flow_out_id =#{flowOutId}
-            </if>
-            <if test="flowOutState!=null and ''!=flowOutId">
-                and tab_pb_flow_out.flow_out_state =#{flowOutState}
-            </if>
-            <if test="username!=null and ''!=username">
-              and sys_user.realname like concat('%',#{username},'%')
-            </if>
-            <if test="idCardNo != null and ''!=idCardNo">
-               and sys_user.id_card_no=#{idCardNo}
-            </if>
-            <if test="flowToUnitName != null and ''!=flowToUnitName">
-              and tab_pb_flow_out.flow_to_unit_name like concat('%',#{flowToUnitName},'%')
-            </if>
-            <choose>
-                <when test="orgRange == 1">
-                    AND (sys_dept.dept_id = #{rangeDeptId} OR sys_dept.parent_id = #{rangeDeptId})
-                </when>
-                <when test="orgRange == 2">
-                    AND find_in_set(#{rangeDeptId}, sys_dept.full_path)
-                </when>
-                <otherwise>
-                    AND sys_dept.dept_id = #{rangeDeptId}
-                </otherwise>
-            </choose>
-        </where>
-        order by
-        tab_pb_flow_out.flow_out_id
-        desc
-    </select>
-
 
     <!--根据id查询单个流出党员详情-->
     <select id="findTabPbFlowOutDtoById" parameterType="Long" resultMap="selectActiveTabPbFlowOutDtoMap">

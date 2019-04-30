@@ -21,10 +21,10 @@ public class MsgNoticeDeptVO {
     @ApiModelProperty(value = "下达通知id")
     private Long noticeId;
 
-    @ApiModelProperty(value = "接收党组织id",required = true)
+    @ApiModelProperty(value = "接收党组织id")
     private Long deptId;
 
-    @ApiModelProperty(value = "接收党组织name",required = true)
+    @ApiModelProperty(value = "接收党组织name")
     private String deptName;
 
     @ApiModelProperty(value = "签收人员")

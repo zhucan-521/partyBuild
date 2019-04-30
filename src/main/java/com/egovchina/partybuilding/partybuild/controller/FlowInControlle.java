@@ -23,20 +23,14 @@ public class FlowInControlle {
 
 
     @ApiOperation(value = "根据流入id获取流入党员DTO信息", notes = "根据流入id获取流入党员DTO信息", httpMethod = "GET")
+    @ApiImplicitParam(value ="流入ID",name="flowInId",paramType = "path",required = true)
     @GetMapping("/{flowInId}")
-    public FlowInMemberVO getFlowInMember(@ApiParam(value = "流入ID",name = "flowInId",required = true) @PathVariable Long flowInId) {
+    public FlowInMemberVO getFlowInMember(@PathVariable Long flowInId) {
         return flowInService.getFlowInMeberVoById(flowInId);
     }
 
 
     @ApiOperation(value = "分页查询流入党员", notes = "分页查询流入党员", httpMethod = "GET")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "orgRange", value = "组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）", paramType = "query"),
-            @ApiImplicitParam(name = "rangeDeptId", value = "组织ID", paramType = "query"),
-            @ApiImplicitParam(name = "username", value = "姓名", paramType = "query"),
-            @ApiImplicitParam(name = "flowInState", value = "状态", paramType = "query" ),
-            @ApiImplicitParam(name = "idCardNo", value = "身份证号码", paramType = "query")
-    })
     @GetMapping
     public PageInfo<FlowInMemberVO> flowInMemberList(FlowInMemberQueryBean flowInMemberQueryBean, Page page) {
         return flowInService.getFlowInMemberList(flowInMemberQueryBean, page);
