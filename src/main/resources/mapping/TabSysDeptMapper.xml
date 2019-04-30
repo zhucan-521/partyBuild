@@ -1031,7 +1031,7 @@
     </select>
 
     <!-- 检查数据是否存在 -->
-    <select id="isExist" parameterType="java.lang.Long" resultType="boolean">
+    <select id="checkIsExistByOrgId" parameterType="java.lang.Long" resultType="boolean">
         SELECT COUNT(1) FROM sys_dept WHERE dept_id = #{deptId}
     </select>
 

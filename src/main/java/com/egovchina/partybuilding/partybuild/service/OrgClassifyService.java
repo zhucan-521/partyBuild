@@ -10,10 +10,9 @@ import com.github.pagehelper.PageInfo;
 import java.util.List;
 
 /**
- * 分类定等service接口
- *
- * @Author Zhang Fan
- **/
+ * desc: 分类定等-服务接口
+ * Created by FanYanGen on 2019/4/22 15:58
+ */
 public interface OrgClassifyService {
 
     int deleteByPrimaryKey(Long orgClassifyId);

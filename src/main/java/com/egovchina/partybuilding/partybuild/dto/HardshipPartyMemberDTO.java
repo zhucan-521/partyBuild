@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel("困难党员-数据传输对象")
-public class HardshipPartyDTO {
+public class HardshipPartyMemberDTO {
 
     @ApiModelProperty("困难程度")
     @NotNull(message = "困难程度不能为空")
