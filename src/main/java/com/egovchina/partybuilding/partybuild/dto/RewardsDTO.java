@@ -2,10 +2,7 @@ package com.egovchina.partybuilding.partybuild.dto;
 
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
-import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.egovchina.partybuilding.common.entity.TabPbAttachment;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
