@@ -32,6 +32,9 @@
   </resultMap>
     <resultMap id="TabPbTrainingDtoMap" extends="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.dto.TabPbTrainingDto">
     </resultMap>
+  <resultMap id="TabPbTrainingDtoMapVO" extends="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.vo.TrainingVO">
+    <result column="deptName" jdbcType="VARCHAR" property="deptName" />
+  </resultMap>
   <sql id="Base_Column_List">
     traning_id, user_id, dept_id, training_start_date, training_finished_date, training_place,
     training_hours, training_type, training_org, training_score, view_date, ebl_flag,
@@ -379,12 +382,73 @@
       desc
   </select>
 
+
+  <!--条件选择党员培训情况列表Vo-->
+  <select id="selectiveTabPbTrainingVO" parameterType="com.egovchina.partybuilding.partybuild.entity.TrainingQueryBean" resultMap="TabPbTrainingDtoMapVO">
+    select
+    t.traning_id,
+    t.user_id,
+    t.dept_id,
+    t.training_start_date,
+    t.training_finished_date,
+    t.training_place,
+    t.training_hours,
+    t.training_type,
+    t.training_org,
+    t.training_content,
+    t.training_score,
+    t.training_gain,
+    t.training_view,
+    t.view_date,
+    d.name as deptName
+    from
+    tab_pb_training t
+    left join sys_dept d on d.dept_id=t.dept_id
+    <where>
+      del_flag = 0
+      <if test="userId!=null and userId!=''">
+        and user_id = #{userId}
+      </if>
+    </where>
+    order by
+    traning_id
+    desc
+  </select>
+
   <!--单个党员培训情况详情查询-->
   <select id="selectOneById" resultType="Long" resultMap="TabPbTrainingDtoMap">
     select
-    *
+    t.*,
+    d.name as deptName
     from
-    tab_pb_training
+    tab_pb_training t
+    left join sys_dept d on d.dept_id=t.dept_id
+    <where>
+      traning_id=#{trainId}
+    </where>
+  </select>
+
+
+  <select id="selectOneVoById" resultType="Long" resultMap="TabPbTrainingDtoMapVO">
+    select
+    t.traning_id,
+    t.user_id,
+    t.dept_id,
+    t.training_start_date,
+    t.training_finished_date,
+    t.training_place,
+    t.training_hours,
+    t.training_type,
+    t.training_org,
+    t.training_content,
+    t.training_score,
+    t.training_gain,
+    t.training_view,
+    t.view_date,
+    d.name as deptName
+    from
+    tab_pb_training t
+    left join sys_dept d on d.dept_id=t.dept_id
     <where>
       traning_id=#{trainId}
     </where>

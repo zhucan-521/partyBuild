@@ -1,6 +1,8 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept;
+import com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean;
+import com.egovchina.partybuilding.partybuild.vo.MsgNoticeDeptVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,6 +29,14 @@ public interface TabPbMsgNoticeDeptMapper {
      * @return
      */
     List<TabPbMsgNoticeDept> selectList(TabPbMsgNoticeDept record);
+
+
+    /**
+     * 查询list
+     * @param record
+     * @return
+     */
+    List<MsgNoticeDeptVO> selectVoDeptList(MsgNoticeDeptQueryBean record);
 
     /**
      * 签收

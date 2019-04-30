@@ -1,9 +1,9 @@
 package com.egovchina.partybuilding.partybuild.service;
 
+import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
+import com.egovchina.partybuilding.partybuild.dto.RegistryDTO;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
 import com.egovchina.partybuilding.partybuild.entity.SysUser;
-import com.egovchina.partybuilding.partybuild.dto.RegistryDTO;
-import com.egovchina.partybuilding.partybuild.vo.RegistryVO;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public interface SysUserService {
     SysUser getRegistryId(Long userId);
 
     /**
-     * 获取用户党籍信息
+     * 获取党籍列表
      *
      * @param userId
      * @return
@@ -55,10 +55,10 @@ public interface SysUserService {
     /**
      * 更新用户党籍信息
      *
-     * @param registryDTO
+     * @param membershipDTO
      * @return
      */
-    int updateMembership(RegistryDTO registryDTO);
+    boolean updateMembership(MembershipDTO membershipDTO);
 
     /**
      * 获取党籍列表
@@ -66,7 +66,7 @@ public interface SysUserService {
      * @param userId
      * @return
      */
-    List<RegistryVO> getRegistryList(Long userId);
+    List<RegistryDTO> getRegistryList(Long userId);
 
     /**
      * 社区活动选人接口(通过组织主键来获取)
