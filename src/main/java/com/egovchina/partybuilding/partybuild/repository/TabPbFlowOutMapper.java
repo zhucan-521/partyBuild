@@ -1,9 +1,10 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.dto.CommunityDTO;
-import com.egovchina.partybuilding.partybuild.dto.TabPbFlowOutDto;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowOut;
 import com.egovchina.partybuilding.partybuild.vo.CommunityVO;
+import com.egovchina.partybuilding.partybuild.entity.FlowOutMemberQueryBean;
+import com.egovchina.partybuilding.partybuild.vo.FlowOutMemberVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,12 +22,15 @@ public interface  TabPbFlowOutMapper {
 
     int updateByPrimaryKey(TabPbFlowOut record);
 
+
+
+
     /**
      * 条件查询流出党员列表
-     * @param dto
+     * @param flowOutMemberQueryBean
      * @return
      */
-    List<TabPbFlowOutDto> selectActiveTabPbFlowOutDto(TabPbFlowOutDto dto);
+    List<FlowOutMemberVO> selectActiveFlowOutVo(FlowOutMemberQueryBean flowOutMemberQueryBean);
 
     /**
      * 根据deptId获取部门名称
@@ -69,7 +73,9 @@ public interface  TabPbFlowOutMapper {
      * @param id
      * @return
      */
-    TabPbFlowOutDto findTabPbFlowOutDtoById(Long id);
+     FlowOutMemberVO findFlowOutVoById(Long id);
+
+
 
 
     /**

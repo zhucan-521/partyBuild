@@ -15,7 +15,7 @@ import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.system.entity.SysRole;
 import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.system.entity.SysUserRole;
-import com.egovchina.partybuilding.partybuild.system.mapper.SysUserMapper;
+import com.egovchina.partybuilding.partybuild.repository.SysUserMapper;
 import com.egovchina.partybuilding.partybuild.system.service.SysMenuService;
 import com.egovchina.partybuilding.partybuild.system.service.SysRoleService;
 import com.egovchina.partybuilding.partybuild.system.service.SysUserRoleService;

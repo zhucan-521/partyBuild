@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbPositiveRegistMapper">
+
   <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist">
     <id column="positive_regist_id" jdbcType="BIGINT" property="positiveRegistId" />
     <result column="dept_id" jdbcType="BIGINT" property="deptId" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="regist_date" jdbcType="VARCHAR" property="registDate" />
+    <result column="regist_date" jdbcType="TIMESTAMP" property="registDate" />
     <result column="regist_comment" jdbcType="VARCHAR" property="registComment" />
     <result column="from_orgnize_id" jdbcType="BIGINT" property="fromOrgnizeId" />
     <result column="from_orgnize_code" jdbcType="VARCHAR" property="fromOrgnizeCode" />
@@ -28,8 +29,6 @@
     <result column="update_userid" jdbcType="BIGINT" property="updateUserid" />
     <result column="update_username" jdbcType="VARCHAR" property="updateUsername" />
     <result column="version" jdbcType="BIGINT" property="version" />
-    <result column="attachment_instance" property="attachmentInstance"/>
-    <result column="attachment_description" property="attachmentDescription"/>
     <collection property="sysUserList" ofType="com.egovchina.partybuilding.partybuild.entity.SysUser">
       <id column="user_id" property="userId"></id>
       <result column="username" property="username"/>
@@ -45,6 +44,10 @@
       <result column="name" property="name"/>
       <result column="dept_name" property="deptName"/>
     </collection>
+  </resultMap>
+
+  <resultMap id="BaseResultVoMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.vo.PositiveRegistMemberVO" >
+    <result column="isEnableBack" property="isEnableBack"/>
   </resultMap>
   <!--保存报到信息-->
   <insert id="addPositiveRegist" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist" useGeneratedKeys="true" keyProperty="positiveRegistId">
@@ -166,7 +169,7 @@
     <if test="userName != null and userName != ''">
       and a.realname like CONCAT('%',#{userName},'%')
     </if>
-    <if test="registDate != null and registDate != ''">
+    <if test="registDate != null ">
       and regist_date = #{registDate}
     </if>
     <if test="revokeTag != null and revokeTag != ''">
@@ -175,6 +178,70 @@
 
     and  regist.del_flag = '0'
   </select>
+
+  <!--Vo-->
+  <select id="selectListVoPage" parameterType="com.egovchina.partybuilding.partybuild.entity.PositiveRegistMemberQueryBean" resultMap="BaseResultVoMap">
+    select
+    regist.positive_regist_id,
+    regist.dept_id,
+    regist.user_id,
+    regist.regist_date,
+    regist.regist_comment,
+    regist.from_orgnize_id,
+    regist.from_orgnize_code,
+    regist.from_orgnize_name,
+    regist.from_orgnize_place,
+    regist.process_man,
+    regist.process_time,
+    regist.process_result,
+    regist.revoke_tag,
+    regist.revoke_tomment,
+    (case  when regist.regist_date &lt;=now() then 1 else 0 end ) as isEnableBack,
+    (case  when regist.revoke_date &lt;=now() then 1 else 0 end ) as revokeIsEnableAccept,
+    regist.revoke_date,
+    a.`name` AS dept_name,a.realname as username,a.gender,
+    TIMESTAMPDIFF(YEAR, a.birthday, CURDATE()) AS age,a.phone,a.identity_type,
+    a.id_card_no,
+    dept.`name`,
+    attac.attachment_instance
+    from tab_pb_positive_regist regist
+    join (SELECT suser.*,dept.`name` FROM sys_user suser join sys_dept dept on suser.dept_id = dept.dept_id and suser.del_flag = 0 and dept.del_flag = 0) a
+    ON regist.user_id = a.user_id
+    join sys_dept dept on regist.dept_id = dept.dept_id and dept.del_flag = '0'
+    LEFT JOIN tab_pb_attachment attac ON attac.host_id = regist.positive_regist_id
+    AND attac.attachment_type = ${@com.egovchina.partybuilding.common.util.AttachmentType@POSITIVE}
+    and attac.del_flag = '0'
+    WHERE true
+    <if test="orgRange != null and orgRange != ''">
+      <choose>
+        <when test="orgRange == 1">
+          AND (dept.dept_id = #{rangeDeptId} OR dept.parent_id = #{rangeDeptId})
+        </when>
+        <when test="orgRange == 2">
+          AND find_in_set(#{rangeDeptId}, dept.full_path)
+        </when>
+      </choose>
+    </if>
+    <if test="orgRange == null or orgRange.toString() == ''">
+      AND dept.dept_id = #{rangeDeptId}
+    </if>
+    <if test="userName != null and userName != ''">
+      and a.realname like CONCAT('%',#{userName},'%')
+    </if>
+    <if test="registDate != null ">
+      and regist_date = #{registDate}
+    </if>
+    <if test="revokeTag != null and revokeTag != ''">
+      and revoke_tag = #{revokeTag}
+    </if>
+    and  regist.del_flag = '0'
+  </select>
+
+
+
+
+
+
   <update id="editPositive" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist">
     update tab_pb_positive_regist
     <set>
@@ -206,17 +273,95 @@
   </update>
 
   <select id="findById" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select regist.*,dept.name from tab_pb_positive_regist regist
+    select
+    regist.positive_regist_id,
+    regist.dept_id,
+    regist.user_id,
+    regist.regist_date,
+    regist.regist_comment,
+    regist.from_orgnize_id,
+    regist.from_orgnize_code,
+    regist.from_orgnize_name,
+    regist.from_orgnize_place,
+    regist.process_man,
+    regist.process_time,
+    regist.process_result,
+    regist.revoke_tag,
+    regist.revoke_tomment,
+    dept.name
+    from
+    tab_pb_positive_regist regist
+    join sys_dept dept on regist.dept_id = dept.dept_id and dept.del_flag = 0
+    where user_id = #{userId}
+    and regist.del_flag = 0 and revoke_tag = 1
+  </select>
+
+    <select id="findByVoId" parameterType="java.lang.Long" resultMap="BaseResultVoMap">
+    select
+    regist.positive_regist_id,
+    regist.dept_id,
+    regist.user_id,
+    regist.regist_date,
+    regist.regist_comment,
+    regist.from_orgnize_id,
+    regist.from_orgnize_code,
+    regist.from_orgnize_name,
+    regist.from_orgnize_place,
+    regist.process_man,
+    regist.process_time,
+    regist.process_result,
+    regist.revoke_tag,
+    regist.revoke_tomment,
+    dept.name
+    from
+    tab_pb_positive_regist regist
     join sys_dept dept on regist.dept_id = dept.dept_id and dept.del_flag = 0
     where user_id = #{userId}
     and regist.del_flag = 0 and revoke_tag = 1
   </select>
 
   <select id="editFindById" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select regist.*,a.`name` AS dept_name,a.realname as username,a.gender,TIMESTAMPDIFF(YEAR, a.birthday, CURDATE()) AS age,a.phone,a.identity_type,a.id_card_no,
+    select
+    regist.*,
+    a.`name` AS dept_name,a.realname as username,a.gender,TIMESTAMPDIFF(YEAR, a.birthday, CURDATE()) AS age,a.phone,a.identity_type,a.id_card_no,
     a.family_address,dept.`name`,attac.attachment_instance,attac.attachment_description
     from tab_pb_positive_regist regist
     join (SELECT suser.*,dept.`name` FROM sys_user suser join sys_dept dept on suser.dept_id = dept.dept_id and suser.del_flag = 0 and dept.del_flag = 0) a
+	ON regist.user_id = a.user_id
+    join sys_dept dept on regist.dept_id = dept.dept_id and dept.del_flag = 0
+    LEFT JOIN tab_pb_attachment attac ON attac.host_id = regist.positive_regist_id
+    AND attac.attachment_type = ${@com.egovchina.partybuilding.common.util.AttachmentType@POSITIVE}
+    and attac.del_flag = 0
+    WHERE true
+    and  regist.del_flag = 0
+    and regist.positive_regist_id = #{positiveRegistId}
+  </select>
+
+
+  <select id="findPositiveRegistMemberById" parameterType="java.lang.Long" resultMap="BaseResultVoMap">
+    select
+    regist.positive_regist_id,
+    regist.dept_id,
+    regist.user_id,
+    regist.regist_date,
+    regist.regist_comment,
+    regist.from_orgnize_id,
+    regist.from_orgnize_code,
+    regist.from_orgnize_name,
+    regist.from_orgnize_place,
+    regist.process_man,
+    regist.process_time,
+    regist.process_result,
+    regist.revoke_tag,
+    regist.revoke_tomment,
+    (case  when regist.regist_date &lt;=now() then 1 else 0 end ) as isEnableBack,
+    (case  when regist.revoke_date &lt;=now() then 1 else 0 end ) as revokeIsEnableAccept,
+    regist.revoke_date,
+    a.`name` AS dept_name,a.realname as username,a.gender,TIMESTAMPDIFF(YEAR, a.birthday, CURDATE()) AS age,a.phone,a.identity_type,a.id_card_no,
+    a.family_address,dept.`name`
+    from tab_pb_positive_regist regist
+    join (SELECT suser.*,dept.`name`
+    FROM sys_user suser join sys_dept dept on suser.dept_id = dept.dept_id and suser.del_flag = 0 and dept.del_flag = 0) a
 	ON regist.user_id = a.user_id
     join sys_dept dept on regist.dept_id = dept.dept_id and dept.del_flag = 0
     LEFT JOIN tab_pb_attachment attac ON attac.host_id = regist.positive_regist_id

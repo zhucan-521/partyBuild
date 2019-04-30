@@ -104,8 +104,8 @@ public class DictController {
      */
     /*@ApiOperation(value = "通过ID查询字典信息", notes = "通过ID查询字典信息", httpMethod = "GET")
     @GetMapping("/{dictType}/{dictValue}")
-    public DictDto findOne(@ApiParam(value = "dictType",required=true)@PathVariable String dictType, @ApiParam(value = "dictValue",required=true)@PathVariable String dictValue) {
-        return tabSysDictService.findOne(dictType,dictValue);
+    public DictDto getFlowOutMember(@ApiParam(value = "dictType",required=true)@PathVariable String dictType, @ApiParam(value = "dictValue",required=true)@PathVariable String dictValue) {
+        return tabSysDictService.getFlowOutMember(dictType,dictValue);
     }*/
 
 	@Deprecated

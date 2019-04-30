@@ -47,7 +47,7 @@ public class TabPbActivitiesAssessController {
             @ApiImplicitParam(name = "rangeDeptId", value = "组织ID", paramType = "query"),
             @ApiImplicitParam(name = "year", value = "评议年度", paramType = "query"),
             @ApiImplicitParam(name = "username", value = "党员姓名", paramType = "query"),
-            @ApiImplicitParam(name = "auditResult", value = "审核结果 dict SHJG  + 1 未审核；2 已审核；全部不传", paramType = "query"),
+            @ApiImplicitParam(name = "auditMsgUpInfo", value = "审核结果 dict SHJG  + 1 未审核；2 已审核；全部不传", paramType = "query"),
             @ApiImplicitParam(name = "assessResult", value = "评议结果 dict ZS_PYJG YB_PYJG", paramType = "query"),
             @ApiImplicitParam(name = "beginCreateTime", value = "上报时间起始 yyyy-MM-dd", paramType = "query"),
             @ApiImplicitParam(name = "endCreateTime", value = "上报时间截至 yyyy-MM-dd", paramType = "query")

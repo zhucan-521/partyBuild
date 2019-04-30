@@ -3,6 +3,8 @@ package com.egovchina.partybuilding.partybuild.repository;
 import com.egovchina.partybuilding.partybuild.dto.TabPbMsgUpInfoDto;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo;
 import com.egovchina.partybuilding.partybuild.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.entity.MsgUpInfoQueryBean;
+import com.egovchina.partybuilding.partybuild.vo.MsgUpInfoVO;
 
 import java.util.List;
 
@@ -36,10 +38,23 @@ public interface TabPbMsgUpInfoMapper {
 
 
     /**
+     * 上报条件查询信息报送列表
+     * @return
+     */
+    List<MsgUpInfoVO> selectVoActive(MsgUpInfoQueryBean dto);
+
+
+    /**
      * 接收条件查询信息报送列表
      * @return
      */
     List<TabPbMsgUpInfoDto> selectActiveRec(TabPbMsgUpInfoDto dto);
+
+    /**
+     * 接收条件查询信息报送列表
+     * @return
+     */
+    List<MsgUpInfoVO> selectActiveVoRec(MsgUpInfoQueryBean dto);
 
 
     /**
