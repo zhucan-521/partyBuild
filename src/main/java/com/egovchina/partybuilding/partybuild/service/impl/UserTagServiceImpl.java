@@ -3,11 +3,11 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
-import com.egovchina.partybuilding.partybuild.dto.HardshipPartyDTO;
+import com.egovchina.partybuilding.partybuild.dto.HardshipPartyMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
 import com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper;
 import com.egovchina.partybuilding.partybuild.dto.UserTagDTO;
-import com.egovchina.partybuilding.partybuild.service.HardshipService;
+import com.egovchina.partybuilding.partybuild.service.HardshipPartyMemberService;
 import com.egovchina.partybuilding.partybuild.service.UserTagService;
 import com.egovchina.partybuilding.partybuild.vo.HardshipPartyVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class UserTagServiceImpl implements UserTagService {
     private TabPbUserTagMapper tabPbUserTagMapper;
 
     @Autowired
-    private HardshipService hardshipService;
+    private HardshipPartyMemberService hardshipService;
 
     /**
      * 根据用户id和标签id添加用户标记
@@ -133,10 +133,10 @@ public class UserTagServiceImpl implements UserTagService {
         List<TabPbUserTag> list = tagTypes.stream().map(tagType -> {
 
             if (tagType == 59428L) {
-                HardshipPartyDTO hardshipPartyDTO = new HardshipPartyDTO();
+                HardshipPartyMemberDTO hardshipPartyDTO = new HardshipPartyMemberDTO();
                 hardshipPartyDTO.setUserId(userTagDTO.getUserId());
                 hardshipPartyDTO.setOrgId(userTagDTO.getOrgId());
-                hardshipService.insertHardshipParty(hardshipPartyDTO);
+                hardshipService.insertHardshipPartyMember(hardshipPartyDTO);
             }
 
             TabPbUserTag tabPbUserTag = new TabPbUserTag();
