@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.util.UserContextHolder;
+import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMemberAddList;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList;
@@ -111,6 +112,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     /**
      * 获取用户党籍详细信息
+     *
      * @param userId 用户id
      * @return
      */
@@ -162,65 +164,6 @@ public class SysUserServiceImpl implements SysUserService {
             return sysUserMapper.updateByPrimaryKeySelective(sysUser) > 0;
         }
         return false;
-    }
-
-    /**
-     * 更新用户党籍信息
-     *
-     * @param registryDTO
-     * @return
-     */
-    @Transactional
-    @Override
-    public int updateMembership(RegistryDTO registryDTO) {
-        if (registryDTO != null && !ObjectUtils.isEmpty(registryDTO.getUserId())) {
-            Long userId = registryDTO.getUserId();
-            SysUser oldUser = sysUserMapper.selectByPrimaryKey(userId);
-            if (registryDTO.getReduceTime() != null && registryDTO.getOutType() != null && CommonConstant.STATUS_DEL.equals(oldUser.getDelFlag())) {
-                TabPbMemberReduceList reduce = new TabPbMemberReduceList();
-                reduce.setUserId(userId.longValue());
-                reduce.setOutType(registryDTO.getOutType());
-                reduce.setReduceTime(registryDTO.getReduceTime());
-                reduce.setDeptId(oldUser.getDeptId().longValue());
-                reduce.setRealName(oldUser.getUsername());
-                memberReduceListMapper.insertSelective(reduce);
-                oldUser.setRegistryStatus(reduce.getOutType());
-                oldUser.setDelFlag(CommonConstant.STATUS_DEL);
-            }
-            return sysUserMapper.updateByPrimaryKeySelective(oldUser);
-        }
-        return 0;
-    }
-
-    @Transactional
-    @Override
-    public List<RegistryVO> getRegistryList(Long userId) {
-        SysUser user = sysUserMapper.selectByPrimaryKey(userId);
-        if (user == null) {
-            return null;
-        }
-        List<RegistryVO> list = new ArrayList<>();
-        //预备党员
-        if (user.getJoinTime() != null) {
-            list.add(new RegistryVO(1L, user.getJoinTime(), user.getJoinTime(), user.getContactor()));
-        }
-        //正式党员
-        if (user.getRegularTime() != null) {
-            list.add(new RegistryVO(2L, user.getRegularTime(), user.getRegularTime(), user.getUpdateUsername()));
-        }
-        //新增 和 减少
-        List<TabPbMemberAddList> add = memberAddListMapper.selectListByUserId(userId);
-        add.forEach(a -> {
-            list.add(new RegistryVO(a.getInType(), a.getCreateTime(), a.getCreateTime(), a.getCreateUsername()));
-        });
-        List<TabPbMemberReduceList> reduce = memberReduceListMapper.selectListByUserId(userId);
-        reduce.forEach(r -> {
-            list.add(new RegistryVO(r.getOutType(), r.getCreateTime(), r.getCreateTime(), r.getCreateUsername()));
-        });
-
-
-
-        return list;
     }
 
     private void setRegularTime(SysUser sysUser) {

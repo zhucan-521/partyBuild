@@ -52,21 +52,6 @@ public interface SysUserService {
      */
     boolean updateUser(SysUser sysUser);
 
-    /**
-     * 更新用户党籍信息
-     *
-     * @param membershipDTO
-     * @return
-     */
-    boolean updateMembership(MembershipDTO membershipDTO);
-
-    /**
-     * 获取党籍列表
-     *
-     * @param userId
-     * @return
-     */
-    List<RegistryDTO> getRegistryList(Long userId);
 
     /**
      * 社区活动选人接口(通过组织主键来获取)
