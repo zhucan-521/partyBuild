@@ -154,12 +154,7 @@
             <result column="positive_name_dict" property="positiveNameDict"/>
         </collection>
     </resultMap>
-    <!-- 带标记的结果集 -->
-    <resultMap extends="BaseResultMap" id="BaseResultMapExtendsTags" type="com.egovchina.partybuilding.partybuild.entity.SysUser">
-        <collection property="tabPbUserTags" select="com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper.selectAllListSelective"
-                    column="{userId=user_id}"/>
-        <collection property="positiveList" select="com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper.selectPositives" column="{userId=user_id}"/>
-    </resultMap>
+
 
     <!--用于分页查询党员信息-->
     <resultMap id="UserInFo" type="com.egovchina.partybuilding.partybuild.vo.PartyMemberInformationVO">
@@ -248,25 +243,7 @@
         <result column="in_where_dept_name" jdbcType="VARCHAR" property="inWhereDeptName"/>
     </resultMap>
 
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.SysUser">
-        <result column="post_reason" jdbcType="LONGVARCHAR" property="postReason"/>
-        <result column="work_resumes" jdbcType="LONGVARCHAR" property="workResumes"/>
-        <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
-        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
-        <result column="rewards" jdbcType="LONGVARCHAR" property="rewards"/>
-        <result column="present_perform" jdbcType="LONGVARCHAR" property="presentPerform"/>
-        <result column="flow_out_date" jdbcType="TIMESTAMP" property="flowOutDate"/>
-        <result column="flow_out_type" jdbcType="BIGINT" property="flowOutType"/>
-        <result column="flow_out_range" jdbcType="BIGINT" property="flowOutRange"/>
-        <result column="flow_out_reason" jdbcType="BIGINT" property="flowOutReason"/>
-        <result column="flow_out_place" jdbcType="BIGINT" property="flowOutPlace"/>
-        <result column="flow_to_unit_name" jdbcType="VARCHAR" property="flowToUnitName"/>
-        <result column="flow_to_orgnize_name" jdbcType="VARCHAR" property="flowToOrgnizeName"/>
-        <result column="flow_to_orgnize_code" jdbcType="VARCHAR" property="flowToOrgnizeCode"/>
-        <result column="flow_to_orgnize_id" jdbcType="BIGINT" property="flowToOrgnizeId"/>
-        <result column="old_place" jdbcType="VARCHAR" property="oldPlace"/>
-        <result column="registry_status" jdbcType="BIGINT" property="registryStatus"/>
-    </resultMap>
+
     <resultMap id="PersonnelResultMap" type="com.egovchina.partybuilding.partybuild.dto.Personnel">
         <result column="user_id" property="userId"/>
         <result column="username" property="username"/>
@@ -315,6 +292,7 @@
         education,unit_id,flow_status,is_llost,is_taiwaner,dept_id,birthday,migrant,stratum,front_line,work_date,ancestor_place,registry_status,family_address,community_addr,
         job_position,join_org_time
     </sql>
+    <!--查询部门表防止名字重复-->
     <sql id="dept_name_result">
     subordinate_dept_name,in_where_dept_name
     </sql>
@@ -409,13 +387,6 @@
         <if test="username != null">
             AND realname like concat('%', #{username}, '%')
         </if>
-        <!--<if test="deptId != null and deptId != 12733">
-            AND exists(select dept_id from sys_dept dept where u.dept_id = dept.dept_id and
-            FIND_IN_SET(#{deptId},full_path))
-        </if>
-        <if test="deptId == null">
-            AND dept_id is not null
-        </if>-->
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）不传查本级 -->
         <if test="orgRange != null">
             <choose>

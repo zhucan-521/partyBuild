@@ -314,15 +314,11 @@ public class SysUser implements Serializable {
 
     private String jobPositionName;
 
-    private List<TabPbUserTag> tabPbUserTags;
-
     private String inWhereDeptName;
 
     private Integer age;
 
     private Integer complete;
-
-    private List<TabPbPositives> positiveList;
 
     private Long orderNumUser;
 }
