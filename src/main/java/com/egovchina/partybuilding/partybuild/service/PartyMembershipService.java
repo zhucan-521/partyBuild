@@ -22,19 +22,12 @@ public interface PartyMembershipService {
     int insertMembershipDTO(MembershipDTO membershipDTO);
 
     /**
-     * 根据人员类别和党籍类型查询党籍列表
+     * 获取党籍实体类列表
      *
      * @param page
      * @return
      */
     List<MembershipVO> getMembershipVOListByCondition(Page page);
-
-    /**
-     * 根据用户id获取用户的党籍信息
-     *
-     * @return
-     */
-    List<MembershipVO> getMembershipVOListByUserId(Long userId);
 
     /**
      * 公共方法
@@ -44,11 +37,4 @@ public interface PartyMembershipService {
      */
     TabPbPartyMembership toolMethod(SysUser sysUser);
 
-    /**
-     * 获取党籍列表
-     *
-     * @param page
-     * @return
-     */
-    List<MembershipVO> getMembershipVOList(Page page);
 }

@@ -52,17 +52,6 @@ public class PartyMembershipServiceImpl implements PartyMembershipService {
     }
 
     /**
-     * 根据用户id查询党籍信息实现方法
-     *
-     * @param userId
-     * @return
-     */
-    @Override
-    public List<MembershipVO> getMembershipVOListByUserId(Long userId) {
-        return tabPbPartyMembershipMapper.getMembershipVOByUserIdList(userId);
-    }
-
-    /**
      * 党籍添加公共方法
      *
      * @param sysUser
@@ -76,18 +65,5 @@ public class PartyMembershipServiceImpl implements PartyMembershipService {
         tabPbPartyMembership.setType(sysUser.getRegistryStatus());
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbPartyMembership);
         return tabPbPartyMembership;
-    }
-
-    /**
-     * 获取党籍列表实现方法
-     *
-     * @param page
-     * @return
-     */
-    @Override
-    public List<MembershipVO> getMembershipVOList(Page page) {
-        PageHelper.startPage(page);
-        List<MembershipVO> list = tabPbPartyMembershipMapper.getMembershipVOList();
-        return list;
     }
 }

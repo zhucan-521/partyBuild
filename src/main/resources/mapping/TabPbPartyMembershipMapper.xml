@@ -11,21 +11,6 @@
             #{createUsername, jdbcType=VARCHAR})
     </insert>
 
-    <update id="updatePartyMembership"
-            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMembership">
-        update tab_pb_party_membership(identity_type, type, reason, create_time, create_userid, create_username)
-        set identity_type = #{identityType, jdbcType=BIGINT}, type = #{type, jdbcType=BIGINT}, reason = #{reason, jdbcType=VARCHAR}, create_time = #{createTime, jdbcType=TIMESTAMP}, create_userid = #{createUserid, jdbcType=BIGINT}, create_username = #{createUsername, jdbcType=VARCHAR}
-        where user_id = #{userId, jdbcType=BIGINT}
-    </update>
-
-    <select id="getMembershipVOByUserIdList"
-            resultType="com.egovchina.partybuilding.partybuild.vo.MembershipVO" parameterType="long">
-        select * from tab_pb_party_membership where user_id = #{userId, jdbcType=BIGINT}
-    </select>
-    <select id="getMembershipVOList"
-            resultType="com.egovchina.partybuilding.partybuild.vo.MembershipVO">
-        select * from tab_pb_party_membership ORDER BY create_time DESC
-    </select>
     <select id="getMembershipVOListByCondition"
             resultType="com.egovchina.partybuilding.partybuild.vo.MembershipVO">
         select * from tab_pb_party_membership ORDER BY create_time DESC
