@@ -37,62 +37,6 @@
         <result column="flow_to_orgnize_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
         <result column="flow_out_state" jdbcType="BIGINT" property="flowOutState"/>
     </resultMap>
-    <resultMap id="selectActiveTabPbFlowOutDtoMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.dto.FlowOutMemberDTO">
-        <id column="user_id" jdbcType="BIGINT" property="userId"/>
-        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
-        <result column="username" jdbcType="VARCHAR" property="username"/>
-        <result column="old_place" jdbcType="VARCHAR" property="oldPlace"/>
-        <result column="flow_to_orgnize_contactor" jdbcType="VARCHAR" property="flowToOrgContactor"/>
-        <result column="flow_to_orgnize_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
-        <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
-        <result column="gender" jdbcType="BIGINT" property="gender"/>
-        <result column="phone" jdbcType="VARCHAR" property="phone"/>
-        <result column="contact" jdbcType="BIGINT" property="contact"/>
-        <result column="joinelsetime" jdbcType="TIMESTAMP" property="joinelsetime"/>
-        <result column="police_office" jdbcType="VARCHAR" property="policeOffice"/>
-        <result column="retired_time" jdbcType="TIMESTAMP" property="retiredTime"/>
-        <result column="post_time" jdbcType="TIMESTAMP" property="postTime"/>
-        <result column="portrait" jdbcType="VARCHAR" property="portrait"/>
-        <result column="person_identity" jdbcType="BIGINT" property="personIdentity"/>
-        <result column="stratum" jdbcType="BIGINT" property="stratum"/>
-        <result column="front_line" jdbcType="BIGINT" property="frontLine"/>
-        <result column="qq_number" jdbcType="VARCHAR" property="qqNumber"/>
-        <result column="email" jdbcType="VARCHAR" property="email"/>
-        <result column="wx_openid" jdbcType="VARCHAR" property="wxOpenid"/>
-        <result column="qq_openid" jdbcType="VARCHAR" property="qqOpenid"/>
-        <result column="pm_code" jdbcType="VARCHAR" property="pmCode"/>
-        <result column="join_time" jdbcType="TIMESTAMP" property="joinTime"/>
-        <result column="regular_time" jdbcType="TIMESTAMP" property="regularTime"/>
-        <result column="regular_status" jdbcType="BIGINT" property="regularStatus"/>
-        <result column="develop_type" jdbcType="BIGINT" property="developType"/>
-        <result column="reference" jdbcType="VARCHAR" property="reference"/>
-        <result column="fee_ratio" jdbcType="DECIMAL" property="feeRatio"/>
-        <result column="join_after_august" jdbcType="TINYINT" property="joinAfterAugust"/>
-        <result column="is_poor" jdbcType="TINYINT" property="isPoor"/>
-        <result column="is_llost" jdbcType="TINYINT" property="isLlost"/>
-        <result column="flow_from_org_id" jdbcType="BIGINT" property="flowFromOrgId"/>
-        <result column="flow_from_org_name" jdbcType="VARCHAR" property="flowFromOrgName"/>
-        <result column="flow_from_org_contactor" jdbcType="VARCHAR" property="flowFromOrgContactor"/>
-        <result column="flow_from_org_phone" jdbcType="VARCHAR" property="flowFromOrgPhone"/>
-        <result column="flow_to_org_id" jdbcType="BIGINT" property="flowToOrgId"/>
-        <result column="flow_to_org_name" jdbcType="VARCHAR" property="flowToOrgName"/>
-        <result column="flow_to_org_contactor" jdbcType="VARCHAR" property="flowToOrgContactor"/>
-        <result column="flow_to_org_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
-        <result column="positived" jdbcType="VARCHAR" property="positived"/>
-        <result column="join_contact_id" jdbcType="BIGINT" property="joinContactId"/>
-        <result column="contactor" jdbcType="VARCHAR" property="contactor"/>
-        <result column="flow_out_date" jdbcType="TIMESTAMP" property="flowOutDate"/>
-        <result column="lost_time" jdbcType="TIMESTAMP" property="lostTime"/>
-        <result column="flow_out_type" jdbcType="BIGINT" property="flowOutType"/>
-        <result column="flow_out_range" jdbcType="BIGINT" property="flowOutRange"/>
-        <result column="flow_out_reason" jdbcType="BIGINT" property="flowOutReason"/>
-        <result column="flow_out_place" jdbcType="BIGINT" property="flowOutPlace"/>
-        <result column="flow_to_unit_name" jdbcType="VARCHAR" property="flowToUnitName"/>
-        <result column="flow_to_orgnize_name" jdbcType="VARCHAR" property="flowToOrgName"/>
-        <result column="flow_to_orgnize_code" jdbcType="VARCHAR" property="flowToOrgnizeCode"/>
-        <result column="flow_to_orgnize_id" jdbcType="BIGINT" property="flowToOrgnizeId"/>
-    </resultMap>
-
     <resultMap id="selectActiveFlowOutVoMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.vo.FlowOutMemberVO">
         <id column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
@@ -657,21 +601,7 @@
         desc
     </select>
 
-    <!--根据id查询单个流出党员详情-->
-    <select id="findTabPbFlowOutDtoById" parameterType="Long" resultMap="selectActiveTabPbFlowOutDtoMap">
-        SELECT
-        <include refid="Base_FlowOut_List" />
-        FROM
-        tab_pb_flow_out
-        left JOIN sys_user ON tab_pb_flow_out.user_id = sys_user.user_id
-        left JOIN sys_dept ON tab_pb_flow_out.org_id = sys_dept.dept_id
-        <where>
-        tab_pb_flow_out.del_flag='0'
-        <if test="_parameter!=null and ''!=_parameter">
-            and tab_pb_flow_out.flow_out_id =#{_parameter,jdbcType=BIGINT}
-        </if>
-        </where>
-    </select>
+
 
     <!--根据id查询单个流出党员Vo详情-->
     <select id="findFlowOutVoById" parameterType="Long" resultMap="selectActiveFlowOutVoMap">
