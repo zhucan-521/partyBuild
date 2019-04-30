@@ -1,7 +1,6 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyMembership;
-import com.egovchina.partybuilding.partybuild.entity.MembershipQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.MembershipVO;
 import org.springframework.stereotype.Repository;
 
@@ -26,10 +25,9 @@ public interface TabPbPartyMembershipMapper {
     /**
      * 根据人员类别和党籍处理获取党籍信息列表
      *
-     * @param membershipQueryBean
      * @return
      */
-    List<MembershipVO> getMembershipVOListByCondition(MembershipQueryBean membershipQueryBean);
+    List<MembershipVO> getMembershipVOListByCondition();
 
     /**
      * 修改党籍信息

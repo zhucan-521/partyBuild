@@ -28,15 +28,6 @@
     </select>
     <select id="getMembershipVOListByCondition"
             resultType="com.egovchina.partybuilding.partybuild.vo.MembershipVO">
-        select * from tab_pb_party_membership
-        <where>
-            <if test="identityType != null and identityType != ''">
-                identity_type = #{identityType, jdbcType=BIGINT}
-            </if>
-            <if test="type != null and type != ''">
-                and type = #{type, jdbcType=BIGINT}
-            </if>
-        </where>
-        ORDER BY create_time DESC
+        select * from tab_pb_party_membership ORDER BY create_time DESC
     </select>
 </mapper>

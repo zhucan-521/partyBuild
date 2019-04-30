@@ -6,7 +6,6 @@ import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyMembership;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPartyMembershipMapper;
-import com.egovchina.partybuilding.partybuild.entity.MembershipQueryBean;
 import com.egovchina.partybuilding.partybuild.service.PartyMembershipService;
 import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.vo.MembershipVO;
@@ -42,14 +41,13 @@ public class PartyMembershipServiceImpl implements PartyMembershipService {
     /**
      * 查询党籍信息列表实现方法
      *
-     * @param membershipQueryBean
      * @param page
      * @return
      */
     @Override
-    public List<MembershipVO> getMembershipVOListByCondition(MembershipQueryBean membershipQueryBean, Page page) {
+    public List<MembershipVO> getMembershipVOListByCondition(Page page) {
         PageHelper.startPage(page);
-        List<MembershipVO> list = tabPbPartyMembershipMapper.getMembershipVOListByCondition(membershipQueryBean);
+        List<MembershipVO> list = tabPbPartyMembershipMapper.getMembershipVOListByCondition();
         return list;
     }
 
