@@ -7,7 +7,6 @@ import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.HardshipPartyMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.HardshipQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.entity.TabPbHardship;
 import com.egovchina.partybuilding.partybuild.repository.TabPbHardshipMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
@@ -56,6 +55,14 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
         }
         conditions.put("rangeDeptId", rangeDeptId);
         return new PageInfo<>(hardshipMapper.selectWithConditions(conditions));
+    }
+
+    @Override
+    public int logicDeleteByUserId(Long userId) {
+        TabPbHardship delete = new TabPbHardship();
+        delete.setDelFlag(CommonConstant.STATUS_DEL);
+        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(delete);
+        return hardshipMapper.logicDeleteByUserId(delete);
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.util.Date;
  * @author create by GuanYingxin on 2019/4/23 17:11
  * @description
  */
-@ApiModel("党籍实体类返回视图")
+@ApiModel("党籍实体类VO")
 @Accessors(chain = true)
 @Data
 public class MembershipVO {
