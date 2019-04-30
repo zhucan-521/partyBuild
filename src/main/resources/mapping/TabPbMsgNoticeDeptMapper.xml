@@ -15,6 +15,8 @@
         <result column="notice_type" property="noticeType"/>
         <result column="publish_time" property="publishTime"/>
     </resultMap>
+    <resultMap id="BaseResultVoMap" extends="BaseResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.MsgNoticeDeptVO"/>
     <sql id="Base_Column_List">
     id, notice_id, dept_id, dept_name, recevie_user_id, recevie_username, recevie_time
     </sql>
@@ -41,6 +43,55 @@
         <where>
             <if test="deptId != null">
                 and dept.dept_id = #{deptId}
+            </if>
+            <choose>
+                <when test="noticeId != null">
+                    and dept.notice_id = #{noticeId}
+                </when>
+                <otherwise>
+                    and notice.publish_time IS NOT NULL
+                </otherwise>
+            </choose>
+        </where>
+        GROUP BY dept.id
+    </select>
+
+    <!--查询Volist-->
+    <select id="selectVoDeptList" parameterType="com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean"
+            resultMap="BaseResultVoMap">
+        SELECT
+        dept.*,
+        notice.notice_title,
+        notice.notice_type,
+        notice.publish_time,
+        COUNT(if(attac.attachment_file_type='58992',TRUE,NULL)) AS photo,
+        COUNT(if(attac.attachment_file_type='58993',TRUE,NULL)) AS doc
+        FROM tab_pb_msg_notice notice
+        JOIN tab_pb_msg_notice_dept dept ON notice.id = dept.notice_id
+        JOIN sys_dept d on d.dept_id=dept.dept_id
+        <if test="noticeId == null">
+            AND notice.state = '1'
+        </if>
+        AND notice.del_flag = '0'
+        <if test="stateTime != null">
+            AND date_format(notice.publish_time, '%Y-%m-%d') &gt;= date_format(#{stateTime}, '%Y-%m-%d')
+        </if>
+        <if test="endTime != null ">
+            AND date_format(notice.publish_time, '%Y-%m-%d') &lt;= date_format(#{endTime}, '%Y-%m-%d')
+        </if>
+        LEFT JOIN tab_pb_attachment attac ON attac.host_id = dept.notice_id
+        AND attac.attachment_type = '50'
+        and attac.del_flag = '0'
+        <where>
+            <if test="orgRange != null and orgRange != '' ">
+                <choose>
+                    <when test="orgRange == 1">
+                        AND (d.dept_id = #{deptId} OR d.parent_id = #{deptId})
+                    </when>
+                    <when test="orgRange == 2">
+                        AND find_in_set(#{deptId}, d.full_path)
+                    </when>
+                </choose>
             </if>
             <choose>
                 <when test="noticeId != null">

@@ -44,6 +44,14 @@ public interface TabPbPositivesMapper {
     int batchAdd(List<TabPbPositives> pbPositivesList);
 
     /**
+     * 批量保存职务
+     *
+     * @param pbPositivesList
+     * @return
+     */
+    int batchInsertPositivesList(List<TabPbPositives> pbPositivesList);
+
+    /**
      * 批量逻辑删除
      *
      * @param pbPositivesList
@@ -59,8 +67,16 @@ public interface TabPbPositivesMapper {
      */
     int tombstoneUser(Long userId);
 
+
     PositivesVO selectByIdToPositivesVO(Integer positiveId);
 
     List<PositivesVO> selectByIdToAllPositivesVO(@Param("userId") Long userId, @Param("positiveType") String positiveType);
 
+    /**
+     * 根据人员id获取他的职位
+     *
+     * @param userId
+     * @return
+     */
+    List<PositivesVO> selectTabPbPositivesByUserId(Long userId);
 }

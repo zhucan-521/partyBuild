@@ -2,6 +2,8 @@ package com.egovchina.partybuilding.partybuild.repository;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice;
+import com.egovchina.partybuilding.partybuild.entity.MsgNoticeQueryBean;
+import com.egovchina.partybuilding.partybuild.vo.MsgNoticeVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -42,6 +44,17 @@ public interface TabPbMsgNoticeMapper extends BaseMapper<TabPbMsgNotice> {
      * @return
      */
     List<TabPbMsgNotice> selectNoticeList(TabPbMsgNotice record);
+
+    /**
+     * 查询list数据
+     *
+     * @param record
+     * @return
+     */
+    List<MsgNoticeVO> selectNoticeVoList(MsgNoticeQueryBean record);
+
+
+
 
     /**
      * 改变状态

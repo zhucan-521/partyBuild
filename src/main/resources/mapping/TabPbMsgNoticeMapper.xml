@@ -21,6 +21,10 @@
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice">
         <result column="notice_content" jdbcType="LONGVARCHAR" property="noticeContent"/>
     </resultMap>
+    <resultMap extends="ResultMapWithBLOBs" id="BaseResultVoMap"
+               type="com.egovchina.partybuilding.partybuild.vo.MsgNoticeVO"/>
+
+
     <sql id="Base_Column_List">
     id, dept_id, dept_name, notice_type, notice_title, state, publish_time, del_flag, 
     create_time, create_userid, create_username, update_time, update_userid, update_username
@@ -75,6 +79,56 @@
         </if>
         GROUP BY a.id
     </select>
+
+    <!--VO-->
+    <select id="selectNoticeVoList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice"
+            resultMap="BaseResultVoMap">
+        SELECT a.*,
+        COUNT(if(attac.attachment_file_type=${@com.egovchina.partybuilding.common.util.AttachmentType@PHOTO},TRUE,NULL))
+        AS photo,
+        COUNT(if(attac.attachment_file_type=${@com.egovchina.partybuilding.common.util.AttachmentType@DOC},TRUE,NULL))
+        AS doc
+        FROM (
+        SELECT
+        notice.id,
+        notice.dept_id,notice.dept_name,notice.notice_type,notice.notice_title,
+        notice.notice_content,notice.state,notice.publish_time,
+        CONCAT(COUNT(nDept.recevie_username),'/',COUNT(nDept.id)) AS signing_situation
+        FROM tab_pb_msg_notice notice
+        JOIN tab_pb_msg_notice_dept nDept ON nDept.notice_id = notice.id
+        WHERE notice.del_flag = '0'
+        GROUP BY nDept.notice_id) a
+        LEFT JOIN tab_pb_attachment attac ON attac.host_id = a.id
+        AND attac.attachment_type = ${@com.egovchina.partybuilding.common.util.AttachmentType@NOTICE}
+        and attac.del_flag = '0'
+        join sys_dept dept on dept.dept_id = a.dept_id and dept.del_flag = '0'
+        where true
+        <choose>
+            <when test="orgRange == 1">
+                AND (dept.dept_id = #{deptId} OR dept.parent_id = #{deptId})
+            </when>
+            <when test="orgRange == 2">
+                AND find_in_set(#{deptId}, dept.full_path)
+            </when>
+            <otherwise>
+                AND dept.dept_id = #{deptId}
+            </otherwise>
+        </choose>
+        <if test="stateTime != null">
+            AND date_format(a.publish_time, '%Y-%m-%d') &gt;= date_format(#{stateTime}, '%Y-%m-%d')
+        </if>
+        <if test="endTime != null ">
+            AND date_format(a.publish_time, '%Y-%m-%d') &lt;= date_format(#{endTime}, '%Y-%m-%d')
+        </if>
+        <if test="state != null and state!= '' ">
+            AND a.state = #{state}
+        </if>
+        <if test="noticeType != null and noticeType != '' ">
+            AND a.notice_type = #{noticeType}
+        </if>
+        GROUP BY a.id
+    </select>
+
 
     <!--发布|取消发布-->
     <update id="editState" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice">

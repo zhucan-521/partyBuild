@@ -48,6 +48,8 @@
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
     </resultMap>
+    <resultMap id="MsgUpInfoDtoResultVoMap" extends="MsgUpInfoDtoResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.MsgUpInfoVO"/>
 
     <sql id="Base_Column_List">
     id, up_type, up_dept_id, up_dept_name, up_user_id, up_username, recevie_dept_id, 
@@ -493,6 +495,130 @@
         desc
     </select>
 
+
+    <!--Vo条件查询上报信息报送列表-->
+    <select id="selectVoActive" parameterType="com.egovchina.partybuilding.partybuild.entity.MsgUpInfoQueryBean"
+            resultMap="MsgUpInfoDtoResultVoMap">
+        SELECT
+        mup.id,
+        mup.up_type,
+        mup.up_dept_id,
+        mup.up_dept_name,
+        mup.up_user_id,
+        mup.up_username,
+        mup.recevie_dept_id,
+        mup.recevie_dept_name,
+        mup.recevie_user_id,
+        mup.recevie_username,
+        mup.title,
+        mup.up_time,
+        mup.title_label,
+        mup.content,
+        mup.audit_dept_id,
+        mup.audit_user_id,
+        mup.audit_time,
+        mup.audit_comment,
+        mup.audit_assess,
+        mup.audit_dept_name,
+        mup.audit_username,
+        mup.real_dept_id,
+        mup.real_dept_name,
+        ifnull(t.video_num, 0) videoNum,
+        ifnull(t.img_num, 0) imgNum,
+        ifnull(t.doc_num, 0) docNum
+        FROM
+        tab_pb_msg_up_info mup
+        LEFT JOIN sys_dept d on d.dept_id=mup.real_dept_id
+        LEFT JOIN view_attachment_count t on mup.id = t.host_id and t.attachment_type = 40
+        <where>
+            mup.del_flag = 0
+            <if test="upTime !=null">
+                and mup.up_time between #{upTime} and #{upTimeOver}
+            </if>
+            <if test="titleLabel !=null and  ''!=titleLabel">
+                and mup.title_label=#{titleLabel}
+            </if>
+            <if test="orgRange != null and orgRange != '' ">
+                <choose>
+                    <when test="orgRange == 1">
+                        AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                    </when>
+                    <when test="orgRange == 2">
+                        AND find_in_set(#{rangeDeptId}, d.full_path)
+                    </when>
+                </choose>
+            </if>
+            <if test="orgRange == null or orgRange.toString() == ''">
+                AND d.dept_id = #{rangeDeptId}
+            </if>
+        </where>
+        order by
+        mup.id
+        desc
+    </select>
+
+
+    <!--Vo条件查询接收信息报送列表-->
+    <select id="selectActiveVoRec" parameterType="com.egovchina.partybuilding.partybuild.entity.MsgUpInfoQueryBean"
+            resultMap="MsgUpInfoDtoResultVoMap">
+        SELECT
+        mup.id,
+        mup.up_type,
+        mup.up_dept_id,
+        mup.up_dept_name,
+        mup.up_user_id,
+        mup.up_username,
+        mup.recevie_dept_id,
+        mup.recevie_dept_name,
+        mup.recevie_user_id,
+        mup.recevie_username,
+        mup.title,
+        mup.up_time,
+        mup.title_label,
+        mup.content,
+        mup.audit_dept_id,
+        mup.audit_user_id,
+        mup.audit_time,
+        mup.audit_comment,
+        mup.audit_assess,
+        mup.audit_dept_name,
+        mup.audit_username,
+        mup.real_dept_id,
+        mup.real_dept_name,
+        ifnull(t.video_num, 0) videoNum,
+        ifnull(t.img_num, 0) imgNum,
+        ifnull(t.doc_num, 0) docNum
+        FROM
+        tab_pb_msg_up_info mup
+        LEFT JOIN sys_dept d on d.dept_id=mup.recevie_dept_id
+        LEFT JOIN view_attachment_count t on mup.id = t.host_id and t.attachment_type = 40
+        <where>
+            mup.del_flag = 0
+            <if test="upTime !=null">
+                and mup.up_time between #{upTime} and #{upTimeOver}
+            </if>
+            <if test="titleLabel !=null and  ''!=titleLabel">
+                and mup.title_label=#{titleLabel}
+            </if>
+            <if test="orgRange != null and orgRange != '' ">
+                <choose>
+                    <when test="orgRange == 1">
+                        AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                    </when>
+                    <when test="orgRange == 2">
+                        AND find_in_set(#{rangeDeptId}, d.full_path)
+                    </when>
+                </choose>
+            </if>
+            <if test="orgRange == null or orgRange.toString() == ''">
+                AND d.dept_id = #{rangeDeptId}
+            </if>
+            order by
+            mup.id
+            desc
+        </where>
+    </select>
+
     <!--条件查询接收信息报送列表-->
     <select id="selectActiveRec" parameterType="com.egovchina.partybuilding.partybuild.dto.TabPbMsgUpInfoDto" resultMap="MsgUpInfoDtoResultMap">
         SELECT
@@ -517,9 +643,6 @@
             </if>
             <if test="recevieDeptId !=null and  ''!=recevieDeptId">
                 and mup.recevie_dept_id=#{recevieDeptId}
-            </if>
-            <if test="upDeptId !=null and  ''!=upDeptId">
-                and mup.up_dept_name=#{upDeptId}
             </if>
             <if test="orgRange != null and orgRange != '' ">
                 <choose>

@@ -134,9 +134,9 @@
   <update id="deleteSysUserByCardNoAndUserId">
     update sys_account set del_flag = '1' where id_card_no=#{idCardNo} AND user_id=#{userId};
   </update>
-  <!--<delete id="deleteSysUserByCardNoAndUserId">
-    DELETE FROM sys_account WHERE id_card_no=#{idCardNo} AND user_id=#{userId};
-  </delete>-->
+    <!--<deleteMsgUpInfo id="deleteSysUserByCardNoAndUserId">
+      DELETE FROM sys_account WHERE id_card_no=#{idCardNo} AND user_id=#{userId};
+    </deleteMsgUpInfo>-->
 
   <!--根据id修改密码-->
   <update id="updatePwdById" parameterType="com.egovchina.partybuilding.partybuild.entity.SysUser">

@@ -37,7 +37,8 @@
         <result column="flow_to_orgnize_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
         <result column="flow_out_state" jdbcType="BIGINT" property="flowOutState"/>
     </resultMap>
-    <resultMap id="selectActiveTabPbFlowOutDtoMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabPbFlowOutDto">
+    <resultMap id="selectActiveFlowOutVoMap" extends="BaseResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.FlowOutMemberVO">
         <id column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
@@ -92,6 +93,7 @@
         <result column="flow_to_orgnize_code" jdbcType="VARCHAR" property="flowToOrgnizeCode"/>
         <result column="flow_to_orgnize_id" jdbcType="BIGINT" property="flowToOrgnizeId"/>
     </resultMap>
+
 
     <sql id="Base_Column_List">
     flow_out_id, org_id, user_id, flow_out_date, flow_out_type, flow_out_range, flow_out_reason,
@@ -561,8 +563,10 @@
         select label  from sys_dict where type ='XZQH' and  id= #{id}
     </select>
 
-    <!--流出党员dto查询-->
-    <select id="selectActiveTabPbFlowOutDto" parameterType="com.egovchina.partybuilding.partybuild.dto.TabPbFlowOutDto" resultMap="selectActiveTabPbFlowOutDtoMap">
+    <!--流出党员vo查询-->
+    <select id="selectActiveFlowOutVo"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.FlowOutMemberQueryBean"
+            resultMap="selectActiveFlowOutVoMap">
         SELECT
         <include refid="Base_FlowOut_List" />
         FROM
@@ -571,17 +575,17 @@
         left JOIN sys_dept ON tab_pb_flow_out.org_id = sys_dept.dept_id
         <where>
             tab_pb_flow_out.del_flag='0'
-            <if test="flowOutId!=null and ''!=flowOutId">
-              and tab_pb_flow_out.flow_out_id =#{flowOutId}
-            </if>
             <if test="username!=null and ''!=username">
-              and sys_user.realname like concat('%',#{username},'%')
+                and sys_user.realname like concat('%',#{username},'%')
             </if>
             <if test="idCardNo != null and ''!=idCardNo">
-               and sys_user.id_card_no=#{idCardNo}
+                and sys_user.id_card_no=#{idCardNo}
+            </if>
+            <if test="flowOutState!=null and ''!=flowOutId">
+                and tab_pb_flow_out.flow_out_state =#{flowOutState}
             </if>
             <if test="flowToUnitName != null and ''!=flowToUnitName">
-              and tab_pb_flow_out.flow_to_unit_name like concat('%',#{flowToUnitName},'%')
+                and tab_pb_flow_out.flow_to_unit_name like concat('%',#{flowToUnitName},'%')
             </if>
             <choose>
                 <when test="orgRange == 1">
@@ -601,8 +605,8 @@
     </select>
 
 
-    <!--根据id查询单个流出党员详情-->
-    <select id="findTabPbFlowOutDtoById" parameterType="Long" resultMap="selectActiveTabPbFlowOutDtoMap">
+    <!--根据id查询单个流出党员Vo详情-->
+    <select id="findFlowOutVoById" parameterType="Long" resultMap="selectActiveFlowOutVoMap">
         SELECT
         <include refid="Base_FlowOut_List" />
         FROM
@@ -610,10 +614,10 @@
         left JOIN sys_user ON tab_pb_flow_out.user_id = sys_user.user_id
         left JOIN sys_dept ON tab_pb_flow_out.org_id = sys_dept.dept_id
         <where>
-        tab_pb_flow_out.del_flag='0'
-        <if test="_parameter!=null and ''!=_parameter">
-            and tab_pb_flow_out.flow_out_id =#{_parameter,jdbcType=BIGINT}
-        </if>
+            tab_pb_flow_out.del_flag='0'
+            <if test="_parameter!=null and ''!=_parameter">
+                and tab_pb_flow_out.flow_out_id =#{_parameter,jdbcType=BIGINT}
+            </if>
         </where>
     </select>
 
