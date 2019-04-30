@@ -368,12 +368,12 @@
 
     <select id="selectOrgChangeVOList" parameterType="java.lang.Long" resultMap="OrgChangeVOResultMap">
           SELECT * FROM (SELECT
-            '64' as attachment_type,
+            '64' AS attachment_type,
             t.change_id,
             t.dept_id,
             d.`name` AS orgnize_name,
             d.org_short_name AS short_name,
-            (select `name` from sys_dept where dept_id = t.now_superior_id) now_superior_name,
+            (SELECT `name` FROM sys_dept WHERE dept_id = t.now_superior_id) AS now_superior_name,
             (SELECT `name` FROM sys_dept WHERE dept_id = t.old_superior_id) AS old_superior_name,
             t.change_type,
             t.change_date,
@@ -389,13 +389,13 @@
             AND t.change_type != 59424
             and t.dept_id = #{deptId}
         UNION
-          select
-                '64' as attachment_type,
+          SELECT
+                '64' AS attachment_type,
                 ch.change_id,
                 ch.dept_id,
                 up.upgrade_dept_name AS `name`,
                 up.upgrade_short_name AS short_name,
-                (select `name` from sys_dept where dept_id = ch.now_superior_id) now_superior_name,
+                (SELECT `name` FROM sys_dept WHERE dept_id = ch.now_superior_id) AS now_superior_name,
                 (SELECT `name` FROM sys_dept WHERE dept_id = ch.old_superior_id) AS old_superior_name,
                 ch.change_type,
                 ch.change_date,

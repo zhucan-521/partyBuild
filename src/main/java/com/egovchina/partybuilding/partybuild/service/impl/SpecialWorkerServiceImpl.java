@@ -51,7 +51,7 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
     public int insert(SpecialWorkerDTO specialWorkerDto) {
         if (tabSysDeptMapper.selectByPrimaryKey(specialWorkerDto.getManageOrgId()) == null &&
                 tabSysDeptMapper.selectByPrimaryKey(specialWorkerDto.getDeptId()) == null) {
-            throw new BusinessDataCheckFailException("根据传入的deptId或者mangerOrgId查找不到对应的组织部门");
+            throw new BusinessDataCheckFailException("组织不存在");
         }
         SysUser sysUser = tabSysUserMapper.selectUserByIdCardNo(specialWorkerDto.getIdCardNo());
         Long userId;
@@ -126,7 +126,7 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
     public int updateBySpecialWorkerId(SpecialWorkerDTO specialWorkerDto) {
         if (null == tabSysDeptMapper.selectByPrimaryKey(specialWorkerDto.getManageOrgId()) ||
                 null == tabSysDeptMapper.selectByPrimaryKey(specialWorkerDto.getDeptId())) {
-            throw new BusinessDataCheckFailException("根据传入的deptId或者mangerOrgId查找不到对应的组织部门");
+            throw new BusinessDataCheckFailException("组织不存在");
         }
         if (specialWorkerDto.getSpecialWorkerId() == null) {
             throw new BusinessDataCheckFailException("缺少专干主键");
@@ -136,7 +136,6 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
                         specialWorkerDto, TabPbSpcialWorker.class, true, true);
         return tabPbSpcialWorkerMapper.updateByPrimaryKeySelective(tabPbSpcialWorker);
     }
-
 
     /**
      * 详情查询
@@ -148,6 +147,5 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
     public SpecialWorkerVO selectSpecialWorkerById(Long specialWorkerId) {
         return tabPbSpcialWorkerMapper.selectSpecialWorkerVOById(specialWorkerId);
     }
-
 
 }

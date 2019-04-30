@@ -40,17 +40,17 @@ public class OrgChangeController {
             notes = "1. <font color=\"red\">组织更名(字典id=59006, value=ZZGM, type=ZZDB)</font><br/> " +
                     "2. <font color=\"red\">组织撤销(字典id=59007, value=ZZCX, type=ZZDB)</font><br/> " +
                     "3. <font color=\"red\">组织恢复(字典id=59008, value=ZZHF, type=ZZDB)</font><br/>" +
-                    "4. <font color=\"red\">组织调整(字典id=59009, value=ZZTZ, type=ZZDB)</font>")
+                    "4. <font color=\"red\">组织调整(字典id=59009, value=ZZTZ, type=ZZDB)</font>"+
+                    "5. <font color=\"red\">整建制转移(字典id=59585, value=ZJZZY, type=ZZDB)</font>")
     @PostMapping()
     public ReturnEntity addOrgChange(@ApiParam("组织变动信息") @RequestBody @Validated OrgChangeDTO change) {
-        int retVal = this.orgChangeService.addOrgChange(change);
-        return ReturnUtil.buildReturn(retVal);
+        return ReturnUtil.buildReturn(this.orgChangeService.addOrgChange(change));
     }
 
     @ApiOperation(value = "获取组织变动信息列表")
-    @ApiImplicitParam(value = "组织id", name = "orgId", paramType = "path", required = true)
-    @GetMapping("/{orgId}")
-    public PageInfo<OrgChangeVO> getOrgChangeList(@PathVariable Long orgId, Page page) {
+    @ApiImplicitParam(value = "组织id", name = "orgId", paramType = "query", required = true)
+    @GetMapping
+    public PageInfo<OrgChangeVO> getOrgChangeList(Long orgId, Page page) {
         return new PageInfo<>(this.orgChangeService.selectOrgChangeList(orgId, page));
     }
 }

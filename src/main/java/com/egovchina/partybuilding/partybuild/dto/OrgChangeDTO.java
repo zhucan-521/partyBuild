@@ -35,14 +35,8 @@ public class OrgChangeDTO {
     @ApiModelProperty(value = "原上级Id")
     private Long oldSuperiorId;
 
-    @ApiModelProperty(value = "原上级Name")
-    private String oldSuperiorName;
-
     @ApiModelProperty(value = "现上级Id")
     private Long nowSuperiorId;
-
-    @ApiModelProperty(value = "现上级name")
-    private String nowSuperiorName;
 
     @ApiModelProperty(value = "组织全称")
     @NotBlank(message = "组织全称不能为空")

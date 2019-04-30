@@ -81,8 +81,8 @@ public class OrgChangeServiceImpl implements OrgChangeService {
         } else {
             throw new BusinessDataCheckFailException("上级组织不存在");
         }
-        int a = tabSysDeptMapper.selectByPrimaryKey(tabPbOrgnizeChange.getDeptId()).getParentId();
-        if (tabPbOrgnizeChange.getNowSuperiorId() == a) {
+        int parentId = tabSysDeptMapper.selectByPrimaryKey(tabPbOrgnizeChange.getDeptId()).getParentId();
+        if (tabPbOrgnizeChange.getNowSuperiorId() == parentId) {
             throw new BusinessDataCheckFailException("上级组织未改变");
         }
         SysDept dept = tabSysDeptMapper.selectByPrimaryKey(tabPbOrgnizeChange.getDeptId());
@@ -106,7 +106,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
     }
 
     /**
-     * 组织变动 (分为组织更名 ZZGM, 组织撤销 ZZCX, 组织恢复 ZZHF， 组织调整 ZZTZ)
+     * 组织变动 (分为组织更名 ZZGM, 组织撤销 ZZCX, 组织恢复 ZZHF， 组织调整 ZZTZ，整建制转移 ZJZZY)
      *
      * @param orgChangeDTO
      * @return
@@ -143,7 +143,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
             this.orgRestoreOrRevoke(tabPbOrgnizeChange, "0", 59123L);
         } else if (dict.getValue().equals("ZZHF")) {
             this.orgRestoreOrRevoke(tabPbOrgnizeChange, "1", 59122L);
-        } else if (dict.getValue().equals("ZZTZ")) {
+        } else if (dict.getValue().equals("ZZTZ") || dict.getValue().equals("ZJZZY")) {
             this.insertOrgChange(tabPbOrgnizeChange);
         }
         paddingBaseFiled(tabPbOrgnizeChange);
@@ -176,7 +176,6 @@ public class OrgChangeServiceImpl implements OrgChangeService {
         int count = this.tabSysDeptMapper.updateByPrimaryKeySelective(newDept);
         return count;
     }
-
 
     /**
      * 组织恢复/撤销
