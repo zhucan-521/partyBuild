@@ -104,7 +104,7 @@ public class TabPbFlowInServiceImpl implements TabPbFlowInService {
         //修改流入流出党组织联系人和电话  user表
         Long userId=tabSysUserMapper.SelectUserIdByIDcard(tabPbFlowInDto.getIdCardNo());
         SysUser sysUser=new SysUser();
-        sysUser.setUserId(userId.intValue());
+        sysUser.setUserId(userId);
         //设置状态流动
         sysUser.setFlowStatus(41207L);
         BeanUtils.copyProperties(tabPbFlowInDto,sysUser);
@@ -125,7 +125,7 @@ public class TabPbFlowInServiceImpl implements TabPbFlowInService {
         tabPbFlowInDto.setFlowToOrgName(null);
         Long userId=tabSysUserMapper.SelectUserIdByIDcard(tabPbFlowInDto.getIdCardNo());
         SysUser sysUser=new SysUser();
-        sysUser.setUserId(userId.intValue());
+        sysUser.setUserId(userId);
         BeanUtil.copyPropertiesIgnoreNull(tabPbFlowInDto, sysUser);
         TabPbFlowIn tabPbFlowIn=tabPbFlowInMapper.selectByPrimaryKey(tabPbFlowInDto.getFlowInId());
         TabPbFlowOutDto tabPbFlowOutDto=new TabPbFlowOutDto();

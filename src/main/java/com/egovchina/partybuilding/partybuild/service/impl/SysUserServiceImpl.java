@@ -142,14 +142,14 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public boolean updateUser(SysUser sysUser) {
         if (sysUser != null && !ObjectUtils.isEmpty(sysUser.getUserId())) {
-            Integer userId = sysUser.getUserId();
-            SysUser oldUser = sysUserMapper.selectByPrimaryKey(userId.longValue());
+            Long userId = sysUser.getUserId();
+            SysUser oldUser = sysUserMapper.selectByPrimaryKey(userId);
             if (sysUser.getReduceTime() != null && sysUser.getOutType() != null && CommonConstant.STATUS_DEL.equals(oldUser.getDelFlag())) {
                 TabPbMemberReduceList reduce = new TabPbMemberReduceList();
-                reduce.setUserId(userId.longValue());
+                reduce.setUserId(userId);
                 reduce.setOutType(sysUser.getOutType());
                 reduce.setReduceTime(sysUser.getReduceTime());
-                reduce.setDeptId(oldUser.getDeptId().longValue());
+                reduce.setDeptId(oldUser.getDeptId());
                 reduce.setRealName(oldUser.getUsername());
                 memberReduceListMapper.insertSelective(reduce);
                 sysUser.setRegistryStatus(reduce.getOutType());
@@ -238,7 +238,7 @@ public class SysUserServiceImpl implements SysUserService {
             var list = sysUserMapper.selectAllRegister(user);
             return list;
         } else {
-            user.setDeptId(UserContextHolder.currentUser().getDeptId());
+            user.setDeptId(UserContextHolder.currentUser().getDeptId().longValue());
             var list = sysUserMapper.selectAllRegister(user);
             return list;
         }

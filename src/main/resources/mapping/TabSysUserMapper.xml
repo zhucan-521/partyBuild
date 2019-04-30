@@ -223,6 +223,7 @@
             <result column="is_llost" jdbcType="TINYINT" property="isLlost"/>
             <result column="flow_status" jdbcType="BIGINT" property="flowStatus"/>
             <result column="marital_status" jdbcType="BIGINT" property="maritalStatus"/>
+            <result column="join_org_time" jdbcType="TIMESTAMP" property="joinOrgTime"/>
             <result column="health" jdbcType="BIGINT" property="health"/>
             <result column="ancestor_place" jdbcType="BIGINT" property="ancestorPlace"/>
             <result column="work_date" jdbcType="TIMESTAMP" property="workDate"/>
@@ -299,10 +300,11 @@
     join_org_type,join_org_contactor,join_org_phone,is_self_dev,registry_status,files_manage_unit,is_taiwaner,job_position,
     report_org_id,report_org_name,report_org_contactor,report_org_phone
     </sql>
+    <!--查询党员详细信息-->
     <sql id="Base_Column_List_new">
       user_id,dept_id,realname,gender,id_card_no,birthday, TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age ,nation,community_addr,avatar,phone,fix_phone,family_address,
       join_org_name,join_org_id,positived,identity_type,files_manage_unit,registry_status,join_time,registry_status,
-      join_time,regular_time,work_resumes,is_llost,flow_status
+      join_time,regular_time,work_resumes,is_llost,flow_status,marital_status,health,ancestor_place,work_date,join_org_time
     </sql>
     <sql id="Blob_Column_List">
     post_reason, work_resumes, comment, content, rewards, present_perform

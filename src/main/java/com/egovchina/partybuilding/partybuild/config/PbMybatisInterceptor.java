@@ -94,7 +94,7 @@ public class PbMybatisInterceptor implements Interceptor {
                     SysUser sysUser = (SysUser)arg;
                     if(sysUser.getDeptId() != null && sysUser.getDeptId() > 0){
                         int cuurentDeptId = UserContextHolder.getOrgId().intValue();
-                        flag = isOperator(cuurentDeptId ,sysUser.getDeptId());
+                        flag = isOperator(cuurentDeptId, sysUser.getDeptId().intValue());
                     }
                 }
             }

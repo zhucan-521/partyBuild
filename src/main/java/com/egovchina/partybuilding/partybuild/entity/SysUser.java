@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
-@ApiModel(value = "系统用户实体")
 @Data
 @Accessors(chain = true)
 @Alias("sysUserPartyInfo")
@@ -30,7 +29,7 @@ public class SysUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Integer userId;
+    private Long userId;
 
     private String username;
 
@@ -50,7 +49,7 @@ public class SysUser implements Serializable {
 
     private String avatar;
 
-    private Integer deptId;
+    private Long deptId;
 
     private Integer manageDeptId;
 

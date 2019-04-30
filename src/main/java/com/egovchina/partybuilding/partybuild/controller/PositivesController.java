@@ -48,11 +48,11 @@ public class PositivesController {
     }
 
     @ApiOperation(value = "查询职务列表信息", notes = "查询职务列表信息", httpMethod = "GET")
-    @GetMapping
     @ApiImplicitParams({
             @ApiImplicitParam(name = "positiveType", value = "职务类型", paramType = "query"),
             @ApiImplicitParam(name = "userId", value = "用户id", paramType = "query", required = true)
     })
+    @GetMapping
     public PageInfo<PositivesVO> selectList(Long userId, String positiveType, Page page) {
         PageHelper.startPage(page);
         return new PageInfo<>(positivesService.selectPositives(userId, positiveType));

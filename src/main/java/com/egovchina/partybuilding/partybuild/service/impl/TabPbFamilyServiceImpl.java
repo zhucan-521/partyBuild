@@ -120,7 +120,7 @@ public class TabPbFamilyServiceImpl extends ServiceImpl<TabPbFamilyMapper, TabPb
         SysUser sysUser = new SysUser();
         TabPbFamily family = pbFamilyMapper.findById(tabPbFamily.getRelationId());
         BeanUtil.copyPropertiesIgnoreNull(tabPbFamily, sysUser);
-        sysUser.setUserId(family.getRelationUserId().intValue());
+        sysUser.setUserId(family.getRelationUserId());
         if (sysUser.getUsername() != null && !"".equals(sysUser.getUsername())) {
             sysUser.setRealname(sysUser.getUsername());
         }

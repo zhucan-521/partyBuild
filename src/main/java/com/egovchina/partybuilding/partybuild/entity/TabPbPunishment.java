@@ -9,7 +9,6 @@ import java.util.Date;
 /**
  * @author Administrator
  */
-@ApiModel(value = "处分")
 @Data
 public class TabPbPunishment {
 

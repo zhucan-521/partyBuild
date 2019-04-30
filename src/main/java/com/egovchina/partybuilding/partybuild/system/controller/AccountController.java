@@ -170,7 +170,7 @@ public class AccountController {
     private void associatedPartyMemberIdIfExists(SysAccount sysAccount) {
         SysUser sysUser = userService.selectDeletedUserByCardNo(sysAccount.getIdCardNo());
         if (sysUser != null) {
-            sysAccount.setSysUserId(sysUser.getUserId());
+            sysAccount.setSysUserId(sysUser.getUserId().intValue());
         }
     }
 

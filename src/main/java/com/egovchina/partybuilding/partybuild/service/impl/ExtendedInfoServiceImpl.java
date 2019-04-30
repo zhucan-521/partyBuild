@@ -46,9 +46,9 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean updateByUserId(DeletePartyMemberDTO reduce) {
+    public int updateByUserId(DeletePartyMemberDTO reduce) {
         SysUser user = new SysUser();
-        user.setUserId(reduce.getUserId().intValue());
+        user.setUserId(reduce.getUserId());
         user.setDelFlag(CommonConstant.STATUS_DEL);
         user.setRegistryStatus(reduce.getOutType());
         TabPbMemberReduceList tabPbMemberReduceList =
@@ -62,22 +62,22 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
                 flag += reduceListMapper.insertSelective(tabPbMemberReduceList);
             }
         }
-        return flag > 0;
+        return flag;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean restoreUser(Long userId) {
+    public int restoreUser(Long userId) {
         TabPbMemberReduceList reduceList = reduceListMapper.selectByUserId(userId);
         if (reduceList == null) {
             throw new BusinessDataNotFoundException("查不到该党员减少记录");
         }
         reduceList.setDelFlag(CommonConstant.STATUS_DEL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(reduceList);
-        reduceListMapper.updateByPrimaryKeySelective(reduceList);
-        SysUser user = new SysUser().setUserId(userId.intValue()).setRegistryStatus(2L).setDelFlag(CommonConstant.STATUS_NORMAL);
+        int num = reduceListMapper.updateByPrimaryKeySelective(reduceList);
+        SysUser user = new SysUser().setUserId(userId).setRegistryStatus(2L).setDelFlag(CommonConstant.STATUS_NORMAL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(user);
-        tabSysUserMapper.updateByPrimaryKeySelective(user);
-        return true;
+        num += tabSysUserMapper.updateByPrimaryKeySelective(user);
+        return num;
     }
 }

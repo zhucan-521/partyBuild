@@ -244,7 +244,7 @@ public class TabPbLeadTeamMemberImpl implements TabPbLeadTeamMemberService {
         SysUser sysUser = new SysUser();
         sysUser.setUsername(record.getPersonName());
         sysUser.setPhone(record.getPhone());
-        sysUser.setUserId(record.getUserId().intValue());
+        sysUser.setUserId(record.getUserId());
         sysUser.setTechnician(record.getPositiveId());
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         return tabPbLeadTeamMemberMapper.updateByPrimaryKeySelective(record);

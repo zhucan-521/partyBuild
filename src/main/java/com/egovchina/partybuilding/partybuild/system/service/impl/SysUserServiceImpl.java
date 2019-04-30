@@ -85,7 +85,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
         userInfo.setUserLogin(userLoginDto);
         //设置角色列表
-        List<SysRole> roleList = sysRoleService.findRolesByUserId(sysUser.getUserId());
+        List<SysRole> roleList = sysRoleService.findRolesByUserId(sysUser.getUserId().intValue());
         List<String> roleCodes = new ArrayList<>();
         if (CollectionUtil.isNotEmpty(roleList)) {
             roleList.forEach(sysRole -> roleCodes.add(sysRole.getRoleCode()));
@@ -170,7 +170,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Override
     @CacheEvict(value = "DETAIL::USER", key = "#sysUser.idCardNo")
     public Boolean deleteUserById(SysUser sysUser) {
-        sysUserRoleService.deleteByUserId(sysUser.getUserId());
+        sysUserRoleService.deleteByUserId(sysUser.getUserId().intValue());
         this.deleteById(sysUser.getUserId());
         return Boolean.TRUE;
     }
@@ -190,7 +190,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
             }
         }
         sysUser.setPhone(userDto.getPhone());
-        sysUser.setUserId(userVO.getUserId());
+        sysUser.setUserId(userVO.getUserId().longValue());
         sysUser.setAvatar(userDto.getAvatar());
         return this.updateById(sysUser);
     }
@@ -208,7 +208,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         sysUserRoleService.delete(new EntityWrapper<>(condition));
         userDto.getRoleIds().forEach(roleId -> {
             SysUserRole userRole = new SysUserRole();
-            userRole.setUserId(sysUser.getUserId());
+            userRole.setUserId(sysUser.getUserId().intValue());
             userRole.setRoleId(roleId);
             userRole.insert();
         });

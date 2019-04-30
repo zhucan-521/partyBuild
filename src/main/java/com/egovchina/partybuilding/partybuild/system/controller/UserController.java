@@ -95,7 +95,7 @@ public class UserController {
     public Boolean user(@ApiIgnore UserDTO userDto) {
         SysUser deletedUser = userService.selectDeletedUserByCardNo(userDto.getIdCardNo());
         if (deletedUser != null) {
-            userService.deleteSysUserByCardNoAndUserId(userDto.getIdCardNo(), deletedUser.getUserId());
+            userService.deleteSysUserByCardNoAndUserId(userDto.getIdCardNo(), deletedUser.getUserId().intValue());
         }
         SysUser sysUser = new SysUser();
         BeanUtils.copyProperties(userDto, sysUser);
@@ -106,7 +106,7 @@ public class UserController {
         userService.insert(sysUser);
         userDto.getRoleIds().forEach(roleId -> {
             SysUserRole userRole = new SysUserRole();
-            userRole.setUserId(sysUser.getUserId());
+            userRole.setUserId(sysUser.getUserId().intValue());
             userRole.setRoleId(roleId);
             userRole.insert();
         });

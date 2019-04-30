@@ -144,7 +144,7 @@ public class TabPbPositiveRegistServiceImpl extends ServiceImpl<TabPbPositiveReg
         SysDept dept = deptMapper.selectById(deptId);
         if(dept!=null){
             SysUser user = new SysUser();
-            user.setUserId(userId);
+            user.setUserId(userId.longValue());
             if(flag){
                 user.setReportOrgId(dept.getDeptId());
                 user.setReportOrgName(dept.getName());
