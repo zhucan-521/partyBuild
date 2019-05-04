@@ -3,34 +3,40 @@ package com.egovchina.partybuilding.partybuild.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * @author: huang
- * Date: 2018/12/13
+ * @author create by GuanYingxin on 2019/4/22 17:44
+ * @description
  */
-@ApiModel(value = "党籍列表信息")
-@AllArgsConstructor
-@NoArgsConstructor
+@ApiModel("更新党籍DTO")
+@Accessors(chain = true)
 @Data
 public class RegistryDTO {
 
-    @ApiModelProperty(value = "党籍 0无、1刚入党、2转正、3出党、4停止党籍、5死亡、6其他")
-    private Long registryStatus;
+    @ApiModelProperty("用户ID")
+    @NotNull(message = "用户Id不允许为空")
+    private Long userId;
 
-    @ApiModelProperty(value = "办理时间")
+    @ApiModelProperty(value = "出党时间", example = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date handleTime;
+    @NotNull(message = "出党时间不允许为空")
+    private Date reduceTime;
 
-    @ApiModelProperty(value = "操作时间")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date operatTime;
+    @ApiModelProperty(value = "出党方式 3出党、4停止党籍、5死亡、6其他")
+    @NotNull(message = "出党方式不允许为空")
+    private Long outType;
 
-    @ApiModelProperty(value = "操作人")
-    private String operat;
+    @ApiModelProperty(value = "组织ID ,党支部Id")
+    @NotNull(message = "组织id不允许为空")
+    private Integer deptId;
+
+    @ApiModelProperty(value = "用户名")
+    @NotNull(message = "用户名不允许为空")
+    private String username;
 }

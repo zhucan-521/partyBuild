@@ -20,14 +20,6 @@ public interface UserTagService {
     int addUserTag(Long userId, Long tagType);
 
     /**
-     * 根据用户id以及字典id添加标签
-     *
-     * @param userTagDTO
-     * @return
-     */
-    int insertUserTagDTO(UserTagDTO userTagDTO);
-
-    /**
      * 根据字典id删除党员标签
      *
      * @param usertagId
@@ -45,18 +37,17 @@ public interface UserTagService {
     int delete(Long userId, Long tagType);
 
     /**
-     * 根据用户id获取标签列表
-     *
-     * @param userId
-     * @return
-     */
-    List<TabPbUserTag> selectTagByUserId(Long userId);
-
-    /**
      * 使用tagType 来确定标签是否存在的update
      *
      * @param userTags -- TagType  1真  0假
      * @return
      */
     boolean updateUserTagByTagType(List<TabPbUserTag> userTags);
+
+    /**
+     * 批量插入标记
+     * @param userTagDTO
+     * @return
+     */
+    int batchInsertUserTagDTO(UserTagDTO userTagDTO);
 }
