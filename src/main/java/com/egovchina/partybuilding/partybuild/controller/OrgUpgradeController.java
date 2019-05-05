@@ -2,7 +2,7 @@ package com.egovchina.partybuilding.partybuild.controller;
 
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
-import com.egovchina.partybuilding.partybuild.dto.OrgUpgradeDto;
+import com.egovchina.partybuilding.partybuild.dto.OrgUpgradeDTO;
 import com.egovchina.partybuilding.partybuild.dto.OrgUpgradedPersonnelTransferDTO;
 import com.egovchina.partybuilding.partybuild.service.OrgUpgradeService;
 import com.egovchina.partybuilding.partybuild.vo.DirectPartyMemberVO;
@@ -33,13 +33,13 @@ public class OrgUpgradeController {
 
     @ApiOperation(value = "新增组织升格信息", notes = "新增组织升格信息")
     @PostMapping
-    public ReturnEntity addOrgUpgrade(@ApiParam("组织升格信息") @RequestBody @Validated OrgUpgradeDto orgUpgradeDto) {
+    public ReturnEntity addOrgUpgrade(@ApiParam("组织升格信息") @RequestBody @Validated OrgUpgradeDTO orgUpgradeDto) {
         return ReturnUtil.buildReturn(orgUpgradeService.addOrgUpgrade(orgUpgradeDto));
     }
 
     @ApiOperation(value = "升格新建组织支部", notes = "升格新建组织支部")
     @PostMapping("/branch")
-    public ReturnEntity addNewOrgBranch(@ApiParam("组织升格信息") @RequestBody @Validated OrgUpgradeDto orgUpgradeDto) {
+    public ReturnEntity addNewOrgBranch(@ApiParam("组织升格信息") @RequestBody @Validated OrgUpgradeDTO orgUpgradeDto) {
         return ReturnUtil.buildReturn(orgUpgradeService.updateByPrimaryKeySelective(orgUpgradeDto));
     }
 

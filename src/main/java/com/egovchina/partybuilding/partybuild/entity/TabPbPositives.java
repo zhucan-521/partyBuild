@@ -9,13 +9,13 @@ import java.util.Date;
 @TableName("tab_pb_positives")
 public class TabPbPositives {
 
-    private Integer positiveId;
+    private Long positiveId;
 
     private Long userId;
 
-    private Integer positiveType;
+    private Long positiveType;
 
-    private Integer positiveOrgId;
+    private Long positiveOrgId;
 
     private String positiveOrg;
 
@@ -56,4 +56,8 @@ public class TabPbPositives {
     private Long leftType;
 
     private Long sort;
+
+    private Byte businessFrom;
+
+    private Long businessId;
 }

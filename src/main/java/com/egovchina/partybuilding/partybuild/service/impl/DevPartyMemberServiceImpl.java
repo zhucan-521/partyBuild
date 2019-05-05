@@ -1,20 +1,17 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.DevPartyMemberDTO;
 import com.egovchina.partybuilding.partybuild.dto.PartyDevAttachDTO;
-import com.egovchina.partybuilding.partybuild.entity.DevPartyMemberQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.PartyApplyQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMember;
-import com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMemberDate;
+import com.egovchina.partybuilding.partybuild.entity.*;
 import com.egovchina.partybuilding.partybuild.repository.TabPbDevPartyMemberDateMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbDevPartyMemberMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.DevPartyMemberService;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.vo.CheckDevPartyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.DevPartyMemberDateVO;
 import com.egovchina.partybuilding.partybuild.vo.DevPartyMemberVO;
@@ -33,6 +30,7 @@ import java.util.List;
  * desc: 党员发展步骤-服务接口实现
  * Created by FanYanGen on 2019/4/23 10:35
  */
+@Deprecated
 @Transactional(rollbackFor = Exception.class)
 @Service("devPartyMemberService")
 public class DevPartyMemberServiceImpl implements DevPartyMemberService {
@@ -84,20 +82,20 @@ public class DevPartyMemberServiceImpl implements DevPartyMemberService {
             if (null == user || !user.getRealname().equals(devPartyMemberQueryBean.getUserName())) {
                 checkVo.setMessage("该党员不存在！");
             } else if (!(user.getRegistryStatus().equals(registerStatus))) {
-                TabPbDevPartyMember devPartyMember = devPartyMemberMapper.selectByUserId(user.getUserId().longValue());
+                TabPbDevPartyMember devPartyMember = devPartyMemberMapper.selectByUserId(user.getUserId());
                 if (null == devPartyMember) {
                     checkVo.setMessage("该党员非发展党员, 不可补录！");
                 } else {
                     checkVo.setMessage("该党员已经被补录过！");
                 }
             } else {
-                TabPbDevPartyMember devPartyMember = devPartyMemberMapper.selectByUserId(user.getUserId().longValue());
+                TabPbDevPartyMember devPartyMember = devPartyMemberMapper.selectByUserId(user.getUserId());
                 if (null == devPartyMember) {
                     checkVo.setMessage("该党员发展环节不存在！");
                 } else if (devPartyMember.getStatus() < status) {
                     checkVo.setMessage("该党员发展环节未达到补录要求(至少需要达到第5环节第1步骤)");
                 } else {
-                    checkVo.setUserId(user.getUserId().longValue());
+                    checkVo.setUserId(user.getUserId());
                     checkVo.setDeptId(devPartyMember.getDeptId());
                     checkVo.setResult(true);
                 }

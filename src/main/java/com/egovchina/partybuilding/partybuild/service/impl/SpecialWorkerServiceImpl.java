@@ -3,17 +3,17 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
+import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.partybuild.dto.SpecialWorkerDTO;
 import com.egovchina.partybuilding.partybuild.entity.SpecialWorkerQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker;
+import com.egovchina.partybuilding.partybuild.feign.SystemServiceFeignClient;
 import com.egovchina.partybuilding.partybuild.repository.TabPbSpcialWorkerMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.SpecialWorkerService;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUserRole;
-import com.egovchina.partybuilding.partybuild.system.mapper.SysUserRoleMapper;
 import com.egovchina.partybuilding.partybuild.vo.SpecialWorkerVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.egovchina.partybuilding.common.util.BeanUtil.copyPropertiesAndPaddingBaseField;
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 import static com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled;
 
 @Service
@@ -34,7 +34,7 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
     TabSysUserMapper tabSysUserMapper;
 
     @Autowired
-    SysUserRoleMapper sysUserRoleMapper;
+    SystemServiceFeignClient systemServiceFeignClient;
 
     @Autowired
     TabPbSpcialWorkerMapper tabPbSpcialWorkerMapper;
@@ -62,20 +62,22 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
         }
         specialWorkerDto.setUserId(userId);
         //设置专干角色为44，并且插入sys_user_role
-        SysUserRole role = tabPbSpcialWorkerMapper.selectSysUserRoleByUserId(userId);
-        if (null == role) {
-            SysUserRole sysUserRole = new SysUserRole();
-            sysUserRole.setUserId(userId.intValue());
-            sysUserRole.setRoleId(44);
-            sysUserRoleMapper.insert(sysUserRole);
+
+        ReturnEntity<Boolean> returnEntity = systemServiceFeignClient.checkUserHasSpecifiedRole(44L, userId);
+        if (returnEntity.unOkResp()) {
+            throw returnEntity.exception();
+        }
+        boolean exists = returnEntity.respBody(Boolean.class);
+        if (!exists) {
+            systemServiceFeignClient.insertUserRole(44L, userId);
         }
         int count = 0;
         if (tabPbSpcialWorkerMapper.checkSpecialWhetherTOLeave(userId)) {
             throw new BusinessDataCheckFailException("该专干正处于任职状态，请离职后在任职");
         } else {
             TabPbSpcialWorker tabPbSpcialWorker =
-                    copyPropertiesAndPaddingBaseField(
-                            specialWorkerDto, TabPbSpcialWorker.class, true, false);
+                    generateTargetCopyPropertiesAndPaddingBaseField(
+                            specialWorkerDto, TabPbSpcialWorker.class, false);
             count = tabPbSpcialWorkerMapper.insertSelective(tabPbSpcialWorker);
         }
         return count;
@@ -132,8 +134,8 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
             throw new BusinessDataCheckFailException("缺少专干主键");
         }
         TabPbSpcialWorker tabPbSpcialWorker =
-                copyPropertiesAndPaddingBaseField(
-                        specialWorkerDto, TabPbSpcialWorker.class, true, true);
+                generateTargetCopyPropertiesAndPaddingBaseField(
+                        specialWorkerDto, TabPbSpcialWorker.class, true);
         return tabPbSpcialWorkerMapper.updateByPrimaryKeySelective(tabPbSpcialWorker);
     }
 

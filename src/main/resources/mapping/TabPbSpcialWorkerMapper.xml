@@ -24,11 +24,6 @@
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
     </resultMap>
 
-    <resultMap id="SysUserRoleMap" type="com.egovchina.partybuilding.partybuild.system.entity.SysUserRole">
-        <result column="user_id" jdbcType="BIGINT" property="userId"/>
-        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
-    </resultMap>
-
     <resultMap id="SpecialWorkerVOMap" type="com.egovchina.partybuilding.partybuild.vo.SpecialWorkerVO">
         <id column="special_worker_id" jdbcType="BIGINT" property="specialWorkerId"/>
         <result column="manage_org_id" jdbcType="BIGINT" property="manageOrgId"/>
@@ -42,6 +37,8 @@
         <result column="contactor" jdbcType="VARCHAR" property="contactor"/>
         <result column="contact_number" jdbcType="VARCHAR" property="contactNumber"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="manage_org_name" jdbcType="VARCHAR" property="manageOrgName"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -281,11 +278,6 @@
     where special_worker_id = #{specialWorkerId,jdbcType=BIGINT}
   </update>
 
-    <!--查询人员权限表中有没有专干人员-->
-    <select id="selectSysUserRoleByUserId" parameterType="Long"  resultMap="SysUserRoleMap">
-       select * from sys_user_role where user_id= #{userId} and role_id =44 limit 1
-    </select>
-
     <!--查询专干党员信息-->
     <select id="selectSpecialWorkerVOList"
             parameterType="com.egovchina.partybuilding.partybuild.entity.SpecialWorkerQueryBean"
@@ -304,9 +296,9 @@
         (case WHEN NOW() > sw.left_time THEN -1
         WHEN IFNULL( sw.left_time, 1) = 1 or NOW() &lt;= sw.left_time  THEN 1 end
         ) status,
-        (select name from sys_dept where dept_id= sw.manage_org_id) deptName,
+        (select name from sys_dept where dept_id= sw.manage_org_id) dept_name,
         u.dept_id,
-        (select name from sys_dept where dept_id= u.dept_id) manageOrgName,
+        (select name from sys_dept where dept_id= u.dept_id) manage_org_name,
         sw.left_time
         FROM
         tab_pb_spcial_worker sw
@@ -361,9 +353,9 @@
         (case WHEN NOW() > sw.left_time THEN -1
         WHEN IFNULL( sw.left_time, 1) = 1 or NOW() &lt;= sw.left_time  THEN 1 end
         ) status,
-        (select name from sys_dept where dept_id= sw.manage_org_id) deptName,
+        (select name from sys_dept where dept_id= sw.manage_org_id) dept_name,
         u.dept_id,
-        (select name from sys_dept where dept_id= u.dept_id) manageOrgName,
+        (select name from sys_dept where dept_id= u.dept_id) manage_org_name,
         sw.left_time
         FROM
         tab_pb_spcial_worker sw

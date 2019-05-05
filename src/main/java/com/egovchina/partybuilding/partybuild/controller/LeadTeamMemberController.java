@@ -1,0 +1,74 @@
+package com.egovchina.partybuilding.partybuild.controller;
+
+import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.util.ReturnEntity;
+import com.egovchina.partybuilding.common.util.ReturnUtil;
+import com.egovchina.partybuilding.partybuild.dto.LeadTeamMemberDTO;
+import com.egovchina.partybuilding.partybuild.entity.LeadTeamMemberQueryBean;
+import com.egovchina.partybuilding.partybuild.service.LeadTeamMemberService;
+import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
+import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+/**
+ * 班子成员
+ *
+ * @Author Jiang An
+ **/
+@Api(tags = "党组织-领导班子成员模块v1-官颖鑫")
+@RestController
+@RequestMapping("/v1")
+public class LeadTeamMemberController {
+
+    @Autowired
+    private LeadTeamMemberService leadTeamMemberService;
+
+    @ApiOperation(value = "班子成员列表", notes = "班子成员列表", httpMethod = "GET")
+    @ApiImplicitParam(value = "班子id", name = "leadTeamId", dataType = "long", paramType = "path", required = true)
+    @GetMapping("/lead-teams/{leadTeamId}/members")
+    public PageInfo<LeadTeamMemberVO> getLeadTeamMemberList(@PathVariable Long leadTeamId, Page page) {
+        List<LeadTeamMemberVO> list = leadTeamMemberService.selectLeadTeamMemberVOListByLeadTeamId(leadTeamId, page);
+        return new PageInfo<>(list);
+    }
+
+    @ApiOperation(value = "添加班子成员", notes = "添加班子成员", httpMethod = "POST")
+    @PostMapping("/lead-team-members")
+    public ReturnEntity insertLeadTeamMember(@ApiParam("班子成员信息") @RequestBody @Validated LeadTeamMemberDTO leadTeamMemberDTO) {
+        return ReturnUtil.buildReturn(leadTeamMemberService.insertLeadTeamMember(leadTeamMemberDTO));
+    }
+
+    @ApiOperation(value = "修改班子成员", notes = "修改班子成员", httpMethod = "PUT")
+    @PutMapping("/lead-team-members")
+    public ReturnEntity updateLeadTeamMember(@ApiParam(value = "班子成员信息") @RequestBody @Validated LeadTeamMemberDTO leadTeamMemberDTO) {
+        return ReturnUtil.buildReturn(leadTeamMemberService.updateLeadTeamMember(leadTeamMemberDTO));
+    }
+
+    @ApiOperation(value = "删除班子成员", notes = "删除班子成员", httpMethod = "DELETE")
+    @ApiImplicitParam(value = "班子人员id", name = "memberId", dataType = "long", paramType = "path", required = true)
+    @DeleteMapping("/lead-team-members/{memberId}")
+    public ReturnEntity deleteLeadTeamMember(@PathVariable Long memberId) {
+        return ReturnUtil.buildReturn(leadTeamMemberService.logicDeleteLeadTeamMemberById(memberId));
+    }
+
+    @ApiOperation(value = "班子成员详情", notes = "查看班子成员详情", httpMethod = "GET")
+    @ApiImplicitParam(value = "班子人员id", name = "memberId", dataType = "long", paramType = "path", required = true)
+    @GetMapping("/lead-team-members/{memberId}")
+    public LeadTeamMemberVO getLeadTeamMember(@PathVariable Long memberId) {
+        return leadTeamMemberService.selectLeadTeamMemberVOById(memberId);
+    }
+
+    @ApiOperation(value = "班子成员列表", notes = "班子成员列表", httpMethod = "GET")
+    @GetMapping("/lead-team-members")
+    public PageInfo<LeadTeamMemberVO> getLeadTeamMemberList(LeadTeamMemberQueryBean queryBean, Page page) {
+        List<LeadTeamMemberVO> list = leadTeamMemberService.selectLeadTeamMemberVOListByCondition(queryBean, page);
+        return new PageInfo<>(list);
+    }
+}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabSysDictMapper">
-    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.system.entity.SysDict">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.SysDict">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
         <result column="value" jdbcType="VARCHAR" property="value"/>
@@ -30,7 +30,8 @@
         from sys_dict
         where  type = #{type} and value = #{type}
     </select>
-    <select id="selectLists" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysDict" resultMap="BaseResultMap">
+    <select id="selectLists" parameterType="com.egovchina.partybuilding.partybuild.entity.SysDict"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from sys_dict d
@@ -49,7 +50,8 @@
         </if>
         ORDER BY sort ASC
     </select>
-    <select id="selectTree" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysDict" resultMap="BaseResultMap">
+    <select id="selectTree" parameterType="com.egovchina.partybuilding.partybuild.entity.SysDict"
+            resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from sys_dict
@@ -72,7 +74,7 @@
     delete from sys_dict
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysDict">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.SysDict">
     insert into sys_dict (id, parent_id, value, 
       label, type, description, 
       sort, create_time, update_time, 
@@ -82,7 +84,7 @@
       #{sort,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{remarks,jdbcType=VARCHAR}, 0)
   </insert>
-    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysDict">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.SysDict">
         insert into sys_dict
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -155,7 +157,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysDict">
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.SysDict">
         update sys_dict
         <set>
             <if test="parentId != null">
@@ -191,7 +193,7 @@
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.system.entity.SysDict">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.SysDict">
     update sys_dict
     set parent_id = #{parentId,jdbcType=INTEGER},
       value = #{value,jdbcType=VARCHAR},
@@ -208,7 +210,7 @@
 
 
     <!--根据字典类型和字典值查询字典信息用于字典序列化-->
-    <select id="findOneUseForDictSerialization" resultType="DictDto">
+    <select id="findOneUseForDictSerialization" resultType="com.egovchina.partybuilding.common.entity.Dictionary">
         select
           group_concat(d.label) as  label
         from sys_dict d

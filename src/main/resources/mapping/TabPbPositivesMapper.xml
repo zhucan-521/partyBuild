@@ -24,6 +24,8 @@
         <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
         <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="business_from" jdbcType="TINYINT" property="businessFrom"/>
+        <result column="business_id" jdbcType="BIGINT" property="businessId"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
         <result column="left_reason" jdbcType="BIGINT" property="leftReason"/>
@@ -43,11 +45,11 @@
         <result column="left_reason" jdbcType="BIGINT" property="leftReason"/>
     </resultMap>
     <sql id="Base_Column_List">
-    positive_id, user_id, positive_type, positive_org_id, positive_org, positive_name, 
-    positive_level, positive_start, positive_finished, ebl_flag, del_flag, order_num, 
-    description, create_time, create_userid, create_username, update_time, update_userid,
-        update_username, version,left_type
-  </sql>
+        positive_id, user_id, positive_type, positive_org_id, positive_org, positive_name,
+        positive_level, positive_start, positive_finished, ebl_flag, del_flag, order_num,
+        description, create_time, create_userid, create_username, update_time, update_userid,
+        update_username, version, left_type, business_from, business_id
+    </sql>
     <sql id="P_Base_Column_List">
     p.positive_id, p.user_id, p.positive_type, p.positive_org_id, p.positive_org, p.positive_name,
     p.positive_level, p.positive_start, p.positive_finished, p.ebl_flag, p.del_flag, p.order_num,
@@ -454,7 +456,7 @@
     </update>
 
     <!--根据用户Id查找用户相应的职位-->
-    <select id="selectTabPbPositivesByUserId" parameterType="Long" resultMap="BaseMoreResultMap">
+    <select id="selectTabPbPositivesByUserId" parameterType="Long" resultMap="BaseResultMap">
           select
           positive_id,
           user_id,
@@ -491,4 +493,14 @@
         </foreach>
     </insert>
 
+
+    <!--根据条件删除职务-->
+    <update id="logicDeletePositiveByCondition"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
+        UPDATE tab_pb_positives
+        SET del_flag = 1,
+        update_time = #{updateTime}, update_userid = #{updateUserid}, updateUsername = #{updateUsername}
+        WHERE
+            positive_org_id = #{positiveOrgId} and user_id = #{userId} and business_from = #{business} and business_id = #{businessId}
+    </update>
 </mapper>

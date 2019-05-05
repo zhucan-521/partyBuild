@@ -8,21 +8,17 @@ import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
-import com.egovchina.partybuilding.partybuild.dto.DirectPartyMemberDTO;
-import com.egovchina.partybuilding.partybuild.dto.OrgUpgradeDto;
-import com.egovchina.partybuilding.partybuild.dto.OrgUpgradedPersonnelTransferDTO;
-import com.egovchina.partybuilding.partybuild.dto.SysDeptDto;
+import com.egovchina.partybuilding.partybuild.dto.*;
 import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.SysDeptUpgradeTemp;
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange;
-import com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo;
 import com.egovchina.partybuilding.partybuild.repository.SysDeptUpgradeTempMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbOrgnizeChangeMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.OrgUpgradeService;
-import com.egovchina.partybuilding.partybuild.service.TabSysDeptService;
+import com.egovchina.partybuilding.partybuild.service.OrganizationService;
 import com.egovchina.partybuilding.partybuild.vo.DirectPartyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
 import com.egovchina.partybuilding.partybuild.vo.OrgUpgradeVO;
@@ -37,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.egovchina.partybuilding.common.util.BeanUtil.copyPropertiesAndPaddingBaseField;
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
 /**
  * 描述:
@@ -55,7 +51,7 @@ public class OrgUpgradeServiceImpl implements OrgUpgradeService {
     @Autowired
     private SysDeptUpgradeTempMapper sysDeptUpgradeTempMapper;
     @Autowired
-    private TabSysDeptService tabSysDeptService;
+    private OrganizationService organizationService;
     @Autowired
     private TabPbOrgnizeChangeMapper tabPbOrgnizeChangeMapper;
     @Autowired
@@ -74,28 +70,28 @@ public class OrgUpgradeServiceImpl implements OrgUpgradeService {
         Long deptId = orgUpgradedPersonnelTransferDTO.getDeptId();
         int count = 0;
         OrgUpgradeVO orgUpgradeVO = sysDeptUpgradeTempMapper.selectOrgUpgradeVOByDeptId(deptId);
-        OrgUpgradeDto orgUpgradeDto = new OrgUpgradeDto();
+        OrgUpgradeDTO orgUpgradeDto = new OrgUpgradeDTO();
         if (orgUpgradeVO != null) {
             BeanUtil.copyPropertiesIgnoreNull(orgUpgradeVO, orgUpgradeDto);
             orgDataVerification(orgUpgradeDto);//校验
             //修改组织信息
-            SysDeptDto sysDeptDto = new SysDeptDto();
-            sysDeptDto.setDeptId(orgUpgradeDto.getDeptId().intValue());
-            sysDeptDto.setName(orgUpgradeDto.getUpgradeDeptName());
-            sysDeptDto.setOrgShortName(orgUpgradeDto.getUpgradeShortName());
-            sysDeptDto.setIsParent((byte) 1);
-            sysDeptDto.setOrgnizeProperty(1001L);
-            PaddingBaseFieldUtil.paddingBaseFiled(sysDeptDto);
-            count += tabSysDeptMapper.updateByPrimaryKeySelective(sysDeptDto);
+            SysDept sysDept = new SysDept();
+            sysDept.setDeptId(orgUpgradeDto.getDeptId());
+            sysDept.setName(orgUpgradeDto.getUpgradeDeptName());
+            sysDept.setOrgShortName(orgUpgradeDto.getUpgradeShortName());
+            sysDept.setIsParent((byte) 1);
+            sysDept.setOrgnizeProperty(1001L);
+            PaddingBaseFieldUtil.paddingBaseFiled(sysDept);
+            count += tabSysDeptMapper.updateByPrimaryKeySelective(sysDept);
         } else {
             throw new BusinessDataNotFoundException("升级组织不存在");
         }
         List<DirectPartyMemberVO> directPartyMemberVOS =
                 tabSysUserMapper.selectDirectPartyMemberVOByDeptId(orgUpgradeDto.getDeptId());
         ArrayList<Integer> longArrayList = new ArrayList<>();
-        List<SysDeptDto> sysDeptDtos = JSONObject.parseArray(orgUpgradeDto.getDeptBranchs(), SysDeptDto.class);
-        sysDeptDtos.forEach(branchOrganization -> {
-            SysDept parentDept = tabSysDeptService.selectAloneByPrimaryKey(branchOrganization.getParentId().longValue());
+        List<OrganizationDTO> organizationDTOS = JSONObject.parseArray(orgUpgradeDto.getDeptBranchs(), OrganizationDTO.class);
+        organizationDTOS.forEach(branchOrganization -> {
+            SysDept parentDept = organizationService.selectAloneByPrimaryKey(branchOrganization.getParentId());
             if (parentDept == null) {
                 throw new BusinessDataNotFoundException(branchOrganization.getName() + "上级组织不存在");
             }
@@ -106,7 +102,7 @@ public class OrgUpgradeServiceImpl implements OrgUpgradeService {
             }
             PaddingBaseFieldUtil.paddingBaseFiled(branchOrganization);
             //新增支部组织
-            tabSysDeptService.insertWithAbout(branchOrganization);
+            organizationService.insertOrganization(branchOrganization);
             //批量移动人员
             for (Map.Entry<String, List<DirectPartyMemberDTO>> vo : directStaffListMap.entrySet()) {
                 if (branchOrganization.getName().equals(vo.getKey())) {
@@ -118,7 +114,7 @@ public class OrgUpgradeServiceImpl implements OrgUpgradeService {
                     longArrayList.addAll(userIds);
                     if (userIds.size() > 0) {
                         tabSysUserMapper.batchDeptIdByUserId(
-                                userIds, branchOrganization.getDeptId().longValue());
+                                userIds, branchOrganization.getDeptId());
                     }
                 }
             }
@@ -135,25 +131,26 @@ public class OrgUpgradeServiceImpl implements OrgUpgradeService {
      *
      * @param orgUpgradeDto
      */
-    private void orgDataVerification(OrgUpgradeDto orgUpgradeDto) {
+    private void orgDataVerification(OrgUpgradeDTO orgUpgradeDto) {
         String deptName = orgUpgradeDto.getUpgradeDeptName();
-        if (tabSysDeptService.checkOrgNameAvailability(deptName)) {
+        Long deptId = orgUpgradeDto.getDeptId();
+        if (organizationService.checkOrgNameAvailability(deptName, deptId)) {
             throw new BusinessDataInvalidException(deptName + "组织名称重复");
         }
         //支部组织数据校验
         if (StringUtil.isNotEmpty(orgUpgradeDto.getDeptBranchs())) {
-            List<SysDeptDto> sysDeptDtos = JSONObject.parseArray(orgUpgradeDto.getDeptBranchs(), SysDeptDto.class);
-            sysDeptDtos.forEach(sysDeptDto -> {
+            List<OrganizationDTO> organizationDTOS = JSONObject.parseArray(orgUpgradeDto.getDeptBranchs(), OrganizationDTO.class);
+            organizationDTOS.forEach(sysDeptDto -> {
                 if (StringUtils.isEmpty(sysDeptDto.getName())) {
                     throw new BusinessDataIncompleteException("支部组织名称不能为空");
                 }
                 if (sysDeptDto.getParentId() == null) {
                     throw new BusinessDataIncompleteException(sysDeptDto.getName() + "上级组织不存在");
                 }
-                if (sysDeptDto.getDeptId() == null && tabSysDeptService.checkOrgNameAvailability(sysDeptDto.getName())) {
+                if (sysDeptDto.getDeptId() == null && organizationService.checkOrgNameAvailability(sysDeptDto.getName(), sysDeptDto.getDeptId())) {
                     throw new BusinessDataInvalidException(sysDeptDto.getName() + "组织名称重复");
                 }
-                List<TabPbUnitInfo> tabPbUnitInfos = sysDeptDto.getTabPbUnitInfos();
+                List<UnitInfoDTO> tabPbUnitInfos = sysDeptDto.getUnits();
                 if (CollectionUtil.isNotEmpty(tabPbUnitInfos)) {
                     tabPbUnitInfos.forEach(tabPbUnitInfo -> {
                         if (StringUtils.isEmpty(tabPbUnitInfo.getUnitName())) {
@@ -182,17 +179,17 @@ public class OrgUpgradeServiceImpl implements OrgUpgradeService {
 
     @Override
     @Transactional
-    public Integer addOrgUpgrade(OrgUpgradeDto orgUpgradeDto) {
+    public Integer addOrgUpgrade(OrgUpgradeDTO orgUpgradeDto) {
         int count = 0;
-        if (!tabSysDeptService.checkOrgIsExists(orgUpgradeDto.getDeptId())) {
+        if (!organizationService.checkOrgIsExists(orgUpgradeDto.getDeptId())) {
             throw new BusinessDataNotFoundException("升级组织不存在");
         }
-        orgUpgradeDto.setDeptName(tabSysDeptService.selectByPrimaryKey(orgUpgradeDto.getDeptId()).getName());
+        orgUpgradeDto.setDeptName(organizationService.selectByPrimaryKey(orgUpgradeDto.getDeptId()).getName());
         //数据校验
         orgDataVerification(orgUpgradeDto);
         SysDeptUpgradeTemp sysDeptUpgradeTemp =
-                copyPropertiesAndPaddingBaseField(
-                        orgUpgradeDto, SysDeptUpgradeTemp.class, true, true);
+                generateTargetCopyPropertiesAndPaddingBaseField(
+                        orgUpgradeDto, SysDeptUpgradeTemp.class,  true);
         if (sysDeptUpgradeTempMapper.selectOrgUpgradeVOByDeptId(sysDeptUpgradeTemp.getDeptId()) != null) {
             OrgUpgradeVO orgUpgradeVO = sysDeptUpgradeTempMapper.selectOrgUpgradeVOByDeptId(
                     sysDeptUpgradeTemp.getDeptId());
@@ -217,7 +214,7 @@ public class OrgUpgradeServiceImpl implements OrgUpgradeService {
      * @return
      */
     @Transactional
-    public Integer addOrModifyAdjustmentsAndAttachments(OrgUpgradeDto orgUpgradeDto) {
+    public Integer addOrModifyAdjustmentsAndAttachments(OrgUpgradeDTO orgUpgradeDto) {
         int count = 0;
         iTabPbAttachmentService.intelligentOperation(
                 orgUpgradeDto.getAttachments(),
@@ -242,13 +239,13 @@ public class OrgUpgradeServiceImpl implements OrgUpgradeService {
     }
 
     @Override
-    public Integer updateByPrimaryKeySelective(OrgUpgradeDto orgUpgradeDto) {
+    public Integer updateByPrimaryKeySelective(OrgUpgradeDTO orgUpgradeDto) {
         int count = 0;
-        List<SysDeptDto> sysDeptDtos = JSONObject.parseArray(orgUpgradeDto.getDeptBranchs(), SysDeptDto.class);
-        if (sysDeptDtos.size() < 2) {
+        List<OrganizationDTO> organizationDTOS = JSONObject.parseArray(orgUpgradeDto.getDeptBranchs(), OrganizationDTO.class);
+        if (organizationDTOS.size() < 2) {
             throw new BusinessDataIncompleteException("请添加两个党支部");
         }
-        sysDeptDtos.forEach(branchOrganization -> {
+        organizationDTOS.forEach(branchOrganization -> {
             if (branchOrganization.getOrgnizeProperty() == null) {
                 throw new BusinessDataIncompleteException("请选择组织类别");
             }
@@ -256,8 +253,8 @@ public class OrgUpgradeServiceImpl implements OrgUpgradeService {
         orgDataVerification(orgUpgradeDto);
         orgUpgradeDto.setId(sysDeptUpgradeTempMapper.selectOrgUpgradeVOByDeptId(orgUpgradeDto.getDeptId()).getId());
         SysDeptUpgradeTemp sysDeptUpgradeTemp =
-                copyPropertiesAndPaddingBaseField(
-                        orgUpgradeDto, SysDeptUpgradeTemp.class, true, true);
+                generateTargetCopyPropertiesAndPaddingBaseField(
+                        orgUpgradeDto, SysDeptUpgradeTemp.class, true);
         count += sysDeptUpgradeTempMapper.updateByPrimaryKeySelective(sysDeptUpgradeTemp);
         return count;
     }

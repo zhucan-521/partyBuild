@@ -2,12 +2,12 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyMembership;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPartyMembershipMapper;
 import com.egovchina.partybuilding.partybuild.service.PartyMembershipService;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.vo.MembershipVO;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class PartyMembershipServiceImpl implements PartyMembershipService {
     @Override
     public TabPbPartyMembership toolMethod(SysUser sysUser) {
         TabPbPartyMembership tabPbPartyMembership = new TabPbPartyMembership();
-        tabPbPartyMembership.setUserId(sysUser.getUserId().longValue());
+        tabPbPartyMembership.setUserId(sysUser.getUserId());
         tabPbPartyMembership.setIdentityType(sysUser.getIdentityType());
         tabPbPartyMembership.setType(sysUser.getRegistryStatus());
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbPartyMembership);

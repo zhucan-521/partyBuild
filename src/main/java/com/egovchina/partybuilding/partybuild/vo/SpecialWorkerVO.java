@@ -53,11 +53,17 @@ public class SpecialWorkerVO {
     @ApiModelProperty(value="管理组织id")
     private Long manageOrgId;
 
+    @ApiModelProperty(value="管理组织名称")
+    private String manageOrgName;
+
     @ApiModelProperty(value = "变更状态，-1离职，1在职")
     private Integer status;
 
     @ApiModelProperty(value = "所属组织ID")
     private Long deptId;
+
+    @ApiModelProperty(value = "所属组织名称")
+    private String deptName;
 
     @ApiModelProperty(value = "userID")
     private Long userId;

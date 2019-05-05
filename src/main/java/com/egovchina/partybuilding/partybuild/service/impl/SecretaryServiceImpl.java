@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.util.*;
 import com.egovchina.partybuilding.partybuild.dto.SecretaryMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.*;
@@ -59,13 +60,12 @@ public class SecretaryServiceImpl implements SecretaryService {
      */
     @Override
     public ReturnEntity insertSecretary(SecretaryMemberDTO secretaryMemberDTO) {
-        Long userId =null;
+        Long userId;
         if (null == secretaryMemberDTO.getUserId()) {
             SysUser sysUser = new SysUser();
             BeanUtil.copyPropertiesIgnoreNull(secretaryMemberDTO, sysUser);
             PaddingBaseFieldUtil.paddingBaseFiled(sysUser);
             tabSysUserMapper.insertSelective(sysUser);
-            userId=sysUser.getUserId().longValue();
         }
         userId = secretaryMemberDTO.getUserId();
         TabPbDeptSecretary tabPbDeptSecretaryinsert = new TabPbDeptSecretary();

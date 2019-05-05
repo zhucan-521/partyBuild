@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 public class MsgUpInfoDTO {
 
-    @ApiModelProperty(value = "主键")
+    @ApiModelProperty(value = "主键", required = true)
     @NotNull(message = "请附带id")
     private Long id;
 
@@ -30,7 +30,7 @@ public class MsgUpInfoDTO {
     @ApiModelProperty(value = "报送人姓名")
     private String upUsername;
 
-    @ApiModelProperty(value = "接收党组织id")
+    @ApiModelProperty(value = "接收党组织id", required = true)
     @NotNull(message = "没有上级组织，无法上报")
     private Long recevieDeptId;
 

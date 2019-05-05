@@ -2,9 +2,11 @@ package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader;
 import com.egovchina.partybuilding.partybuild.vo.LinkLeaderVO;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface TabPbLinkLeaderMapper {
     int deleteByPrimaryKey(Long linkLedaerId);
 

@@ -1,6 +1,6 @@
 package com.egovchina.partybuilding.partybuild.service;
 
-import com.egovchina.partybuilding.partybuild.dto.OrgUpgradeDto;
+import com.egovchina.partybuilding.partybuild.dto.OrgUpgradeDTO;
 import com.egovchina.partybuilding.partybuild.dto.OrgUpgradedPersonnelTransferDTO;
 import com.egovchina.partybuilding.partybuild.vo.DirectPartyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.OrgUpgradeVO;
@@ -31,9 +31,9 @@ public interface OrgUpgradeService {
      */
     List<DirectPartyMemberVO> getDirectPartyMemberByDeptId(Long deptId);
 
-    Integer addOrgUpgrade(OrgUpgradeDto orgUpgradeDto);
+    Integer addOrgUpgrade(OrgUpgradeDTO orgUpgradeDto);
 
-    Integer updateByPrimaryKeySelective(OrgUpgradeDto orgUpgradeDto);
+    Integer updateByPrimaryKeySelective(OrgUpgradeDTO orgUpgradeDto);
 
     OrgUpgradeVO selectOrgUpgradeByDeptId(Long deptId);
 

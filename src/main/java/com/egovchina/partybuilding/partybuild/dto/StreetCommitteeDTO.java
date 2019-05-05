@@ -24,13 +24,9 @@ public class StreetCommitteeDTO {
     @ApiModelProperty(value = "大公委主键")
     private Long grantCommitteeId;
 
-    @ApiModelProperty(value = "组织主键")
+    @ApiModelProperty(value = "组织主键", required = true)
     @NotNull(message = "组织主键不能为空")
     private Long orgId;
-
-    @ApiModelProperty(value = "组织名称")
-    @NotNull(message = "组织名称不能为空")
-    private String orgName;
 
     @ApiModelProperty(value = "当届标识")
     @NotNull(message = "当届标识不能为空")

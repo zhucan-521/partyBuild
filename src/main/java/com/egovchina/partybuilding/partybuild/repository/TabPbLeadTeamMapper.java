@@ -1,44 +1,51 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
-import com.egovchina.partybuilding.partybuild.dto.TabPbLeadTeamDto;
+import com.egovchina.partybuilding.partybuild.entity.LeadTeamQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeam;
-import org.apache.ibatis.annotations.Param;
+import com.egovchina.partybuilding.partybuild.vo.LeadTeamVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface TabPbLeadTeamMapper {
-    int deleteByPrimaryKey(Long leadTeamId);
-
-    int insert(TabPbLeadTeam record);
-
-    int insertSelective(TabPbLeadTeam record);
-
-    TabPbLeadTeamDto selectByPrimaryKey(Long leadTeamId);
-
-    int updateByPrimaryKeySelective(TabPbLeadTeam record);
-
-    int updateByPrimaryKeyWithBLOBs(TabPbLeadTeam record);
-
-    int updateByPrimaryKey(TabPbLeadTeam record);
-
-    List<TabPbLeadTeamDto> select(Map<String, Object> conditions);
-
-    //查询
-    TabPbLeadTeam select(Long leadTeamId);
-
-    int deleteId(Long leadTeamId);
 
     /**
-     * 维护委员人数
+     * 新增班子
      *
+     * @param tabPbLeadTeam
+     * @return
      */
-    void updateNum(@Param("leadTeamId") Long leadTeamId);
+    int insertSelective(TabPbLeadTeam tabPbLeadTeam);
 
+    /**
+     * 根据主键修改选择的key（不为空）
+     *
+     * @param tabPbLeadTeam
+     * @return
+     */
+    int updateByPrimaryKeySelective(TabPbLeadTeam tabPbLeadTeam);
 
-    void updateById(@Param("leadTeamId")Long i,@Param("count")Long count);
+    /**
+     * 根据条件查询班子vo列表
+     *
+     * @param queryBean
+     * @return
+     */
+    List<LeadTeamVO> selectLeadTeamVOByCondition(LeadTeamQueryBean queryBean);
 
-    Long selectByNum(Long leadTeamId);
+    /**
+     * 根据id查询班子详情
+     *
+     * @param leadTeamId id
+     * @return
+     */
+    LeadTeamVO selectLeadTeamVOById(Long leadTeamId);
+
+    /**
+     * 根据班子id修正班子人数
+     *
+     * @param leadTeamId 班子id
+     */
+    void correctTheNumberOfTeamsAccordingToTheTeamId(Long leadTeamId);
 }

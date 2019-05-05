@@ -6,14 +6,14 @@ import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.TransferApprovalDto;
 import com.egovchina.partybuilding.partybuild.dto.TransferItemDto;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
+import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.TabPbTransfer;
 import com.egovchina.partybuilding.partybuild.entity.TabPbTransferItem;
 import com.egovchina.partybuilding.partybuild.repository.TabPbTransferItemMapper;
+import com.egovchina.partybuilding.partybuild.service.OrganizationService;
 import com.egovchina.partybuilding.partybuild.service.SysUserService;
 import com.egovchina.partybuilding.partybuild.service.TabPbTransferItemService;
 import com.egovchina.partybuilding.partybuild.service.TabPbTransferService;
-import com.egovchina.partybuilding.partybuild.service.TabSysDeptService;
-import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.util.DeptStrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
+@Deprecated
 @Service
 @Transactional
 public class TabPbTransferItemServiceImpl implements TabPbTransferItemService {
@@ -29,7 +30,7 @@ public class TabPbTransferItemServiceImpl implements TabPbTransferItemService {
     @Autowired
     private TabPbTransferItemMapper mapper;
     @Autowired
-    private TabSysDeptService tabSysDeptService;
+    private OrganizationService organizationService;
     @Autowired
     private SysUserService sysUserService;
     @Autowired
@@ -58,8 +59,8 @@ public class TabPbTransferItemServiceImpl implements TabPbTransferItemService {
     @Override
     public int add(TabPbTransfer transfer) {
         int i = -1;
-        SysDept outDept = tabSysDeptService.selectByPrimaryKey(transfer.getFlowOutDeptId());//转出支部Id
-        SysDept inDept = tabSysDeptService.selectByPrimaryKey(transfer.getFlowInDeptId());  //接受支部Id
+        SysDept outDept = organizationService.selectByPrimaryKey(transfer.getFlowOutDeptId());//转出支部Id
+        SysDept inDept = organizationService.selectByPrimaryKey(transfer.getFlowInDeptId());  //接受支部Id
         if (outDept != null && inDept != null) {
 
             String startStr = DeptStrUtil.clearFormat(outDept.getFullPath());

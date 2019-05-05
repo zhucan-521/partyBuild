@@ -2,17 +2,17 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.partybuild.dto.FlowOutMemberDTO;
+import com.egovchina.partybuilding.partybuild.entity.FlowOutMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowIn;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowOut;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFlowInMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFlowOutMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
-import com.egovchina.partybuilding.partybuild.entity.FlowOutMemberQueryBean;
-import com.egovchina.partybuilding.partybuild.dto.FlowOutMemberDTO;
 import com.egovchina.partybuilding.partybuild.service.FlowOutVoService;
 import com.egovchina.partybuilding.partybuild.vo.FlowOutMemberVO;
 import com.github.pagehelper.PageHelper;
@@ -48,8 +48,7 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
     public PageInfo<FlowOutMemberVO> getFlowOutVoList(FlowOutMemberQueryBean dto , Page page) {
         PageHelper.startPage(page);
         List<FlowOutMemberVO> list=tabPbFlowOutMapper.selectActiveFlowOutVo(dto);
-        PageInfo<FlowOutMemberVO> pageInfo=new PageInfo(list);
-        return pageInfo;
+        return (PageInfo<FlowOutMemberVO>) new PageInfo(list);
     }
 
 
@@ -73,7 +72,7 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
             tabSysUserMapper.insertSelective(newSysUser);
             sysUser=tabSysUserMapper.selectUserByIdCardNo(flowOutMemberDto.getIdCardNo());
         }
-        Long userId=sysUser.getUserId().longValue();
+        Long userId=sysUser.getUserId();
         if(null !=tabPbFlowOutMapper.checkTabPbFlowOutExixtByUserId(userId)){
             throw new BusinessDataCheckFailException("该党员已经处于流出状态，无法继续流出！");
         }
@@ -147,7 +146,7 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
         //修改流入表
         var tabPbFlowIn=new TabPbFlowIn()
                     .setFlowOutId(flowOutMemberDto.getFlowOutId())
-                    .setUserId(sysUser.getUserId().longValue())
+                    .setUserId(sysUser.getUserId())
                     .setOldOrgnizeId(flowOutMemberDto.getOrgId())
                     .setOrgId(flowOutMemberDto.getFlowOutPlace())
                     .setOldPlace(flowOutMemberDto.getFlowToUnitName())
@@ -203,9 +202,5 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
         }
         return flag;
     }
-
-
-
-
 
 }

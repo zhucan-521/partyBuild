@@ -12,9 +12,9 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbOrgnizeChangeMappe
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
-import com.egovchina.partybuilding.partybuild.service.ITabSysDictService;
 import com.egovchina.partybuilding.partybuild.service.OrgChangeService;
-import com.egovchina.partybuilding.partybuild.service.TabSysDeptService;
+import com.egovchina.partybuilding.partybuild.service.OrganizationService;
+import com.egovchina.partybuilding.partybuild.service.SysDictService;
 import com.egovchina.partybuilding.partybuild.vo.DirectPartyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
 import com.github.pagehelper.PageHelper;
@@ -48,10 +48,10 @@ public class OrgChangeServiceImpl implements OrgChangeService {
     private TabSysDeptMapper tabSysDeptMapper;
 
     @Autowired
-    private ITabSysDictService tabSysDictService;
+    private SysDictService tabSysDictService;
 
     @Autowired
-    private TabSysDeptService tabSysDeptService;
+    private OrganizationService organizationService;
 
     @Autowired
     private TabSysUserMapper tabSysUserMapper;
@@ -74,14 +74,14 @@ public class OrgChangeServiceImpl implements OrgChangeService {
     @Transactional
     public int insertOrgChange(TabPbOrgnizeChange tabPbOrgnizeChange) {
         SysDept sysDept = new SysDept();
-        sysDept.setDeptId(tabPbOrgnizeChange.getDeptId().intValue());
+        sysDept.setDeptId(tabPbOrgnizeChange.getDeptId());
         SysDept superiorOrganization = tabSysDeptMapper.selectByPrimaryKey(tabPbOrgnizeChange.getNowSuperiorId());
         if (superiorOrganization != null) {
-            sysDept.setParentId(tabPbOrgnizeChange.getNowSuperiorId().intValue());
+            sysDept.setParentId(tabPbOrgnizeChange.getNowSuperiorId());
         } else {
             throw new BusinessDataCheckFailException("上级组织不存在");
         }
-        int parentId = tabSysDeptMapper.selectByPrimaryKey(tabPbOrgnizeChange.getDeptId()).getParentId();
+        long parentId = tabSysDeptMapper.selectByPrimaryKey(tabPbOrgnizeChange.getDeptId()).getParentId();
         if (tabPbOrgnizeChange.getNowSuperiorId() == parentId) {
             throw new BusinessDataCheckFailException("上级组织未改变");
         }
@@ -95,7 +95,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
         sysDept.setOrgCode(tabPbOrgnizeChange.getOrgnizeCode());
         sysDept.setFoundedFileNumber(tabPbOrgnizeChange.getFileNumber());
         paddingUpdateRelatedBaseFiled(sysDept);
-        tabSysDeptService.modifyFullPathAndSubDeptIfNecessary(sysDept);
+        organizationService.modifyFullPathAndSubDeptIfNecessary(sysDept);
         return tabSysDeptMapper.updateByPrimaryKeySelective(sysDept);
     }
 
@@ -170,7 +170,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
         }
 
         var newDept = new SysDept();
-        newDept.setDeptId(org.getDeptId().intValue());
+        newDept.setDeptId(org.getDeptId());
         newDept.setName(org.getOrgnizeName());
         newDept.setOrgShortName(org.getShortName());
         int count = this.tabSysDeptMapper.updateByPrimaryKeySelective(newDept);
@@ -195,7 +195,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
             }
         }
         var newDept = new SysDept();
-        newDept.setDeptId(org.getDeptId().intValue());
+        newDept.setDeptId(org.getDeptId());
         newDept.setEblFlag(eblFlag);
         newDept.setOrgStatus(orgStatus);
         return this.tabSysDeptMapper.updateByPrimaryKeySelective(newDept);
