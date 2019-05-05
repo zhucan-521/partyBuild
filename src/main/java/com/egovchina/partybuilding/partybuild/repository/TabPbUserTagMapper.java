@@ -1,7 +1,7 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public interface TabPbUserTagMapper {
     int deleteByPrimaryKey(Long usertagId);
 
-    int deleteByUserIdAndTagType(@Param("userId") Long userId, @Param("tagType") Long tagType);
+    int deleteByUserIdAndTagType(@Param("userId") Long userId, @Param("tagTypes") Long tagType);
 
     int insert(TabPbUserTag record);
 
@@ -35,14 +35,34 @@ public interface TabPbUserTagMapper {
      */
     List<TabPbUserTag> selectAllListSelective(TabPbUserTag userTag);
 
+    boolean exist(@Param("userId") Long userId, @Param("tagTypes") Long tagType);
+
     /**
-     * 对应的dictId可通过系统-字典管理-用户标签查看对应的标签
-     *
-     * @param tagDict 用户标签查看对应的标签
+     * 批量插入标记
+     * @param list
      * @return
      */
-    List<SysUser> selectUserByTagDict(Long tagDict);
+    int batchInsertUserTagDTO(List<TabPbUserTag> list);
 
-    boolean exist(@Param("userId") Long userId, @Param("tagType") Long tagType);
+    List<TabPbUserTag> selectTagTypesList(Long userId);
 
+    List selectUsertagIdList(Long userId);
+
+    List<TabPbUserTag> selectTabPbUserTagListByUserId(Long userId);
+
+    int insertUserTagDTO(TabPbUserTag tabPbUserTag);
+
+    /**
+     * 根据用户id删除用户所有标签
+     * @param userId 用户id
+     * @return
+     */
+    int batchDeleteByUserId(Long userId);
+
+    /**
+     * 批量删除根据id
+     * @param deleteIds ids
+     * @return
+     */
+    int batchDeleteById(List<Long> deleteIds);
 }

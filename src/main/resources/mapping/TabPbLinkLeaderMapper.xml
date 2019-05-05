@@ -34,13 +34,6 @@
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
         <result column="username" jdbcType="VARCHAR" property="realName"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <collection property="activitiesList" ofType="com.egovchina.partybuilding.partybuild.entity.TabPbActivities">
-            <id column="activities_id" property="activitiesId"/>
-            <result column="subject" property="subject"/>
-            <result column="org_id" jdbcType="BIGINT" property="orgId"/>
-            <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
-            <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
-        </collection>
     </resultMap>
 
     <sql id="Base_Column_List">

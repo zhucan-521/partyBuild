@@ -2,6 +2,7 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
@@ -10,15 +11,14 @@ import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.PositiveRegistMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.PositiveRegistMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.SysDept;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPositiveRegistMapper;
+import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.PositiveRegistService;
 import com.egovchina.partybuilding.partybuild.service.UserTagService;
-import com.egovchina.partybuilding.partybuild.system.mapper.SysDeptMapper;
-import com.egovchina.partybuilding.partybuild.system.util.UserTagType;
+import com.egovchina.partybuilding.partybuild.util.UserTagType;
 import com.egovchina.partybuilding.partybuild.vo.PositiveRegistMemberVO;
 import com.github.pagehelper.PageHelper;
 import lombok.var;
@@ -37,16 +37,16 @@ import java.util.List;
 public class PositiveRegistServiceImpl implements PositiveRegistService {
 
     @Autowired
-    private TabPbPositiveRegistMapper positiveRegistMapper;
+    private TabPbPositiveRegistMapper tabPbPositiveRegistMapper;
 
     @Autowired
-    private TabSysUserMapper sysUserMapper;
+    private TabSysUserMapper tabSysUserMapper;
 
     @Autowired
-    private SysDeptMapper deptMapper;
+    private TabSysDeptMapper tabSysDeptMapper;
 
     @Autowired
-    private UserTagService tabPbUserTagService;
+    private UserTagService userTagService;
 
     @Autowired
     private ITabPbAttachmentService iTabPbAttachmentService;
@@ -59,17 +59,17 @@ public class PositiveRegistServiceImpl implements PositiveRegistService {
     @Transactional
     @PaddingBaseField(recursive = true)
     public int addRegistMemberDTO(PositiveRegistMemberDTO positiveRegistMemberDto) {
-        TabPbPositiveRegist regist = positiveRegistMapper.findById(positiveRegistMemberDto.getUserId());
+        TabPbPositiveRegist regist = tabPbPositiveRegistMapper.findById(positiveRegistMemberDto.getUserId());
         if(regist != null){
-            throw new BusinessDataNotFoundException("该党员已经报道:"+regist.getSysDeptList().get(0).getName()+" 在不返回或者不删除该党员报道记录是不能在继续报道新组织");
+            throw new BusinessDataNotFoundException("该党员已经报道，在不返回或者不删除该党员报道记录是不能在继续报道新组织");
         }
         //0为未报到,,1为已报到
         positiveRegistMemberDto.setRevokeTag(new Byte("1"));
         //修改党员信息
-        newUser(positiveRegistMemberDto.getUserId().intValue(),true, positiveRegistMemberDto.getDeptId());
+        newUser(positiveRegistMemberDto.getUserId(), true, positiveRegistMemberDto.getDeptId());
         TabPbPositiveRegist tabPbPositiveRegist=new TabPbPositiveRegist();
         BeanUtil.copyPropertiesIgnoreNull(positiveRegistMemberDto,tabPbPositiveRegist);
-        int retVal = positiveRegistMapper.addPositiveRegist(tabPbPositiveRegist);
+        int retVal = tabPbPositiveRegistMapper.addPositiveRegist(tabPbPositiveRegist);
         Long hostId=tabPbPositiveRegist.getPositiveRegistId();
         if(retVal>0){
             iTabPbAttachmentService.intelligentOperation(positiveRegistMemberDto.getAttachments(),hostId, AttachmentType.POSITIVE);
@@ -84,7 +84,7 @@ public class PositiveRegistServiceImpl implements PositiveRegistService {
     @Override
     public List<PositiveRegistMemberVO> selectRegistMemberVOList(PositiveRegistMemberQueryBean positiveRegistMemberQueryBean, Page page) {
         PageHelper.startPage(page);
-        var list = positiveRegistMapper.selectListVoPage(positiveRegistMemberQueryBean);
+        var list = tabPbPositiveRegistMapper.selectListVoPage(positiveRegistMemberQueryBean);
         return list;
     }
 
@@ -94,7 +94,7 @@ public class PositiveRegistServiceImpl implements PositiveRegistService {
      */
     @Override
     public int delectRegistStatus(Long userId){
-        TabPbPositiveRegist regist = positiveRegistMapper.findById(userId);
+        TabPbPositiveRegist regist = tabPbPositiveRegistMapper.findById(userId);
         if(regist != null){
             return delete(regist.getPositiveRegistId());
         }
@@ -103,48 +103,48 @@ public class PositiveRegistServiceImpl implements PositiveRegistService {
 
     @Override
     public PositiveRegistMemberVO getReportMembersInfo(Long positiveRegistId) {
-        PositiveRegistMemberVO positiveRegistMemberVO=positiveRegistMapper.findPositiveRegistMemberById(positiveRegistId);
+        PositiveRegistMemberVO positiveRegistMemberVO = tabPbPositiveRegistMapper.findPositiveRegistMemberById(positiveRegistId);
         positiveRegistMemberVO.setAttachments(iTabPbAttachmentService.listByHostId( positiveRegistId,AttachmentType.POSITIVE));
         return positiveRegistMemberVO;
     }
 
     @Override
     @PaddingBaseField(updateOnly = true)
-    public int ChangeStatus(Long positiveRegistId, Byte revokeTag) {
+    public int changeStatus(Long positiveRegistId, Byte revokeTag) {
         int retVal = 0;
-        TabPbPositiveRegist regist = positiveRegistMapper.selectById(positiveRegistId);
+        TabPbPositiveRegist regist = tabPbPositiveRegistMapper.selectById(positiveRegistId);
         if(regist!=null){
-            retVal = positiveRegistMapper.editPositive(new TabPbPositiveRegist().setPositiveRegistId(positiveRegistId)
+            retVal = tabPbPositiveRegistMapper.editPositive(new TabPbPositiveRegist().setPositiveRegistId(positiveRegistId)
                     .setRevokeTag(revokeTag).setRevokeDate(new Date()));
         }
         //修改党员信息
         if(revokeTag == 2){
-            newUser(regist.getUserId().intValue(),false,regist.getDeptId());
+            newUser(regist.getUserId(), false, regist.getDeptId());
         }else {
-            newUser(regist.getUserId().intValue(),true,regist.getDeptId());
+            newUser(regist.getUserId(), true, regist.getDeptId());
         }
         return retVal;
     }
 
     @Override
     public int delete(Long positiveRegistId){
-        TabPbPositiveRegist regist = positiveRegistMapper.selectById(positiveRegistId);
+        TabPbPositiveRegist regist = tabPbPositiveRegistMapper.selectById(positiveRegistId);
         if(regist!=null){
-            newUser(regist.getUserId().intValue(),false,regist.getDeptId());
+            newUser(regist.getUserId(), false, regist.getDeptId());
             PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(regist);
-            return positiveRegistMapper.deleteRegist(regist);
+            return tabPbPositiveRegistMapper.deleteRegist(regist);
         }
-        return 3;
+        return 0;
     }
 
     /**
      * 生成user对象，然后根据报到党员的主键id修改
      */
-    private void newUser(Integer userId,Boolean flag,Long deptId){
+    private void newUser(Long userId, Boolean flag, Long deptId) {
         if(userId ==null){
             throw new BusinessDataIncompleteException("请选择报到党员");
         }
-        SysDept dept = deptMapper.selectById(deptId);
+        SysDept dept = tabSysDeptMapper.selectAloneByPrimaryKey(deptId);
         if(dept!=null){
             SysUser user = new SysUser();
             user.setUserId(userId);
@@ -154,12 +154,12 @@ public class PositiveRegistServiceImpl implements PositiveRegistService {
                 user.setReportOrgPhone(dept.getContactNumber());
                 user.setReportOrgContactor(dept.getContactor());
                 //添加标签
-                tabPbUserTagService.addUserTag(userId.longValue(), UserTagType.REPORT);
+                userTagService.addUserTag(userId.longValue(), UserTagType.REPORT);
             }else{
                 //删除标签
-                tabPbUserTagService.delete(userId.longValue(), UserTagType.REPORT);
+                userTagService.delete(userId.longValue(), UserTagType.REPORT);
             }
-            sysUserMapper.editUserRegister(user);
+            tabSysUserMapper.editUserRegister(user);
 
         }else {
             throw new BusinessDataNotFoundException("组织不存在");

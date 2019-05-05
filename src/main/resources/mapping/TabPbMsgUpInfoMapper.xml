@@ -43,7 +43,7 @@
                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                    column="{hostId=id,attachmentType=attachment_type}"/>
    </resultMap>
-    <resultMap id="selectBydeptIdMap" type="com.egovchina.partybuilding.partybuild.entity.SysUser">
+    <resultMap id="selectBydeptIdMap" type="com.egovchina.partybuilding.common.entity.SysUser">
         <id column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>

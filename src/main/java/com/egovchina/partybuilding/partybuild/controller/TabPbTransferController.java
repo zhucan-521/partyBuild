@@ -11,14 +11,21 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbTransfer;
 import com.egovchina.partybuilding.partybuild.service.TabPbTransferItemService;
 import com.egovchina.partybuilding.partybuild.service.TabPbTransferService;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import springfox.documentation.annotations.ApiIgnore;
 
-@Api(tags = "党员-组织关系接转模块")
-@RestController
-@RequestMapping("/transfer")
+@Deprecated
+//@Api(tags = "党员-组织关系接转模块")
+//@RestController
+//@RequestMapping("/transfer")
 public class TabPbTransferController {
 
     @Autowired

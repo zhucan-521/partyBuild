@@ -24,11 +24,6 @@
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
     </resultMap>
 
-    <resultMap id="SysUserRoleMap" type="com.egovchina.partybuilding.partybuild.system.entity.SysUserRole">
-        <result column="user_id" jdbcType="BIGINT" property="userId"/>
-        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
-    </resultMap>
-
     <resultMap id="SpecialWorkerVOMap" type="com.egovchina.partybuilding.partybuild.vo.SpecialWorkerVO">
         <id column="special_worker_id" jdbcType="BIGINT" property="specialWorkerId"/>
         <result column="manage_org_id" jdbcType="BIGINT" property="manageOrgId"/>
@@ -280,11 +275,6 @@
       version = #{version,jdbcType=BIGINT}
     where special_worker_id = #{specialWorkerId,jdbcType=BIGINT}
   </update>
-
-    <!--查询人员权限表中有没有专干人员-->
-    <select id="selectSysUserRoleByUserId" parameterType="Long"  resultMap="SysUserRoleMap">
-       select * from sys_user_role where user_id= #{userId} and role_id =44 limit 1
-    </select>
 
     <!--查询专干党员信息-->
     <select id="selectSpecialWorkerVOList"

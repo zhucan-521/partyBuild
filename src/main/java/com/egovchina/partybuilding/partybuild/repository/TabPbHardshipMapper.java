@@ -39,4 +39,5 @@ public interface TabPbHardshipMapper {
 
     int logicDelete(TabPbHardship record);
 
+    int logicDeleteByUserId(TabPbHardship tabPbHardship);
 }

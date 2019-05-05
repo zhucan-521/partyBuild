@@ -64,7 +64,7 @@
     <!-- 返回出国出境详细信息Vo数据集合 -->
     <resultMap id="AbroadDetailsResultMap" type="com.egovchina.partybuilding.partybuild.vo.AbroadDetailsVO">
         <id column="abroad_id" jdbcType="BIGINT" property="abroadId"/>
-        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="real_name" jdbcType="VARCHAR" property="realName"/>
@@ -439,10 +439,10 @@
     </select>
 
     <!-- 根据主键ID查询详情 -->
-    <select id="findByAbroadId" parameterType="java.lang.Long" resultMap="AbroadDetailsResultMap">
+    <select id="findAbroadDetailsVOByAbroadId" parameterType="java.lang.Long" resultMap="AbroadDetailsResultMap">
         SELECT
         <include refid="Simplify_Column_List"/>,
-        dept.`name`,
+        dept.`name` as org_name,
         `user`.username,
         `user`.realname
         FROM

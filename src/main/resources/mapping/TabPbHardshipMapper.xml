@@ -471,4 +471,15 @@
         where hardship_id = #{hardshipId,jdbcType=BIGINT}
     </update>
 
+    <!--根据用户id逻辑删除-->
+    <update id="logicDeleteByUserId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
+        update tab_pb_hardship
+        set del_flag = 1,
+          update_time = #{updateTime,jdbcType=TIMESTAMP},
+          update_userid = #{updateUserid,jdbcType=BIGINT},
+          update_username = #{updateUsername,jdbcType=VARCHAR},
+          version = #{version,jdbcType=BIGINT}
+        where user_id = #{hardshipId,jdbcType=BIGINT}
+    </update>
+
 </mapper>

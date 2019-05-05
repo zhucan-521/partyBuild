@@ -2,7 +2,7 @@ package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.OrgRange;
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.partybuild.dto.CommentaryDTO;
+import com.egovchina.partybuilding.partybuild.dto.DoubleCommentaryDTO;
 import com.egovchina.partybuilding.partybuild.entity.CommentaryQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.DoubleCommentaryQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary;
@@ -42,22 +42,22 @@ public interface DoubleCommentaryService {
     /**
      * desc: 新增双述双评
      *
-     * @param commentaryDTO dto
+     * @param doubleCommentaryDTO dto
      * @return int
      * @author FanYanGen
      * @date 2019/4/24 17:55
      **/
-    int insertCommentary(CommentaryDTO commentaryDTO);
+    int insertCommentary(DoubleCommentaryDTO doubleCommentaryDTO);
 
     /**
      * desc: 更新双述双评
      *
-     * @param commentaryDTO dto
+     * @param doubleCommentaryDTO dto
      * @return int
      * @author FanYanGen
      * @date 2019/4/24 19:29
      **/
-    int updateCommentary(CommentaryDTO commentaryDTO);
+    int updateCommentary(DoubleCommentaryDTO doubleCommentaryDTO);
 
     /**
      * desc: 根据主键ID查询详情

@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.egovchina.partybuilding.common.util.BeanUtil.copyListPropertiesAndPaddingBaseField;
-import static com.egovchina.partybuilding.common.util.BeanUtil.copyPropertiesAndPaddingBaseField;
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField;
 import static com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled;
 
 /**
@@ -28,6 +28,7 @@ import static com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil.paddi
  */
 @Service
 public class UnitInfoServiceImpl implements UnitInfoService {
+
     @Autowired
     private TabPbUnitInfoMapper tabPbUnitInfoMapper;
 
@@ -45,8 +46,8 @@ public class UnitInfoServiceImpl implements UnitInfoService {
     @Override
     public int insertUnitInfo(UnitInfoDTO unitInfoDTO) {
         TabPbUnitInfo tabPbUnitInfo =
-                copyPropertiesAndPaddingBaseField(
-                        unitInfoDTO,TabPbUnitInfo.class,true,false);
+                generateTargetCopyPropertiesAndPaddingBaseField(
+                        unitInfoDTO, TabPbUnitInfo.class, false);
         return tabPbUnitInfoMapper.insertSelective(tabPbUnitInfo);
     }
 
@@ -64,8 +65,8 @@ public class UnitInfoServiceImpl implements UnitInfoService {
         int count = 0;
         if (tabPbUnitInfoMapper.selectByPrimaryKey(unitInfoDTO.getUnitId()) != null) {
             TabPbUnitInfo tabPbUnitInfo =
-                    copyPropertiesAndPaddingBaseField(
-                            unitInfoDTO,TabPbUnitInfo.class,true,true);
+                    generateTargetCopyPropertiesAndPaddingBaseField(
+                            unitInfoDTO, TabPbUnitInfo.class, true);
             count += tabPbUnitInfoMapper.updateByPrimaryKeySelective(tabPbUnitInfo);
         } else {
             throw new BusinessDataNotFoundException("该单位不存在");
@@ -85,8 +86,9 @@ public class UnitInfoServiceImpl implements UnitInfoService {
         if (CollectionUtil.isEmpty(unitInfoDTOList)) {
             return count;
         }
-        List<TabPbUnitInfo> tabPbUnitInfos = copyListPropertiesAndPaddingBaseField(
-                unitInfoDTOList, TabPbUnitInfo.class, true, true);
+        List<TabPbUnitInfo> tabPbUnitInfos =
+                generateTargetListCopyPropertiesAndPaddingBaseField(
+                        unitInfoDTOList, TabPbUnitInfo.class, true);
         for (TabPbUnitInfo tabPbUnitInfo : tabPbUnitInfos) {
             count += tabPbUnitInfoMapper.updateByPrimaryKeySelective(tabPbUnitInfo);
         }

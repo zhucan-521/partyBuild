@@ -1,8 +1,8 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.entity.TabPbAttachment;
-import com.egovchina.partybuilding.partybuild.dto.SysDeptDto;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.dto.OrganizationDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -67,10 +67,10 @@ public class PositiveRegistMemberVO {
     private String userName;
 
     @ApiModelProperty(value = "人员列表")
-    private List<SysUser> sysUserList;
+    private List<UserInfoVO> users;
 
     @ApiModelProperty(value = "组织列表")
-    private List<SysDeptDto> sysDeptList;
+    private List<OrganizationVO> organizations;
 
     @ApiModelProperty(value = "附件")
     private List<TabPbAttachment> attachments;
@@ -83,6 +83,5 @@ public class PositiveRegistMemberVO {
 
     @ApiModelProperty(value = "0报道日期大于当前日期，1报道日期小于等于当前日期")
     private Long isEnableBack;
-
 
 }

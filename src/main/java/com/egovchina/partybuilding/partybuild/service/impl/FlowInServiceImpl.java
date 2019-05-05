@@ -1,17 +1,18 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
+
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.partybuild.dto.FlowInMemberDTO;
+import com.egovchina.partybuilding.partybuild.entity.FlowInMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowIn;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowOut;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFlowInMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFlowOutMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
-import com.egovchina.partybuilding.partybuild.entity.FlowInMemberQueryBean;
-import com.egovchina.partybuilding.partybuild.dto.FlowInMemberDTO;
 import com.egovchina.partybuilding.partybuild.service.FlowInService;
 import com.egovchina.partybuilding.partybuild.vo.FlowInMemberVO;
 import com.github.pagehelper.PageHelper;
@@ -20,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 /**
@@ -103,7 +105,7 @@ public class FlowInServiceImpl implements FlowInService {
         //修改流入流出党组织联系人和电话  user表
         Long userId=tabSysUserMapper.SelectUserIdByIDcard(flowInMemberDto.getIdCardNo());
         SysUser sysUser=new SysUser();
-        sysUser.setUserId(userId.intValue());
+        sysUser.setUserId(userId);
         //设置状态流动
         sysUser.setFlowStatus(41207L);
         BeanUtils.copyProperties(flowInMemberDto,sysUser);
@@ -124,7 +126,7 @@ public class FlowInServiceImpl implements FlowInService {
         flowInMemberDto.setFlowToOrgName(null);
         Long userId=tabSysUserMapper.SelectUserIdByIDcard(flowInMemberDto.getIdCardNo());
         SysUser sysUser=new SysUser();
-        sysUser.setUserId(userId.intValue());
+        sysUser.setUserId(userId);
         BeanUtil.copyPropertiesIgnoreNull(flowInMemberDto, sysUser);
         TabPbFlowIn tabPbFlowIn=tabPbFlowInMapper.selectByPrimaryKey(flowInMemberDto.getFlowInId());
         TabPbFlowOut tabPbFlowOutDto=new TabPbFlowOut();

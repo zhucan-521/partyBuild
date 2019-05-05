@@ -7,11 +7,11 @@ import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailExcepti
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.OrgClassifyDTO;
+import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify;
 import com.egovchina.partybuilding.partybuild.repository.TabPbOrgClassifyMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.service.OrgClassifyService;
-import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.vo.OrgClassifyVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -25,10 +25,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 分类定等service实现类
- *
- * @Author Zhang Fan
- **/
+ * desc: 分类定等-服务接口实现
+ * Created by FanYanGen on 2019/4/22 15:58
+ */
 @Transactional(rollbackFor = Exception.class)
 @Service("tabPbOrgClassifyService")
 public class OrgClassifyServiceImpl implements OrgClassifyService {
@@ -55,7 +54,7 @@ public class OrgClassifyServiceImpl implements OrgClassifyService {
     public int insertSelective(TabPbOrgClassify record) {
         int retVal = orgClassifyMapper.insertSelective(record);
         if (retVal > 0) {
-            retVal += pushModification(record.getDeptId().intValue(), record.getOrgLevel(), record.getLevelDate());
+            retVal += pushModification(record.getDeptId(), record.getOrgLevel(), record.getLevelDate());
         }
         return retVal;
     }
@@ -68,8 +67,8 @@ public class OrgClassifyServiceImpl implements OrgClassifyService {
      * @param levelDate 定等日期
      * @return
      */
-    private int pushModification(Integer deptId, Long orgLevel, Date levelDate) {
-        SysDept sysDept = deptMapper.selectByPrimaryKey(deptId.longValue());
+    private int pushModification(Long deptId, Long orgLevel, Date levelDate) {
+        SysDept sysDept = deptMapper.selectByPrimaryKey(deptId);
         sysDept.setDeptId(deptId);
         sysDept.setOrgLevel(orgLevel);
         sysDept.setLevelDate(levelDate);
@@ -85,7 +84,7 @@ public class OrgClassifyServiceImpl implements OrgClassifyService {
     @Override
     public int updateByPrimaryKeySelective(TabPbOrgClassify record) {
         int retVal = orgClassifyMapper.updateByPrimaryKeySelective(record);
-        retVal += pushModification(record.getDeptId().intValue(), record.getOrgLevel(), record.getLevelDate());
+        retVal += pushModification(record.getDeptId(), record.getOrgLevel(), record.getLevelDate());
         return retVal;
     }
 
@@ -185,7 +184,7 @@ public class OrgClassifyServiceImpl implements OrgClassifyService {
      * @date 2019/4/25 9:54
      **/
     private void verification(OrgClassifyDTO orgClassifyDTO) {
-        if (!deptMapper.isExist(orgClassifyDTO.getDeptId())) {
+        if (!deptMapper.checkIsExistByOrgId(orgClassifyDTO.getDeptId())) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
     }

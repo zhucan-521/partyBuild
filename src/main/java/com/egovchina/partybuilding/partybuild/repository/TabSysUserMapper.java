@@ -1,10 +1,9 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 
-import com.egovchina.partybuilding.partybuild.dto.Personnel;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
 import com.egovchina.partybuilding.partybuild.dto.UserDeptPositiveDto;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.entity.SysUserQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import org.apache.ibatis.annotations.Param;
@@ -52,7 +51,7 @@ public interface TabSysUserMapper {
     SysUser selectUserByIdCardNo(String idCardNo);
 
 
-    List<SysUserVO> selectPartyByIdCardNoOnUserName(@Param("idCardNo") String idCardNo ,@Param("username") String username);
+    List<SysUserVO> selectPartyByIdCardNoOnUserName(@Param("idCardNo") String idCardNo, @Param("username") String username);
 
     //根据组织Id 获取党务工作者信息
     TransferUserDeptInfo getDWRoleUserInfoByDeptId(Long deptId);
@@ -100,14 +99,6 @@ public interface TabSysUserMapper {
      * @return
      */
     int batchDeptIdByUserId(@Param("userIdList") List<Integer> userIdList, @Param("deptId") Long deptId);
-
-    /**
-     * 查询组织下的所有人员 包括直属党员、在职党员、流入党员
-     *
-     * @param deptId
-     * @return
-     */
-    List<Personnel> selectUserByDeptId(@Param("deptId") Long deptId);
 
     /**
      * 查询组织下的直属党员
@@ -177,7 +168,7 @@ public interface TabSysUserMapper {
      * @author FanYanGen
      * @date 2019/4/15 9:32
      **/
-    boolean checkIsExistByUserId(Integer userId);
+    boolean checkIsExistByUserId(Long userId);
 
     /**
      * desc: 根据身份证号码查询该用户是否存在
@@ -191,8 +182,21 @@ public interface TabSysUserMapper {
 
     /**
      * 查询附带 工作 学历信息
+     *
      * @param userId
      * @return
      */
     PartyMemberVO selectByPrimaryKeyToAll(Long userId);
+
+    /**
+     * desc: 修改党员困难标识
+     *
+     * @param isPoor     贫困标识
+     * @param hardshipId 困难ID
+     * @return int
+     * @author FanYanGen
+     * @date 2019/4/29 10:47
+     **/
+    int updateUserIsPoorByHardshipId(Integer isPoor, Long hardshipId);
+
 }

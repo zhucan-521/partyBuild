@@ -1,9 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service;
 
-import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
-import com.egovchina.partybuilding.partybuild.dto.RegistryDTO;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
 
 import java.util.List;
 
@@ -44,29 +42,6 @@ public interface SysUserService {
      */
     SysUser getRegistryByUserId(Long userId);
 
-    /**
-     * 更新用户党籍信息
-     *
-     * @param sysUser
-     * @return
-     */
-    boolean updateUser(SysUser sysUser);
-
-    /**
-     * 更新用户党籍信息
-     *
-     * @param membershipDTO
-     * @return
-     */
-    boolean updateMembership(MembershipDTO membershipDTO);
-
-    /**
-     * 获取党籍列表
-     *
-     * @param userId
-     * @return
-     */
-    List<RegistryDTO> getRegistryList(Long userId);
 
     /**
      * 社区活动选人接口(通过组织主键来获取)

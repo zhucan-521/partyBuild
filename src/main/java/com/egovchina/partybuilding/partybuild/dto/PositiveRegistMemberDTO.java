@@ -1,7 +1,8 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.entity.TabPbAttachment;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
+import com.egovchina.partybuilding.partybuild.vo.UserInfoVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,11 +17,11 @@ public class PositiveRegistMemberDTO {
     @ApiModelProperty(value = "报到Id")
     private Long positiveRegistId;
 
-    @ApiModelProperty(value = "组织主键")
+    @ApiModelProperty(value = "组织主键", required = true)
     @NotNull(message = "组织主键不能为空")
     private Long deptId;
 
-    @ApiModelProperty(value = "人员Id")
+    @ApiModelProperty(value = "人员Id", required = true)
     @NotNull(message = "人员Id不能为空")
     private Long userId;
 
@@ -65,10 +66,10 @@ public class PositiveRegistMemberDTO {
     private String userName;
 
     @ApiModelProperty(value = "人员列表")
-    private List<SysUser> sysUserList;
+    private List<UserInfoVO> users;
 
     @ApiModelProperty(value = "组织列表")
-    private List<SysDeptDto> sysDeptList;
+    private List<OrganizationDTO> organizations;
 
     @ApiModelProperty(value = "附件")
     private List<TabPbAttachment> attachments;
