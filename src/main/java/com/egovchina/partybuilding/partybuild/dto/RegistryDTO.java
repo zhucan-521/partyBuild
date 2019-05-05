@@ -19,24 +19,24 @@ import java.util.Date;
 @Data
 public class RegistryDTO {
 
-    @ApiModelProperty("用户ID")
+    @ApiModelProperty(value = "用户ID", required = true)
     @NotNull(message = "用户Id不允许为空")
     private Long userId;
 
-    @ApiModelProperty(value = "出党时间", example = "yyyy-MM-dd")
+    @ApiModelProperty(value = "出党时间", required = true, example = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "出党时间不允许为空")
     private Date reduceTime;
 
-    @ApiModelProperty(value = "出党方式 3出党、4停止党籍、5死亡、6其他")
+    @ApiModelProperty(value = "出党方式 3出党、4停止党籍、5死亡、6其他", required = true)
     @NotNull(message = "出党方式不允许为空")
     private Long outType;
 
-    @ApiModelProperty(value = "组织ID ,党支部Id")
+    @ApiModelProperty(value = "组织ID ,党支部Id", required = true)
     @NotNull(message = "组织id不允许为空")
     private Integer deptId;
 
-    @ApiModelProperty(value = "用户名")
+    @ApiModelProperty(value = "用户名", required = true)
     @NotNull(message = "用户名不允许为空")
     private String username;
 }

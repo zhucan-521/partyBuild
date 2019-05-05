@@ -39,7 +39,7 @@
     </resultMap>
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="UserResultMap" type="com.egovchina.partybuilding.partybuild.entity.SysUser">
+    <resultMap id="UserResultMap" type="com.egovchina.partybuilding.common.entity.SysUser">
         <id column="user_id" property="userId"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
@@ -58,7 +58,6 @@
         <result column="report_org_contactor" property="reportOrgContactor"/>
         <result column="report_org_phone" property="reportOrgPhone"/>
         <result column="identity_type" property="identityType"/>
-        <result column="hardship_type" property="hardshipType"/>
     </resultMap>
 
     <resultMap id="UserIdMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMember">

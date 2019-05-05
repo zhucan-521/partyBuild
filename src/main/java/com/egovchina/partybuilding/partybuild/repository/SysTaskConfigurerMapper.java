@@ -39,7 +39,7 @@ public interface SysTaskConfigurerMapper {
      * @param year      年度
      * @return
      */
-    SysTaskConfigurer selectByTaskIdAndFulfillIdAndYear(@Param("taskId") @NotNull(message = "任务ID不能为空") String taskId, @Param("fulfillId") @NotNull(message = "履行组织ID不能为空") String fulfillId, @Param("year") @NotNull(message = "年度不能为空") @Pattern(regexp = "\\d{4}", message = "年度格式不正确") String year);
+    SysTaskConfigurer selectByTaskIdAndFulfillIdAndYear(@Param("taskId") String taskId, @Param("fulfillId") String fulfillId, @Param("year") String year);
 
     /**
      * 获取指定组织下待新增的配置数据
@@ -49,7 +49,7 @@ public interface SysTaskConfigurerMapper {
      * @param taskId
      * @return
      */
-    List<Long> selectCandidateFulfillIds(@Param("orgId") Long orgId, @Param("year") @NotNull(message = "年度不能为空") @Pattern(regexp = "\\d{4}", message = "年度格式不正确") String year, @Param("taskId") @NotNull(message = "任务ID不能为空") String taskId);
+    List<Long> selectCandidateFulfillIds(@Param("orgId") Long orgId, @Param("year") String year, @Param("taskId") String taskId);
 
     /**
      * 批量新增

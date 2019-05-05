@@ -34,21 +34,65 @@
         <result column="plan_check" jdbcType="LONGVARCHAR" property="planCheck"/>
         <result column="summary_check" jdbcType="LONGVARCHAR" property="summaryCheck"/>
     </resultMap>
-    <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithAttachments" type="com.egovchina.partybuilding.partybuild.entity.TabPbWorkPlan">
+    <!--工作计划VO结果集-->
+    <resultMap id="WorkPlanVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.WorkPlanVO">
+        <id column="plan_id" jdbcType="BIGINT" property="planId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="plan_year" jdbcType="BIGINT" property="planYear"/>
+        <result column="report_date" jdbcType="TIMESTAMP" property="reportDate"/>
+        <result column="plan_check_date" jdbcType="TIMESTAMP" property="planCheckDate"/>
+        <result column="check_org" jdbcType="BIGINT" property="checkOrg"/>
+        <result column="check_result" jdbcType="BIGINT" property="checkResult"/>
+        <result column="check_user" jdbcType="BIGINT" property="checkUser"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+    <!--工作计划VO带统计数字结果集-->
+    <resultMap extends="WorkPlanVOResultMap" id="ContainsStatisticsWorkPlanVOResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.WorkPlanVO">
+        <result column="video_num" jdbcType="INTEGER" property="videoNum"/>
+        <result column="img_num" jdbcType="INTEGER" property="imgNum"/>
+        <result column="doc_num" jdbcType="INTEGER" property="docNum"/>
+    </resultMap>
+    <!--工作计划VO带附件-->
+    <resultMap extends="WorkPlanVOResultMap" id="ContainsAttachmentWorkPlanVOResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.WorkPlanVO">
         <result column="check_org_name" jdbcType="VARCHAR" property="checkOrgName"/>
         <result column="check_user_name" jdbcType="VARCHAR" property="checkUserName"/>
+        <collection property="attachments"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=plan_id,attachmentType=attachment_type}"/>
+    </resultMap>
+    <!--工作总结VO结果集-->
+    <resultMap id="WorkSummaryVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.WorkSummaryVO">
+        <id column="plan_id" jdbcType="BIGINT" property="planId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="plan_year" jdbcType="BIGINT" property="planYear"/>
+        <result column="summary_date" jdbcType="TIMESTAMP" property="summaryDate"/>
+        <result column="summary_check_date" jdbcType="TIMESTAMP" property="summaryCheckDate"/>
+        <result column="summary_check_org" jdbcType="BIGINT" property="summaryCheckOrg"/>
+        <result column="summary_check_result" jdbcType="BIGINT" property="summaryCheckResult"/>
+        <result column="summary_check_user" jdbcType="BIGINT" property="summaryCheckUser"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+    <!--工作总结VO带统计数字结果集-->
+    <resultMap extends="WorkSummaryVOResultMap" id="ContainsStatisticsWorkSummaryVOResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.WorkSummaryVO">
+        <result column="video_num" jdbcType="INTEGER" property="videoNum"/>
+        <result column="img_num" jdbcType="INTEGER" property="imgNum"/>
+        <result column="doc_num" jdbcType="INTEGER" property="docNum"/>
+    </resultMap>
+    <!--工作总结VO带附件-->
+    <resultMap extends="WorkSummaryVOResultMap" id="ContainsAttachmentWorkSummaryVOResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.WorkSummaryVO">
         <result column="summary_check_org_name" jdbcType="VARCHAR" property="summaryCheckOrgName"/>
         <result column="summary_check_user_name" jdbcType="VARCHAR" property="summaryCheckUserName"/>
-        <collection property="planAttachments" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
-                    column="{hostId=plan_id,attachmentType=attachment_type_plan}"/>
-        <collection property="summaryAttachments" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
-                    column="{hostId=plan_id,attachmentType=attachment_type_summary}"/>
+        <collection property="attachments"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=plan_id,attachmentType=attachment_type}"/>
     </resultMap>
-    <resultMap extends="ResultMapWithBLOBs" id="BaseResultMapWithCount" type="com.egovchina.partybuilding.partybuild.entity.TabPbWorkPlan">
-        <result column="video_num" jdbcType="INTEGER" property="videoNum"/>
-        <result column="img_num" jdbcType="BIGINT" property="imgNum"/>
-        <result column="doc_num" jdbcType="BIGINT" property="docNum"/>
-    </resultMap>
+
     <sql id="Base_Column_List">
     p.plan_id, p.org_id, p.plan_year, p.report_date, p.summary_date, p.plan_check_date, p.summary_check_date,
     p.check_org, p.check_result, p.check_user, p.summary_check_org, p.summary_check_result, p.summary_check_user,
@@ -58,6 +102,22 @@
     <sql id="Blob_Column_List">
     p.plan_content, p.plan_summary, p.plan_check, p.summary_check
   </sql>
+    <!--工作计划VO column-->
+    <sql id="WorkPlanVO_Column_List">
+        p.plan_id, p.org_id, p.plan_year, p.report_date, p.plan_check_date, p.check_org,
+        p.check_result, p.check_user, p.description
+    </sql>
+    <sql id="WorkPlanVO_Blob_Column_List">
+        p.plan_content, p.plan_check
+    </sql>
+    <!--工作总结VO column-->
+    <sql id="WorkSummaryVO_Column_List">
+        p.plan_id, p.org_id, p.plan_year, p.report_date, p.summary_date, p.summary_check_date,
+        p.summary_check_org, p.summary_check_result, p.summary_check_user, p.description
+    </sql>
+    <sql id="WorkSummaryVO_Blob_Column_List">
+        p.plan_summary, p.summary_check
+    </sql>
     <sql id="Base_WhereCase_List">
         <if test="planId != null and planId != ''">
             AND p.plan_id = #{planId}
@@ -117,9 +177,6 @@
         <if test="eblFlag != null and eblFlag != ''">
             AND p.ebl_flag = eblFlag
         </if>
-        <if test="delFlag != null and delFlag != ''">
-            AND p.del_flag = #{delFlag}
-        </if>
         <if test="orderNum != null and orderNum != ''">
             AND p.order_num = #{orderNum}
         </if>
@@ -174,51 +231,14 @@
             AND d.dept_id = #{rangeDeptId}
         </if>
     </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMapWithAttachments">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         ,
         <include refid="Blob_Column_List"/>
-        , t.name as org_name,
-        t2.name as check_org_name,
-        u.realname as check_user_name,
-        t3.name as summary_check_org_name,
-        u2.realname as summary_check_user_name,
-        '1' as attachment_type_plan,
-        '4' as attachment_type_summary
         from tab_pb_work_plan p
-        left join sys_dept t on p.org_id = t.dept_id
-        left join sys_dept t2 on p.check_org = t2.dept_id
-        left join sys_user u on p.check_user = u.user_id
-        left join sys_dept t3 on p.summary_check_org = t3.dept_id
-        left join sys_user u2 on p.summary_check_user = u2.user_id
         where p.plan_id = #{planId,jdbcType=BIGINT}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from tab_pb_work_plan
-    where plan_id = #{planId,jdbcType=BIGINT}
-  </delete>
-    <insert id="insert" useGeneratedKeys="true" keyProperty="planId" 
-            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbWorkPlan">
-    insert into tab_pb_work_plan (org_id, plan_year,
-      report_date, summary_date, plan_check_date,
-      summary_check_date, check_org, check_result, check_user,
-      summary_check_org, summary_check_result, summary_check_user, ebl_flag, del_flag,
-      order_num, description, create_time,
-      create_userid, create_username, update_time,
-      update_userid, update_username, version,
-      plan_content, plan_summary, plan_check,
-      summary_check)
-    values (#{orgId,jdbcType=BIGINT}, #{planYear,jdbcType=BIGINT},
-      #{reportDate,jdbcType=TIMESTAMP}, #{summaryDate,jdbcType=TIMESTAMP}, #{planCheckDate,jdbcType=TIMESTAMP},
-      #{summaryCheckDate,jdbcType=TIMESTAMP}, #{checkOrg,jdbcType=BIGINT}, #{checkResult,jdbcType=BIGINT}, #{checkUser,jdbcType=BIGINT},
-      #{summaryCheckOrg,jdbcType=BIGINT}, #{summaryCheckResult,jdbcType=BIGINT}, #{summaryCheckUser,jdbcType=BIGINT}, #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR},
-      #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
-      #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT},
-      #{planContent,jdbcType=LONGVARCHAR}, #{planSummary,jdbcType=LONGVARCHAR}, #{planCheck,jdbcType=LONGVARCHAR},
-      #{summaryCheck,jdbcType=LONGVARCHAR})
-  </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="planId"
             parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbWorkPlan">
         insert into tab_pb_work_plan
@@ -482,48 +502,40 @@
         </set>
         where plan_id = #{planId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbWorkPlan">
-    update tab_pb_work_plan
-    set org_id = #{orgId,jdbcType=BIGINT},
-      plan_year = #{planYear,jdbcType=BIGINT},
-      report_date = #{reportDate,jdbcType=TIMESTAMP},
-      summary_date = #{summaryDate,jdbcType=TIMESTAMP},
-      plan_check_date = #{planCheckDate,jdbcType=TIMESTAMP},
-      summary_check_date = #{summaryCheckDate,jdbcType=TIMESTAMP},
-      check_org  = #{checkOrg,jdbcType=BIGINT},
-      check_result = #{checkResult,jdbcType=BIGINT},
-      check_user = #{checkUser,jdbcType=BIGINT},
-      summary_check_org = #{summaryCheckOrg,jdbcType=BIGINT},
-      summary_check_result = #{summaryCheckResult,jdbcType=BIGINT},
-      summary_check_user = #{summaryCheckUser,jdbcType=BIGINT},
-      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
-      del_flag = #{delFlag,jdbcType=VARCHAR},
-      order_num = #{orderNum,jdbcType=BIGINT},
-      description = #{description,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_userid = #{createUserid,jdbcType=BIGINT},
-      create_username = #{createUsername,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_userid = #{updateUserid,jdbcType=BIGINT},
-      update_username = #{updateUsername,jdbcType=VARCHAR},
-      version = #{version,jdbcType=BIGINT}
-    where plan_id = #{planId,jdbcType=BIGINT}
-  </update>
 
-    <!--根据条件查询-->
-    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="BaseResultMapWithCount">
+    <!--根据条件查询工作计划-->
+    <select id="selectWorkPlanVOByCondition"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.WorkPlanQueryBean"
+            resultMap="ContainsStatisticsWorkPlanVOResultMap">
         select
-        <include refid="Base_Column_List" />
-        ,
-        <include refid="Blob_Column_List" />
+        <include refid="WorkPlanVO_Column_List"/>
         , d.name as org_name,
         ifnull(t.video_num, 0) video_num,
         ifnull(t.img_num, 0) img_num,
         ifnull(t.doc_num, 0) doc_num
         from tab_pb_work_plan p
         left join sys_dept d on p.org_id = d.dept_id
-        left join view_attachment_count t on p.plan_id = t.host_id and t.attachment_type = #{attachmentType}
+        left join view_attachment_count t on p.plan_id = t.host_id and t.attachment_type = 1
         <where>
+            p.del_flag = 0
+            <include refid="Base_WhereCase_List"/>
+        </where>
+    </select>
+
+    <!--根据条件查询工作总结-->
+    <select id="selectWorkSummaryVOByCondition" parameterType="java.util.Map"
+            resultMap="ContainsStatisticsWorkSummaryVOResultMap">
+        select
+        <include refid="WorkSummaryVO_Column_List"/>
+        , d.name as org_name,
+        ifnull(t.video_num, 0) video_num,
+        ifnull(t.img_num, 0) img_num,
+        ifnull(t.doc_num, 0) doc_num
+        from tab_pb_work_plan p
+        left join sys_dept d on p.org_id = d.dept_id
+        left join view_attachment_count t on p.plan_id = t.host_id and t.attachment_type = 4
+        <where>
+            p.del_flag = 0
             <include refid="Base_WhereCase_List"/>
         </where>
     </select>
@@ -536,5 +548,40 @@
     <!--根据年度和组织id查询计划-->
     <select id="selectByPlanYearAndOrgId" resultMap="BaseResultMap">
         select * from tab_pb_work_plan where del_flag = 0 and plan_year = #{planYear} and org_id = #{orgId}
+    </select>
+
+    <!--根据id查询工作计划-->
+    <select id="selectWorkPlanVOById" parameterType="java.lang.Long" resultMap="ContainsAttachmentWorkPlanVOResultMap">
+        select
+        <include refid="WorkPlanVO_Column_List"/>
+        ,
+        <include refid="WorkPlanVO_Blob_Column_List"/>
+        , d.name as org_name,
+        d2.name as check_org_name,
+        u.realname as check_user_name,
+        1 as attachment_type
+        from tab_pb_work_plan p
+        left join sys_dept d on p.org_id = d.dept_id
+        left join sys_dept d2 on p.check_org = d2.dept_id
+        left join sys_user u on p.check_user = u.user_id
+        where p.del_flag = 0 and p.plan_id = #{planId}
+    </select>
+
+    <!--根据id查询工作总结-->
+    <select id="selectWorkSummaryVOById" parameterType="java.lang.Long"
+            resultMap="ContainsAttachmentWorkSummaryVOResultMap">
+        select
+        <include refid="WorkSummaryVO_Column_List"/>
+        ,
+        <include refid="WorkSummaryVO_Blob_Column_List"/>
+        , t.name as org_name,
+        d.name as summary_check_org_name,
+        d2.realname as summary_check_user_name,
+        4 as attachment_type_summary
+        from tab_pb_work_plan p
+        left join sys_dept d on p.org_id = d.dept_id
+        left join sys_dept d2 on p.summary_check_org = d2.dept_id
+        left join sys_user u on p.summary_check_user = u.user_id
+        where p.del_flag = 0 and p.plan_id = #{planId}
     </select>
 </mapper>

@@ -9,11 +9,7 @@ import java.util.List;
 @ApiModel(value = "党员详情返回实体")
 @Data
 public class PartyMemberVO {
-    private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键ID
-     */
     @ApiModelProperty(value = "人员信息")
     private SysUserVO party;
 
@@ -25,6 +21,5 @@ public class PartyMemberVO {
 
     @ApiModelProperty(value = "工作信息")
     private List<PartyWorkVO> works;
-
 
 }

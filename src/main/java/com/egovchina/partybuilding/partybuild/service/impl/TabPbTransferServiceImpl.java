@@ -23,6 +23,7 @@ import java.util.List;
 /**
  * 组织关系接转服务
  */
+@Deprecated
 @Service
 @Transactional
 public class TabPbTransferServiceImpl implements TabPbTransferService {

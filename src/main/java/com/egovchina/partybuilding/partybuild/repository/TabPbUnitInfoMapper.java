@@ -3,9 +3,11 @@ package com.egovchina.partybuilding.partybuild.repository;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo;
 import com.egovchina.partybuilding.partybuild.vo.UnitInfoVO;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface TabPbUnitInfoMapper {
     int deleteByPrimaryKey(Long unitId);
 

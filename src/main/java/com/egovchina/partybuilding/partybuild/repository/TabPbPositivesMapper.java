@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface TabPbPositivesMapper {
@@ -63,8 +62,6 @@ public interface TabPbPositivesMapper {
      */
     int tombstoneUser(Long userId);
 
-
-
     PositivesVO selectByIdToPositivesVO(Integer positiveId);
 
     List<PositivesVO> selectByIdToAllPositivesVO(@Param("userId") Long userId,@Param("positiveType") String positiveType);
@@ -75,4 +72,11 @@ public interface TabPbPositivesMapper {
      * @return
      */
     List<PositivesVO> selectTabPbPositivesByUserId(Long userId);
+
+    /**
+     * 根据条件逻辑删除职务
+     *
+     * @param delete 删除实体
+     */
+    int logicDeletePositiveByCondition(TabPbPositives delete);
 }

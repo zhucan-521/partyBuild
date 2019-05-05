@@ -6,7 +6,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-@ApiModel(value = "l历史党员查询实体")
+
+@ApiModel(value = "历史党员查询实体")
 @Data
 public class HistoryPartyVO {
     @ApiModelProperty(value = "申请人姓名")

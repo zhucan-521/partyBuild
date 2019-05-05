@@ -4,11 +4,10 @@ import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
-import com.egovchina.partybuilding.partybuild.dto.TabPbTrainingDto;
-import com.egovchina.partybuilding.partybuild.entity.TabPbTraining;
-import com.egovchina.partybuilding.partybuild.repository.TabPbTrainingMapper;
-import com.egovchina.partybuilding.partybuild.entity.TrainingQueryBean;
 import com.egovchina.partybuilding.partybuild.dto.TrainingDTO;
+import com.egovchina.partybuilding.partybuild.entity.TabPbTraining;
+import com.egovchina.partybuilding.partybuild.entity.TrainingQueryBean;
+import com.egovchina.partybuilding.partybuild.repository.TabPbTrainingMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.service.TrainingService;
 import com.egovchina.partybuilding.partybuild.vo.TrainingVO;
@@ -47,15 +46,15 @@ public class TrainingServiceImpl implements TrainingService {
 
     /**
      * 逻辑删除党员培训情况
-     * @param traningId
+     * @param trainingId
      * @return
      */
     @Override
     @PaddingBaseField
-    public int deletTrainingDTO(Long traningId) {
-        TabPbTraining tabPbTraining=new TabPbTrainingDto();
+    public int logicDeleteTrainingDTO(Long trainingId) {
+        TabPbTraining tabPbTraining = new TabPbTraining();
         tabPbTraining.setDelFlag("1");
-        tabPbTraining.setTraningId(traningId);
+        tabPbTraining.setTraningId(trainingId);
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbTraining);
         return tabPbTrainingMapper.updateByPrimaryKeySelective(tabPbTraining);
     }
@@ -80,14 +79,13 @@ public class TrainingServiceImpl implements TrainingService {
      */
     @Override
     @PaddingBaseField(updateOnly = true)
-    public int updateTrainingDTO(TrainingDTO trainingDto) {
-       if(trainingDto.getTraningId()==null){
+    public int updateTrainingDTO(TrainingDTO trainingDTO) {
+        if (trainingDTO.getTraningId() == null) {
            throw new BusinessDataCheckFailException("缺少主键");
-       }
-        TabPbTrainingDto tabPbTrainingDto=new TabPbTrainingDto();
-        BeanUtil.copyPropertiesIgnoreNull(trainingDto,tabPbTrainingDto);
-        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbTrainingDto);
-        return tabPbTrainingMapper.updateByPrimaryKeySelective(tabPbTrainingDto);
+        }
+        TabPbTraining tabPbTraining = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(
+                trainingDTO, TabPbTraining.class, true);
+        return tabPbTrainingMapper.updateByPrimaryKeySelective(tabPbTraining);
     }
 
 

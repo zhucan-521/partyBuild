@@ -22,11 +22,11 @@ public class LinkLeaderDTO {
     @ApiModelProperty(value = "组织联点领导联点主键")
     private Long linkLedaerId;
 
-    @ApiModelProperty(value = "组织主键")
+    @ApiModelProperty(value = "组织主键", required = true)
     @NotNull(message = "组织id不能为空")
     private Long deptId;
 
-    @ApiModelProperty(value = "人员Id")
+    @ApiModelProperty(value = "人员Id", required = true)
     @NotNull(message = "userId不能为空")
     private Long userId;
 
