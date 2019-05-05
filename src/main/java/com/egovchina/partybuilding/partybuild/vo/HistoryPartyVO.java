@@ -14,10 +14,10 @@ public class HistoryPartyVO {
     private String realname;
 
     @ApiModelProperty(value = "用户ID")
-    private Integer userId;
+    private Long userId;
 
     @ApiModelProperty(value = "组织ID ,党支部Id")
-    private Integer deptId;
+    private Long deptId;
 
     @ApiModelProperty(value = "身份证号码")
     private String idCardNo;

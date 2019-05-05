@@ -252,6 +252,7 @@
         <result column="nation" jdbcType="BIGINT" property="nation"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="in_where_dept_name" jdbcType="VARCHAR" property="inWhereDeptName"/>
+        <result column="age" jdbcType="BIGINT" property="partyStanding"/>
     </resultMap>
 
 
@@ -270,7 +271,6 @@
         <result column="id_card_no" property="idCardNo"/>
         <result column="gender" property="gender"/>
     </resultMap>
-
     <sql id="Base_Column_List">
         user_id, dept_id,realname as username , realname, identity_type, salt, avatar, id_card_no, used_name,
     gender, nation, registeredresidence, ancestor_place, born_place, health, familyorigin,
@@ -281,14 +281,14 @@
     pm_code, join_time, regular_time, regular_status, develop_type, reference, fee_ratio,
     join_after_august, is_poor, is_llost, flow_status, flow_from_org_id, flow_from_org_name,
     flow_from_org_contactor, flow_from_org_phone, flow_to_org_id, flow_to_org_name, flow_to_org_contactor,
-    flow_to_org_phone, policy_face, join_org_time, positived, join_contact_id, contactor,
+    flow_to_org_phone, policy_face,  positived, join_contact_id, contactor,
     app_date, exp_activist_date, activist_date, exp_dev_date, dev_date, dev_stage, ebl_flag,
     del_flag, order_num, description, create_time, create_userid, create_username, update_time,
     update_userid, update_username, version ,files_manage_unit_id,join_org_id,join_org_name,
     join_org_type,join_org_contactor,join_org_phone,is_self_dev,registry_status,files_manage_unit,is_taiwaner,job_position,
-    report_org_id,report_org_name,report_org_contactor,report_org_phone
+    report_org_id,report_org_name,report_org_contactor,report_org_phone,join_org_time
     </sql>
-    <!--查询党员详细信息-->
+    <!--查询党员详细信息 ,join_org_time-->
     <sql id="Base_Column_List_new">
       user_id,dept_id,realname,gender,id_card_no,birthday, TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age ,nation,community_addr,avatar,phone,fix_phone,family_address,
       join_org_name,join_org_id,positived,identity_type,files_manage_unit,registry_status,join_time,registry_status,
@@ -301,7 +301,7 @@
     <sql id="Base_users_info">
         user_id,realname,gender,TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age,nation,id_card_no,join_time,regular_time,report_org_name,phone,identity_type,marital_status,
         education,unit_id,flow_status,is_llost,is_taiwaner,dept_id,birthday,migrant,stratum,front_line,work_date,ancestor_place,registry_status,family_address,community_addr,
-        job_position,join_org_time
+        job_position
     </sql>
     <!--查询部门表防止名字重复-->
     <sql id="dept_name_result">

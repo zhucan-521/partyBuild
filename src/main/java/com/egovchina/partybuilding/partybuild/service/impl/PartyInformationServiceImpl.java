@@ -60,6 +60,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @Autowired
     private TabPbPartyWorkMapper tabPbPartyWorkMapper;
 
+    @Autowired
+    private TabPbAbroadMapper tabPbAbroadMapper;
 
     @Override
     public UserInfoVO getUserInfoVO() {
@@ -88,7 +90,27 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @Override
     public PageInfo<HistoryPartyVO> historyPartyPage(HistoricalPartyMemberQueryBean queryBean, Page page) {
         PageHelper.startPage(page);
-        return new PageInfo<>(reduceListMapper.historyPartyPage(queryBean));
+        List<HistoryPartyVO> historyPartyVO = reduceListMapper.historyPartyPage(queryBean);
+        //获取党员出国记录
+        List<MemberReducesVO> memberReducesVO = tabPbAbroadMapper.findAbroadDetailsByPartyId(queryBean);
+        //计算党龄
+        for (int i = 0; i < historyPartyVO.size(); i++) {
+            //理论党龄
+            Integer age = historyPartyVO.get(i).getPartyStanding();
+            //党龄减去出国时间
+            if (memberReducesVO != null && memberReducesVO.size() > 0) {
+                for (int j = 0; j < memberReducesVO.size(); j++) {
+                    if (memberReducesVO.get(j) != null && memberReducesVO.get(j).getUser_id() != null) {
+                        if (memberReducesVO.get(j).getUser_id().equals(historyPartyVO.get(i).getUserId())) {
+                            age -= memberReducesVO.get(j).getAge();
+                        }
+                    }
+                }
+            }
+            //设置真实党龄
+            historyPartyVO.get(i).setPartyStanding(age);
+        }
+        return new PageInfo<>(historyPartyVO);
     }
 
     @Override

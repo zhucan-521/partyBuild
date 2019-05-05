@@ -5,7 +5,7 @@
         <id column="work_id" jdbcType="BIGINT" property="workId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="unit" jdbcType="VARCHAR" property="unit"/>
-        <result column="post" jdbcType="VARCHAR" property="post"/>
+        <result column="post" jdbcType="BIGINT" property="post"/>
         <result column="front_line" jdbcType="BIGINT" property="frontLine"/>
         <result column="stratum" jdbcType="BIGINT" property="stratum"/>
         <result column="start_date" jdbcType="DATE" property="startDate"/>
@@ -43,7 +43,7 @@
       update_time, update_userid, update_username
       )
     values (#{workId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{unit,jdbcType=VARCHAR}, 
-      #{post,jdbcType=VARCHAR}, #{frontLine,jdbcType=BIGINT}, #{stratum,jdbcType=BIGINT}, 
+      #{post,jdbcType=BIGINT}, #{frontLine,jdbcType=BIGINT}, #{stratum,jdbcType=BIGINT},
       #{startDate,jdbcType=DATE}, #{endDate,jdbcType=DATE}, #{delFlag,jdbcType=BIT}, 
       #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}
@@ -109,7 +109,7 @@
                 #{unit,jdbcType=VARCHAR},
             </if>
             <if test="post != null">
-                #{post,jdbcType=VARCHAR},
+                #{post,jdbcType=BIGINT},
             </if>
             <if test="frontLine != null">
                 #{frontLine,jdbcType=BIGINT},
@@ -157,7 +157,7 @@
                 unit = #{unit,jdbcType=VARCHAR},
             </if>
             <if test="post != null">
-                post = #{post,jdbcType=VARCHAR},
+                post = #{post,jdbcType=BIGINT},
             </if>
             <if test="frontLine != null">
                 front_line = #{frontLine,jdbcType=BIGINT},
@@ -199,7 +199,7 @@
     update tab_pb_party_work
     set user_id = #{userId,jdbcType=BIGINT},
       unit = #{unit,jdbcType=VARCHAR},
-      post = #{post,jdbcType=VARCHAR},
+      post = #{post,jdbcType=BIGINT},
       front_line = #{frontLine,jdbcType=BIGINT},
       stratum = #{stratum,jdbcType=BIGINT},
       start_date = #{startDate,jdbcType=DATE},
@@ -235,7 +235,7 @@
         <foreach collection="list" item="item" separator=",">
             (
             #{item.userId,jdbcType=BIGINT}, #{item.unit,jdbcType=VARCHAR},
-            #{item.post,jdbcType=VARCHAR}, #{item.frontLine,jdbcType=BIGINT}, #{item.stratum,jdbcType=BIGINT},
+            #{item.post,jdbcType=BIGINT}, #{item.frontLine,jdbcType=BIGINT}, #{item.stratum,jdbcType=BIGINT},
             #{item.startDate,jdbcType=DATE}, #{item.endDate,jdbcType=DATE}, #{item.createTime,jdbcType=TIMESTAMP},
             #{item.createUserid,jdbcType=BIGINT}, #{item.createUsername,jdbcType=VARCHAR},
             #{item.updateTime,jdbcType=TIMESTAMP},
@@ -256,7 +256,7 @@
                     unit = #{item.unit,jdbcType=VARCHAR},
                 </if>
                 <if test="item.post != null">
-                    post = #{item.post,jdbcType=VARCHAR},
+                    post = #{item.post,jdbcType=BIGINT},
                 </if>
                 <if test="item.frontLine != null">
                     front_line = #{item.frontLine,jdbcType=BIGINT},
