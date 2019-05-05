@@ -32,19 +32,21 @@ public class PositivesVO {
     private String positiveOrg;
 
     @JsonSerialize(using = DictSerializer.class)
-    @ApiModelProperty(value = "（党内职务）职务名称，字典：党内职务（DNZW）；行政职务（HZZW）",required=true)
+    @ApiModelProperty(value = "党内职务 dict DNZW",required=true)
     private Long positiveName;
 
-    @ApiModelProperty(value = "（职务级别）职务级别 ZWJB")
+    @ApiModelProperty(value = "职务级别 dict ZWJB")
     @JsonSerialize(using = DictSerializer.class)
     private Long positiveLevel;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+
     @ApiModelProperty(value = "任职开始",required=true)
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date positiveStart;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+
     @ApiModelProperty(value = "任职结束",required=true)
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date positiveFinished;
 
     @ApiModelProperty(value = "（党内职务说明）描述")
