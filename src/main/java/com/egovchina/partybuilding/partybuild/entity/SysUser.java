@@ -40,7 +40,6 @@ public class SysUser implements Serializable {
     @TableId(value = "user_id", type = IdType.AUTO)
     private Integer userId;
 
-
     @ApiModelProperty(value = "身份证号")
     private String username;
 
@@ -55,13 +54,13 @@ public class SysUser implements Serializable {
     private String salt;
 
     @ApiModelProperty(value = "创建时间", hidden = true)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private LocalDateTime createTime;
 
     @ApiModelProperty(value = "修改时间", hidden = true)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private LocalDateTime updateTime;
 
     @ApiModelProperty(value = "0-正常，1-删除")
@@ -435,6 +434,9 @@ public class SysUser implements Serializable {
 
     @ApiModelProperty(value = "加入党组织类别")
     private Long joinOrgType;
+
+    @ApiModelProperty(value = "加入党组织时间")
+    private Long joinOrgTime;
 
     @ApiModelProperty(value = "入党组织联系人")
     private String joinOrgContactor;

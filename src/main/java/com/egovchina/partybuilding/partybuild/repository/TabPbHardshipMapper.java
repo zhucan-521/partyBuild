@@ -37,4 +37,7 @@ public interface TabPbHardshipMapper {
 
     HardshipPartyVO findByUserId(Long userId);
 
+    int logicDelete(TabPbHardship record);
+
+    int logicDeleteByUserId(TabPbHardship tabPbHardship);
 }

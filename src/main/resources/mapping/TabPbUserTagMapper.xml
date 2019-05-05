@@ -37,7 +37,9 @@
 
 
 
-                                 select count(1) from tab_pb_user_tag where user_id = #{userId} and tag_type = #{tagType}
+
+                                         select count(1) from tab_pb_user_tag where user_id = #{userId} and tag_type = #{tagType}
+
 
 
 
@@ -69,6 +71,19 @@
         from tab_pb_user_tag
         where usertag_id = #{usertagId,jdbcType=BIGINT}
     </select>
+
+    <select id="selectTagTypesList" resultType="com.egovchina.partybuilding.partybuild.entity.TabPbUserTag" parameterType="long">
+          select tag_type, usertag_id from tab_pb_user_tag where user_id = #{userId, jdbcType=BIGINT}
+    </select>
+
+    <select id="selectTabPbUserTagListByUserId"
+            resultType="com.egovchina.partybuilding.partybuild.entity.TabPbUserTag" parameterType="long">
+        select * from tab_pb_user_tag where user_id = #{userId, jdbcType=BIGINT}
+    </select>
+    <select id="selectUsertagIdList" resultType="java.lang.Long" parameterType="long">
+          select usertag_id from tab_pb_user_tag where user_id = #{userId, jdbcType=BIGINT}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tab_pb_user_tag
     where usertag_id = #{usertagId,jdbcType=BIGINT}
@@ -212,6 +227,36 @@
         </trim>
     </insert>
 
+    <insert id="batchInsertUserTagDTO" keyProperty="usertagId" useGeneratedKeys="true"  parameterType="java.util.List">
+        insert into tab_pb_user_tag
+        (usertag_id, user_id, tag_type,
+        create_time, create_userid,create_username,update_time, update_userid,update_username)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.usertagId,jdbcType=BIGINT}, #{item.userId,jdbcType=BIGINT}, #{item.tagType,jdbcType=BIGINT},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.createUserid,jdbcType=BIGINT}, #{item.createUsername,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.updateUserid,jdbcType=BIGINT}, #{item.updateUsername,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="insertUserTagDTO" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbUserTag">
+        insert into tab_pb_user_tag
+        (usertag_id, user_id, tag_type,
+        create_time, create_userid,create_username,update_time, update_userid,update_username)
+        values
+            (
+            #{usertagId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{tagType,jdbcType=BIGINT},
+            #{createTime,jdbcType=TIMESTAMP},
+            #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR},
+            #{updateTime,jdbcType=TIMESTAMP},
+            #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}
+            )
+    </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbUserTag">
         update tab_pb_user_tag
         <set>
@@ -254,4 +299,20 @@
       update_username = #{updateUsername,jdbcType=VARCHAR}
     where usertag_id = #{usertagId,jdbcType=BIGINT}
   </update>
+
+    <!--根据用户id删除用户所有标签-->
+    <delete id="batchDeleteByUserId" parameterType="java.lang.Long">
+        delete from tab_pb_user_tag where user_id = #{userId};
+        delete from tab_pb_hardship where del_flag = 0 and user_id = #{userId};
+    </delete>
+
+    <!--批量删除根据id-->
+    <delete id="batchDeleteById" parameterType="java.util.List">
+        delete from tab_pb_user_tag where usertag_id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            ${item}
+        </foreach>
+    </delete>
+
+
 </mapper>

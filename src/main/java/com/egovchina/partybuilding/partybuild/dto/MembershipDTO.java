@@ -1,6 +1,8 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
+import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -11,32 +13,24 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * @author create by GuanYingxin on 2019/4/22 17:44
+ * @author create by GuanYingxin on 2019/4/29 9:30
  * @description
  */
-@ApiModel("更新党籍")
+@ApiModel("党籍实体类DTO")
 @Accessors(chain = true)
 @Data
 public class MembershipDTO {
 
-    @ApiModelProperty("用户ID")
-    @NotNull
-    private Integer userId;
+    @ApiModelProperty(value = "党员id", required = true)
+    @NotNull(message = "党员id不能为空")
+    private Long userId;
 
-    @ApiModelProperty(value = "出党时间", example = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull
-    private Date reduceTime;
+    @ApiModelProperty(value = "人员类别 码表值 RYLB")
+    private Long identityType;
 
-    @ApiModelProperty(value = "出党方式 3出党、4停止党籍、5死亡、6其他")
-    @NotNull
-    private Long outType;
+    @ApiModelProperty(value = "党籍处理 码表值 DJCL")
+    private Long type;
 
-    @ApiModelProperty(value = "组织ID ,党支部Id")
-    @NotNull
-    private Integer deptId;
-
-    @ApiModelProperty(value = "身份证号")
-    @NotNull
-    private String username;
+    @ApiModelProperty(value = "处理原因")
+    private String reason;
 }

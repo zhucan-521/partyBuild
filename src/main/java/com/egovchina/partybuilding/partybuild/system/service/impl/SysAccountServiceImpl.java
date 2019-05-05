@@ -161,7 +161,7 @@ public class SysAccountServiceImpl extends ServiceImpl<SysAccountMapper, SysAcco
     @CacheEvict(value = "DETAIL::ACCOUNT", key = "#sysAccount.idCardNo")
     public Boolean deleteUserById(SysAccount sysAccount) {
         deleteSysUserByCardNoAndUserId(sysAccount.getIdCardNo(), sysAccount.getUserId());
-        //sysUserRoleService.deleteByUserId(sysAccount.getUserId());
+        //sysUserRoleService.logicDeleteByUserId(sysAccount.getUserId());
         //this.deleteById(sysAccount.getUserId());
         return Boolean.TRUE;
     }

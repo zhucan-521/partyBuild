@@ -80,7 +80,7 @@ public class PartyOrganizationActivitiesController {
             @ApiImplicitParam(name = "startTime", value = "开始时间", paramType = "query"),
             @ApiImplicitParam(name = "finishedTime", value = "结束时间", paramType = "query"),
             @ApiImplicitParam(name = "reportToType", value = "上报类型", paramType = "query"),
-            @ApiImplicitParam(name = "auditResult", value = "审核情况", paramType = "query")
+            @ApiImplicitParam(name = "auditMsgUpInfo", value = "审核情况", paramType = "query")
     })
     @GetMapping("/findByList")
     public PageInfo<PartyOrganizationActivitiesDto> findByList(@ApiIgnore PartyOrganizationActivitiesDto activitiesDto,
