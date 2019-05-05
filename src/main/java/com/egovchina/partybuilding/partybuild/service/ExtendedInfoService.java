@@ -11,9 +11,9 @@ public interface ExtendedInfoService {
 
     PageInfo<SysUserVO> selectPartyByIdCardNoOrUserName( String idCardNo, String username, Page page);
 
-    int restoreUser(Long userId);
+    Boolean restoreUser(Long userId);
 
     PartyMemberVO selectPartyMemberVOById(Long userId);
 
-    int updateByUserId(DeletePartyMemberDTO reduce );
+    Boolean updateByUserId(DeletePartyMemberDTO reduce );
 }
