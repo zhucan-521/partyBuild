@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper">
+    <!--基础结果集-->
     <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.SysDept">
         <id column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
@@ -25,7 +26,6 @@
         <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
         <result column="unit_id" jdbcType="BIGINT" property="unitId"/>
         <result column="unit_state" jdbcType="BIGINT" property="unitState"/>
-        <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
         <result column="community_addr" jdbcType="BIGINT" property="communityAddr"/>
         <result column="founded_date" jdbcType="TIMESTAMP" property="foundedDate"/>
         <result column="founded_file_number" jdbcType="VARCHAR" property="foundedFileNumber"/>
@@ -45,7 +45,6 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
         <result column="version" jdbcType="BIGINT" property="version"/>
         <result column="is_parent" jdbcType="TINYINT" property="isParent"/>
-        <result column="is_branch" jdbcType="TINYINT" property="isBranch"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
                type="com.egovchina.partybuilding.partybuild.entity.SysDept">
@@ -53,16 +52,55 @@
         <result column="position_range" jdbcType="LONGVARCHAR" property="positionRange"/>
         <result column="founded_reason" jdbcType="LONGVARCHAR" property="foundedReason"/>
     </resultMap>
+
+    <!--组织VO结果集-->
+    <resultMap id="OrganizationVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.OrganizationVO">
+        <id column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="org_short_name" jdbcType="VARCHAR" property="orgShortName"/>
+        <result column="org_code" jdbcType="VARCHAR" property="orgCode"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="is_team" jdbcType="TINYINT" property="isTeam"/>
+        <result column="org_level" jdbcType="BIGINT" property="orgLevel"/>
+        <result column="level_date" jdbcType="TIMESTAMP" property="levelDate"/>
+        <result column="org_status" jdbcType="BIGINT" property="orgStatus"/>
+        <result column="is_city" jdbcType="TINYINT" property="isCity"/>
+        <result column="orgnize_property" jdbcType="BIGINT" property="orgnizeProperty"/>
+        <result column="dependency_relation" jdbcType="VARCHAR" property="dependencyRelation"/>
+        <result column="orgnize_master_id" jdbcType="BIGINT" property="orgnizeMasterId"/>
+        <result column="orgnize_master" jdbcType="VARCHAR" property="orgnizeMaster"/>
+        <result column="contactor_id" jdbcType="BIGINT" property="contactorId"/>
+        <result column="contactor" jdbcType="VARCHAR" property="contactor"/>
+        <result column="office_size" jdbcType="BIGINT" property="officeSize"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
+        <result column="unit_id" jdbcType="BIGINT" property="unitId"/>
+        <result column="unit_state" jdbcType="BIGINT" property="unitState"/>
+        <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
+        <result column="community_addr" jdbcType="BIGINT" property="communityAddr"/>
+        <result column="founded_date" jdbcType="TIMESTAMP" property="foundedDate"/>
+        <result column="founded_file_number" jdbcType="VARCHAR" property="foundedFileNumber"/>
+        <result column="contact_number" jdbcType="VARCHAR" property="contactNumber"/>
+        <result column="fax_number" jdbcType="VARCHAR" property="faxNumber"/>
+        <result column="post_code" jdbcType="VARCHAR" property="postCode"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="is_parent" jdbcType="TINYINT" property="isParent"/>
+        <result column="is_branch" jdbcType="TINYINT" property="isBranch"/>
+        <result column="position" jdbcType="LONGVARCHAR" property="position"/>
+        <result column="position_range" jdbcType="LONGVARCHAR" property="positionRange"/>
+        <result column="founded_reason" jdbcType="LONGVARCHAR" property="foundedReason"/>
+    </resultMap>
     <!--包含组织关联信息的ResultMap-->
-    <resultMap extends="ResultMapWithBLOBs" id="ResultMapWithAboutInfo"
-               type="com.egovchina.partybuilding.partybuild.dto.SysDeptDto">
+    <resultMap extends="OrganizationVOResultMap" id="OrganizationVOWithAboutInfoResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.OrganizationVO">
         <result column="parent_name" jdbcType="VARCHAR" property="parentName"/>
-        <collection property="tabPbUnitInfos"
-                    select="com.egovchina.partybuilding.partybuild.repository.TabPbUnitInfoMapper.selectByOrgId"
+        <collection property="units"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbUnitInfoMapper.selectUnitInfoByOrgId"
                     column="dept_id"/>
     </resultMap>
     <!--组织阵地BaseResultMap-->
-    <resultMap id="BasePositionResultMap" type="com.egovchina.partybuilding.partybuild.dto.TabDeptPositionDto">
+    <resultMap id="OrganizationPositionVOResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.OrganizationPositionVO">
         <id column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="office_size" jdbcType="BIGINT" property="officeSize"/>
@@ -72,8 +110,8 @@
         <result column="img_annex_num" jdbcType="INTEGER" property="imgAnnexNum"/>
     </resultMap>
     <!--包含附件的组织阵地BaseResultMap-->
-    <resultMap extends="BasePositionResultMap" id="WithAttachmentsPositionResultMap"
-               type="com.egovchina.partybuilding.partybuild.dto.TabDeptPositionDto">
+    <resultMap extends="OrganizationPositionVOResultMap" id="OrganizationPositionVOWithAboutInfoResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.OrganizationPositionVO">
         <collection property="attachments"
                     select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=dept_id,attachmentType=attachment_type}"/>
@@ -81,48 +119,28 @@
     <sql id="Base_Column_List">
         d.dept_id, d.name, d.org_short_name, d.org_code, d.org_inner_code,d.full_path, d.parent_id, d.is_team,
         d.org_level,
-    d.level_date, d.org_status, d.is_city, d.orgnize_property, d.dependency_relation, d.orgnize_master_id,
-    d.orgnize_master, d.contactor_id, d.contactor, d.office_size, d.address, d.unit_name, d.unit_id, d.unit_state,
-    d.community_addr, d.founded_date, d.founded_file_number, d.contact_number, d.fax_number, d.post_code,
-    d.system_uuid, d.ebl_flag, d.del_flag, d.order_num, d.description, d.create_time, d.create_userid,
-    d.create_username, d.update_time, d.update_userid, d.update_username, d.version, d.is_parent
-  </sql>
+        d.level_date, d.org_status, d.is_city, d.orgnize_property, d.dependency_relation, d.orgnize_master_id,
+        d.orgnize_master, d.contactor_id, d.contactor, d.office_size, d.address, d.unit_name, d.unit_id, d.unit_state,
+        d.community_addr, d.founded_date, d.founded_file_number, d.contact_number, d.fax_number, d.post_code,
+        d.system_uuid, d.ebl_flag, d.del_flag, d.order_num, d.description, d.create_time, d.create_userid,
+        d.create_username, d.update_time, d.update_userid, d.update_username, d.version, d.is_parent
+    </sql>
     <sql id="Blob_Column_List">
-    d.position, d.position_range, d.founded_reason
-  </sql>
+      d.position, d.position_range, d.founded_reason
+    </sql>
+    <sql id="VO_Column_List">
+        d.dept_id, d.name, d.org_short_name, d.org_code, d.parent_id, d.is_team, d.org_level,
+        d.level_date, d.org_status, d.is_city, d.orgnize_property, d.dependency_relation, d.orgnize_master_id,
+        d.orgnize_master, d.contactor_id, d.contactor, d.office_size, d.address, d.unit_name, d.unit_id, d.unit_state,
+        d.community_addr, d.founded_date, d.founded_file_number, d.contact_number, d.fax_number, d.post_code,
+        d.description, d.is_parent, d.position, d.position_range, d.founded_reason
+    </sql>
     <sql id="Base_WhereCase_List">
-        <if test="deptId != null and deptId != ''">
-            AND d.dept_id = #{deptId}
-        </if>
-        <if test="name != null and name != ''">
-            AND d.`name` like concat('%',#{name},'%')
-        </if>
-        <if test="orgShortName != null and orgShortName != ''">
-            AND d.org_short_name like concat('%',#{name},'%')
+        <if test="orgName != null and orgName != ''">
+            AND d.`name` like concat('%',#{orgName},'%')
         </if>
         <if test="orgCode != null and orgCode != ''">
             AND d.org_code = #{orgCode}
-        </if>
-        <if test="orgInnerCode != null and orgInnerCode != ''">
-            AND d.org_inner_code = #{orgInnerCode}
-        </if>
-        <if test="parentId != null and parentId != ''">
-            AND d.parent_id = #{parentId}
-        </if>
-        <if test="isTeam != null and isTeam != ''">
-            AND d.is_team = #{isTeam}
-        </if>
-        <if test="orgLevel != null and orgLevel != ''">
-            AND d.org_level = #{orgLevel}
-        </if>
-        <if test="levelDate != null and levelDate != ''">
-            AND d.level_date = #{levelDate}
-        </if>
-        <if test="orgStatus != null and orgStatus != ''">
-            AND d.org_status = #{orgStatus}
-        </if>
-        <if test="isCity != null and isCity != ''">
-            AND d.is_city = #{isCity}
         </if>
         <if test="orgnizeProperty != null and orgnizeProperty != ''">
             AND find_in_set(d.orgnize_property,#{orgnizeProperty})
@@ -130,104 +148,8 @@
         <if test="dependencyRelation != null and dependencyRelation != ''">
             AND find_in_set(d.dependency_relation,#{dependencyRelation})
         </if>
-        <if test="orgnizeMasterId != null and orgnizeMasterId != ''">
-            AND d.orgnize_master_id = #{orgnizeMasterId}
-        </if>
         <if test="orgnizeMaster != null and orgnizeMaster != ''">
             AND d.orgnize_master like concat('%',#{orgnizeMaster},'%')
-        </if>
-        <if test="contactorId != null and contactorId != ''">
-            AND d.contactor_id = #{contactorId}
-        </if>
-        <if test="contactor != null and contactor != ''">
-            AND d.contactor = #{contactor}
-        </if>
-        <if test="officeSize != null and officeSize != ''">
-            AND d.office_size = #{officeSize}
-        </if>
-        <if test="address != null and address != ''">
-            AND d.address = #{address}
-        </if>
-        <!--<if test="unitName != null and unitName != ''">-->
-        <!--AND d.unit_name = #{unitName}-->
-        <!--</if>-->
-        <if test="unitId != null and unitId != ''">
-            AND d.unit_id = #{unitId}
-        </if>
-        <if test="unitState != null and unitState != ''">
-            AND d.unit_state = #{unitState}
-        </if>
-        <if test="communityAddr != null and communityAddr != ''">
-            AND d.community_addr = #{communityAddr}
-        </if>
-        <if test="foundedDate != null and foundedDate != ''">
-            AND d.founded_date = #{foundedDate}
-        </if>
-        <if test="foundedFileNumber != null and foundedFileNumber != ''">
-            AND d.founded_file_number = #{foundedFileNumber}
-        </if>
-        <if test="contactNumber != null and contactNumber != ''">
-            AND d.contact_number = #{contactNumber}
-        </if>
-        <if test="faxNumber != null and faxNumber != ''">
-            AND d.fax_number = #{faxNumber}
-        </if>
-        <if test="postCode != null and postCode != ''">
-            AND d.post_code = #{postCode}
-        </if>
-        <if test="systemUuid != null and systemUuid != ''">
-            AND d.system_uuid = #{systemUuid}
-        </if>
-        <if test="eblFlag != null and eblFlag != ''">
-            AND d.ebl_flag = #{eblFlag}
-        </if>
-        <if test="delFlag != null and delFlag != ''">
-            AND d.del_flag = #{delFlag}
-        </if>
-        <if test="orderNum != null and orderNum != ''">
-            AND d.order_num = #{orderNum}
-        </if>
-        <if test="description != null and description != ''">
-            AND d.description = #{description}
-        </if>
-        <if test="createTime != null and createTime != ''">
-            AND d.create_time = #{createTime}
-        </if>
-        <if test="createUserid != null and createUserid != ''">
-            AND d.create_userid = #{createUserid}
-        </if>
-        <if test="createUsername != null and createUsername != ''">
-            AND d.create_username = #{createUsername}
-        </if>
-        <if test="updateTime != null and updateTime != ''">
-            AND d.update_time = #{updateTime}
-        </if>
-        <if test="updateUserid != null and updateUserid != ''">
-            AND d.update_userid = #{updateUserid}
-        </if>
-        <if test="updateUsername != null and updateUsername != ''">
-            AND d.update_username = #{updateUsername}
-        </if>
-        <if test="version != null and version != ''">
-            AND d.version = #{version}
-        </if>
-        <if test="isParent != null and isParent != ''">
-            AND d.is_parent = #{isParent}
-        </if>
-        <if test="position != null and position != ''">
-            AND d.position = #{position}
-        </if>
-        <if test="positionRange != null and positionRange != ''">
-            AND d.position_range = #{positionRange}
-        </if>
-        <if test="foundedReason != null and foundedReason != ''">
-            AND d.founded_reason = #{foundedReason}
-        </if>
-        <if test="deptIds != null and deptIds != ''">
-            AND d.dept_id in
-            <foreach collection="deptIds" item="item" open="(" separator="," close=")">
-                ${item}
-            </foreach>
         </if>
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
         <if test="orgRange != null and orgRange != ''">
@@ -250,9 +172,6 @@
         </if>
         <if test="unitName != null and unitName != ''">
             AND u.unit_name like concat('%',#{unitName},'%')
-        </if>
-        <if test="unitCode != null and unitCode != ''">
-            AND u.unit_code = #{unitCode}
         </if>
     </sql>
     <sql id="Selective_Column_List">
@@ -766,33 +685,39 @@
   </update>
 
     <!--判断组织机构名称合法性-->
-    <select id="checkOrgNameAvailability" resultType="com.egovchina.partybuilding.partybuild.entity.SysDept">
-    SELECT dept_id as deptId, `name` FROM sys_dept WHERE `name` = #{deptName}
-  </select>
+    <select id="checkOrgNameAvailability" resultType="java.lang.Boolean">
+        SELECT true
+        FROM sys_dept
+        WHERE `name` = #{orgName} and del_flag = 0
+        <if test="orgId != null and orgId != 0">
+            AND dept_id != #{orgId}
+        </if>
+    </select>
 
     <!--根据条件查询-->
-    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <select id="selectOrganizationVOWithCondition"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.OrganizationQueryBean"
+            resultMap="OrganizationVOResultMap">
         select
-        <include refid="Base_Column_List"/>
-        ,
-        <include refid="Blob_Column_List"/>
+        <include refid="VO_Column_List"/>
         , u.unit_property,
         case when d.orgnize_property in ( 989, 992, 995, 1002, 1003, 1007, 1008) then 1 else 0 end AS is_branch
         from sys_dept d
         left join tab_pb_unit_info u on d.unit_id = u.unit_id
         <where>
+            d.del_flag = 0
             <include refid="Base_WhereCase_List"/>
         </where>
         order by d.order_num
     </select>
 
     <!--简单列表-map-->
-    <select id="selectToMapWithConditions" parameterType="java.util.Map" resultType="java.util.HashMap">
+    <select id="selectToMapByCondition" parameterType="java.util.Map" resultType="java.util.HashMap">
         select
           d.dept_id,
           d.name
         from sys_dept d
-        where d.name like concat('%',#{name},'%')
+        where d.del_flag = 0 and d.name like concat('%',#{name},'%')
     </select>
 
     <!--批量插入-->
@@ -815,12 +740,14 @@
     </insert>
 
     <!--根据ID查询组织信息并关联相关的实体信息-->
-    <select id="selectWithAboutInfoByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithAboutInfo">
+    <select id="selectOrganizationVOAndUnitsByOrgId" parameterType="java.lang.Long"
+            resultMap="OrganizationVOWithAboutInfoResultMap">
         select
         <include refid="Base_Column_List"/>
         ,
         <include refid="Blob_Column_List"/>
-        , d2.name as parent_name, u.unit_property,
+        , d2.name as parent_name,
+        u.unit_property,
         case when d.orgnize_property in ( 989, 992, 995, 1002, 1003, 1007, 1008) then 1 else 0 end AS is_branch
         from sys_dept d
         left join sys_dept d2 on d.parent_id = d2.dept_id
@@ -839,7 +766,8 @@
     </update>
 
     <!--根据条件查询组织阵地-->
-    <select id="selectPositionWithConditions" parameterType="java.util.Map" resultMap="BasePositionResultMap">
+    <select id="selectOrganizationPositionVOByCondition" parameterType="java.util.Map"
+            resultMap="OrganizationPositionVOResultMap">
         select
         d.dept_id, d.name, d.office_size, d.address, d.position, d.founded_date,
         ifnull(t.img_annex_num, 0) as img_annex_num,
@@ -853,14 +781,15 @@
         GROUP BY host_id
         ) t ON d.dept_id = t.host_id
         <where>
+            d.del_flag = 0
             <include refid="Base_WhereCase_List"/>
         </where>
         order by d.create_time
     </select>
 
     <!--根据ID查询组织阵地信息并关联相关的实体信息-->
-    <select id="selectPositionWithAboutInfoByPrimaryKey" parameterType="java.lang.Long"
-            resultMap="WithAttachmentsPositionResultMap">
+    <select id="selectOrganizationPositionVOAndAttachmentsById" parameterType="java.lang.Long"
+            resultMap="OrganizationPositionVOWithAboutInfoResultMap">
         select
           d.dept_id,
           d.name,
@@ -917,7 +846,8 @@
     </update>
 
     <!--统计组织和党员信息-->
-    <select id="countOrgWithPartyManInfo" parameterType="java.lang.Integer" resultType="SysDeptDtoWithCountInfo">
+    <select id="countOrganizationStatisticsByOrgId" parameterType="java.lang.Long"
+            resultType="com.egovchina.partybuilding.partybuild.vo.ContainsStatisticsOrganizationVO">
         SELECT
         *
         FROM
@@ -975,7 +905,8 @@
     </select>
 
     <!--统计组织党建工作信息-->
-    <select id="countPartyBuildingWorkInfo" parameterType="java.lang.Long" resultType="PartyBuildingWorkInfoDto">
+    <select id="selectOrganizationPartyBuildingWorkVOByOrgId" parameterType="java.lang.Long"
+            resultType="com.egovchina.partybuilding.partybuild.vo.OrganizationPartyBuildingWorkVO">
         SELECT
             d.dependency_relation AS dependencyRelation,
             ui.party_buiding_status AS partyBuidingStatus,

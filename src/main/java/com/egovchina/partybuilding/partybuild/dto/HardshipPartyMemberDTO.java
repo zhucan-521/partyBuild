@@ -14,22 +14,22 @@ import javax.validation.constraints.NotNull;
 @ApiModel("困难党员-数据传输对象")
 public class HardshipPartyMemberDTO {
 
-    @ApiModelProperty("困难程度")
+    @ApiModelProperty(value = "困难程度", required = true)
     @NotNull(message = "困难程度不能为空")
     private Long difficultyLevel;
 
     @ApiModelProperty("困难记录ID")
     private Long hardshipId;
 
-    @ApiModelProperty("组织主键")
+    @ApiModelProperty(value = "组织主键", required = true)
     @NotNull(message = "组织主键不能为空")
     private Long orgId;
 
-    @ApiModelProperty("人员Id")
+    @ApiModelProperty(value = "人员Id", required = true)
     @NotNull(message = "人员ID不能为空")
     private Long userId;
 
-    @ApiModelProperty("生活困难类型 dict KNLX")
+    @ApiModelProperty(value = "生活困难类型 dict KNLX", required = true)
     @NotNull(message = "生活困难类型不能为空")
     private String hardshipType;
 

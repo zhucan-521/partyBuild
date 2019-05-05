@@ -1,64 +1,76 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
-import com.egovchina.partybuilding.partybuild.dto.TabPbLeadTeamMemberDto;
+import com.egovchina.partybuilding.partybuild.entity.LeadTeamMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember;
-import org.apache.ibatis.annotations.Param;
+import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface TabPbLeadTeamMemberMapper {
-    int deleteByPrimaryKey(Long memberId);
-
-    int insert(TabPbLeadTeamMember record);
-
-    int insertSelective(TabPbLeadTeamMember record);
-
-    TabPbLeadTeamMember selectByPrimaryKey(Long memberId);
-
-    int updateByPrimaryKeySelective(TabPbLeadTeamMember record);
-
-    int updateByPrimaryKey(TabPbLeadTeamMember record);
-
-    int deleteId(Long memberId);
-
-    //查询所有领导班子成员
-    List<TabPbLeadTeamMember> selectTeamMemberListByTeamId(Long leadTeamId);
-
-    int deleteMemberByMemberId(Long memberId);
 
     /**
-     * 通过姓名,职务查询社区兼职委员列表
+     * 新增班子成员
      *
      * @param tabPbLeadTeamMember
      * @return
      */
-    List<TabPbLeadTeamMemberDto> selectLeadTeamMemberByUser(Map<String, Object> tabPbLeadTeamMember);
-
-    TabPbLeadTeamMemberDto selectById(Long memberId);
-
-    //按条件查询班子成员
-    List<TabPbLeadTeamMemberDto> selectByTabPbLeadTeamDto(TabPbLeadTeamMemberDto tabPbLeadTeamMemberDto);
-
-    void updateByTabPbLeadTeam(Long leadTeamId);
-
-    //查询上级组织领导班子成员
-    List<TabPbLeadTeamMemberDto> queryTheLeaderOfTheSuperiorOrganization(@Param("deptId") Long deptId,@Param("personName") String personName);
-
-    Long selectBycount(Long leadTeamId);
-
-
-    Long selectByLeadTeamId(Long memberId);
+    int insertSelective(TabPbLeadTeamMember tabPbLeadTeamMember);
 
     /**
-     * 查询成员是否重复添加
-     * @param leadTeamId
-     * @param userId
+     * 根据成员id查询成员信息
+     *
+     * @param memberId
      * @return
      */
-    List<TabPbLeadTeamMember> selectByUserId(@Param("leadTeamId") Long leadTeamId, @Param("userId")Long userId);
+    TabPbLeadTeamMember selectByPrimaryKey(Long memberId);
 
-    List<TabPbLeadTeamMember> queryTeamMembers(Long leadTeamId);
+    /**
+     * 根据主键修改班子成员信息
+     * @param tabPbLeadTeamMember
+     * @return
+     */
+    int updateByPrimaryKeySelective(TabPbLeadTeamMember tabPbLeadTeamMember);
+
+    /**
+     * 根据班子id查询班子成员列表
+     *
+     * @param leadTeamId 班子id
+     * @return
+     */
+    List<LeadTeamMemberVO> selectTeamMemberVOListByTeamId(Long leadTeamId);
+
+    /**
+     * 根据id查询班子成员详情
+     *
+     * @param memberId id
+     * @return
+     */
+    LeadTeamMemberVO selectLeadTeamMemberVOById(Long memberId);
+
+    /**
+     * 根据条件查询班子成员列表
+     *
+     * @param queryBean 查询实体
+     * @return
+     */
+    List<LeadTeamMemberVO> selectLeadTeamMemberVOListByCondition(LeadTeamMemberQueryBean queryBean);
+
+    /**
+     * 根据班子id逻辑删除班子成员
+     *
+     * @param leadTeamId 班子id
+     * @return
+     */
+    int logicDeleteByLeadTeamId(Long leadTeamId);
+
+    /**
+     * 成员已经存在在指定班子中
+     *
+     * @param leadTeamId 班子id
+     * @param userId     用户id
+     * @return
+     */
+    boolean memberAlreadyExistsInTheTeam(Long leadTeamId, Long userId);
 }

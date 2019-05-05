@@ -23,7 +23,7 @@ import java.util.List;
 public class FamilyServiceImpl implements FamilyService {
 
     @Autowired
-    private TabPbFamilyMapper pbFamilyMapper;
+    private TabPbFamilyMapper tabPbFamilyMapper;
 
     /**
      * 根据用户id获取他的家庭成员
@@ -32,7 +32,7 @@ public class FamilyServiceImpl implements FamilyService {
      */
     @Override
     public List<FamilyMemberVO> selectFamilyMemberList(Long partyMemberId) {
-        return pbFamilyMapper.getFamilyMemberVoByUserId(partyMemberId);
+        return tabPbFamilyMapper.getFamilyMemberVoByUserId(partyMemberId);
     }
 
     /**
@@ -42,10 +42,10 @@ public class FamilyServiceImpl implements FamilyService {
      */
     @Override
     public FamilyMemberVO selectFamilyMemberById(Long relationId) {
-            TabPbFamily tabPbFamily = pbFamilyMapper.findById(relationId);
-            FamilyMemberVO familyMemberVO =new FamilyMemberVO();
-            BeanUtil.copyPropertiesIgnoreNull(tabPbFamily, familyMemberVO);
-            return familyMemberVO;
+        TabPbFamily tabPbFamily = tabPbFamilyMapper.findById(relationId);
+        FamilyMemberVO familyMemberVO =new FamilyMemberVO();
+        BeanUtil.copyPropertiesIgnoreNull(tabPbFamily, familyMemberVO);
+        return familyMemberVO;
     }
 
     /**
@@ -54,14 +54,14 @@ public class FamilyServiceImpl implements FamilyService {
      */
     @Override
     public int deleteFamilyMemberByPrimaryKey(Long relationId) {
-        if(null==pbFamilyMapper.findById(relationId)){
+        if(null== tabPbFamilyMapper.findById(relationId)){
             throw new BusinessDataCheckFailException("不存在这个人");
         }
         TabPbFamily tabPbFamily = new TabPbFamily();
         tabPbFamily.setRelationId(relationId);
         tabPbFamily.setDelFlag("1");
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbFamily);
-        return pbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
+        return tabPbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
     }
 
     /**
@@ -75,7 +75,7 @@ public class FamilyServiceImpl implements FamilyService {
         }
         TabPbFamily tabPbFamily=new TabPbFamily();
         BeanUtil.copyPropertiesIgnoreNull(familyMemberDTO,tabPbFamily);
-        return pbFamilyMapper.insertSelective(tabPbFamily);
+        return tabPbFamilyMapper.insertSelective(tabPbFamily);
     }
 
     /**
@@ -88,6 +88,6 @@ public class FamilyServiceImpl implements FamilyService {
         TabPbFamily tabPbFamily=new TabPbFamily();
         BeanUtil.copyPropertiesIgnoreNull(familyMemberDTO, tabPbFamily);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbFamily);
-        return  pbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
+        return  tabPbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
     }
 }

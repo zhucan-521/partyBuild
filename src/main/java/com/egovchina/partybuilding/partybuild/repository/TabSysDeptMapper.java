@@ -1,10 +1,11 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
-import com.egovchina.partybuilding.partybuild.dto.PartyBuildingWorkInfoDto;
-import com.egovchina.partybuilding.partybuild.dto.SysDeptDto;
-import com.egovchina.partybuilding.partybuild.dto.SysDeptDtoWithCountInfo;
-import com.egovchina.partybuilding.partybuild.dto.TabDeptPositionDto;
+import com.egovchina.partybuilding.partybuild.entity.OrganizationQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.SysDept;
+import com.egovchina.partybuilding.partybuild.vo.ContainsStatisticsOrganizationVO;
+import com.egovchina.partybuilding.partybuild.vo.OrganizationPartyBuildingWorkVO;
+import com.egovchina.partybuilding.partybuild.vo.OrganizationPositionVO;
+import com.egovchina.partybuilding.partybuild.vo.OrganizationVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -28,23 +29,35 @@ public interface TabSysDeptMapper {
 
     int updateByPrimaryKey(SysDept record);
 
-    List<SysDept> selectWithConditions(Map<String, Object> conditions);
+    /**
+     * 根据条件查询组织VO列表
+     *
+     * @param queryBean 查询实体
+     * @return
+     */
+    List<OrganizationVO> selectOrganizationVOWithCondition(OrganizationQueryBean queryBean);
 
-    SysDept checkOrgNameAvailability(String deptName);
+    boolean checkOrgNameAvailability(@Param("orgName") String orgName, @Param("orgId") Long orgId);
 
     void batchInsert(List<SysDept> effectiveList);
 
     int logicDeleteById(Long deptId);
 
-    SysDeptDto selectWithAboutInfoByPrimaryKey(Long deptId);
+    /**
+     * 根据组织id查询组织vo实体（包含单位等信息）
+     *
+     * @param orgId 组织id
+     * @return
+     */
+    OrganizationVO selectOrganizationVOAndUnitsByOrgId(Long orgId);
 
-    void insertToDeptRelationTable(@Param("parentId") Integer parentId, @Param("deptId") Integer deptId);
+    void insertToDeptRelationTable(@Param("parentId") Long parentId, @Param("deptId") Long deptId);
 
     void batchInsertRelation(List<SysDept> effectiveList);
 
-    List<TabDeptPositionDto> selectPositionWithConditions(Map<String, Object> conditions);
+    List<OrganizationPositionVO> selectOrganizationPositionVOByCondition(Map<String, Object> conditions);
 
-    TabDeptPositionDto selectPositionWithAboutInfoByPrimaryKey(Long deptId);
+    OrganizationPositionVO selectOrganizationPositionVOAndAttachmentsById(Long deptId);
 
     int updateLeaderUserIdByDeptId(@Param("deptId") Long deptId, @Param("leaderUserId") Long leaderUserId);
 
@@ -61,7 +74,7 @@ public interface TabSysDeptMapper {
      */
     int updateFullPathForSubs(@Param("oldFullPath") String oldFullPath,
                               @Param("newFullPath") String newFullPath,
-                              @Param("nowDeptId") Integer nowDeptId);
+                              @Param("nowDeptId") Long nowDeptId);
 
     /**
      * 数据里列表-map
@@ -69,7 +82,7 @@ public interface TabSysDeptMapper {
      * @param conditions
      * @return
      */
-    List<HashMap<String, Object>> selectToMapWithConditions(Map<String, Object> conditions);
+    List<HashMap<String, Object>> selectToMapByCondition(Map<String, Object> conditions);
 
     /**
      * 检查
@@ -94,7 +107,7 @@ public interface TabSysDeptMapper {
      * @param orgId
      * @return
      */
-    SysDeptDtoWithCountInfo countOrgWithPartyManInfo(@Param("orgId") Integer orgId);
+    ContainsStatisticsOrganizationVO countOrganizationStatisticsByOrgId(@Param("orgId") Long orgId);
 
     /**
      * 统计党建工作信息
@@ -102,7 +115,7 @@ public interface TabSysDeptMapper {
      * @param deptId
      * @return
      */
-    PartyBuildingWorkInfoDto countPartyBuildingWorkInfo(Long deptId);
+    OrganizationPartyBuildingWorkVO selectOrganizationPartyBuildingWorkVOByOrgId(Long deptId);
 
     /**
      * desc: 判断数据是否存在

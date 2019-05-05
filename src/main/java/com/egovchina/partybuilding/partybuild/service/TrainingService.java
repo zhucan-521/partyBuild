@@ -20,7 +20,7 @@ public interface TrainingService {
      * @param traningId
      * @return
      */
-    int deletTrainingDTO(Long traningId);
+    int logicDeleteTrainingDTO(Long traningId);
 
     /**
      * 列表条件查询党员培训情况

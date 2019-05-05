@@ -18,6 +18,7 @@ import java.util.List;
  * desc: 党员发展步骤-服务接口
  * Created by FanYanGen on 2019/4/22 19:21
  */
+@Deprecated
 public interface DevPartyMemberService {
 
     /**

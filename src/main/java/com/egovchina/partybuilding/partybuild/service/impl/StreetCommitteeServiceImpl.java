@@ -4,14 +4,14 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.partybuild.dto.StreetCommitteeDTO;
+import com.egovchina.partybuilding.partybuild.dto.StreetCommitteeMemberDTO;
+import com.egovchina.partybuilding.partybuild.entity.StreetCommitteeQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember;
 import com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommittee;
 import com.egovchina.partybuilding.partybuild.repository.TabPbGrantCommitteMemberMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbGrantCommitteeMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
-import com.egovchina.partybuilding.partybuild.dto.StreetCommitteeDTO;
-import com.egovchina.partybuilding.partybuild.dto.StreetCommitteeMemberDTO;
-import com.egovchina.partybuilding.partybuild.entity.StreetCommitteeQueryBean;
 import com.egovchina.partybuilding.partybuild.service.StreetCommitteeService;
 import com.egovchina.partybuilding.partybuild.vo.StreetCommitteeMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.StreetCommitteeVO;
@@ -25,8 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.egovchina.partybuilding.common.util.BeanUtil.copyListPropertiesAndPaddingBaseField;
-import static com.egovchina.partybuilding.common.util.BeanUtil.copyPropertiesAndPaddingBaseField;
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField;
 
 /**
  * @author wuyunjie
@@ -54,8 +54,8 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
 
         var old = this.tabPbGrantCommitteeMapper.selectByOrgId(streetCommitteeDTO.getOrgId());
         TabPbGrantCommittee tabPbGrantCommittee =
-                copyPropertiesAndPaddingBaseField(
-                        streetCommitteeDTO,TabPbGrantCommittee.class,true,false);
+                generateTargetCopyPropertiesAndPaddingBaseField(
+                        streetCommitteeDTO, TabPbGrantCommittee.class, false);
         int count = 0;
         if (old == null) {
             streetCommitteeDTO.setCurrent((byte) 1);
@@ -164,8 +164,8 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
     @Override
     @Transactional
     public int addStreetCommitteeMembers(List<StreetCommitteeMemberDTO> streetCommitteMemberDTOList) {
-        List<TabPbGrantCommitteMember> tabPbGrantCommitteMembers = copyListPropertiesAndPaddingBaseField(
-                streetCommitteMemberDTOList, TabPbGrantCommitteMember.class, true, false);
+        List<TabPbGrantCommitteMember> tabPbGrantCommitteMembers =
+                generateTargetListCopyPropertiesAndPaddingBaseField(streetCommitteMemberDTOList, TabPbGrantCommitteMember.class, false);
         int count = 0;
         for (TabPbGrantCommitteMember tabPbGrantCommitteMember : tabPbGrantCommitteMembers.stream()
                 .filter(v -> v.getGrantCommitteeId() != null)

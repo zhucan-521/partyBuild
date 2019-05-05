@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.egovchina.partybuilding.common.util.BeanUtil.copyPropertiesAndPaddingBaseField;
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
 /**
  * desc:  出国出境-服务接口实现
@@ -49,7 +49,7 @@ public class AbroadServiceImpl implements AbroadService {
     public int insertGoAbroad(GoAbroadDTO goAbroadDTO) {
         Long userId = goAbroadDTO.getUserId();
         verification(goAbroadDTO.getOrgId(), userId);
-        TabPbAbroad tabPbAbroad = copyPropertiesAndPaddingBaseField(goAbroadDTO, TabPbAbroad.class, false, false);
+        TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(goAbroadDTO, TabPbAbroad.class, false);
         int result = abroadMapper.insertSelective(tabPbAbroad);
         // 党员出国后将该党员移至历史党员
         if (0 < result) {
@@ -64,7 +64,7 @@ public class AbroadServiceImpl implements AbroadService {
     @Override
     public PageInfo<AbroadVO> findAbroadVOWithConditions(AbroadQueryBean abroadQueryBean, Page page) {
         PageHelper.startPage(page);
-        TabPbAbroad tabPbAbroad = copyPropertiesAndPaddingBaseField(abroadQueryBean, TabPbAbroad.class, false, false);
+        TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(abroadQueryBean, TabPbAbroad.class, false);
         return new PageInfo<>(abroadMapper.selectByConditions(tabPbAbroad));
     }
 
@@ -80,25 +80,25 @@ public class AbroadServiceImpl implements AbroadService {
     @Override
     public int updateGoAbroad(GoAbroadDTO goAbroadDTO) {
         verification(goAbroadDTO.getOrgId(), goAbroadDTO.getUserId());
-        TabPbAbroad tabPbAbroad = copyPropertiesAndPaddingBaseField(goAbroadDTO, TabPbAbroad.class, false, true);
+        TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(goAbroadDTO, TabPbAbroad.class, true);
         return abroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
     }
 
     @Override
     public int updateReturnAbroad(ReturnAbroadDTO returnAbroadDTO) {
         verification(returnAbroadDTO.getOrgId(), returnAbroadDTO.getUserId());
-        TabPbAbroad tabPbAbroad = copyPropertiesAndPaddingBaseField(returnAbroadDTO, TabPbAbroad.class, false, true);
+        TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(returnAbroadDTO, TabPbAbroad.class, true);
         return abroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
     }
 
     @Override
     public GoAbroadDetailsVO findGoAbroadDetailsVOByAbroadId(Long abroadId) {
-        return copyPropertiesAndPaddingBaseField(abroadMapper.findAbroadDetailsVOByAbroadId(abroadId), GoAbroadDetailsVO.class, false, false);
+        return generateTargetCopyPropertiesAndPaddingBaseField(abroadMapper.findAbroadDetailsVOByAbroadId(abroadId), GoAbroadDetailsVO.class, false);
     }
 
     @Override
     public BackAbroadDetailsVO findBackAbroadDetailsVOByAbroadId(Long abroadId) {
-        return copyPropertiesAndPaddingBaseField(abroadMapper.findAbroadDetailsVOByAbroadId(abroadId), BackAbroadDetailsVO.class, false, false);
+        return generateTargetCopyPropertiesAndPaddingBaseField(abroadMapper.findAbroadDetailsVOByAbroadId(abroadId), BackAbroadDetailsVO.class, false);
     }
 
     /**

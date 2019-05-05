@@ -22,8 +22,8 @@ public class RewardsDTO {
     @TableId(value = "rewards_id", type = IdType.AUTO)
     private Long rewardsId;
 
-    @ApiModelProperty(value = "奖励日期",example ="yyyy-MM-dd")
-    @NotNull(message = "奖励日期不能为空!")
+    @ApiModelProperty(value = "奖励日期", required = true, example = "yyyy-MM-dd")
+    @NotNull(message = "奖励日期不能为空")
     private Date rewardsDate;
 
     @ApiModelProperty(value = "奖励机构", required = true)
@@ -39,7 +39,7 @@ public class RewardsDTO {
     private String eblFlag;
 
     @ApiModelProperty(value = "奖励名称 dict DYJCJL", required = true)
-    @NotNull(message = "奖励名称不能为空!")
+    @NotNull(message = "奖励名称不能为空")
     private String rewardsName;
 
     @ApiModelProperty(value = "备注：奖励说明")
