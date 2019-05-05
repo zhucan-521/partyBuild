@@ -454,7 +454,7 @@
     </update>
 
     <!--根据用户Id查找用户相应的职位-->
-    <select id="selectTabPbPositivesByUserId" parameterType="Long" resultMap="BaseResultMap">
+    <select id="selectTabPbPositivesByUserId" parameterType="Long" resultMap="BaseMoreResultMap">
           select
           positive_id,
           user_id,

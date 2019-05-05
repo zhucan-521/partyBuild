@@ -1,6 +1,5 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -8,7 +7,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,7 +14,7 @@ import java.util.Date;
  */
 @ApiModel(value = "家庭成员对象",description = "家庭成员实体类")
 @Data
-public class FamilyMemberVO implements Serializable {
+public class FamilyMemberVO{
 
     @ApiModelProperty(value = "家庭成员主键ID")
     private Long relationId;
@@ -31,7 +29,6 @@ public class FamilyMemberVO implements Serializable {
     @ApiModelProperty(value = "家庭成员主键",hidden = true)
     private Long relationUserId;
 
-    @TableField(exist = false)
     @ApiModelProperty(value = "姓名")
     private String username;
 
