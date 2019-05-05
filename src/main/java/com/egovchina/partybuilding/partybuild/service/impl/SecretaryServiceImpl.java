@@ -13,10 +13,14 @@ import com.egovchina.partybuilding.partybuild.vo.SecretaryInfoVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.mysql.jdbc.IterateBlock;
+import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.HTMLDocument;
+import java.util.Iterator;
 import java.util.List;
 
 /**

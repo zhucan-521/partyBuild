@@ -24,7 +24,6 @@ public interface TabPbDeptSecretaryMapper {
      */
     SecretaryMemberVO selectSecretaryVOByUserId(Long userId);
 
-
     /**
      * 根据书记id获取书记信息
      * @param SecretaryId
@@ -38,13 +37,5 @@ public interface TabPbDeptSecretaryMapper {
      * @return
      */
     List<SecretaryMemberVO> selectSecretaryVOList(SecretaryMemberQueryBean secretaryMemberQueryBean);
-
-
-    /**
-     * 根据码表id获取码表排序码
-     * @param id
-     * @return
-     */
-    Long getSortByDictId(Long id);
 
 }
