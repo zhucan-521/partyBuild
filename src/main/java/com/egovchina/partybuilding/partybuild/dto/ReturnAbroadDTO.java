@@ -19,7 +19,7 @@ public class ReturnAbroadDTO {
     @ApiModelProperty(value = "出国出境(主键)ID")
     private Long abroadId;
 
-    @ApiModelProperty(value = "组织id")
+    @ApiModelProperty(value = "组织id", required = true)
     @NotNull(message = "组织ID不能为空")
     private Long orgId;
 

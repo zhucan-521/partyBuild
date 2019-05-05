@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.egovchina.partybuilding.common.util.BeanUtil.copyPropertiesAndPaddingBaseField;
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
 /**
  * desc: 困难党员-服务接口实现
@@ -68,7 +68,7 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
     @Override
     public int insertHardshipPartyMember(HardshipPartyMemberDTO hardshipPartyMemberDTO) {
         verification(hardshipPartyMemberDTO);
-        TabPbHardship tabPbHardship = copyPropertiesAndPaddingBaseField(hardshipPartyMemberDTO, TabPbHardship.class, false, false);
+        TabPbHardship tabPbHardship = generateTargetCopyPropertiesAndPaddingBaseField(hardshipPartyMemberDTO, TabPbHardship.class, false);
         // 新增困难党员时 修改党员困难标识
         int result = hardshipMapper.insertSelective(tabPbHardship);
         if (0 < result) {
@@ -94,18 +94,18 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
     @Override
     public int updateHardshipPartyMember(HardshipPartyMemberDTO hardshipPartyMemberDTO) {
         verification(hardshipPartyMemberDTO);
-        TabPbHardship tabPbHardship = copyPropertiesAndPaddingBaseField(hardshipPartyMemberDTO, TabPbHardship.class, false, true);
+        TabPbHardship tabPbHardship = generateTargetCopyPropertiesAndPaddingBaseField(hardshipPartyMemberDTO, TabPbHardship.class, true);
         return hardshipMapper.updateByPrimaryKeySelective(tabPbHardship);
     }
 
     @Override
     public HardshipPartyVO findHardshipPartyVOByHardshipId(Long hardshipId) {
-        return copyPropertiesAndPaddingBaseField(hardshipMapper.findByHardshipId(hardshipId), HardshipPartyVO.class, false, false);
+        return generateTargetCopyPropertiesAndPaddingBaseField(hardshipMapper.findByHardshipId(hardshipId), HardshipPartyVO.class, false);
     }
 
     @Override
     public HardshipPartyVO findHardshipPartyVOByUserId(Long userId) {
-        return copyPropertiesAndPaddingBaseField(hardshipMapper.findByUserId(userId), HardshipPartyVO.class, false, false);
+        return generateTargetCopyPropertiesAndPaddingBaseField(hardshipMapper.findByUserId(userId), HardshipPartyVO.class, false);
     }
 
     /**

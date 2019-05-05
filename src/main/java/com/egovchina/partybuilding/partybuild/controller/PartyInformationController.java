@@ -47,10 +47,10 @@ public class PartyInformationController {
 
     @ApiOperation(value = "党员身份核查", notes = "党员身份核查", httpMethod = "GET")
     @GetMapping("/party-members/identities")
-    public PageInfo<PersonnelVO> FindUserByCondition(@RequestParam(required = false) @ApiParam(value = "姓名") String username,
-                                                     @RequestParam(required = false) @ApiParam(value = "身份证") String idCardNo,
-                                                     @RequestParam(required = false) @ApiParam(value = "手机号") String phone,
-                                                     Page page) {
+    public PageInfo<PersonnelVO> getPersonnelVOList(@RequestParam(required = false) @ApiParam(value = "姓名") String username,
+                                                    @RequestParam(required = false) @ApiParam(value = "身份证") String idCardNo,
+                                                    @RequestParam(required = false) @ApiParam(value = "手机号") String phone,
+                                                    Page page) {
         if (StringUtils.isAllBlank(username, idCardNo, phone)) {
             throw new BusinessDataIncompleteException("查询条件不能为空");
         }
@@ -105,6 +105,7 @@ public class PartyInformationController {
         return new PageInfo<>(partyInformationService.selectCommunityVO(communityDTO));
     }
 
+    @Deprecated
     @ApiOperation(value = "获取登录用户的信息")
     @GetMapping("/login-user-infos")
     public UserInfoVO getUserInfo() {

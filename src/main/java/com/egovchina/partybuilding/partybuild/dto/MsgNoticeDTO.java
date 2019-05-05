@@ -13,8 +13,7 @@ import java.util.List;
 @Data
 public class MsgNoticeDTO {
 
-
-    @ApiModelProperty(value = "主键ID")
+    @ApiModelProperty(value = "主键ID", required = true)
     @NotNull(message = "请附带id")
     private Long id;
 

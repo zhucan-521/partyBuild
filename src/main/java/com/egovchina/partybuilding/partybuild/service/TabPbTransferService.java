@@ -7,6 +7,7 @@ import com.egovchina.partybuilding.partybuild.dto.TransferListWaitingDto;
 import com.egovchina.partybuilding.partybuild.entity.TabPbTransfer;
 import com.github.pagehelper.PageInfo;
 
+@Deprecated
 public interface TabPbTransferService {
 
     /**

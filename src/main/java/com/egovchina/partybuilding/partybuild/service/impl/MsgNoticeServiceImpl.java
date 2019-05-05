@@ -1,6 +1,5 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
-import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.util.*;
@@ -75,7 +74,7 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
         TabPbMsgNotice tabPbMsgNoticeUpdate=new TabPbMsgNotice();
         BeanUtil.copyPropertiesIgnoreNull(notice,tabPbMsgNoticeUpdate);
         tabPbMsgNoticeUpdate.setUpdateTime(new Date());
-        tabPbMsgNoticeUpdate.setUpdateUserid(UserContextHolder.getUserIdLong());
+        tabPbMsgNoticeUpdate.setUpdateUserid(UserContextHolder.getUserId());
         tabPbMsgNoticeUpdate.setUpdateUsername(UserContextHolder.getUserName());
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbMsgNoticeUpdate);
         int count = noticeMapper.updateByPrimaryKeySelective(tabPbMsgNoticeUpdate);

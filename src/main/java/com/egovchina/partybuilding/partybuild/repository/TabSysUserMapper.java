@@ -1,17 +1,15 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 
-import com.egovchina.partybuilding.partybuild.dto.Personnel;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
 import com.egovchina.partybuilding.partybuild.dto.UserDeptPositiveDto;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.entity.SysUserQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface TabSysUserMapper {
@@ -101,14 +99,6 @@ public interface TabSysUserMapper {
      * @return
      */
     int batchDeptIdByUserId(@Param("userIdList") List<Integer> userIdList, @Param("deptId") Long deptId);
-
-    /**
-     * 查询组织下的所有人员 包括直属党员、在职党员、流入党员
-     *
-     * @param deptId
-     * @return
-     */
-    List<Personnel> selectUserByDeptId(@Param("deptId") Long deptId);
 
     /**
      * 查询组织下的直属党员

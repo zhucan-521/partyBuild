@@ -7,11 +7,11 @@ import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailExcepti
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.OrgClassifyDTO;
+import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify;
 import com.egovchina.partybuilding.partybuild.repository.TabPbOrgClassifyMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.service.OrgClassifyService;
-import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.vo.OrgClassifyVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -54,7 +54,7 @@ public class OrgClassifyServiceImpl implements OrgClassifyService {
     public int insertSelective(TabPbOrgClassify record) {
         int retVal = orgClassifyMapper.insertSelective(record);
         if (retVal > 0) {
-            retVal += pushModification(record.getDeptId().intValue(), record.getOrgLevel(), record.getLevelDate());
+            retVal += pushModification(record.getDeptId(), record.getOrgLevel(), record.getLevelDate());
         }
         return retVal;
     }
@@ -67,8 +67,8 @@ public class OrgClassifyServiceImpl implements OrgClassifyService {
      * @param levelDate 定等日期
      * @return
      */
-    private int pushModification(Integer deptId, Long orgLevel, Date levelDate) {
-        SysDept sysDept = deptMapper.selectByPrimaryKey(deptId.longValue());
+    private int pushModification(Long deptId, Long orgLevel, Date levelDate) {
+        SysDept sysDept = deptMapper.selectByPrimaryKey(deptId);
         sysDept.setDeptId(deptId);
         sysDept.setOrgLevel(orgLevel);
         sysDept.setLevelDate(levelDate);
@@ -84,7 +84,7 @@ public class OrgClassifyServiceImpl implements OrgClassifyService {
     @Override
     public int updateByPrimaryKeySelective(TabPbOrgClassify record) {
         int retVal = orgClassifyMapper.updateByPrimaryKeySelective(record);
-        retVal += pushModification(record.getDeptId().intValue(), record.getOrgLevel(), record.getLevelDate());
+        retVal += pushModification(record.getDeptId(), record.getOrgLevel(), record.getLevelDate());
         return retVal;
     }
 

@@ -16,7 +16,7 @@ public class UnitInfoDTO {
     @ApiModelProperty(value = "组织ID")
     private Long orgId;
 
-    @ApiModelProperty(value = "单位名称")
+    @ApiModelProperty(value = "单位名称", required = true)
     @NotBlank(message = "单位名称不能为空")
     private String unitName;
 

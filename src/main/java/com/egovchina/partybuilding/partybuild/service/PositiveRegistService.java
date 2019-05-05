@@ -21,7 +21,7 @@ public interface PositiveRegistService  {
      * 修改报到状态
      * @param positiveRegistId
      */
-    int ChangeStatus(Long positiveRegistId, Byte revokeTag);
+    int changeStatus(Long positiveRegistId, Byte revokeTag);
 
     /**
      * 逻辑删除
