@@ -1,5 +1,4 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
-
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
@@ -21,7 +20,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 /**
@@ -39,8 +37,6 @@ public class FlowInServiceImpl implements FlowInService {
 
     @Autowired
     private TabPbFlowOutMapper tabPbFlowOutMapper;
-
-
 
     /**
      * 流入党员列表查询
@@ -143,7 +139,6 @@ public class FlowInServiceImpl implements FlowInService {
         return tabPbFlowInMapper.updateByPrimaryKeySelective(tabPbFlowInUpdate);
     }
 
-
     /**
      * 結束流動
      * @param
@@ -167,7 +162,6 @@ public class FlowInServiceImpl implements FlowInService {
         tabPbFlowOut.setFlowOutState(59416L);
         //设置返回日期
         tabPbFlowOut.setReturnDate(flowInMemberDto.getReturnDate());
-
         return tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOut);
     }
 

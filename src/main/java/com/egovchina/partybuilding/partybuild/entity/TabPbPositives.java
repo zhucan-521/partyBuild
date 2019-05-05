@@ -1,7 +1,6 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
 import com.baomidou.mybatisplus.annotations.TableName;
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.util.Date;
