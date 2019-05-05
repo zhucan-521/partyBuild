@@ -44,7 +44,7 @@ public class SecretaryController {
         return secretaryService.insertSecretary(secretaryMemberDTO);
     }
 
-    @ApiOperation(value = "修改书记", notes = "修改", httpMethod = "PUT")
+    @ApiOperation(value = "修改书记", notes = "（书记的家庭成员和职务传他们的id则是修改不传则是添加）", httpMethod = "PUT")
     @PutMapping
     public ReturnEntity updateSecretary(@ApiParam(value = "修改书记") @RequestBody @Validated SecretaryMemberDTO secretaryMemberDTO) {
         return secretaryService.updateSecretary(secretaryMemberDTO);

@@ -1,16 +1,11 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
-import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
-
-import java.io.Serializable;
 import java.util.Date;
 
 
 @Data
-@TableName(value = "tab_pb_family")
-public class TabPbFamily implements Serializable {
-
+public class TabPbFamily {
 
     private Long relationId;
 
@@ -61,8 +56,4 @@ public class TabPbFamily implements Serializable {
     private String whetherAbroad;
 
     private Long abroad;
-
-
-
-
 }

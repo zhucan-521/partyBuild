@@ -47,7 +47,7 @@ public class FamilyController {
         return ReturnUtil.buildReturn(familyService.deleteFamilyMemberByPrimaryKey(relationId));
     }
 
-    @ApiOperation(value = "保存单个家庭成员信息", notes = "添加家庭成员", httpMethod = "POST")
+    @ApiOperation(value = "保存单个家庭成员信息（userId为该家庭成员的关系党员id必填）", notes = "添加家庭成员", httpMethod = "POST")
     @PostMapping
     public ReturnEntity addFamilyMember(@RequestBody @ApiParam(value = "家庭成员对象")  FamilyMemberDTO familyMemberDTO) {
         return ReturnUtil.buildReturn(familyService.addFamilyDTO(familyMemberDTO));
