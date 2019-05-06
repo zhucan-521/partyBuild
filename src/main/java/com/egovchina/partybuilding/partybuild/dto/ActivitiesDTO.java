@@ -6,12 +6,11 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
-@ApiModel(value = "活动实体DTO", description = "活动实体DTO")
+@ApiModel(value = "联点活动DTO", description = "联点活动DTO")
 @Data
 @Accessors(chain = true)
-public class ActivitiesDTO implements Serializable {
+public class ActivitiesDTO {
 
     @ApiModelProperty(value = "活动ID")
     private Long activitiesId;
