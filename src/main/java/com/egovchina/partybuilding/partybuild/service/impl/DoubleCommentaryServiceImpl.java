@@ -46,36 +46,6 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
     private TabSysDeptMapper deptMapper;
 
     @Override
-    public int deleteByPrimaryKey(Long commentaryId) {
-        return doubleCommentaryMapper.deleteByPrimaryKey(commentaryId);
-    }
-
-    @Override
-    public int insert(TabPbDoubleCommentary record) {
-        return doubleCommentaryMapper.insert(record);
-    }
-
-    @Override
-    public int insertSelective(TabPbDoubleCommentary record) {
-        return doubleCommentaryMapper.insertSelective(record);
-    }
-
-    @Override
-    public int updateByPrimaryKeySelective(TabPbDoubleCommentary record) {
-        return doubleCommentaryMapper.updateByPrimaryKeySelective(record);
-    }
-
-    @Override
-    public int updateByPrimaryKeyWithBLOBs(TabPbDoubleCommentary record) {
-        return doubleCommentaryMapper.updateByPrimaryKeyWithBLOBs(record);
-    }
-
-    @Override
-    public int updateByPrimaryKey(TabPbDoubleCommentary record) {
-        return doubleCommentaryMapper.updateByPrimaryKey(record);
-    }
-
-    @Override
     public int insertCommentary(DoubleCommentaryDTO doubleCommentaryDTO) {
         Long planYear = doubleCommentaryDTO.getPlanYear();
         Long orgId = doubleCommentaryDTO.getOrgId();

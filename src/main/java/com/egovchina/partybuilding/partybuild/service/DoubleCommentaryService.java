@@ -15,18 +15,6 @@ import com.github.pagehelper.PageInfo;
  */
 public interface DoubleCommentaryService {
 
-    int deleteByPrimaryKey(Long commentaryId);
-
-    int insert(TabPbDoubleCommentary record);
-
-    int insertSelective(TabPbDoubleCommentary record);
-
-    int updateByPrimaryKeySelective(TabPbDoubleCommentary record);
-
-    int updateByPrimaryKeyWithBLOBs(TabPbDoubleCommentary record);
-
-    int updateByPrimaryKey(TabPbDoubleCommentary record);
-
     /**
      * desc: 根据组合条件查询双述双评列表
      *
