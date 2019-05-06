@@ -49,6 +49,7 @@ public class SecretaryServiceImpl implements SecretaryService {
 
     /**
      * 根据用户id获取书记基本信息
+     *
      * @param userId
      * @return
      */
@@ -62,14 +63,15 @@ public class SecretaryServiceImpl implements SecretaryService {
 
     /**
      * 添加书记
+     *
      * @param secretaryMemberDTO
      * @return
      */
     @Override
     public ReturnEntity insertSecretary(SecretaryMemberDTO secretaryMemberDTO) {
         Long userId = secretaryMemberDTO.getUserId();
-        if (userId==null) {
-            SysUser sysUser = generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO,SysUser.class, false);
+        if (userId == null) {
+            SysUser sysUser = generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO, SysUser.class, false);
             tabSysUserMapper.insertSelective(sysUser);
             userId = sysUser.getUserId();
         }
@@ -93,6 +95,7 @@ public class SecretaryServiceImpl implements SecretaryService {
 
     /**
      * 修改书记
+     *
      * @param secretaryMemberDTO
      * @return
      */
@@ -107,12 +110,12 @@ public class SecretaryServiceImpl implements SecretaryService {
         if (CollectionUtil.isNotEmpty(familyMemberDTOS)) {
             for (FamilyMemberDTO familyDTO : familyMemberDTOS) {
                 if (familyDTO.getRelationId() != null) {
-                    TabPbFamily tabPbFamily=new TabPbFamily();
-                    BeanUtil.copyPropertiesIgnoreNull(familyDTO,tabPbFamily);
+                    TabPbFamily tabPbFamily = new TabPbFamily();
+                    BeanUtil.copyPropertiesIgnoreNull(familyDTO, tabPbFamily);
                     tabPbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
                 } else {
-                    TabPbFamily tabPbFamily=new TabPbFamily();
-                    BeanUtil.copyPropertiesIgnoreNull(familyDTO,tabPbFamily);
+                    TabPbFamily tabPbFamily = new TabPbFamily();
+                    BeanUtil.copyPropertiesIgnoreNull(familyDTO, tabPbFamily);
                     tabPbFamily.setUserId(secretaryMemberDTO.getUserId());
                     tabPbFamilyMapper.insertSelective(tabPbFamily);
                 }
@@ -121,12 +124,12 @@ public class SecretaryServiceImpl implements SecretaryService {
         if (CollectionUtil.isNotEmpty(secretaryMemberDTO.getPositivesList())) {
             for (PositivesDTO positivesDTO : positivesDTOS) {
                 if (positivesDTO.getPositiveId() != null) {
-                    TabPbPositives tabPbPositives=new TabPbPositives();
-                    BeanUtil.copyPropertiesIgnoreNull(positivesDTO,tabPbPositives);
+                    TabPbPositives tabPbPositives = new TabPbPositives();
+                    BeanUtil.copyPropertiesIgnoreNull(positivesDTO, tabPbPositives);
                     tabPbPositivesMapper.updateByPrimaryKeySelective(tabPbPositives);
                 } else {
-                    TabPbPositives tabPbPositives=new TabPbPositives();
-                    BeanUtil.copyPropertiesIgnoreNull(positivesDTO,tabPbPositives);
+                    TabPbPositives tabPbPositives = new TabPbPositives();
+                    BeanUtil.copyPropertiesIgnoreNull(positivesDTO, tabPbPositives);
                     tabPbPositivesMapper.insertSelective(tabPbPositives);
                 }
             }
@@ -136,6 +139,7 @@ public class SecretaryServiceImpl implements SecretaryService {
 
     /**
      * 根据书记id获取书记详情
+     *
      * @param secretaryId
      * @return
      */
@@ -146,6 +150,7 @@ public class SecretaryServiceImpl implements SecretaryService {
 
     /**
      * 列表查询书记
+     *
      * @param secretaryMemberQueryBean
      * @return
      */
@@ -159,6 +164,7 @@ public class SecretaryServiceImpl implements SecretaryService {
 
     /**
      * 删除书记
+     *
      * @param secretaryId
      * @return
      */

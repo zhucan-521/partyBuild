@@ -22,40 +22,40 @@ import java.util.List;
 @RequestMapping("/v1/training/")
 public class TrainingController {
 
-        @Autowired
-        TrainingService tabPbTrainingService;
+    @Autowired
+    TrainingService tabPbTrainingService;
 
-        @ApiOperation(value = "添加党员培训情况", notes = "必须有userId", httpMethod = "POST")
-        @PostMapping
-        public ReturnEntity addTraining(@RequestBody @Validated  @ApiParam(name = "培训党员")  TrainingDTO trainingDTO){
-            return ReturnUtil.buildReturn(tabPbTrainingService.addTraningDTO(trainingDTO));
-        }
+    @ApiOperation(value = "添加党员培训情况", notes = "必须有userId", httpMethod = "POST")
+    @PostMapping
+    public ReturnEntity addTraining(@RequestBody @Validated @ApiParam(name = "培训党员") TrainingDTO trainingDTO) {
+        return ReturnUtil.buildReturn(tabPbTrainingService.addTraningDTO(trainingDTO));
+    }
 
-        @ApiOperation(value = "根据某党员id列表显示某党员培训情况", notes = "根据党员id列表显示党员培训情况", httpMethod = "GET")
-        @ApiImplicitParam(name = "userId", value = "党员ID", paramType = "query")
-        @GetMapping
-        public List<TrainingVO> getTrainingVOList(TrainingQueryBean trainingQueryBean){
-           return tabPbTrainingService.getTrainingVOById(trainingQueryBean);
-        }
+    @ApiOperation(value = "根据某党员id列表显示某党员培训情况", notes = "根据党员id列表显示党员培训情况", httpMethod = "GET")
+    @ApiImplicitParam(name = "userId", value = "党员ID", paramType = "query")
+    @GetMapping
+    public List<TrainingVO> getTrainingVOList(TrainingQueryBean trainingQueryBean) {
+        return tabPbTrainingService.getTrainingVOById(trainingQueryBean);
+    }
 
-        @ApiOperation(value = "根据培训主键单个查询党员培训情况", httpMethod = "GET")
-        @ApiImplicitParam(value = "培训主键",name = "traningId",paramType = "path")
-        @GetMapping ("/{traningId}")
-        public TrainingVO getTrainingVOById(@PathVariable Long traningId) {
-            return tabPbTrainingService.getTrainingVOById(traningId);
-        }
+    @ApiOperation(value = "根据培训主键单个查询党员培训情况", httpMethod = "GET")
+    @ApiImplicitParam(value = "培训主键", name = "traningId", paramType = "path")
+    @GetMapping("/{traningId}")
+    public TrainingVO getTrainingVOById(@PathVariable Long traningId) {
+        return tabPbTrainingService.getTrainingVOById(traningId);
+    }
 
-        @ApiOperation(value = "根据培训主键删除党员培训情况", notes = "必须要有党员培训主键", httpMethod = "DELETE")
-        @ApiImplicitParam(value = "培训主键",name = "traningId",paramType = "path")
-        @DeleteMapping("/{traningId}")
-        public ReturnEntity deletTrainingDTO(@PathVariable Long traningId) {
-                return ReturnUtil.buildReturn(tabPbTrainingService.logicDeleteTrainingDTO(traningId));
-        }
+    @ApiOperation(value = "根据培训主键删除党员培训情况", notes = "必须要有党员培训主键", httpMethod = "DELETE")
+    @ApiImplicitParam(value = "培训主键", name = "traningId", paramType = "path")
+    @DeleteMapping("/{traningId}")
+    public ReturnEntity deletTrainingDTO(@PathVariable Long traningId) {
+        return ReturnUtil.buildReturn(tabPbTrainingService.logicDeleteTrainingDTO(traningId));
+    }
 
-        @ApiOperation(value = "根据培训主键修改党员培训情况", notes = "必须要有党员培训主键", httpMethod = "PUT")
-        @PutMapping
-        public ReturnEntity updateTrainingDTO(@RequestBody @Validated  @ApiParam(name = "培训党员")  TrainingDTO trainingDTO) {
-            return ReturnUtil.buildReturn(tabPbTrainingService.updateTrainingDTO(trainingDTO));
-        }
+    @ApiOperation(value = "根据培训主键修改党员培训情况", notes = "必须要有党员培训主键", httpMethod = "PUT")
+    @PutMapping
+    public ReturnEntity updateTrainingDTO(@RequestBody @Validated @ApiParam(name = "培训党员") TrainingDTO trainingDTO) {
+        return ReturnUtil.buildReturn(tabPbTrainingService.updateTrainingDTO(trainingDTO));
+    }
 
 }

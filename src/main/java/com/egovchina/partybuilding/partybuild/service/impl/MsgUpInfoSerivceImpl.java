@@ -41,14 +41,15 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
 
     /**
      * 信息实体添加
+     *
      * @param
      * @return
      */
     @Override
     public int insertMsgUpInfo(MsgUpInfoDTO msgUpInfoDTO) {
-        TabPbMsgUpInfo tabPbMsgUpInfo=generateTargetCopyPropertiesAndPaddingBaseField(msgUpInfoDTO,TabPbMsgUpInfo.class,false);
+        TabPbMsgUpInfo tabPbMsgUpInfo = generateTargetCopyPropertiesAndPaddingBaseField(msgUpInfoDTO, TabPbMsgUpInfo.class, false);
         int retVal = tabPbMsgUpInfoMapper.insertSelective(tabPbMsgUpInfo);
-        Long id=tabPbMsgUpInfo.getId();
+        Long id = tabPbMsgUpInfo.getId();
         if (retVal > 0) {
             msgUpInfoDTO.setId(id);
             retVal += modifyAttachment(msgUpInfoDTO);
@@ -73,31 +74,32 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
 
     /**
      * 返回登录人的姓名，组织名称，上级组织名称，上级组织专干人姓名,党组织名称，党组织id
+     *
      * @return TabPbMsgUpInfoDto
      */
     @Override
     public TabPbMsgUpInfo retrnUpMember(Long realDeptId) {
-        if(null == realDeptId ){
-            realDeptId= UserContextHolder.getOrgId();
+        if (null == realDeptId) {
+            realDeptId = UserContextHolder.getOrgId();
         }
         TabPbMsgUpInfo tabPbMsgUpInfo = new TabPbMsgUpInfo();
         //党组织
         tabPbMsgUpInfo.setRealDeptId(realDeptId);
         SysDept realSysDept = tabSysDeptMapper.selectAloneByPrimaryKey(realDeptId);
-        tabPbMsgUpInfo.setRealDeptName( realSysDept.getName());
+        tabPbMsgUpInfo.setRealDeptName(realSysDept.getName());
         //上报时间
         tabPbMsgUpInfo.setUpTime(new Date());
         //上报人姓名
         tabPbMsgUpInfo.setUpUserId(UserContextHolder.getUserId());
         tabPbMsgUpInfo.setUpUsername(UserContextHolder.getUserName());
         //上报人组织名称
-        Long upDeptId=UserContextHolder.getOrgId();
+        Long upDeptId = UserContextHolder.getOrgId();
         SysDept upDept = tabSysDeptMapper.selectAloneByPrimaryKey(upDeptId);
         tabPbMsgUpInfo.setUpDeptId(upDeptId);
         tabPbMsgUpInfo.setUpDeptName(upDept.getName());
         //接受组织名称
-        if(null == realSysDept.getParentId()){
-           return tabPbMsgUpInfo;
+        if (null == realSysDept.getParentId()) {
+            return tabPbMsgUpInfo;
         }
         SysDept recDept = tabSysDeptMapper.selectAloneByPrimaryKey(realSysDept.getParentId());
         if (null == recDept) {
@@ -117,6 +119,7 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
 
     /**
      * 条件查询信息报送列表
+     *
      * @param msgUpInfoQueryBean
      * @return
      */
@@ -147,12 +150,13 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
 
     /**
      * 修改
+     *
      * @param tabPbMsgUpInfoDto
      * @return
      */
     @Override
     public int editMsgUpInfo(MsgUpInfoDTO tabPbMsgUpInfoDto) {
-        TabPbMsgUpInfo tabPbMsgUpInfoUpdate=generateTargetCopyPropertiesAndPaddingBaseField(tabPbMsgUpInfoDto,TabPbMsgUpInfo.class,true);
+        TabPbMsgUpInfo tabPbMsgUpInfoUpdate = generateTargetCopyPropertiesAndPaddingBaseField(tabPbMsgUpInfoDto, TabPbMsgUpInfo.class, true);
         int retVal = tabPbMsgUpInfoMapper.updateByPrimaryKeySelective(tabPbMsgUpInfoUpdate);
         if (retVal > 0) {
             retVal += modifyAttachment(tabPbMsgUpInfoDto);
@@ -162,6 +166,7 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
 
     /**
      * 删除
+     *
      * @param id
      * @return
      */
@@ -176,18 +181,20 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
 
     /**
      * 单个查询
+     *
      * @param id
      * @return
      */
     @Override
     public MsgUpInfoVO getMsgUpInfoById(Long id) {
-          MsgUpInfoVO msgUpInfoVO=new MsgUpInfoVO();
-          BeanUtil.copyPropertiesIgnoreNull(tabPbMsgUpInfoMapper.selectWithAboutById(id),msgUpInfoVO);
-          return msgUpInfoVO;
+        MsgUpInfoVO msgUpInfoVO = new MsgUpInfoVO();
+        BeanUtil.copyPropertiesIgnoreNull(tabPbMsgUpInfoMapper.selectWithAboutById(id), msgUpInfoVO);
+        return msgUpInfoVO;
     }
 
     /**
      * 审核
+     *
      * @param
      * @return
      */
@@ -195,15 +202,15 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
     public int auditMsgUpInfo(MsgUpInfoDTO msgUpInfoDto) {
         //审核人组织
         msgUpInfoDto.setAuditDeptId(UserContextHolder.getOrgId());
-        SysDept auditSysDept=tabSysDeptMapper.selectAloneByPrimaryKey(UserContextHolder.getOrgId());
+        SysDept auditSysDept = tabSysDeptMapper.selectAloneByPrimaryKey(UserContextHolder.getOrgId());
         msgUpInfoDto.setAuditDeptName(auditSysDept.getName());
         //审核人姓名
         msgUpInfoDto.setAuditUserId(UserContextHolder.getUserId());
         msgUpInfoDto.setAuditUsername(UserContextHolder.getUserName());
         //审核时间
         msgUpInfoDto.setAuditTime(new Date());
-        TabPbMsgUpInfo tabPbMsgUpInfo=new TabPbMsgUpInfo();
-        BeanUtil.copyPropertiesIgnoreNull(msgUpInfoDto,tabPbMsgUpInfo);
+        TabPbMsgUpInfo tabPbMsgUpInfo = new TabPbMsgUpInfo();
+        BeanUtil.copyPropertiesIgnoreNull(msgUpInfoDto, tabPbMsgUpInfo);
         return tabPbMsgUpInfoMapper.updateByPrimaryKeySelective(tabPbMsgUpInfo);
     }
 

@@ -30,22 +30,24 @@ public class TrainingServiceImpl implements TrainingService {
 
     /**
      * 添加党员培训情况
+     *
      * @param
      * @return
      */
     @Override
     public int addTraningDTO(TrainingDTO trainingDto) {
-        if(trainingDto.getUserId()==null){
+        if (trainingDto.getUserId() == null) {
             throw new BusinessDataCheckFailException("缺少userId");
         }
-        TabPbTraining tabPbTrainingDto =generateTargetCopyPropertiesAndPaddingBaseField(trainingDto,TabPbTraining.class,false);
-        BeanUtil.copyPropertiesIgnoreNull(trainingDto,tabPbTrainingDto);
+        TabPbTraining tabPbTrainingDto = generateTargetCopyPropertiesAndPaddingBaseField(trainingDto, TabPbTraining.class, false);
+        BeanUtil.copyPropertiesIgnoreNull(trainingDto, tabPbTrainingDto);
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbTrainingDto);
         return tabPbTrainingMapper.insertSelective(tabPbTrainingDto);
     }
 
     /**
      * 逻辑删除党员培训情况
+     *
      * @param trainingId
      * @return
      */
@@ -60,24 +62,26 @@ public class TrainingServiceImpl implements TrainingService {
 
     /**
      * 列表条件查询党员培训情况
+     *
      * @param tabPbTrainingDto
      * @return
      */
     @Override
     public List<TrainingVO> getTrainingVOById(TrainingQueryBean tabPbTrainingDto) {
-        List<TrainingVO> list=tabPbTrainingMapper.selectiveTabPbTrainingVO(tabPbTrainingDto);
+        List<TrainingVO> list = tabPbTrainingMapper.selectiveTabPbTrainingVO(tabPbTrainingDto);
         return list;
     }
 
     /**
      * 修改党员培训情况 必须附带主键id
+     *
      * @param
      * @return
      */
     @Override
     public int updateTrainingDTO(TrainingDTO trainingDTO) {
         if (trainingDTO.getTraningId() == null) {
-           throw new BusinessDataCheckFailException("缺少主键");
+            throw new BusinessDataCheckFailException("缺少主键");
         }
         TabPbTraining tabPbTraining = generateTargetCopyPropertiesAndPaddingBaseField(
                 trainingDTO, TabPbTraining.class, true);
@@ -86,12 +90,13 @@ public class TrainingServiceImpl implements TrainingService {
 
     /**
      * 单个培训情况详情查询
+     *
      * @param traningId
      * @return
      */
     @Override
     public TrainingVO getTrainingVOById(Long traningId) {
-        TrainingVO trainingVO=tabPbTrainingMapper.selectOneVoById(traningId);
+        TrainingVO trainingVO = tabPbTrainingMapper.selectOneVoById(traningId);
         return trainingVO;
     }
 

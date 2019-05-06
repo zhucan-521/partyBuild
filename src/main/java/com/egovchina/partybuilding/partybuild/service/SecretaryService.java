@@ -16,6 +16,7 @@ public interface SecretaryService {
 
     /**
      * 根据userId获取书记基本信息
+     *
      * @param userId
      * @return
      */
@@ -23,6 +24,7 @@ public interface SecretaryService {
 
     /**
      * 添加书记
+     *
      * @param secretaryMemberDTO
      * @return
      */
@@ -30,6 +32,7 @@ public interface SecretaryService {
 
     /**
      * 修改书记
+     *
      * @param secretaryMemberDTO
      * @return
      */
@@ -37,6 +40,7 @@ public interface SecretaryService {
 
     /**
      * 根据书记id获取书记详情
+     *
      * @param secretaryId
      * @return
      */
@@ -44,6 +48,7 @@ public interface SecretaryService {
 
     /**
      * 列表查询书记
+     *
      * @param secretaryMemberQueryBean
      * @return
      */
@@ -51,6 +56,7 @@ public interface SecretaryService {
 
     /**
      * 删除书记家庭成员和职务以及书记本人
+     *
      * @return
      */
     ReturnEntity deleteSecretary(Long secretaryId);

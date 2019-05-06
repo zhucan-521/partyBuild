@@ -41,7 +41,7 @@ public class FlowInControlle {
     @PostMapping("/return-register")
     public ReturnEntity returnFlowInMember(@Validated @RequestBody @ApiParam(value = "流入成员") FlowInMemberDTO flowInMemberDTO) {
         return ReturnUtil.buildReturn(flowInService.returnFlowInMember(flowInMemberDTO));
-}
+    }
 
     @ApiOperation(value = "流入党员接收(带上flowInId)", notes = "务必带上flowInId", httpMethod = "POST")
     @PostMapping("/accept")
