@@ -192,6 +192,9 @@ public interface TabSysUserMapper {
      */
     PartyMemberVO selectByPrimaryKeyToAll(Long userId);
 
+
+    SecretariesPartyMemberVO selectSecretariesPartyByPrimaryKey(Long userId);
+
     /**
      * desc: 修改党员困难标识
      *

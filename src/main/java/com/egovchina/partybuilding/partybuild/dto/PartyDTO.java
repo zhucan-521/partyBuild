@@ -91,7 +91,7 @@ public class PartyDTO {
     private List<UserTagDTO> userTags;
 
     @ApiModelProperty(value = "组织ID ,党支部Id")
-    private Integer deptId;
+    private Long deptId;
 
     @ApiModelProperty(value = "是否失联")
     private Byte isLlost;

@@ -59,7 +59,7 @@
         </if>
     </select>
     <select id="selectAllListSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbUserTag"
-            resultMap="DictBaseResultMap">
+            resultType="com.egovchina.partybuilding.partybuild.vo.UserTagVO">
         SELECT t.usertag_id,if(usertag_id is not null,1,0) as tag_type,t.user_id,id, parent_id, value, label, type, description, sort, remarks
          from (SELECT * FROM sys_dict WHERE parent_id = 59381 and del_flag = 0 and remarks = '1') d
         left join tab_pb_user_tag t on d.id = t.tag_type and t.user_id = #{userId,jdbcType=BIGINT}

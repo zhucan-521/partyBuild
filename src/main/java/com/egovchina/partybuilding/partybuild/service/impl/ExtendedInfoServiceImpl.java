@@ -13,6 +13,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
 import com.egovchina.partybuilding.partybuild.util.CommonConstant;
 import com.egovchina.partybuilding.partybuild.vo.PartyMemberVO;
+import com.egovchina.partybuilding.partybuild.vo.SecretariesPartyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.SysUserVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -39,6 +40,11 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
     @Override
     public PartyMemberVO selectPartyMemberVOById(Long userId) {
         return tabSysUserMapper.selectByPrimaryKeyToAll(userId);
+    }
+
+    @Override
+    public SecretariesPartyMemberVO selectSecretariesPartyMemberVO(Long userId) {
+        return tabSysUserMapper.selectSecretariesPartyByPrimaryKey(userId);
     }
 
     @Override
