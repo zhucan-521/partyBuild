@@ -13,9 +13,10 @@ import java.util.List;
 /**
  * @author YangYingXiang on 2018/12/28
  */
-public interface MsgNoticeService{
+public interface MsgNoticeService {
     /**
      * 保存
+     *
      * @param notice
      * @return
      */
@@ -23,6 +24,7 @@ public interface MsgNoticeService{
 
     /**
      * 修改
+     *
      * @param notice
      * @return
      */
@@ -30,7 +32,8 @@ public interface MsgNoticeService{
 
     /**
      * 根据主键id查询数据
-     * @param id 主表主键id
+     *
+     * @param id       主表主键id
      * @param noticeId 明细主键id
      * @return
      */
@@ -38,6 +41,7 @@ public interface MsgNoticeService{
 
     /**
      * 逻辑删除
+     *
      * @param id
      * @return
      */
@@ -45,6 +49,7 @@ public interface MsgNoticeService{
 
     /**
      * 查询list数据
+     *
      * @param record
      * @param page
      * @return
@@ -53,6 +58,7 @@ public interface MsgNoticeService{
 
     /**
      * 改变状态
+     *
      * @param record
      * @return
      */
@@ -60,6 +66,7 @@ public interface MsgNoticeService{
 
     /**
      * 根据主键id签收
+     *
      * @param noticeDept
      * @return
      */
@@ -67,6 +74,7 @@ public interface MsgNoticeService{
 
     /**
      * 接收通知list
+     *
      * @param noticeDept
      * @param page
      * @return

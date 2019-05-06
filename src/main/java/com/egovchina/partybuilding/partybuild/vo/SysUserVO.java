@@ -2,13 +2,14 @@ package com.egovchina.partybuilding.partybuild.vo;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.egovchina.partybuilding.common.config.DictSerializer;
+import com.egovchina.partybuilding.partybuild.dto.PositivesDTO;
+import com.egovchina.partybuilding.partybuild.entity.TabPbPositives;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -20,10 +21,10 @@ public class SysUserVO {
     private String realname;
 
     @ApiModelProperty(value = "组织ID ,党支部Id")
-    private Integer deptId;
+    private Long deptId;
 
     @ApiModelProperty(value = "用户ID")
-    private Integer userId;
+    private long userId;
 
     @ApiModelProperty(value = "年龄")
     private Integer age;
@@ -47,7 +48,6 @@ public class SysUserVO {
     @JsonSerialize(using = DictSerializer.class)
     private Long communityAddr;
 
-
     @ApiModelProperty(value = "头像")
     private String avatar;
 
@@ -62,9 +62,6 @@ public class SysUserVO {
 
     @ApiModelProperty(value = "入党所在支部名称")
     private String joinOrgName;
-
-    @ApiModelProperty(value = "入党所在支部主键")
-    private Long joinOrgId;
 
     @ApiModelProperty(value = "曾任职务")
     private String positived;
@@ -84,7 +81,11 @@ public class SysUserVO {
     @ApiModelProperty(value = "入党时间、预备党员时间")
     private Date joinTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "加入党组织时间")
+    private Date joinOrgTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "转正时间、正式党员时间")
     private Date regularTime;
 
@@ -102,7 +103,6 @@ public class SysUserVO {
     @ApiModelProperty(value = "用户标签列表")
     private List<TabPbUserTag> tabPbUserTags;
 
-
     @ApiModelProperty(value = "婚姻状况 码表值 FYZK")
     @JsonSerialize(using = DictSerializer.class)
     private Long maritalStatus;
@@ -118,4 +118,8 @@ public class SysUserVO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "工作时间")
     private Date workDate;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "人员职务集合")
+    private List<PositivesDTO> positives;
 }

@@ -83,10 +83,8 @@ public class RewardsAndPunishmentsController {
     }
 
     @ApiOperation(value = "查询奖励信息列表", notes = "查询奖励信息", httpMethod = "GET")
+    @ApiImplicitParam(name = "userId", value = "用户id", dataType = "long", paramType = "path", required = true)
     @GetMapping("/rewards/users/{userId}")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "userId", value = "用户id", dataType = "long", paramType = "path", required = true)
-    })
     public List<RewardsVO> selectRewardsList(@PathVariable Long userId) {
         return rewardsAndPunishmentsService.getRewardsListAndFiles(userId);
     }

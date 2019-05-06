@@ -67,12 +67,12 @@ public class PositiveRegistServiceImpl implements PositiveRegistService {
         positiveRegistMemberDto.setRevokeTag(new Byte("1"));
         //修改党员信息
         newUser(positiveRegistMemberDto.getUserId(), true, positiveRegistMemberDto.getDeptId());
-        TabPbPositiveRegist tabPbPositiveRegist=new TabPbPositiveRegist();
-        BeanUtil.copyPropertiesIgnoreNull(positiveRegistMemberDto,tabPbPositiveRegist);
+        TabPbPositiveRegist tabPbPositiveRegist = new TabPbPositiveRegist();
+        BeanUtil.copyPropertiesIgnoreNull(positiveRegistMemberDto, tabPbPositiveRegist);
         int retVal = tabPbPositiveRegistMapper.addPositiveRegist(tabPbPositiveRegist);
-        Long hostId=tabPbPositiveRegist.getPositiveRegistId();
+        Long hostId = tabPbPositiveRegist.getPositiveRegistId();
         if(retVal>0){
-            iTabPbAttachmentService.intelligentOperation(positiveRegistMemberDto.getAttachments(),hostId, AttachmentType.POSITIVE);
+            iTabPbAttachmentService.intelligentOperation(positiveRegistMemberDto.getAttachments(), hostId, AttachmentType.POSITIVE);
         }
 
         return retVal;
@@ -104,7 +104,7 @@ public class PositiveRegistServiceImpl implements PositiveRegistService {
     @Override
     public PositiveRegistMemberVO getReportMembersInfo(Long positiveRegistId) {
         PositiveRegistMemberVO positiveRegistMemberVO = tabPbPositiveRegistMapper.findPositiveRegistMemberById(positiveRegistId);
-        positiveRegistMemberVO.setAttachments(iTabPbAttachmentService.listByHostId( positiveRegistId,AttachmentType.POSITIVE));
+        positiveRegistMemberVO.setAttachments(iTabPbAttachmentService.listByHostId(positiveRegistId, AttachmentType.POSITIVE));
         return positiveRegistMemberVO;
     }
 

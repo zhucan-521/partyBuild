@@ -10,6 +10,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbMemberReduceListMa
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.OrganizationService;
 import com.egovchina.partybuilding.partybuild.service.SysUserService;
+import com.egovchina.partybuilding.partybuild.vo.SysUserVO;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -150,7 +151,7 @@ public class SysUserServiceImpl implements SysUserService {
             var list = sysUserMapper.selectAllRegister(user);
             return list;
         } else {
-            user.setDeptId(UserContextHolder.currentUser().getDeptId());
+            user.setDeptId(UserContextHolder.currentUser().getDeptId().longValue());
             var list = sysUserMapper.selectAllRegister(user);
             return list;
         }

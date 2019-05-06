@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author YangYingXiang on 2018/11/26
  */
-public interface FamilyService  {
+public interface FamilyService {
     /**
      * 根据党员id加载list数据
      * @param partyMemberId

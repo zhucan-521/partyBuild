@@ -39,6 +39,7 @@ public interface TabPbUserTagMapper {
 
     /**
      * 批量插入标记
+     *
      * @param list
      * @return
      */
@@ -54,6 +55,7 @@ public interface TabPbUserTagMapper {
 
     /**
      * 根据用户id删除用户所有标签
+     *
      * @param userId 用户id
      * @return
      */
@@ -61,6 +63,7 @@ public interface TabPbUserTagMapper {
 
     /**
      * 批量删除根据id
+     *
      * @param deleteIds ids
      * @return
      */

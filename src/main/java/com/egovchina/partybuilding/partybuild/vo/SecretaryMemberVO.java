@@ -44,7 +44,7 @@ public class SecretaryMemberVO {
 
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "出生日期",example = "yyyy-hh-dd")
+    @ApiModelProperty(value = "出生日期", example = "yyyy-hh-dd")
     private Date birthday;
 
 
@@ -54,7 +54,7 @@ public class SecretaryMemberVO {
 
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "工作时间",example = "yyyy-hh-dd")
+    @ApiModelProperty(value = "工作时间", example = "yyyy-hh-dd")
     private Date workDate;
 
     @ApiModelProperty(value = "健康状况 码表值 GB4767")
@@ -116,12 +116,12 @@ public class SecretaryMemberVO {
     private Date servingTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "任同级实职时间",example = "yyyy-hh-dd")
+    @ApiModelProperty(value = "任同级实职时间", example = "yyyy-hh-dd")
     private Date servingRealTime;
 
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "任现级时间",example = "yyyy-hh-dd")
+    @ApiModelProperty(value = "任现级时间", example = "yyyy-hh-dd")
     private Date incumbentTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")

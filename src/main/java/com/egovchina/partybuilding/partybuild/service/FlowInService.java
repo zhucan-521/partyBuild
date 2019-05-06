@@ -11,6 +11,7 @@ public interface FlowInService {
 
     /**
      * 列表查询
+     *
      * @param
      * @param page
      * @return
@@ -19,6 +20,7 @@ public interface FlowInService {
 
     /**
      * 根据流入id删除
+     *
      * @param flowInId
      * @return
      */
@@ -26,6 +28,7 @@ public interface FlowInService {
 
     /**
      * 录入流入党员
+     *
      * @param
      * @return
      */
@@ -33,6 +36,7 @@ public interface FlowInService {
 
     /**
      * 修改
+     *
      * @param
      * @return
      */
@@ -40,6 +44,7 @@ public interface FlowInService {
 
     /**
      * 返回登记
+     *
      * @param
      * @return
      */
@@ -48,11 +53,11 @@ public interface FlowInService {
 
     /**
      * 单个详情查询
+     *
      * @param flowInId
      * @return
      */
     FlowInMemberVO getFlowInMeberVoById(Long flowInId);
-
 
 
 }

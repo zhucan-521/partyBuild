@@ -43,7 +43,7 @@ public class FamilyServiceImpl implements FamilyService {
     @Override
     public FamilyMemberVO selectFamilyMemberById(Long relationId) {
         TabPbFamily tabPbFamily = tabPbFamilyMapper.findById(relationId);
-        FamilyMemberVO familyMemberVO =new FamilyMemberVO();
+        FamilyMemberVO familyMemberVO = new FamilyMemberVO();
         BeanUtil.copyPropertiesIgnoreNull(tabPbFamily, familyMemberVO);
         return familyMemberVO;
     }
@@ -54,7 +54,7 @@ public class FamilyServiceImpl implements FamilyService {
      */
     @Override
     public int deleteFamilyMemberByPrimaryKey(Long relationId) {
-        if(null== tabPbFamilyMapper.findById(relationId)){
+        if (null == tabPbFamilyMapper.findById(relationId)) {
             throw new BusinessDataCheckFailException("不存在这个人");
         }
         TabPbFamily tabPbFamily = new TabPbFamily();
@@ -70,24 +70,25 @@ public class FamilyServiceImpl implements FamilyService {
      */
     @Override
     public int addFamilyDTO(FamilyMemberDTO familyMemberDTO) {
-        if(familyMemberDTO.getUserId()==null){
+        if (familyMemberDTO.getUserId() == null) {
             throw new BusinessDataCheckFailException("userId不能为空");
         }
-        TabPbFamily tabPbFamily=new TabPbFamily();
-        BeanUtil.copyPropertiesIgnoreNull(familyMemberDTO,tabPbFamily);
+        TabPbFamily tabPbFamily = new TabPbFamily();
+        BeanUtil.copyPropertiesIgnoreNull(familyMemberDTO, tabPbFamily);
         return tabPbFamilyMapper.insertSelective(tabPbFamily);
     }
 
     /**
      * 修改家庭成员
+     *
      * @param familyMemberDTO
      * @return
      */
     @Override
     public int updateByPrimaryKeySelective(FamilyMemberDTO familyMemberDTO) {
-        TabPbFamily tabPbFamily=new TabPbFamily();
+        TabPbFamily tabPbFamily = new TabPbFamily();
         BeanUtil.copyPropertiesIgnoreNull(familyMemberDTO, tabPbFamily);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbFamily);
-        return  tabPbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
+        return tabPbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
     }
 }

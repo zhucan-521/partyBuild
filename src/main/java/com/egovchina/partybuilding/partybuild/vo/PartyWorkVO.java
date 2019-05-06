@@ -19,7 +19,8 @@ public class PartyWorkVO {
     private String unit;
 
     @ApiModelProperty(value = "岗位")
-    private String post;
+    @JsonSerialize(using = DictSerializer.class)
+    private Long post;
 
     @ApiModelProperty(value = "一线情况 dict YXQK")
     @JsonSerialize(using = DictSerializer.class)

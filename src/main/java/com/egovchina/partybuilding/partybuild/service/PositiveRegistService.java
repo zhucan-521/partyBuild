@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author YangYingXiang on 2018/11/29
  */
-public interface PositiveRegistService  {
+public interface PositiveRegistService {
 
     int addRegistMemberDTO(PositiveRegistMemberDTO positiveRegistMemberDto);
 
@@ -19,18 +19,21 @@ public interface PositiveRegistService  {
 
     /**
      * 修改报到状态
+     *
      * @param positiveRegistId
      */
     int changeStatus(Long positiveRegistId, Byte revokeTag);
 
     /**
      * 逻辑删除
+     *
      * @param positiveRegistId
      */
     int delete(Long positiveRegistId);
 
     /**
      * 根据userId判断是否需要删除
+     *
      * @param userId
      */
     int delectRegistStatus(Long userId);

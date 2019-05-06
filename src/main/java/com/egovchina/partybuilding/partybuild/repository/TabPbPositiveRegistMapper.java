@@ -30,6 +30,7 @@ public interface TabPbPositiveRegistMapper extends BaseMapper<TabPbPositiveRegis
 
     /**
      * 查询list数据(分页)
+     *
      * @param positiveRegist
      * @return
      */

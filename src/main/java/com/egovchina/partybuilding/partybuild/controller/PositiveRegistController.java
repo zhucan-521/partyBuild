@@ -27,7 +27,7 @@ public class PositiveRegistController {
 
     @ApiOperation(value = "保存报到党员", httpMethod = "POST")
     @PostMapping
-    public ReturnEntity addRegistMember(@RequestBody @ApiParam(value = "在职党员")PositiveRegistMemberDTO positiveRegistMemberDTO) {
+    public ReturnEntity addRegistMember(@RequestBody @ApiParam(value = "在职党员") PositiveRegistMemberDTO positiveRegistMemberDTO) {
         int add = positiveRegistService.addRegistMemberDTO(positiveRegistMemberDTO);
         return ReturnUtil.buildReturn(add);
     }
@@ -75,10 +75,10 @@ public class PositiveRegistController {
 
     @ApiOperation(value = "查看报到党员信息", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(value = "主键id", name = "positiveRegistId",paramType = "path",required = true),
+            @ApiImplicitParam(value = "主键id", name = "positiveRegistId", paramType = "path", required = true),
     })
     @GetMapping(value = "/{positiveRegistId}")
-    public PositiveRegistMemberVO getReportMembersInfo(@PathVariable Long positiveRegistId){
+    public PositiveRegistMemberVO getReportMembersInfo(@PathVariable Long positiveRegistId) {
         return positiveRegistService.getReportMembersInfo(positiveRegistId);
     }
 

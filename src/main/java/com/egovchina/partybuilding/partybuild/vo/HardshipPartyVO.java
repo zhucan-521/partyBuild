@@ -15,6 +15,7 @@ import lombok.Data;
 public class HardshipPartyVO {
 
     @ApiModelProperty("困难程度")
+    @JsonSerialize(using = DictSerializer.class)
     private Long difficultyLevel;
 
     @ApiModelProperty("困难记录ID")

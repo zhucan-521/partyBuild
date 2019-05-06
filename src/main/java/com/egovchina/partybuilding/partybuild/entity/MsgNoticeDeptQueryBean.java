@@ -17,7 +17,7 @@ public class MsgNoticeDeptQueryBean {
     @ApiModelProperty(value = "结束时间", example = "yyyy-MM-dd")
     private Date endTime;
 
-    @ApiModelProperty(value = "接收党组织id",required = true)
+    @ApiModelProperty(value = "接收党组织id", required = true)
     private Long deptId;
 
 

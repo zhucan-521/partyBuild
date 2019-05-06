@@ -34,11 +34,11 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     @PaddingBaseField
     public int addTraningDTO(TrainingDTO trainingDto) {
-        if(trainingDto.getUserId()==null){
+        if (trainingDto.getUserId() == null) {
             throw new BusinessDataCheckFailException("缺少userId");
         }
-        TabPbTraining tabPbTrainingDto =new TabPbTraining();
-        BeanUtil.copyPropertiesIgnoreNull(trainingDto,tabPbTrainingDto);
+        TabPbTraining tabPbTrainingDto = new TabPbTraining();
+        BeanUtil.copyPropertiesIgnoreNull(trainingDto, tabPbTrainingDto);
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbTrainingDto);
         return tabPbTrainingMapper.insertSelective(tabPbTrainingDto);
     }
@@ -67,7 +67,7 @@ public class TrainingServiceImpl implements TrainingService {
      */
     @Override
     public List<TrainingVO> getTrainingVOById(TrainingQueryBean tabPbTrainingDto) {
-        List<TrainingVO> list=tabPbTrainingMapper.selectiveTabPbTrainingVO(tabPbTrainingDto);
+        List<TrainingVO> list = tabPbTrainingMapper.selectiveTabPbTrainingVO(tabPbTrainingDto);
         return list;
     }
 
@@ -96,7 +96,7 @@ public class TrainingServiceImpl implements TrainingService {
      */
     @Override
     public TrainingVO getTrainingVOById(Long traningId) {
-        TrainingVO trainingVO=tabPbTrainingMapper.selectOneVoById(traningId);
+        TrainingVO trainingVO = tabPbTrainingMapper.selectOneVoById(traningId);
         return trainingVO;
     }
 

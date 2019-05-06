@@ -21,8 +21,8 @@
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice">
         <result column="notice_content" jdbcType="LONGVARCHAR" property="noticeContent"/>
     </resultMap>
-    <resultMap extends="ResultMapWithBLOBs" id="BaseResultVoMap" type="com.egovchina.partybuilding.partybuild.vo.MsgNoticeVO" />
-
+    <resultMap extends="ResultMapWithBLOBs" id="BaseResultVoMap"
+               type="com.egovchina.partybuilding.partybuild.vo.MsgNoticeVO"/>
 
 
     <sql id="Base_Column_List">
@@ -81,10 +81,13 @@
     </select>
 
     <!--VO-->
-    <select id="selectNoticeVoList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice" resultMap="BaseResultVoMap">
+    <select id="selectNoticeVoList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice"
+            resultMap="BaseResultVoMap">
         SELECT a.*,
-        COUNT(if(attac.attachment_file_type=${@com.egovchina.partybuilding.common.util.AttachmentType@PHOTO},TRUE,NULL)) AS photo,
-        COUNT(if(attac.attachment_file_type=${@com.egovchina.partybuilding.common.util.AttachmentType@DOC},TRUE,NULL)) AS doc
+        COUNT(if(attac.attachment_file_type=${@com.egovchina.partybuilding.common.util.AttachmentType@PHOTO},TRUE,NULL))
+        AS photo,
+        COUNT(if(attac.attachment_file_type=${@com.egovchina.partybuilding.common.util.AttachmentType@DOC},TRUE,NULL))
+        AS doc
         FROM (
         SELECT
         notice.id,
@@ -125,14 +128,6 @@
         </if>
         GROUP BY a.id
     </select>
-
-
-
-
-
-
-
-
 
 
     <!--发布|取消发布-->
