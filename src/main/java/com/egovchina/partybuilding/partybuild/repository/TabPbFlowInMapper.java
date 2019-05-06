@@ -6,10 +6,11 @@ import com.egovchina.partybuilding.partybuild.vo.FlowInMemberVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
+
 
 @Repository
 public interface TabPbFlowInMapper {
+
     int deleteByPrimaryKey(Long flowInId);
 
     int insert(TabPbFlowIn record);
@@ -31,13 +32,19 @@ public interface TabPbFlowInMapper {
      */
     List<FlowInMemberVO> selectListByFlowInVo(FlowInMemberQueryBean flowInMemberQueryBean);
 
-
     /**
      * 流入党员详情查询
      * @param flowInId
      * @return
      */
     FlowInMemberVO selectFlowInVoByFlowId(Long flowInId);
+
+    /**
+     * 根据流出外键查询流入主键
+     * @param flowInId
+     * @return
+     */
+    Long getFlowOutIdByFlowInId(Long flowInId);
 
 
 }

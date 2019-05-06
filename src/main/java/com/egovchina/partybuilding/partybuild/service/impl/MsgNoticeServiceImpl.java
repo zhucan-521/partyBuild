@@ -26,6 +26,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
+
 /**
  * @author YangYingXiang on 2018/12/28
  */
@@ -48,14 +50,12 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
         if (CollectionUtils.isEmpty(msgNoticeDTO.getNoticeDeptList())) {
             throw new BusinessDataIncompleteException("请选择接收通知组织");
         }
-        TabPbMsgNotice tabPbMsgNotice = new TabPbMsgNotice();
-        BeanUtil.copyPropertiesIgnoreNull(msgNoticeDTO, tabPbMsgNotice);
-        PaddingBaseFieldUtil.paddingBaseFiled(tabPbMsgNotice);
+        TabPbMsgNotice tabPbMsgNotice = generateTargetCopyPropertiesAndPaddingBaseField(msgNoticeDTO, TabPbMsgNotice.class, false);
         int count = noticeMapper.insertSelective(tabPbMsgNotice);
         /**
          * 保存附件
          */
-        if(count>0){
+        if (count > 0) {
             iTabPbAttachmentService.intelligentOperation(msgNoticeDTO.getAttachments(), tabPbMsgNotice.getId(), AttachmentType.NOTICE);
             /**
              * 保存明细
@@ -67,12 +67,12 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
 
     @Override
     @Transactional
-    public int editMsgNoticeById(MsgNoticeDTO notice) {
-        if(CollectionUtils.isEmpty(notice.getNoticeDeptList())){
+    public int editMsgNoticeById(MsgNoticeDTO msgNoticeDTO) {
+        if (CollectionUtils.isEmpty(msgNoticeDTO.getNoticeDeptList())) {
             throw new BusinessDataIncompleteException("请选择接收通知组织");
         }
         TabPbMsgNotice tabPbMsgNoticeUpdate = new TabPbMsgNotice();
-        BeanUtil.copyPropertiesIgnoreNull(notice, tabPbMsgNoticeUpdate);
+        BeanUtil.copyPropertiesIgnoreNull(msgNoticeDTO, tabPbMsgNoticeUpdate);
         tabPbMsgNoticeUpdate.setUpdateTime(new Date());
         tabPbMsgNoticeUpdate.setUpdateUserid(UserContextHolder.getUserId());
         tabPbMsgNoticeUpdate.setUpdateUsername(UserContextHolder.getUserName());
@@ -80,22 +80,22 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
         int count = noticeMapper.updateByPrimaryKeySelective(tabPbMsgNoticeUpdate);
         if (count > 0) {
             //查询出该发出通知需要通知的所有组织信息
-            List<TabPbMsgNoticeDept> noticeDeptList = deptMapper.selectDeptList(notice.getId());
+            List<TabPbMsgNoticeDept> noticeDeptList = deptMapper.selectDeptList(msgNoticeDTO.getId());
             //筛选出数据库查询出的数据的组织id
             List<Long> dbDeptIdList = noticeDeptList.stream()
                     .map(TabPbMsgNoticeDept::getDeptId).collect(Collectors.toList());
             //筛选出前端查询的数据的组织id
-            List<Long> interactionDeptList = notice.getNoticeDeptList().stream()
+            List<Long> interactionDeptList = msgNoticeDTO.getNoticeDeptList().stream()
                     .map(TabPbMsgNoticeDept::getDeptId).collect(Collectors.toList());
-            if(!CollectionUtil.isEqualCollection(dbDeptIdList,interactionDeptList)){
+            if (!CollectionUtil.isEqualCollection(dbDeptIdList, interactionDeptList)) {
                 //数据库和前端不相等的需要删除
                 List<Long> noticeDeptRemoveList = noticeDeptList.stream()
-                        .filter(noticeDept -> !notice.getNoticeDeptList()
+                        .filter(noticeDept -> !msgNoticeDTO.getNoticeDeptList()
                                 .contains(noticeDept.getDeptId()))
                         .map(TabPbMsgNoticeDept::getId)
                         .collect(Collectors.toList());
                 //前端和数据库不相等的需要新增
-                List<TabPbMsgNoticeDept> addMsgNoticeDeptList = notice.getNoticeDeptList().stream()
+                List<TabPbMsgNoticeDept> addMsgNoticeDeptList = msgNoticeDTO.getNoticeDeptList().stream()
                         .filter(noticeDept -> !dbDeptIdList
                                 .contains(noticeDept.getDeptId()))
                         .collect(Collectors.toList());
@@ -106,12 +106,12 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
                 /**
                  * 保存
                  */
-                addNoticeDeptList(addMsgNoticeDeptList,notice.getId());
+                addNoticeDeptList(addMsgNoticeDeptList, msgNoticeDTO.getId());
             }
             /**
              * 保存附件
              */
-            iTabPbAttachmentService.intelligentOperation(notice.getAttachments(), notice.getId(), AttachmentType.NOTICE);
+            iTabPbAttachmentService.intelligentOperation(msgNoticeDTO.getAttachments(), msgNoticeDTO.getId(), AttachmentType.NOTICE);
         }
         return count;
     }
@@ -121,7 +121,7 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
         /**
          * 查询明细数据
          */
-        if(noticeId!=null){
+        if (noticeId != null) {
             TabPbMsgNoticeDept noticeDept = deptMapper.findByDept(noticeId);
             TabPbMsgNotice notice = noticeMapper.selectByPrimaryKey(noticeDept.getNoticeId());
             List<TabPbMsgNoticeDept> list = new ArrayList();
@@ -134,7 +134,7 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
             MsgNoticeVO msgNoticeVO = new MsgNoticeVO();
             BeanUtil.copyPropertiesIgnoreNull(notice, msgNoticeVO);
             return msgNoticeVO;
-        }else{
+        } else {
             TabPbMsgNotice notice = noticeMapper.selectByPrimaryKey(id);
             notice.setNoticeDeptList(deptMapper.selectList(new TabPbMsgNoticeDept().setNoticeId(id)));
             /**
@@ -151,17 +151,17 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
     public int deleteMsgNotice(Long id) {
         TabPbMsgNotice tabPbMsgNotice = new TabPbMsgNotice();
         tabPbMsgNotice.setId(id);
-        tabPbMsgNotice.setDelFlag("1");
+        tabPbMsgNotice.setDelFlag(CommonConstant.STATUS_DEL);
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbMsgNotice);
         return noticeMapper.updateByPrimaryKeySelective(tabPbMsgNotice);
     }
 
     @Override
-    public List<MsgNoticeVO> selectSendMsgNoticeList(MsgNoticeQueryBean record, Page page) {
+    public List<MsgNoticeVO> selectSendMsgNoticeList(MsgNoticeQueryBean msgNoticeQueryBean, Page page) {
         if (page != null) {
             PageHelper.startPage(page);
         }
-        return noticeMapper.selectNoticeVoList(record);
+        return noticeMapper.selectNoticeVoList(msgNoticeQueryBean);
     }
 
     @Override
@@ -194,14 +194,14 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
         return deptMapper.selectVoDeptList(noticeDept);
     }
 
-
     /**
      * 保存组织
+     *
      * @param list
      */
-    private int addNoticeDeptList(List<TabPbMsgNoticeDept> list, Long id){
+    private int addNoticeDeptList(List<TabPbMsgNoticeDept> list, Long id) {
         int retVal = 0;
-        for(TabPbMsgNoticeDept noticeDept : list){
+        for (TabPbMsgNoticeDept noticeDept : list) {
             noticeDept.setNoticeId(id);
             retVal += deptMapper.insertSelective(noticeDept);
         }

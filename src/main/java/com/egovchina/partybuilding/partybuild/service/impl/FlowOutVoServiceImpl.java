@@ -1,11 +1,12 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
-import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
+import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.FlowOutMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.FlowOutMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowIn;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -38,43 +40,48 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
     @Autowired
     TabPbFlowInMapper tabPbFlowInMapper;
 
-
     /**
      * 流出党员列表条件查询
-     * @param dto
+     *
+     * @param flowOutMemberQueryBean
      * @return
      */
     @Override
-    public PageInfo<FlowOutMemberVO> getFlowOutVoList(FlowOutMemberQueryBean dto, Page page) {
+    public PageInfo<FlowOutMemberVO> getFlowOutVoList(FlowOutMemberQueryBean flowOutMemberQueryBean, Page page) {
+        Long rangeDeptId = flowOutMemberQueryBean.getRangeDeptId();
+        if (rangeDeptId == null || rangeDeptId == 0) {
+            flowOutMemberQueryBean.setRangeDeptId(UserContextHolder.getOrgId());
+        }
         PageHelper.startPage(page);
-        List<FlowOutMemberVO> list = tabPbFlowOutMapper.selectActiveFlowOutVo(dto);
+        List<FlowOutMemberVO> list = tabPbFlowOutMapper.selectActiveFlowOutVo(flowOutMemberQueryBean);
         return (PageInfo<FlowOutMemberVO>) new PageInfo(list);
     }
 
-
     /**
      * 登记流出党员信息(市外流动党员录入)
+     *
      * @param flowOutMemberDto
      * @return
      */
     @Override
-    @PaddingBaseField
     public int addFlowOutMemberDTO(FlowOutMemberDTO flowOutMemberDto) {
         //修改用户表信息
         SysUser sysUser = tabSysUserMapper.selectUserByIdCardNo(flowOutMemberDto.getIdCardNo());
-        if (null == sysUser) {
+        if (sysUser == null) {
             //外市流动党员登记
-            SysUser newSysUser = new SysUser()
-                    .setRealname(flowOutMemberDto.getUsername())
-                    .setGender(flowOutMemberDto.getGender())
+            sysUser = new SysUser()
                     .setIdCardNo(flowOutMemberDto.getIdCardNo())
-                    .setFlowStatus(41207L);
-            tabSysUserMapper.insertSelective(newSysUser);
+                    .setGender(flowOutMemberDto.getGender())
+                    .setRealname(flowOutMemberDto.getUsername())
+                    .setFlowStatus(CommonConstant.FLOW);
+            PaddingBaseFieldUtil.paddingBaseFiled(sysUser);
+            tabSysUserMapper.insertSelective(sysUser);
             sysUser = tabSysUserMapper.selectUserByIdCardNo(flowOutMemberDto.getIdCardNo());
         }
         Long userId = sysUser.getUserId();
-        if (null != tabPbFlowOutMapper.checkTabPbFlowOutExixtByUserId(userId)) {
-            throw new BusinessDataCheckFailException("该党员已经处于流出状态，无法继续流出！");
+        Boolean exists = Optional.ofNullable(tabPbFlowOutMapper.checkTabPbFlowOutExistsByUserId(userId)).orElse(false);
+        if (exists) {
+            throw new BusinessDataCheckFailException("该党员已经处于流出状态，无法继续流出");
         }
         BeanUtils.copyProperties(flowOutMemberDto, sysUser);
         flowOutMemberDto.setUserId(userId);
@@ -82,24 +89,25 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
         if (flowOutMemberDto.getFlowOutPlace() != null) {
             sysUser.setFlowToOrgId(flowOutMemberDto.getFlowOutPlace());
             //插入流出表 设置状态为待报道
-            flowOutMemberDto.setFlowOutState(59413L);
+            flowOutMemberDto.setFlowOutState(CommonConstant.PENDING_REPORT);
         } else {
             //插入流出表 设置状态为已经流出
-            flowOutMemberDto.setFlowOutState(59414L);
-            sysUser.setFlowStatus(41207L);
+            flowOutMemberDto.setFlowOutState(CommonConstant.FLOWED_OUT);
+            sysUser.setFlowStatus(CommonConstant.FLOW);
         }
         //流出党组织
         if (flowOutMemberDto.getOrgId() != null) {
             sysUser.setFlowFromOrgId(flowOutMemberDto.getOrgId());
         }
+        sysUser.setUserId(userId);
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         TabPbFlowOut tabPbFlowOutInsert = new TabPbFlowOut();
         BeanUtil.copyPropertiesIgnoreNull(flowOutMemberDto, tabPbFlowOutInsert);
         tabPbFlowOutMapper.insertSelective(tabPbFlowOutInsert);
         //插入流入表
         TabPbFlowIn tabPbFlowIn = new TabPbFlowIn()
-                .setFlowOutId(flowOutMemberDto.getFlowOutId())
-                .setFlowInState(59413L) //设置状态为待报道
+                .setFlowOutId(tabPbFlowOutInsert.getFlowOutId())
+                .setFlowInState(CommonConstant.PENDING_REPORT) //设置状态为待报道
                 .setUserId(userId)  //设置流入人
                 .setOldPlace(flowOutMemberDto.getFlowToUnitName())  //设置原地
                 .setFlowInType(flowOutMemberDto.getFlowOutType()) //设置流出类型
@@ -110,7 +118,7 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
         if (flowOutMemberDto.getFlowOutPlace() != null) {
             tabPbFlowIn.setOrgId(flowOutMemberDto.getFlowOutPlace()); //设置流入组织
         } else {
-            flowOutMemberDto.setFlowOutState(59414L); //已经流出
+            flowOutMemberDto.setFlowOutState(CommonConstant.FLOWED_OUT); //已经流出
         }
         //流出党组织
         if (flowOutMemberDto.getOrgId() != null) {
@@ -118,18 +126,18 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
         }
         if (flowOutMemberDto.getFlowInDate() != null) {  //如果有录入日期则为手动录入
             tabPbFlowIn.setFlowInDate(flowOutMemberDto.getFlowInDate());//设置流入日期
-            tabPbFlowIn.setFlowInState(59415L);//已录入
+            tabPbFlowIn.setFlowInState(CommonConstant.FLOWED_IN);//已录入
         }
         return tabPbFlowInMapper.insertSelective(tabPbFlowIn);
     }
 
     /**
      * 修改流出党员dto
+     *
      * @param
      * @return
      */
     @Override
-    @PaddingBaseField(updateOnly = true)
     public int updateFlowOutMember(FlowOutMemberDTO flowOutMemberDto) {
         //不让他修改流出组织
         flowOutMemberDto.setOrgId(null);
@@ -163,9 +171,9 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
         return tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOutUpdate);
     }
 
-
     /**
-     *单个查询
+     * 单个查询
+     *
      * @param id
      * @return
      */
@@ -174,33 +182,33 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
         return tabPbFlowOutMapper.findFlowOutVoById(id);
     }
 
-
     /**
      * 逻辑删除
+     *
      * @param id
      * @return
      */
     @Override
-    @PaddingBaseField
     public int delete(Long id) {
         TabPbFlowOut tabPbFlowOut = tabPbFlowOutMapper.selectByPrimaryKey(id);
         int flag = 0;
-        if (tabPbFlowOut.getFlowOutState() == 59413) {
-            tabPbFlowOut.setDelFlag("1");
+        if (tabPbFlowOut.getFlowOutState().equals(CommonConstant.PENDING_REPORT)) {
+            tabPbFlowOut.setDelFlag(CommonConstant.STATUS_DEL);
             tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOut);
             SysUser sysUser = tabSysUserMapper.selectByPrimaryKey(tabPbFlowOut.getUserId());
             //用户结束流动
-            sysUser.setFlowStatus(41209L);
+            sysUser.setFlowStatus(CommonConstant.END_FLOW);
             flag = tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
             if (flag > 0) {
                 TabPbFlowIn tabPbFlowIn = new TabPbFlowIn();
-                tabPbFlowIn.setDelFlag("1");
+                Long flowInId = tabPbFlowInMapper.getFlowOutIdByFlowInId(id);
+                tabPbFlowIn.setFlowInId(flowInId);
+                tabPbFlowIn.setDelFlag(CommonConstant.STATUS_DEL);
                 tabPbFlowInMapper.updateByPrimaryKeySelective(tabPbFlowIn);
             }
-        } else {
-            throw new BusinessDataCheckFailException("只有带报道的流动党员才可以删除！");
+            return flag;
         }
-        return flag;
+        throw new BusinessDataCheckFailException("只有带报道的流动党员才可以删除！");
     }
 
 }

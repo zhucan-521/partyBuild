@@ -21,7 +21,6 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping("/v1/registers")
 public class PositiveRegistController {
 
-
     @Autowired
     private PositiveRegistService positiveRegistService;
 
@@ -32,15 +31,7 @@ public class PositiveRegistController {
         return ReturnUtil.buildReturn(add);
     }
 
-
     @ApiOperation(value = "获取社区报到信息列表", notes = "可指定条件查询", httpMethod = "GET")
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "党员名称", name = "userName", paramType = "query"),
-            @ApiImplicitParam(value = "状态", name = "revokeTag", paramType = "query"),
-            @ApiImplicitParam(value = "报到日期", name = "date", paramType = "query"),
-            @ApiImplicitParam(value = "组织主键", name = "rangeDeptId", paramType = "query"),
-            @ApiImplicitParam(value = "组织范围 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） 其他值 当前组织", name = "orgRange", paramType = "query"),
-    })
     @GetMapping
     public PageInfo<PositiveRegistMemberVO> registMemberVOList(@ApiIgnore PositiveRegistMemberQueryBean positiveRegistMemberQueryBean, Page page) {
         return new PageInfo<>(positiveRegistService.selectRegistMemberVOList(positiveRegistMemberQueryBean, page));
@@ -71,7 +62,6 @@ public class PositiveRegistController {
         int flag = positiveRegistService.delectRegistStatus(userId);
         return ReturnUtil.buildReturn(flag);
     }
-
 
     @ApiOperation(value = "查看报到党员信息", httpMethod = "GET")
     @ApiImplicitParams({

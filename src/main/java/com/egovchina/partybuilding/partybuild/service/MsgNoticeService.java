@@ -80,4 +80,5 @@ public interface MsgNoticeService {
      * @return
      */
     List<MsgNoticeDeptVO> selectReceiveMsgNotice(MsgNoticeDeptQueryBean noticeDept, Page page);
+
 }

@@ -11,6 +11,7 @@ import com.github.pagehelper.PageInfo;
 public interface MsgUpInfoSerivce {
     /**
      * 添加信息传送扩展类
+     *
      * @param dto
      * @return
      */
@@ -18,12 +19,14 @@ public interface MsgUpInfoSerivce {
 
     /**
      * 返回登录人的姓名，组织名称，上级组织名称，上级组织专干人姓名
+     *
      * @return TabPbMsgUpInfoDto
      */
     TabPbMsgUpInfo retrnUpMember(Long deptId);
 
     /**
      * 上报信息条件查询信息报送列表
+     *
      * @param dto
      * @return
      */
@@ -32,6 +35,7 @@ public interface MsgUpInfoSerivce {
 
     /**
      * 收到信息条件查询信息报送列表
+     *
      * @param dto
      * @return
      */
@@ -39,6 +43,7 @@ public interface MsgUpInfoSerivce {
 
     /**
      * 修改
+     *
      * @param
      * @return
      */
@@ -46,6 +51,7 @@ public interface MsgUpInfoSerivce {
 
     /**
      * 逻辑删除
+     *
      * @param id
      * @return
      */
@@ -53,6 +59,7 @@ public interface MsgUpInfoSerivce {
 
     /**
      * 根据id查询
+     *
      * @param id
      * @return
      */
@@ -60,6 +67,7 @@ public interface MsgUpInfoSerivce {
 
     /**
      * 审核结果
+     *
      * @param
      * @return
      */
