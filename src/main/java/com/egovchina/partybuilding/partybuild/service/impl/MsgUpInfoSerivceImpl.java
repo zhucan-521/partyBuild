@@ -145,7 +145,6 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
         return new PageInfo<>(list);
     }
 
-
     /**
      * 修改
      * @param tabPbMsgUpInfoDto

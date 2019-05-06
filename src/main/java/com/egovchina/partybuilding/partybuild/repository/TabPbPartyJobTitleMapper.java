@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyJobTitle;
+import com.egovchina.partybuilding.partybuild.vo.PartyJobTitleVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public interface TabPbPartyJobTitleMapper {
      * @author FanYanGen
      * @date 2019/4/11 14:31
      **/
-    List<TabPbPartyJobTitle> findAllByUserId(Long userId);
+    List<PartyJobTitleVO> findAllByUserId(Long userId);
 
     /**
      * desc: 批量添加

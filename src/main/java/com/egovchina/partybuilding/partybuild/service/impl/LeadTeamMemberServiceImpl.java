@@ -18,6 +18,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.LeadTeamMemberService;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
+import com.egovchina.partybuilding.partybuild.vo.SysUserVO;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

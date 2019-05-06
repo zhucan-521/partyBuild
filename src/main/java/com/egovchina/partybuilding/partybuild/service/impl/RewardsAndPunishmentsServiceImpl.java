@@ -12,9 +12,6 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbRewards;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPunishmentMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbRewardsMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
-import com.egovchina.partybuilding.partybuild.util.CommonConstant;
-import com.egovchina.partybuilding.partybuild.dto.PunishmentDTO;
-import com.egovchina.partybuilding.partybuild.dto.RewardsDTO;
 import com.egovchina.partybuilding.partybuild.service.RewardsAndPunishmentsService;
 import com.egovchina.partybuilding.partybuild.util.CommonConstant;
 import com.egovchina.partybuilding.partybuild.vo.PunishmentVO;
@@ -43,7 +40,7 @@ public class RewardsAndPunishmentsServiceImpl implements RewardsAndPunishmentsSe
         TabPbPunishment tabPbPunishment = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(punishmentDTO, TabPbPunishment.class, false);
         int insertRow = tabPbPunishmentMapper.insertSelective(tabPbPunishment);
         if (insertRow > 0) {
-            insertRow += tabPbAttachmentService.intelligentOperation( punishmentDTO.getAttachments(), tabPbPunishment.getPunishmentId(), AttachmentType.PUNISHMENT);
+            insertRow += tabPbAttachmentService.intelligentOperation(punishmentDTO.getAttachments(), tabPbPunishment.getPunishmentId(), AttachmentType.PUNISHMENT);
         }
         return insertRow;
     }

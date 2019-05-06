@@ -275,7 +275,7 @@
     <!--查询党员详细信息 ,join_org_time-->
     <sql id="Base_Column_List_new">
       user_id,dept_id,realname,gender,id_card_no,birthday, TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age ,nation,community_addr,avatar,phone,fix_phone,family_address,
-      join_org_name,join_org_id,positived,identity_type,files_manage_unit,registry_status,join_time,registry_status,
+      join_org_name,join_org_id,positived,identity_type,files_manage_unit,registry_status,registry_status,
       join_time,regular_time,work_resumes,is_llost,flow_status,marital_status,health,ancestor_place,work_date,join_org_time
     </sql>
     <sql id="Blob_Column_List">
@@ -321,7 +321,7 @@
         <if test="orgRange == null and deptId != null">
             AND u.dept_id = #{deptId}
         </if>
-        AND del_flag = '0'
+            AND del_flag = '0'
         <if test="idCardNo != null and idCardNo != ''">
             AND id_card_no = #{idCardNo}
         </if>
@@ -465,7 +465,7 @@
 
     <select id="selectPageByMap_COUNT" parameterType="Map" resultType="java.lang.Long">
         SELECT
-        count( u.user_id )
+            count( u.user_id )
         <choose>
             <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
             <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
@@ -1702,7 +1702,7 @@
         from sys_user
         where del_flag = 0
         <if test="username != null and username != ''">
-            AND realname like concat(concat("%",#{username,jdbcType=VARCHAR}),"%")
+          AND realname like concat(concat("%",#{username,jdbcType=VARCHAR}),"%")
         </if>
         <if test="idCardNo != null and idCardNo != ''">
             AND id_card_no = #{idCardNo}
@@ -1843,17 +1843,17 @@
     <!--党员信息核查-->
     <select id="partyIdentityVerification" resultType="com.egovchina.partybuilding.partybuild.vo.PersonnelVO">
         SELECT
-        u.user_id AS userId,
-        u.realname AS username,
-        u.gender,
-        ROUND( DATEDIFF( CURDATE( ), u.birthday ) / 365.2422 ) AS age,
-        u.id_card_no AS idCardNo,
-        d.NAME AS orgName,
-        d.contactor,
-        d.contact_number AS contactNumber
+            u.user_id AS userId,
+            u.realname AS username,
+            u.gender,
+            ROUND( DATEDIFF( CURDATE( ), u.birthday ) / 365.2422 ) AS age,
+            u.id_card_no AS idCardNo,
+            d.NAME AS orgName,
+            d.contactor,
+            d.contact_number AS contactNumber
         FROM
-        sys_user u
-        INNER JOIN sys_dept d USING ( dept_id )
+            sys_user u
+            INNER JOIN sys_dept d USING ( dept_id )
         <where>
             u.del_flag = 0
             AND u.identity_type = 223

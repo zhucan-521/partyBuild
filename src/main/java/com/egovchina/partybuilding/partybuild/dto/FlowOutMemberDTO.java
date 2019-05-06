@@ -26,7 +26,7 @@ public class FlowOutMemberDTO {
     private Long flowOutPlace;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @ApiModelProperty(value = "失联时间",example = "yyyy-MM-dd")
+    @ApiModelProperty(value = "失联时间", example = "yyyy-MM-dd")
     private Date lostTime;
 
     @ApiModelProperty(value = "联系情况  码表LXQK")
@@ -36,7 +36,7 @@ public class FlowOutMemberDTO {
     private Long userId;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @ApiModelProperty(value = "流出日期",example = "yyyy-MM-dd")
+    @ApiModelProperty(value = "流出日期", example = "yyyy-MM-dd")
     private Date flowOutDate;
 
     @ApiModelProperty(value = "流动类型 码表LDQK")
@@ -102,7 +102,7 @@ public class FlowOutMemberDTO {
     @ApiModelProperty(value = "流出组织联系电话")
     private String flowFromOrgPhone;
 
-    @ApiModelProperty(value = "流入时间",example = "yyyy-MM-dd")
+    @ApiModelProperty(value = "流入时间", example = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date flowInDate;
 
@@ -111,4 +111,6 @@ public class FlowOutMemberDTO {
 
     @ApiModelProperty(value = "流出组织名称")
     private String flowFromOrgName;
+
+
 }

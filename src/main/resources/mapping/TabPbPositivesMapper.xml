@@ -89,7 +89,8 @@
     </select>
 
     <!--查询党员职务，党员信息列表使用-->
-    <select id="selectPositives" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives" resultMap="ResultMapWithBLOBs">
+    <select id="selectPositives" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives"
+            resultType="com.egovchina.partybuilding.partybuild.vo.PositivesVO">
         select
         <include refid="P_Base_Column_List"/>,
         p.positive_name,p.positive_id,d.label AS positive_name_dict
@@ -103,22 +104,14 @@
 
     <select id="selectByIdToAllPositivesVO" parameterType="java.util.Map" resultMap="BaseMoreResultMap">
         select
-        <include refid="P_Base_Column_List"/>,
-        p.positive_name,p.positive_id,d.label AS positive_name_dict
+        <include refid="P_Base_Column_List"/>
         from tab_pb_positives p
-        join sys_dict d on p.positive_name = d.id
-
-        where p.del_flag = 0
-        <choose>
-            <when test="positiveType!=null">
-                and d.type=#{positiveType}
-            </when>
-            <otherwise>
-                and d.type='DNZW'
-            </otherwise>
-        </choose>
+        where del_flag = 0
+        <if test="positiveType!=null">
+            and positive_type=#{positiveType}
+        </if>
         <if test="userId != null">
-            and p.user_id = #{userId}
+            and user_id = #{userId}
         </if>
 
     </select>
@@ -481,7 +474,8 @@
     <!--批量新增职务-->
     <insert id="batchInsertPositivesList" parameterType="java.util.List">
         insert into
-        tab_pb_positives (user_id,left_type,positive_type,positive_org_id,positive_org,positive_name,positive_level,positive_start,
+        tab_pb_positives
+        (user_id,left_type,positive_type,positive_org_id,positive_org,positive_name,positive_level,positive_start,
         positive_finished,create_time,create_username,
         create_userid,update_time,update_userid,update_username,version,description)
         values

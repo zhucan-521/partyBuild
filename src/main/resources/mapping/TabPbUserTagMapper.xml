@@ -72,7 +72,8 @@
         where usertag_id = #{usertagId,jdbcType=BIGINT}
     </select>
 
-    <select id="selectTagTypesList" resultType="com.egovchina.partybuilding.partybuild.entity.TabPbUserTag" parameterType="long">
+    <select id="selectTagTypesList" resultType="com.egovchina.partybuilding.partybuild.entity.TabPbUserTag"
+            parameterType="long">
           select tag_type, usertag_id from tab_pb_user_tag where user_id = #{userId, jdbcType=BIGINT}
     </select>
 
@@ -227,7 +228,7 @@
         </trim>
     </insert>
 
-    <insert id="batchInsertUserTagDTO" keyProperty="usertagId" useGeneratedKeys="true"  parameterType="java.util.List">
+    <insert id="batchInsertUserTagDTO" keyProperty="usertagId" useGeneratedKeys="true" parameterType="java.util.List">
         insert into tab_pb_user_tag
         (usertag_id, user_id, tag_type,
         create_time, create_userid,create_username,update_time, update_userid,update_username)

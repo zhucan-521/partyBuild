@@ -32,6 +32,7 @@ public interface TabPbTrainingMapper {
 
     /**
      * 条件选择党员培训情况列表
+     *
      * @param tabPbTrainingDto
      * @return
      */
@@ -47,6 +48,7 @@ public interface TabPbTrainingMapper {
 
     /**
      * 单个党员培训情况详情查询
+     *
      * @param traningId
      * @return
      */

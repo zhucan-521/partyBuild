@@ -1,9 +1,6 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
 import com.baomidou.mybatisplus.annotations.TableField;
-import com.egovchina.partybuilding.common.config.DictSerializer;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -28,8 +25,12 @@ public class PartyDTO {
     @NotNull(message = "人员类别不能为空")
     private Long identityType;
 
+    @ApiModelProperty(value = "头像")
+    private String avatar;
+
     @ApiModelProperty(value = "申请人姓名",required = true)
     @NotNull(message = "申请人姓名不能为空")
+
     private String realname;
 
     @ApiModelProperty(value = "身份证号码",required = true)
@@ -62,6 +63,10 @@ public class PartyDTO {
     @ApiModelProperty(value = "入党时间、预备党员时间",required = true,example ="yyyy-MM-dd")
     @NotNull(message = "加入党组织时间不能为空")
     private Date joinTime;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "加入党组织时间", required = true, example = "yyyy-MM-dd")
+    private Date joinOrgTime;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd" )
     @ApiModelProperty(value = "转正时间、正式党员时间",required = true,example ="yyyy-MM-dd")
@@ -97,24 +102,17 @@ public class PartyDTO {
     @ApiModelProperty(value = "工作简历")
     private String workResumes;
 
-    @TableField(exist = false)
-    @ApiModelProperty(value = "年龄")
-    private Integer age;
-
     @ApiModelProperty(value = "婚姻状况 码表值 FYZK")
-    @JsonSerialize(using = DictSerializer.class)
     private Long maritalStatus;
 
     @ApiModelProperty(value = "健康状况 码表值 GB4767")
-    @JsonSerialize(using = DictSerializer.class)
     private Long health;
 
     @ApiModelProperty(value = "籍贯 码表值 JG")
-    @JsonSerialize(using = DictSerializer.class)
     private Long ancestorPlace;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "工作时间")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "工作时间", example = "2018-05-24")
     private Date workDate;
 
 }

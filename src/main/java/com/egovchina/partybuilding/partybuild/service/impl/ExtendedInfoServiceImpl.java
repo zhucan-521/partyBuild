@@ -6,6 +6,7 @@ import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundExceptio
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.DeletePartyMemberDTO;
+import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMemberReduceListMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
@@ -32,6 +33,9 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
     @Autowired
     private TabPbMemberReduceListMapper reduceListMapper;
 
+    @Autowired
+    private PartyMembershipServiceImpl partyMembershipServiceImpl;
+
     @Override
     public PartyMemberVO selectPartyMemberVOById(Long userId) {
         return tabSysUserMapper.selectByPrimaryKeyToAll(userId);
@@ -46,38 +50,51 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Boolean updateByUserId(DeletePartyMemberDTO reduce) {
-        SysUser user = new SysUser();
-        user.setUserId(reduce.getUserId());
+    public int updateByUserId(DeletePartyMemberDTO reduce) {
+        SysUser user =
+                BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(reduce, SysUser.class, false);
         user.setDelFlag(CommonConstant.STATUS_DEL);
         user.setRegistryStatus(reduce.getOutType());
-        TabPbMemberReduceList tabPbMemberReduceList =
-                BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(reduce, TabPbMemberReduceList.class, false);
         int flag = tabSysUserMapper.updateByPrimaryKeySelective(user);
+        SysUser newuser = null;
         if (flag > 0) {
-            SysUser newuser = tabSysUserMapper.selectByPrimaryKey(reduce.getUserId());
+            TabPbMemberReduceList tabPbMemberReduceList =
+                    BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(reduce, TabPbMemberReduceList.class, false);
+            newuser = tabSysUserMapper.selectByPrimaryKey(reduce.getUserId());
             if (newuser != null && !ObjectUtils.isEmpty(newuser.getDeptId())) {
                 tabPbMemberReduceList.setDeptId(newuser.getDeptId());
-                tabPbMemberReduceList.setRealName(newuser.getUsername());
+                tabPbMemberReduceList.setRealName(newuser.getRealname());
                 flag += reduceListMapper.insertSelective(tabPbMemberReduceList);
             }
+            //添加一条党籍
+            MembershipDTO membershipDTO = new MembershipDTO();
+            membershipDTO.setUserId(reduce.getUserId()).setIdentityType(newuser.getIdentityType()).setType(reduce.getOutType());
+
+            flag += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
         }
-        return flag > 0;
+        return flag;
     }
 
-    @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean restoreUser(Long userId) {
+    @Override
+    public int restoreUser(Long userId) {
+        //修改党员减少表
         TabPbMemberReduceList reduceList = reduceListMapper.selectByUserId(userId);
-        if(reduceList==null){
-            throw  new BusinessDataNotFoundException("查不到该党员减少记录");
+        if (reduceList == null) {
+            throw new BusinessDataNotFoundException("查不到该党员减少记录");
         }
         reduceList.setDelFlag(CommonConstant.STATUS_DEL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(reduceList);
-        reduceListMapper.updateByPrimaryKeySelective(reduceList);
+        int num = reduceListMapper.updateByPrimaryKeySelective(reduceList);
+        //查询查询identity_type
+        Long identity_type = tabSysUserMapper.selectUserByIdFindIdentity(userId);
+        MembershipDTO membershipDTO = new MembershipDTO();
+        membershipDTO.setUserId(userId).setIdentityType(identity_type).setType(2L);
+        //新增党籍
+        num += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
         SysUser user = new SysUser().setUserId(userId).setRegistryStatus(2L).setDelFlag(CommonConstant.STATUS_NORMAL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(user);
-        tabSysUserMapper.updateByPrimaryKeySelective(user);
-        return true;
+        num += tabSysUserMapper.updateByPrimaryKeySelective(user);
+        return num;
     }
 }

@@ -51,7 +51,8 @@
         <result column="flow_to_org_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
         <result column="out_profession" jdbcType="BIGINT" property="outProfession"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="TabPbFlowInDtoResultVoMap" type="com.egovchina.partybuilding.partybuild.vo.FlowInMemberVO">
+    <resultMap extends="BaseResultMap" id="TabPbFlowInDtoResultVoMap"
+               type="com.egovchina.partybuilding.partybuild.vo.FlowInMemberVO">
         <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
         <result column="gender" jdbcType="BIGINT" property="gender"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
@@ -571,9 +572,11 @@
 
 
     <!--流入党员列表查询vo-->
-    <select id="selectListByFlowInVo" parameterType="com.egovchina.partybuilding.partybuild.entity.FlowInMemberQueryBean" resultMap="TabPbFlowInDtoResultVoMap">
+    <select id="selectListByFlowInVo"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.FlowInMemberQueryBean"
+            resultMap="TabPbFlowInDtoResultVoMap">
         SELECT
-        <include refid="Base_FlowIn_List" />
+        <include refid="Base_FlowIn_List"/>
         FROM
         tab_pb_flow_in AS t
         LEFT JOIN sys_user AS s ON t.user_id = s.user_id
@@ -612,7 +615,7 @@
     <!--单个流入vo党员详情查询-->
     <select id="selectFlowInVoByFlowId" parameterType="java.lang.Long" resultMap="TabPbFlowInDtoResultVoMap">
         SELECT
-        <include refid="Base_FlowIn_List" />
+        <include refid="Base_FlowIn_List"/>
         FROM
         tab_pb_flow_in AS t
         LEFT JOIN sys_user AS s ON t.user_id = s.user_id

@@ -6,7 +6,7 @@ import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
-import com.egovchina.partybuilding.common.util.BeanUtil;
+
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.PositiveRegistMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.PositiveRegistMemberQueryBean;

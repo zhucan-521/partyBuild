@@ -37,7 +37,8 @@
         <result column="flow_to_orgnize_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
         <result column="flow_out_state" jdbcType="BIGINT" property="flowOutState"/>
     </resultMap>
-    <resultMap id="selectActiveFlowOutVoMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.vo.FlowOutMemberVO">
+    <resultMap id="selectActiveFlowOutVoMap" extends="BaseResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.FlowOutMemberVO">
         <id column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
@@ -563,7 +564,9 @@
     </select>
 
     <!--流出党员vo查询-->
-    <select id="selectActiveFlowOutVo" parameterType="com.egovchina.partybuilding.partybuild.entity.FlowOutMemberQueryBean" resultMap="selectActiveFlowOutVoMap">
+    <select id="selectActiveFlowOutVo"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.FlowOutMemberQueryBean"
+            resultMap="selectActiveFlowOutVoMap">
         SELECT
         <include refid="Base_FlowOut_List" />
         FROM
@@ -600,7 +603,6 @@
         tab_pb_flow_out.flow_out_id
         desc
     </select>
-
 
 
     <!--根据id查询单个流出党员Vo详情-->

@@ -52,7 +52,7 @@ public class PositivesServiceImpl implements PositivesService {
     }
 
     @Override
-    public List<PositivesVO> selectPositives(Long userId ,String positiveType) {
+    public List<PositivesVO> selectPositives(Long userId, String positiveType) {
         return tabPbPositivesMapper.selectByIdToAllPositivesVO(userId, positiveType);
     }
 

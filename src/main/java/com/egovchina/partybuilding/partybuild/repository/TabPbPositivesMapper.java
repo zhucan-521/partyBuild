@@ -30,7 +30,7 @@ public interface TabPbPositivesMapper {
      * @param tabPbPositives
      * @return
      */
-    List<TabPbPositives> selectPositives(TabPbPositives tabPbPositives);
+    List<PositivesVO> selectPositives(TabPbPositives tabPbPositives);
 
     List<TabPbPositives> verifyDuplicateDuties(TabPbPositives tabPbPositives);
 
@@ -64,7 +64,7 @@ public interface TabPbPositivesMapper {
 
     PositivesVO selectByIdToPositivesVO(Integer positiveId);
 
-    List<PositivesVO> selectByIdToAllPositivesVO(@Param("userId") Long userId,@Param("positiveType") String positiveType);
+    List<PositivesVO> selectByIdToAllPositivesVO(@Param("userId") Long userId, @Param("positiveType") String positiveType);
 
     /**
      * 根据人员id获取他的职位
