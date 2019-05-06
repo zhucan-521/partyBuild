@@ -15,6 +15,7 @@ import com.egovchina.partybuilding.partybuild.service.UserTagService;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -115,9 +116,12 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     }
 
     @Override
-    public List<PersonnelVO> partyIdentityVerification(String username, String idCardNo, String phone, Page page) {
+    public PageInfo<PersonnelVO> partyIdentityVerification(String username, String idCardNo, String phone, Page page) {
+        if (StringUtils.isAllBlank(username, idCardNo, phone)) {
+            throw new BusinessDataIncompleteException("查询条件不能为空");
+        }
         PageHelper.startPage(page);
-        return tabSysUserMapper.partyIdentityVerification(username, idCardNo, phone);
+        return new PageInfo<>(tabSysUserMapper.partyIdentityVerification(username, idCardNo, phone));
     }
 
 

@@ -21,10 +21,10 @@ public class SysUserVO {
     private String realname;
 
     @ApiModelProperty(value = "组织ID ,党支部Id")
-    private Integer deptId;
+    private Long deptId;
 
     @ApiModelProperty(value = "用户ID")
-    private Integer userId;
+    private long userId;
 
     @ApiModelProperty(value = "年龄")
     private Integer age;

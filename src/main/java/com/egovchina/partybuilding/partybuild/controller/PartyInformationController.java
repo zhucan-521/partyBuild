@@ -51,11 +51,7 @@ public class PartyInformationController {
                                                     @RequestParam(required = false) @ApiParam(value = "身份证") String idCardNo,
                                                     @RequestParam(required = false) @ApiParam(value = "手机号") String phone,
                                                     Page page) {
-        if (StringUtils.isAllBlank(username, idCardNo, phone)) {
-            throw new BusinessDataIncompleteException("查询条件不能为空");
-        }
-        List<PersonnelVO> list = partyInformationService.partyIdentityVerification(username, idCardNo, phone, page);
-        return new PageInfo<>(list);
+        return partyInformationService.partyIdentityVerification(username, idCardNo, phone, page);
     }
 
     @ApiOperation(value = "历史党员列表", notes = "分页查询历史党员信息", httpMethod = "GET")
