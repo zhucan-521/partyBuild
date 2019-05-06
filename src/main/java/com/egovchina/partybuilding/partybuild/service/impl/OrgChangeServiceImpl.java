@@ -40,6 +40,14 @@ import static com.egovchina.partybuilding.common.util.UserContextHolder.currentU
  */
 @Service("orgChangeService")
 public class OrgChangeServiceImpl implements OrgChangeService {
+    //组织所在单位类型 上级党组织相同
+    private static final Long UNIT_SAME = 59139L;
+
+    //组织撤消字典
+    private static final Long REVOKE = 59123L;
+
+    //组织恢复字典
+    private static final Long RESTORE = 59123L;
 
     @Autowired
     private TabPbOrgnizeChangeMapper tabPbOrgnizeChangeMapper;
@@ -87,7 +95,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
         }
         SysDept dept = tabSysDeptMapper.selectByPrimaryKey(tabPbOrgnizeChange.getDeptId());
         if (dept != null) {
-            if (dept.getUnitState() != null && dept.getUnitState() == 59139L) {
+            if (dept.getUnitState() != null && Objects.equals(dept.getUnitState(), UNIT_SAME)) {
                 sysDept.setUnitId(superiorOrganization.getUnitId());
                 sysDept.setUnitName(superiorOrganization.getUnitName());
             }
@@ -140,9 +148,9 @@ public class OrgChangeServiceImpl implements OrgChangeService {
         if (dict.getValue().equals("ZZGM")) {
             this.orgRename(tabPbOrgnizeChange);
         } else if (dict.getValue().equals("ZZCX")) {
-            this.orgRestoreOrRevoke(tabPbOrgnizeChange, "0", 59123L);
+            this.orgRestoreOrRevoke(tabPbOrgnizeChange, "0", REVOKE);
         } else if (dict.getValue().equals("ZZHF")) {
-            this.orgRestoreOrRevoke(tabPbOrgnizeChange, "1", 59122L);
+            this.orgRestoreOrRevoke(tabPbOrgnizeChange, "1", RESTORE);
         } else if (dict.getValue().equals("ZZTZ") || dict.getValue().equals("ZJZZY")) {
             this.insertOrgChange(tabPbOrgnizeChange);
         }
@@ -173,8 +181,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
         newDept.setDeptId(org.getDeptId());
         newDept.setName(org.getOrgnizeName());
         newDept.setOrgShortName(org.getShortName());
-        int count = this.tabSysDeptMapper.updateByPrimaryKeySelective(newDept);
-        return count;
+        return this.tabSysDeptMapper.updateByPrimaryKeySelective(newDept);
     }
 
     /**
@@ -184,7 +191,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
      * @return
      */
     private int orgRestoreOrRevoke(TabPbOrgnizeChange org, String eblFlag, Long orgStatus) {
-        if (orgStatus == 59123L) {
+        if (Objects.equals(orgStatus, REVOKE)) {
             SysDept sysDept = this.tabSysDeptMapper.selectByPrimaryKey(org.getDeptId());
             if (sysDept.getIsParent() == 1) {
                 throw new BusinessDataInvalidException("该组织存在下级组织，撤消失败");

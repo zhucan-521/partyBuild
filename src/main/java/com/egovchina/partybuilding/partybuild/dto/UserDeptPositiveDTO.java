@@ -16,7 +16,7 @@ import java.util.List;
  */
 @ApiModel(value = "人员组织职务DTO")
 @Data
-public class UserDeptPositiveDto {
+public class UserDeptPositiveDTO {
 
     @ApiModelProperty(value = "人员id")
     private Long userId;

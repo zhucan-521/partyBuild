@@ -3,7 +3,7 @@ package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
-import com.egovchina.partybuilding.partybuild.dto.UserDeptPositiveDto;
+import com.egovchina.partybuilding.partybuild.dto.UserDeptPositiveDTO;
 import com.egovchina.partybuilding.partybuild.entity.SysUserQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import org.apache.ibatis.annotations.Param;
@@ -76,7 +76,7 @@ public interface TabSysUserMapper {
      * @param deptId
      * @return
      */
-    List<UserDeptPositiveDto> selectUserDeptByDeptId(Long deptId);
+    List<UserDeptPositiveDTO> selectUserDeptByDeptId(Long deptId);
 
     int updateByUserId(Long userId);
 

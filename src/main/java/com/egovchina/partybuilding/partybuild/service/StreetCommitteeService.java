@@ -57,7 +57,6 @@ public interface StreetCommitteeService {
      */
     PageInfo<StreetCommitteeVO> getStreetCommitteeList(StreetCommitteeQueryBean streetCommitteeQueryBean, Page page);
 
-
     /**
      * 添加街道大公委成员数据, 其街道大公委id和userId必须存在
      *

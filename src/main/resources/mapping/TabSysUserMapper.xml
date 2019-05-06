@@ -141,7 +141,7 @@
     </resultMap>
 
     <!-- UserDeptPositiveDto结果集 -->
-    <resultMap id="userDeptPositiveDtoResultMap" type="com.egovchina.partybuilding.partybuild.dto.UserDeptPositiveDto">
+    <resultMap id="userDeptPositiveDtoResultMap" type="com.egovchina.partybuilding.partybuild.dto.UserDeptPositiveDTO">
         <result column="user_id" property="userId"/>
         <result column="username" property="userName"/>
         <result column="dept_id" property="deptId"/>
