@@ -98,6 +98,7 @@
         join sys_dict d on p.positive_name = d.id and d.type='DNZW'
         where p.del_flag = 0
         and p.user_id = #{userId}
+        order by p.update_time desc
     </select>
 
 

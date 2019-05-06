@@ -32,7 +32,7 @@ public class PositivesVO {
 
     @JsonSerialize(using = DictSerializer.class)
     @ApiModelProperty(value = "党内职务 dict DNZW")
-    private Long positiveName;
+    private Long positive;
 
     @ApiModelProperty(value = "职务级别 dict ZWJB")
     @JsonSerialize(using = DictSerializer.class)

@@ -98,8 +98,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             //党龄减去出国时间
             if (memberReducesVO != null && memberReducesVO.size() > 0) {
                 for (int j = 0; j < memberReducesVO.size(); j++) {
-                    if (memberReducesVO.get(j) != null && memberReducesVO.get(j).getUser_id() != null) {
-                        if (memberReducesVO.get(j).getUser_id().equals(historyPartyVO.get(i).getUserId())) {
+                    if (memberReducesVO.get(j) != null && memberReducesVO.get(j).getUserId() != null) {
+                        if (memberReducesVO.get(j).getUserId().equals(historyPartyVO.get(i).getUserId())) {
                             if (age <= 0) {
                                 age = 0;
                                 break;

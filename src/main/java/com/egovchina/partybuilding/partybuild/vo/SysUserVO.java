@@ -121,5 +121,5 @@ public class SysUserVO {
 
     @TableField(exist = false)
     @ApiModelProperty(value = "人员职务集合")
-    private List<PositivesDTO> positives;
+    private List<PositivesVO> positives;
 }
