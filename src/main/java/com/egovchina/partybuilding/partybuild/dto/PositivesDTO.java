@@ -13,7 +13,7 @@ import java.util.Date;
 public class PositivesDTO {
 
     @ApiModelProperty(value = "id")
-    private Integer positiveId;
+    private Long positiveId;
 
     @ApiModelProperty(value = "用户id", required = true)
     @NotNull(message = "用户id不为空")
@@ -21,11 +21,11 @@ public class PositivesDTO {
 
     @ApiModelProperty(value = "职务类型 1党内职务 2行政职务", required = true)
     @NotNull(message = "职务类型不能为空")
-    private Integer positiveType;
+    private Long positiveType;
 
     @ApiModelProperty(value = "任职 机构/党组织id", required = true)
     @NotNull(message = "任职党组织机构的主键不能为空")
-    private Integer positiveOrgId;
+    private Long positiveOrgId;
 
     @ApiModelProperty(value = "职务名称，字典：党内职务（DNZW）；行政职务（HZZW）", required = true)
     @NotNull(message = "任职党组织名称不能为空")
