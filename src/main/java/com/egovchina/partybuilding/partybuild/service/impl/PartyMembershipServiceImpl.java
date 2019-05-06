@@ -30,7 +30,6 @@ public class PartyMembershipServiceImpl implements PartyMembershipService {
     @Override
     public int insertMembershipDTO(MembershipDTO membershipDTO) {
         TabPbPartyMembership tabPbPartyMembership = generateTargetCopyPropertiesAndPaddingBaseField(membershipDTO, TabPbPartyMembership.class, false);
-        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbPartyMembership);
         return tabPbPartyMembershipMapper.insertPartyMembershipDTO(tabPbPartyMembership);
     }
 

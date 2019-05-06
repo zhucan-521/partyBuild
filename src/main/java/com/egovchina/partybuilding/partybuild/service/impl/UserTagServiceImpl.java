@@ -4,9 +4,9 @@ import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.HardshipPartyMemberDTO;
+import com.egovchina.partybuilding.partybuild.dto.UserTagDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
 import com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper;
-import com.egovchina.partybuilding.partybuild.dto.UserTagDTO;
 import com.egovchina.partybuilding.partybuild.service.HardshipPartyMemberService;
 import com.egovchina.partybuilding.partybuild.service.UserTagService;
 import com.egovchina.partybuilding.partybuild.vo.HardshipPartyVO;
@@ -120,7 +120,7 @@ public class UserTagServiceImpl implements UserTagService {
     @Transactional
     @Override
     public int batchInsertUserTagDTO(UserTagDTO userTagDTO) {
-        //困难党员字典
+        //困难党员字典id
         final Long HARD_MEMBERSHIP = 59428L;
 
         int value = 0;

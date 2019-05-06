@@ -33,7 +33,7 @@ import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCop
  *
  * @Author Zhang Fan
  **/
-@Service("tabPbWorkPlanService")
+@Service("workPlanService")
 public class WorkPlanServiceImpl implements WorkPlanService {
 
     @Autowired
@@ -72,6 +72,10 @@ public class WorkPlanServiceImpl implements WorkPlanService {
     @Transactional
     @Override
     public int updateWorkPlan(WorkPlanDTO workPlanDTO) {
+        WorkPlanVO workPlanVO = tabPbWorkPlanMapper.selectWorkPlanVOById(workPlanDTO.getPlanId());
+        if (workPlanVO == null) {
+            throw new BusinessDataNotFoundException("您要修改的工作计划不存在");
+        }
         TabPbWorkPlan tabPbWorkPlan = generateTargetCopyPropertiesAndPaddingBaseField(workPlanDTO, TabPbWorkPlan.class, true);
         int judgment = tabPbWorkPlanMapper.updateByPrimaryKeySelective(tabPbWorkPlan);
         if (judgment > 0) {
@@ -83,6 +87,10 @@ public class WorkPlanServiceImpl implements WorkPlanService {
 
     @Override
     public WorkPlanVO selectWorkPlanVOById(Long planId) {
+        WorkPlanVO workPlanVO = tabPbWorkPlanMapper.selectWorkPlanVOById(planId);
+        if (workPlanVO == null) {
+            throw new BusinessDataCheckFailException("您要查询的工作计划不存在");
+        }
         return tabPbWorkPlanMapper.selectWorkPlanVOById(planId);
     }
 
@@ -93,6 +101,10 @@ public class WorkPlanServiceImpl implements WorkPlanService {
 
     @Override
     public int logicDeleteById(Long planId) {
+        WorkPlanVO workPlanVO = tabPbWorkPlanMapper.selectWorkPlanVOById(planId);
+        if (workPlanVO == null) {
+            throw new BusinessDataCheckFailException("该工作计划不存在或已经被删除");
+        }
         TabPbWorkPlan delete = new TabPbWorkPlan();
         delete.setPlanId(planId);
         delete.setDelFlag(CommonConstant.STATUS_DEL);
@@ -109,6 +121,10 @@ public class WorkPlanServiceImpl implements WorkPlanService {
     @Transactional
     @Override
     public int updateWorkSummary(WorkSummaryDTO workSummaryDTO) {
+        WorkSummaryVO workSummaryVO = tabPbWorkPlanMapper.selectWorkSummaryVOById(workSummaryDTO.getPlanId());
+        if (workSummaryVO == null) {
+            throw new BusinessDataNotFoundException("该工作总结不存在");
+        }
         TabPbWorkPlan tabPbWorkPlan =
                 generateTargetCopyPropertiesAndPaddingBaseField(workSummaryDTO, TabPbWorkPlan.class, true);
         int judgment = tabPbWorkPlanMapper.updateByPrimaryKeySelective(tabPbWorkPlan);
@@ -121,6 +137,10 @@ public class WorkPlanServiceImpl implements WorkPlanService {
 
     @Override
     public WorkSummaryVO selectWorkSummaryVOById(Long planId) {
+        WorkSummaryVO workSummaryVO = tabPbWorkPlanMapper.selectWorkSummaryVOById(planId);
+        if (workSummaryVO == null) {
+            throw new BusinessDataNotFoundException("该工作总结不存在");
+        }
         return tabPbWorkPlanMapper.selectWorkSummaryVOById(planId);
     }
 
