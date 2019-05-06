@@ -3,7 +3,6 @@ package com.egovchina.partybuilding.partybuild.repository;
 import com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbAbroad;
 import com.egovchina.partybuilding.partybuild.vo.*;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,4 +24,5 @@ public interface TabPbAbroadMapper {
     AbroadDetailsVO findAbroadDetailsVOByAbroadId(Long abroadId);
 
     List<MemberReducesVO> findAbroadDetailsByPartyId(HistoricalPartyMemberQueryBean historicalPartyMemberQueryBean);
+
 }

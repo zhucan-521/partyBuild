@@ -58,14 +58,6 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
     }
 
     @Override
-    public int logicDeleteByUserId(Long userId) {
-        TabPbHardship delete = new TabPbHardship();
-        delete.setDelFlag(CommonConstant.STATUS_DEL);
-        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(delete);
-        return hardshipMapper.logicDeleteByUserId(delete);
-    }
-
-    @Override
     public int insertHardshipPartyMember(HardshipPartyMemberDTO hardshipPartyMemberDTO) {
         verification(hardshipPartyMemberDTO);
         TabPbHardship tabPbHardship = generateTargetCopyPropertiesAndPaddingBaseField(hardshipPartyMemberDTO, TabPbHardship.class, false);

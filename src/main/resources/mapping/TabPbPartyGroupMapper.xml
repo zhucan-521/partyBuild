@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbPartyGroupMapper">
+
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroup">
+        <id column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="del_flag" jdbcType="TINYINT" property="delFlag"/>
+        <result column="is_revoke" jdbcType="TINYINT" property="isRevoke"/>
+        <result column="revoke_name" jdbcType="VARCHAR" property="revokeName"/>
+        <result column="revoke_time" jdbcType="TIMESTAMP" property="revokeTime"/>
+        <result column="build_time" jdbcType="TIMESTAMP" property="buildTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroup">
+        <result column="remarks" jdbcType="LONGVARCHAR" property="remarks"/>
+    </resultMap>
+
+    <!-- 返回PartyGroupVO视图对象 -->
+    <resultMap id="PartyGroupVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.PartyGroupVO">
+        <id column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="is_revoke" jdbcType="TINYINT" property="isRevoke"/>
+        <result column="revoke_name" jdbcType="VARCHAR" property="revokeName"/>
+        <result column="revoke_time" jdbcType="TIMESTAMP" property="revokeTime"/>
+        <result column="build_time" jdbcType="TIMESTAMP" property="buildTime"/>
+        <collection property="members" ofType="com.egovchina.partybuilding.partybuild.vo.PartyGroupMemberVO">
+            <id column="member_id" jdbcType="BIGINT" property="memberId"/>
+            <result column="user_id" jdbcType="BIGINT" property="userId"/>
+            <result column="is_leader" jdbcType="TINYINT" property="isLeader"/>
+            <result column="username" jdbcType="VARCHAR" property="username"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    group_id, group_name, org_id, del_flag, is_revoke, revoke_name, revoke_time, build_time, 
+    create_time, create_userid, create_username, update_time, update_userid, update_username
+  </sql>
+    <sql id="Blob_Column_List">
+    remarks
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tab_pb_party_group
+        where group_id = #{groupId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_party_group
+    where group_id = #{groupId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroup">
+    insert into tab_pb_party_group (group_id, group_name, org_id, 
+      del_flag, is_revoke, revoke_name, 
+      revoke_time, build_time, create_time, 
+      create_userid, create_username, update_time, 
+      update_userid, update_username, remarks
+      )
+    values (#{groupId,jdbcType=BIGINT}, #{groupName,jdbcType=VARCHAR}, #{orgId,jdbcType=BIGINT}, 
+      #{delFlag,jdbcType=TINYINT}, #{isRevoke,jdbcType=TINYINT}, #{revokeName,jdbcType=VARCHAR}, 
+      #{revokeTime,jdbcType=TIMESTAMP}, #{buildTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{remarks,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroup">
+        insert into tab_pb_party_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="groupName != null">
+                group_name,
+            </if>
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="isRevoke != null">
+                is_revoke,
+            </if>
+            <if test="revokeName != null">
+                revoke_name,
+            </if>
+            <if test="revokeTime != null">
+                revoke_time,
+            </if>
+            <if test="buildTime != null">
+                build_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="groupId != null">
+                #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="groupName != null">
+                #{groupName,jdbcType=VARCHAR},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=TINYINT},
+            </if>
+            <if test="isRevoke != null">
+                #{isRevoke,jdbcType=TINYINT},
+            </if>
+            <if test="revokeName != null">
+                #{revokeName,jdbcType=VARCHAR},
+            </if>
+            <if test="revokeTime != null">
+                #{revokeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="buildTime != null">
+                #{buildTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroup">
+        update tab_pb_party_group
+        <set>
+            <if test="groupName != null">
+                group_name = #{groupName,jdbcType=VARCHAR},
+            </if>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=TINYINT},
+            </if>
+            <if test="isRevoke != null">
+                is_revoke = #{isRevoke,jdbcType=TINYINT},
+            </if>
+            <if test="revokeName != null">
+                revoke_name = #{revokeName,jdbcType=VARCHAR},
+            </if>
+            <if test="revokeTime != null">
+                revoke_time = #{revokeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="buildTime != null">
+                build_time = #{buildTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where group_id = #{groupId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroup">
+    update tab_pb_party_group
+    set group_name = #{groupName,jdbcType=VARCHAR},
+      org_id = #{orgId,jdbcType=BIGINT},
+      del_flag = #{delFlag,jdbcType=TINYINT},
+      is_revoke = #{isRevoke,jdbcType=TINYINT},
+      revoke_name = #{revokeName,jdbcType=VARCHAR},
+      revoke_time = #{revokeTime,jdbcType=TIMESTAMP},
+      build_time = #{buildTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      remarks = #{remarks,jdbcType=LONGVARCHAR}
+    where group_id = #{groupId,jdbcType=BIGINT}
+  </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroup">
+    update tab_pb_party_group
+    set group_name = #{groupName,jdbcType=VARCHAR},
+      org_id = #{orgId,jdbcType=BIGINT},
+      del_flag = #{delFlag,jdbcType=TINYINT},
+      is_revoke = #{isRevoke,jdbcType=TINYINT},
+      revoke_name = #{revokeName,jdbcType=VARCHAR},
+      revoke_time = #{revokeTime,jdbcType=TIMESTAMP},
+      build_time = #{buildTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR}
+    where group_id = #{groupId,jdbcType=BIGINT}
+  </update>
+
+    <!-- 根据主键查询该条数据是否存在 -->
+    <select id="checkIsExistByGroupId" parameterType="java.lang.Long" resultType="boolean">
+        SELECT COUNT(1) FROM tab_pb_party_group WHERE group_id = #{groupId,jdbcType=BIGINT}
+    </select>
+
+    <!-- 根据主键查询党小组详情 -->
+    <select id="selectPartyGroupDetailsByGroupId" parameterType="java.lang.Long" resultMap="PartyGroupVOResultMap">
+        SELECT
+            pg.group_id,
+            pg.group_name,
+            pg.org_id,
+            sd.`name`,
+            sd.org_short_name,
+            pg.is_revoke,
+            pg.revoke_name,
+            pg.revoke_time,
+            pg.build_time,
+            pg.remarks,
+            -- 人员表信息字段
+            gm.member_id,
+            gm.user_id,
+            su.username,
+            gm.is_leader
+        FROM
+            tab_pb_party_group pg
+            INNER JOIN sys_dept sd ON pg.org_id = dept_id
+            LEFT JOIN tab_pb_party_group_member gm ON pg.group_id = gm.group_id
+            INNER JOIN sys_user su ON gm.user_id = su.user_id
+        WHERE
+            pg.group_id = #{groupId,jdbcType=BIGINT}
+            AND pg.del_flag = 0
+            AND sd.del_flag = '0'
+            AND su.del_flag = '0'
+            AND gm.del_flag = 0
+    </select>
+
+    <!-- 根据主键查询党小组详情 -->
+    <select id="selectPartyGroupDetails" parameterType="com.egovchina.partybuilding.partybuild.entity.PartyGroupQueryBean" resultMap="PartyGroupVOResultMap">
+        SELECT
+        pg.group_id,
+        pg.group_name,
+        pg.org_id,
+        sd.`name`,
+        sd.org_short_name,
+        pg.is_revoke,
+        pg.revoke_name,
+        pg.revoke_time,
+        pg.build_time,
+        pg.remarks,
+        -- 人员表信息字段
+        gm.member_id,
+        gm.user_id,
+        su.username,
+        gm.is_leader
+        FROM
+        tab_pb_party_group pg
+        INNER JOIN sys_dept sd ON pg.org_id = dept_id
+        LEFT JOIN tab_pb_party_group_member gm ON pg.group_id = gm.group_id
+        INNER JOIN sys_user su ON gm.user_id = su.user_id
+        WHERE
+        pg.del_flag = 0
+        AND sd.del_flag = '0'
+        AND su.del_flag = '0'
+        AND gm.del_flag = 0
+
+        <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <choose>
+            <when test="orgRange == 1">
+                AND (sd.dept_id = #{orgId} OR sd.parent_id = #{orgId})
+            </when>
+            <when test="orgRange == 2">
+                AND find_in_set(#{orgId}, sd.full_path)
+            </when>
+            <otherwise>
+                AND sd.dept_id = #{orgId}
+            </otherwise>
+        </choose>
+
+        <if test="groupName != null and groupName != '' ">
+            AND pg.group_name like concat('%', #{groupName} ,'%')
+        </if>
+
+        <if test="leaderName != null and leaderName != '' ">
+            AND su.`username` like concat('%', #{leaderName} ,'%')
+        </if>
+
+        <if test="isRevoke != null and isRevoke != '' ">
+            AND pg.is_revoke = #{isRevoke}
+        </if>
+    </select>
+
+</mapper>

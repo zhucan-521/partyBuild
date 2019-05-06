@@ -3,37 +3,14 @@ package com.egovchina.partybuilding.partybuild.service;
 import com.egovchina.partybuilding.common.entity.OrgRange;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.dto.OrgClassifyDTO;
-import com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify;
 import com.egovchina.partybuilding.partybuild.vo.OrgClassifyVO;
 import com.github.pagehelper.PageInfo;
-
-import java.util.List;
 
 /**
  * desc: 分类定等-服务接口
  * Created by FanYanGen on 2019/4/22 15:58
  */
 public interface OrgClassifyService {
-
-    int deleteByPrimaryKey(Long orgClassifyId);
-
-    int insert(TabPbOrgClassify record);
-
-    int insertSelective(TabPbOrgClassify record);
-
-    TabPbOrgClassify selectByPrimaryKey(Long orgClassifyId);
-
-    int updateByPrimaryKeySelective(TabPbOrgClassify record);
-
-    int updateByPrimaryKey(TabPbOrgClassify record);
-
-    /**
-     * 根据组织ID查询定等数据
-     *
-     * @param deptId 组织ID
-     * @return
-     */
-    List<TabPbOrgClassify> selectByDeptId(Long deptId);
 
     /**
      * desc: 根据组合条件查询分类定等列表
