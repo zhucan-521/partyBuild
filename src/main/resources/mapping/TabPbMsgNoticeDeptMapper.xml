@@ -15,7 +15,8 @@
         <result column="notice_type" property="noticeType"/>
         <result column="publish_time" property="publishTime"/>
     </resultMap>
-    <resultMap id="BaseResultVoMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.vo.MsgNoticeDeptVO"/>
+    <resultMap id="BaseResultVoMap" extends="BaseResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.MsgNoticeDeptVO"/>
     <sql id="Base_Column_List">
     id, notice_id, dept_id, dept_name, recevie_user_id, recevie_username, recevie_time
     </sql>
@@ -56,7 +57,8 @@
     </select>
 
     <!--查询Volist-->
-    <select id="selectVoDeptList" parameterType="com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean" resultMap="BaseResultVoMap">
+    <select id="selectVoDeptList" parameterType="com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean"
+            resultMap="BaseResultVoMap">
         SELECT
         dept.*,
         notice.notice_title,

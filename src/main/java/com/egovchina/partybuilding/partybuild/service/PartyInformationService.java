@@ -36,7 +36,7 @@ public interface PartyInformationService {
      * @param page
      * @return
      */
-    List<PersonnelVO> partyIdentityVerification(String username, String searchVal, String phone, Page page);
+    PageInfo<PersonnelVO> partyIdentityVerification(String username, String searchVal, String phone, Page page);
 
 
     /**

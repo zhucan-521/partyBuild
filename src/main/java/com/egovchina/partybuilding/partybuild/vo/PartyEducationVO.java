@@ -16,12 +16,12 @@ public class PartyEducationVO {
     @ApiModelProperty(value = "党员id")
     private Long userId;
 
-    @ApiModelProperty(value = "学历 dict XL")
+    @ApiModelProperty(value = "学历 dict WHCD")
     @JsonSerialize(using = DictSerializer.class)
     private Long level;
 
     private String levelName;
-    @ApiModelProperty(value = "学位 dict ")
+    @ApiModelProperty(value = "学位 dict XW")
     @JsonSerialize(using = DictSerializer.class)
     private Long degree;
 

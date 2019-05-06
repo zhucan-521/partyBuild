@@ -23,8 +23,6 @@ public interface  TabPbFlowOutMapper {
     int updateByPrimaryKey(TabPbFlowOut record);
 
 
-
-
     /**
      * 条件查询流出党员列表
      * @param flowOutMemberQueryBean
@@ -73,7 +71,7 @@ public interface  TabPbFlowOutMapper {
      * @param id
      * @return
      */
-     FlowOutMemberVO findFlowOutVoById(Long id);
+    FlowOutMemberVO findFlowOutVoById(Long id);
 
 
 

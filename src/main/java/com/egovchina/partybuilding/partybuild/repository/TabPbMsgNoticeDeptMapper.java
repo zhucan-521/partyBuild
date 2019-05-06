@@ -33,6 +33,7 @@ public interface TabPbMsgNoticeDeptMapper {
 
     /**
      * 查询list
+     *
      * @param record
      * @return
      */

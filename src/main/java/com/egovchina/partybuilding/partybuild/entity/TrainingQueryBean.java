@@ -10,7 +10,6 @@ import java.util.Date;
 public class TrainingQueryBean {
 
 
-
     @ApiModelProperty(value = "人员Id")
     private Long userId;
 

@@ -104,7 +104,7 @@ public class SecretaryServiceImpl implements SecretaryService {
         int flag = tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretaryinsert);
         List<TabPbFamily> familyList = secretaryMemberDTO.getFamilyList();
         List<TabPbPositives> positivesList = secretaryMemberDTO.getPositivesList();
-        if(CollectionUtil.isNotEmpty(familyList)){
+        if (CollectionUtil.isNotEmpty(familyList)) {
             for (TabPbFamily tabPbFamily : familyList) {
                 if (tabPbFamily.getRelationId() != null) {
                     tabPbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);

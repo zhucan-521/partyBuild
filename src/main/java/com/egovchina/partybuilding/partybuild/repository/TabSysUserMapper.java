@@ -29,8 +29,6 @@ public interface TabSysUserMapper {
 
     int updateByPrimaryKeyId(SysUser record);
 
-    List<SysUser> selectPage(SysUser sysUser);
-
     List<PartyMemberInformationVO> selectPageByMap(SysUserQueryBean sysUserQueryBean);
 
     /**
@@ -50,6 +48,12 @@ public interface TabSysUserMapper {
      */
     SysUser selectUserByIdCardNo(String idCardNo);
 
+    /**
+     * 根据身份证查询人员信息
+     *
+     * @return
+     */
+    Long selectUserByIdFindIdentity(Long userId);
 
     List<SysUserVO> selectPartyByIdCardNoOnUserName(@Param("idCardNo") String idCardNo, @Param("username") String username);
 

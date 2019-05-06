@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyEducation;
+import com.egovchina.partybuilding.partybuild.vo.PartyEducationVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public interface TabPbPartyEducationMapper {
      * @author FanYanGen
      * @date 2019/4/11 14:25
      **/
-    List<TabPbPartyEducation> findAllByUserId(Long userId);
+    List<PartyEducationVO> findAllByUserId(Long userId);
 
     /**
      * desc: 批量添加

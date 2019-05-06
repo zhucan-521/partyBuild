@@ -15,7 +15,7 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 @ApiModel(value = "接收下达文件通知党组织")
-public class MsgNoticeDeptDTO  {
+public class MsgNoticeDeptDTO {
 
     @ApiModelProperty(value = "主键ID")
     private Long id;
@@ -23,10 +23,10 @@ public class MsgNoticeDeptDTO  {
     @ApiModelProperty(value = "下达通知id")
     private Long noticeId;
 
-    @ApiModelProperty(value = "接收党组织id",required = true)
+    @ApiModelProperty(value = "接收党组织id", required = true)
     private Long deptId;
 
-    @ApiModelProperty(value = "接收党组织name",required = true)
+    @ApiModelProperty(value = "接收党组织name", required = true)
     private String deptName;
 
     @ApiModelProperty(value = "签收人员")

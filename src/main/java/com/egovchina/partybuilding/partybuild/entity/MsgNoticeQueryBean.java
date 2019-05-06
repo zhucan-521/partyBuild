@@ -14,7 +14,7 @@ public class MsgNoticeQueryBean {
     @ApiModelProperty(value = "组织范围 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织)")
     private Long orgRange;
 
-    @ApiModelProperty(value = "发布党组织名称id" ,required = true)
+    @ApiModelProperty(value = "发布党组织名称id", required = true)
     private Long deptId;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

@@ -3,18 +3,18 @@
 <mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbPositiveRegistMapper">
 
   <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist">
-    <id column="positive_regist_id" jdbcType="BIGINT" property="positiveRegistId" />
+      <id column="positive_regist_id" jdbcType="BIGINT" property="positiveRegistId"/>
     <result column="dept_id" jdbcType="BIGINT" property="deptId" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="regist_date" jdbcType="TIMESTAMP" property="registDate" />
+      <result column="regist_date" jdbcType="TIMESTAMP" property="registDate"/>
     <result column="regist_comment" jdbcType="VARCHAR" property="registComment" />
     <result column="from_orgnize_id" jdbcType="BIGINT" property="fromOrgnizeId" />
     <result column="from_orgnize_code" jdbcType="VARCHAR" property="fromOrgnizeCode" />
-    <result column="from_orgnize_name" jdbcType="VARCHAR" property="fromOrgnizeName" />
+      <result column="from_orgnize_name" jdbcType="VARCHAR" property="fromOrgnizeName"/>
     <result column="from_orgnize_place" jdbcType="VARCHAR" property="fromOrgnizePlace" />
     <result column="process_man" jdbcType="VARCHAR" property="processMan" />
     <result column="process_time" jdbcType="TIMESTAMP" property="processTime" />
-    <result column="process_result" jdbcType="VARCHAR" property="processResult" />
+      <result column="process_result" jdbcType="VARCHAR" property="processResult"/>
     <result column="revoke_tag" jdbcType="TINYINT" property="revokeTag" />
     <result column="revoke_tomment" jdbcType="VARCHAR" property="revokeTomment" />
     <result column="revoke_date" property="revokeDate"/>
@@ -168,80 +168,79 @@
     <if test="userName != null and userName != ''">
       and a.realname like CONCAT('%',#{userName},'%')
     </if>
-    <if test="registDate != null ">
-      and regist_date = #{registDate}
-    </if>
-    <if test="revokeTag != null and revokeTag != ''">
-        and revoke_tag = #{revokeTag}
-    </if>
+      <if test="registDate != null ">
+          and regist_date = #{registDate}
+      </if>
+      <if test="revokeTag != null and revokeTag != ''">
+          and revoke_tag = #{revokeTag}
+      </if>
 
-    and  regist.del_flag = '0'
+      and regist.del_flag = '0'
   </select>
 
-  <!--Vo-->
-  <select id="selectListVoPage" parameterType="com.egovchina.partybuilding.partybuild.entity.PositiveRegistMemberQueryBean" resultMap="BaseResultVoMap">
-    select
-    regist.positive_regist_id,
-    regist.dept_id,
-    regist.user_id,
-    regist.regist_date,
-    regist.regist_comment,
-    regist.from_orgnize_id,
-    regist.from_orgnize_code,
-    regist.from_orgnize_name,
-    regist.from_orgnize_place,
-    regist.process_man,
-    regist.process_time,
-    regist.process_result,
-    regist.revoke_tag,
-    regist.revoke_tomment,
-    (case  when regist.regist_date &lt;=now() then 1 else 0 end ) as isEnableBack,
-    (case  when regist.revoke_date &lt;=now() then 1 else 0 end ) as revokeIsEnableAccept,
-    regist.revoke_date,
-    a.`name` AS dept_name,a.realname as username,a.gender,
-    TIMESTAMPDIFF(YEAR, a.birthday, CURDATE()) AS age,a.phone,a.identity_type,
-    a.id_card_no,
-    dept.`name`,
-    attac.attachment_instance
-    from tab_pb_positive_regist regist
-    join (SELECT suser.*,dept.`name` FROM sys_user suser join sys_dept dept on suser.dept_id = dept.dept_id and suser.del_flag = 0 and dept.del_flag = 0) a
-    ON regist.user_id = a.user_id
-    join sys_dept dept on regist.dept_id = dept.dept_id and dept.del_flag = '0'
-    LEFT JOIN tab_pb_attachment attac ON attac.host_id = regist.positive_regist_id
-    AND attac.attachment_type = ${@com.egovchina.partybuilding.common.util.AttachmentType@POSITIVE}
-    and attac.del_flag = '0'
-    WHERE true
-    <if test="orgRange != null and orgRange != ''">
-      <choose>
-        <when test="orgRange == 1">
-          AND (dept.dept_id = #{rangeDeptId} OR dept.parent_id = #{rangeDeptId})
-        </when>
-        <when test="orgRange == 2">
-          AND find_in_set(#{rangeDeptId}, dept.full_path)
-        </when>
-      </choose>
-    </if>
-    <if test="orgRange == null or orgRange.toString() == ''">
-      AND dept.dept_id = #{rangeDeptId}
-    </if>
-    <if test="userName != null and userName != ''">
-      and a.realname like CONCAT('%',#{userName},'%')
-    </if>
-    <if test="registDate != null ">
-      and regist_date = #{registDate}
-    </if>
-    <if test="revokeTag != null and revokeTag != ''">
-      and revoke_tag = #{revokeTag}
-    </if>
-    and  regist.del_flag = '0'
-  </select>
+    <!--Vo-->
+    <select id="selectListVoPage"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.PositiveRegistMemberQueryBean"
+            resultMap="BaseResultVoMap">
+        select
+        regist.positive_regist_id,
+        regist.dept_id,
+        regist.user_id,
+        regist.regist_date,
+        regist.regist_comment,
+        regist.from_orgnize_id,
+        regist.from_orgnize_code,
+        regist.from_orgnize_name,
+        regist.from_orgnize_place,
+        regist.process_man,
+        regist.process_time,
+        regist.process_result,
+        regist.revoke_tag,
+        regist.revoke_tomment,
+        (case when regist.regist_date &lt;=now() then 1 else 0 end ) as isEnableBack,
+        (case when regist.revoke_date &lt;=now() then 1 else 0 end ) as revokeIsEnableAccept,
+        regist.revoke_date,
+        a.`name` AS dept_name,a.realname as username,a.gender,
+        TIMESTAMPDIFF(YEAR, a.birthday, CURDATE()) AS age,a.phone,a.identity_type,
+        a.id_card_no,
+        dept.`name`,
+        attac.attachment_instance
+        from tab_pb_positive_regist regist
+        join (SELECT suser.*,dept.`name` FROM sys_user suser join sys_dept dept on suser.dept_id = dept.dept_id and
+        suser.del_flag = 0 and dept.del_flag = 0) a
+        ON regist.user_id = a.user_id
+        join sys_dept dept on regist.dept_id = dept.dept_id and dept.del_flag = '0'
+        LEFT JOIN tab_pb_attachment attac ON attac.host_id = regist.positive_regist_id
+        AND attac.attachment_type = ${@com.egovchina.partybuilding.common.util.AttachmentType@POSITIVE}
+        and attac.del_flag = '0'
+        WHERE true
+        <if test="orgRange != null and orgRange != ''">
+            <choose>
+                <when test="orgRange == 1">
+                    AND (dept.dept_id = #{rangeDeptId} OR dept.parent_id = #{rangeDeptId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{rangeDeptId}, dept.full_path)
+                </when>
+            </choose>
+        </if>
+        <if test="orgRange == null or orgRange.toString() == ''">
+            AND dept.dept_id = #{rangeDeptId}
+        </if>
+        <if test="userName != null and userName != ''">
+            and a.realname like CONCAT('%',#{userName},'%')
+        </if>
+        <if test="registDate != null ">
+            and regist_date = #{registDate}
+        </if>
+        <if test="revokeTag != null and revokeTag != ''">
+            and revoke_tag = #{revokeTag}
+        </if>
+        and regist.del_flag = '0'
+    </select>
 
 
-
-
-
-
-  <update id="editPositive" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist">
+    <update id="editPositive" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist">
     update tab_pb_positive_regist
     <set>
       <if test="revokeTag != null">
@@ -337,7 +336,7 @@
   </select>
 
 
-  <select id="findPositiveRegistMemberById" parameterType="java.lang.Long" resultMap="BaseResultVoMap">
+    <select id="findPositiveRegistMemberById" parameterType="java.lang.Long" resultMap="BaseResultVoMap">
     select
     regist.positive_regist_id,
     regist.dept_id,

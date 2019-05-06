@@ -45,11 +45,11 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
     @Transactional
     @Override
     public int addMsgNotice(MsgNoticeDTO msgNoticeDTO) {
-        if(CollectionUtils.isEmpty(msgNoticeDTO.getNoticeDeptList())){
+        if (CollectionUtils.isEmpty(msgNoticeDTO.getNoticeDeptList())) {
             throw new BusinessDataIncompleteException("请选择接收通知组织");
         }
-        TabPbMsgNotice tabPbMsgNotice=new TabPbMsgNotice();
-        BeanUtil.copyPropertiesIgnoreNull(msgNoticeDTO,tabPbMsgNotice);
+        TabPbMsgNotice tabPbMsgNotice = new TabPbMsgNotice();
+        BeanUtil.copyPropertiesIgnoreNull(msgNoticeDTO, tabPbMsgNotice);
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbMsgNotice);
         int count = noticeMapper.insertSelective(tabPbMsgNotice);
         /**
@@ -60,7 +60,7 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
             /**
              * 保存明细
              */
-            addNoticeDeptList(msgNoticeDTO.getNoticeDeptList(),tabPbMsgNotice.getId());
+            addNoticeDeptList(msgNoticeDTO.getNoticeDeptList(), tabPbMsgNotice.getId());
         }
         return count;
     }
@@ -71,8 +71,8 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
         if(CollectionUtils.isEmpty(notice.getNoticeDeptList())){
             throw new BusinessDataIncompleteException("请选择接收通知组织");
         }
-        TabPbMsgNotice tabPbMsgNoticeUpdate=new TabPbMsgNotice();
-        BeanUtil.copyPropertiesIgnoreNull(notice,tabPbMsgNoticeUpdate);
+        TabPbMsgNotice tabPbMsgNoticeUpdate = new TabPbMsgNotice();
+        BeanUtil.copyPropertiesIgnoreNull(notice, tabPbMsgNoticeUpdate);
         tabPbMsgNoticeUpdate.setUpdateTime(new Date());
         tabPbMsgNoticeUpdate.setUpdateUserid(UserContextHolder.getUserId());
         tabPbMsgNoticeUpdate.setUpdateUsername(UserContextHolder.getUserName());
@@ -131,8 +131,8 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
              * 查询附件list
              */
             notice.setAttachments(iTabPbAttachmentService.listByHostId(notice.getId(), AttachmentType.NOTICE));
-            MsgNoticeVO msgNoticeVO=new MsgNoticeVO();
-            BeanUtil.copyPropertiesIgnoreNull(notice,msgNoticeVO);
+            MsgNoticeVO msgNoticeVO = new MsgNoticeVO();
+            BeanUtil.copyPropertiesIgnoreNull(notice, msgNoticeVO);
             return msgNoticeVO;
         }else{
             TabPbMsgNotice notice = noticeMapper.selectByPrimaryKey(id);
@@ -141,8 +141,8 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
              * 查询附件list
              */
             notice.setAttachments(iTabPbAttachmentService.listByHostId(notice.getId(), AttachmentType.NOTICE));
-            MsgNoticeVO msgNoticeVO=new MsgNoticeVO();
-            BeanUtil.copyPropertiesIgnoreNull(notice,msgNoticeVO);
+            MsgNoticeVO msgNoticeVO = new MsgNoticeVO();
+            BeanUtil.copyPropertiesIgnoreNull(notice, msgNoticeVO);
             return msgNoticeVO;
         }
     }
@@ -170,8 +170,8 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
          * （是|取消）发布
          */
         record.setPublishTime(new Date());
-        TabPbMsgNotice msgNoticeVO=new TabPbMsgNotice();
-        BeanUtil.copyPropertiesIgnoreNull(record,msgNoticeVO);
+        TabPbMsgNotice msgNoticeVO = new TabPbMsgNotice();
+        BeanUtil.copyPropertiesIgnoreNull(record, msgNoticeVO);
         return noticeMapper.editState(msgNoticeVO);
     }
 
@@ -180,8 +180,8 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
         noticeDept.setRecevieUsername(UserContextHolder.getUserName());
         noticeDept.setRecevieUserId(UserContextHolder.getUserId().longValue());
         noticeDept.setRecevieTime(new Date());
-        TabPbMsgNoticeDept tabPbMsgNoticeDept=new TabPbMsgNoticeDept();
-        BeanUtil.copyPropertiesIgnoreNull(noticeDept,tabPbMsgNoticeDept);
+        TabPbMsgNoticeDept tabPbMsgNoticeDept = new TabPbMsgNoticeDept();
+        BeanUtil.copyPropertiesIgnoreNull(noticeDept, tabPbMsgNoticeDept);
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbMsgNoticeDept);
         return deptMapper.updateSigning(tabPbMsgNoticeDept);
     }
@@ -193,7 +193,6 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
         }
         return deptMapper.selectVoDeptList(noticeDept);
     }
-
 
 
     /**
