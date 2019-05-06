@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetAndCopyProperties;
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
 /**
@@ -48,7 +49,7 @@ public class OrgClassifyServiceImpl implements OrgClassifyService {
         TabPbOrgClassify orgClassify = new TabPbOrgClassify();
         orgClassify.setDelFlag(CommonConstant.STATUS_DEL);
         orgClassify.setOrgClassifyId(orgClassifyId);
-        TabPbOrgClassify tabPbOrgClassify = generateTargetCopyPropertiesAndPaddingBaseField(orgClassify, TabPbOrgClassify.class, false);
+        TabPbOrgClassify tabPbOrgClassify = generateTargetCopyPropertiesAndPaddingBaseField(orgClassify, TabPbOrgClassify.class, true);
         return orgClassifyMapper.updateByPrimaryKeySelective(tabPbOrgClassify);
     }
 
@@ -68,7 +69,7 @@ public class OrgClassifyServiceImpl implements OrgClassifyService {
 
     @Override
     public OrgClassifyVO findOrgClassifyVOByOrgClassifyId(Long orgClassifyId) {
-        return generateTargetCopyPropertiesAndPaddingBaseField(orgClassifyMapper.selectByPrimaryKey(orgClassifyId), OrgClassifyVO.class, false);
+        return generateTargetAndCopyProperties(orgClassifyMapper.selectByPrimaryKey(orgClassifyId), OrgClassifyVO.class);
     }
 
     /**
