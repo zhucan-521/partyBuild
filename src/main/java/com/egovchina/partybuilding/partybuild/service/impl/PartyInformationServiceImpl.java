@@ -98,8 +98,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             //党龄减去出国时间
             if (memberReducesVO != null && memberReducesVO.size() > 0) {
                 for (int j = 0; j < memberReducesVO.size(); j++) {
-                    if (memberReducesVO.get(j) != null && memberReducesVO.get(j).getUser_id() != null) {
-                        if (memberReducesVO.get(j).getUser_id().equals(historyPartyVO.get(i).getUserId())) {
+                    if (memberReducesVO.get(j) != null && memberReducesVO.get(j).getUserId() != null) {
+                        if (memberReducesVO.get(j).getUserId().equals(historyPartyVO.get(i).getUserId())) {
                             if (age <= 0) {
                                 age = 0;
                                 break;
@@ -129,7 +129,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @Transactional(rollbackFor = Exception.class)
     public int savePartyInfo(PartyInfoDTO partyInfoDTO) {
         if (!tabSysUserMapper.checkIsExistByIdCard(partyInfoDTO.getParty().getIdCardNo())) {
-            partyInfoDTO.getParty().setIdentityType(59423L);
+            //补录成正式党员
+            partyInfoDTO.getParty().setIdentityType(223L);
             SysUser sys = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyInfoDTO.getParty(), SysUser.class, false);
             //新增用户信息
             tabSysUserMapper.insertSelective(sys);
@@ -357,8 +358,11 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         if ("14307".equals(deptId) && "2".equals(orgRange)) {
             queryBean.setOrgRange("0");
         }
+        long start = System.currentTimeMillis();
         PageHelper.startPage(page);
         List<PartyMemberInformationVO> partyMemberInformationVO = tabSysUserMapper.selectPageByMap(queryBean);
+        long end = System.currentTimeMillis();
+        long a = end - start;
         return new PageInfo<>(calculationComplete(partyMemberInformationVO));
     }
 

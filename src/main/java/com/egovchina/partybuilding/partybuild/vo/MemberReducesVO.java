@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class MemberReducesVO {
-    private Long user_id;
+    private Long userId;
     private Integer age;
 }

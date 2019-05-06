@@ -17,7 +17,7 @@ public class SysUserQueryBean {
 
     @ApiModelProperty(value = "组织id")
     @NotNull(message = "组织id不能为空")
-    private Integer deptId;
+    private Long deptId;
 
     @ApiModelProperty(value = "人员类别")
     private Long identityType;
