@@ -57,7 +57,7 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
         SysUser sysUser = tabSysUserMapper.selectUserByIdCardNo(specialWorkerDto.getIdCardNo());
         Long userId;
         if (sysUser != null) {
-            userId = sysUser.getUserId().longValue();
+            userId = sysUser.getUserId();
         } else {
             throw new BusinessDataCheckFailException("该身份证号码不存在");
         }
