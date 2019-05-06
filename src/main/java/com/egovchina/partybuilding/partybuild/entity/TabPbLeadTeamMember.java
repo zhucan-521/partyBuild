@@ -92,14 +92,9 @@ public class TabPbLeadTeamMember {
     private Long leadMemberOrder;
 
     /**
-     * 图片
+     * 头像
      */
-    private String pictures;
-
-    /**
-     * 附件集合
-     */
-    private List<TabPbAttachment> attachments;
+    private String avatar;
 
     /**
      * 数据描述

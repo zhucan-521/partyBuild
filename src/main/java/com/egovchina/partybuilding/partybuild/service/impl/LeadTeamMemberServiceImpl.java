@@ -2,6 +2,7 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysUser;
+import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
@@ -24,6 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,12 +101,9 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
             tabPbLeadTeamMapper.correctTheNumberOfTeamsAccordingToTheTeamId(leadTeamMemberDTO.getLeadTeamId());
             //修改职务信息
             modifyPosition(leadTeamMemberDTO);
-            judgment += iTabPbAttachmentService.intelligentOperation(leadTeamMemberDTO.getAttachments(),
-                    leadTeamMemberDTO.getMemberId(), AttachmentType.PORTRAIT);
         }
         return judgment;
     }
-
 
     @Transactional
     @Override
@@ -117,8 +117,6 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
         int judgment = tabPbLeadTeamMemberMapper.updateByPrimaryKeySelective(tabPbLeadTeamMember);
         if (judgment > 0) {
             modifyPosition(leadTeamMemberDTO);
-            judgment += iTabPbAttachmentService.intelligentOperation(leadTeamMemberDTO.getAttachments(),
-                    leadTeamMemberDTO.getMemberId(), AttachmentType.PORTRAIT);
         }
         return judgment;
     }
