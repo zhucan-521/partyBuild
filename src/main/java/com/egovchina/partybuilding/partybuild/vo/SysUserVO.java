@@ -2,9 +2,6 @@ package com.egovchina.partybuilding.partybuild.vo;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.egovchina.partybuilding.common.config.DictSerializer;
-import com.egovchina.partybuilding.partybuild.dto.PositivesDTO;
-import com.egovchina.partybuilding.partybuild.entity.TabPbPositives;
-import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
@@ -24,7 +21,7 @@ public class SysUserVO {
     private Long deptId;
 
     @ApiModelProperty(value = "用户ID")
-    private long userId;
+    private Long userId;
 
     @ApiModelProperty(value = "年龄")
     private Integer age;
@@ -60,6 +57,7 @@ public class SysUserVO {
     @ApiModelProperty(value = "家庭住址")
     private String familyAddress;
 
+    @TableField(exist = false)
     @ApiModelProperty(value = "入党所在支部名称")
     private String joinOrgName;
 
@@ -101,7 +99,7 @@ public class SysUserVO {
 
     @TableField(exist = false)
     @ApiModelProperty(value = "用户标签列表")
-    private List<TabPbUserTag> tabPbUserTags;
+    private List<UserTagVO> tabPbUserTags;
 
     @ApiModelProperty(value = "婚姻状况 码表值 FYZK")
     @JsonSerialize(using = DictSerializer.class)
@@ -119,7 +117,4 @@ public class SysUserVO {
     @ApiModelProperty(value = "工作时间")
     private Date workDate;
 
-    @TableField(exist = false)
-    @ApiModelProperty(value = "人员职务集合")
-    private List<PositivesVO> positives;
 }
