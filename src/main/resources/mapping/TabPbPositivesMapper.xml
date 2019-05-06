@@ -448,6 +448,31 @@
         where user_id = #{userId}
     </update>
 
+
+    <!--根据用户Id查找用户相应的职位-->
+    <select id="selectMaxTabPbPositivesByUserId" parameterType="Long" resultMap="BaseMoreResultMap">
+          select
+          positive_id,
+          user_id,
+          positive_org_id,
+          positive_org,
+          positive_name,
+          positive_level,
+          positive_start,
+          (select order_num from sys_dept where dept_id= positive_org_id) org_order,
+          (select sort from sys_dict where id= positive_name)  positive_name_order,
+          (select sort from sys_dict where id= positive_level) positive_level_order
+          from
+          tab_pb_positives
+         where
+         user_id=#{userId}
+         and
+         del_flag=0
+         ORDER BY
+         org_order asc ,positive_name_order desc ,positive_level_order desc
+         limit 1
+    </select>
+
     <!--根据用户Id查找用户相应的职位-->
     <select id="selectTabPbPositivesByUserId" parameterType="Long" resultMap="BaseMoreResultMap">
           select

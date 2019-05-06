@@ -74,14 +74,14 @@ public class FlowInServiceImpl implements FlowInService {
             flag=tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
             if(flag>0){
                 TabPbFlowOut tabPbFlowOut=new TabPbFlowOut();
-                tabPbFlowIn.setDelFlag(CommonConstant.STATUS_DEL);
+                tabPbFlowOut.setDelFlag(CommonConstant.STATUS_DEL);
+                tabPbFlowOut.setFlowOutId(tabPbFlowIn.getFlowOutId());
                 tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOut);
                 PaddingBaseFieldUtil.paddingBaseFiled(tabPbFlowOut);
             }
-        }else{
-            throw new BusinessDataCheckFailException("只有带报道的流动党员才可以删除！");
-        }
-        return flag;
+            return flag;
+          }
+           throw new BusinessDataCheckFailException("只有带报道的流动党员才可以删除");
     }
 
     /**
@@ -95,7 +95,7 @@ public class FlowInServiceImpl implements FlowInService {
         //流入表
         TabPbFlowIn tabPbFlowIn=tabPbFlowInMapper.selectByPrimaryKey(flowInMemberDto.getFlowInId());
         if(tabPbFlowIn.getFlowInState().equals(CommonConstant.FLOWED_IN)){
-            throw new BusinessDataCheckFailException("该党员已经录入！");
+            throw new BusinessDataCheckFailException("该党员已经录入");
         }
         BeanUtils.copyProperties(flowInMemberDto,tabPbFlowIn);
         //设置状态已流入

@@ -3,6 +3,8 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.util.*;
+import com.egovchina.partybuilding.partybuild.dto.FamilyMemberDTO;
+import com.egovchina.partybuilding.partybuild.dto.PositivesDTO;
 import com.egovchina.partybuilding.partybuild.dto.SecretaryMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.SecretaryMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbDeptSecretary;
@@ -13,6 +15,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbFamilyMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.SecretaryService;
+import com.egovchina.partybuilding.partybuild.vo.FamilyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryInfoVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
 import com.github.pagehelper.PageHelper;
@@ -73,13 +76,13 @@ public class SecretaryServiceImpl implements SecretaryService {
         TabPbDeptSecretary tabPbDeptSecretaryinsert = generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO, TabPbDeptSecretary.class, false);
         int flag = tabPbDeptSecretaryMapper.insertSelective(tabPbDeptSecretaryinsert);
         if (flag > 0) {
-            List<TabPbFamily> familyList = secretaryMemberDTO.getFamilyList();
+            List<FamilyMemberDTO> familyList = secretaryMemberDTO.getFamilyList();
             final Long finalUserId = userId;
             if (CollectionUtil.isNotEmpty(familyList)) {
                 List<TabPbFamily> familys = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(familyList, TabPbFamily.class, family -> family.setUserId(finalUserId), false);
                 tabPbFamilyMapper.batchInsertFamilyList(familys);
             }
-            List<TabPbPositives> positivesList = secretaryMemberDTO.getPositivesList();
+            List<PositivesDTO> positivesList = secretaryMemberDTO.getPositivesList();
             if (CollectionUtil.isNotEmpty(positivesList)) {
                 List<TabPbPositives> positives = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(positivesList, TabPbPositives.class, positive -> positive.setUserId(finalUserId), false);
                 tabPbPositivesMapper.batchInsertPositivesList(positives);
@@ -99,23 +102,31 @@ public class SecretaryServiceImpl implements SecretaryService {
         BeanUtil.copyPropertiesIgnoreNull(secretaryMemberDTO, tabPbDeptSecretaryinsert);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbDeptSecretaryinsert);
         int flag = tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretaryinsert);
-        List<TabPbFamily> familyList = secretaryMemberDTO.getFamilyList();
-        List<TabPbPositives> positivesList = secretaryMemberDTO.getPositivesList();
-        if (CollectionUtil.isNotEmpty(familyList)) {
-            for (TabPbFamily tabPbFamily : familyList) {
-                if (tabPbFamily.getRelationId() != null) {
+        List<FamilyMemberDTO> familyMemberDTOS = secretaryMemberDTO.getFamilyList();
+        List<PositivesDTO> positivesDTOS = secretaryMemberDTO.getPositivesList();
+        if (CollectionUtil.isNotEmpty(familyMemberDTOS)) {
+            for (FamilyMemberDTO familyDTO : familyMemberDTOS) {
+                if (familyDTO.getRelationId() != null) {
+                    TabPbFamily tabPbFamily=new TabPbFamily();
+                    BeanUtil.copyPropertiesIgnoreNull(familyDTO,tabPbFamily);
                     tabPbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
                 } else {
+                    TabPbFamily tabPbFamily=new TabPbFamily();
+                    BeanUtil.copyPropertiesIgnoreNull(familyDTO,tabPbFamily);
                     tabPbFamily.setUserId(secretaryMemberDTO.getUserId());
                     tabPbFamilyMapper.insertSelective(tabPbFamily);
                 }
             }
         }
         if (CollectionUtil.isNotEmpty(secretaryMemberDTO.getPositivesList())) {
-            for (TabPbPositives tabPbPositives : positivesList) {
-                if (tabPbPositives.getPositiveId() != null) {
+            for (PositivesDTO positivesDTO : positivesDTOS) {
+                if (positivesDTO.getPositiveId() != null) {
+                    TabPbPositives tabPbPositives=new TabPbPositives();
+                    BeanUtil.copyPropertiesIgnoreNull(positivesDTO,tabPbPositives);
                     tabPbPositivesMapper.updateByPrimaryKeySelective(tabPbPositives);
                 } else {
+                    TabPbPositives tabPbPositives=new TabPbPositives();
+                    BeanUtil.copyPropertiesIgnoreNull(positivesDTO,tabPbPositives);
                     tabPbPositivesMapper.insertSelective(tabPbPositives);
                 }
             }

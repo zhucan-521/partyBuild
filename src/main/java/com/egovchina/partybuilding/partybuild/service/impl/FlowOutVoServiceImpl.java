@@ -97,6 +97,7 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
         if(flowOutMemberDto.getOrgId()!=null){
             sysUser.setFlowFromOrgId(flowOutMemberDto.getOrgId()) ;
         }
+        sysUser.setUserId(userId);
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         TabPbFlowOut tabPbFlowOutInsert=new TabPbFlowOut();
         BeanUtil.copyPropertiesIgnoreNull(flowOutMemberDto,tabPbFlowOutInsert);
@@ -195,6 +196,8 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
             flag = tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
             if (flag > 0) {
                 TabPbFlowIn tabPbFlowIn = new TabPbFlowIn();
+                Long flowInId=tabPbFlowInMapper.getFlowOutIdByFlowInId(id);
+                tabPbFlowIn.setFlowInId(flowInId);
                 tabPbFlowIn.setDelFlag(CommonConstant.STATUS_DEL);
                 tabPbFlowInMapper.updateByPrimaryKeySelective(tabPbFlowIn);
             }

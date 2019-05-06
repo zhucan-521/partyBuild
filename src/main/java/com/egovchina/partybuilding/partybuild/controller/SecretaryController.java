@@ -38,7 +38,7 @@ public class SecretaryController {
         return secretaryService.selectSecretaryBySecretaryId(secretaryId);
     }
 
-    @ApiOperation(value = "添加书记需要userId（手动添加书记不需要userId）", httpMethod = "POST")
+    @ApiOperation(value = "添加书记需要userId（手动添加书记不需要userId）",notes = "deptId",httpMethod = "POST")
     @PostMapping
     public ReturnEntity insertSecretaries(@ApiParam(value = "保存书记") @RequestBody SecretaryMemberDTO secretaryMemberDTO) {
         return secretaryService.insertSecretary(secretaryMemberDTO);

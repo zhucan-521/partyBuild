@@ -30,6 +30,7 @@ public class FamilyServiceImpl implements FamilyService {
 
     /**
      * 根据用户id获取他的家庭成员
+     *
      * @param partyMemberId
      * @return
      */
@@ -40,24 +41,26 @@ public class FamilyServiceImpl implements FamilyService {
 
     /**
      * 根据主键ID查询单条记录
+     *
      * @param relationId
      * @return
      */
     @Override
     public FamilyMemberVO selectFamilyMemberById(Long relationId) {
         TabPbFamily tabPbFamily = tabPbFamilyMapper.findById(relationId);
-        FamilyMemberVO familyMemberVO =new FamilyMemberVO();
+        FamilyMemberVO familyMemberVO = new FamilyMemberVO();
         BeanUtil.copyPropertiesIgnoreNull(tabPbFamily, familyMemberVO);
         return familyMemberVO;
     }
 
     /**
      * 根据主键ID删除单条记录
+     *
      * @param relationId
      */
     @Override
     public int deleteFamilyMemberByPrimaryKey(Long relationId) {
-        if(null== tabPbFamilyMapper.findById(relationId)){
+        if (tabPbFamilyMapper.findById(relationId) == null) {
             throw new BusinessDataCheckFailException("不存在这个人");
         }
         TabPbFamily tabPbFamily = new TabPbFamily();
@@ -69,25 +72,27 @@ public class FamilyServiceImpl implements FamilyService {
 
     /**
      * 保存家庭成员
+     *
      * @param
      */
     @Override
     public int addFamilyDTO(FamilyMemberDTO familyMemberDTO) {
-        if(familyMemberDTO.getUserId()==null){
+        if (familyMemberDTO.getUserId() == null) {
             throw new BusinessDataCheckFailException("userId不能为空");
         }
-        TabPbFamily tabPbFamily=generateTargetCopyPropertiesAndPaddingBaseField(familyMemberDTO,TabPbFamily.class,false);
+        TabPbFamily tabPbFamily = generateTargetCopyPropertiesAndPaddingBaseField(familyMemberDTO, TabPbFamily.class, false);
         return tabPbFamilyMapper.insertSelective(tabPbFamily);
     }
 
     /**
      * 修改家庭成员
+     *
      * @param familyMemberDTO
      * @return
      */
     @Override
     public int updateByPrimaryKeySelective(FamilyMemberDTO familyMemberDTO) {
-        TabPbFamily tabPbFamily=generateTargetCopyPropertiesAndPaddingBaseField(familyMemberDTO,TabPbFamily.class,false);
-        return  tabPbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
+        TabPbFamily tabPbFamily = generateTargetCopyPropertiesAndPaddingBaseField(familyMemberDTO, TabPbFamily.class, false);
+        return tabPbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
     }
 }

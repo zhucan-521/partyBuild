@@ -67,4 +67,5 @@ public class SecretaryInfoVO {
 
     @ApiModelProperty(value = "家庭成员")
     private List<FamilyMemberVO> familyList;
+
 }

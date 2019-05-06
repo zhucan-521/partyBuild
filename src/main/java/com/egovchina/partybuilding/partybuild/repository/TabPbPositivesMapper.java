@@ -74,9 +74,18 @@ public interface TabPbPositivesMapper {
     List<PositivesVO> selectTabPbPositivesByUserId(Long userId);
 
     /**
+     * 根据人员id获取他最高的职位
+     * @param userId
+     * @return
+     */
+    List<PositivesVO> selectMaxTabPbPositivesByUserId(Long userId);
+
+    /**
      * 根据条件逻辑删除职务
      *
      * @param delete 删除实体
      */
     int logicDeletePositiveByCondition(TabPbPositives delete);
+
+
 }
