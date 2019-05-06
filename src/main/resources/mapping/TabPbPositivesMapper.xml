@@ -36,13 +36,15 @@
         <result column="positive_type" jdbcType="INTEGER" property="positiveType"/>
         <result column="left_type" jdbcType="INTEGER" property="leftType"/>
         <result column="positive_org_id" jdbcType="INTEGER" property="positiveOrgId"/>
-        <result column="positive_org" jdbcType="VARCHAR" property="positiveOrg"/>
         <result column="positive_name" jdbcType="INTEGER" property="positiveName"/>
         <result column="positive_level" jdbcType="INTEGER" property="positiveLevel"/>
         <result column="positive_start" jdbcType="TIMESTAMP" property="positiveStart"/>
         <result column="positive_finished" jdbcType="TIMESTAMP" property="positiveFinished"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="left_reason" jdbcType="BIGINT" property="leftReason"/>
+        <collection property="positiveOrg"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper.selectDeptNameByPrimaryKey"
+                    column="positive_org_id"/>
     </resultMap>
     <sql id="Base_Column_List">
         positive_id, user_id, positive_type, positive_org_id, positive_org, positive_name,
