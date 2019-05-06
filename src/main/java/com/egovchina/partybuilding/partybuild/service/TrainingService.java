@@ -7,13 +7,13 @@ import com.egovchina.partybuilding.partybuild.vo.TrainingVO;
 import java.util.List;
 
 public interface TrainingService {
+
     /**
      * 添加党员培训情况
      * @param tabPbTrainingDTO
      * @return
      */
     int addTraningDTO(TrainingDTO tabPbTrainingDTO);
-
 
     /**
      * 逻辑删除党员培训情况

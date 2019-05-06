@@ -2,9 +2,11 @@ package com.egovchina.partybuilding.partybuild.entity;
 
 import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 
+@Accessors(chain = true)
 @Data
 @TableName("tab_pb_positives")
 public class TabPbPositives {

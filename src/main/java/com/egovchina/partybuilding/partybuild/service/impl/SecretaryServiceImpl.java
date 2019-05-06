@@ -4,7 +4,10 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.util.*;
 import com.egovchina.partybuilding.partybuild.dto.SecretaryMemberDTO;
-import com.egovchina.partybuilding.partybuild.entity.*;
+import com.egovchina.partybuilding.partybuild.entity.SecretaryMemberQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.TabPbDeptSecretary;
+import com.egovchina.partybuilding.partybuild.entity.TabPbFamily;
+import com.egovchina.partybuilding.partybuild.entity.TabPbPositives;
 import com.egovchina.partybuilding.partybuild.repository.TabPbDeptSecretaryMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFamilyMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper;
@@ -14,15 +17,13 @@ import com.egovchina.partybuilding.partybuild.vo.SecretaryInfoVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.mysql.jdbc.IterateBlock;
-import org.apache.ibatis.scripting.xmltags.ForEachSqlNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.HTMLDocument;
-import java.util.Iterator;
 import java.util.List;
+
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
 /**
  * @author zhucan
@@ -42,7 +43,6 @@ public class SecretaryServiceImpl implements SecretaryService {
 
     @Autowired
     TabSysUserMapper tabSysUserMapper;
-
 
     /**
      * 根据用户id获取书记基本信息
@@ -64,32 +64,25 @@ public class SecretaryServiceImpl implements SecretaryService {
      */
     @Override
     public ReturnEntity insertSecretary(SecretaryMemberDTO secretaryMemberDTO) {
-        Long userId;
-        if (null == secretaryMemberDTO.getUserId()) {
-            SysUser sysUser = new SysUser();
-            BeanUtil.copyPropertiesIgnoreNull(secretaryMemberDTO, sysUser);
-            PaddingBaseFieldUtil.paddingBaseFiled(sysUser);
+        Long userId = secretaryMemberDTO.getUserId();
+        if (userId==null) {
+            SysUser sysUser = generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO,SysUser.class, false);
             tabSysUserMapper.insertSelective(sysUser);
+            userId = sysUser.getUserId();
         }
-        userId = secretaryMemberDTO.getUserId();
-        TabPbDeptSecretary tabPbDeptSecretaryinsert = new TabPbDeptSecretary();
-        BeanUtil.copyPropertiesIgnoreNull(secretaryMemberDTO, tabPbDeptSecretaryinsert);
-        PaddingBaseFieldUtil.paddingBaseFiled(tabPbDeptSecretaryinsert);
+        TabPbDeptSecretary tabPbDeptSecretaryinsert = generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO, TabPbDeptSecretary.class, false);
         int flag = tabPbDeptSecretaryMapper.insertSelective(tabPbDeptSecretaryinsert);
         if (flag > 0) {
             List<TabPbFamily> familyList = secretaryMemberDTO.getFamilyList();
-            List<TabPbPositives> positivesList = secretaryMemberDTO.getPositivesList();
+            final Long finalUserId = userId;
             if (CollectionUtil.isNotEmpty(familyList)) {
-                for (TabPbFamily tabPbFamily : familyList) {
-                    tabPbFamily.setUserId(userId);
-                }
-                tabPbFamilyMapper.batchInsertFamilyList(familyList);
+                List<TabPbFamily> familys = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(familyList, TabPbFamily.class, family -> family.setUserId(finalUserId), false);
+                tabPbFamilyMapper.batchInsertFamilyList(familys);
             }
-            if (CollectionUtil.isNotEmpty(secretaryMemberDTO.getPositivesList())) {
-                for (TabPbPositives tabPbPositives : positivesList) {
-                    tabPbPositives.setUserId(userId);
-                }
-                tabPbPositivesMapper.batchInsertPositivesList(positivesList);
+            List<TabPbPositives> positivesList = secretaryMemberDTO.getPositivesList();
+            if (CollectionUtil.isNotEmpty(positivesList)) {
+                List<TabPbPositives> positives = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(positivesList, TabPbPositives.class, positive -> positive.setUserId(finalUserId), false);
+                tabPbPositivesMapper.batchInsertPositivesList(positives);
             }
         }
         return ReturnUtil.buildReturn(flag);
@@ -132,7 +125,6 @@ public class SecretaryServiceImpl implements SecretaryService {
 
     /**
      * 根据书记id获取书记详情
-     *
      * @param secretaryId
      * @return
      */
@@ -141,10 +133,8 @@ public class SecretaryServiceImpl implements SecretaryService {
         return tabPbDeptSecretaryMapper.selectSecretaryVOBySecretaryId(secretaryId);
     }
 
-
     /**
      * 列表查询书记
-     *
      * @param secretaryMemberQueryBean
      * @return
      */
@@ -156,10 +146,8 @@ public class SecretaryServiceImpl implements SecretaryService {
         return pageInfo;
     }
 
-
     /**
      * 删除书记
-     *
      * @param secretaryId
      * @return
      */
@@ -167,11 +155,10 @@ public class SecretaryServiceImpl implements SecretaryService {
     public ReturnEntity deleteSecretary(Long secretaryId) {
         TabPbDeptSecretary tabPbDeptSecretary = new TabPbDeptSecretary();
         tabPbDeptSecretary.setSecretaryId(secretaryId);
-        tabPbDeptSecretary.setDelFlag("1");
+        tabPbDeptSecretary.setDelFlag(CommonConstant.STATUS_DEL);
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbDeptSecretary);
         int flag = tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretary);
         return ReturnUtil.buildReturn(flag);
     }
-
 
 }

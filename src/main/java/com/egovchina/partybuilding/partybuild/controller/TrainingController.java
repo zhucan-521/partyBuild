@@ -57,4 +57,5 @@ public class TrainingController {
         public ReturnEntity updateTrainingDTO(@RequestBody @Validated  @ApiParam(name = "培训党员")  TrainingDTO trainingDTO) {
             return ReturnUtil.buildReturn(tabPbTrainingService.updateTrainingDTO(trainingDTO));
         }
+
 }

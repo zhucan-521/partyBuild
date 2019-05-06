@@ -6,10 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @ApiModel(value = "党员信息流出表")
-@TableName(value = "tab_pb_flow_out")
 @Data
 public class FlowOutMemberQueryBean {
-
 
     @ApiModelProperty(value = "身份证号码")
     private String idCardNo;

@@ -456,7 +456,7 @@
     </update>
 
     <!--根据用户Id查找用户相应的职位-->
-    <select id="selectTabPbPositivesByUserId" parameterType="Long" resultMap="BaseResultMap">
+    <select id="selectTabPbPositivesByUserId" parameterType="Long" resultMap="BaseMoreResultMap">
           select
           positive_id,
           user_id,
@@ -469,8 +469,6 @@
           positive_finished,
           order_num,
           description,
-          (select sort from sys_dict where id=positive_level) level_sort,
-          (select sort from sys_dict where id=positive_name) positive_sort,
           left_type
          from
          tab_pb_positives
@@ -478,10 +476,6 @@
          user_id=#{userId}
          and
          del_flag=0
-         ORDER BY
-         positive_sort
-         asc ,
-         level_sort asc
     </select>
 
     <!--批量新增职务-->

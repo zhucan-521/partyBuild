@@ -64,7 +64,6 @@ public class MsgNoticeController {
         return ReturnUtil.buildReturn(noticeService.editMsgNoticeById(msgNoticeDTO));
     }
 
-
     @ApiOperation(value = "改变文件状态", httpMethod = "PUT")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键id", paramType = "path" ,required = true),
@@ -93,8 +92,5 @@ public class MsgNoticeController {
     public ReturnEntity deleteMsgNotice(@PathVariable Long id ){
         return ReturnUtil.buildReturn(noticeService.deleteMsgNotice(id));
     }
-
-
-
 
 }

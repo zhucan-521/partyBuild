@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface  TabPbFlowOutMapper {
+
     int deleteByPrimaryKey(Long flowOutId);
 
     int insert(TabPbFlowOut record);
@@ -21,9 +22,6 @@ public interface  TabPbFlowOutMapper {
     int updateByPrimaryKeySelective(TabPbFlowOut record);
 
     int updateByPrimaryKey(TabPbFlowOut record);
-
-
-
 
     /**
      * 条件查询流出党员列表
@@ -46,7 +44,6 @@ public interface  TabPbFlowOutMapper {
      */
     TabPbFlowOut selectFlowOutByUserId(Long userId);
 
-
     /**
      * 获取档案所在单位名称
      * @param filesManageUnitId
@@ -66,7 +63,7 @@ public interface  TabPbFlowOutMapper {
      * @param id
      * @return
      */
-    String CommunityNameById(Long id);
+    String communityNameById(Long id);
 
     /**
      * 单个查询根据id
@@ -75,15 +72,12 @@ public interface  TabPbFlowOutMapper {
      */
      FlowOutMemberVO findFlowOutVoById(Long id);
 
-
-
-
     /**
      * 查询待报道流动党员是否流动
      * 返回状态 返回实体 其余状态 null
      * @param userId
      * @return
      */
-    TabPbFlowOut checkTabPbFlowOutExixtByUserId(Long userId);
+    Boolean checkTabPbFlowOutExistsByUserId(Long userId);
 
 }

@@ -21,7 +21,6 @@ public class FlowInControlle {
     @Autowired
     private FlowInService flowInService;
 
-
     @ApiOperation(value = "根据流入id获取流入党员DTO信息", notes = "根据流入id获取流入党员DTO信息", httpMethod = "GET")
     @ApiImplicitParam(value ="流入ID",name="flowInId",paramType = "path",required = true)
     @GetMapping("/{flowInId}")

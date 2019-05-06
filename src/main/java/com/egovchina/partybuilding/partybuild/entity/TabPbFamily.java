@@ -1,9 +1,12 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
+
 import java.util.Date;
 
 
+@Accessors(chain = true)
 @Data
 public class TabPbFamily {
 

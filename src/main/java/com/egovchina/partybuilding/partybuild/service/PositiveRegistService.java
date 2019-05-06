@@ -37,5 +37,4 @@ public interface PositiveRegistService  {
 
     PositiveRegistMemberVO getReportMembersInfo(Long positiveRegistId);
 
-
 }

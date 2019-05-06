@@ -67,7 +67,7 @@
         <result column="flow_to_org_contactor" jdbcType="VARCHAR" property="flowToOrgContactor"/>
         <result column="flow_to_org_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
         <result column="policy_face" jdbcType="BIGINT" property="policyFace"/>
-        <result column="join_time2" jdbcType="TIMESTAMP" property="joinTime2"/>
+        <result column="join_org_time" jdbcType="TIMESTAMP" property="joinOrgTime"/>
         <result column="positived" jdbcType="VARCHAR" property="positived"/>
         <result column="join_contact_id" jdbcType="BIGINT" property="joinContactId"/>
         <result column="contactor" jdbcType="VARCHAR" property="contactor"/>
@@ -153,13 +153,6 @@
             <result column="positive_name_dict" property="positiveNameDict"/>
         </collection>
     </resultMap>
-    <!-- 带标记的结果集 -->
-    <resultMap extends="BaseResultMap" id="BaseResultMapExtendsTags"
-               type="com.egovchina.partybuilding.common.entity.SysUser">
-        <collection property="tabPbUserTags" select="com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper.selectAllListSelective"
-                    column="{userId=user_id}"/>
-        <collection property="positiveList" select="com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper.selectPositives" column="{userId=user_id}"/>
-    </resultMap>
 
     <!--用于分页查询党员信息-->
     <resultMap id="UserInFo" type="com.egovchina.partybuilding.partybuild.vo.PartyMemberInformationVO">
@@ -209,10 +202,9 @@
             <result column="community_addr" jdbcType="BIGINT" property="communityAddr"/>
             <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
             <result column="phone" jdbcType="VARCHAR" property="phone"/>
+            <result column="age" jdbcType="VARCHAR" property="age"/>
             <result column="fix_phone" jdbcType="VARCHAR" property="fixPhone"/>
             <result column="family_address" jdbcType="VARCHAR" property="familyAddress"/>
-            <result column="join_org_name" jdbcType="VARCHAR" property="joinOrgName"/>
-            <result column="join_org_id" jdbcType="BIGINT" property="joinOrgId"/>
             <result column="positived" jdbcType="VARCHAR" property="positived"/>
             <result column="identity_type" jdbcType="BIGINT" property="identityType"/>
             <result column="files_manage_unit" jdbcType="VARCHAR" property="filesManageUnit"/>
@@ -223,10 +215,17 @@
             <result column="is_llost" jdbcType="TINYINT" property="isLlost"/>
             <result column="flow_status" jdbcType="BIGINT" property="flowStatus"/>
             <result column="marital_status" jdbcType="BIGINT" property="maritalStatus"/>
+            <result column="join_org_time" jdbcType="TIMESTAMP" property="joinOrgTime"/>
             <result column="health" jdbcType="BIGINT" property="health"/>
             <result column="ancestor_place" jdbcType="BIGINT" property="ancestorPlace"/>
             <result column="work_date" jdbcType="TIMESTAMP" property="workDate"/>
             <collection property="tabPbUserTags" select="com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper.selectAllListSelective"
+                        column="{userId=user_id}"/>
+            <collection property="joinOrgName"
+                        select="com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper.selectDeptNameByPrimaryKey"
+                        column="dept_id"/>
+            <collection property="positives"
+                        select="com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper.selectPositives"
                         column="{userId=user_id}"/>
         </association>
         <collection property="educations" select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyEducationMapper.findAllByUserId" column="user_id"/>
@@ -245,27 +244,9 @@
         <result column="nation" jdbcType="BIGINT" property="nation"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="in_where_dept_name" jdbcType="VARCHAR" property="inWhereDeptName"/>
+        <result column="age" jdbcType="BIGINT" property="partyStanding"/>
     </resultMap>
 
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.common.entity.SysUser">
-        <result column="post_reason" jdbcType="LONGVARCHAR" property="postReason"/>
-        <result column="work_resumes" jdbcType="LONGVARCHAR" property="workResumes"/>
-        <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
-        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
-        <result column="rewards" jdbcType="LONGVARCHAR" property="rewards"/>
-        <result column="present_perform" jdbcType="LONGVARCHAR" property="presentPerform"/>
-        <result column="flow_out_date" jdbcType="TIMESTAMP" property="flowOutDate"/>
-        <result column="flow_out_type" jdbcType="BIGINT" property="flowOutType"/>
-        <result column="flow_out_range" jdbcType="BIGINT" property="flowOutRange"/>
-        <result column="flow_out_reason" jdbcType="BIGINT" property="flowOutReason"/>
-        <result column="flow_out_place" jdbcType="BIGINT" property="flowOutPlace"/>
-        <result column="flow_to_unit_name" jdbcType="VARCHAR" property="flowToUnitName"/>
-        <result column="flow_to_orgnize_name" jdbcType="VARCHAR" property="flowToOrgnizeName"/>
-        <result column="flow_to_orgnize_code" jdbcType="VARCHAR" property="flowToOrgnizeCode"/>
-        <result column="flow_to_orgnize_id" jdbcType="BIGINT" property="flowToOrgnizeId"/>
-        <result column="old_place" jdbcType="VARCHAR" property="oldPlace"/>
-        <result column="registry_status" jdbcType="BIGINT" property="registryStatus"/>
-    </resultMap>
 
     <resultMap id="DirectPartyMemberVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.DirectPartyMemberVO">
         <result column="user_id" property="userId"/>
@@ -274,9 +255,8 @@
         <result column="id_card_no" property="idCardNo"/>
         <result column="gender" property="gender"/>
     </resultMap>
-
     <sql id="Base_Column_List">
-        user_id, dept_id,realname as username , realname, identity_type, salt, avatar, id_card_no, used_name,
+        user_id, dept_id, realname, identity_type, salt, avatar, id_card_no, used_name,
     gender, nation, registeredresidence, ancestor_place, born_place, health, familyorigin,
     birthday , marital_status, unit_id, unit_name, work_date, phone, fix_phone, education,
     degree, family_address, community_addr, profession, positive, democratic_party, technician,
@@ -285,27 +265,29 @@
     pm_code, join_time, regular_time, regular_status, develop_type, reference, fee_ratio,
     join_after_august, is_poor, is_llost, flow_status, flow_from_org_id, flow_from_org_name,
     flow_from_org_contactor, flow_from_org_phone, flow_to_org_id, flow_to_org_name, flow_to_org_contactor,
-    flow_to_org_phone, policy_face, join_time2, positived, join_contact_id, contactor,
+    flow_to_org_phone, policy_face,  positived, join_contact_id, contactor,
     app_date, exp_activist_date, activist_date, exp_dev_date, dev_date, dev_stage, ebl_flag,
     del_flag, order_num, description, create_time, create_userid, create_username, update_time,
     update_userid, update_username, version ,files_manage_unit_id,join_org_id,join_org_name,
     join_org_type,join_org_contactor,join_org_phone,is_self_dev,registry_status,files_manage_unit,is_taiwaner,job_position,
-    report_org_id,report_org_name,report_org_contactor,report_org_phone
+    report_org_id,report_org_name,report_org_contactor,report_org_phone,join_org_time
     </sql>
+    <!--查询党员详细信息 ,join_org_time-->
     <sql id="Base_Column_List_new">
       user_id,dept_id,realname,gender,id_card_no,birthday, TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age ,nation,community_addr,avatar,phone,fix_phone,family_address,
       join_org_name,join_org_id,positived,identity_type,files_manage_unit,registry_status,join_time,registry_status,
-      join_time,regular_time,work_resumes,is_llost,flow_status
+      join_time,regular_time,work_resumes,is_llost,flow_status,marital_status,health,ancestor_place,work_date,join_org_time
     </sql>
     <sql id="Blob_Column_List">
     post_reason, work_resumes, comment, content, rewards, present_perform
     </sql>
-    <!---查询党员信息列表-->
+    <!---分页查询党员信息列表-->
     <sql id="Base_users_info">
         user_id,realname,gender,TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age,nation,id_card_no,join_time,regular_time,report_org_name,phone,identity_type,marital_status,
         education,unit_id,flow_status,is_llost,is_taiwaner,dept_id,birthday,migrant,stratum,front_line,work_date,ancestor_place,registry_status,family_address,community_addr,
         job_position
     </sql>
+    <!--查询部门表防止名字重复-->
     <sql id="dept_name_result">
     subordinate_dept_name,in_where_dept_name
     </sql>
@@ -339,7 +321,7 @@
         <if test="orgRange == null and deptId != null">
             AND u.dept_id = #{deptId}
         </if>
-            AND del_flag = '0'
+        AND del_flag = '0'
         <if test="idCardNo != null and idCardNo != ''">
             AND id_card_no = #{idCardNo}
         </if>
@@ -400,13 +382,6 @@
         <if test="username != null">
             AND realname like concat('%', #{username}, '%')
         </if>
-        <!--<if test="deptId != null and deptId != 12733">
-            AND exists(select dept_id from sys_dept dept where u.dept_id = dept.dept_id and
-            FIND_IN_SET(#{deptId},full_path))
-        </if>
-        <if test="deptId == null">
-            AND dept_id is not null
-        </if>-->
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）不传查本级 -->
         <if test="orgRange != null">
             <choose>
@@ -438,7 +413,7 @@
         </if>
     </sql>
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMapExtendsTags">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         ,
@@ -452,68 +427,6 @@
         <include refid="Base_Column_List_new"/>
         from sys_user
         where user_id = #{userId,jdbcType=BIGINT}
-    </select>
-
-
-    <select id="selectPage" parameterType="com.egovchina.partybuilding.common.entity.SysUser"
-            resultMap="BaseResultMapExtendsTags">
-        select
-        <include refid="Base_Column_List"/>
-        ,
-        <include refid="Blob_Column_List"/>
-        ,
-        <include refid="dept_name_result"/>
-        ,
-        <include refid="registry_status_name"/>
-        <choose>
-            <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
-            <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
-                from (select dept_id as org_id from sys_dept dept
-                where dept.del_flag = 0
-                <if test="orgRange == 1">
-                    and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
-                </if>
-                <if test="orgRange == 2">
-                    and find_in_set(#{deptId}, dept.full_path)
-                </if>
-                ) d
-                inner join sys_user u on u.dept_id = d.org_id
-            </when>
-            <otherwise>
-                from sys_user u
-            </otherwise>
-        </choose>
-        LEFT JOIN ( SELECT dept_id AS subordinate_dept_id, NAME AS subordinate_dept_name FROM sys_dept ) d1
-        ON d1.subordinate_dept_id = u.dept_id
-        <where>
-            <include refid="selectPageWhereCaseList"/>
-        </where>
-    </select>
-
-    <select id="selectPage_COUNT" parameterType="Map" resultType="java.lang.Long">
-        SELECT
-        count( u.user_id )
-        <choose>
-            <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
-            <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
-                from (select dept_id as org_id from sys_dept dept
-                where dept.del_flag = 0
-                <if test="orgRange == 1">
-                    and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
-                </if>
-                <if test="orgRange == 2">
-                    and find_in_set(#{deptId}, dept.full_path)
-                </if>
-                ) d
-                inner join sys_user u on u.dept_id = d.org_id
-            </when>
-            <otherwise>
-                from sys_user u
-            </otherwise>
-        </choose>
-        <where>
-            <include refid="selectPageByMapWhereCaseList"/>
-        </where>
     </select>
 
     <select id="selectPageByMap" resultMap="UserInFo">
@@ -552,7 +465,7 @@
 
     <select id="selectPageByMap_COUNT" parameterType="Map" resultType="java.lang.Long">
         SELECT
-            count( u.user_id )
+        count( u.user_id )
         <choose>
             <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
             <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
@@ -603,7 +516,7 @@
       flow_from_org_id, flow_from_org_name, flow_from_org_contactor,
       flow_from_org_phone, flow_to_org_id, flow_to_org_name,
       flow_to_org_contactor, flow_to_org_phone, policy_face,
-      join_time2, positived, join_contact_id,
+      join_org_time, positived, join_contact_id,
       contactor, app_date, exp_activist_date,
       activist_date, exp_dev_date, dev_date,
       dev_stage, ebl_flag, del_flag,
@@ -635,7 +548,7 @@
       #{flowFromOrgId,jdbcType=BIGINT}, #{flowFromOrgName,jdbcType=VARCHAR}, #{flowFromOrgContactor,jdbcType=VARCHAR},
       #{flowFromOrgPhone,jdbcType=VARCHAR}, #{flowToOrgId,jdbcType=BIGINT}, #{flowToOrgName,jdbcType=VARCHAR},
       #{flowToOrgContactor,jdbcType=VARCHAR}, #{flowToOrgPhone,jdbcType=VARCHAR}, #{policyFace,jdbcType=BIGINT},
-      #{joinTime2,jdbcType=TIMESTAMP}, #{positived,jdbcType=VARCHAR}, #{joinContactId,jdbcType=BIGINT},
+      #{joinOrgTime,jdbcType=TIMESTAMP}, #{positived,jdbcType=VARCHAR}, #{joinContactId,jdbcType=BIGINT},
       #{contactor,jdbcType=VARCHAR}, #{appDate,jdbcType=TIMESTAMP}, #{expActivistDate,jdbcType=TIMESTAMP},
       #{activistDate,jdbcType=TIMESTAMP}, #{expDevDate,jdbcType=TIMESTAMP}, #{devDate,jdbcType=TIMESTAMP},
       #{devStage,jdbcType=BIGINT}, #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR},
@@ -849,8 +762,8 @@
             <if test="policyFace != null">
                 policy_face,
             </if>
-            <if test="joinTime2 != null">
-                join_time2,
+            <if test="joinOrgTime != null">
+                join_org_time,
             </if>
             <if test="positived != null">
                 positived,
@@ -1139,8 +1052,8 @@
             <if test="policyFace != null">
                 #{policyFace,jdbcType=BIGINT},
             </if>
-            <if test="joinTime2 != null">
-                #{joinTime2,jdbcType=TIMESTAMP},
+            <if test="joinOrgTime != null">
+                #{joinOrgTime,jdbcType=TIMESTAMP},
             </if>
             <if test="positived != null">
                 #{positived,jdbcType=VARCHAR},
@@ -1441,8 +1354,8 @@
             <if test="policyFace != null">
                 policy_face = #{policyFace,jdbcType=BIGINT},
             </if>
-            <if test="joinTime2 != null">
-                join_time2 = #{joinTime2,jdbcType=TIMESTAMP},
+            <if test="joinOrgTime != null">
+                join_org_time = #{joinOrgTime,jdbcType=TIMESTAMP},
             </if>
             <if test="positived != null">
                 positived = #{positived,jdbcType=VARCHAR},
@@ -1622,7 +1535,7 @@
       flow_to_org_contactor = #{flowToOrgContactor,jdbcType=VARCHAR},
       flow_to_org_phone = #{flowToOrgPhone,jdbcType=VARCHAR},
       policy_face = #{policyFace,jdbcType=BIGINT},
-      join_time2 = #{joinTime2,jdbcType=TIMESTAMP},
+      join_org_time = #{joinOrgTime,jdbcType=TIMESTAMP},
       positived = #{positived,jdbcType=VARCHAR},
       join_contact_id = #{joinContactId,jdbcType=BIGINT},
       contactor = #{contactor,jdbcType=VARCHAR},
@@ -1720,7 +1633,7 @@
       flow_to_org_contactor = #{flowToOrgContactor,jdbcType=VARCHAR},
       flow_to_org_phone = #{flowToOrgPhone,jdbcType=VARCHAR},
       policy_face = #{policyFace,jdbcType=BIGINT},
-      join_time2 = #{joinTime2,jdbcType=TIMESTAMP},
+      join_org_time = #{joinOrgTime,jdbcType=TIMESTAMP},
       positived = #{positived,jdbcType=VARCHAR},
       join_contact_id = #{joinContactId,jdbcType=BIGINT},
       contactor = #{contactor,jdbcType=VARCHAR},
@@ -1763,7 +1676,7 @@
     <update id="updateByUserId" parameterType="java.lang.Long">
     update sys_user
     set del_flag = 1
-    where user_id = #{userId}
+    where user_id = #{user_id}
    </update>
 
     <!--根据身份政查找userId-->
@@ -1776,6 +1689,11 @@
         select * from sys_user where id_card_no =#{idCardNo} and del_flag = 0 limit 1
     </select>
 
+    <!--根据身份証查找identity信息-->
+    <select id="selectUserByIdFindIdentity" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select identity_type from sys_user where user_id =#{user_id} and del_flag = 1
+    </select>
+
     <!--通过用户名或者身份证查询用户信息-->
     <select id="selectPartyByIdCardNoOnUserName"
             resultType="com.egovchina.partybuilding.partybuild.vo.SysUserVO">
@@ -1784,7 +1702,7 @@
         from sys_user
         where del_flag = 0
         <if test="username != null and username != ''">
-          AND realname like concat(concat("%",#{username,jdbcType=VARCHAR}),"%")
+            AND realname like concat(concat("%",#{username,jdbcType=VARCHAR}),"%")
         </if>
         <if test="idCardNo != null and idCardNo != ''">
             AND id_card_no = #{idCardNo}
@@ -1925,17 +1843,17 @@
     <!--党员信息核查-->
     <select id="partyIdentityVerification" resultType="com.egovchina.partybuilding.partybuild.vo.PersonnelVO">
         SELECT
-            u.user_id AS userId,
-            u.realname AS username,
-            u.gender,
-            ROUND( DATEDIFF( CURDATE( ), u.birthday ) / 365.2422 ) AS age,
-            u.id_card_no AS idCardNo,
-            d.NAME AS orgName,
-            d.contactor,
-            d.contact_number AS contactNumber
+        u.user_id AS userId,
+        u.realname AS username,
+        u.gender,
+        ROUND( DATEDIFF( CURDATE( ), u.birthday ) / 365.2422 ) AS age,
+        u.id_card_no AS idCardNo,
+        d.NAME AS orgName,
+        d.contactor,
+        d.contact_number AS contactNumber
         FROM
-            sys_user u
-            INNER JOIN sys_dept d USING ( dept_id )
+        sys_user u
+        INNER JOIN sys_dept d USING ( dept_id )
         <where>
             u.del_flag = 0
             AND u.identity_type = 223
@@ -2107,7 +2025,7 @@
         where user_id = #{userId}
     </update>
 
-    <select id="checkIsExistByUserId" parameterType="java.lang.Integer" resultType="java.lang.Boolean">
+    <select id="checkIsExistByUserId" parameterType="java.lang.Long" resultType="java.lang.Boolean">
         SELECT COUNT(1) FROM sys_user WHERE user_id = #{userId}
     </select>
 
