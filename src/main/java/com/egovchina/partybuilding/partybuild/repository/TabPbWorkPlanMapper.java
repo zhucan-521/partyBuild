@@ -37,7 +37,7 @@ public interface TabPbWorkPlanMapper {
 
     int logicDeleteById(Long planId);
 
-    TabPbWorkPlan selectByPlanYearAndOrgId(@Param("planYear") Long planYear, @Param("orgId") Long orgId);
+    TabPbWorkPlan selectByPlanYearAndOrgId(@Param("planYear") String planYear, @Param("orgId") Long orgId);
 
     /**
      * 根据id查询工作计划VO

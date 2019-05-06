@@ -1,15 +1,6 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
-import com.egovchina.partybuilding.common.config.DictSerializer;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -21,19 +12,43 @@ import java.util.Date;
 @Data
 public class TabPbPartyMembership implements Serializable {
 
+    /**
+     * 党籍id
+     */
     private Long membershipId;
 
+    /**
+     * 党员id
+     */
     private Long userId;
 
+    /**
+     * 人员类别 码表值 RYLB
+     */
     private Long identityType;
 
+    /**
+     * 党籍处理
+     */
     private Long type;
 
+    /**
+     * 处理原因
+     */
     private String reason;
 
+    /**
+     * 创建时间
+     */
     private Date createTime;
 
+    /**
+     * 创建人id
+     */
     private Long createUserid;
 
+    /**
+     * 创建人姓名
+     */
     private String createUsername;
 }

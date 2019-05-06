@@ -29,6 +29,7 @@
         <result column="version" jdbcType="BIGINT" property="version"/>
         <result column="approval_number" jdbcType="VARCHAR" property="approvalNumber"/>
         <result column="rank" jdbcType="VARCHAR" property="rank"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
     </resultMap>
 
     <!--VO 结果集-->
@@ -58,14 +59,14 @@
         member_id, org_id, lead_team_id, user_id, person_name, positive_id, positive_name,
         tenure_mode, tenure_begin, tenure_duration, tenure_leave, as_committee_member, as_committee_director,
         lead_member_order, ebl_flag, del_flag, order_num, description, create_time, create_userid,
-        create_username, update_time, update_userid, update_username, version,rank,approval_number
+        create_username, update_time, update_userid, update_username, version,rank, approval_number, avatar
     </sql>
 
     <!--VO ResultMap-->
     <sql id="LeadTeamMemberVO_Column_List">
         ltm.member_id, ltm.org_id, ltm.lead_team_id, ltm.user_id, ltm.person_name, ltm.positive_id, ltm.positive_name,
         ltm.tenure_mode, ltm.tenure_begin, ltm.tenure_duration, ltm.tenure_leave, ltm.as_committee_member, ltm.as_committee_director,
-        ltm.lead_member_order, ltm.description, ltm.rank, ltm.approval_number
+        ltm.lead_member_order, ltm.description, ltm.rank, ltm.approval_number, ltm.avatar
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -117,6 +118,9 @@
             </if>
             <if test="leadMemberOrder != null">
                 lead_member_order,
+            </if>
+            <if test="avatar != null">
+                avatar,
             </if>
             <if test="eblFlag != null">
                 ebl_flag,
@@ -201,6 +205,9 @@
             <if test="leadMemberOrder != null">
                 #{leadMemberOrder,jdbcType=BIGINT},
             </if>
+            <if test="avatar != null">
+                #{avatar,jdbcType=VARCHAR},
+            </if>
             <if test="eblFlag != null">
                 #{eblFlag,jdbcType=VARCHAR},
             </if>
@@ -284,6 +291,9 @@
             <if test="leadMemberOrder != null">
                 lead_member_order = #{leadMemberOrder,jdbcType=BIGINT},
             </if>
+            <if test="avatar != null">
+                avatar = #{avatar,jdbcType=VARCHAR},
+            </if>
             <if test="eblFlag != null">
                 ebl_flag = #{eblFlag,jdbcType=VARCHAR},
             </if>
@@ -332,26 +342,20 @@
             resultMap="LeadTeamMemberVOResultMap">
         SELECT
         <include refid="LeadTeamMemberVO_Column_List"/>
-        ,a.attachment_instance as pictures
         FROM tab_pb_lead_team_member ltm
-        LEFT JOIN tab_pb_attachment a ON ltm.member_id = a.host_id AND a.del_flag = 0
         LEFT JOIN sys_dept d ON ltm.org_id = d.dept_id
         WHERE lead_team_id = #{leadTeamId}
-        AND ltm.del_flag = 0 AND a.attachment_type = 38
         ORDER BY ltm.member_id
     </select>
 
     <select id="selectLeadTeamMemberVOById" parameterType="java.lang.Long" resultMap="LeadTeamMemberVOResultMap">
         SELECT
         <include refid="LeadTeamMemberVO_Column_List"/>
-        ,d.NAME AS org_name,
-        a.attachment_instance AS avator
+        ,d.NAME AS org_name
         FROM
         tab_pb_lead_team_member ltm
         LEFT JOIN sys_dept d ON ltm.org_id = d.dept_id
-        LEFT JOIN tab_pb_attachment a ON host_id = ltm.member_id and a.attachment_type = 38
-        WHERE
-        a.del_flag = 0 and ltm.member_id = #{memberId}
+        WHERE ltm.member_id = #{memberId}
     </select>
 
     <!--根据条件查询班子成员VO列表-->
@@ -360,12 +364,10 @@
             resultMap="LeadTeamMemberVOResultMap">
         SELECT
         <include refid="LeadTeamMemberVO_Column_List"/>
-        ,a.attachment_instance as avatar,
-        d.name as org_name
+        ,d.name as org_name
         FROM tab_pb_lead_team_member ltm
         LEFT JOIN sys_user u ON ltm.user_id = u.user_id
         LEFT JOIN tab_pb_lead_team t ON ltm.lead_team_id = t.lead_team_id
-        LEFT JOIN tab_pb_attachment a ON host_id = ltm.member_id AND a.attachment_type = 38 AND a.del_flag = 0
         LEFT JOIN sys_dept d ON t.org_id = d.dept_id
         WHERE ltm.del_flag = 0
         <if test="personName != null and personName != ''">

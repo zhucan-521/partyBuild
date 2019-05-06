@@ -78,4 +78,5 @@ public class LeadTeamMemberVO {
 
     @ApiModelProperty(value = "头像")
     private String avatar;
+
 }
