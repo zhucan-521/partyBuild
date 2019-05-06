@@ -9,7 +9,6 @@ import com.egovchina.partybuilding.partybuild.dto.DeletePartyMemberDTO;
 import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMemberReduceListMapper;
-import com.egovchina.partybuilding.partybuild.repository.TabPbPartyMembershipMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
 import com.egovchina.partybuilding.partybuild.util.CommonConstant;

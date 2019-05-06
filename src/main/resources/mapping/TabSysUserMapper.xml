@@ -275,7 +275,7 @@
     <!--查询党员详细信息 ,join_org_time-->
     <sql id="Base_Column_List_new">
       user_id,dept_id,realname,gender,id_card_no,birthday, TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age ,nation,community_addr,avatar,phone,fix_phone,family_address,
-      join_org_name,join_org_id,positived,identity_type,files_manage_unit,registry_status,join_time,registry_status,
+      join_org_name,join_org_id,positived,identity_type,files_manage_unit,registry_status,registry_status,
       join_time,regular_time,work_resumes,is_llost,flow_status,marital_status,health,ancestor_place,work_date,join_org_time
     </sql>
     <sql id="Blob_Column_List">
