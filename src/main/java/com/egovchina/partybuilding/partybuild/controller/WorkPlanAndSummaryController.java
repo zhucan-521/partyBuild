@@ -2,7 +2,6 @@ package com.egovchina.partybuilding.partybuild.controller;
 
 import com.egovchina.partybuilding.common.entity.OrgRange;
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.WorkPlanDTO;
@@ -22,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +39,7 @@ public class WorkPlanAndSummaryController {
 
     @ApiOperation(value = "工作计划列表", notes = "工作计划列表", httpMethod = "GET")
     @GetMapping("/work-plans")
-    public PageInfo<WorkPlanVO> getWorkPlanList(WorkPlanQueryBean queryBean, Page page) {
+    public PageInfo<WorkPlanVO> getWorkPlanList(@ApiParam("工作计划列表查询参数") WorkPlanQueryBean queryBean, Page page) {
         List<WorkPlanVO> list = workPlanService.selectWorkPlanVOByCondition(queryBean, page);
         return new PageInfo<>(list);
     }
@@ -49,12 +47,6 @@ public class WorkPlanAndSummaryController {
     @ApiOperation(value = "新增工作计划", notes = "新增工作计划", httpMethod = "POST")
     @PostMapping("/work-plans")
     public ReturnEntity insertWorkPlan(@ApiParam(value = "计划信息") @RequestBody @Validated WorkPlanDTO workPlanDTO) {
-        Long planYear = workPlanDTO.getPlanYear();
-        Long orgId = workPlanDTO.getOrgId();
-        if (workPlanService.existsWorkPlan(planYear, orgId)) {
-            throw new BusinessDataCheckFailException(String.format("该组织%s年度工作计划已存在", planYear));
-        }
-        workPlanDTO.setReportDate(new Date());
         return ReturnUtil.buildReturn(workPlanService.insertWorkPlan(workPlanDTO));
     }
 
@@ -110,5 +102,4 @@ public class WorkPlanAndSummaryController {
     public ReturnEntity reviewWorkSummary(@ApiParam("审核信息") @RequestBody @Validated WorkSumamryReviewDTO reviewDTO) {
         return ReturnUtil.buildReturn(workPlanService.reviewWorkSummary(reviewDTO));
     }
-
 }

@@ -23,7 +23,7 @@ public class TabPbDoubleCommentary {
     private Long orgId;
 
     @ApiModelProperty(value = "评述年份 yyyy", required = true, example = "yyyy-MM-dd")
-    private Long planYear;
+    private String planYear;
 
     @ApiModelProperty(value = "上报日期 yyyy-MM-dd", required = true, example = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

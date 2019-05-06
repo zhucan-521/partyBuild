@@ -33,4 +33,5 @@ public class MembershipDTO {
 
     @ApiModelProperty(value = "处理原因")
     private String reason;
+
 }

@@ -1,12 +1,14 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.LeadTeamDTO;
 import com.egovchina.partybuilding.partybuild.entity.LeadTeamQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeam;
+import com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember;
 import com.egovchina.partybuilding.partybuild.repository.TabPbLeadTeamMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbLeadTeamMemberMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
@@ -29,8 +31,10 @@ public class LeadTeamServiceImpl implements LeadTeamService {
 
     @Autowired
     private TabPbLeadTeamMapper tabPbLeadTeamMapper;
+
     @Autowired
     private ITabPbAttachmentService iTabPbAttachmentService;
+
     @Autowired
     private TabPbLeadTeamMemberMapper tabPbLeadTeamMemberMapper;
 
@@ -43,13 +47,20 @@ public class LeadTeamServiceImpl implements LeadTeamService {
     @Transactional
     @Override
     public int logicDeleteLeadTeamById(Long leadTeamId) {
+        LeadTeamVO leadTeamVO = tabPbLeadTeamMapper.selectLeadTeamVOById(leadTeamId);
+        if (leadTeamVO == null) {
+            throw new BusinessDataNotFoundException("领导班子信息已删除或有误");
+        }
         TabPbLeadTeam delete = new TabPbLeadTeam();
         delete.setLeadTeamId(leadTeamId);
         delete.setDelFlag(CommonConstant.STATUS_DEL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(delete);
         int judgment = tabPbLeadTeamMapper.updateByPrimaryKeySelective(delete);
         if (judgment > 0) {
-            judgment += tabPbLeadTeamMemberMapper.logicDeleteByLeadTeamId(leadTeamId);
+            TabPbLeadTeamMember memberDelete = new TabPbLeadTeamMember();
+            memberDelete.setLeadTeamId(leadTeamId);
+            PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(memberDelete);
+            judgment += tabPbLeadTeamMemberMapper.logicDeleteByLeadTeamId(memberDelete);
         }
         return judgment;
     }
@@ -70,6 +81,10 @@ public class LeadTeamServiceImpl implements LeadTeamService {
     @Transactional
     @Override
     public int updateLeadTeam(LeadTeamDTO leadTeamDTO) {
+        LeadTeamVO leadTeamVO = tabPbLeadTeamMapper.selectLeadTeamVOById(leadTeamDTO.getLeadTeamId());
+        if (leadTeamVO == null) {
+            throw new BusinessDataNotFoundException("要修改的领导班子不存在");
+        }
         TabPbLeadTeam tabPbLeadTeam =
                 generateTargetCopyPropertiesAndPaddingBaseField(leadTeamDTO, TabPbLeadTeam.class, true);
         int judgment = tabPbLeadTeamMapper.updateByPrimaryKeySelective(tabPbLeadTeam);
@@ -82,6 +97,10 @@ public class LeadTeamServiceImpl implements LeadTeamService {
 
     @Override
     public LeadTeamVO selectLeadTeamVOById(Long leadTeamId) {
+        LeadTeamVO leadTeamVO = tabPbLeadTeamMapper.selectLeadTeamVOById(leadTeamId);
+        if (leadTeamVO == null) {
+            throw new BusinessDataNotFoundException("您要查找的领导班子信息不存在");
+        }
         return tabPbLeadTeamMapper.selectLeadTeamVOById(leadTeamId);
     }
 }
