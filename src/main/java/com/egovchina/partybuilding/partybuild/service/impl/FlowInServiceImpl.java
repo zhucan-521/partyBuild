@@ -49,7 +49,7 @@ public class FlowInServiceImpl implements FlowInService {
     public PageInfo<FlowInMemberVO> getFlowInMemberList(FlowInMemberQueryBean flowInMemberQueryBean, Page page) {
         PageHelper.startPage(page);
         List<FlowInMemberVO> tabPbFlowInDtos = tabPbFlowInMapper.selectListByFlowInVo(flowInMemberQueryBean);
-        PageInfo<FlowInMemberVO> pageInfo=new PageInfo(tabPbFlowInDtos);
+        PageInfo<FlowInMemberVO> pageInfo = new PageInfo(tabPbFlowInDtos);
         return pageInfo;
     }
 
@@ -60,22 +60,22 @@ public class FlowInServiceImpl implements FlowInService {
      */
     @Override
     public int deleteFlowInMember(Long flowInId) {
-        TabPbFlowIn tabPbFlowIn=tabPbFlowInMapper.selectByPrimaryKey(flowInId);
-        int flag=0;
-        if(tabPbFlowIn.getFlowInState()==59413){
+        TabPbFlowIn tabPbFlowIn = tabPbFlowInMapper.selectByPrimaryKey(flowInId);
+        int flag = 0;
+        if (tabPbFlowIn.getFlowInState() == 59413) {
             tabPbFlowIn.setDelFlag("1");
             tabPbFlowInMapper.updateByPrimaryKeySelective(tabPbFlowIn);
-            SysUser sysUser=tabSysUserMapper.selectByPrimaryKey(tabPbFlowIn.getUserId());
+            SysUser sysUser = tabSysUserMapper.selectByPrimaryKey(tabPbFlowIn.getUserId());
             //用户结束流动
             sysUser.setFlowStatus(41209L);
-            flag=tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
-            if(flag>0){
-                TabPbFlowOut tabPbFlowOut=new TabPbFlowOut();
+            flag = tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
+            if (flag > 0) {
+                TabPbFlowOut tabPbFlowOut = new TabPbFlowOut();
                 tabPbFlowIn.setDelFlag("1");
                 tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOut);
                 PaddingBaseFieldUtil.paddingBaseFiled(tabPbFlowOut);
             }
-        }else{
+        } else {
             throw new BusinessDataCheckFailException("只有带报道的流动党员才可以删除！");
         }
         return flag;
@@ -90,11 +90,11 @@ public class FlowInServiceImpl implements FlowInService {
     @PaddingBaseField
     public int acceptFlowInMember(FlowInMemberDTO flowInMemberDto) {
         //流入表
-        TabPbFlowIn tabPbFlowIn=tabPbFlowInMapper.selectByPrimaryKey(flowInMemberDto.getFlowInId());
+        TabPbFlowIn tabPbFlowIn = tabPbFlowInMapper.selectByPrimaryKey(flowInMemberDto.getFlowInId());
         if(tabPbFlowIn.getFlowInState()==59415L){
             throw new BusinessDataCheckFailException("该党员已经录入！");
         }
-        BeanUtils.copyProperties(flowInMemberDto,tabPbFlowIn);
+        BeanUtils.copyProperties(flowInMemberDto, tabPbFlowIn);
         //设置状态已流入
         tabPbFlowIn.setFlowInState(59415L);
         tabPbFlowInMapper.updateByPrimaryKeySelective(tabPbFlowIn);
@@ -103,12 +103,12 @@ public class FlowInServiceImpl implements FlowInService {
         //设置状态已流出
         tabPbFlowOut.setFlowOutState(59414L);
         //修改流入流出党组织联系人和电话  user表
-        Long userId=tabSysUserMapper.SelectUserIdByIDcard(flowInMemberDto.getIdCardNo());
+        Long userId = tabSysUserMapper.SelectUserIdByIDcard(flowInMemberDto.getIdCardNo());
         SysUser sysUser=new SysUser();
         sysUser.setUserId(userId);
         //设置状态流动
         sysUser.setFlowStatus(41207L);
-        BeanUtils.copyProperties(flowInMemberDto,sysUser);
+        BeanUtils.copyProperties(flowInMemberDto, sysUser);
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         return tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOut);
     }
@@ -124,20 +124,20 @@ public class FlowInServiceImpl implements FlowInService {
         //不让修改流入党组织
         flowInMemberDto.setOrgId(null);
         flowInMemberDto.setFlowToOrgName(null);
-        Long userId=tabSysUserMapper.SelectUserIdByIDcard(flowInMemberDto.getIdCardNo());
+        Long userId = tabSysUserMapper.SelectUserIdByIDcard(flowInMemberDto.getIdCardNo());
         SysUser sysUser=new SysUser();
         sysUser.setUserId(userId);
         BeanUtil.copyPropertiesIgnoreNull(flowInMemberDto, sysUser);
-        TabPbFlowIn tabPbFlowIn=tabPbFlowInMapper.selectByPrimaryKey(flowInMemberDto.getFlowInId());
-        TabPbFlowOut tabPbFlowOutDto=new TabPbFlowOut();
-        BeanUtil.copyPropertiesIgnoreNull(flowInMemberDto,tabPbFlowOutDto);
+        TabPbFlowIn tabPbFlowIn = tabPbFlowInMapper.selectByPrimaryKey(flowInMemberDto.getFlowInId());
+        TabPbFlowOut tabPbFlowOutDto = new TabPbFlowOut();
+        BeanUtil.copyPropertiesIgnoreNull(flowInMemberDto, tabPbFlowOutDto);
         tabPbFlowOutDto.setFlowOutId(tabPbFlowIn.getFlowOutId());
         tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOutDto);
         //修改流入流出党组织联系人和电话
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
-        TabPbFlowIn tabPbFlowInUpdate=new TabPbFlowIn();
+        TabPbFlowIn tabPbFlowInUpdate = new TabPbFlowIn();
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbFlowInUpdate);
-        BeanUtil.copyPropertiesIgnoreNull(flowInMemberDto,tabPbFlowInUpdate);
+        BeanUtil.copyPropertiesIgnoreNull(flowInMemberDto, tabPbFlowInUpdate);
         return tabPbFlowInMapper.updateByPrimaryKeySelective(tabPbFlowInUpdate);
     }
 
@@ -150,16 +150,16 @@ public class FlowInServiceImpl implements FlowInService {
     @PaddingBaseField
     public int returnFlowInMember(FlowInMemberDTO flowInMemberDto) {
         SysUser sysUser = tabSysUserMapper.selectByPrimaryKey(flowInMemberDto.getUserId());
-        BeanUtils.copyProperties(flowInMemberDto,sysUser);
+        BeanUtils.copyProperties(flowInMemberDto, sysUser);
         //结束流动
         sysUser.setFlowStatus(41209L);
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         //返回
         flowInMemberDto.setFlowInState(59416L);
-        TabPbFlowIn tabPbFlowIn=new TabPbFlowIn();
-        BeanUtil.copyPropertiesIgnoreNull(flowInMemberDto,tabPbFlowIn);
+        TabPbFlowIn tabPbFlowIn = new TabPbFlowIn();
+        BeanUtil.copyPropertiesIgnoreNull(flowInMemberDto, tabPbFlowIn);
         tabPbFlowInMapper.updateByPrimaryKeySelective(tabPbFlowIn);
-        TabPbFlowOut tabPbFlowOut=tabPbFlowOutMapper.selectByPrimaryKey(flowInMemberDto.getFlowOutId());
+        TabPbFlowOut tabPbFlowOut = tabPbFlowOutMapper.selectByPrimaryKey(flowInMemberDto.getFlowOutId());
         //返回
         tabPbFlowOut.setFlowOutState(59416L);
         //设置返回日期

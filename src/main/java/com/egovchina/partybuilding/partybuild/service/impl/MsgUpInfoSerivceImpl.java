@@ -45,11 +45,11 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
      */
     @Override
     public int insertMsgUpInfo(MsgUpInfoDTO msgUpInfoDTO) {
-        TabPbMsgUpInfo tabPbMsgUpInfo=new TabPbMsgUpInfo();
-        BeanUtil.copyPropertiesIgnoreNull(msgUpInfoDTO,tabPbMsgUpInfo);
+        TabPbMsgUpInfo tabPbMsgUpInfo = new TabPbMsgUpInfo();
+        BeanUtil.copyPropertiesIgnoreNull(msgUpInfoDTO, tabPbMsgUpInfo);
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbMsgUpInfo);
         int retVal = tabPbMsgUpInfoMapper.insertSelective(tabPbMsgUpInfo);
-        Long id=tabPbMsgUpInfo.getId();
+        Long id = tabPbMsgUpInfo.getId();
         if (retVal > 0) {
             msgUpInfoDTO.setId(id);
             retVal += modifyAttachment(msgUpInfoDTO);
@@ -156,8 +156,8 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
     @Override
     @PaddingBaseField(updateOnly = true)
     public int editMsgUpInfo(MsgUpInfoDTO tabPbMsgUpInfoDto) {
-        TabPbMsgUpInfo tabPbMsgUpInfoUpdate=new TabPbMsgUpInfo();
-        BeanUtil.copyPropertiesIgnoreNull(tabPbMsgUpInfoDto,tabPbMsgUpInfoUpdate);
+        TabPbMsgUpInfo tabPbMsgUpInfoUpdate = new TabPbMsgUpInfo();
+        BeanUtil.copyPropertiesIgnoreNull(tabPbMsgUpInfoDto, tabPbMsgUpInfoUpdate);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbMsgUpInfoUpdate);
         int retVal = tabPbMsgUpInfoMapper.updateByPrimaryKeySelective(tabPbMsgUpInfoUpdate);
         if (retVal > 0) {
@@ -190,9 +190,9 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
      */
     @Override
     public MsgUpInfoVO getMsgUpInfoById(Long id) {
-          MsgUpInfoVO msgUpInfoVO=new MsgUpInfoVO();
-          BeanUtil.copyPropertiesIgnoreNull(tabPbMsgUpInfoMapper.selectWithAboutById(id),msgUpInfoVO);
-          return msgUpInfoVO;
+        MsgUpInfoVO msgUpInfoVO = new MsgUpInfoVO();
+        BeanUtil.copyPropertiesIgnoreNull(tabPbMsgUpInfoMapper.selectWithAboutById(id), msgUpInfoVO);
+        return msgUpInfoVO;
     }
 
 
@@ -205,15 +205,15 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
     public int auditMsgUpInfo(MsgUpInfoDTO msgUpInfoDto) {
         //审核人组织
         msgUpInfoDto.setAuditDeptId(UserContextHolder.getOrgId());
-        SysDept auditSysDept=tabSysDeptMapper.selectAloneByPrimaryKey(UserContextHolder.getOrgId());
+        SysDept auditSysDept = tabSysDeptMapper.selectAloneByPrimaryKey(UserContextHolder.getOrgId());
         msgUpInfoDto.setAuditDeptName(auditSysDept.getName());
         //审核人姓名
         msgUpInfoDto.setAuditUserId(UserContextHolder.getUserId());
         msgUpInfoDto.setAuditUsername(UserContextHolder.getUserName());
         //审核时间
         msgUpInfoDto.setAuditTime(new Date());
-        TabPbMsgUpInfo tabPbMsgUpInfo=new TabPbMsgUpInfo();
-        BeanUtil.copyPropertiesIgnoreNull(msgUpInfoDto,tabPbMsgUpInfo);
+        TabPbMsgUpInfo tabPbMsgUpInfo = new TabPbMsgUpInfo();
+        BeanUtil.copyPropertiesIgnoreNull(msgUpInfoDto, tabPbMsgUpInfo);
         return tabPbMsgUpInfoMapper.updateByPrimaryKeySelective(tabPbMsgUpInfo);
     }
 

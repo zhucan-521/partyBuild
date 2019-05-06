@@ -451,5 +451,21 @@
         INNER JOIN sys_user `user` ON abroad.user_id = `user`.user_id
         WHERE abroad.abroad_id = #{abroadId} AND abroad.del_flag = 0
     </select>
-
+    <!--根据党员id查询出国记录-->
+    <select id="findAbroadDetailsByPartyId"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean"
+            resultType="com.egovchina.partybuilding.partybuild.vo.MemberReducesVO">
+        SELECT
+        TIMESTAMPDIFF(YEAR, abroad_date,if(return_date is null ,return_date,CURDATE())) as age,
+        t.user_id
+        from tab_pb_abroad t
+        inner join sys_dept dept on dept.dept_id = t.org_id
+        WHERE t.del_flag = '0'
+        <if test="orgRange == 1">
+            and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
+        </if>
+        <if test="orgRange == 2">
+            and find_in_set(#{deptId}, dept.full_path)
+        </if>
+    </select>
 </mapper>

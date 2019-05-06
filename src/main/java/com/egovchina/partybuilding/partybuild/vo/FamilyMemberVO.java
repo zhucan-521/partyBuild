@@ -12,9 +12,9 @@ import java.util.Date;
 /**
  * @author zhucan
  */
-@ApiModel(value = "家庭成员对象",description = "家庭成员实体类")
+@ApiModel(value = "家庭成员对象", description = "家庭成员实体类")
 @Data
-public class FamilyMemberVO{
+public class FamilyMemberVO {
 
     @ApiModelProperty(value = "家庭成员主键ID")
     private Long relationId;
@@ -26,7 +26,7 @@ public class FamilyMemberVO{
     @JsonSerialize(using = DictSerializer.class)
     private Long relation;
 
-    @ApiModelProperty(value = "家庭成员主键",hidden = true)
+    @ApiModelProperty(value = "家庭成员主键", hidden = true)
     private Long relationUserId;
 
     @ApiModelProperty(value = "姓名")

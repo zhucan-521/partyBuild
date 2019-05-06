@@ -7,7 +7,6 @@ import com.egovchina.partybuilding.partybuild.dto.GoAbroadDTO;
 import com.egovchina.partybuilding.partybuild.dto.ReturnAbroadDTO;
 import com.egovchina.partybuilding.partybuild.entity.AbroadQueryBean;
 import com.egovchina.partybuilding.partybuild.service.AbroadService;
-import com.egovchina.partybuilding.partybuild.vo.AbroadDetailsVO;
 import com.egovchina.partybuilding.partybuild.vo.AbroadVO;
 import com.egovchina.partybuilding.partybuild.vo.BackAbroadDetailsVO;
 import com.egovchina.partybuilding.partybuild.vo.GoAbroadDetailsVO;

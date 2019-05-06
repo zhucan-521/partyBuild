@@ -14,7 +14,7 @@ public interface MsgUpInfoSerivce {
      * @param dto
      * @return
      */
-   int insertMsgUpInfo(MsgUpInfoDTO dto);
+    int insertMsgUpInfo(MsgUpInfoDTO dto);
 
     /**
      * 返回登录人的姓名，组织名称，上级组织名称，上级组织专干人姓名

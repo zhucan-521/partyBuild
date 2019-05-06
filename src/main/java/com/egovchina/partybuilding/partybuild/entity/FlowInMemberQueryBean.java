@@ -22,4 +22,5 @@ public class FlowInMemberQueryBean {
     @ApiModelProperty(value = "流入状态 码表值LDGC")
     private Long flowInState;
 
+
 }

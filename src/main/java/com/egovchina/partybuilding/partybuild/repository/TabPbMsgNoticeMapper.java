@@ -47,6 +47,7 @@ public interface TabPbMsgNoticeMapper extends BaseMapper<TabPbMsgNotice> {
 
     /**
      * 查询list数据
+     *
      * @param record
      * @return
      */

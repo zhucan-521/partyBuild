@@ -41,6 +41,7 @@ public interface TabPbMsgUpInfoMapper {
 
     /**
      * 上报条件查询信息报送列表
+     *
      * @return
      */
     List<MsgUpInfoVO> selectVoActive(MsgUpInfoQueryBean dto);
@@ -54,6 +55,7 @@ public interface TabPbMsgUpInfoMapper {
 
     /**
      * 接收条件查询信息报送列表
+     *
      * @return
      */
     List<MsgUpInfoVO> selectActiveVoRec(MsgUpInfoQueryBean dto);

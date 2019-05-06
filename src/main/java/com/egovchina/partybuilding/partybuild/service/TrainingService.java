@@ -9,6 +9,7 @@ import java.util.List;
 public interface TrainingService {
     /**
      * 添加党员培训情况
+     *
      * @param tabPbTrainingDTO
      * @return
      */
@@ -17,6 +18,7 @@ public interface TrainingService {
 
     /**
      * 逻辑删除党员培训情况
+     *
      * @param traningId
      * @return
      */
@@ -24,6 +26,7 @@ public interface TrainingService {
 
     /**
      * 列表条件查询党员培训情况
+     *
      * @param tabPbTrainingDto
      * @return
      */
@@ -31,6 +34,7 @@ public interface TrainingService {
 
     /**
      * 修改党员培训情况 必须附带主键id
+     *
      * @param tabPbTrainingDTO
      * @return
      */
@@ -38,6 +42,7 @@ public interface TrainingService {
 
     /**
      * 根据主键id单个详情查询培训情况
+     *
      * @param traningId
      * @return
      */

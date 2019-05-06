@@ -48,7 +48,8 @@
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
     </resultMap>
-    <resultMap id="MsgUpInfoDtoResultVoMap" extends="MsgUpInfoDtoResultMap" type="com.egovchina.partybuilding.partybuild.vo.MsgUpInfoVO" />
+    <resultMap id="MsgUpInfoDtoResultVoMap" extends="MsgUpInfoDtoResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.MsgUpInfoVO"/>
 
     <sql id="Base_Column_List">
     id, up_type, up_dept_id, up_dept_name, up_user_id, up_username, recevie_dept_id, 
@@ -495,9 +496,9 @@
     </select>
 
 
-
     <!--Vo条件查询上报信息报送列表-->
-    <select id="selectVoActive" parameterType="com.egovchina.partybuilding.partybuild.entity.MsgUpInfoQueryBean" resultMap="MsgUpInfoDtoResultVoMap">
+    <select id="selectVoActive" parameterType="com.egovchina.partybuilding.partybuild.entity.MsgUpInfoQueryBean"
+            resultMap="MsgUpInfoDtoResultVoMap">
         SELECT
         mup.id,
         mup.up_type,
@@ -532,7 +533,7 @@
         <where>
             mup.del_flag = 0
             <if test="upTime !=null">
-                and  mup.up_time  between #{upTime} and #{upTimeOver}
+                and mup.up_time between #{upTime} and #{upTimeOver}
             </if>
             <if test="titleLabel !=null and  ''!=titleLabel">
                 and mup.title_label=#{titleLabel}
@@ -558,7 +559,8 @@
 
 
     <!--Vo条件查询接收信息报送列表-->
-    <select id="selectActiveVoRec" parameterType="com.egovchina.partybuilding.partybuild.entity.MsgUpInfoQueryBean" resultMap="MsgUpInfoDtoResultVoMap">
+    <select id="selectActiveVoRec" parameterType="com.egovchina.partybuilding.partybuild.entity.MsgUpInfoQueryBean"
+            resultMap="MsgUpInfoDtoResultVoMap">
         SELECT
         mup.id,
         mup.up_type,
@@ -588,12 +590,12 @@
         ifnull(t.doc_num, 0) docNum
         FROM
         tab_pb_msg_up_info mup
-        LEFT JOIN sys_dept d  on d.dept_id=mup.recevie_dept_id
+        LEFT JOIN sys_dept d on d.dept_id=mup.recevie_dept_id
         LEFT JOIN view_attachment_count t on mup.id = t.host_id and t.attachment_type = 40
         <where>
             mup.del_flag = 0
             <if test="upTime !=null">
-                and  mup.up_time  between #{upTime} and #{upTimeOver}
+                and mup.up_time between #{upTime} and #{upTimeOver}
             </if>
             <if test="titleLabel !=null and  ''!=titleLabel">
                 and mup.title_label=#{titleLabel}

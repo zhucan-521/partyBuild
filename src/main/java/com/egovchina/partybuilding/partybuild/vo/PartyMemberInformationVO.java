@@ -47,6 +47,10 @@ public class PartyMemberInformationVO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date joinTime;
 
+    @ApiModelProperty(value = "加入入党组织时间")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date joinOrgTime;
+
     @ApiModelProperty(value = "转正时间、正式党员时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date regularTime;

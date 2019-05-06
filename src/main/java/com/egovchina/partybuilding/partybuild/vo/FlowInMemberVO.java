@@ -37,7 +37,7 @@ public class FlowInMemberVO {
 
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "流出日期",example = "yyyy-hh-dd")
+    @ApiModelProperty(value = "流出日期", example = "yyyy-hh-dd")
     private Date flowOutDate;
 
     @ApiModelProperty(value = "流出组织联系人")
@@ -59,7 +59,7 @@ public class FlowInMemberVO {
     private Long userId;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "流入时间",example = "yyyy-MM-dd")
+    @ApiModelProperty(value = "流入时间", example = "yyyy-MM-dd")
     private Date flowInDate;
 
     @ApiModelProperty(value = "流入类别 码表值 LDQK")
@@ -99,7 +99,7 @@ public class FlowInMemberVO {
     private String oldContactPhone;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "回归时间",example = "yyyy-hh-dd")
+    @ApiModelProperty(value = "回归时间", example = "yyyy-hh-dd")
     private Date returnDate;
 
     @ApiModelProperty(value = "对应流出id")
@@ -111,7 +111,7 @@ public class FlowInMemberVO {
 
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "失联时间",example = "yyyy-hh-dd")
+    @ApiModelProperty(value = "失联时间", example = "yyyy-hh-dd")
     private Date lostTime;
 
     @ApiModelProperty(value = "失联情况 码表值LXQK")

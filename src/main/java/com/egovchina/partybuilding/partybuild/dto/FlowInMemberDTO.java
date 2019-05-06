@@ -15,7 +15,7 @@ import java.util.Date;
  * @outhor asd
  * @create 2018-11-28 13:03
  */
-@ApiModel(value = "流入党员dto",description = "流入党员dto")
+@ApiModel(value = "流入党员dto", description = "流入党员dto")
 @Data
 public class FlowInMemberDTO {
 
@@ -42,7 +42,7 @@ public class FlowInMemberDTO {
     private Long outProfession;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @ApiModelProperty(value = "流出日期",example = "yyyy-MM-dd")
+    @ApiModelProperty(value = "流出日期", example = "yyyy-MM-dd")
     private Date flowOutDate;
 
     @ApiModelProperty(value = "流出组织联系人")
@@ -57,14 +57,14 @@ public class FlowInMemberDTO {
     @ApiModelProperty(value = "流入党支部联系人")
     private String flowToOrgContactor;
 
-    @ApiModelProperty(value = "组织主键",required = true)
+    @ApiModelProperty(value = "组织主键", required = true)
     private Long orgId;
 
-    @ApiModelProperty(value = "人员Id",required = true)
+    @ApiModelProperty(value = "人员Id", required = true)
     private Long userId;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @ApiModelProperty(value = "流入时间",example = "yyyy-MM-dd")
+    @ApiModelProperty(value = "流入时间", example = "yyyy-MM-dd")
     private Date flowInDate;
 
     @ApiModelProperty(value = "流入类别 码表值 LDQK")
@@ -101,7 +101,7 @@ public class FlowInMemberDTO {
     private String oldContactPhone;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @ApiModelProperty(value = "回归时间",example = "yyyy-MM-dd")
+    @ApiModelProperty(value = "回归时间", example = "yyyy-MM-dd")
     private Date returnDate;
 
     @ApiModelProperty(value = "对应流出id")

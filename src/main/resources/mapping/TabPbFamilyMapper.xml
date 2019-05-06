@@ -28,7 +28,8 @@
         <result column="positive" property="positive"/>
         <result column="birthday" property="birthday"/>
     </resultMap>
-    <resultMap id="BaseResultVoMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.vo.FamilyMemberVO" />
+    <resultMap id="BaseResultVoMap" extends="BaseResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.FamilyMemberVO"/>
     <sql id="Base_Column_List">
         relation,
         (CASE whether_abroad WHEN 1 THEN '否' ELSE '是' END) AS `whether_abroad`,
@@ -48,18 +49,18 @@
     <!--查询listVo数据-->
     <select id="getFamilyMemberVoByUserId" resultMap="BaseResultVoMap" parameterType="java.lang.Long" flushCache="true">
         SELECT
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         FROM
-	    tab_pb_family
+        tab_pb_family
         WHERE
-	    user_id = #{userId}
+        user_id = #{userId}
 	    AND
-	    del_flag = 0
+        del_flag = 0
     </select>
     <!--查询根据主键查询单条数据-->
     <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from
         tab_pb_family
         where
@@ -307,7 +308,7 @@
     <!--批量插入家庭-->
     <insert id="batchInsertFamilyList" parameterType="List">
         insert into tab_pb_family
-       (user_id,relation,whether_abroad,abroad, relation_user_id,
+        (user_id,relation,whether_abroad,abroad, relation_user_id,
         ebl_flag,order_num,create_time, create_userid,del_flag,
         username,gender,id_card_no,nation,birthday,positive,policy_face
         ,phone
