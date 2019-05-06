@@ -75,7 +75,7 @@ public class LeadTeamMemberDTO {
     @ApiModelProperty(value = "数据描述")
     private String description;
 
-    @ApiModelProperty(value = "附件集合")
-    private List<TabPbAttachment> attachments;
+    @ApiModelProperty(value = "头像")
+    private String avatar;
 
 }
