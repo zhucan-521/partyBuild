@@ -879,6 +879,9 @@
             <if test="jobPosition != null">
                 job_position,
             </if>
+            <if test="filesManageUnit != null">
+                files_manage_unit,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="deptId != null">
@@ -1168,6 +1171,9 @@
             </if>
             <if test="jobPosition != null">
                 #{jobPosition,jdbcType=VARCHAR},
+            </if>
+            <if test="filesManageUnit != null">
+                #{filesManageUnit,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -2053,11 +2059,11 @@
     </update>
 
     <select id="checkIsExistByUserId" parameterType="java.lang.Long" resultType="java.lang.Boolean">
-        SELECT COUNT(1) FROM sys_user WHERE user_id = #{userId}
+        SELECT COUNT(*) FROM sys_user WHERE user_id = #{userId}
     </select>
 
     <select id="checkIsExistByIdCard" parameterType="java.lang.String" resultType="java.lang.Boolean">
-        SELECT COUNT(1) FROM sys_user WHERE id_card_no = #{idCard}
+        SELECT COUNT(*) FROM sys_user WHERE id_card_no = #{idCard}
     </select>
 
     <update id="updateUserIsPoorByHardshipId">
