@@ -26,7 +26,7 @@ public class CommentaryVO {
     private Long orgId;
 
     @ApiModelProperty(value = "评述年份")
-    private Long planYear;
+    private String planYear;
 
     @ApiModelProperty(value = "上报日期")
     @JsonFormat(pattern = "yyyy-MM-dd")

@@ -60,10 +60,10 @@ public interface TabPbLeadTeamMemberMapper {
     /**
      * 根据班子id逻辑删除班子成员
      *
-     * @param leadTeamId 班子id
+     * @param teamMember 班子id
      * @return
      */
-    int logicDeleteByLeadTeamId(Long leadTeamId);
+    int logicDeleteByLeadTeamId(TabPbLeadTeamMember teamMember);
 
     /**
      * 成员已经存在在指定班子中
@@ -72,5 +72,5 @@ public interface TabPbLeadTeamMemberMapper {
      * @param userId     用户id
      * @return
      */
-    boolean memberAlreadyExistsInTheTeam(Long leadTeamId, Long userId);
+    Boolean memberAlreadyExistsInTheTeam(Long leadTeamId, Long userId);
 }

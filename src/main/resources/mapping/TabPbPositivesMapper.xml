@@ -294,6 +294,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
         update tab_pb_positives
         <set>
@@ -493,8 +494,8 @@
             parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
         UPDATE tab_pb_positives
         SET del_flag = 1,
-        update_time = #{updateTime}, update_userid = #{updateUserid}, updateUsername = #{updateUsername}
+        update_time = #{updateTime}, update_userid = #{updateUserid}, update_username = #{updateUsername}
         WHERE
-            positive_org_id = #{positiveOrgId} and user_id = #{userId} and business_from = #{business} and business_id = #{businessId}
+            positive_org_id = #{positiveOrgId} and user_id = #{userId} and business_from = #{businessFrom} and business_id = #{businessId}
     </update>
 </mapper>

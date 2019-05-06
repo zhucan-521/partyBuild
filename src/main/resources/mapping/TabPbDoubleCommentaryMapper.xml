@@ -5,7 +5,7 @@
     <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
         <id column="commentary_id" jdbcType="BIGINT" property="commentaryId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
-        <result column="plan_year" jdbcType="BIGINT" property="planYear"/>
+        <result column="plan_year" jdbcType="CHAR" property="planYear"/>
         <result column="report_date" jdbcType="TIMESTAMP" property="reportDate"/>
         <result column="check_date" jdbcType="TIMESTAMP" property="checkDate"/>
         <result column="check_result" jdbcType="BIGINT" property="checkResult"/>
@@ -51,7 +51,7 @@
     <resultMap id="CommentaryVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.CommentaryVO">
         <id column="commentary_id" jdbcType="BIGINT" property="commentaryId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
-        <result column="plan_year" jdbcType="BIGINT" property="planYear"/>
+        <result column="plan_year" jdbcType="CHAR" property="planYear"/>
         <result column="report_date" jdbcType="TIMESTAMP" property="reportDate"/>
         <result column="check_date" jdbcType="TIMESTAMP" property="checkDate"/>
         <result column="check_result" jdbcType="BIGINT" property="checkResult"/>
@@ -193,7 +193,7 @@
       version, commentary_content, check_result, check_org, check_user,
       check_desc
       )
-    values (#{commentaryId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{planYear,jdbcType=BIGINT}, 
+    values (#{commentaryId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{planYear,jdbcType=CHAR},
       #{reportDate,jdbcType=TIMESTAMP}, #{checkDate,jdbcType=TIMESTAMP}, #{eblFlag,jdbcType=VARCHAR},
       #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
@@ -278,7 +278,7 @@
                 #{orgId,jdbcType=BIGINT},
             </if>
             <if test="planYear != null">
-                #{planYear,jdbcType=BIGINT},
+                #{planYear,jdbcType=CHAR},
             </if>
             <if test="reportDate != null">
                 #{reportDate,jdbcType=TIMESTAMP},
@@ -341,7 +341,7 @@
         update tab_pb_double_commentary
         <set>
             <if test="planYear != null">
-                plan_year = #{planYear,jdbcType=BIGINT},
+                plan_year = #{planYear,jdbcType=CHAR},
             </if>
             <if test="reportDate != null">
                 report_date = #{reportDate,jdbcType=TIMESTAMP},
@@ -404,7 +404,7 @@
             parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
     update tab_pb_double_commentary
     set org_id = #{orgId,jdbcType=BIGINT},
-      plan_year = #{planYear,jdbcType=BIGINT},
+      plan_year = #{planYear,jdbcType=CHAR},
       report_date = #{reportDate,jdbcType=TIMESTAMP},
       check_date = #{checkDate,jdbcType=TIMESTAMP},
       ebl_flag = #{eblFlag,jdbcType=VARCHAR},
@@ -429,7 +429,7 @@
     <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
     update tab_pb_double_commentary
     set org_id = #{orgId,jdbcType=BIGINT},
-      plan_year = #{planYear,jdbcType=BIGINT},
+      plan_year = #{planYear,jdbcType=CHAR},
       report_date = #{reportDate,jdbcType=TIMESTAMP},
       check_date = #{checkDate,jdbcType=TIMESTAMP},
       ebl_flag = #{eblFlag,jdbcType=VARCHAR},

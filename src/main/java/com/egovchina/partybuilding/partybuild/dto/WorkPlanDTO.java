@@ -4,6 +4,7 @@ import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -30,8 +31,9 @@ public class WorkPlanDTO {
     @ApiModelProperty(value = "计划年份", required = true)
     @NotNull(message = "计划年份不能为空")
     @Pattern(regexp = "\\d{4}", message = "计划年份无效")
-    private Long planYear;
+    private String planYear;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date reportDate;
 
     @ApiModelProperty(value = "计划内容", required = true)

@@ -1,7 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
-import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.CommonConstant;
@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,7 @@ public class WorkPlanServiceImpl implements WorkPlanService {
 
     @Autowired
     private TabPbWorkPlanMapper tabPbWorkPlanMapper;
+
     @Autowired
     private ITabPbAttachmentService iTabPbAttachmentService;
 
@@ -49,6 +51,14 @@ public class WorkPlanServiceImpl implements WorkPlanService {
     @Transactional
     @Override
     public int insertWorkPlan(WorkPlanDTO workPlanDTO) {
+        //判断添加的工作计划是否已经在数据库中存在
+        String planYear = workPlanDTO.getPlanYear();
+        Long orgId = workPlanDTO.getOrgId();
+        if (this.existsWorkPlan(planYear, orgId)) {
+            throw new BusinessDataCheckFailException(String.format("该组织%s年度工作计划已存在", planYear));
+        }
+        workPlanDTO.setReportDate(new Date());
+
         TabPbWorkPlan tabPbWorkPlan =
                 generateTargetCopyPropertiesAndPaddingBaseField(workPlanDTO, TabPbWorkPlan.class, false);
         int judgment = tabPbWorkPlanMapper.insertSelective(tabPbWorkPlan);
@@ -77,7 +87,7 @@ public class WorkPlanServiceImpl implements WorkPlanService {
     }
 
     @Override
-    public boolean existsWorkPlan(Long planYear, Long orgId) {
+    public boolean existsWorkPlan(String planYear, Long orgId) {
         return tabPbWorkPlanMapper.selectByPlanYearAndOrgId(planYear, orgId) != null;
     }
 

@@ -120,6 +120,9 @@ public class UserTagServiceImpl implements UserTagService {
     @Transactional
     @Override
     public int batchInsertUserTagDTO(UserTagDTO userTagDTO) {
+        //困难党员字典
+        final Long HARD_MEMBERSHIP = 59428L;
+
         int value = 0;
 
         //从前端传过来的tagType标签集合
@@ -129,16 +132,13 @@ public class UserTagServiceImpl implements UserTagService {
         if (CollectionUtil.isEmpty(tagTypes)) {
             return tabPbUserTagMapper.batchDeleteByUserId(userTagDTO.getUserId());
         }
-
         List<TabPbUserTag> list = tagTypes.stream().map(tagType -> {
-
-            if (tagType == 59428L) {
+            if (tagType == HARD_MEMBERSHIP) {
                 HardshipPartyMemberDTO hardshipPartyDTO = new HardshipPartyMemberDTO();
                 hardshipPartyDTO.setUserId(userTagDTO.getUserId());
                 hardshipPartyDTO.setOrgId(userTagDTO.getOrgId());
                 hardshipService.insertHardshipPartyMember(hardshipPartyDTO);
             }
-
             TabPbUserTag tabPbUserTag = new TabPbUserTag();
             tabPbUserTag.setUserId(userTagDTO.getUserId());
             tabPbUserTag.setTagType(tagType);
@@ -161,7 +161,7 @@ public class UserTagServiceImpl implements UserTagService {
             //前端没有但是数据库有的，删除
             if (!tagTypes.contains(tabPbUserTag.getTagType())) {
                 deleteIds.add(tabPbUserTag.getUsertagId());
-                if (tabPbUserTag.getTagType() == 59428L) {
+                if (tabPbUserTag.getTagType() == HARD_MEMBERSHIP) {
                     hardshipService.logicDeleteByUserId(userTagDTO.getUserId());
                 }
             }

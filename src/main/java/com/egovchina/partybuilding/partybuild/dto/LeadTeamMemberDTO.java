@@ -77,4 +77,5 @@ public class LeadTeamMemberDTO {
 
     @ApiModelProperty(value = "附件集合")
     private List<TabPbAttachment> attachments;
+
 }

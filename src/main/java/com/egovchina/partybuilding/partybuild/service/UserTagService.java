@@ -51,4 +51,5 @@ public interface UserTagService {
      * @return
      */
     int batchInsertUserTagDTO(UserTagDTO userTagDTO);
+
 }

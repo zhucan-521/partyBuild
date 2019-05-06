@@ -5,7 +5,6 @@ import com.egovchina.partybuilding.partybuild.dto.WorkPlanDTO;
 import com.egovchina.partybuilding.partybuild.dto.WorkPlanReviewDTO;
 import com.egovchina.partybuilding.partybuild.dto.WorkSumamryReviewDTO;
 import com.egovchina.partybuilding.partybuild.dto.WorkSummaryDTO;
-import com.egovchina.partybuilding.partybuild.entity.TabPbWorkPlan;
 import com.egovchina.partybuilding.partybuild.entity.WorkPlanQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.WorkPlanVO;
 import com.egovchina.partybuilding.partybuild.vo.WorkSummaryVO;
@@ -20,6 +19,13 @@ import java.util.Map;
  **/
 public interface WorkPlanService {
 
+    /**
+     * 工作计划列表
+     *
+     * @param queryBean 工作计划列表查询参数
+     * @param page
+     * @return
+     */
     List<WorkPlanVO> selectWorkPlanVOByCondition(WorkPlanQueryBean queryBean, Page page);
 
     /**
@@ -54,8 +60,21 @@ public interface WorkPlanService {
      */
     int reviewWorkPlan(WorkPlanReviewDTO reviewDTO);
 
-    boolean existsWorkPlan(Long planYear, Long orgId);
+    /**
+     * 判断该工作计划是否存在
+     *
+     * @param planYear 计划年份
+     * @param orgId    组织id
+     * @return
+     */
+    boolean existsWorkPlan(String planYear, Long orgId);
 
+    /**
+     * 逻辑删除
+     *
+     * @param planId 工作计划id
+     * @return
+     */
     int logicDeleteById(Long planId);
 
     /**

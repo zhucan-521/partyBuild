@@ -29,12 +29,4 @@ public interface PartyMembershipService {
      */
     List<MembershipVO> getMembershipVOListByCondition(Page page);
 
-    /**
-     * 公共方法
-     *
-     * @param sysUser
-     * @return
-     */
-    TabPbPartyMembership toolMethod(SysUser sysUser);
-
 }

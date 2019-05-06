@@ -4,6 +4,7 @@ import com.egovchina.partybuilding.common.util.UserContextHolder;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * 工作计划QueryBean
@@ -21,7 +22,7 @@ public class WorkPlanQueryBean {
     private Long rangeDeptId;
 
     @ApiModelProperty("年度 yyyy")
-    private Long planYear;
+    private String planYear;
 
     @ApiModelProperty("上报日期-开始 yyyy-MM-dd")
     private String reportStartDate;
@@ -31,8 +32,6 @@ public class WorkPlanQueryBean {
 
     @ApiModelProperty("计划审核结果 dict SHJG")
     private Long checkResult;
-
-    private Long attachmentType;
 
     public Long getRangeDeptId() {
         if (this.rangeDeptId == null || this.rangeDeptId == 0) {

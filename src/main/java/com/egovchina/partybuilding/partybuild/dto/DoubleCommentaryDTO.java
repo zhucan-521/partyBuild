@@ -27,7 +27,7 @@ public class DoubleCommentaryDTO {
 
     @ApiModelProperty(value = "评述年份 yyyy", required = true, dataType = "Long", example = "2019")
     @NotNull(message = "评述年份不能为空")
-    private Long planYear;
+    private String planYear;
 
     @ApiModelProperty(value = "上报日期 yyyy-MM-dd", required = true, dataType = "Date", example = "2019-01-01")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

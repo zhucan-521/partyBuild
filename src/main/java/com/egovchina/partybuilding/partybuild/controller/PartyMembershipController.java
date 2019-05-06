@@ -20,16 +20,9 @@ public class PartyMembershipController {
     @Autowired
     private PartyMembershipService partyMembershipService;
 
-    /**
-     * 获取党籍实体类列表
-     *
-     * @param page
-     * @return
-     */
     @ApiOperation(value = "获取党籍列表", notes = "获取党籍列表", httpMethod = "GET")
     @GetMapping
     public PageInfo<MembershipVO> getMembershipListByCondition(@ApiParam("分页对象") Page page) {
         return new PageInfo<>(partyMembershipService.getMembershipVOListByCondition(page));
     }
-
 }

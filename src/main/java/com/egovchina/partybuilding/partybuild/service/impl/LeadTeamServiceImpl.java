@@ -7,6 +7,7 @@ import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.LeadTeamDTO;
 import com.egovchina.partybuilding.partybuild.entity.LeadTeamQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeam;
+import com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember;
 import com.egovchina.partybuilding.partybuild.repository.TabPbLeadTeamMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbLeadTeamMemberMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
@@ -29,8 +30,10 @@ public class LeadTeamServiceImpl implements LeadTeamService {
 
     @Autowired
     private TabPbLeadTeamMapper tabPbLeadTeamMapper;
+
     @Autowired
     private ITabPbAttachmentService iTabPbAttachmentService;
+
     @Autowired
     private TabPbLeadTeamMemberMapper tabPbLeadTeamMemberMapper;
 
@@ -49,7 +52,10 @@ public class LeadTeamServiceImpl implements LeadTeamService {
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(delete);
         int judgment = tabPbLeadTeamMapper.updateByPrimaryKeySelective(delete);
         if (judgment > 0) {
-            judgment += tabPbLeadTeamMemberMapper.logicDeleteByLeadTeamId(leadTeamId);
+            TabPbLeadTeamMember memberDelete = new TabPbLeadTeamMember();
+            memberDelete.setLeadTeamId(leadTeamId);
+            PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(memberDelete);
+            judgment += tabPbLeadTeamMemberMapper.logicDeleteByLeadTeamId(memberDelete);
         }
         return judgment;
     }
