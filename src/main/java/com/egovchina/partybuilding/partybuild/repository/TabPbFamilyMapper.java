@@ -18,40 +18,23 @@ public interface TabPbFamilyMapper extends BaseMapper<TabPbFamily> {
 
     int updateByPrimaryKey(TabPbFamily record);
 
-    List<TabPbFamily> selectListPrimary(Long partyMemberId);
-
     /**
-     * 根据用户id去查找用户的家庭成员
-     *
+     * 根据用户id去查找用户的家庭成员集合
      * @param userId
      * @return
      */
     List<FamilyMemberVO> getFamilyMemberVoByUserId(Long userId);
 
-
-
+    /**
+     * 根据主键查询家庭成员
+     *
+     * @param relationId
+     * @return
+     */
     TabPbFamily findById(Long relationId);
 
     /**
-     * 逻辑删除党员的家庭成员
-     * @param userId
-     * @return
-     */
-    int tombstoneUser(Long userId);
-
-
-    /**
-     * 根据用户id查找用户家人
-     *
-     * @param userId
-     * @return
-     */
-    List<TabPbFamily> selectFamilyByUserId(Long userId);
-
-
-    /**
      * 批量插入家庭
-     *
      * @param tabPbFamilyList
      * @return
      */

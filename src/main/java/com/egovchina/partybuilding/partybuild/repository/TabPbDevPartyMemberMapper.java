@@ -1,9 +1,9 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.dto.DevPartyMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.PartyApplyQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbDevPartyMember;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.vo.DevPartyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.DevPartyVO;
 import org.apache.ibatis.annotations.Param;

@@ -29,7 +29,6 @@ public class FlowInControlle {
         return flowInService.getFlowInMeberVoById(flowInId);
     }
 
-
     @ApiOperation(value = "分页查询流入党员", notes = "分页查询流入党员", httpMethod = "GET")
     @GetMapping
     public PageInfo<FlowInMemberVO> flowInMemberList(FlowInMemberQueryBean flowInMemberQueryBean, Page page) {
@@ -63,6 +62,5 @@ public class FlowInControlle {
         int flag = flowInService.updateFlowInDto(flowInMemberDTO);
         return ReturnUtil.buildReturn(flag);
     }
-
 
 }

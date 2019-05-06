@@ -1,13 +1,11 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
-import com.egovchina.partybuilding.partybuild.entity.TabPbActivities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * 描述:
@@ -42,9 +40,6 @@ public class LinkLeaderVO{
 
     @ApiModelProperty(value = "数据描述")
     private String description;
-
-    @ApiModelProperty(value = "活动对象集合 增加活动需传活动id")
-    private List<TabPbActivities> activitiesList;
 
     @ApiModelProperty(value = "连接领导姓名")
     private String realName;

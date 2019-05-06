@@ -8,7 +8,7 @@ import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.MsgUpInfoDTO;
-import com.egovchina.partybuilding.partybuild.entity.MsgUpInfoAuditDTO;
+import com.egovchina.partybuilding.partybuild.dto.MsgUpInfoAuditDTO;
 import com.egovchina.partybuilding.partybuild.entity.MsgUpInfoQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo;
 import com.egovchina.partybuilding.partybuild.service.MsgUpInfoSerivce;

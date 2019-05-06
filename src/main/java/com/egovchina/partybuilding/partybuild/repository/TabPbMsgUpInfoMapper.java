@@ -1,13 +1,15 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.dto.TabPbMsgUpInfoDto;
-import com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.entity.MsgUpInfoQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo;
 import com.egovchina.partybuilding.partybuild.vo.MsgUpInfoVO;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface TabPbMsgUpInfoMapper {
     int deleteByPrimaryKey(Long id);
 

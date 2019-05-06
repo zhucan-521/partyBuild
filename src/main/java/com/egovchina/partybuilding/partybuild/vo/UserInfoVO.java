@@ -10,7 +10,7 @@ public class UserInfoVO {
     @ApiModelProperty(value = "后台用户ID，后台用户一定有值，党员不一定有值")
     private Long userId;
     /**
-     * 后台用户没有ci此组织id，只有管理组织id
+     * 后台用户没有此组织id，只有管理组织id
      */
     @ApiModelProperty(value = "组织ID ,党支部Id")
     private Long deptId;
@@ -30,5 +30,5 @@ public class UserInfoVO {
      * 后台用户保存管理组织id
      */
     @ApiModelProperty(value = "后台用户管理组织ID")
-    private Integer manageDeptId;
+    private Long manageDeptId;
 }

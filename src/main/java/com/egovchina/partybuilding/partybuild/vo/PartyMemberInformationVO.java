@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -16,7 +15,6 @@ import java.util.List;
 @ApiModel("党员信息VO")
 @Data
 public class PartyMemberInformationVO {
-
 
     @ApiModelProperty(value = "用户ID")
     private Integer userId;
@@ -45,27 +43,29 @@ public class PartyMemberInformationVO {
     @ApiModelProperty(value = "身份证号码")
     private String idCardNo;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
     @ApiModelProperty(value = "入党时间、预备党员时间")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date joinTime;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd" )
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @ApiModelProperty(value = "加入入党组织时间")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date joinOrgTime;
+
     @ApiModelProperty(value = "转正时间、正式党员时间")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date regularTime;
 
     @ApiModelProperty(value = "报到组织名称")
     private String reportOrgName;
-    //预计通过dept_id关联查
+
     @ApiModelProperty(value = "从属组织")
     private String subordinateDeptName;
 
     @ApiModelProperty(value = "电话号码")
     private String phone;
 
-    @JsonSerialize(using = DictSerializer.class)
     @ApiModelProperty(value = "人员类别 码表值 RYLB")
+    @JsonSerialize(using = DictSerializer.class)
     private Long identityType;
 
     @ApiModelProperty(value = "婚姻状况 码表值 FYZK")
@@ -89,7 +89,6 @@ public class PartyMemberInformationVO {
     @ApiModelProperty(value = "是否台湾籍")
     private Byte isTaiwaner;
 
-    @TableField(exist = false)
     @ApiModelProperty(value = "基础资料完成度")
     private Integer complete;
 
@@ -104,12 +103,12 @@ public class PartyMemberInformationVO {
     @JsonSerialize(using = DictSerializer.class)
     private Long frontLine;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "工作时间")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date workDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "出生日期")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     @ApiModelProperty(value = "籍贯 码表值 JG")
@@ -130,6 +129,4 @@ public class PartyMemberInformationVO {
     @ApiModelProperty(value = "工作岗位 dict GZGW")
     @JsonSerialize(using = DictSerializer.class)
     private String jobPosition;
-
-
 }

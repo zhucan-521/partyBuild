@@ -1,16 +1,16 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.DeletePartyMemberDTO;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMemberReduceListMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
-import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
+import com.egovchina.partybuilding.partybuild.util.CommonConstant;
 import com.egovchina.partybuilding.partybuild.vo.PartyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.SysUserVO;
 import com.github.pagehelper.PageHelper;
@@ -52,12 +52,12 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         user.setDelFlag(CommonConstant.STATUS_DEL);
         user.setRegistryStatus(reduce.getOutType());
         TabPbMemberReduceList tabPbMemberReduceList =
-                BeanUtil.copyPropertiesAndPaddingBaseField(reduce, TabPbMemberReduceList.class, true, false);
+                BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(reduce, TabPbMemberReduceList.class, false);
         int flag = tabSysUserMapper.updateByPrimaryKeySelective(user);
         if (flag > 0) {
             SysUser newuser = tabSysUserMapper.selectByPrimaryKey(reduce.getUserId());
             if (newuser != null && !ObjectUtils.isEmpty(newuser.getDeptId())) {
-                tabPbMemberReduceList.setDeptId(newuser.getDeptId().longValue());
+                tabPbMemberReduceList.setDeptId(newuser.getDeptId());
                 tabPbMemberReduceList.setRealName(newuser.getUsername());
                 flag += reduceListMapper.insertSelective(tabPbMemberReduceList);
             }

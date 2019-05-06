@@ -49,7 +49,7 @@ public class TrainingController {
     @ApiImplicitParam(value = "培训主键", name = "traningId", paramType = "path")
     @DeleteMapping("/{traningId}")
     public ReturnEntity deletTrainingDTO(@PathVariable Long traningId) {
-        return ReturnUtil.buildReturn(tabPbTrainingService.deletTrainingDTO(traningId));
+        return ReturnUtil.buildReturn(tabPbTrainingService.logicDeleteTrainingDTO(traningId));
     }
 
     @ApiOperation(value = "根据培训主键修改党员培训情况", notes = "必须要有党员培训主键", httpMethod = "PUT")
@@ -57,6 +57,4 @@ public class TrainingController {
     public ReturnEntity updateTrainingDTO(@RequestBody @Validated @ApiParam(name = "培训党员") TrainingDTO trainingDTO) {
         return ReturnUtil.buildReturn(tabPbTrainingService.updateTrainingDTO(trainingDTO));
     }
-
-
 }

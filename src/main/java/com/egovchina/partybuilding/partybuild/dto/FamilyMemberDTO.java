@@ -6,15 +6,12 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @author YangYingXiang
- */
+
 @ApiModel(value = "家庭成员对象", description = "家庭成员实体类")
 @Data
-public class FamilyMemberDTO implements Serializable {
+public class FamilyMemberDTO {
 
     @ApiModelProperty(value = "家庭成员主键ID", required = true)
     @NotNull(message = "请传入relationId主键")
@@ -33,7 +30,6 @@ public class FamilyMemberDTO implements Serializable {
     private Long gender;
 
     @ApiModelProperty(value = "身份证号码")
-    @NotNull(message = "请输入身份证号")
     private String idCardNo;
 
     @ApiModelProperty(value = "民族 码表值 MZ")

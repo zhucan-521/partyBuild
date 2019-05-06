@@ -142,10 +142,6 @@
          where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from tab_pb_msg_notice
-    where id = #{id,jdbcType=BIGINT}
-  </delete>
     <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice" useGeneratedKeys="true" keyProperty="id">
         insert into tab_pb_msg_notice
         <trim prefix="(" suffix=")" suffixOverrides=",">

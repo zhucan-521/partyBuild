@@ -1,28 +1,20 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
-import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
-import com.egovchina.partybuilding.partybuild.entity.TabPbMemberAddList;
+import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMemberAddListMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMemberReduceListMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
-import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
-import com.egovchina.partybuilding.partybuild.service.TabSysDeptService;
-import com.egovchina.partybuilding.partybuild.entity.SysDept;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
-import com.egovchina.partybuilding.partybuild.system.util.CommonConstant;
-import com.egovchina.partybuilding.partybuild.dto.RegistryDTO;
-import com.egovchina.partybuilding.partybuild.vo.RegistryVO;
+import com.egovchina.partybuilding.partybuild.service.OrganizationService;
 import com.egovchina.partybuilding.partybuild.service.SysUserService;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -43,10 +35,7 @@ public class SysUserServiceImpl implements SysUserService {
     private TabPbMemberAddListMapper memberAddListMapper;
 
     @Autowired
-    private TabSysDeptService sysDeptService;
-
-    @Autowired
-    private ExtendedInfoService extendedInfoService;
+    private OrganizationService organizationService;
 
     /**
      * 根据组织Id 获取党务工作者信息
@@ -93,16 +82,16 @@ public class SysUserServiceImpl implements SysUserService {
             return null;
         }
         SysUser user = sysUserMapper.selectByPrimaryKey(userId);
-        SysDept dept = sysDeptService.selectByPrimaryKey(user.getJoinOrgId());
+        SysDept dept = organizationService.selectByPrimaryKey(user.getJoinOrgId());
         TabPbMemberReduceList reduce = memberReduceListMapper.selectByUserId(userId);
-        if (reduce != null) {
-            user.setOutType(reduce.getOutType());
-            user.setReduceTime(reduce.getReduceTime());
-        }
-        TabPbMemberAddList add = memberAddListMapper.selectByUserId(userId);
-        if (add != null) {
-            user.setAddTime(add.getAddTime());
-        }
+//        if (reduce != null) {
+//            user.setOutType(reduce.getOutType());
+//            user.setReduceTime(reduce.getReduceTime());
+//        }
+//        TabPbMemberAddList add = memberAddListMapper.selectByUserId(userId);
+//        if (add != null) {
+//            user.setAddTime(add.getAddTime());
+//        }
         if (dept != null) {
             user.setJoinOrgName(dept.getName());
         }
@@ -122,48 +111,21 @@ public class SysUserServiceImpl implements SysUserService {
         //获取用户信息
         SysUser user = sysUserMapper.selectByPrimaryKey(userId);
         //获取用户所在的部门信息
-        SysDept dept = sysDeptService.selectByPrimaryKey(user.getJoinOrgId());
+        SysDept dept = organizationService.selectByPrimaryKey(user.getJoinOrgId());
         TabPbMemberReduceList reduce = memberReduceListMapper.selectByUserId(userId);
-        if (reduce != null) {
-            user.setOutType(reduce.getOutType());
-            user.setReduceTime(reduce.getReduceTime());
-        }
-        TabPbMemberAddList add = memberAddListMapper.selectByUserId(userId);
-        if (add != null) {
-            user.setAddTime(add.getAddTime());
-        }
+//        if (reduce != null) {
+//            user.setOutType(reduce.getOutType());
+//            user.setReduceTime(reduce.getReduceTime());
+//        }
+//        TabPbMemberAddList add = memberAddListMapper.selectByUserId(userId);
+//        if (add != null) {
+//            user.setAddTime(add.getAddTime());
+//        }
         if (dept != null) {
             user.setJoinOrgName(dept.getName());
         }
         setRegularTime(user);
         return user;
-    }
-
-    /**
-     * 更新用户党籍信息
-     *
-     * @param sysUser
-     * @return
-     */
-    @Override
-    public boolean updateUser(SysUser sysUser) {
-        if (sysUser != null && !ObjectUtils.isEmpty(sysUser.getUserId())) {
-            Long userId = sysUser.getUserId();
-            SysUser oldUser = sysUserMapper.selectByPrimaryKey(userId);
-            if (sysUser.getReduceTime() != null && sysUser.getOutType() != null && CommonConstant.STATUS_DEL.equals(oldUser.getDelFlag())) {
-                TabPbMemberReduceList reduce = new TabPbMemberReduceList();
-                reduce.setUserId(userId);
-                reduce.setOutType(sysUser.getOutType());
-                reduce.setReduceTime(sysUser.getReduceTime());
-                reduce.setDeptId(oldUser.getDeptId());
-                reduce.setRealName(oldUser.getUsername());
-                memberReduceListMapper.insertSelective(reduce);
-                sysUser.setRegistryStatus(reduce.getOutType());
-                sysUser.setDelFlag(CommonConstant.STATUS_DEL);
-            }
-            return sysUserMapper.updateByPrimaryKeySelective(sysUser) > 0;
-        }
-        return false;
     }
 
     private void setRegularTime(SysUser sysUser) {

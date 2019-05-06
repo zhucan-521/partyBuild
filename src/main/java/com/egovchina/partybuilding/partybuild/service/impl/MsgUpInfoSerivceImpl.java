@@ -2,12 +2,12 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.egovchina.partybuilding.common.util.*;
 import com.egovchina.partybuilding.partybuild.dto.MsgUpInfoDTO;
 import com.egovchina.partybuilding.partybuild.entity.MsgUpInfoQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.SysDept;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMsgUpInfoMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
@@ -91,7 +91,7 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
         //上报时间
         tabPbMsgUpInfo.setUpTime(new Date());
         //上报人姓名
-        tabPbMsgUpInfo.setUpUserId(UserContextHolder.getUserIdLong());
+        tabPbMsgUpInfo.setUpUserId(UserContextHolder.getUserId());
         tabPbMsgUpInfo.setUpUsername(UserContextHolder.getUserName());
         //上报人组织名称
         Long upDeptId=UserContextHolder.getOrgId();
@@ -102,18 +102,18 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
         if(null == realSysDept.getParentId()){
            return tabPbMsgUpInfo;
         }
-        SysDept recDept = tabSysDeptMapper.selectAloneByPrimaryKey(realSysDept.getParentId().longValue());
+        SysDept recDept = tabSysDeptMapper.selectAloneByPrimaryKey(realSysDept.getParentId());
         if (null == recDept) {
             return tabPbMsgUpInfo;
         }
-        tabPbMsgUpInfo.setRecevieDeptId(recDept.getDeptId().longValue());
+        tabPbMsgUpInfo.setRecevieDeptId(recDept.getDeptId());
         tabPbMsgUpInfo.setRecevieDeptName(recDept.getName());
         //接受人姓名
-        SysUser recSysUser = tabPbMsgUpInfoMapper.selectBydeptId(recDept.getDeptId().longValue());
+        SysUser recSysUser = tabPbMsgUpInfoMapper.selectBydeptId(recDept.getDeptId());
         if (null == recSysUser) {
             return tabPbMsgUpInfo;
         }
-        tabPbMsgUpInfo.setRecevieUserId(recSysUser.getUserId().longValue());
+        tabPbMsgUpInfo.setRecevieUserId(recSysUser.getUserId());
         tabPbMsgUpInfo.setRecevieUsername(recSysUser.getUsername());
         return tabPbMsgUpInfo;
     }
@@ -205,10 +205,10 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
     public int auditMsgUpInfo(MsgUpInfoDTO msgUpInfoDto) {
         //审核人组织
         msgUpInfoDto.setAuditDeptId(UserContextHolder.getOrgId());
-        SysDept AuditSysDept=tabSysDeptMapper.selectAloneByPrimaryKey(UserContextHolder.getOrgId());
-        msgUpInfoDto.setAuditDeptName(AuditSysDept.getName());
+        SysDept auditSysDept = tabSysDeptMapper.selectAloneByPrimaryKey(UserContextHolder.getOrgId());
+        msgUpInfoDto.setAuditDeptName(auditSysDept.getName());
         //审核人姓名
-        msgUpInfoDto.setAuditUserId(UserContextHolder.getUserIdLong());
+        msgUpInfoDto.setAuditUserId(UserContextHolder.getUserId());
         msgUpInfoDto.setAuditUsername(UserContextHolder.getUserName());
         //审核时间
         msgUpInfoDto.setAuditTime(new Date());

@@ -8,13 +8,13 @@ public class TabPbPositives {
 
     private static final long serialVersionUID = 1L;
 
-    private Integer positiveId;
+    private Long positiveId;
 
     private Long userId;
 
-    private Integer positiveType;
+    private Long positiveType;
 
-    private Integer positiveOrgId;
+    private Long positiveOrgId;
 
     private String positiveOrg;
 
@@ -56,4 +56,7 @@ public class TabPbPositives {
 
     private Long sort;
 
+    private Byte businessFrom;
+
+    private Long businessId;
 }

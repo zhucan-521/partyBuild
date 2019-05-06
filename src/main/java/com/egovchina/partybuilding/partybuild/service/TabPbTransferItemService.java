@@ -7,6 +7,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbTransferItem;
 
 import java.util.List;
 
+@Deprecated
 public interface TabPbTransferItemService {
 
     /**

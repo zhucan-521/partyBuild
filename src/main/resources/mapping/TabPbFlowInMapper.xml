@@ -37,7 +37,7 @@
         <result column="link_status" jdbcType="BIGINT" property="linkStatus"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="TabPbFlowInDtoResultMap"
-               type="com.egovchina.partybuilding.partybuild.dto.FamilyMemberDTO">
+               type="com.egovchina.partybuilding.partybuild.vo.FamilyMemberVO">
         <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
         <result column="gender" jdbcType="BIGINT" property="gender"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
@@ -570,6 +570,7 @@
   </update>
 
 
+
     <!--流入党员列表查询vo-->
     <select id="selectListByFlowInVo"
             parameterType="com.egovchina.partybuilding.partybuild.entity.FlowInMemberQueryBean"
@@ -611,60 +612,6 @@
         desc
     </select>
 
-
-    <!--流入党员列表查询-->
-    <select id="selectListByFlowInDto" parameterType="java.util.Map" resultMap="TabPbFlowInDtoResultMap">
-        SELECT
-         <include refid="Base_FlowIn_List" />
-        FROM
-        tab_pb_flow_in AS t
-        LEFT JOIN sys_user AS s ON t.user_id = s.user_id
-        LEFT JOIN sys_dept d ON t.org_id = d.dept_id
-        LEFT JOIN tab_pb_flow_out f on t.flow_out_id=f.flow_out_id
-        AND d.del_flag = '0'
-        where
-        1=1
-        <if test="username != null and username != ''">
-            AND s.username like CONCAT('%',#{username},'%')
-        </if>
-        <if test="flowInState != null and flowInState != ''">
-            AND t.flow_in_state = #{flowInState}
-        </if>
-        <if test="idCardNo != null and idCardNo != ''">
-            AND s.id_card_no = #{idCardNo}
-        </if>
-        <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
-        <choose>
-            <when test="orgRange == 1">
-                AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
-            </when>
-            <when test="orgRange == 2">
-                AND find_in_set(#{rangeDeptId}, d.full_path)
-            </when>
-            <otherwise>
-                AND d.dept_id = #{rangeDeptId}
-            </otherwise>
-        </choose>
-        AND t.del_flag = '0'
-        order by
-        t.flow_in_id
-        desc
-    </select>
-
-    <!--单个流入党员详情查询-->
-    <select id="selectFlowInByFlowId" parameterType="java.lang.Long" resultMap="TabPbFlowInDtoResultMap">
-       SELECT
-        <include refid="Base_FlowIn_List" />
-	    FROM
-		tab_pb_flow_in AS t
-		LEFT JOIN sys_user AS s ON t.user_id = s.user_id
-		LEFT JOIN sys_dept d ON t.org_id = d.dept_id
-		LEFT JOIN tab_pb_flow_out f on t.flow_out_id=f.flow_out_id
-        where
-        t.flow_in_id = #{flowInId,jdbcType=BIGINT}
-    </select>
-
-
     <!--单个流入vo党员详情查询-->
     <select id="selectFlowInVoByFlowId" parameterType="java.lang.Long" resultMap="TabPbFlowInDtoResultVoMap">
         SELECT
@@ -677,6 +624,4 @@
         where
         t.flow_in_id = #{flowInId,jdbcType=BIGINT}
     </select>
-
-
 </mapper>

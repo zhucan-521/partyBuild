@@ -29,27 +29,25 @@
     <result column="update_userid" jdbcType="BIGINT" property="updateUserid" />
     <result column="update_username" jdbcType="VARCHAR" property="updateUsername" />
     <result column="version" jdbcType="BIGINT" property="version" />
-    <collection property="sysUserList" ofType="com.egovchina.partybuilding.partybuild.entity.SysUser">
-      <id column="user_id" property="userId"></id>
-      <result column="username" property="username"/>
-      <result column="gender" property="gender"/>
-      <result column="age" property="age"/>
-      <result column="phone" property="phone"/>
-      <result column="identity_type" property="identityType"/>
-      <result column="id_card_no" property="idCardNo"/>
-      <result column="family_address" property="familyAddress"/>
-    </collection>
-    <collection property="sysDeptList" ofType="com.egovchina.partybuilding.partybuild.dto.SysDeptDto">
-      <id column="dept_id" property="deptId"/>
-      <result column="name" property="name"/>
-      <result column="dept_name" property="deptName"/>
-    </collection>
   </resultMap>
 
     <resultMap id="BaseResultVoMap" extends="BaseResultMap"
                type="com.egovchina.partybuilding.partybuild.vo.PositiveRegistMemberVO">
         <result column="isEnableBack" property="isEnableBack"/>
-    </resultMap>
+        <collection property="users" ofType="com.egovchina.partybuilding.common.entity.SysUser">
+            <id column="user_id" property="userId"/>
+      <result column="username" property="username"/>
+      <result column="gender" property="gender"/>
+      <result column="phone" property="phone"/>
+      <result column="identity_type" property="identityType"/>
+      <result column="id_card_no" property="idCardNo"/>
+      <result column="family_address" property="familyAddress"/>
+    </collection>
+        <collection property="organizations" ofType="com.egovchina.partybuilding.partybuild.vo.OrganizationVO">
+      <id column="dept_id" property="deptId"/>
+      <result column="name" property="name"/>
+    </collection>
+  </resultMap>
   <!--保存报到信息-->
   <insert id="addPositiveRegist" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist" useGeneratedKeys="true" keyProperty="positiveRegistId">
     insert into tab_pb_positive_regist

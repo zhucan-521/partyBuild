@@ -21,12 +21,12 @@ public class PunishmentDTO {
     @TableId(value = "punishment_id", type = IdType.AUTO)
     private Long punishmentId;
 
-    @ApiModelProperty(value = "处分日期",example ="yyyy-MM-dd")
-    @NotNull(message = "处分日期不能为空!")
+    @ApiModelProperty(value = "处分日期", required = true, example = "yyyy-MM-dd")
+    @NotNull(message = "处分日期不能为空")
     private Date punishDate;
 
-    @ApiModelProperty(value = "处分名称")
-    @NotNull(message = "处分名称不能为空!")
+    @ApiModelProperty(value = "处分名称", required = true)
+    @NotNull(message = "处分名称不能为空")
     private String punishName;
 
     @ApiModelProperty(value = "是否移交司法机关：1 是;0 否(字符串只能有一个长度)", required = true,example = "0")

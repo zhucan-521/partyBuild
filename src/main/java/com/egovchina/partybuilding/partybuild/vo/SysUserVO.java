@@ -2,6 +2,8 @@ package com.egovchina.partybuilding.partybuild.vo;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.egovchina.partybuilding.common.config.DictSerializer;
+import com.egovchina.partybuilding.partybuild.dto.PositivesDTO;
+import com.egovchina.partybuilding.partybuild.entity.TabPbPositives;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -116,4 +118,8 @@ public class SysUserVO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "工作时间")
     private Date workDate;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "人员职务集合")
+    private List<PositivesDTO> positives;
 }

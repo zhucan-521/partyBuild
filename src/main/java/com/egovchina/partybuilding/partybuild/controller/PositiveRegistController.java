@@ -10,7 +10,6 @@ import com.egovchina.partybuilding.partybuild.vo.PositiveRegistMemberVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -54,7 +53,7 @@ public class PositiveRegistController {
     })
     @PutMapping("/status")
     public ReturnEntity changeStatus(Long positiveRegistId, Byte revokeTag) {
-        return ReturnUtil.buildReturn(positiveRegistService.ChangeStatus(positiveRegistId, revokeTag));
+        return ReturnUtil.buildReturn(positiveRegistService.changeStatus(positiveRegistId, revokeTag));
     }
 
     @ApiOperation(value = "根据主键ID删除信息", notes = "主键ID为必填", httpMethod = "DELETE")

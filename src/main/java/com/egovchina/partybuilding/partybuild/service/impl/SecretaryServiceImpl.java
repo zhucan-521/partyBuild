@@ -1,12 +1,13 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.util.*;
+import com.egovchina.partybuilding.partybuild.dto.SecretaryMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.*;
 import com.egovchina.partybuilding.partybuild.repository.TabPbDeptSecretaryMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFamilyMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper;
-import com.egovchina.partybuilding.partybuild.dto.SecretaryMemberDTO;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.SecretaryService;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryInfoVO;
@@ -41,7 +42,6 @@ public class SecretaryServiceImpl implements SecretaryService {
 
     /**
      * 根据用户id获取书记基本信息
-     *
      * @param userId
      * @return
      */
@@ -53,22 +53,19 @@ public class SecretaryServiceImpl implements SecretaryService {
         return secretaryInfoVO;
     }
 
-
     /**
      * 添加书记
-     *
      * @param secretaryMemberDTO
      * @return
      */
     @Override
     public ReturnEntity insertSecretary(SecretaryMemberDTO secretaryMemberDTO) {
-        Long userId = null;
+        Long userId;
         if (null == secretaryMemberDTO.getUserId()) {
             SysUser sysUser = new SysUser();
             BeanUtil.copyPropertiesIgnoreNull(secretaryMemberDTO, sysUser);
             PaddingBaseFieldUtil.paddingBaseFiled(sysUser);
             tabSysUserMapper.insertSelective(sysUser);
-            userId = sysUser.getUserId().longValue();
         }
         userId = secretaryMemberDTO.getUserId();
         TabPbDeptSecretary tabPbDeptSecretaryinsert = new TabPbDeptSecretary();
@@ -80,15 +77,6 @@ public class SecretaryServiceImpl implements SecretaryService {
             List<TabPbPositives> positivesList = secretaryMemberDTO.getPositivesList();
             if (CollectionUtil.isNotEmpty(familyList)) {
                 for (TabPbFamily tabPbFamily : familyList) {
-                    Long relationUserId = tabSysUserMapper.SelectUserIdByIDcard(tabPbFamily.getIdCardNo());
-                    if (null == relationUserId) {
-                        SysUser sysUser = new SysUser();
-                        BeanUtil.copyPropertiesIgnoreNull(tabPbFamily, sysUser);
-                        sysUser.setUserId(null);
-                        tabSysUserMapper.insertSelective(sysUser);
-                        relationUserId = sysUser.getUserId().longValue();
-                    }
-                    tabPbFamily.setRelationId(relationUserId);
                     tabPbFamily.setUserId(userId);
                 }
                 tabPbFamilyMapper.batchInsertFamilyList(familyList);
@@ -103,10 +91,8 @@ public class SecretaryServiceImpl implements SecretaryService {
         return ReturnUtil.buildReturn(flag);
     }
 
-
     /**
      * 修改书记
-     *
      * @param secretaryMemberDTO
      * @return
      */
@@ -118,33 +104,27 @@ public class SecretaryServiceImpl implements SecretaryService {
         int flag = tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretaryinsert);
         List<TabPbFamily> familyList = secretaryMemberDTO.getFamilyList();
         List<TabPbPositives> positivesList = secretaryMemberDTO.getPositivesList();
-        for (TabPbFamily tabPbFamily : familyList) {
-            if (tabPbFamily.getRelationId() != null) {
-                tabPbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
-            } else {
-                Long relationUserId = tabSysUserMapper.SelectUserIdByIDcard(tabPbFamily.getIdCardNo());
-                if (null == relationUserId) {
-                    SysUser sysUser = new SysUser();
-                    BeanUtil.copyPropertiesIgnoreNull(tabPbFamily, sysUser);
-                    sysUser.setUserId(null);
-                    tabSysUserMapper.insertSelective(sysUser);
-                    relationUserId = sysUser.getUserId().longValue();
+        if (CollectionUtil.isNotEmpty(familyList)) {
+            for (TabPbFamily tabPbFamily : familyList) {
+                if (tabPbFamily.getRelationId() != null) {
+                    tabPbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
+                } else {
+                    tabPbFamily.setUserId(secretaryMemberDTO.getUserId());
+                    tabPbFamilyMapper.insertSelective(tabPbFamily);
                 }
-                tabPbFamily.setRelationId(relationUserId);
-                tabPbFamily.setUserId(secretaryMemberDTO.getUserId());
-                tabPbFamilyMapper.insertSelective(tabPbFamily);
             }
         }
-        for (TabPbPositives tabPbPositives : positivesList) {
-            if (tabPbPositives.getPositiveId() != null) {
-                tabPbPositivesMapper.updateByPrimaryKeySelective(tabPbPositives);
-            } else {
-                tabPbPositivesMapper.insertSelective(tabPbPositives);
+        if (CollectionUtil.isNotEmpty(secretaryMemberDTO.getPositivesList())) {
+            for (TabPbPositives tabPbPositives : positivesList) {
+                if (tabPbPositives.getPositiveId() != null) {
+                    tabPbPositivesMapper.updateByPrimaryKeySelective(tabPbPositives);
+                } else {
+                    tabPbPositivesMapper.insertSelective(tabPbPositives);
+                }
             }
         }
         return ReturnUtil.buildReturn(flag);
     }
-
 
     /**
      * 根据书记id获取书记详情

@@ -36,12 +36,12 @@ public class PositivesDTO {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "任职开始", required = true,example ="yyyy-MM-dd")
-    @NotNull(message = "任职开始日期不能为空!")
+    @NotNull(message = "任职开始日期不能为空")
     private Date positiveStart;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "任职结束", required = true,example ="yyyy-MM-dd")
-    @NotNull(message = "任职结束日期不能为空!")
+    @NotNull(message = "任职结束日期不能为空")
     private Date positiveFinished;
 
     @ApiModelProperty(value = "描述")

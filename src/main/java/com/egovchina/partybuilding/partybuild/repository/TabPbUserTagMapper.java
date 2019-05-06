@@ -1,8 +1,7 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
-import com.egovchina.partybuilding.partybuild.dto.UserTagDTO;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -35,14 +34,6 @@ public interface TabPbUserTagMapper {
      * @return
      */
     List<TabPbUserTag> selectAllListSelective(TabPbUserTag userTag);
-
-    /**
-     * 对应的dictId可通过系统-字典管理-用户标签查看对应的标签
-     *
-     * @param tagDict 用户标签查看对应的标签
-     * @return
-     */
-    List<SysUser> selectUserByTagDict(Long tagDict);
 
     boolean exist(@Param("userId") Long userId, @Param("tagTypes") Long tagType);
 

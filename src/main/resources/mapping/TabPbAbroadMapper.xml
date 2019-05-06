@@ -64,7 +64,7 @@
     <!-- 返回出国出境详细信息Vo数据集合 -->
     <resultMap id="AbroadDetailsResultMap" type="com.egovchina.partybuilding.partybuild.vo.AbroadDetailsVO">
         <id column="abroad_id" jdbcType="BIGINT" property="abroadId"/>
-        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="real_name" jdbcType="VARCHAR" property="realName"/>
@@ -442,7 +442,7 @@
     <select id="findAbroadDetailsVOByAbroadId" parameterType="java.lang.Long" resultMap="AbroadDetailsResultMap">
         SELECT
         <include refid="Simplify_Column_List"/>,
-        dept.`name`,
+        dept.`name` as org_name,
         `user`.username,
         `user`.realname
         FROM
@@ -457,28 +457,15 @@
             resultType="com.egovchina.partybuilding.partybuild.vo.MemberReducesVO">
         SELECT
         TIMESTAMPDIFF(YEAR, abroad_date,if(return_date is null ,return_date,CURDATE())) as age,
-        user_id
-        <!--过滤查询-->
-        <choose>
-            <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
-            <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
-                from (select dept_id as org_id from sys_dept dept
-                where dept.del_flag = 0
-                <if test="orgRange == 1">
-                    and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
-                </if>
-                <if test="orgRange == 2">
-                    and find_in_set(#{deptId}, dept.full_path)
-                </if>
-                ) d
-                inner join sys_user u on u.dept_id = d.org_id
-                INNER JOIN tab_pb_abroad t ON u.user_id = t.user_id
-            </when>
-            <otherwise>
-                from sys_user u
-            </otherwise>
-        </choose>
-        INNER JOIN tab_pb_abroad t ON u.user_id = t.user_id
-        WHERE t.del_flag = 0
+        t.user_id
+        from tab_pb_abroad t
+        inner join sys_dept dept on dept.dept_id = t.org_id
+        WHERE t.del_flag = '0'
+        <if test="orgRange == 1">
+            and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
+        </if>
+        <if test="orgRange == 2">
+            and find_in_set(#{deptId}, dept.full_path)
+        </if>
     </select>
 </mapper>

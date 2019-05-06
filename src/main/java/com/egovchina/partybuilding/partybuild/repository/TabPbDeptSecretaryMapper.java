@@ -40,4 +40,13 @@ public interface TabPbDeptSecretaryMapper {
      */
     List<SecretaryMemberVO> selectSecretaryVOList(SecretaryMemberQueryBean secretaryMemberQueryBean);
 
+
+    /**
+     * 根据码表id获取码表排序码
+     *
+     * @param id
+     * @return
+     */
+    Long getSortByDictId(Long id);
+
 }

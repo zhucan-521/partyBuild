@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.egovchina.partybuilding.common.util.BeanUtil.copyPropertiesAndPaddingBaseField;
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
 /**
  * desc: 双述双评-服务接口实现
@@ -84,7 +84,7 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
         conditions.put("orgId", orgId);
         conditions.put("delFlag", "0");
         verificationInsert(doubleCommentaryDTO, conditions);
-        TabPbDoubleCommentary tabPbDoubleCommentary = copyPropertiesAndPaddingBaseField(doubleCommentaryDTO, TabPbDoubleCommentary.class, false, false);
+        TabPbDoubleCommentary tabPbDoubleCommentary = generateTargetCopyPropertiesAndPaddingBaseField(doubleCommentaryDTO, TabPbDoubleCommentary.class, false);
         int result = doubleCommentaryMapper.insertSelective(tabPbDoubleCommentary);
         if (result > 0) {
             result += attachmentService.intelligentOperation(doubleCommentaryDTO.getAttachments(), doubleCommentaryDTO.getCommentaryId(), AttachmentType.DOUBLE_COMMENTARY);
@@ -95,7 +95,7 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
     @Override
     public int updateCommentary(DoubleCommentaryDTO doubleCommentaryDTO) {
         verificationUpdate(doubleCommentaryDTO);
-        TabPbDoubleCommentary tabPbDoubleCommentary = copyPropertiesAndPaddingBaseField(doubleCommentaryDTO, TabPbDoubleCommentary.class, false, true);
+        TabPbDoubleCommentary tabPbDoubleCommentary = generateTargetCopyPropertiesAndPaddingBaseField(doubleCommentaryDTO, TabPbDoubleCommentary.class, true);
         int retVal = doubleCommentaryMapper.updateByPrimaryKeySelective(tabPbDoubleCommentary);
         if (0 < retVal) {
             retVal += attachmentService.intelligentOperation(doubleCommentaryDTO.getAttachments(), doubleCommentaryDTO.getCommentaryId(), AttachmentType.DOUBLE_COMMENTARY);
@@ -124,7 +124,7 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
         TabPbDoubleCommentary commentary = new TabPbDoubleCommentary();
         commentary.setCommentaryId(commentaryId);
         commentary.setDelFlag(CommonConstant.STATUS_DEL);
-        TabPbDoubleCommentary tabPbDoubleCommentary = copyPropertiesAndPaddingBaseField(commentary, TabPbDoubleCommentary.class, false, true);
+        TabPbDoubleCommentary tabPbDoubleCommentary = generateTargetCopyPropertiesAndPaddingBaseField(commentary, TabPbDoubleCommentary.class, true);
         return doubleCommentaryMapper.updateByPrimaryKeySelective(tabPbDoubleCommentary);
     }
 
@@ -137,11 +137,11 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
         TabPbDoubleCommentary commentary = new TabPbDoubleCommentary();
         commentary.setCommentaryId(commentaryVO.getCommentaryId());
         commentary.setCheckOrg(UserContextHolder.getOrgId());
-        commentary.setCheckUser(UserContextHolder.getUserIdLong());
+        commentary.setCheckUser(UserContextHolder.getUserId());
         commentary.setCheckResult(doubleCommentaryQueryBean.getCheckResult());
         commentary.setCheckDesc(doubleCommentaryQueryBean.getCheckDesc());
         commentary.setCheckDate(new Date());
-        TabPbDoubleCommentary tabPbDoubleCommentary = copyPropertiesAndPaddingBaseField(commentary, TabPbDoubleCommentary.class, false, true);
+        TabPbDoubleCommentary tabPbDoubleCommentary = generateTargetCopyPropertiesAndPaddingBaseField(commentary, TabPbDoubleCommentary.class, true);
         return doubleCommentaryMapper.updateByPrimaryKeySelective(tabPbDoubleCommentary);
     }
 

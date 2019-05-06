@@ -1,12 +1,13 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
-import com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker;
-import com.egovchina.partybuilding.partybuild.system.entity.SysUserRole;
 import com.egovchina.partybuilding.partybuild.entity.SpecialWorkerQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker;
 import com.egovchina.partybuilding.partybuild.vo.SpecialWorkerVO;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface TabPbSpcialWorkerMapper {
     int deleteByPrimaryKey(Long specialWorkerId);
 
@@ -21,14 +22,6 @@ public interface TabPbSpcialWorkerMapper {
     int updateByPrimaryKeyWithBLOBs(TabPbSpcialWorker record);
 
     int updateByPrimaryKey(TabPbSpcialWorker record);
-
-
-    /**
-     * 查询人员权限表中有没有专干人员
-     * @param userId
-     * @return
-     */
-    SysUserRole selectSysUserRoleByUserId(Long userId);
 
 
     /**

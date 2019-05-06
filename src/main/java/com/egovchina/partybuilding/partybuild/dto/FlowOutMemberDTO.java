@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 public class FlowOutMemberDTO {
 
-    @ApiModelProperty(value = "流出党员信息ID")
+    @ApiModelProperty(value = "流出党员信息ID", required = true)
     @NotNull(message = "请传入flowOutId")
     private Long flowOutId;
 
@@ -108,7 +108,6 @@ public class FlowOutMemberDTO {
 
     @ApiModelProperty(value = "流入组织名称")
     private String flowToOrgName;
-
 
     @ApiModelProperty(value = "流出组织名称")
     private String flowFromOrgName;

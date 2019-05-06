@@ -16,7 +16,7 @@ public class SecretaryMemberVO {
     private Long secretaryId;
 
     @ApiModelProperty(value = "用户ID")
-    private Integer userId;
+    private Long userId;
 
     @ApiModelProperty(value = "身份证")
     private String idCardNo;
@@ -44,7 +44,7 @@ public class SecretaryMemberVO {
 
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "出生日期")
+    @ApiModelProperty(value = "出生日期", example = "yyyy-hh-dd")
     private Date birthday;
 
 
@@ -116,12 +116,12 @@ public class SecretaryMemberVO {
     private Date servingTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "任同级实职时间")
+    @ApiModelProperty(value = "任同级实职时间", example = "yyyy-hh-dd")
     private Date servingRealTime;
 
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "任现级时间")
+    @ApiModelProperty(value = "任现级时间", example = "yyyy-hh-dd")
     private Date incumbentTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")

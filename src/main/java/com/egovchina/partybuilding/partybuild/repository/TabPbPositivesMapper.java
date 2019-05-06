@@ -27,17 +27,15 @@ public interface TabPbPositivesMapper {
 
     /**
      * 根据userId查询党内职务，党员信息列表使用
-     *
      * @param tabPbPositives
      * @return
      */
-    List<TabPbPositives> selectPositives(TabPbPositives tabPbPositives);
+    List<PositivesVO> selectPositives(TabPbPositives tabPbPositives);
 
     List<TabPbPositives> verifyDuplicateDuties(TabPbPositives tabPbPositives);
 
     /**
      * 批量保存职务
-     *
      * @param pbPositivesList
      * @return
      */
@@ -45,7 +43,6 @@ public interface TabPbPositivesMapper {
 
     /**
      * 批量保存职务
-     *
      * @param pbPositivesList
      * @return
      */
@@ -53,7 +50,6 @@ public interface TabPbPositivesMapper {
 
     /**
      * 批量逻辑删除
-     *
      * @param pbPositivesList
      * @return
      */
@@ -61,12 +57,10 @@ public interface TabPbPositivesMapper {
 
     /**
      * 根据userId删除所有职务
-     *
      * @param userId
      * @return
      */
     int tombstoneUser(Long userId);
-
 
     PositivesVO selectByIdToPositivesVO(Integer positiveId);
 
@@ -74,9 +68,15 @@ public interface TabPbPositivesMapper {
 
     /**
      * 根据人员id获取他的职位
-     *
      * @param userId
      * @return
      */
     List<PositivesVO> selectTabPbPositivesByUserId(Long userId);
+
+    /**
+     * 根据条件逻辑删除职务
+     *
+     * @param delete 删除实体
+     */
+    int logicDeletePositiveByCondition(TabPbPositives delete);
 }

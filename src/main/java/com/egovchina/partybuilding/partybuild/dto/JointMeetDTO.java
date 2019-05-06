@@ -23,7 +23,7 @@ public class JointMeetDTO {
     @ApiModelProperty(value = "党建联席会主键")
     private Long jointMeetId;
 
-    @ApiModelProperty(value = "组织主键")
+    @ApiModelProperty(value = "组织主键", required = true)
     @NotNull(message = "组织主键不能为空")
     private Long orgId;
 
@@ -34,7 +34,7 @@ public class JointMeetDTO {
     @ApiModelProperty(value = "数据描述")
     private String description;
 
-    @ApiModelProperty(value = "党建联席会成员组织列表")
+    @ApiModelProperty(value = "党建联席会成员组织列表", required = true)
     @NotNull(message = "党建联席会成员组织列表不能为空")
     List<JointMeetOrgDTO> jointMeetOrgs;
 }

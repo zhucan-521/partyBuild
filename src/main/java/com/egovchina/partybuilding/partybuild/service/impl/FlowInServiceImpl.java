@@ -2,17 +2,17 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.partybuild.dto.FlowInMemberDTO;
+import com.egovchina.partybuilding.partybuild.entity.FlowInMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowIn;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowOut;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFlowInMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFlowOutMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
-import com.egovchina.partybuilding.partybuild.entity.SysUser;
-import com.egovchina.partybuilding.partybuild.entity.FlowInMemberQueryBean;
-import com.egovchina.partybuilding.partybuild.dto.FlowInMemberDTO;
 import com.egovchina.partybuilding.partybuild.service.FlowInService;
 import com.egovchina.partybuilding.partybuild.vo.FlowInMemberVO;
 import com.github.pagehelper.PageHelper;
@@ -39,8 +39,6 @@ public class FlowInServiceImpl implements FlowInService {
 
     @Autowired
     private TabPbFlowOutMapper tabPbFlowOutMapper;
-
-
 
     /**
      * 流入党员列表查询
@@ -143,7 +141,6 @@ public class FlowInServiceImpl implements FlowInService {
         return tabPbFlowInMapper.updateByPrimaryKeySelective(tabPbFlowInUpdate);
     }
 
-
     /**
      * 結束流動
      * @param
@@ -167,7 +164,6 @@ public class FlowInServiceImpl implements FlowInService {
         tabPbFlowOut.setFlowOutState(59416L);
         //设置返回日期
         tabPbFlowOut.setReturnDate(flowInMemberDto.getReturnDate());
-
         return tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOut);
     }
 

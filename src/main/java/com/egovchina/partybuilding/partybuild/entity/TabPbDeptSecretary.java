@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
+import com.egovchina.partybuilding.common.entity.SysUser;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
