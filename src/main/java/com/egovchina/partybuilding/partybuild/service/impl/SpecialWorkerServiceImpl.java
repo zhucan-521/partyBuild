@@ -5,6 +5,7 @@ import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
+import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.partybuild.dto.SpecialWorkerDTO;
 import com.egovchina.partybuilding.partybuild.entity.SpecialWorkerQueryBean;
@@ -31,16 +32,16 @@ import static com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil.paddi
 public class SpecialWorkerServiceImpl implements SpecialWorkerService {
 
     @Autowired
-    TabSysUserMapper tabSysUserMapper;
+    private TabSysUserMapper tabSysUserMapper;
 
     @Autowired
-    SystemServiceFeignClient systemServiceFeignClient;
+    private SystemServiceFeignClient systemServiceFeignClient;
 
     @Autowired
-    TabPbSpcialWorkerMapper tabPbSpcialWorkerMapper;
+    private TabPbSpcialWorkerMapper tabPbSpcialWorkerMapper;
 
     @Autowired
-    TabSysDeptMapper tabSysDeptMapper;
+    private TabSysDeptMapper tabSysDeptMapper;
 
     /**
      * 专干新增
@@ -95,8 +96,8 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
         if (spcialWorker == null) {
             throw new BusinessDataCheckFailException("专干不存在");
         }
-        spcialWorker.setDelFlag("1");
-        spcialWorker.setEblFlag("0");
+        spcialWorker.setDelFlag(CommonConstant.STATUS_DEL);
+        spcialWorker.setEblFlag(CommonConstant.STATUS_NOEBL);
         paddingUpdateRelatedBaseFiled(spcialWorker);
         int count = tabPbSpcialWorkerMapper.updateByPrimaryKeySelective(spcialWorker);
         //删除user_role表里面的专干信息
