@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * 班子成员
  *
- * @Author Jiang An
+ * @Author guanyingxin
  **/
 @Api(tags = "党组织-领导班子成员模块v1-官颖鑫")
 @RestController

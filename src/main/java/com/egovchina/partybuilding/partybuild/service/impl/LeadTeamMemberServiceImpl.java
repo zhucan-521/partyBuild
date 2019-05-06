@@ -2,6 +2,7 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysUser;
+import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
@@ -18,13 +19,16 @@ import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.LeadTeamMemberService;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
-import com.egovchina.partybuilding.partybuild.vo.SysUserVO;
+import com.egovchina.partybuilding.partybuild.vo.LeadTeamVO;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
@@ -72,6 +76,10 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
 
     @Override
     public LeadTeamMemberVO selectLeadTeamMemberVOById(Long memberId) {
+        LeadTeamMemberVO leadTeamMemberVO = tabPbLeadTeamMemberMapper.selectLeadTeamMemberVOById(memberId);
+        if (leadTeamMemberVO == null) {
+            throw new BusinessDataNotFoundException("您要查询的班子成员信息不存在");
+        }
         return tabPbLeadTeamMemberMapper.selectLeadTeamMemberVOById(memberId);
     }
 
@@ -84,30 +92,31 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
     @Transactional
     @Override
     public int insertLeadTeamMember(LeadTeamMemberDTO leadTeamMemberDTO) {
+        //数据验证
         dataValidation(leadTeamMemberDTO);
         TabPbLeadTeamMember tabPbLeadTeamMember =
                 generateTargetCopyPropertiesAndPaddingBaseField(leadTeamMemberDTO, TabPbLeadTeamMember.class, false);
         int judgment = tabPbLeadTeamMemberMapper.insertSelective(tabPbLeadTeamMember);
         if (judgment > 0) {
             tabPbLeadTeamMapper.correctTheNumberOfTeamsAccordingToTheTeamId(leadTeamMemberDTO.getLeadTeamId());
+            //修改职务信息
             modifyPosition(leadTeamMemberDTO);
-            judgment += iTabPbAttachmentService.intelligentOperation(leadTeamMemberDTO.getAttachments(),
-                    leadTeamMemberDTO.getMemberId(), AttachmentType.PORTRAIT);
         }
         return judgment;
     }
 
-
     @Transactional
     @Override
     public int updateLeadTeamMember(LeadTeamMemberDTO leadTeamMemberDTO) {
+        LeadTeamMemberVO leadTeamMemberVO = tabPbLeadTeamMemberMapper.selectLeadTeamMemberVOById(leadTeamMemberDTO.getMemberId());
+        if (leadTeamMemberVO == null) {
+            throw new BusinessDataNotFoundException("您要修改的班子成员信息不存在");
+        }
         TabPbLeadTeamMember tabPbLeadTeamMember =
                 generateTargetCopyPropertiesAndPaddingBaseField(leadTeamMemberDTO, TabPbLeadTeamMember.class, true);
         int judgment = tabPbLeadTeamMemberMapper.updateByPrimaryKeySelective(tabPbLeadTeamMember);
         if (judgment > 0) {
             modifyPosition(leadTeamMemberDTO);
-            judgment += iTabPbAttachmentService.intelligentOperation(leadTeamMemberDTO.getAttachments(),
-                    leadTeamMemberDTO.getMemberId(), AttachmentType.PORTRAIT);
         }
         return judgment;
     }
@@ -122,8 +131,13 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
         if (sysUser == null) {
             throw new BusinessDataNotFoundException("用户不存在");
         }
-        boolean exists = tabPbLeadTeamMemberMapper
-                .memberAlreadyExistsInTheTeam(leadTeamMemberDTO.getLeadTeamId(), leadTeamMemberDTO.getUserId());
+        LeadTeamVO leadTeamVO = tabPbLeadTeamMapper.selectLeadTeamVOById(leadTeamMemberDTO.getLeadTeamId());
+        if (leadTeamVO == null) {
+            throw new BusinessDataNotFoundException("领导班子不存在");
+        }
+        boolean exists = Optional.ofNullable(tabPbLeadTeamMemberMapper
+                .memberAlreadyExistsInTheTeam(leadTeamMemberDTO.getLeadTeamId(), leadTeamMemberDTO.getUserId()))
+                .orElse(false);
         if (exists) {
             throw new BusinessDataCheckFailException("该成员已存在");
         }
@@ -135,6 +149,8 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
      * @param leadTeamMemberDTO 班子成员DTO
      */
     private void modifyPosition(LeadTeamMemberDTO leadTeamMemberDTO) {
+        //党内职务
+        final Long Party_Position = 59421L;
         //先移除同一个班子里已有的职务
         TabPbPositives delete = new TabPbPositives();
         delete.setPositiveOrgId(leadTeamMemberDTO.getOrgId());
@@ -147,7 +163,7 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
         TabPbPositives tabPbPositives =
                 generateTargetCopyPropertiesAndPaddingBaseField(delete, TabPbPositives.class, false);
         tabPbPositives.setPositiveName(leadTeamMemberDTO.getPositiveId());
-        tabPbPositives.setPositiveType(59421L); // 党内职务
+        tabPbPositives.setPositiveType(Party_Position); // 党内职务
         tabPbPositives.setPositiveStart(leadTeamMemberDTO.getTenureBegin());
         tabPbPositives.setPositiveFinished(leadTeamMemberDTO.getTenureLeave());
         tabPbPositives.setDescription(leadTeamMemberDTO.getDescription());

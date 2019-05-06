@@ -32,7 +32,7 @@ public class LeadTeamDTO {
     private Long sessionYear;
 
     @ApiModelProperty(value = "换届时间", example = "2019-01-01")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date changeDate;
 
     @ApiModelProperty(value = "任期年限", required = true)
@@ -90,4 +90,5 @@ public class LeadTeamDTO {
 
     @ApiModelProperty(value = "附件")
     private List<TabPbAttachment> attachments;
+
 }

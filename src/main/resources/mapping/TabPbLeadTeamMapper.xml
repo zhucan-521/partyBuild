@@ -410,12 +410,6 @@
         <if test="orgName != null and orgName != ''">
             AND d.name like CONCAT('%',#{orgName},'%')
         </if>
-        <if test="personName !=null and personName !=''">
-            and ll.leadname like CONCAT('%',#{personName},'%') or (d.orgnize_master like CONCAT('%',#{personName},'%'))
-        </if>
-        <if test="idCardNo != null and idCardNo !=''">
-            AND ll.idcard like CONCAT('%',#{idCardNo},'%')
-        </if>
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
         <choose>
             <when test="orgRange == 1">

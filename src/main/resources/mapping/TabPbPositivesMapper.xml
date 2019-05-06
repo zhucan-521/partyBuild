@@ -98,9 +98,19 @@
         join sys_dict d on p.positive_name = d.id and d.type='DNZW'
         where p.del_flag = 0
         and p.user_id = #{userId}
+        order by p.update_time desc
     </select>
-
-
+    <!--查询党员职务名称，党员信息列表使用-->
+    <select id="selectPositivesName" parameterType="java.lang.Long"
+            resultType="com.egovchina.partybuilding.partybuild.vo.SecretariesPostivesVO">
+        select
+        p.positive_name
+        from tab_pb_positives p
+        join sys_dict d on p.positive_name = d.id and d.type='DNZW'
+        where p.del_flag = 0
+        and p.user_id = #{userId}
+        order by p.update_time desc
+    </select>
 
     <select id="selectByIdToAllPositivesVO" parameterType="java.util.Map" resultMap="BaseMoreResultMap">
         select
@@ -294,6 +304,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
         update tab_pb_positives
         <set>
@@ -518,8 +529,8 @@
             parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
         UPDATE tab_pb_positives
         SET del_flag = 1,
-        update_time = #{updateTime}, update_userid = #{updateUserid}, updateUsername = #{updateUsername}
+        update_time = #{updateTime}, update_userid = #{updateUserid}, update_username = #{updateUsername}
         WHERE
-            positive_org_id = #{positiveOrgId} and user_id = #{userId} and business_from = #{business} and business_id = #{businessId}
+            positive_org_id = #{positiveOrgId} and user_id = #{userId} and business_from = #{businessFrom} and business_id = #{businessId}
     </update>
 </mapper>

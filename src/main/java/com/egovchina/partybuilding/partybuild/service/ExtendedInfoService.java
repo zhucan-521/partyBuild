@@ -3,6 +3,7 @@ package com.egovchina.partybuilding.partybuild.service;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.dto.DeletePartyMemberDTO;
 import com.egovchina.partybuilding.partybuild.vo.PartyMemberVO;
+import com.egovchina.partybuilding.partybuild.vo.SecretariesPartyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.SysUserVO;
 import com.github.pagehelper.PageInfo;
 
@@ -16,4 +17,6 @@ public interface ExtendedInfoService {
     PartyMemberVO selectPartyMemberVOById(Long userId);
 
     int updateByUserId(DeletePartyMemberDTO reduce);
+
+    SecretariesPartyMemberVO selectSecretariesPartyMemberVO(Long userId);
 }

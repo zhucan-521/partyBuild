@@ -67,6 +67,13 @@ public class PartyInformationController {
         return extendedInfoService.selectPartyMemberVOById(id);
     }
 
+    @ApiOperation(value = "根据id获取组织信息列表里面的书记的简单信息", notes = "根据id获取组织信息列表里面的书记的简单信息", httpMethod = "GET")
+    @ApiImplicitParam(value = "党员id", name = "id", dataType = "long", paramType = "path", required = true)
+    @GetMapping("/party-members/{id}/secretaries")
+    public SecretariesPartyMemberVO getSecretariesParty(@PathVariable Long id) {
+        return extendedInfoService.selectSecretariesPartyMemberVO(id);
+    }
+
     @ApiOperation(value = "根据身份证号码或者姓名获取人员信息", notes = "根据身份证号码或者姓名获取人员信息", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "姓名", dataType = "String"),

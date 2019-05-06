@@ -224,16 +224,32 @@
             <collection property="joinOrgName"
                         select="com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper.selectDeptNameByPrimaryKey"
                         column="dept_id"/>
-            <collection property="positives"
-                        select="com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper.selectPositives"
-                        column="{userId=user_id}"/>
         </association>
         <collection property="educations" select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyEducationMapper.findAllByUserId" column="user_id"/>
         <collection property="jobTitles" select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyJobTitleMapper.findAllByUserId" column="user_id"/>
         <collection property="works" select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyWorkMapper.findAllByUserId" column="user_id"/>
     </resultMap>
 
-
+    <!--查询组织书记的简单信息-->
+    <resultMap id="BaseSecretariesPartyResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.SecretariesPartyMemberVO">
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="realname" jdbcType="VARCHAR" property="realname"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="gender" jdbcType="BIGINT" property="gender"/>
+        <result column="birthday" jdbcType="TIMESTAMP" property="birthday"/>
+        <result column="nation" jdbcType="BIGINT" property="nation"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="fix_phone" jdbcType="VARCHAR" property="fixPhone"/>
+        <result column="join_org_time" jdbcType="TIMESTAMP" property="joinOrgTime"/>
+        <result column="ancestor_place" jdbcType="BIGINT" property="ancestorPlace"/>
+        <collection property="joinOrgName"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper.selectDeptNameByPrimaryKey"
+                    column="dept_id"/>
+        <collection property="positives"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper.selectPositivesName"
+                    column="user_id"/>
+    </resultMap>
 
     <!--历史党员信息-->
     <resultMap id="History_UserInfo" type="com.egovchina.partybuilding.partybuild.vo.HistoryPartyVO">
@@ -246,7 +262,6 @@
         <result column="in_where_dept_name" jdbcType="VARCHAR" property="inWhereDeptName"/>
         <result column="age" jdbcType="BIGINT" property="partyStanding"/>
     </resultMap>
-
 
     <resultMap id="DirectPartyMemberVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.DirectPartyMemberVO">
         <result column="user_id" property="userId"/>
@@ -275,8 +290,8 @@
     <!--查询党员详细信息 ,join_org_time-->
     <sql id="Base_Column_List_new">
       user_id,dept_id,realname,gender,id_card_no,birthday, TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age ,nation,community_addr,avatar,phone,fix_phone,family_address,
-      join_org_name,join_org_id,positived,identity_type,files_manage_unit,registry_status,registry_status,
-      join_time,regular_time,work_resumes,is_llost,flow_status,marital_status,health,ancestor_place,work_date,join_org_time
+      join_org_name,join_org_id,positived,identity_type,files_manage_unit,registry_status,join_time,regular_time,work_resumes,is_llost,flow_status,marital_status,health,
+      ancestor_place,work_date,join_org_time
     </sql>
     <sql id="Blob_Column_List">
     post_reason, work_resumes, comment, content, rewards, present_perform
@@ -420,6 +435,7 @@
         <include refid="Blob_Column_List"/>
         from sys_user
         where user_id = #{userId,jdbcType=BIGINT}
+        and del_flag = '0'
     </select>
 
     <select id="selectByPrimaryKeyToAll" parameterType="java.lang.Long" resultMap="BaseResultMapExtendsTagsAndSomeOthers">
@@ -427,6 +443,17 @@
         <include refid="Base_Column_List_new"/>
         from sys_user
         where user_id = #{userId,jdbcType=BIGINT}
+        and del_flag = '0'
+    </select>
+
+    <select id="selectSecretariesPartyByPrimaryKey" parameterType="java.lang.Long"
+            resultMap="BaseSecretariesPartyResultMap">
+        select
+         user_id,dept_id,realname,gender,nation,phone,fix_phone,
+        join_org_name,marital_status,ancestor_place,join_org_time
+        from sys_user
+        where user_id = #{userId,jdbcType=BIGINT}
+        and del_flag = '0'
     </select>
 
     <select id="selectPageByMap" resultMap="UserInFo">
@@ -852,6 +879,9 @@
             <if test="jobPosition != null">
                 job_position,
             </if>
+            <if test="filesManageUnit != null">
+                files_manage_unit,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="deptId != null">
@@ -1141,6 +1171,9 @@
             </if>
             <if test="jobPosition != null">
                 #{jobPosition,jdbcType=VARCHAR},
+            </if>
+            <if test="filesManageUnit != null">
+                #{filesManageUnit,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -2026,11 +2059,11 @@
     </update>
 
     <select id="checkIsExistByUserId" parameterType="java.lang.Long" resultType="java.lang.Boolean">
-        SELECT COUNT(1) FROM sys_user WHERE user_id = #{userId}
+        SELECT COUNT(*) FROM sys_user WHERE user_id = #{userId}
     </select>
 
     <select id="checkIsExistByIdCard" parameterType="java.lang.String" resultType="java.lang.Boolean">
-        SELECT COUNT(1) FROM sys_user WHERE id_card_no = #{idCard}
+        SELECT COUNT(*) FROM sys_user WHERE id_card_no = #{idCard}
     </select>
 
     <update id="updateUserIsPoorByHardshipId">

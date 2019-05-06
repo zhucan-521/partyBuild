@@ -2,6 +2,7 @@ package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.TabPbPositives;
 import com.egovchina.partybuilding.partybuild.vo.PositivesVO;
+import com.egovchina.partybuilding.partybuild.vo.SecretariesPostivesVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -31,6 +32,8 @@ public interface TabPbPositivesMapper {
      * @return
      */
     List<PositivesVO> selectPositives(TabPbPositives tabPbPositives);
+
+    List<SecretariesPostivesVO> selectPositivesName(Long userId);
 
     List<TabPbPositives> verifyDuplicateDuties(TabPbPositives tabPbPositives);
 

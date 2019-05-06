@@ -77,7 +77,7 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
 
     @Override
     public int insertCommentary(DoubleCommentaryDTO doubleCommentaryDTO) {
-        Long planYear = doubleCommentaryDTO.getPlanYear();
+        String planYear = doubleCommentaryDTO.getPlanYear();
         Long orgId = doubleCommentaryDTO.getOrgId();
         Map<String, Object> conditions = new HashMap<>(3);
         conditions.put("planYear", planYear);

@@ -30,7 +30,7 @@ public class WorkPlanVO {
     private String orgName;
 
     @ApiModelProperty(value = "计划年份")
-    private Long planYear;
+    private String planYear;
 
     @ApiModelProperty(value = "上报日期")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
@@ -76,4 +76,5 @@ public class WorkPlanVO {
 
     @ApiModelProperty(value = "视频数")
     private Integer videoNum;
+
 }
