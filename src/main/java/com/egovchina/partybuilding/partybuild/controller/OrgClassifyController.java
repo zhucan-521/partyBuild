@@ -1,10 +1,10 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
-import com.egovchina.partybuilding.common.entity.OrgRange;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.OrgClassifyDTO;
+import com.egovchina.partybuilding.partybuild.entity.ClassifyQueryBean;
 import com.egovchina.partybuilding.partybuild.service.OrgClassifyService;
 import com.egovchina.partybuilding.partybuild.vo.OrgClassifyVO;
 import com.github.pagehelper.PageInfo;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  * desc: 分类定等模块-v1
  * Created by FanYanGen on 2019/4/24 21:47
  */
-@Api(tags = "党员-分类定等模块v1-范焱根")
+@Api(tags = "党组织-分类定等模块v1-范焱根")
 @RequestMapping("/v1/classifies")
 @RestController
 public class OrgClassifyController {
@@ -55,10 +55,9 @@ public class OrgClassifyController {
     }
 
     @ApiOperation(value = "分类定等列表", notes = "分类定等列表", httpMethod = "GET")
-    @ApiImplicitParam(name = "orgLevel", value = "定等级别 dict FLDD", paramType = "query")
     @GetMapping
-    public PageInfo<OrgClassifyVO> getClassifyList(Page page, OrgRange orgRange, String orgLevel) {
-        return orgClassifyService.findOrgClassifyVOWithConditions(page, orgRange, orgLevel);
+    public PageInfo<OrgClassifyVO> getClassifyList(@RequestBody @Validated ClassifyQueryBean classifyQueryBean, Page page) {
+        return orgClassifyService.findOrgClassifyVOWithConditions(classifyQueryBean, page);
     }
 
 }

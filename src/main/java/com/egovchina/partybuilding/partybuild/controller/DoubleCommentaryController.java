@@ -1,6 +1,5 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
-import com.egovchina.partybuilding.common.entity.OrgRange;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
@@ -58,8 +57,8 @@ public class DoubleCommentaryController {
 
     @ApiOperation(value = "双述双评列表", notes = "双述双评列表", httpMethod = "GET")
     @GetMapping
-    public PageInfo<CommentaryVO> getCommentaryList(Page page, CommentaryQueryBean commentaryQueryBean, OrgRange orgRange) {
-        return commentaryService.findCommentaryVOWithConditions(page, commentaryQueryBean, orgRange);
+    public PageInfo<CommentaryVO> getCommentaryList(CommentaryQueryBean commentaryQueryBean, Page page) {
+        return commentaryService.findCommentaryVOWithConditions(commentaryQueryBean, page);
     }
 
     @ApiOperation(value = "双述双评审核", notes = "双述双评审核", httpMethod = "PUT")

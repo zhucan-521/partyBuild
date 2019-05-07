@@ -23,6 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetAndCopyProperties;
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
 /**
@@ -34,28 +37,41 @@ import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCop
 public class AbroadServiceImpl implements AbroadService {
 
     @Autowired
-    private TabPbAbroadMapper abroadMapper;
+    private TabPbAbroadMapper tabPbAbroadMapper;
 
     @Autowired
-    private TabSysDeptMapper deptMapper;
+    private TabSysDeptMapper tabSysDeptMapper;
 
     @Autowired
-    private TabSysUserMapper sysUserMapper;
+    private TabSysUserMapper tabSysUserMapper;
 
     @Autowired
     private ExtendedInfoService extendedInfoService;
+
+    /**
+     * 减少方式为出国出境
+     **/
+    private final Long OUT_TYPE = 7L;
+
+    /**
+     * 出党方式为出国出境
+     **/
+    private final Long QUIT_TYPE = 30034L;
 
     @Override
     public int insertGoAbroad(GoAbroadDTO goAbroadDTO) {
         Long userId = goAbroadDTO.getUserId();
         verification(goAbroadDTO.getOrgId(), userId);
         TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(goAbroadDTO, TabPbAbroad.class, false);
-        int result = abroadMapper.insertSelective(tabPbAbroad);
-        // 党员出国后将该党员移至历史党员
-        if (0 < result) {
+        int result = tabPbAbroadMapper.insertSelective(tabPbAbroad);
+        /**
+         * 党员出国后将该党员移至历史党员并且修改党籍
+         **/
+        if (result > 0) {
             DeletePartyMemberDTO deletePartyMemberDTO = new DeletePartyMemberDTO();
             deletePartyMemberDTO.setUserId(userId);
-            deletePartyMemberDTO.setOutType(6L);
+            deletePartyMemberDTO.setOutType(OUT_TYPE);
+            deletePartyMemberDTO.setQuitType(QUIT_TYPE);
             extendedInfoService.updateByUserId(deletePartyMemberDTO);
         }
         return result;
@@ -64,8 +80,8 @@ public class AbroadServiceImpl implements AbroadService {
     @Override
     public PageInfo<AbroadVO> findAbroadVOWithConditions(AbroadQueryBean abroadQueryBean, Page page) {
         PageHelper.startPage(page);
-        TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(abroadQueryBean, TabPbAbroad.class, false);
-        return new PageInfo<>(abroadMapper.selectByConditions(tabPbAbroad));
+        TabPbAbroad tabPbAbroad = generateTargetAndCopyProperties(abroadQueryBean, TabPbAbroad.class);
+        return new PageInfo<>(tabPbAbroadMapper.selectByConditions(tabPbAbroad));
     }
 
     @Override
@@ -74,31 +90,38 @@ public class AbroadServiceImpl implements AbroadService {
         tabPbAbroad.setDelFlag(CommonConstant.STATUS_DEL);
         tabPbAbroad.setAbroadId(abroadId);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbAbroad);
-        return abroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
+        return tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
     }
 
     @Override
     public int updateGoAbroad(GoAbroadDTO goAbroadDTO) {
         verification(goAbroadDTO.getOrgId(), goAbroadDTO.getUserId());
         TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(goAbroadDTO, TabPbAbroad.class, true);
-        return abroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
+        return tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
     }
 
     @Override
     public int updateReturnAbroad(ReturnAbroadDTO returnAbroadDTO) {
         verification(returnAbroadDTO.getOrgId(), returnAbroadDTO.getUserId());
         TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(returnAbroadDTO, TabPbAbroad.class, true);
-        return abroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
+        /**
+         * 党员回国后将该党员恢复成出国前的状态
+         **/
+        int result = tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
+        if (result > 0) {
+            extendedInfoService.restoreUser(tabPbAbroad.getUserId());
+        }
+        return result;
     }
 
     @Override
     public GoAbroadDetailsVO findGoAbroadDetailsVOByAbroadId(Long abroadId) {
-        return generateTargetCopyPropertiesAndPaddingBaseField(abroadMapper.findAbroadDetailsVOByAbroadId(abroadId), GoAbroadDetailsVO.class, false);
+        return generateTargetAndCopyProperties(tabPbAbroadMapper.findAbroadDetailsVOByAbroadId(abroadId), GoAbroadDetailsVO.class);
     }
 
     @Override
     public BackAbroadDetailsVO findBackAbroadDetailsVOByAbroadId(Long abroadId) {
-        return generateTargetCopyPropertiesAndPaddingBaseField(abroadMapper.findAbroadDetailsVOByAbroadId(abroadId), BackAbroadDetailsVO.class, false);
+        return generateTargetAndCopyProperties(tabPbAbroadMapper.findAbroadDetailsVOByAbroadId(abroadId), BackAbroadDetailsVO.class);
     }
 
     /**
@@ -110,10 +133,10 @@ public class AbroadServiceImpl implements AbroadService {
      * @date 2019/4/24 21:02
      **/
     private void verification(Long orgId, Long userId) {
-        if (!deptMapper.checkIsExistByOrgId(orgId)) {
+        if (!tabSysDeptMapper.checkIsExistByOrgId(orgId)) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
-        if (!sysUserMapper.checkIsExistByUserId(userId)) {
+        if (!tabSysUserMapper.checkIsExistByUserId(userId)) {
             throw new BusinessDataCheckFailException("该用户不存在");
         }
     }
