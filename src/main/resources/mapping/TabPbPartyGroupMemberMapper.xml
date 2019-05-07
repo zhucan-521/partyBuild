@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbPartyGroupMemberMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroupMember">
+        <id column="member_id" jdbcType="BIGINT" property="memberId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="is_leader" jdbcType="TINYINT" property="isLeader"/>
+        <result column="del_flag" jdbcType="TINYINT" property="delFlag"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+    </resultMap>
+
+    <!-- 返回PartyGroupVO视图对象 -->
+    <resultMap id="PartyGroupMemberVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.PartyGroupMemberVO">
+        <id column="member_id" jdbcType="BIGINT" property="memberId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="is_leader" jdbcType="TINYINT" property="isLeader"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+    </resultMap>
+
+    <!-- 返回PartyMemberBaseVO视图对象 -->
+    <resultMap id="PartyMemberBaseVOVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.PartyMemberBaseVO">
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="realname" jdbcType="VARCHAR" property="realName"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    member_id, user_id, group_id, is_leader, del_flag, username, create_time, create_userid, 
+    create_username, update_time, update_userid, update_username
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_party_group_member
+        where member_id = #{memberId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_party_group_member
+    where member_id = #{memberId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroupMember">
+    insert into tab_pb_party_group_member (member_id, user_id, group_id, 
+      is_leader, del_flag, username, 
+      create_time, create_userid, create_username, 
+      update_time, update_userid, update_username
+      )
+    values (#{memberId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, 
+      #{isLeader,jdbcType=TINYINT}, #{delFlag,jdbcType=TINYINT}, #{username,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroupMember">
+        insert into tab_pb_party_group_member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="groupId != null">
+                group_id,
+            </if>
+            <if test="isLeader != null">
+                is_leader,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">
+                #{memberId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="isLeader != null">
+                #{isLeader,jdbcType=TINYINT},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=TINYINT},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroupMember">
+        update tab_pb_party_group_member
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId,jdbcType=BIGINT},
+            </if>
+            <if test="isLeader != null">
+                is_leader = #{isLeader,jdbcType=TINYINT},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=TINYINT},
+            </if>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where member_id = #{memberId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroupMember">
+    update tab_pb_party_group_member
+    set user_id = #{userId,jdbcType=BIGINT},
+      group_id = #{groupId,jdbcType=BIGINT},
+      is_leader = #{isLeader,jdbcType=TINYINT},
+      del_flag = #{delFlag,jdbcType=TINYINT},
+      username = #{username,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR}
+    where member_id = #{memberId,jdbcType=BIGINT}
+  </update>
+
+    <!-- 根据党小组ID获取该小组下所有成员详细信息 -->
+    <select id="selectPartyGroupMembersDetailsInfoByGroupId" parameterType="java.lang.Long"
+            resultMap="PartyGroupMemberVOResultMap">
+        SELECT
+            gm.member_id,
+            gm.user_id,
+            su.username,
+            gm.is_leader
+        FROM
+            tab_pb_party_group_member gm
+            INNER JOIN sys_user su ON gm.user_id = su.user_id
+        WHERE
+            gm.group_id = #{groupId,jdbcType=BIGINT}
+            AND gm.del_flag = 0
+    </select>
+
+    <!-- 根据党小组ID获取该小组下所有成员基本信息 -->
+    <select id="selectPartyGroupMembersBaseInfoByGroupId" parameterType="java.lang.Long"
+            resultMap="PartyGroupMemberVOResultMap">
+        SELECT
+            gm.member_id,
+        FROM
+            tab_pb_party_group_member gm
+            INNER JOIN sys_user su ON gm.user_id = su.user_id
+        WHERE
+            gm.group_id = #{groupId,jdbcType=BIGINT}
+            AND gm.del_flag = 0
+    </select>
+
+    <!-- 批量删除成员 -->
+    <update id="batchDelete" parameterType="java.lang.Long">
+        UPDATE tab_pb_party_group_member
+        <set>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=TINYINT},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE group_id = #{groupId,jdbcType=BIGINT}
+    </update>
+
+    <!-- 批量新增成员到党小组 -->
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO tab_pb_party_group_member
+        ( group_id, user_id, is_leader, create_time, create_userid, create_username, update_time, update_userid,
+        update_username )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.groupId,jdbcType=BIGINT}, #{item.userId,jdbcType=BIGINT}, #{item.isLeader,jdbcType=TINYINT},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.createUserid,jdbcType=BIGINT},#{item.createUsername,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.updateUserid,jdbcType=BIGINT},#{item.updateUsername,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 移除党组成员 -->
+    <update id="removePartyGroupMembers" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            UPDATE tab_pb_party_group_member
+            <set>
+                del_flag = 1,
+                <if test="item.updateTime != null">
+                    update_time = #{item.updateTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="item.updateUserid != null">
+                    update_userid = #{item.updateUserid,jdbcType=BIGINT},
+                </if>
+                <if test="item.updateUsername != null">
+                    update_username = #{item.updateUsername,jdbcType=VARCHAR},
+                </if>
+            </set>
+            WHERE member_id = #{item.memberId,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
+    <!-- 根据党员ID查询该条数据是否存在 -->
+    <select id="checkIsExistByUserId" parameterType="java.lang.Long" resultType="boolean">
+        SELECT COUNT(1) FROM tab_pb_party_group_member WHERE user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <!-- 筛选指定组织中未在任何党组存在的党员 -->
+    <select id="screenPartyGroupMembers" parameterType="java.lang.Long" resultMap="PartyMemberBaseVOVOResultMap">
+        SELECT
+            su.user_id,
+            su.realname
+        FROM
+            sys_dept sd
+            LEFT JOIN sys_user su ON sd.dept_id = su.dept_id
+        WHERE
+            sd.dept_id = #{deptId}
+            AND su.user_id NOT IN (SELECT user_id FROM tab_pb_party_group_member)
+    </select>
+
+</mapper>

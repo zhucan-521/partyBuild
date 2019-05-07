@@ -26,11 +26,8 @@ public class BackAbroadDetailsVO {
     @ApiModelProperty(value = "人员Id")
     private Long userId;
 
-    @ApiModelProperty(value = "用户名")
+    @ApiModelProperty(value = "姓名")
     private String userName;
-
-    @ApiModelProperty(value = "真实姓名")
-    private String realName;
 
     @ApiModelProperty(value = "身份证号")
     private String idCardNo;
@@ -63,7 +60,7 @@ public class BackAbroadDetailsVO {
     private Date allowActivitiesDate;
 
     @ApiModelProperty(value = "组织关系出境时是否转往国外")
-    private Byte isTransOut;
+    private Integer isTransOut;
 
     @ApiModelProperty(value = "备注")
     private String comment;
