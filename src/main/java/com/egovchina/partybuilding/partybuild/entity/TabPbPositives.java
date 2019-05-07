@@ -19,7 +19,7 @@ public class TabPbPositives {
 
     private Long positiveOrgId;
 
-    private String positiveOrg;
+    private String positiveOrgName;
 
     private Long positiveName;
 
