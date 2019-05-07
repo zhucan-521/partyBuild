@@ -1,7 +1,9 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.partybuild.entity.CommunityPartTimeMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.LeadTeamMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember;
+import com.egovchina.partybuilding.partybuild.vo.CommunityPartTimeMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
 import org.springframework.stereotype.Repository;
 
@@ -73,4 +75,12 @@ public interface TabPbLeadTeamMemberMapper {
      * @return
      */
     Boolean memberAlreadyExistsInTheTeam(Long leadTeamId, Long userId);
+
+    /**
+     * 根据条件查询社区兼职委员VO列表
+     *
+     * @param queryBean 查询实体
+     * @return
+     */
+    List<CommunityPartTimeMemberVO> selectCommunityPartTimeMemberVOListByCondition(CommunityPartTimeMemberQueryBean queryBean);
 }

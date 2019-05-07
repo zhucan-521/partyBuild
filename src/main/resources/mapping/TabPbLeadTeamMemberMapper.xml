@@ -55,6 +55,19 @@
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
     </resultMap>
 
+    <!--CommunityPartTimeMember VO 结果集-->
+    <resultMap id="CommunityPartTimeMemberVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.CommunityPartTimeMemberVO">
+        <id column="member_id" jdbcType="BIGINT" property="memberId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="person_name" jdbcType="VARCHAR" property="personName"/>
+        <result column="positive_id" jdbcType="BIGINT" property="positiveId"/>
+        <result column="rank" jdbcType="VARCHAR" property="rank"/>
+        <result column="gender" jdbcType="BIGINT" property="gender"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
         member_id, org_id, lead_team_id, user_id, person_name, positive_id, positive_name,
         tenure_mode, tenure_begin, tenure_duration, tenure_leave, as_committee_member, as_committee_director,
@@ -67,6 +80,12 @@
         ltm.member_id, ltm.org_id, ltm.lead_team_id, ltm.user_id, ltm.person_name, ltm.positive_id, ltm.positive_name,
         ltm.tenure_mode, ltm.tenure_begin, ltm.tenure_duration, ltm.tenure_leave, ltm.as_committee_member, ltm.as_committee_director,
         ltm.lead_member_order, ltm.description, ltm.rank, ltm.approval_number, ltm.avatar
+    </sql>
+
+    <!--CommunityPartTimeMemberVO ResultMap-->
+    <sql id="CommunityPartTimeMemberVO_Column_List">
+        ltm.member_id, ltm.org_id, ltm.user_id, ltm.person_name, ltm.positive_id, ltm.positive_name,
+        ltm.rank
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -412,5 +431,40 @@
         WHERE
             del_flag = 0
             AND user_id = #{userId} and lead_team_id = #{leadTeamId}
+    </select>
+
+    <!--根据条件查询社区兼职委员VO列表-->
+    <select id="selectCommunityPartTimeMemberVOListByCondition"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.CommunityPartTimeMemberQueryBean"
+            resultMap="CommunityPartTimeMemberVOResultMap">
+        SELECT
+        <include refid="CommunityPartTimeMemberVO_Column_List"/>
+        ,d.name as org_name,
+        u.gender,
+        u.phone
+        FROM tab_pb_lead_team_member ltm
+        INNER JOIN tab_pb_lead_team t
+          ON ltm.lead_team_id = t.lead_team_id AND ltm.del_flag = t.lead_team_id
+        INNER JOIN sys_dept d ON t.org_id = d.dept_id
+        INNER JOIN sys_user u ON ltm.user_id = u.user_id
+        WHERE ltm.del_flag = 0 AND t.current = 1
+        <if test="personName != null and personName != ''">
+            AND ltm.person_name LIKE concat('%', #{personName}, '%')
+        </if>
+        <if test="rank != null and rank != ''">
+            AND ltm.rank = #{rank}
+        </if>
+        <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <choose>
+            <when test="orgRange == 1">
+                AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+            </when>
+            <when test="orgRange == 2">
+                AND find_in_set(#{rangeDeptId}, d.full_path)
+            </when>
+            <otherwise>
+                AND d.dept_id = #{rangeDeptId}
+            </otherwise>
+        </choose>
     </select>
 </mapper>
