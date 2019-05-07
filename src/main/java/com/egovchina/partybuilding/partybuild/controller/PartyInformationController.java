@@ -41,7 +41,7 @@ public class PartyInformationController {
 
     @ApiOperation(value = "分页查询党员信息", notes = "分页查询党员信息", httpMethod = "GET")
     @GetMapping("/party-members")
-    public PageInfo<PartyMemberInformationVO> getPartyMemberList(SysUserQueryBean queryBean, Page page) {
+    public PageInfo<PartyMemberInformationVO> getPartyMemberList(@Validated SysUserQueryBean queryBean, Page page) {
         return partyInformationService.getPartyList(queryBean, page);
     }
 
@@ -56,7 +56,7 @@ public class PartyInformationController {
 
     @ApiOperation(value = "历史党员列表", notes = "分页查询历史党员信息", httpMethod = "GET")
     @GetMapping("/history-members")
-    public PageInfo<HistoryPartyVO> getPartyHistoryList(HistoricalPartyMemberQueryBean queryBean, Page page) {
+    public PageInfo<HistoryPartyVO> getPartyHistoryList(@Validated HistoricalPartyMemberQueryBean queryBean, Page page) {
         return partyInformationService.historyPartyPage(queryBean, page);
     }
 
