@@ -105,7 +105,7 @@ public class AbroadServiceImpl implements AbroadService {
         verification(returnAbroadDTO.getOrgId(), returnAbroadDTO.getUserId());
         TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(returnAbroadDTO, TabPbAbroad.class, true);
         /**
-         * 党员回国后将该党员恢复成出国之前的状态
+         * 党员回国后将该党员恢复成出国前的状态
          **/
         int result = tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
         if (result > 0) {
