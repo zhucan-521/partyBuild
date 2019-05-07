@@ -53,7 +53,7 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
          **/
         int result = tabPbHardshipMapper.insertSelective(tabPbHardship);
         if (result > 0) {
-            result += tabSysUserMapper.updateUserIsPoorByHardshipId(1, hardshipPartyMemberDTO.getHardshipId());
+            result += tabSysUserMapper.updateUserIsPoorByHardshipId(1, tabPbHardship.getHardshipId());
         }
         return result;
     }

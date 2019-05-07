@@ -2034,7 +2034,7 @@
     </select>
 
     <update id="updateUserIsPoorByHardshipId">
-        update sys_user set is_poor = #{isPoor} where user_Id  = (select user_Id from tab_pb_hardship where del_flag = 0 and hardship_id = #{hardshipId})
+        update sys_user set is_poor = #{isPoor} where user_Id  = (select user_Id from tab_pb_hardship where hardship_id = #{hardshipId})
     </update>
 
 </mapper>
