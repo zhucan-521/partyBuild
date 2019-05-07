@@ -56,7 +56,7 @@ public class PositivesServiceImpl implements PositivesService {
         return tabPbPositivesMapper.selectByIdToAllPositivesVO(userId, positiveType);
     }
 
-    public void check(Integer id) {
+    public void check(Long id) {
         if (ObjectUtils.isEmpty(id)) {
             throw new BusinessDataNotFoundException("该职务主键不能为空");
         }

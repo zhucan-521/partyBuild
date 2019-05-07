@@ -11,7 +11,6 @@ import java.util.Date;
  */
 @Data
 @Accessors(chain = true)
-@TableName("tab_pb_positive_regist")
 public class TabPbPositiveRegist {
 
     private Long positiveRegistId;

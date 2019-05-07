@@ -50,7 +50,7 @@ public class ReturnAbroadDTO {
     private Date returnDate;
 
     @ApiModelProperty(value = "组织关系出境时是否转往国外")
-    private Byte isTransOut;
+    private Integer isTransOut;
 
     @ApiModelProperty(value = "党员基本情况")
     private String baseStatus;

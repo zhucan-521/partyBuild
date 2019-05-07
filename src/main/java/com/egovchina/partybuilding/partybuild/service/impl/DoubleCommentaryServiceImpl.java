@@ -1,6 +1,5 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
-import com.egovchina.partybuilding.common.entity.OrgRange;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
@@ -23,8 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
@@ -33,31 +30,25 @@ import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCop
  * Created by FanYanGen on 2019/4/24 16:17
  */
 @Transactional(rollbackFor = Exception.class)
-@Service("tabPbDoubleCommentaryService")
+@Service("commentaryService")
 public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
 
     @Autowired
-    private TabPbDoubleCommentaryMapper doubleCommentaryMapper;
+    private TabPbDoubleCommentaryMapper tabPbDoubleCommentaryMapper;
 
     @Autowired
-    private ITabPbAttachmentService attachmentService;
+    private ITabPbAttachmentService tabPbAttachmentService;
 
     @Autowired
-    private TabSysDeptMapper deptMapper;
+    private TabSysDeptMapper tabSysDeptMapper;
 
     @Override
     public int insertCommentary(DoubleCommentaryDTO doubleCommentaryDTO) {
-        Long planYear = doubleCommentaryDTO.getPlanYear();
-        Long orgId = doubleCommentaryDTO.getOrgId();
-        Map<String, Object> conditions = new HashMap<>(3);
-        conditions.put("planYear", planYear);
-        conditions.put("orgId", orgId);
-        conditions.put("delFlag", "0");
-        verificationInsert(doubleCommentaryDTO, conditions);
+        verificationInsert(doubleCommentaryDTO);
         TabPbDoubleCommentary tabPbDoubleCommentary = generateTargetCopyPropertiesAndPaddingBaseField(doubleCommentaryDTO, TabPbDoubleCommentary.class, false);
-        int result = doubleCommentaryMapper.insertSelective(tabPbDoubleCommentary);
+        int result = tabPbDoubleCommentaryMapper.insertSelective(tabPbDoubleCommentary);
         if (result > 0) {
-            result += attachmentService.intelligentOperation(doubleCommentaryDTO.getAttachments(), doubleCommentaryDTO.getCommentaryId(), AttachmentType.DOUBLE_COMMENTARY);
+            result += tabPbAttachmentService.intelligentOperation(doubleCommentaryDTO.getAttachments(), doubleCommentaryDTO.getCommentaryId(), AttachmentType.DOUBLE_COMMENTARY);
         }
         return result;
     }
@@ -66,27 +57,22 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
     public int updateCommentary(DoubleCommentaryDTO doubleCommentaryDTO) {
         verificationUpdate(doubleCommentaryDTO);
         TabPbDoubleCommentary tabPbDoubleCommentary = generateTargetCopyPropertiesAndPaddingBaseField(doubleCommentaryDTO, TabPbDoubleCommentary.class, true);
-        int retVal = doubleCommentaryMapper.updateByPrimaryKeySelective(tabPbDoubleCommentary);
-        if (0 < retVal) {
-            retVal += attachmentService.intelligentOperation(doubleCommentaryDTO.getAttachments(), doubleCommentaryDTO.getCommentaryId(), AttachmentType.DOUBLE_COMMENTARY);
+        int result = tabPbDoubleCommentaryMapper.updateByPrimaryKeySelective(tabPbDoubleCommentary);
+        if (result > 0) {
+            result += tabPbAttachmentService.intelligentOperation(doubleCommentaryDTO.getAttachments(), doubleCommentaryDTO.getCommentaryId(), AttachmentType.DOUBLE_COMMENTARY);
         }
-        return retVal;
+        return result;
     }
 
     @Override
     public CommentaryVO findCommentaryVOByCommentaryId(Long commentaryId) {
-        return doubleCommentaryMapper.selectByPrimaryKey(commentaryId);
+        return tabPbDoubleCommentaryMapper.selectByPrimaryKey(commentaryId);
     }
 
     @Override
-    public PageInfo<CommentaryVO> findCommentaryVOWithConditions(Page page, CommentaryQueryBean commentaryQueryBean, OrgRange orgRange) {
+    public PageInfo<CommentaryVO> findCommentaryVOWithConditions(CommentaryQueryBean commentaryQueryBean, Page page) {
         PageHelper.startPage(page);
-        Map<String, Object> conditions = orgRange.toMap();
-        conditions.put("planYear", commentaryQueryBean.getPlanYear());
-        conditions.put("reportStartDate", commentaryQueryBean.getReportStartDate());
-        conditions.put("reportEndDate", commentaryQueryBean.getReportEndDate());
-        conditions.put("delFlag", "0");
-        return new PageInfo<>(doubleCommentaryMapper.selectWithConditions(conditions));
+        return new PageInfo<>(tabPbDoubleCommentaryMapper.selectWithConditions(commentaryQueryBean));
     }
 
     @Override
@@ -95,13 +81,13 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
         commentary.setCommentaryId(commentaryId);
         commentary.setDelFlag(CommonConstant.STATUS_DEL);
         TabPbDoubleCommentary tabPbDoubleCommentary = generateTargetCopyPropertiesAndPaddingBaseField(commentary, TabPbDoubleCommentary.class, true);
-        return doubleCommentaryMapper.updateByPrimaryKeySelective(tabPbDoubleCommentary);
+        return tabPbDoubleCommentaryMapper.updateByPrimaryKeySelective(tabPbDoubleCommentary);
     }
 
     @Override
     public int verifyCommentary(DoubleCommentaryQueryBean doubleCommentaryQueryBean) {
-        CommentaryVO commentaryVO = doubleCommentaryMapper.selectByPrimaryKey(doubleCommentaryQueryBean.getCommentaryId());
-        if (null == commentaryVO) {
+        CommentaryVO commentaryVO = tabPbDoubleCommentaryMapper.selectByPrimaryKey(doubleCommentaryQueryBean.getCommentaryId());
+        if (commentaryVO == null) {
             throw new BusinessDataNotFoundException("双述双评数据不存在");
         }
         TabPbDoubleCommentary commentary = new TabPbDoubleCommentary();
@@ -112,7 +98,7 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
         commentary.setCheckDesc(doubleCommentaryQueryBean.getCheckDesc());
         commentary.setCheckDate(new Date());
         TabPbDoubleCommentary tabPbDoubleCommentary = generateTargetCopyPropertiesAndPaddingBaseField(commentary, TabPbDoubleCommentary.class, true);
-        return doubleCommentaryMapper.updateByPrimaryKeySelective(tabPbDoubleCommentary);
+        return tabPbDoubleCommentaryMapper.updateByPrimaryKeySelective(tabPbDoubleCommentary);
     }
 
     /**
@@ -123,23 +109,23 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
      * @author FanYanGen
      * @date 2019/4/24 21:02
      **/
-    private void verificationInsert(DoubleCommentaryDTO doubleCommentaryDTO, Map map) {
-        if (!deptMapper.checkIsExistByOrgId(doubleCommentaryDTO.getOrgId())) {
+    private void verificationInsert(DoubleCommentaryDTO doubleCommentaryDTO) {
+        final Long planYear = doubleCommentaryDTO.getPlanYear();
+        if (!tabSysDeptMapper.checkIsExistByOrgId(doubleCommentaryDTO.getOrgId())) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
-        if (0 < doubleCommentaryMapper.selectWithConditions(map).size()) {
-            throw new BusinessDataCheckFailException(String.format("该组织%s年度双述双评总结已存在", doubleCommentaryDTO.getPlanYear()));
+        if (!tabPbDoubleCommentaryMapper.checkIsExistByPlanYear(planYear)) {
+            throw new BusinessDataCheckFailException(String.format("该组织%s年度双述双评总结已存在", planYear));
         }
     }
 
     private void verificationUpdate(DoubleCommentaryDTO doubleCommentaryDTO) {
-        if (!deptMapper.checkIsExistByOrgId(doubleCommentaryDTO.getOrgId())) {
+        if (!tabSysDeptMapper.checkIsExistByOrgId(doubleCommentaryDTO.getOrgId())) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
-        if (!doubleCommentaryMapper.isExist(doubleCommentaryDTO.getCommentaryId())) {
-            throw new BusinessDataCheckFailException("该数据不存在 无法修改");
+        if (!tabPbDoubleCommentaryMapper.checkIsExistByCommentId(doubleCommentaryDTO.getCommentaryId())) {
+            throw new BusinessDataCheckFailException("该数据不存在无法修改");
         }
-
     }
 
 }

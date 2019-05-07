@@ -30,4 +30,5 @@ public class LeadTeamQueryBean {
 
     @ApiModelProperty("组织名称")
     private String orgName;
+
 }

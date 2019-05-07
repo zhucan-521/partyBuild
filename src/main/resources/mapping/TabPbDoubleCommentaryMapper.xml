@@ -105,9 +105,7 @@
         <if test="eblFlag != null and eblFlag != ''">
             AND dc.ebl_flag = #{eblFlag}
         </if>
-        <if test="delFlag != null and delFlag != ''">
-            AND dc.del_flag = #{delFlag}
-        </if>
+        AND dc.del_flag = 0
         <if test="orderNum != null and orderNum != ''">
             AND dc.order_num = #{orderNum}
         </if>
@@ -478,8 +476,14 @@
     </update>
 
     <!-- 检验数据是否存在 -->
-    <select id="isExist" parameterType="java.lang.Long" resultType="boolean">
+    <select id="checkIsExistByCommentId" parameterType="java.lang.Long" resultType="boolean">
         SELECT COUNT(1) FROM tab_pb_double_commentary WHERE commentary_id = #{commentaryId}
     </select>
+
+    <!-- 根据年度查询该数据是否存在 -->
+    <select id="checkIsExistByPlanYear" parameterType="java.lang.Long" resultType="java.lang.Boolean">
+        SELECT COUNT(1) FROM tab_pb_double_commentary WHERE  plan_year = #{planYear}
+    </select>
+
 
 </mapper>

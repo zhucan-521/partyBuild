@@ -7,7 +7,7 @@
         <result column="positive_type" jdbcType="INTEGER" property="positiveType"/>
         <result column="left_type" jdbcType="INTEGER" property="leftType"/>
         <result column="positive_org_id" jdbcType="INTEGER" property="positiveOrgId"/>
-        <result column="positive_org" jdbcType="VARCHAR" property="positiveOrg"/>
+        <result column="positive_org_name" jdbcType="VARCHAR" property="positiveOrgName"/>
         <result column="positive_name_dict" jdbcType="VARCHAR" property="positiveNameDict"/>
         <result column="positive_name" jdbcType="INTEGER" property="positiveName"/>
         <result column="positive_level" jdbcType="INTEGER" property="positiveLevel"/>
@@ -36,7 +36,7 @@
         <result column="positive_type" jdbcType="INTEGER" property="positiveType"/>
         <result column="left_type" jdbcType="INTEGER" property="leftType"/>
         <result column="positive_org_id" jdbcType="INTEGER" property="positiveOrgId"/>
-        <result column="positive_org" jdbcType="VARCHAR" property="positiveOrg"/>
+        <result column="positive_org_name" jdbcType="INTEGER" property="positiveOrgName"/>
         <result column="positive_name" jdbcType="INTEGER" property="positiveName"/>
         <result column="positive_level" jdbcType="INTEGER" property="positiveLevel"/>
         <result column="positive_start" jdbcType="TIMESTAMP" property="positiveStart"/>
@@ -45,13 +45,13 @@
         <result column="left_reason" jdbcType="BIGINT" property="leftReason"/>
     </resultMap>
     <sql id="Base_Column_List">
-        positive_id, user_id, positive_type, positive_org_id, positive_org, positive_name,
+        positive_id, user_id, positive_type, positive_org_id, positive_org_name, positive_name,
         positive_level, positive_start, positive_finished, ebl_flag, del_flag, order_num,
         description, create_time, create_userid, create_username, update_time, update_userid,
         update_username, version, left_type, business_from, business_id
     </sql>
     <sql id="P_Base_Column_List">
-    p.positive_id, p.user_id, p.positive_type, p.positive_org_id, p.positive_org, p.positive_name,
+    p.positive_id, p.user_id, p.positive_type, p.positive_org_id, p.positive_org_name, p.positive_name,
     p.positive_level, p.positive_start, p.positive_finished, p.ebl_flag, p.del_flag, p.order_num,
     p.description, p.create_time, p.create_userid, p.create_username, p.update_time, p.update_userid,
         p.update_username, p.version,p.left_type,p.left_reason
@@ -69,8 +69,11 @@
     <select id="selectByIdToPositivesVO" parameterType="java.lang.Integer" resultMap="BaseMoreResultMap">
         select
         <include refid="P_Base_Column_List"/>
-        ,d.label as positive_name_dict
-        from tab_pb_positives p left join sys_dict d on d.id = p.positive_name
+        ,d.label as positive_name_dict,
+        dd.`name` as positive_org_name
+        from tab_pb_positives p
+        left join sys_dict d on d.id = p.positive_name
+        left join sys_dept dd on dd.dept_id = p.positive_org_id
         where p.positive_id = #{positiveId,jdbcType=INTEGER}
     </select>
     <select id="selectList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives" resultMap="ResultMapWithBLOBs">
@@ -115,8 +118,10 @@
     <select id="selectByIdToAllPositivesVO" parameterType="java.util.Map" resultMap="BaseMoreResultMap">
         select
         <include refid="P_Base_Column_List"/>
+        ,d.`name` as positive_org_name
         from tab_pb_positives p
-        where del_flag = 0
+        left join sys_dept d on d.dept_id = p.positive_org_id
+        where p.del_flag = 0
         <if test="positiveType!=null">
             and positive_type=#{positiveType}
         </if>
@@ -148,7 +153,7 @@
   </delete>
     <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
     insert into tab_pb_positives (positive_id, user_id, positive_type, 
-      positive_org_id, positive_org, positive_name, 
+      positive_org_id, positive_org_name, positive_name,
       positive_level, positive_start, positive_finished, 
       ebl_flag, del_flag, order_num, 
       description, create_time, create_userid, 
@@ -156,7 +161,7 @@
         update_username, version, left_reason,left_type
       )
     values (#{positiveId,jdbcType=INTEGER}, #{userId,jdbcType=BIGINT}, #{positiveType,jdbcType=INTEGER}, 
-      #{positiveOrgId,jdbcType=INTEGER}, #{positiveOrg,jdbcType=VARCHAR}, #{positiveName,jdbcType=INTEGER}, 
+      #{positiveOrgId,jdbcType=INTEGER}, #{positiveOrgName,jdbcType=VARCHAR}, #{positiveName,jdbcType=INTEGER},
       #{positiveLevel,jdbcType=INTEGER}, #{positiveStart,jdbcType=TIMESTAMP}, #{positiveFinished,jdbcType=TIMESTAMP}, 
       #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, 
       #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, 
@@ -183,8 +188,8 @@
             <if test="positiveOrgId != null">
                 positive_org_id,
             </if>
-            <if test="positiveOrg != null">
-                positive_org,
+            <if test="positiveOrgName != null">
+                positive_org_name,
             </if>
             <if test="positiveName != null">
                 positive_name,
@@ -251,8 +256,8 @@
             <if test="positiveOrgId != null">
                 #{positiveOrgId,jdbcType=INTEGER},
             </if>
-            <if test="positiveOrg != null">
-                #{positiveOrg,jdbcType=VARCHAR},
+            <if test="positiveOrgName != null">
+                #{positiveOrgName,jdbcType=VARCHAR},
             </if>
             <if test="positiveName != null">
                 #{positiveName,jdbcType=INTEGER},
@@ -304,6 +309,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
         update tab_pb_positives
         <set>
@@ -319,8 +325,8 @@
             <if test="positiveOrgId != null">
                 positive_org_id = #{positiveOrgId,jdbcType=INTEGER},
             </if>
-            <if test="positiveOrg != null">
-                positive_org = #{positiveOrg,jdbcType=VARCHAR},
+            <if test="positiveOrgName != null">
+                positive_org_name = #{positiveOrgName,jdbcType=VARCHAR},
             </if>
             <if test="positiveName != null">
                 positive_name = #{positiveName,jdbcType=INTEGER},
@@ -379,7 +385,7 @@
       positive_type = #{positiveType,jdbcType=INTEGER},
         left_type = #{leftType,jdbcType=INTEGER},
       positive_org_id = #{positiveOrgId,jdbcType=INTEGER},
-      positive_org = #{positiveOrg,jdbcType=VARCHAR},
+      positive_org_name = #{positiveOrgName,jdbcType=VARCHAR},
       positive_name = #{positiveName,jdbcType=INTEGER},
       positive_level = #{positiveLevel,jdbcType=INTEGER},
       positive_start = #{positiveStart,jdbcType=TIMESTAMP},
@@ -404,7 +410,7 @@
         left_type = #{leftType,jdbcType=INTEGER},
       positive_type = #{positiveType,jdbcType=INTEGER},
       positive_org_id = #{positiveOrgId,jdbcType=INTEGER},
-      positive_org = #{positiveOrg,jdbcType=VARCHAR},
+      positive_org_name = #{positiveOrgName,jdbcType=VARCHAR},
       positive_name = #{positiveName,jdbcType=INTEGER},
       positive_level = #{positiveLevel,jdbcType=INTEGER},
       positive_start = #{positiveStart,jdbcType=TIMESTAMP},
@@ -423,7 +429,8 @@
     where positive_id = #{positiveId,jdbcType=INTEGER}
   </update>
     <insert id="batchAdd" parameterType="java.util.List">
-        insert into tab_pb_positives (user_id,left_type,positive_type,positive_org_id,positive_org,positive_name,positive_level,positive_start,positive_finished,create_time,create_username,
+        insert into tab_pb_positives
+        (user_id,left_type,positive_type,positive_org_id,positive_org_name,positive_name,positive_level,positive_start,positive_finished,create_time,create_username,
         create_userid,update_time,update_userid,update_username,version,description)
         values <foreach collection="list" item="item" separator=",">
         (#{item.userId},#{item.leftType},#{item.positiveType},#{item.positiveOrgId},#{item.positiveOrg},#{item.positiveName},#{item.positiveLevel},#{item.positiveStart},
@@ -458,14 +465,39 @@
         where user_id = #{userId}
     </update>
 
+
     <!--根据用户Id查找用户相应的职位-->
-    <select id="selectTabPbPositivesByUserId" parameterType="Long" resultMap="BaseResultMap">
+    <select id="selectMaxTabPbPositivesByUserId" parameterType="Long" resultMap="BaseMoreResultMap">
+          select
+          positive_id,
+          user_id,
+          positive_org_id,
+          positive_org,
+          positive_name,
+          positive_level,
+          positive_start,
+          (select order_num from sys_dept where dept_id= positive_org_id) org_order,
+          (select sort from sys_dict where id= positive_name)  positive_name_order,
+          (select sort from sys_dict where id= positive_level) positive_level_order
+          from
+          tab_pb_positives
+         where
+         user_id=#{userId}
+         and
+         del_flag=0
+         ORDER BY
+         org_order asc ,positive_name_order desc ,positive_level_order desc
+         limit 1
+    </select>
+
+    <!--根据用户Id查找用户相应的职位-->
+    <select id="selectTabPbPositivesByUserId" parameterType="Long" resultMap="BaseMoreResultMap">
           select
           positive_id,
           user_id,
           positive_type,
           positive_org_id,
-          positive_org,
+          positive_org_name,
           positive_name,
           positive_level,
           positive_start,
@@ -485,7 +517,7 @@
     <insert id="batchInsertPositivesList" parameterType="java.util.List">
         insert into
         tab_pb_positives
-        (user_id,left_type,positive_type,positive_org_id,positive_org,positive_name,positive_level,positive_start,
+        (user_id,left_type,positive_type,positive_org_id,positive_org_name,positive_name,positive_level,positive_start,
         positive_finished,create_time,create_username,
         create_userid,update_time,update_userid,update_username,version,description)
         values
@@ -503,8 +535,8 @@
             parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives">
         UPDATE tab_pb_positives
         SET del_flag = 1,
-        update_time = #{updateTime}, update_userid = #{updateUserid}, updateUsername = #{updateUsername}
+        update_time = #{updateTime}, update_userid = #{updateUserid}, update_username = #{updateUsername}
         WHERE
-            positive_org_id = #{positiveOrgId} and user_id = #{userId} and business_from = #{business} and business_id = #{businessId}
+            positive_org_id = #{positiveOrgId} and user_id = #{userId} and business_from = #{businessFrom} and business_id = #{businessId}
     </update>
 </mapper>

@@ -3,6 +3,7 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
+import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.FamilyMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFamily;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
 /**
  * @author zhucan on 2018/11/26
@@ -27,6 +30,7 @@ public class FamilyServiceImpl implements FamilyService {
 
     /**
      * 根据用户id获取他的家庭成员
+     *
      * @param partyMemberId
      * @return
      */
@@ -37,6 +41,7 @@ public class FamilyServiceImpl implements FamilyService {
 
     /**
      * 根据主键ID查询单条记录
+     *
      * @param relationId
      * @return
      */
@@ -50,22 +55,24 @@ public class FamilyServiceImpl implements FamilyService {
 
     /**
      * 根据主键ID删除单条记录
+     *
      * @param relationId
      */
     @Override
     public int deleteFamilyMemberByPrimaryKey(Long relationId) {
-        if (null == tabPbFamilyMapper.findById(relationId)) {
+        if (tabPbFamilyMapper.findById(relationId) == null) {
             throw new BusinessDataCheckFailException("不存在这个人");
         }
         TabPbFamily tabPbFamily = new TabPbFamily();
         tabPbFamily.setRelationId(relationId);
-        tabPbFamily.setDelFlag("1");
+        tabPbFamily.setDelFlag(CommonConstant.STATUS_DEL);
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbFamily);
         return tabPbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
     }
 
     /**
      * 保存家庭成员
+     *
      * @param
      */
     @Override
@@ -73,8 +80,7 @@ public class FamilyServiceImpl implements FamilyService {
         if (familyMemberDTO.getUserId() == null) {
             throw new BusinessDataCheckFailException("userId不能为空");
         }
-        TabPbFamily tabPbFamily = new TabPbFamily();
-        BeanUtil.copyPropertiesIgnoreNull(familyMemberDTO, tabPbFamily);
+        TabPbFamily tabPbFamily = generateTargetCopyPropertiesAndPaddingBaseField(familyMemberDTO, TabPbFamily.class, false);
         return tabPbFamilyMapper.insertSelective(tabPbFamily);
     }
 
@@ -86,9 +92,7 @@ public class FamilyServiceImpl implements FamilyService {
      */
     @Override
     public int updateByPrimaryKeySelective(FamilyMemberDTO familyMemberDTO) {
-        TabPbFamily tabPbFamily = new TabPbFamily();
-        BeanUtil.copyPropertiesIgnoreNull(familyMemberDTO, tabPbFamily);
-        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbFamily);
+        TabPbFamily tabPbFamily = generateTargetCopyPropertiesAndPaddingBaseField(familyMemberDTO, TabPbFamily.class, false);
         return tabPbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
     }
 }

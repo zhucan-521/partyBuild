@@ -28,7 +28,7 @@ public class PositivesVO {
     private Integer positiveOrgId;
 
     @ApiModelProperty(value = "任职 机构/党组织 名称")
-    private String positiveOrg;
+    private String positiveOrgName;
 
     @JsonSerialize(using = DictSerializer.class)
     @ApiModelProperty(value = "党内职务 dict DNZW")

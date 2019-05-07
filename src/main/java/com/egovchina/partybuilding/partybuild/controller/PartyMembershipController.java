@@ -4,9 +4,13 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.service.PartyMembershipService;
 import com.egovchina.partybuilding.partybuild.vo.MembershipVO;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author: GuanYingxin
@@ -20,16 +24,9 @@ public class PartyMembershipController {
     @Autowired
     private PartyMembershipService partyMembershipService;
 
-    /**
-     * 获取党籍实体类列表
-     *
-     * @param page
-     * @return
-     */
     @ApiOperation(value = "获取党籍列表", notes = "获取党籍列表", httpMethod = "GET")
     @GetMapping
     public PageInfo<MembershipVO> getMembershipListByCondition(@ApiParam("分页对象") Page page) {
         return new PageInfo<>(partyMembershipService.getMembershipVOListByCondition(page));
     }
-
 }

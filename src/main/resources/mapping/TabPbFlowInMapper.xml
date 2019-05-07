@@ -624,4 +624,9 @@
         where
         t.flow_in_id = #{flowInId,jdbcType=BIGINT}
     </select>
+
+    <select id="getFlowOutIdByFlowInId" parameterType="Long" resultType="Long">
+        select flow_in_id from tab_pb_flow_in where flow_out_id=#{flowOutId}
+    </select>
+
 </mapper>

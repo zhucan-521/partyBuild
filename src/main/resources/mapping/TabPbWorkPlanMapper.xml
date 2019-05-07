@@ -4,7 +4,7 @@
     <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbWorkPlan">
         <id column="plan_id" jdbcType="BIGINT" property="planId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
-        <result column="plan_year" jdbcType="BIGINT" property="planYear"/>
+        <result column="plan_year" jdbcType="CHAR" property="planYear"/>
         <result column="report_date" jdbcType="TIMESTAMP" property="reportDate"/>
         <result column="summary_date" jdbcType="TIMESTAMP" property="summaryDate"/>
         <result column="plan_check_date" jdbcType="TIMESTAMP" property="planCheckDate"/>
@@ -39,7 +39,7 @@
         <id column="plan_id" jdbcType="BIGINT" property="planId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
-        <result column="plan_year" jdbcType="BIGINT" property="planYear"/>
+        <result column="plan_year" jdbcType="CHAR" property="planYear"/>
         <result column="report_date" jdbcType="TIMESTAMP" property="reportDate"/>
         <result column="plan_check_date" jdbcType="TIMESTAMP" property="planCheckDate"/>
         <result column="check_org" jdbcType="BIGINT" property="checkOrg"/>
@@ -68,7 +68,7 @@
         <id column="plan_id" jdbcType="BIGINT" property="planId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
-        <result column="plan_year" jdbcType="BIGINT" property="planYear"/>
+        <result column="plan_year" jdbcType="CHAR" property="planYear"/>
         <result column="summary_date" jdbcType="TIMESTAMP" property="summaryDate"/>
         <result column="summary_check_date" jdbcType="TIMESTAMP" property="summaryCheckDate"/>
         <result column="summary_check_org" jdbcType="BIGINT" property="summaryCheckOrg"/>
@@ -119,12 +119,6 @@
         p.plan_summary, p.summary_check
     </sql>
     <sql id="Base_WhereCase_List">
-        <if test="planId != null and planId != ''">
-            AND p.plan_id = #{planId}
-        </if>
-        <if test="orgId != null and orgId != ''">
-            AND p.org_id = #{orgId}
-        </if>
         <if test="planYear != null and planYear != ''">
             AND p.plan_year = #{planYear}
         </if>
@@ -135,86 +129,8 @@
         <if test="reportEndDate != null and reportEndDate != ''">
             AND date_format(p.report_date, '%Y-%m-%d') &lt;= #{reportEndDate}
         </if>
-        <!--总结日期-->
-        <if test="summaryStartDate != null and summaryStartDate != ''">
-            AND date_format(p.summary_date, '%Y-%m-%d') >= #{summaryStartDate}
-        </if>
-        <if test="summaryEndDate != null and summaryEndDate != ''">
-            AND date_format(p.summary_date, '%Y-%m-%d') &lt;= #{summaryEndDate}
-        </if>
-        <!--计划审核日期-->
-        <if test="planCheckStartDate != null and planCheckStartDate != ''">
-            AND date_format(p.plan_check_date, '%Y-%m-%d') >= #{planCheckStartDate}
-        </if>
-        <if test="planCheckEndDate != null and planCheckEndDate != ''">
-            AND date_format(p.plan_check_date, '%Y-%m-%d') &lt; #{planCheckEndDate}
-        </if>
-        <!--总结审核日期-->
-        <if test="summaryStartDate != null and summaryStartDate != ''">
-            AND date_format(p.summary_check_date, '%Y-%m-%d') >= #{summaryStartDate}
-        </if>
-        <if test="summaryEndDate != null and summaryEndDate != ''">
-            AND date_format(p.summary_check_date, '%Y-%m-%d') &lt;= #{summaryEndDate}
-        </if>
-        <if test="checkOrg != null and checkOrg != ''">
-            AND p.check_org = #{checkOrg}
-        </if>
         <if test="checkResult != null and checkResult != ''">
             AND p.check_result = #{checkResult}
-        </if>
-        <if test="checkUser != null and checkUser != ''">
-            AND p.check_user = #{checkUser}
-        </if>
-        <if test="summaryCheckOrg != null and summaryCheckOrg != ''">
-            AND p.summary_check_org = #{summaryCheckOrg}
-        </if>
-        <if test="summaryCheckResult != null and summaryCheckResult != ''">
-            AND p.summary_check_result = #{summaryCheckResult}
-        </if>
-        <if test="summaryCheckUser != null and summaryCheckUser != ''">
-            AND p.summary_check_user = #{summaryCheckUser}
-        </if>
-        <if test="eblFlag != null and eblFlag != ''">
-            AND p.ebl_flag = eblFlag
-        </if>
-        <if test="orderNum != null and orderNum != ''">
-            AND p.order_num = #{orderNum}
-        </if>
-        <if test="description != null and description != ''">
-            AND p.description = #{description}
-        </if>
-        <if test="createTime != null and createTime != ''">
-            AND p.create_time = #{createTime}
-        </if>
-        <if test="createUserid != null and createUserid != ''">
-            AND p.create_userid = #{createUserid}
-        </if>
-        <if test="createUsername != null and createUsername != ''">
-            AND p.create_username = #{createUsername}
-        </if>
-        <if test="updateTime != null and updateTime != ''">
-            AND p.update_time = #{updateTime}
-        </if>
-        <if test="updateUserid != null and updateUserid != ''">
-            AND p.update_userid = #{updateUserid}
-        </if>
-        <if test="updateUsername != null and updateUsername != ''">
-            AND p.update_username = #{updateUsername}
-        </if>
-        <if test="version != null and version != ''">
-            AND p.version = #{version}
-        </if>
-        <if test="planContent != null and planContent != ''">
-            AND p.plan_content = #{planContent}
-        </if>
-        <if test="planSummary != null and planSummary != ''">
-            AND p.plan_summary = #{planSummary}
-        </if>
-        <if test="planCheck != null and planCheck != ''">
-            AND p.plan_check = #{planCheck}
-        </if>
-        <if test="summaryCheck != null and summaryCheck != ''">
-            AND p.summary_check = #{summaryCheck}
         </if>
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
         <if test="orgRange != null and orgRange != ''">
@@ -336,7 +252,7 @@
                 #{orgId,jdbcType=BIGINT},
             </if>
             <if test="planYear != null">
-                #{planYear,jdbcType=BIGINT},
+                #{planYear,jdbcType=CHAR},
             </if>
             <if test="reportDate != null">
                 #{reportDate,jdbcType=TIMESTAMP},
@@ -422,7 +338,7 @@
                 org_id = #{orgId,jdbcType=BIGINT},
             </if>
             <if test="planYear != null">
-                plan_year = #{planYear,jdbcType=BIGINT},
+                plan_year = #{planYear,jdbcType=CHAR},
             </if>
             <if test="reportDate != null">
                 report_date = #{reportDate,jdbcType=TIMESTAMP},
@@ -574,10 +490,10 @@
         <include refid="WorkSummaryVO_Column_List"/>
         ,
         <include refid="WorkSummaryVO_Blob_Column_List"/>
-        , t.name as org_name,
-        d.name as summary_check_org_name,
-        d2.realname as summary_check_user_name,
-        4 as attachment_type_summary
+        , d.name as org_name,
+        d2.name as summary_check_org_name,
+        u.realname as summary_check_user_name,
+        4 as attachment_type
         from tab_pb_work_plan p
         left join sys_dept d on p.org_id = d.dept_id
         left join sys_dept d2 on p.summary_check_org = d2.dept_id

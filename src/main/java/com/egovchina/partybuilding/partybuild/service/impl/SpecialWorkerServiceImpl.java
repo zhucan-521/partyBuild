@@ -60,10 +60,10 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
         if (returnEntity.unOkResp()) {
             throw returnEntity.exception();
         }
-        boolean exists = returnEntity.respBody(Boolean.class);
-        if (!exists) {
-            systemServiceFeignClient.insertUserRole(44L, userId);
-        }
+//        boolean exists = returnEntity.respBody(Boolean.class);
+//        if (!exists) {
+//            systemServiceFeignClient.insertUserRole(44L, userId);
+//        }
         int count = 0;
         if(tabPbSpcialWorkerMapper.checkSpecialWhetherTOLeave(userId)){
             throw new BusinessDataCheckFailException("该专干正处于任职状态，请离职后在任职");

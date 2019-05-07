@@ -1,14 +1,15 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.partybuild.entity.ClassifyQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify;
 import com.egovchina.partybuilding.partybuild.vo.OrgClassifyVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface TabPbOrgClassifyMapper {
+
     int deleteByPrimaryKey(Long orgClassifyId);
 
     int insert(TabPbOrgClassify record);
@@ -25,5 +26,6 @@ public interface TabPbOrgClassifyMapper {
 
     int logicDeleteById(Long orgClassifyId);
 
-    List<OrgClassifyVO> selectWithConditions(Map<String, Object> conditions);
+    List<OrgClassifyVO> selectWithConditions(ClassifyQueryBean classifyQueryBean);
+
 }

@@ -6,7 +6,7 @@ import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
-import com.egovchina.partybuilding.common.util.BeanUtil;
+
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.PositiveRegistMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.PositiveRegistMemberQueryBean;
@@ -28,6 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
 /**
  * @author YangYingXiang on 2018/11/29
@@ -57,7 +59,6 @@ public class PositiveRegistServiceImpl implements PositiveRegistService {
      */
     @Override
     @Transactional
-    @PaddingBaseField(recursive = true)
     public int addRegistMemberDTO(PositiveRegistMemberDTO positiveRegistMemberDto) {
         TabPbPositiveRegist regist = tabPbPositiveRegistMapper.findById(positiveRegistMemberDto.getUserId());
         if(regist != null){
@@ -67,15 +68,13 @@ public class PositiveRegistServiceImpl implements PositiveRegistService {
         positiveRegistMemberDto.setRevokeTag(new Byte("1"));
         //修改党员信息
         newUser(positiveRegistMemberDto.getUserId(), true, positiveRegistMemberDto.getDeptId());
-        TabPbPositiveRegist tabPbPositiveRegist = new TabPbPositiveRegist();
-        BeanUtil.copyPropertiesIgnoreNull(positiveRegistMemberDto, tabPbPositiveRegist);
-        int retVal = tabPbPositiveRegistMapper.addPositiveRegist(tabPbPositiveRegist);
-        Long hostId = tabPbPositiveRegist.getPositiveRegistId();
-        if(retVal>0){
-            iTabPbAttachmentService.intelligentOperation(positiveRegistMemberDto.getAttachments(), hostId, AttachmentType.POSITIVE);
+        TabPbPositiveRegist tabPbPositiveRegist=generateTargetCopyPropertiesAndPaddingBaseField(positiveRegistMemberDto,TabPbPositiveRegist.class,false);
+        int flag = tabPbPositiveRegistMapper.addPositiveRegist(tabPbPositiveRegist);
+        Long hostId=tabPbPositiveRegist.getPositiveRegistId();
+        if(flag>0){
+            iTabPbAttachmentService.intelligentOperation(positiveRegistMemberDto.getAttachments(),hostId, AttachmentType.POSITIVE);
         }
-
-        return retVal;
+        return flag;
     }
 
     /**
@@ -104,7 +103,7 @@ public class PositiveRegistServiceImpl implements PositiveRegistService {
     @Override
     public PositiveRegistMemberVO getReportMembersInfo(Long positiveRegistId) {
         PositiveRegistMemberVO positiveRegistMemberVO = tabPbPositiveRegistMapper.findPositiveRegistMemberById(positiveRegistId);
-        positiveRegistMemberVO.setAttachments(iTabPbAttachmentService.listByHostId(positiveRegistId, AttachmentType.POSITIVE));
+        positiveRegistMemberVO.setAttachments(iTabPbAttachmentService.listByHostId( positiveRegistId,AttachmentType.POSITIVE));
         return positiveRegistMemberVO;
     }
 

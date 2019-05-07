@@ -1,8 +1,6 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
-import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyMembership;
@@ -16,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
+
 /**
  * @author create by GuanYingxin on 2019/4/18 13:36
  * @description 党籍Service实现类
@@ -27,14 +27,9 @@ public class PartyMembershipServiceImpl implements PartyMembershipService {
     private TabPbPartyMembershipMapper tabPbPartyMembershipMapper;
 
     @Transactional
-    @PaddingBaseField
     @Override
     public int insertMembershipDTO(MembershipDTO membershipDTO) {
-        TabPbPartyMembership tabPbPartyMembership = new TabPbPartyMembership();
-        tabPbPartyMembership.setUserId(membershipDTO.getUserId());
-        tabPbPartyMembership.setType(membershipDTO.getType());
-        tabPbPartyMembership.setIdentityType(membershipDTO.getIdentityType());
-        tabPbPartyMembership.setReason(membershipDTO.getReason());
+        TabPbPartyMembership tabPbPartyMembership = generateTargetCopyPropertiesAndPaddingBaseField(membershipDTO, TabPbPartyMembership.class, false);
         return tabPbPartyMembershipMapper.insertPartyMembershipDTO(tabPbPartyMembership);
     }
 
@@ -49,21 +44,5 @@ public class PartyMembershipServiceImpl implements PartyMembershipService {
         PageHelper.startPage(page);
         List<MembershipVO> list = tabPbPartyMembershipMapper.getMembershipVOListByCondition();
         return list;
-    }
-
-    /**
-     * 党籍添加公共方法
-     *
-     * @param sysUser
-     * @return
-     */
-    @Override
-    public TabPbPartyMembership toolMethod(SysUser sysUser) {
-        TabPbPartyMembership tabPbPartyMembership = new TabPbPartyMembership();
-        tabPbPartyMembership.setUserId(sysUser.getUserId());
-        tabPbPartyMembership.setIdentityType(sysUser.getIdentityType());
-        tabPbPartyMembership.setType(sysUser.getRegistryStatus());
-        PaddingBaseFieldUtil.paddingBaseFiled(tabPbPartyMembership);
-        return tabPbPartyMembership;
     }
 }

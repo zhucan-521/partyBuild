@@ -63,7 +63,7 @@ public class HardshipPartyMemberController {
 
     @ApiOperation(value = "困难党员列表", notes = "困难党员列表", httpMethod = "GET")
     @GetMapping
-    public PageInfo<HardshipPartyVO> getDifficultyPartyList(@Validated HardshipQueryBean hardshipQueryBean, Page page) {
+    public PageInfo<HardshipPartyVO> getDifficultyPartyList(@RequestBody @Validated HardshipQueryBean hardshipQueryBean, Page page) {
         return hardshipPartyMemberService.findHardshipPartyVOWithConditions(hardshipQueryBean, page);
     }
 

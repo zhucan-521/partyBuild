@@ -1,12 +1,15 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
+import com.baomidou.mybatisplus.annotations.TableName;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
-@Data
-public class TabPbPositives {
 
-    private static final long serialVersionUID = 1L;
+@Accessors(chain = true)
+@Data
+@TableName("tab_pb_positives")
+public class TabPbPositives {
 
     private Long positiveId;
 
@@ -16,7 +19,7 @@ public class TabPbPositives {
 
     private Long positiveOrgId;
 
-    private String positiveOrg;
+    private String positiveOrgName;
 
     private Long positiveName;
 

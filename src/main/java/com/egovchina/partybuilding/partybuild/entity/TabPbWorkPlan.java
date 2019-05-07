@@ -21,7 +21,7 @@ public class TabPbWorkPlan {
     /**
      * 计划年份 新增工作计划必传
      */
-    private Long planYear;
+    private String planYear;
 
     /**
      * 上报日期", example = "yyyy-MM-dd

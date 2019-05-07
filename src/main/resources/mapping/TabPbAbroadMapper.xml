@@ -64,10 +64,9 @@
     <!-- 返回出国出境详细信息Vo数据集合 -->
     <resultMap id="AbroadDetailsResultMap" type="com.egovchina.partybuilding.partybuild.vo.AbroadDetailsVO">
         <id column="abroad_id" jdbcType="BIGINT" property="abroadId"/>
-        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="orgName"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
-        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
         <result column="username" jdbcType="VARCHAR" property="userName"/>
         <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
         <result column="abroad_date" jdbcType="TIMESTAMP" property="abroadDate"/>
@@ -85,6 +84,7 @@
         <result column="allow_activities_date" jdbcType="TIMESTAMP" property="allowActivitiesDate"/>
         <result column="registry_reverse_date" jdbcType="TIMESTAMP" property="registryReverseDate"/>
         <result column="is_trans_out" jdbcType="TINYINT" property="isTransOut"/>
+        <result column="comment" jdbcType="VARCHAR" property="comment"/>
     </resultMap>
 
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
@@ -103,7 +103,7 @@
     <sql id="Simplify_Column_List">
         abroad_id, org_id,abroad.user_id,abroad_date, plan_return, return_date, go_country, base_status,
         abroad_reason, return_status, settle_time, registry_mode, link_status, return_activities_status,
-        apply_activities_date, allow_activities_date, registry_reverse_date
+        apply_activities_date, allow_activities_date, registry_reverse_date,abroad.is_trans_out,abroad.comment
     </sql>
 
     <sql id="Blob_Column_List">
@@ -394,78 +394,62 @@
     <select id="selectByConditions" parameterType="com.egovchina.partybuilding.partybuild.entity.AbroadQueryBean"
             resultMap="AbroadResultMap">
         SELECT
-        A.*,
-        B.realname AS username,
-        B.id_card_no
+        pa.*,
+        su.realname AS username,
+        su.id_card_no
         FROM
-        tab_pb_abroad A
-        INNER JOIN sys_user B ON A.user_id = B.user_id
-        INNER JOIN sys_dept d ON A.org_id = d.dept_id
+        tab_pb_abroad pa
+        INNER JOIN sys_user su ON pa.user_id = su.user_id
+        INNER JOIN sys_dept sd ON pa.org_id = sd.dept_id
         WHERE
-        A.del_flag = 0
-        AND B.del_flag = '0'
-        AND d.del_flag = '0'
+        pa.del_flag = 0
+        AND su.del_flag = '0'
+        AND sd.del_flag = '0'
 
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
         <choose>
             <when test="orgRange == 1">
-                AND (d.dept_id = #{orgId} OR d.parent_id = #{orgId})
+                AND (sd.dept_id = #{orgId} OR sd.parent_id = #{orgId})
             </when>
             <when test="orgRange == 2">
-                AND find_in_set(#{orgId}, d.full_path)
+                AND find_in_set(#{orgId}, sd.full_path)
             </when>
             <otherwise>
-                AND d.dept_id = #{orgId}
+                AND sd.dept_id = #{orgId}
             </otherwise>
         </choose>
 
         <if test="userId != null and userId != '' ">
-            AND A.user_id = #{userId}
+            AND pa.user_id = #{userId}
         </if>
 
         <if test="userName != null and userName != '' ">
-            AND B.realname like concat('%',#{userName},'%')
+            AND su.realname like concat('%',#{userName},'%')
         </if>
 
         <if test="idCardNo != null and idCardNo != '' ">
-            AND B.id_card_no LIKE concat('%',#{idCardNo},'%')
+            AND su.id_card_no LIKE concat('%',#{idCardNo},'%')
         </if>
 
         <if test="abroadId != null and abroadId != ''">
-            AND A.abroad_id = #{abroadId,jdbcType=BIGINT}
+            AND pa.abroad_id = #{abroadId,jdbcType=BIGINT}
         </if>
 
-        order by A.order_num
+        order by pa.order_num
     </select>
 
     <!-- 根据主键ID查询详情 -->
     <select id="findAbroadDetailsVOByAbroadId" parameterType="java.lang.Long" resultMap="AbroadDetailsResultMap">
         SELECT
         <include refid="Simplify_Column_List"/>,
-        dept.`name` as org_name,
-        `user`.username,
-        `user`.realname
+        dept.`name` AS dept_name,
+        `user`.id_card_no,
+        `user`.realname AS username
         FROM
-        tab_pb_abroad abroad
+        tab_pb_abroad AS abroad
         INNER JOIN sys_dept dept ON abroad.org_id = dept.dept_id
         INNER JOIN sys_user `user` ON abroad.user_id = `user`.user_id
         WHERE abroad.abroad_id = #{abroadId} AND abroad.del_flag = 0
     </select>
-    <!--根据党员id查询出国记录-->
-    <select id="findAbroadDetailsByPartyId"
-            parameterType="com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean"
-            resultType="com.egovchina.partybuilding.partybuild.vo.MemberReducesVO">
-        SELECT
-        TIMESTAMPDIFF(YEAR, abroad_date,if(return_date is null ,return_date,CURDATE())) as age,
-        t.user_id
-        from tab_pb_abroad t
-        inner join sys_dept dept on dept.dept_id = t.org_id
-        WHERE t.del_flag = '0'
-        <if test="orgRange == 1">
-            and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
-        </if>
-        <if test="orgRange == 2">
-            and find_in_set(#{deptId}, dept.full_path)
-        </if>
-    </select>
+
 </mapper>

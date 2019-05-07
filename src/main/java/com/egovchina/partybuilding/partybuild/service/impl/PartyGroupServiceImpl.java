@@ -47,14 +47,14 @@ public class PartyGroupServiceImpl implements PartyGroupService {
     private TabSysDeptMapper tabSysDeptMapper;
 
     @Autowired
-    private ITabPbAttachmentService attachmentService;
+    private ITabPbAttachmentService tabPbAttachmentService;
 
     @Override
     public int insertPartyGroup(PartyGroupDTO partyGroupDTO) {
         verificationPartyGroup(partyGroupDTO, false);
         int result = tabPbPartyGroupMapper.insertSelective(generateTargetCopyPropertiesAndPaddingBaseField(partyGroupDTO, TabPbPartyGroup.class, false));
-        if (0 < result) {
-            result += attachmentService.intelligentOperation(partyGroupDTO.getAttachments(), partyGroupDTO.getGroupId(), AttachmentType.DOUBLE_COMMENTARY);
+        if (result > 0) {
+            result += tabPbAttachmentService.intelligentOperation(partyGroupDTO.getAttachments(), partyGroupDTO.getGroupId(), AttachmentType.DOUBLE_COMMENTARY);
         }
         return result;
     }
@@ -70,8 +70,8 @@ public class PartyGroupServiceImpl implements PartyGroupService {
     public int updatePartyGroup(PartyGroupDTO partyGroupDTO) {
         verificationPartyGroup(partyGroupDTO, true);
         int result = tabPbPartyGroupMapper.updateByPrimaryKeySelective(generateTargetCopyPropertiesAndPaddingBaseField(partyGroupDTO, TabPbPartyGroup.class, true));
-        if (0 < result) {
-            result += attachmentService.intelligentOperation(partyGroupDTO.getAttachments(), partyGroupDTO.getGroupId(), AttachmentType.DOUBLE_COMMENTARY);
+        if (result > 0) {
+            result += tabPbAttachmentService.intelligentOperation(partyGroupDTO.getAttachments(), partyGroupDTO.getGroupId(), AttachmentType.DOUBLE_COMMENTARY);
         }
         return result;
     }
@@ -87,8 +87,10 @@ public class PartyGroupServiceImpl implements PartyGroupService {
         tabPbPartyGroupMember.setDelFlag(1);
         generateTargetCopyPropertiesAndPaddingBaseField(tabPbPartyGroupMember, TabPbPartyGroupMember.class, true);
         int result = tabPbPartyGroupMapper.updateByPrimaryKeySelective(tabPbPartyGroup);
-        // 删除党小组及成员
-        if (0 < result) {
+        /**
+         * 删除党小组及成员
+         **/
+        if (result > 0) {
             tabPbPartyGroupMemberMapper.batchDelete(tabPbPartyGroupMember);
         }
         return result;

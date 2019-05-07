@@ -37,8 +37,7 @@ public class LeadTeamVO {
     private Long sessionYear;
 
     @ApiModelProperty(value = "换届时间", example = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date changeDate;
 
     @ApiModelProperty("任期年限")
@@ -67,8 +66,7 @@ public class LeadTeamVO {
     private Long electedType;
 
     @ApiModelProperty(value = "当选时间", example = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date electedTime;
 
     @ApiModelProperty("委员人数")
@@ -106,4 +104,5 @@ public class LeadTeamVO {
 
     @ApiModelProperty(value = "附件")
     private List<TabPbAttachment> attachments;
+
 }
