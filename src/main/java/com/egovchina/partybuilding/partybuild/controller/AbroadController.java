@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
@@ -46,6 +47,7 @@ public class AbroadController {
     @ApiOperation(value = "更新（添加）回国信息 - 用作出国信息添加和更新", notes = "更新（添加）回国信息 - 用作出国信息添加和更新", httpMethod = "PUT")
     @PutMapping("/repatriations")
     public ReturnEntity updateReturnAbroad(@RequestBody @Validated @ApiParam("回国信息") ReturnAbroadDTO returnAbroadDTO) {
+        System.out.println(JSON.toJSONString(returnAbroadDTO));
         return ReturnUtil.buildReturn(abroadService.updateReturnAbroad(returnAbroadDTO));
     }
 
@@ -72,7 +74,7 @@ public class AbroadController {
 
     @ApiOperation(value = "获取出国出境信息列表", notes = "获取出国出境信息列表", httpMethod = "GET")
     @GetMapping("/overseas-repatriations")
-    public PageInfo<AbroadVO> getOverseaList(@RequestBody @Validated AbroadQueryBean abroadQueryBean, Page page) {
+    public PageInfo<AbroadVO> getOverseaList(@Validated AbroadQueryBean abroadQueryBean, Page page) {
         return abroadService.findAbroadVOWithConditions(abroadQueryBean, page);
     }
 
