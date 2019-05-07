@@ -62,6 +62,9 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @Autowired
     private TabPbAbroadMapper tabPbAbroadMapper;
 
+    @Autowired
+    private TabSysDeptMapper tabSysDeptMapper;
+
     @Override
     public UserInfoVO getUserInfoVO() {
         Profile profile = UserContextHolder.currentUser();
@@ -132,6 +135,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             //补录成正式党员
             partyInfoDTO.getParty().setIdentityType(223L);
             SysUser sys = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyInfoDTO.getParty(), SysUser.class, false);
+            //检测组织Id
+            checkIsExist(sys);
             //新增用户信息
             tabSysUserMapper.insertSelective(sys);
             //新增或者删除标签信息
@@ -142,7 +147,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             if (partyInfoDTO.getEducations() != null && partyInfoDTO.getEducations().size() > 0) {
                 //赋值主键
                 partyInfoDTO.getEducations().forEach(education -> {
-                    education.setUserId(sys.getUserId().longValue());
+                    education.setUserId(sys.getUserId());
                 });
                 effected += tabPbPartyEducationMapper.batchInsert(BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(partyInfoDTO.getEducations(), TabPbPartyEducation.class, false));
             }
@@ -173,6 +178,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         if (tabSysUserMapper.checkIsExistByUserId(id)) {
             int effected = 0;
             SysUser sys = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyInfoDTO.getParty(), SysUser.class, true);
+            //检测组织Id
+            checkIsExist(sys);
             effected += tabSysUserMapper.updateByPrimaryKeySelective(sys);
             //新增或者删除标签信息
             if (partyInfoDTO.getParty().getUserTags() != null && partyInfoDTO.getParty().getUserTags().size() > 0) {
@@ -235,7 +242,6 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                     }
                     effected += tabPbPartyEducationMapper.batchUpdate(deleteSource);
                 }
-
             }
             //新增技术信息
             if (partyInfoDTO.getJobTitles() != null) {
@@ -361,6 +367,13 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         PageHelper.startPage(page);
         List<PartyMemberInformationVO> partyMemberInformationVO = tabSysUserMapper.selectPageByMap(queryBean);
         return new PageInfo<>(calculationComplete(partyMemberInformationVO));
+    }
+
+    //检查id是否存在
+    public void checkIsExist(SysUser user) {
+        if (!tabSysDeptMapper.checkIsExistByOrgId(user.getDeptId())) {
+            throw new BusinessDataIncompleteException("组织ID不存在");
+        }
     }
 
     public List<PartyMemberInformationVO> calculationComplete(List<PartyMemberInformationVO> userList) {
