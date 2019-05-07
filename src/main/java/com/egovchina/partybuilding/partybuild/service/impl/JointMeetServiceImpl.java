@@ -143,6 +143,11 @@ public class JointMeetServiceImpl implements JointMeetService {
         }
         TabPbJointMeet tabPbJointMeet =
                 generateTargetCopyPropertiesAndPaddingBaseField(jointMeetDto, TabPbJointMeet.class, true);
+        if(jointMeetDto.getJointMeetOrgs() != null){
+            List<TabPbJointMeetOrg> tabPbJointMeetOrgList = generateTargetListCopyPropertiesAndPaddingBaseField(
+                    jointMeetDto.getJointMeetOrgs(), TabPbJointMeetOrg.class, true);
+            this.tabPbJointMeetOrgMapper.batchUpdate(tabPbJointMeetOrgList);
+        }
         return this.tabPbJointMeetMapper.updateByPrimaryKeySelective(tabPbJointMeet);
     }
 

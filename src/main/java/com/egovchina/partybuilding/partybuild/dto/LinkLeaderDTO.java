@@ -7,7 +7,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 描述:
@@ -30,11 +29,11 @@ public class LinkLeaderDTO {
     @NotNull(message = "userId不能为空")
     private Long userId;
 
-    @ApiModelProperty(value = "联点开始时间",example = "yyyy-MM-dd")
+    @ApiModelProperty(value = "联点开始时间", example = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date linkStartDate;
 
-    @ApiModelProperty(value = "联点结束时间",example = "yyyy-MM-dd")
+    @ApiModelProperty(value = "联点结束时间", example = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date linkFinishedDate;
 
@@ -46,9 +45,6 @@ public class LinkLeaderDTO {
 
     @ApiModelProperty(value = "联点说明")
     private String comment;
-
-    @ApiModelProperty(value = "活动对象集合 增加活动需传活动id")
-    private List<ActivitiesDTO> activitiesList;
 
     @ApiModelProperty(value = "连接领导姓名")
     private String realName;

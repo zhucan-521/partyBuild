@@ -10,7 +10,7 @@ import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.PositiveRegistMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.PositiveRegistMemberQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.SysDept;
+import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPositiveRegistMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;

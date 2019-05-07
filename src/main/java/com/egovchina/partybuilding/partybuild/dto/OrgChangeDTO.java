@@ -1,7 +1,6 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
-import com.egovchina.partybuilding.common.config.DictSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -10,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 描述:
@@ -35,14 +35,8 @@ public class OrgChangeDTO {
     @ApiModelProperty(value = "原上级Id")
     private Long oldSuperiorId;
 
-    @ApiModelProperty(value = "原上级Name")
-    private String oldSuperiorName;
-
     @ApiModelProperty(value = "现上级Id")
     private Long nowSuperiorId;
-
-    @ApiModelProperty(value = "现上级name")
-    private String nowSuperiorName;
 
     @ApiModelProperty(value = "组织全称", required = true)
     @NotBlank(message = "组织全称不能为空")
@@ -71,4 +65,7 @@ public class OrgChangeDTO {
 
     @ApiModelProperty(value = "变动原因")
     private String changeReason;
+
+    @ApiModelProperty(value = "附件集合")
+    private List<TabPbAttachment> attachments;
 }

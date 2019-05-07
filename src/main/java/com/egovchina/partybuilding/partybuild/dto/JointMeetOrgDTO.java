@@ -13,26 +13,26 @@ import java.util.Date;
 @Accessors(chain = true)
 @ApiModel("党建联席会成员组织")
 public class JointMeetOrgDTO {
-    @ApiModelProperty(value="成员组织主键")
+    @ApiModelProperty(value = "成员组织主键")
     private Long memberOrgId;
 
-    @ApiModelProperty(value = "党建联席会主键", required = true)
-    @NotNull(message = "党建联席会主键不能为空")
+    @ApiModelProperty(value = "党建联席会主键")
     private Long jointMeetId;
 
-    @ApiModelProperty(value="组织主键")
+    @ApiModelProperty(value = "成员组织主键", required = true)
+    @NotNull(message = "成员组织主键不能为空")
     private Long orgId;
 
-    @ApiModelProperty(value="组织名称")
+    @ApiModelProperty(value = "组织名称")
     private String orgName;
 
-    @ApiModelProperty(value="单位名称")
+    @ApiModelProperty(value = "单位名称")
     private String unitName;
 
-    @ApiModelProperty(value="单位id")
+    @ApiModelProperty(value = "单位id")
     private Long unitId;
 
-    @ApiModelProperty(value="加入日期")
+    @ApiModelProperty(value = "加入日期")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date joinDate;
 

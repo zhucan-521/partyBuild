@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 系统服务FeignClient
@@ -22,7 +23,8 @@ public interface SystemServiceFeignClient {
      * @param userId 用户id
      * @return
      */
-    @PostMapping("/{roleId}/users/{userId}")
+    @PostMapping("/v1/roles/{roleId}/users/{userId}")
+    @ResponseBody
     ReturnEntity insertUserRole(@PathVariable("roleId") Long roleId, @PathVariable("userId") Long userId);
 
     /**
@@ -32,6 +34,7 @@ public interface SystemServiceFeignClient {
      * @param userId 用户id
      * @return
      */
-    @GetMapping("/{roleId}/users/{userId}/exists")
-    ReturnEntity checkUserHasSpecifiedRole(@PathVariable("roleId") Long roleId, @PathVariable("userId") Long userId);
+    @GetMapping("/v1/roles/{roleId}/users/{userId}/exists")
+    @ResponseBody
+    ReturnEntity<Boolean> checkUserHasSpecifiedRole(@PathVariable("roleId") Long roleId, @PathVariable("userId") Long userId);
 }

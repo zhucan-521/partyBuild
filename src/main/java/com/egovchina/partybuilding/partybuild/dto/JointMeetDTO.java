@@ -27,7 +27,7 @@ public class JointMeetDTO {
     @NotNull(message = "组织主键不能为空")
     private Long orgId;
 
-    @ApiModelProperty(value = "成立时间" )
+    @ApiModelProperty(value = "成立时间")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date foundedDate;
 

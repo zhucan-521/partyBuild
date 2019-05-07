@@ -2,11 +2,11 @@ package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
+import com.egovchina.partybuilding.partybuild.dto.JointMeetDTO;
+import com.egovchina.partybuilding.partybuild.dto.JointMeetOrgDTO;
 import com.egovchina.partybuilding.partybuild.entity.JointMeetOrgQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbJointMeet;
 import com.egovchina.partybuilding.partybuild.entity.TabPbJointMeetOrg;
-import com.egovchina.partybuilding.partybuild.dto.JointMeetDTO;
-import com.egovchina.partybuilding.partybuild.dto.JointMeetOrgDTO;
 import com.egovchina.partybuilding.partybuild.vo.JointMeetOrgVO;
 import com.egovchina.partybuilding.partybuild.vo.JointMeetVO;
 import com.github.pagehelper.PageInfo;
