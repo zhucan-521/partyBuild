@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
 import com.egovchina.partybuilding.common.config.DictSerializer;
+import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
@@ -8,6 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 描述:
@@ -65,4 +67,7 @@ public class OrgChangeVO {
 
     @ApiModelProperty(value = "描述")
     private String description;
+
+    @ApiModelProperty(value = "附件集合")
+    private List<TabPbAttachment> attachments;
 }
