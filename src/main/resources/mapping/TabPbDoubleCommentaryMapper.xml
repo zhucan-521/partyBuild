@@ -485,5 +485,4 @@
         SELECT COUNT(1) FROM tab_pb_double_commentary WHERE plan_year = #{planYear}
     </select>
 
-
 </mapper>

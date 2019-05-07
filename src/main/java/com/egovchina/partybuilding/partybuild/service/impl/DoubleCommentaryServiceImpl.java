@@ -114,7 +114,7 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
         if (!tabSysDeptMapper.checkIsExistByOrgId(doubleCommentaryDTO.getOrgId())) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
-        if (!tabPbDoubleCommentaryMapper.checkIsExistByPlanYear(planYear)) {
+        if (tabPbDoubleCommentaryMapper.checkIsExistByPlanYear(planYear)) {
             throw new BusinessDataCheckFailException(String.format("该组织%s年度双述双评总结已存在", planYear));
         }
     }
