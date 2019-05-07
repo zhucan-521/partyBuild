@@ -25,7 +25,6 @@
         <result column="punish_name" jdbcType="VARCHAR" property="punishName"/>
         <result column="judiciary_flag" jdbcType="VARCHAR" property="judiciaryFlag"/>
         <result column="punish_type" jdbcType="BIGINT" property="punishType"/>
-
         <result column="img_tool" jdbcType="BIGINT" property="imgTool"/>
         <result column="file_tool" jdbcType="BIGINT" property="fileTool"/>
     </resultMap>
@@ -34,6 +33,18 @@
         <result column="mistake" jdbcType="LONGVARCHAR" property="mistake"/>
         <result column="follow_up" jdbcType="LONGVARCHAR" property="followUp"/>
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
+    </resultMap>
+    <resultMap id="ResultMapWithMoreBLOBAll" type="com.egovchina.partybuilding.partybuild.vo.PunishmentVO">
+        <id column="punishment_id" jdbcType="BIGINT" property="punishmentId"/>
+        <result column="punish_date" jdbcType="TIMESTAMP" property="punishDate"/>
+        <result column="punish_org" jdbcType="VARCHAR" property="punishOrg"/>
+        <result column="punish_org_id" jdbcType="BIGINT" property="punishOrgId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="punish_name" jdbcType="VARCHAR" property="punishName"/>
+        <result column="judiciary_flag" jdbcType="VARCHAR" property="judiciaryFlag"/>
+        <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
+        <result column="img_num" jdbcType="BIGINT" property="imgTool"/>
+        <result column="doc_num" jdbcType="BIGINT" property="fileTool"/>
     </resultMap>
     <resultMap id="ResultMapWithMoreBLOB" type="com.egovchina.partybuilding.partybuild.vo.PunishmentVO">
         <id column="punishment_id" jdbcType="BIGINT" property="punishmentId"/>
@@ -55,6 +66,10 @@
         create_userid, create_username, update_time, update_userid, update_username, version,punish_name,
         judiciary_flag,punish_type
   </sql>
+
+    <sql id="Easy_Column_List">
+    p.punishment_id,p.punish_date,p.punish_org,p.punish_org_id,p.user_id,p.punish_name,p.judiciary_flag,p.comment
+    </sql>
     <sql id="Blob_Column_List">
     base_status, mistake, follow_up, comment
   </sql>
@@ -95,16 +110,16 @@ GROUP BY
     </select>
 
     <!--通过用户id或者机构查询处分,返回附带附件-->
-    <select id="selectListAndFileVO" resultMap="ResultMapWithMoreBLOB">
+    <select id="selectListAndFileVO" resultMap="ResultMapWithMoreBLOBAll">
         select
-        <include refid="Base_Column_List"/>
-        ,
-        <include refid="Blob_Column_List"/>
-        ,12 as attachment_type
-        from tab_pb_punishment
-        where del_flag = '0'
+        <include refid="Easy_Column_List"/>,
+        vac.doc_num,
+        vac.img_num
+        from tab_pb_punishment p
+        left join view_attachment_count vac on p.punishment_id = vac.host_id and vac.attachment_type = 12
+        where p.del_flag = '0'
         <if test="userId != null">
-            and user_id = #{userId}
+            and p.user_id = #{userId}
         </if>
     </select>
 

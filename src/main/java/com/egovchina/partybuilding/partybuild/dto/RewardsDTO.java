@@ -32,9 +32,6 @@ public class RewardsDTO {
     @ApiModelProperty(value = "userId", required = true)
     private Long userId;
 
-    @ApiModelProperty(value = "有效标记 1有效 0无效")
-    private String eblFlag;
-
     @ApiModelProperty(value = "奖励名称 dict DYJCJL", required = true)
     @NotNull(message = "奖励名称不能为空")
     private String rewardsName;

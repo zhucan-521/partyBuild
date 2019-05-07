@@ -45,6 +45,17 @@
                     select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="hostId=rewards_id,attachmentType=attachment_type"/>
     </resultMap>
+    <resultMap id="ResultMapWithMoreBLOBAll" type="com.egovchina.partybuilding.partybuild.vo.RewardsVO">
+        <id column="rewards_id" jdbcType="BIGINT" property="rewardsId"/>
+        <result column="rewards_date" jdbcType="TIMESTAMP" property="rewardsDate"/>
+        <result column="rewards_orgnize" jdbcType="VARCHAR" property="rewardsOrgnize"/>
+        <result column="rewards_orgnize_id" jdbcType="BIGINT" property="rewardsOrgnizeId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="rewards_name" jdbcType="VARCHAR" property="rewardsName"/>
+        <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
+        <result column="img_num" jdbcType="BIGINT" property="imgTool"/>
+        <result column="doc_num" jdbcType="BIGINT" property="fileTool"/>
+    </resultMap>
     <sql id="Base_Column_List">
         rewards_id, rewards_date, rewards_orgnize, rewards_orgnize_id, user_id, rewards,
         rewards_reason, approved_level, revoke_date, ebl_flag, del_flag, order_num, description,
@@ -54,6 +65,12 @@
     <sql id="Blob_Column_List">
     base_status, deed, comment
   </sql>
+
+    <sql id="Easy_Colum_List">
+        r.rewards_id,r.rewards_date,r.rewards_orgnize,r.user_id,r.rewards_name,r.comment,r.rewards_orgnize_id
+    </sql>
+
+
     <sql id="atta_result">
     img_tool, file_tool
   </sql>
@@ -115,18 +132,17 @@ GROUP BY
     </if>
 </select>
     <!--通过用户id或者机构查询奖励,返回附带附件-->
-    <select id="selectListAndFile" resultMap="ResultMapWithMoreBLOB">
+    <select id="selectListAndFile" resultMap="ResultMapWithMoreBLOBAll">
         select
-        <include refid="Base_Column_List"/>
-        ,
-        <include refid="Blob_Column_List"/>
-        ,11  as attachment_type
-        from tab_pb_rewards
-        where del_flag = '0'
+        <include refid="Easy_Colum_List"/>
+        ,vac.doc_num,
+        vac.img_num
+        from tab_pb_rewards r
+        left join view_attachment_count vac on r.rewards_id = vac.host_id and vac.attachment_type = 11
+        where r.del_flag = '0'
         <if test="userId != null">
             and user_id = #{userId}
         </if>
-
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tab_pb_rewards
