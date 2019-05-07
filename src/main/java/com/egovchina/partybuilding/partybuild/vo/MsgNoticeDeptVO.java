@@ -37,11 +37,9 @@ public class MsgNoticeDeptVO {
     @ApiModelProperty(value = "签收日期", example = "yyyy-MM-dd")
     private Date recevieTime;
 
-
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "开始时间", example = "yyyy-MM-dd")
     private Date stateTime;
-
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "结束时间", example = "yyyy-MM-dd")
@@ -50,14 +48,11 @@ public class MsgNoticeDeptVO {
     @ApiModelProperty(value = "组织范围 1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） 其他值 当前组织")
     private Long orgRange;
 
-
     @ApiModelProperty(value = "图片")
     private Long photo;
 
-
     @ApiModelProperty(value = "文档")
     private Long doc;
-
 
     @ApiModelProperty(value = "发布日期", example = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
