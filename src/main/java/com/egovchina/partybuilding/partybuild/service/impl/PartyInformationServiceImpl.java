@@ -110,21 +110,24 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         for (int i = 0; i < historyPartyVO.size(); i++) {
             //理论党龄
             Integer age = historyPartyVO.get(i).getPartyStanding();
-            //党龄减去出国时间
-            if (memberReducesVO != null && memberReducesVO.size() > 0) {
-                for (int j = 0; j < memberReducesVO.size(); j++) {
-                    if (memberReducesVO.get(j) != null && memberReducesVO.get(j).getUserId() != null) {
-                        if (memberReducesVO.get(j).getUserId().equals(historyPartyVO.get(i).getUserId())) {
-                            if (age <= 0) {
-                                age = 0;
-                                break;
+            if (age != null) {
+                //党龄减去出国时间
+                if (memberReducesVO != null && memberReducesVO.size() > 0) {
+                    for (int j = 0; j < memberReducesVO.size(); j++) {
+                        if (memberReducesVO.get(j) != null && memberReducesVO.get(j).getUserId() != null) {
+                            if (memberReducesVO.get(j).getUserId().equals(historyPartyVO.get(i).getUserId())) {
+                                if (age <= 0) {
+                                    age = 0;
+                                    break;
+                                }
+                                if (memberReducesVO.get(j).getAge() != null) {
+                                    age -= memberReducesVO.get(j).getAge();
+                                }
                             }
-                            age -= memberReducesVO.get(j).getAge();
                         }
                     }
                 }
             }
-            //减去
             //设置真实党龄
             historyPartyVO.get(i).setPartyStanding(age);
         }
