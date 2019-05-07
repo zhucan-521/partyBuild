@@ -28,7 +28,7 @@ public class StreetCommitteeDTO {
     @NotNull(message = "组织主键不能为空")
     private Long orgId;
 
-    @ApiModelProperty(value = "当届标识")
+    @ApiModelProperty(value = "当届标识", required = true)
     @NotNull(message = "当届标识不能为空")
     private Byte current;
 
@@ -39,27 +39,27 @@ public class StreetCommitteeDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date changeDate;
 
-    @ApiModelProperty(value = "任期年限")
+    @ApiModelProperty(value = "任期年限", required = true)
     @NotNull(message = "任期年限不能为空")
     private Long duringYear;
 
-    @ApiModelProperty(value = "选举类型 FJXJ")
+    @ApiModelProperty(value = "选举类型 FJXJ", required = true)
     @NotNull(message = "选举类型不能为空")
     private Long voteType;
 
-    @ApiModelProperty(value = "应到人数")
+    @ApiModelProperty(value = "应到人数", required = true)
     @NotNull(message = "应到人数不能为空")
     private Long dueCount;
 
-    @ApiModelProperty(value = "实到人数")
+    @ApiModelProperty(value = "实到人数", required = true)
     @NotNull(message = "实到人数不能为空")
     private Long factCount;
 
-    @ApiModelProperty(value = "总票数")
+    @ApiModelProperty(value = "总票数", required = true)
     @NotNull(message = "总票数不能为空")
     private Long voteCount;
 
-    @ApiModelProperty(value = "有效票数")
+    @ApiModelProperty(value = "有效票数", required = true)
     @NotNull(message = "有效票数不能为空")
     private Long validVoteCount;
 

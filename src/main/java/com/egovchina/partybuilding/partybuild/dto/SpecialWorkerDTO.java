@@ -16,7 +16,7 @@ public class SpecialWorkerDTO {
     private Long specialWorkerId;
 
     @ApiModelProperty(value = "用户主键", required = true)
-    @NotNull(message = "请传入userId")
+    @NotNull(message = "请传入党员Id")
     private Long userId;
 
     @ApiModelProperty(value = "组织id")

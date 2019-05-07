@@ -63,6 +63,6 @@ public class SpecialWorkerVO {
     @ApiModelProperty(value = "所属组织名称")
     private String deptName;
 
-    @ApiModelProperty(value = "userID")
+    @ApiModelProperty(value = "党员Id")
     private Long userId;
 }

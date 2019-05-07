@@ -19,7 +19,7 @@ public class JointMeetOrgDTO {
     @ApiModelProperty(value = "党建联席会主键")
     private Long jointMeetId;
 
-    @ApiModelProperty(value = "成员组织主键")
+    @ApiModelProperty(value = "成员组织主键", required = true)
     @NotNull(message = "成员组织主键不能为空")
     private Long orgId;
 

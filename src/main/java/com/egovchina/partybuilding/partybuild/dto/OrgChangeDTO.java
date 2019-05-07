@@ -24,11 +24,11 @@ public class OrgChangeDTO {
     @ApiModelProperty(value = "变动Id")
     private Long changeId;
 
-    @ApiModelProperty(value = "组织主键")
+    @ApiModelProperty(value = "组织主键", required = true)
     @NotNull(message = "组织主键不能为空")
     private Long deptId;
 
-    @ApiModelProperty(value = "变动类型 码表值 ZZBD")
+    @ApiModelProperty(value = "变动类型 码表值 ZZBD", required = true)
     @NotNull(message = "变动类型不能为空")
     private Long changeType;
 
@@ -38,18 +38,18 @@ public class OrgChangeDTO {
     @ApiModelProperty(value = "现上级Id")
     private Long nowSuperiorId;
 
-    @ApiModelProperty(value = "组织全称")
+    @ApiModelProperty(value = "组织全称", required = true)
     @NotBlank(message = "组织全称不能为空")
     private String orgnizeName;
 
-    @ApiModelProperty(value = "组织简称")
+    @ApiModelProperty(value = "组织简称", required = true)
     @NotBlank(message = "组织简称不能为空")
     private String shortName;
 
     @ApiModelProperty(value = "组织编码")
     private String orgnizeCode;
 
-    @ApiModelProperty(value = "变动日期")
+    @ApiModelProperty(value = "变动日期", required = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "变动日期不能为空")
     private Date changeDate;
