@@ -162,7 +162,7 @@ public class UserTagServiceImpl implements UserTagService {
             if (!tagTypes.contains(tabPbUserTag.getTagType())) {
                 deleteIds.add(tabPbUserTag.getUsertagId());
                 if (tabPbUserTag.getTagType() == HARD_MEMBERSHIP) {
-                    hardshipService.logicDeleteByUserId(userTagDTO.getUserId());
+                    hardshipService.deleteByHardshipId(userTagDTO.getUserId());
                 }
             }
             dbUserTagList.add(tabPbUserTag.getTagType());
