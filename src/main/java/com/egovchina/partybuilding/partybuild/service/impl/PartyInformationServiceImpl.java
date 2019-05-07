@@ -358,11 +358,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         if ("14307".equals(deptId) && "2".equals(orgRange)) {
             queryBean.setOrgRange("0");
         }
-        long start = System.currentTimeMillis();
         PageHelper.startPage(page);
         List<PartyMemberInformationVO> partyMemberInformationVO = tabSysUserMapper.selectPageByMap(queryBean);
-        long end = System.currentTimeMillis();
-        long a = end - start;
         return new PageInfo<>(calculationComplete(partyMemberInformationVO));
     }
 
