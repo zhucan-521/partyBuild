@@ -47,6 +47,6 @@ public interface TabPbDoubleCommentaryMapper {
      * @author FanYanGen
      * @date 2019/5/7 11:16
      **/
-    boolean checkIsExistByPlanYear(Long planYear);
+    boolean checkIsExistByPlanYear(String planYear);
 
 }

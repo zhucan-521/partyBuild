@@ -110,7 +110,7 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
      * @date 2019/4/24 21:02
      **/
     private void verificationInsert(DoubleCommentaryDTO doubleCommentaryDTO) {
-        final Long planYear = doubleCommentaryDTO.getPlanYear();
+        final String planYear = doubleCommentaryDTO.getPlanYear();
         if (!tabSysDeptMapper.checkIsExistByOrgId(doubleCommentaryDTO.getOrgId())) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }

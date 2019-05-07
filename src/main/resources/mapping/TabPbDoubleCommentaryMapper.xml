@@ -5,7 +5,7 @@
     <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
         <id column="commentary_id" jdbcType="BIGINT" property="commentaryId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
-        <result column="plan_year" jdbcType="BIGINT" property="planYear"/>
+        <result column="plan_year" jdbcType="VARCHAR" property="planYear"/>
         <result column="report_date" jdbcType="TIMESTAMP" property="reportDate"/>
         <result column="check_date" jdbcType="TIMESTAMP" property="checkDate"/>
         <result column="check_result" jdbcType="BIGINT" property="checkResult"/>
@@ -51,7 +51,7 @@
     <resultMap id="CommentaryVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.CommentaryVO">
         <id column="commentary_id" jdbcType="BIGINT" property="commentaryId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
-        <result column="plan_year" jdbcType="BIGINT" property="planYear"/>
+        <result column="plan_year" jdbcType="VARCHAR" property="planYear"/>
         <result column="report_date" jdbcType="TIMESTAMP" property="reportDate"/>
         <result column="check_date" jdbcType="TIMESTAMP" property="checkDate"/>
         <result column="check_result" jdbcType="BIGINT" property="checkResult"/>
@@ -481,8 +481,8 @@
     </select>
 
     <!-- 根据年度查询该数据是否存在 -->
-    <select id="checkIsExistByPlanYear" parameterType="java.lang.Long" resultType="java.lang.Boolean">
-        SELECT COUNT(1) FROM tab_pb_double_commentary WHERE  plan_year = #{planYear}
+    <select id="checkIsExistByPlanYear" parameterType="java.lang.String" resultType="java.lang.Boolean">
+        SELECT COUNT(1) FROM tab_pb_double_commentary WHERE plan_year = #{planYear}
     </select>
 
 
