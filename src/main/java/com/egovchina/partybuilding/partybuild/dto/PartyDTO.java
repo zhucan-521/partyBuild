@@ -90,7 +90,7 @@ public class PartyDTO {
     @ApiModelProperty(value = "用户标签列表")
     private List<UserTagDTO> userTags;
 
-    @ApiModelProperty(value = "组织ID ,党支部Id")
+    @ApiModelProperty(value = "组织ID ,党支部Id", required = true)
     private Long deptId;
 
     @ApiModelProperty(value = "是否失联")

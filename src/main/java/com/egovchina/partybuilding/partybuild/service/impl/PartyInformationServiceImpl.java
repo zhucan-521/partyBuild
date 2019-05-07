@@ -62,6 +62,21 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @Autowired
     private TabPbAbroadMapper tabPbAbroadMapper;
 
+    @Autowired
+    private TabSysDeptMapper tabSysDeptMapper;
+
+    //长沙市组织id
+    private final String ORG_ID = "14307";
+
+    //当前组织范围
+    private final String RANGE_STATE_LEVEL = "0";
+
+    //当前组织包含所有下级
+    private final String RANGE_STATE_SUBORDINATE = "2";
+
+    //非党员
+    private final Long TYPE_STATE = 59423L;
+
     @Override
     public UserInfoVO getUserInfoVO() {
         Profile profile = UserContextHolder.currentUser();
@@ -109,6 +124,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                     }
                 }
             }
+            //减去
             //设置真实党龄
             historyPartyVO.get(i).setPartyStanding(age);
         }
@@ -129,9 +145,11 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @Transactional(rollbackFor = Exception.class)
     public int savePartyInfo(PartyInfoDTO partyInfoDTO) {
         if (!tabSysUserMapper.checkIsExistByIdCard(partyInfoDTO.getParty().getIdCardNo())) {
-            //补录成正式党员
-            partyInfoDTO.getParty().setIdentityType(223L);
+            //补录成非党员
+            partyInfoDTO.getParty().setIdentityType(TYPE_STATE);
             SysUser sys = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyInfoDTO.getParty(), SysUser.class, false);
+            //检测组织Id
+            checkIsExist(sys);
             //新增用户信息
             tabSysUserMapper.insertSelective(sys);
             //新增或者删除标签信息
@@ -142,7 +160,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             if (partyInfoDTO.getEducations() != null && partyInfoDTO.getEducations().size() > 0) {
                 //赋值主键
                 partyInfoDTO.getEducations().forEach(education -> {
-                    education.setUserId(sys.getUserId().longValue());
+                    education.setUserId(sys.getUserId());
                 });
                 effected += tabPbPartyEducationMapper.batchInsert(BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(partyInfoDTO.getEducations(), TabPbPartyEducation.class, false));
             }
@@ -173,6 +191,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         if (tabSysUserMapper.checkIsExistByUserId(id)) {
             int effected = 0;
             SysUser sys = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyInfoDTO.getParty(), SysUser.class, true);
+            //检测组织Id
+            checkIsExist(sys);
             effected += tabSysUserMapper.updateByPrimaryKeySelective(sys);
             //新增或者删除标签信息
             if (partyInfoDTO.getParty().getUserTags() != null && partyInfoDTO.getParty().getUserTags().size() > 0) {
@@ -235,7 +255,6 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                     }
                     effected += tabPbPartyEducationMapper.batchUpdate(deleteSource);
                 }
-
             }
             //新增技术信息
             if (partyInfoDTO.getJobTitles() != null) {
@@ -350,20 +369,23 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         }
         throw new BusinessDataIncompleteException("用户ID不存在");
     }
-
     @Override
     public PageInfo<PartyMemberInformationVO> getPartyList(SysUserQueryBean queryBean, Page page) {
         String deptId = String.valueOf(queryBean.getDeptId());
         String orgRange = String.valueOf(queryBean.getOrgRange()); // 2 包含所有下级
-        if ("14307".equals(deptId) && "2".equals(orgRange)) {
-            queryBean.setOrgRange("0");
+        if (ORG_ID.equals(deptId) && RANGE_STATE_SUBORDINATE.equals(orgRange)) {
+            queryBean.setOrgRange(RANGE_STATE_LEVEL);
         }
-        long start = System.currentTimeMillis();
         PageHelper.startPage(page);
         List<PartyMemberInformationVO> partyMemberInformationVO = tabSysUserMapper.selectPageByMap(queryBean);
-        long end = System.currentTimeMillis();
-        long a = end - start;
         return new PageInfo<>(calculationComplete(partyMemberInformationVO));
+    }
+
+    //检查id是否存在
+    public void checkIsExist(SysUser user) {
+        if (!tabSysDeptMapper.checkIsExistByOrgId(user.getDeptId())) {
+            throw new BusinessDataIncompleteException("组织ID不存在");
+        }
     }
 
     public List<PartyMemberInformationVO> calculationComplete(List<PartyMemberInformationVO> userList) {
