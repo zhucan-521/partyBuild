@@ -67,4 +67,5 @@ public class FamilyMemberVO {
 
     @ApiModelProperty(value = " 排序码")
     private Long orderNum;
+
 }
