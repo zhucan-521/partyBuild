@@ -47,7 +47,6 @@ public class AbroadController {
     @ApiOperation(value = "更新（添加）回国信息 - 用作出国信息添加和更新", notes = "更新（添加）回国信息 - 用作出国信息添加和更新", httpMethod = "PUT")
     @PutMapping("/repatriations")
     public ReturnEntity updateReturnAbroad(@RequestBody @Validated @ApiParam("回国信息") ReturnAbroadDTO returnAbroadDTO) {
-        System.out.println(JSON.toJSONString(returnAbroadDTO));
         return ReturnUtil.buildReturn(abroadService.updateReturnAbroad(returnAbroadDTO));
     }
 
