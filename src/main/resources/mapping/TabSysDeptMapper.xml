@@ -710,9 +710,11 @@
             resultMap="OrganizationVOResultMap">
         select
         <include refid="VO_Column_List"/>
-        , u.unit_property,
+        , pd.`name` as parent_name,
+        u.unit_property,
         case when d.orgnize_property in ( 989, 992, 995, 1002, 1003, 1007, 1008) then 1 else 0 end AS is_branch
         from sys_dept d
+        left join sys_dept pd on d.parent_id = pd.dept_id
         left join tab_pb_unit_info u on d.unit_id = u.unit_id
         <where>
             d.del_flag = 0

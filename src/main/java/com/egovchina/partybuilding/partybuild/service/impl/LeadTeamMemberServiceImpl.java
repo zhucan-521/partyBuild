@@ -9,6 +9,7 @@ import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.LeadTeamMemberDTO;
+import com.egovchina.partybuilding.partybuild.entity.CommunityPartTimeMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.LeadTeamMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPositives;
@@ -18,6 +19,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.LeadTeamMemberService;
+import com.egovchina.partybuilding.partybuild.vo.CommunityPartTimeMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamVO;
 import com.github.pagehelper.PageHelper;
@@ -119,6 +121,12 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
             modifyPosition(leadTeamMemberDTO);
         }
         return judgment;
+    }
+
+    @Override
+    public List<CommunityPartTimeMemberVO> selectCommunityPartTimeMemberVOListByCondition(CommunityPartTimeMemberQueryBean queryBean, Page page) {
+        PageHelper.startPage(page);
+        return tabPbLeadTeamMemberMapper.selectCommunityPartTimeMemberVOListByCondition(queryBean);
     }
 
     /**
