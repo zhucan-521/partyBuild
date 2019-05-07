@@ -16,14 +16,15 @@ import java.util.Date;
 @ApiModel(" 出国信息-数据传输对象")
 public class GoAbroadDTO {
 
-    @ApiModelProperty(value = "出国出境(主键)ID")
+    @ApiModelProperty(value = "出国出境(主键)ID", required = true)
+    @NotNull(message = "出国出境(主键)ID不能为空")
     private Long abroadId;
 
-    @ApiModelProperty(value = "组织id")
+    @ApiModelProperty(value = "组织ID", required = true)
     @NotNull(message = "组织ID不能为空")
     private Long orgId;
 
-    @ApiModelProperty(value = "人员Id")
+    @ApiModelProperty(value = "人员ID", required = true)
     @NotNull(message = "人员ID不能为空")
     private Long userId;
 

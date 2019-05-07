@@ -12,6 +12,12 @@ import lombok.Data;
 @ApiModel("双述双评模块-查询条件")
 public class CommentaryQueryBean {
 
+    @ApiModelProperty("组织范围 1 查当前组织及其直属组织； 2 查当前组织及所有下级组织；其他值 查本组织")
+    private String orgRange;
+
+    @ApiModelProperty(value = "组织ID", required = true)
+    private Long rangeDeptId;
+
     @ApiModelProperty(value = "所属年度 yyyy")
     private String planYear;
 

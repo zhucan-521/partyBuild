@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.partybuild.entity.CommentaryQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary;
 import com.egovchina.partybuilding.partybuild.vo.CommentaryVO;
 import org.springframework.stereotype.Repository;
@@ -26,7 +27,7 @@ public interface TabPbDoubleCommentaryMapper {
 
     int logicDeleteById(Long commentaryId);
 
-    List<CommentaryVO> selectWithConditions(Map<String, Object> conditions);
+    List<CommentaryVO> selectWithConditions(CommentaryQueryBean commentaryQueryBean);
 
     /**
      * desc: 检验数据是否存在
@@ -36,6 +37,16 @@ public interface TabPbDoubleCommentaryMapper {
      * @author FanYanGen
      * @date 2019/4/24 20:49
      **/
-    boolean isExist(Long commentaryId);
+    boolean checkIsExistByCommentId(Long commentaryId);
+
+    /**
+     * desc: 根据年度查询该数据是否存在
+     *
+     * @param planYear 年度
+     * @return boolean
+     * @author FanYanGen
+     * @date 2019/5/7 11:16
+     **/
+    boolean checkIsExistByPlanYear(String planYear);
 
 }

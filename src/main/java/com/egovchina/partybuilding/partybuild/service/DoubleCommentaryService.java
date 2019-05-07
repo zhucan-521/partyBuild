@@ -1,11 +1,9 @@
 package com.egovchina.partybuilding.partybuild.service;
 
-import com.egovchina.partybuilding.common.entity.OrgRange;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.dto.DoubleCommentaryDTO;
 import com.egovchina.partybuilding.partybuild.entity.CommentaryQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.DoubleCommentaryQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary;
 import com.egovchina.partybuilding.partybuild.vo.CommentaryVO;
 import com.github.pagehelper.PageInfo;
 
@@ -15,29 +13,16 @@ import com.github.pagehelper.PageInfo;
  */
 public interface DoubleCommentaryService {
 
-    int deleteByPrimaryKey(Long commentaryId);
-
-    int insert(TabPbDoubleCommentary record);
-
-    int insertSelective(TabPbDoubleCommentary record);
-
-    int updateByPrimaryKeySelective(TabPbDoubleCommentary record);
-
-    int updateByPrimaryKeyWithBLOBs(TabPbDoubleCommentary record);
-
-    int updateByPrimaryKey(TabPbDoubleCommentary record);
-
     /**
      * desc: 根据组合条件查询双述双评列表
      *
-     * @param page                分页实体
      * @param commentaryQueryBean 查询条件
-     * @param orgRange            组织条件集合
+     * @param page                分页实体
      * @return List<CommentaryVO>
      * @author FanYanGen
      * @date 2019/4/24 16:28
      **/
-    PageInfo<CommentaryVO> findCommentaryVOWithConditions(Page page, CommentaryQueryBean commentaryQueryBean, OrgRange orgRange);
+    PageInfo<CommentaryVO> findCommentaryVOWithConditions(CommentaryQueryBean commentaryQueryBean, Page page);
 
     /**
      * desc: 新增双述双评

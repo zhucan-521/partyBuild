@@ -79,6 +79,6 @@ public class TabPbAbroad {
 
     private Date registryReverseDate;
 
-    private Byte isTransOut;
+    private Integer isTransOut;
 
 }
