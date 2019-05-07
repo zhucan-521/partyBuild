@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper">
     <!--基础结果集-->
-    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.SysDept">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.common.entity.SysDept">
         <id column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="org_short_name" jdbcType="VARCHAR" property="orgShortName"/>
@@ -47,7 +47,7 @@
         <result column="is_parent" jdbcType="TINYINT" property="isParent"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
-               type="com.egovchina.partybuilding.partybuild.entity.SysDept">
+               type="com.egovchina.partybuilding.common.entity.SysDept">
         <result column="position" jdbcType="LONGVARCHAR" property="position"/>
         <result column="position_range" jdbcType="LONGVARCHAR" property="positionRange"/>
         <result column="founded_reason" jdbcType="LONGVARCHAR" property="foundedReason"/>
@@ -593,7 +593,7 @@
     where d.dept_id = #{deptId,jdbcType=BIGINT}
   </delete>
     <insert id="insert" useGeneratedKeys="true" keyProperty="deptId"
-            parameterType="com.egovchina.partybuilding.partybuild.entity.SysDept">
+            parameterType="com.egovchina.partybuilding.common.entity.SysDept">
     insert into sys_dept (name, org_short_name,
       org_code, org_inner_code, parent_id,
       is_team, org_level, level_date,
@@ -626,7 +626,7 @@
       )
   </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="deptId"
-            parameterType="com.egovchina.partybuilding.partybuild.entity.SysDept">
+            parameterType="com.egovchina.partybuilding.common.entity.SysDept">
         insert into sys_dept
         <include refid="Selective_Column_List"/>
         values
@@ -634,7 +634,7 @@
     </insert>
     <!--根据主键修改选择的字段-->
     <update id="updateByPrimaryKeySelective"
-            parameterType="com.egovchina.partybuilding.partybuild.entity.SysDept">
+            parameterType="com.egovchina.partybuilding.common.entity.SysDept">
         update sys_dept d
         <set>
             <include refid="Base_Set_Column_List"/>
@@ -642,7 +642,7 @@
         where d.dept_id = #{deptId,jdbcType=BIGINT}
     </update>
     <!--根据主键修改-->
-    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.SysDept">
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.common.entity.SysDept">
     update sys_dept
     set name = #{name,jdbcType=VARCHAR},
       org_short_name = #{orgShortName,jdbcType=VARCHAR},
@@ -832,7 +832,7 @@
 
     <!--修改组织信息的同时修改 relation 表-->
     <update id="updateWithRelationByPrimaryKeySelective"
-            parameterType="com.egovchina.partybuilding.partybuild.entity.SysDept">
+            parameterType="com.egovchina.partybuilding.common.entity.SysDept">
         update sys_dept d
         inner join sys_dept_relation dr on d.dept_id = dr.descendant
         <set>

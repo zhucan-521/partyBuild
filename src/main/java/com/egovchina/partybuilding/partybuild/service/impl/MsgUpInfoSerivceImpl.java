@@ -6,7 +6,7 @@ import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.egovchina.partybuilding.common.util.*;
 import com.egovchina.partybuilding.partybuild.dto.MsgUpInfoDTO;
 import com.egovchina.partybuilding.partybuild.entity.MsgUpInfoQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.SysDept;
+import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMsgUpInfoMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;

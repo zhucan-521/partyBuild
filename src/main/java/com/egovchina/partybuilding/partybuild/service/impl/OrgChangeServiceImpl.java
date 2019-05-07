@@ -7,7 +7,7 @@ import com.egovchina.partybuilding.common.exception.BusinessDataInvalidException
 import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.partybuild.dto.OrgChangeDTO;
-import com.egovchina.partybuilding.partybuild.entity.SysDept;
+import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange;
 import com.egovchina.partybuilding.partybuild.repository.TabPbOrgnizeChangeMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
