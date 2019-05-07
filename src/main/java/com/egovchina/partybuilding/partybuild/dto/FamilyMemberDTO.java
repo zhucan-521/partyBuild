@@ -56,4 +56,7 @@ public class FamilyMemberDTO {
 
     @ApiModelProperty(value = " 排序码")
     private Long orderNum;
+
+    @ApiModelProperty(value = "姓名")
+    private String username;
 }

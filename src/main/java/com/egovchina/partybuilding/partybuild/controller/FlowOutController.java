@@ -43,7 +43,7 @@ public class FlowOutController {
         return flowOutVoService.getFlowOutVoList(flowOutMemberQueryBean, page);
     }
 
-    @ApiOperation(value = "流出党员（包括市外）登记/市外流入党员手动登记（一定要附带录入日期）", notes = "如果是流出党员流出市外登记那么就不要给流入组织id（flowOutPlace）赋值,因为系统没有流入", httpMethod = "POST")
+    @ApiOperation(value = "流出党员（包括市外）登记/市外流入党员手动登记（一定要附带录入日期）", notes = "如果是流出党员流出市外登记那么就不要给流入组织id（flowOutPlace）赋值,因为系统没有流入；手动录入，一定要有录入日期，流出组织id（orgId）为空，因为外市流入本系统没有对应的流出组织", httpMethod = "POST")
     @PostMapping
     public ReturnEntity addFlowOutMember(@RequestBody @ApiParam(value = "流出党员") FlowOutMemberDTO flowOutMemberDTO) {
         return ReturnUtil.buildReturn(flowOutVoService.addFlowOutMemberDTO(flowOutMemberDTO));
