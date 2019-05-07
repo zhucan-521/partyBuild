@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 import static com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled;
@@ -68,8 +69,8 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
         if (returnEntity.unOkResp()) {
             throw returnEntity.exception();
         }
-        boolean exists = returnEntity.respBody(Boolean.class);
-        if (!exists) {
+        Boolean check = Optional.ofNullable(returnEntity.getResultObj()).orElse(true);
+        if (check) {
             systemServiceFeignClient.insertUserRole(44L, userId);
         }
         int count = 0;
