@@ -224,9 +224,6 @@
             <collection property="joinOrgName"
                         select="com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper.selectDeptNameByPrimaryKey"
                         column="dept_id"/>
-            <collection property="positives"
-                        select="com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper.selectPositives"
-                        column="{userId=user_id}"/>
         </association>
         <collection property="educations" select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyEducationMapper.findAllByUserId" column="user_id"/>
         <collection property="jobTitles" select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyJobTitleMapper.findAllByUserId" column="user_id"/>
@@ -245,6 +242,7 @@
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="in_where_dept_name" jdbcType="VARCHAR" property="inWhereDeptName"/>
         <result column="age" jdbcType="BIGINT" property="partyStanding"/>
+        <result column="reduce_time" jdbcType="TIMESTAMP" property="reduceTime"/>
     </resultMap>
 
 
