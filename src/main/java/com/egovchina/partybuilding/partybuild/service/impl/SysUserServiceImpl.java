@@ -1,16 +1,15 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
+import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
-import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMemberAddListMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMemberReduceListMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.OrganizationService;
 import com.egovchina.partybuilding.partybuild.service.SysUserService;
-import com.egovchina.partybuilding.partybuild.vo.SysUserVO;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

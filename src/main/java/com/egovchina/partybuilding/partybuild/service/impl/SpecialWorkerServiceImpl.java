@@ -3,7 +3,9 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
+import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.partybuild.dto.SpecialWorkerDTO;
 import com.egovchina.partybuilding.partybuild.entity.SpecialWorkerQueryBean;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 import static com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled;
@@ -30,16 +33,16 @@ import static com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil.paddi
 public class SpecialWorkerServiceImpl implements SpecialWorkerService {
 
     @Autowired
-    TabSysUserMapper tabSysUserMapper;
+    private TabSysUserMapper tabSysUserMapper;
 
     @Autowired
-    SystemServiceFeignClient systemServiceFeignClient;
+    private SystemServiceFeignClient systemServiceFeignClient;
 
     @Autowired
-    TabPbSpcialWorkerMapper tabPbSpcialWorkerMapper;
+    private TabPbSpcialWorkerMapper tabPbSpcialWorkerMapper;
 
     @Autowired
-    TabSysDeptMapper tabSysDeptMapper;
+    private TabSysDeptMapper tabSysDeptMapper;
 
     /**
      * 专干新增
@@ -48,11 +51,17 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
     @PaddingBaseField
     @Override
     public int insert(SpecialWorkerDTO specialWorkerDto) {
-       if(tabSysDeptMapper.selectByPrimaryKey(specialWorkerDto.getManageOrgId()) == null &&
-               tabSysDeptMapper.selectByPrimaryKey(specialWorkerDto.getDeptId()) == null ){
-           throw new BusinessDataCheckFailException("根据传入的deptId或者mangerOrgId查找不到对应的组织部门");
-       }
-        Long userId = tabSysUserMapper.selectUserByIdCardNo(specialWorkerDto.getIdCardNo()).getUserId().longValue();
+        if (tabSysDeptMapper.selectByPrimaryKey(specialWorkerDto.getManageOrgId()) == null &&
+                tabSysDeptMapper.selectByPrimaryKey(specialWorkerDto.getDeptId()) == null) {
+            throw new BusinessDataCheckFailException("组织不存在");
+        }
+        SysUser sysUser = tabSysUserMapper.selectUserByIdCardNo(specialWorkerDto.getIdCardNo());
+        Long userId;
+        if (sysUser != null) {
+            userId = sysUser.getUserId();
+        } else {
+            throw new BusinessDataCheckFailException("该身份证号码不存在");
+        }
         specialWorkerDto.setUserId(userId);
         //设置专干角色为44，并且插入sys_user_role
 
@@ -60,20 +69,20 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
         if (returnEntity.unOkResp()) {
             throw returnEntity.exception();
         }
-//        boolean exists = returnEntity.respBody(Boolean.class);
-//        if (!exists) {
-//            systemServiceFeignClient.insertUserRole(44L, userId);
-//        }
+        Boolean check = Optional.ofNullable(returnEntity.getResultObj()).orElse(true);
+        if (check) {
+            systemServiceFeignClient.insertUserRole(44L, userId);
+        }
         int count = 0;
-        if(tabPbSpcialWorkerMapper.checkSpecialWhetherTOLeave(userId)){
+        if (tabPbSpcialWorkerMapper.checkSpecialWhetherTOLeave(userId)) {
             throw new BusinessDataCheckFailException("该专干正处于任职状态，请离职后在任职");
-        }else{
+        } else {
             TabPbSpcialWorker tabPbSpcialWorker =
                     generateTargetCopyPropertiesAndPaddingBaseField(
                             specialWorkerDto, TabPbSpcialWorker.class, false);
-            count=tabPbSpcialWorkerMapper.insertSelective(tabPbSpcialWorker);
+            count = tabPbSpcialWorkerMapper.insertSelective(tabPbSpcialWorker);
         }
-        return  count;
+        return count;
     }
 
     /**
@@ -85,11 +94,11 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
     @Override
     public int deleteBySpecialWorkerId(Long specialWorkerId) {
         TabPbSpcialWorker spcialWorker = tabPbSpcialWorkerMapper.selectByPrimaryKey(specialWorkerId);
-        if(spcialWorker == null){
+        if (spcialWorker == null) {
             throw new BusinessDataCheckFailException("专干不存在");
         }
-        spcialWorker.setDelFlag("1");
-        spcialWorker.setEblFlag("0");
+        spcialWorker.setDelFlag(CommonConstant.STATUS_DEL);
+        spcialWorker.setEblFlag(CommonConstant.STATUS_NOEBL);
         paddingUpdateRelatedBaseFiled(spcialWorker);
         int count = tabPbSpcialWorkerMapper.updateByPrimaryKeySelective(spcialWorker);
         //删除user_role表里面的专干信息
@@ -119,11 +128,11 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
      */
     @Override
     public int updateBySpecialWorkerId(SpecialWorkerDTO specialWorkerDto) {
-        if(null==tabSysDeptMapper.selectByPrimaryKey(specialWorkerDto.getManageOrgId()) ||
-                null==tabSysDeptMapper.selectByPrimaryKey(specialWorkerDto.getDeptId())){
-            throw new BusinessDataCheckFailException("根据传入的deptId或者mangerOrgId查找不到对应的组织部门");
+        if (null == tabSysDeptMapper.selectByPrimaryKey(specialWorkerDto.getManageOrgId()) ||
+                null == tabSysDeptMapper.selectByPrimaryKey(specialWorkerDto.getDeptId())) {
+            throw new BusinessDataCheckFailException("组织不存在");
         }
-        if(specialWorkerDto.getSpecialWorkerId()==null){
+        if (specialWorkerDto.getSpecialWorkerId() == null) {
             throw new BusinessDataCheckFailException("缺少专干主键");
         }
         TabPbSpcialWorker tabPbSpcialWorker =
@@ -132,9 +141,9 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
         return tabPbSpcialWorkerMapper.updateByPrimaryKeySelective(tabPbSpcialWorker);
     }
 
-
     /**
      * 详情查询
+     *
      * @param specialWorkerId
      * @return
      */
@@ -142,6 +151,5 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
     public SpecialWorkerVO selectSpecialWorkerById(Long specialWorkerId) {
         return tabPbSpcialWorkerMapper.selectSpecialWorkerVOById(specialWorkerId);
     }
-
 
 }

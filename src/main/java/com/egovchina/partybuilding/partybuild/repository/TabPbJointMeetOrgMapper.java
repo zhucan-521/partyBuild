@@ -26,4 +26,6 @@ public interface TabPbJointMeetOrgMapper {
     List<JointMeetOrgVO> selectJointMeetOrgVOList(JointMeetOrgQueryBean jointMeetOrgQueryBean);
 
     int batchInsert(List<TabPbJointMeetOrg> tabPbJointMeetOrgList);
+
+    int batchUpdate(List<TabPbJointMeetOrg> tabPbJointMeetOrgList);
 }

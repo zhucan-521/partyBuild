@@ -1,7 +1,7 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.OrganizationQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.vo.ContainsStatisticsOrganizationVO;
 import com.egovchina.partybuilding.partybuild.vo.OrganizationPartyBuildingWorkVO;
 import com.egovchina.partybuilding.partybuild.vo.OrganizationPositionVO;
@@ -37,7 +37,9 @@ public interface TabSysDeptMapper {
      */
     List<OrganizationVO> selectOrganizationVOWithCondition(OrganizationQueryBean queryBean);
 
-    boolean checkOrgNameAvailability(@Param("orgName") String orgName, @Param("orgId") Long orgId);
+    Boolean checkOrgNameAvailability(@Param("orgName") String orgName, @Param("orgId") Long orgId);
+
+    Boolean checkOrgCodeAvailability(@Param("orgCode") String orgCode, @Param("orgId") Long deptId);
 
     void batchInsert(List<SysDept> effectiveList);
 

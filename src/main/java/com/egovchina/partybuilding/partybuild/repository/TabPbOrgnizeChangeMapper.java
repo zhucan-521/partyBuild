@@ -5,7 +5,6 @@ import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
 
 public interface TabPbOrgnizeChangeMapper {
     int deleteByPrimaryKey(Long changeId);
@@ -27,17 +26,8 @@ public interface TabPbOrgnizeChangeMapper {
      * @param deptId
      * @return
      */
-    TabPbOrgnizeChange selectOrgChangeByDeptIdOrderTime(@Param("deptId") Long deptId,
+    OrgChangeVO selectOrgChangeByDeptIdOrderTime(@Param("deptId") Long deptId,
                                                         @Param("changeType") Long changeType);
-
-    List<TabPbOrgnizeChange> selectByChangeType(Map<String, Object> conditions);
-
-    /**
-     * 整合组织信息
-     * @param deptId
-     * @return
-     */
-    List<TabPbOrgnizeChange> selectCombination(@Param("deptId") Long deptId);
 
     /**
      * 查询组织变动记录

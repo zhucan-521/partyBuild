@@ -15,7 +15,6 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbFamilyMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.SecretaryService;
-import com.egovchina.partybuilding.partybuild.vo.FamilyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryInfoVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
 import com.github.pagehelper.PageHelper;
