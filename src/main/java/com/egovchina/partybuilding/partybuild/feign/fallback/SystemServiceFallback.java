@@ -19,7 +19,7 @@ public class SystemServiceFallback implements SystemServiceFeignClient {
     }
 
     @Override
-    public ReturnEntity checkUserHasSpecifiedRole(Long roleId, Long userId) {
+    public ReturnEntity<Boolean> checkUserHasSpecifiedRole(Long roleId, Long userId) {
         return ReturnUtil.fail();
     }
 }
