@@ -48,7 +48,7 @@ public class UnitInfoServiceImpl implements UnitInfoService {
     public int insertUnitInfo(UnitInfoDTO unitInfoDTO) {
         TabPbUnitInfo tabPbUnitInfo =
                 generateTargetCopyPropertiesAndPaddingBaseField(
-                        unitInfoDTO, TabPbUnitInfo.class, false);
+                        unitInfoDTO, TabPbUnitInfo.class,  false);
         return tabPbUnitInfoMapper.insertSelective(tabPbUnitInfo);
     }
 
