@@ -45,4 +45,10 @@ public class RewardsVO {
 
     @ApiModelProperty(value = "附件")
     private List<TabPbAttachment> attachments;
+
+    @ApiModelProperty(value = "图片数量")
+    private Long imgTool;
+
+    @ApiModelProperty(value = "文件数量")
+    private Long fileTool;
 }
