@@ -1,6 +1,5 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
-import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -11,7 +10,7 @@ import java.util.List;
 public interface TabPbUserTagMapper {
     int deleteByPrimaryKey(Long usertagId);
 
-    int deleteByUserIdAndTagType(@Param("userId") Long userId, @Param("tagTypes") Long tagType);
+    int deleteByUserIdAndTagType(@Param("userId") Long userId, @Param("tagType") Long tagType);
 
     int insert(TabPbUserTag record);
 
@@ -35,7 +34,7 @@ public interface TabPbUserTagMapper {
      */
     List<TabPbUserTag> selectAllListSelective(TabPbUserTag userTag);
 
-    boolean exist(@Param("userId") Long userId, @Param("tagTypes") Long tagType);
+    boolean exist(@Param("userId") Long userId, @Param("tagType") Long tagType);
 
     /**
      * 批量插入标记
