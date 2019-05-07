@@ -37,7 +37,9 @@ public interface TabSysDeptMapper {
      */
     List<OrganizationVO> selectOrganizationVOWithCondition(OrganizationQueryBean queryBean);
 
-    boolean checkOrgNameAvailability(@Param("orgName") String orgName, @Param("orgId") Long orgId);
+    Boolean checkOrgNameAvailability(@Param("orgName") String orgName, @Param("orgId") Long orgId);
+
+    Boolean checkOrgCodeAvailability(@Param("orgCode") String orgCode, @Param("orgId") Long deptId);
 
     void batchInsert(List<SysDept> effectiveList);
 

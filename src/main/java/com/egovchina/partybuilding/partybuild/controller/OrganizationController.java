@@ -58,7 +58,6 @@ public class OrganizationController {
     @ApiOperation(value = "新增组织", notes = "新增组织", httpMethod = "POST")
     @PostMapping
     public ReturnEntity insertOrganization(@ApiParam(value = "组织实体") @RequestBody @Validated OrganizationDTO organizationDTO) {
-
         orgDataVerification(organizationDTO);
         return ReturnUtil.buildReturn(organizationService.insertOrganization(organizationDTO));
     }
@@ -140,6 +139,9 @@ public class OrganizationController {
         //校验组织名称有效性
         checkOrganizationNameAvailability(organizationDTO);
 
+        //校验组织编码有效性
+        checkOrganizationCodeAvailability(organizationDTO);
+
         SysDept parentDept = organizationService.selectAloneByPrimaryKey(organizationDTO.getParentId());
         if (parentDept == null) {
             throw new BusinessDataInvalidException("上级组织不存在");
@@ -148,6 +150,21 @@ public class OrganizationController {
         if (organizationDTO.getUnitState() == 59139L) {
             organizationDTO.setUnitName(parentDept.getUnitName());
             organizationDTO.setUnitId(parentDept.getUnitId());
+        }
+
+    }
+
+    /**
+     * 检验组织编码可用性
+     *
+     * @param organizationDTO
+     */
+    private void checkOrganizationCodeAvailability(OrganizationDTO organizationDTO) {
+        boolean availability = Optional.ofNullable(organizationService.checkOrgCodeAvailability(
+                organizationDTO.getOrgCode(), organizationDTO.getDeptId()))
+                .orElse(false);
+        if (availability) {
+            throw new BusinessDataCheckFailException("组织编码已被占用");
         }
     }
 
@@ -160,7 +177,7 @@ public class OrganizationController {
         boolean availability = Optional.ofNullable(organizationService.checkOrgNameAvailability(
                 organizationDTO.getName(), organizationDTO.getDeptId()))
                 .orElse(false);
-        if (!availability) {
+        if (availability) {
             throw new BusinessDataCheckFailException("组织名称已被占用");
         }
     }

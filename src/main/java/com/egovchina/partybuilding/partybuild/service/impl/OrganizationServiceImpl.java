@@ -37,19 +37,23 @@ import static com.egovchina.partybuilding.common.util.RedisKeyConstant.ORGANIZAT
  *
  * @Author Zhang Fan
  **/
-@Service("tabSysDeptService")
+@Service("organizationService")
 public class OrganizationServiceImpl implements OrganizationService {
 
     private static final int COMPLETE_SEED = 10;
 
     @Autowired
     private TabSysDeptMapper tabSysDeptMapper;
+
     @Autowired
     private TabPbUnitInfoMapper tabPbUnitInfoMapper;
+
     @Autowired
     private TabPbOrgClassifyMapper tabPbOrgClassifyMapper;
+
     @Autowired
     private OrgChangeService orgChangeService;
+
     @Autowired
     private ITabPbAttachmentService iTabPbAttachmentService;
 
@@ -66,6 +70,11 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
+    public Boolean checkOrgCodeAvailability(String orgCode, Long deptId) {
+        return tabSysDeptMapper.checkOrgCodeAvailability(orgCode, deptId);
+    }
+
+    @Override
     public SysDept selectByPrimaryKey(Long deptId) {
         return tabSysDeptMapper.selectByPrimaryKey(deptId);
     }
@@ -78,20 +87,19 @@ public class OrganizationServiceImpl implements OrganizationService {
         //新增组织信息
         SysDept sysDept = generateTargetCopyPropertiesAndPaddingBaseField(organizationDTO, SysDept.class, false);
         judgment += tabSysDeptMapper.insertSelective(sysDept);
-        //新增Relation表
-        tabSysDeptMapper.insertToDeptRelationTable(organizationDTO.getParentId(), organizationDTO.getDeptId());
-
+        organizationDTO.setDeptId(sysDept.getDeptId());
         //新增调整【新建】状态
         initToOrganizationChangeTable(organizationDTO);
 
         //新增分类定等数据，如果需要
         insertClassifyIfNecessary(organizationDTO);
-
         //新增单位数据
-        List<TabPbUnitInfo> tabPbUnitInfoList =
-                generateTargetListCopyPropertiesAndPaddingBaseField(organizationDTO.getUnits(), TabPbUnitInfo.class, false);
-        if (tabPbUnitInfoList != null && tabPbUnitInfoList.size() > 0) {
-            tabPbUnitInfoList.forEach(tabPbUnitInfo -> insertUnitInfo(organizationDTO, tabPbUnitInfo));
+        if (organizationDTO.getUnits() != null) {
+            List<TabPbUnitInfo> tabPbUnitInfoList =
+                    generateTargetListCopyPropertiesAndPaddingBaseField(organizationDTO.getUnits(), TabPbUnitInfo.class, false);
+            if (tabPbUnitInfoList != null && tabPbUnitInfoList.size() > 0) {
+                tabPbUnitInfoList.forEach(tabPbUnitInfo -> insertUnitInfo(organizationDTO, tabPbUnitInfo));
+            }
         }
         //维护组织表单位及 full_path
         modifyFullPathAndSubDeptIfNecessary(sysDept);
@@ -245,7 +253,6 @@ public class OrganizationServiceImpl implements OrganizationService {
     public OrganizationPartyBuildingWorkVO selectOrganizationPartyBuildingWorkVOByOrgId(Long deptId) {
         return tabSysDeptMapper.selectOrganizationPartyBuildingWorkVOByOrgId(deptId);
     }
-
 
     @Override
     public int updateByPrimaryKeySelective(SysDept sysDept) {

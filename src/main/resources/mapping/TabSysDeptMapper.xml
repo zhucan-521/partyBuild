@@ -694,6 +694,16 @@
         </if>
     </select>
 
+
+    <select id="checkOrgCodeAvailability" resultType="java.lang.Boolean">
+        SELECT true
+        FROM sys_dept
+        WHERE `org_code` = #{orgCode} and del_flag = 0
+        <if test="orgId != null and orgId != 0">
+            AND dept_id != #{orgId}
+        </if>
+    </select>
+
     <!--根据条件查询-->
     <select id="selectOrganizationVOWithCondition"
             parameterType="com.egovchina.partybuilding.partybuild.entity.OrganizationQueryBean"

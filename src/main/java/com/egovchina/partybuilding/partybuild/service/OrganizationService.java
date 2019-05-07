@@ -40,6 +40,15 @@ public interface OrganizationService {
     Boolean checkOrgNameAvailability(String orgName, Long orgId);
 
     /**
+     * 校验组织编码的可用性
+     *
+     * @param orgCode
+     * @param deptId
+     * @return
+     */
+    Boolean checkOrgCodeAvailability(String orgCode, Long deptId);
+
+    /**
      * 根据id查询组织信息
      *
      * @param deptId id
@@ -168,4 +177,5 @@ public interface OrganizationService {
      * @return
      */
     OrganizationPartyBuildingWorkVO selectOrganizationPartyBuildingWorkVOByOrgId(Long deptId);
+
 }
