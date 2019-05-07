@@ -242,6 +242,27 @@
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="in_where_dept_name" jdbcType="VARCHAR" property="inWhereDeptName"/>
         <result column="age" jdbcType="BIGINT" property="partyStanding"/>
+        <result column="reduce_time" jdbcType="TIMESTAMP" property="reduceTime"/>
+    </resultMap>
+    <!--查询组织书记的简单信息-->
+    <resultMap id="BaseSecretariesPartyResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.SecretariesPartyMemberVO">
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="realname" jdbcType="VARCHAR" property="realname"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="gender" jdbcType="BIGINT" property="gender"/>
+        <result column="birthday" jdbcType="TIMESTAMP" property="birthday"/>
+        <result column="nation" jdbcType="BIGINT" property="nation"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="fix_phone" jdbcType="VARCHAR" property="fixPhone"/>
+        <result column="join_org_time" jdbcType="TIMESTAMP" property="joinOrgTime"/>
+        <result column="ancestor_place" jdbcType="BIGINT" property="ancestorPlace"/>
+        <collection property="joinOrgName"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper.selectDeptNameByPrimaryKey"
+                    column="dept_id"/>
+        <collection property="positives"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper.selectPositivesName"
+                    column="user_id"/>
     </resultMap>
 
 
@@ -373,7 +394,16 @@
             and is_taiwaner = #{isTaiwaner}
         </if>
     </sql>
-
+    <!--查询书记的简单党员信息-->
+    <select id="selectSecretariesPartyByPrimaryKey" parameterType="java.lang.Long"
+            resultMap="BaseSecretariesPartyResultMap">
+        select
+         user_id,dept_id,realname,gender,nation,phone,fix_phone,
+        join_org_name,marital_status,ancestor_place,join_org_time
+        from sys_user
+        where user_id = #{userId,jdbcType=BIGINT}
+        and del_flag = '0'
+    </select>
     <!--查询列表WhereCaseList-->
     <sql id="selectPageWhereCaseList">
         <if test="username != null">
@@ -849,6 +879,9 @@
             <if test="jobPosition != null">
                 job_position,
             </if>
+            <if test="filesManageUnit != null">
+                files_manage_unit,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="deptId != null">
@@ -1138,6 +1171,9 @@
             </if>
             <if test="jobPosition != null">
                 #{jobPosition,jdbcType=VARCHAR},
+            </if>
+            <if test="filesManageUnit != null">
+                #{filesManageUnit,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>

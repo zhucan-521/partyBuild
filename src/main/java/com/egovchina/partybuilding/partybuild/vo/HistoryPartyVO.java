@@ -2,10 +2,13 @@ package com.egovchina.partybuilding.partybuild.vo;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.egovchina.partybuilding.common.config.DictSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.Date;
 
 @ApiModel(value = "历史党员查询实体")
 @Data
@@ -41,4 +44,7 @@ public class HistoryPartyVO {
     @ApiModelProperty(value = "原所在支部")
     private String inWhereDeptName;
 
+    @ApiModelProperty(value = "离开党组织时间")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date reduceTime;
 }
