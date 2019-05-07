@@ -3,6 +3,7 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.CollectionUtil;
+import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.partybuild.dto.UnitInfoDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo;
 import com.egovchina.partybuilding.partybuild.repository.TabPbUnitInfoMapper;
@@ -47,7 +48,7 @@ public class UnitInfoServiceImpl implements UnitInfoService {
     public int insertUnitInfo(UnitInfoDTO unitInfoDTO) {
         TabPbUnitInfo tabPbUnitInfo =
                 generateTargetCopyPropertiesAndPaddingBaseField(
-                        unitInfoDTO, TabPbUnitInfo.class, false);
+                        unitInfoDTO, TabPbUnitInfo.class,  false);
         return tabPbUnitInfoMapper.insertSelective(tabPbUnitInfo);
     }
 
@@ -55,7 +56,7 @@ public class UnitInfoServiceImpl implements UnitInfoService {
     public int deleteUnitInfo(Long unitId) {
         TabPbUnitInfo tabPbUnitInfo = new TabPbUnitInfo();
         tabPbUnitInfo.setUnitId(unitId);
-        tabPbUnitInfo.setDelFlag("1");
+        tabPbUnitInfo.setDelFlag(CommonConstant.STATUS_DEL);
         paddingUpdateRelatedBaseFiled(tabPbUnitInfo);
         return tabPbUnitInfoMapper.updateByPrimaryKeySelective(tabPbUnitInfo);
     }

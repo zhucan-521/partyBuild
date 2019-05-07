@@ -1,12 +1,12 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
+import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.exception.BusinessException;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.TransferApprovalDto;
 import com.egovchina.partybuilding.partybuild.dto.TransferItemDto;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
-import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.TabPbTransfer;
 import com.egovchina.partybuilding.partybuild.entity.TabPbTransferItem;
 import com.egovchina.partybuilding.partybuild.repository.TabPbTransferItemMapper;

@@ -7,7 +7,7 @@ import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailExcepti
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.OrgClassifyDTO;
-import com.egovchina.partybuilding.partybuild.entity.SysDept;
+import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify;
 import com.egovchina.partybuilding.partybuild.repository.TabPbOrgClassifyMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;

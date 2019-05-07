@@ -37,6 +37,8 @@
         <result column="contactor" jdbcType="VARCHAR" property="contactor"/>
         <result column="contact_number" jdbcType="VARCHAR" property="contactNumber"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="manage_org_name" jdbcType="VARCHAR" property="manageOrgName"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -294,9 +296,9 @@
         (case WHEN NOW() > sw.left_time THEN -1
         WHEN IFNULL( sw.left_time, 1) = 1 or NOW() &lt;= sw.left_time  THEN 1 end
         ) status,
-        (select name from sys_dept where dept_id= sw.manage_org_id) deptName,
+        (select name from sys_dept where dept_id= sw.manage_org_id) dept_name,
         u.dept_id,
-        (select name from sys_dept where dept_id= u.dept_id) manageOrgName,
+        (select name from sys_dept where dept_id= u.dept_id) manage_org_name,
         sw.left_time
         FROM
         tab_pb_spcial_worker sw
@@ -345,14 +347,15 @@
         u.gender,
         u.realname AS username,
         u.phone,
+        u.user_id,
         sw.arrive_time,
         sw.manage_org_id,
         (case WHEN NOW() > sw.left_time THEN -1
         WHEN IFNULL( sw.left_time, 1) = 1 or NOW() &lt;= sw.left_time  THEN 1 end
         ) status,
-        (select name from sys_dept where dept_id= sw.manage_org_id) deptName,
+        (select name from sys_dept where dept_id= sw.manage_org_id) dept_name,
         u.dept_id,
-        (select name from sys_dept where dept_id= u.dept_id) manageOrgName,
+        (select name from sys_dept where dept_id= u.dept_id) manage_org_name,
         sw.left_time
         FROM
         tab_pb_spcial_worker sw

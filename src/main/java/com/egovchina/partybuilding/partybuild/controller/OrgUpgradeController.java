@@ -30,8 +30,8 @@ import org.springframework.web.bind.annotation.*;
 public class OrgUpgradeController {
     @Autowired
     private OrgUpgradeService orgUpgradeService;
-    
-    @ApiOperation(value = "新增组织升格信息",notes = "新增组织升格信息")
+
+    @ApiOperation(value = "新增组织升格信息", notes = "新增组织升格信息")
     @PostMapping
     public ReturnEntity addOrgUpgrade(@ApiParam("组织升格信息") @RequestBody @Validated OrgUpgradeDTO orgUpgradeDto) {
         return ReturnUtil.buildReturn(orgUpgradeService.addOrgUpgrade(orgUpgradeDto));
@@ -43,22 +43,22 @@ public class OrgUpgradeController {
         return ReturnUtil.buildReturn(orgUpgradeService.updateByPrimaryKeySelective(orgUpgradeDto));
     }
 
-    @ApiOperation(value = "查看组织升格信息",notes = "查看组织升格信息")
-    @ApiImplicitParam(value = "组织id",name = "deptId" ,paramType = "path" , required = true)
+    @ApiOperation(value = "查看组织升格信息", notes = "查看组织升格信息")
+    @ApiImplicitParam(value = "组织id", name = "deptId", paramType = "path", required = true)
     @GetMapping("/{deptId}")
-    public OrgUpgradeVO getOrgUpgrade(@PathVariable Long deptId){
+    public OrgUpgradeVO getOrgUpgrade(@PathVariable Long deptId) {
         return orgUpgradeService.selectOrgUpgradeByDeptId(deptId);
     }
 
     @ApiOperation(value = "批量转移人员", notes = "批量转移人员")
     @PostMapping("/personnel-transfer")
     public ReturnEntity updateListUser(@ApiParam("人员集合信息")
-            @RequestBody @Validated OrgUpgradedPersonnelTransferDTO orgUpgradedPersonnelTransferDTO) {
+                                       @RequestBody @Validated OrgUpgradedPersonnelTransferDTO orgUpgradedPersonnelTransferDTO) {
         return ReturnUtil.buildReturn(orgUpgradeService.batchDeptIdByUserId(orgUpgradedPersonnelTransferDTO));
     }
 
     @ApiOperation(value = "查询组织下的直属党员", notes = "查询组织下的直属党员")
-    @ApiImplicitParam(value = "组织id",name = "deptId" ,paramType = "path" , required = true)
+    @ApiImplicitParam(value = "组织id", name = "deptId", paramType = "path", required = true)
     @GetMapping("/members/{deptId}")
     public PageInfo<DirectPartyMemberVO> getDirectPartyMemberByDeptId(@PathVariable Long deptId) {
         return new PageInfo<>(orgUpgradeService.getDirectPartyMemberByDeptId(deptId));

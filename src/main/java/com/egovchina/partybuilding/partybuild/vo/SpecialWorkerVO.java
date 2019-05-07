@@ -6,9 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -20,7 +18,7 @@ import java.util.Date;
 @Data
 @ApiModel(value = "专干VO")
 public class SpecialWorkerVO {
-    @ApiModelProperty(value="专干主键")
+    @ApiModelProperty(value = "专干主键")
     private Long specialWorkerId;
 
     @ApiModelProperty(value = "组织联系人")
@@ -42,16 +40,19 @@ public class SpecialWorkerVO {
     @ApiModelProperty(value = "电话号码")
     private String phone;
 
-    @ApiModelProperty(value="接任时间")
+    @ApiModelProperty(value = "接任时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date arriveTime;
 
-    @ApiModelProperty(value="离任时间")
+    @ApiModelProperty(value = "离任时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date leftTime;
 
-    @ApiModelProperty(value="管理组织id")
+    @ApiModelProperty(value = "管理组织id")
     private Long manageOrgId;
+
+    @ApiModelProperty(value = "管理组织名称")
+    private String manageOrgName;
 
     @ApiModelProperty(value = "变更状态，-1离职，1在职")
     private Integer status;
@@ -59,6 +60,9 @@ public class SpecialWorkerVO {
     @ApiModelProperty(value = "所属组织ID")
     private Long deptId;
 
-    @ApiModelProperty(value = "userID")
+    @ApiModelProperty(value = "所属组织名称")
+    private String deptName;
+
+    @ApiModelProperty(value = "党员Id")
     private Long userId;
 }

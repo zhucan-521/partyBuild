@@ -36,7 +36,7 @@ public class SpecialWorkerController {
     @ApiOperation(value = "新增专干", notes = "新增专干")
     @PostMapping
     public ReturnEntity addSpecialWorker(@ApiParam("专干信息") @RequestBody @Validated SpecialWorkerDTO specialWorkerDto) {
-        return  ReturnUtil.buildReturn(specialWorkerService.insert(specialWorkerDto));
+        return ReturnUtil.buildReturn(specialWorkerService.insert(specialWorkerDto));
     }
 
     @ApiOperation(value = "删除", notes = "传入specialWorkerId删除,未删除sys_user_role表里面的值")
@@ -48,7 +48,7 @@ public class SpecialWorkerController {
 
     @ApiOperation(value = "条件分页查询", notes = "status为变更状态，1为在职，-1为离职")
     @GetMapping
-    public PageInfo<SpecialWorkerVO> getSpecialWorkerList(Page page,SpecialWorkerQueryBean specialWorkerQueryBean) {
+    public PageInfo<SpecialWorkerVO> getSpecialWorkerList(Page page, SpecialWorkerQueryBean specialWorkerQueryBean) {
         Long rangeDeptId = specialWorkerQueryBean.getRangeDeptId();
         if (rangeDeptId == null || rangeDeptId == 0) {
             specialWorkerQueryBean.setRangeDeptId(UserContextHolder.getOrgId());
@@ -63,7 +63,7 @@ public class SpecialWorkerController {
     }
 
     @ApiOperation(value = "详情查询根据id", notes = "详情查询根据id")
-    @ApiImplicitParam(value = "专干主键" ,name = "specialWorkerId",paramType = "path", required = true)
+    @ApiImplicitParam(value = "专干主键", name = "specialWorkerId", paramType = "path", required = true)
     @GetMapping("/{specialWorkerId}")
     public SpecialWorkerVO getSpecialWorkerById(@PathVariable Long specialWorkerId) {
         return specialWorkerService.selectSpecialWorkerById(specialWorkerId);

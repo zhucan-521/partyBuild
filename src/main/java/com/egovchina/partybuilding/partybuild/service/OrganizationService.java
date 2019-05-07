@@ -1,10 +1,10 @@
 package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.dto.OrganizationDTO;
 import com.egovchina.partybuilding.partybuild.dto.OrganizationPositionDTO;
 import com.egovchina.partybuilding.partybuild.entity.OrganizationQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.vo.ContainsStatisticsOrganizationVO;
 import com.egovchina.partybuilding.partybuild.vo.OrganizationPartyBuildingWorkVO;
 import com.egovchina.partybuilding.partybuild.vo.OrganizationPositionVO;
@@ -38,6 +38,15 @@ public interface OrganizationService {
      * @return
      */
     Boolean checkOrgNameAvailability(String orgName, Long orgId);
+
+    /**
+     * 校验组织编码的可用性
+     *
+     * @param orgCode
+     * @param deptId
+     * @return
+     */
+    Boolean checkOrgCodeAvailability(String orgCode, Long deptId);
 
     /**
      * 根据id查询组织信息
@@ -168,4 +177,5 @@ public interface OrganizationService {
      * @return
      */
     OrganizationPartyBuildingWorkVO selectOrganizationPartyBuildingWorkVOByOrgId(Long deptId);
+
 }

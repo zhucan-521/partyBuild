@@ -70,6 +70,7 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
 
     /**
      * 保存大公委及大公委成员数据
+     *
      * @param streetCommitteeDTO
      * @param streetCommitteMemberDTOList
      */
@@ -116,7 +117,7 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
      * 分页查询街道大公委数据
      *
      * @param streetCommitteeQueryBean
-     * @param page         分页
+     * @param page                     分页
      * @return 街道大公委数据
      */
     @Override
@@ -130,7 +131,7 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
     @Override
     public int addStreetCommitteeMember(StreetCommitteeMemberDTO streetCommitteeMemberDTO) {
         TabPbGrantCommitteMember tabPbGrantCommitteMember = new TabPbGrantCommitteMember();
-        BeanUtil.copyPropertiesIgnoreNull(streetCommitteeMemberDTO,tabPbGrantCommitteMember);
+        BeanUtil.copyPropertiesIgnoreNull(streetCommitteeMemberDTO, tabPbGrantCommitteMember);
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbGrantCommitteMember);
         return this.tabPbGrantCommitteMemberMapper.insertSelective(tabPbGrantCommitteMember);
     }
@@ -171,10 +172,10 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
                 .filter(v -> v.getGrantCommitteeId() != null)
                 .collect(Collectors.toList())) {
             //校验街道大工委成员是否存在
-            if(this.tabPbGrantCommitteMemberMapper.verifyStreetCommitteeMembers(
-                    tabPbGrantCommitteMember.getLeadTeamId(),tabPbGrantCommitteMember.getGrantCommitteeId(),
-                    tabPbGrantCommitteMember.getUserId()) > 0){
-                throw new BusinessDataIncompleteException(tabPbGrantCommitteMember.getPersonName()+"已经存在");
+            if (this.tabPbGrantCommitteMemberMapper.verifyStreetCommitteeMembers(
+                    tabPbGrantCommitteMember.getLeadTeamId(), tabPbGrantCommitteMember.getGrantCommitteeId(),
+                    tabPbGrantCommitteMember.getUserId()) > 0) {
+                throw new BusinessDataIncompleteException(tabPbGrantCommitteMember.getPersonName() + "已经存在");
             }
             count += this.tabPbGrantCommitteMemberMapper.insertSelective(tabPbGrantCommitteMember);
         }
