@@ -78,7 +78,7 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
      * @return TabPbMsgUpInfoDto
      */
     @Override
-    public TabPbMsgUpInfo retrnUpMember(Long realDeptId) {
+    public MsgUpInfoVO retrnUpMember(Long realDeptId) {
         if (null == realDeptId) {
             realDeptId = UserContextHolder.getOrgId();
         }
@@ -99,22 +99,30 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
         tabPbMsgUpInfo.setUpDeptName(upDept.getName());
         //接受组织名称
         if (null == realSysDept.getParentId()) {
-            return tabPbMsgUpInfo;
+            MsgUpInfoVO msgUpInfoVO=new MsgUpInfoVO();
+            BeanUtil.copyPropertiesIgnoreNull(tabPbMsgUpInfo,msgUpInfoVO);
+            return msgUpInfoVO;
         }
         SysDept recDept = tabSysDeptMapper.selectAloneByPrimaryKey(realSysDept.getParentId());
         if (null == recDept) {
-            return tabPbMsgUpInfo;
+            MsgUpInfoVO msgUpInfoVO=new MsgUpInfoVO();
+            BeanUtil.copyPropertiesIgnoreNull(tabPbMsgUpInfo,msgUpInfoVO);
+            return msgUpInfoVO;
         }
         tabPbMsgUpInfo.setRecevieDeptId(recDept.getDeptId());
         tabPbMsgUpInfo.setRecevieDeptName(recDept.getName());
         //接受人姓名
         SysUser recSysUser = tabPbMsgUpInfoMapper.selectBydeptId(recDept.getDeptId());
         if (null == recSysUser) {
-            return tabPbMsgUpInfo;
+            MsgUpInfoVO msgUpInfoVO=new MsgUpInfoVO();
+            BeanUtil.copyPropertiesIgnoreNull(tabPbMsgUpInfo,msgUpInfoVO);
+            return msgUpInfoVO;
         }
         tabPbMsgUpInfo.setRecevieUserId(recSysUser.getUserId());
         tabPbMsgUpInfo.setRecevieUsername(recSysUser.getUsername());
-        return tabPbMsgUpInfo;
+        MsgUpInfoVO msgUpInfoVO=new MsgUpInfoVO();
+        BeanUtil.copyPropertiesIgnoreNull(tabPbMsgUpInfo,msgUpInfoVO);
+        return msgUpInfoVO;
     }
 
     /**

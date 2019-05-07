@@ -47,7 +47,7 @@ public class MsgUpInfoController {
     @ApiOperation(value = "获取信息上报人（姓名，组织名称id，接受组织名称id，接受组织专干人姓名,党组织名称）", notes = "不填返回登录人的", httpMethod = "GET")
     @ApiImplicitParam(value = "上报组织主键", name = "realDeptId", paramType = "query")
     @GetMapping("/up-member-info")
-    public TabPbMsgUpInfo retrnUpMember(Long realDeptId) {
+    public MsgUpInfoVO retrnUpMember(Long realDeptId) {
         return msgUpInfoSerivce.retrnUpMember(realDeptId);
     }
 
