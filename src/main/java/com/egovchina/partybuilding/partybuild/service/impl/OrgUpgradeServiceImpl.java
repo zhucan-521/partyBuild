@@ -44,6 +44,9 @@ import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCop
  */
 @Service
 public class OrgUpgradeServiceImpl implements OrgUpgradeService {
+    //字典类型 组织升格
+    private static final Long UPGRADE = 59424L;
+
     @Autowired
     private TabSysUserMapper tabSysUserMapper;
     @Autowired
@@ -189,7 +192,7 @@ public class OrgUpgradeServiceImpl implements OrgUpgradeService {
         orgDataVerification(orgUpgradeDto);
         SysDeptUpgradeTemp sysDeptUpgradeTemp =
                 generateTargetCopyPropertiesAndPaddingBaseField(
-                        orgUpgradeDto, SysDeptUpgradeTemp.class,  true);
+                        orgUpgradeDto, SysDeptUpgradeTemp.class, true);
         if (sysDeptUpgradeTempMapper.selectOrgUpgradeVOByDeptId(sysDeptUpgradeTemp.getDeptId()) != null) {
             OrgUpgradeVO orgUpgradeVO = sysDeptUpgradeTempMapper.selectOrgUpgradeVOByDeptId(
                     sysDeptUpgradeTemp.getDeptId());
@@ -220,7 +223,7 @@ public class OrgUpgradeServiceImpl implements OrgUpgradeService {
                 orgUpgradeDto.getAttachments(),
                 orgUpgradeDto.getId(), AttachmentType.ORG_UPGRADE);
         TabPbOrgnizeChange tabPbOrgnizeChange = new TabPbOrgnizeChange();
-        tabPbOrgnizeChange.setChangeType(59424L);
+        tabPbOrgnizeChange.setChangeType(UPGRADE);
         tabPbOrgnizeChange.setDeptId(orgUpgradeDto.getDeptId());
         tabPbOrgnizeChange.setFileNumber(orgUpgradeDto.getFileNumber());
         tabPbOrgnizeChange.setChangeReason(orgUpgradeDto.getChangeReason());
@@ -228,7 +231,7 @@ public class OrgUpgradeServiceImpl implements OrgUpgradeService {
         tabPbOrgnizeChange.setOrgnizeName(orgUpgradeDto.getDeptName());
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbOrgnizeChange);
         OrgChangeVO orgChangeVO = tabPbOrgnizeChangeMapper.selectOrgChangeByDeptIdOrderTime(
-                orgUpgradeDto.getDeptId(), 59424L);
+                orgUpgradeDto.getDeptId(), UPGRADE);
         if (orgChangeVO != null) {
             tabPbOrgnizeChange.setChangeId(orgChangeVO.getChangeId());
             count += tabPbOrgnizeChangeMapper.updateByPrimaryKeySelective(tabPbOrgnizeChange);

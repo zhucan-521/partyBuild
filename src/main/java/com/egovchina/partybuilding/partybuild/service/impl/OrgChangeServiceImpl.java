@@ -5,6 +5,7 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataInvalidException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
+import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.partybuild.dto.OrgChangeDTO;
 import com.egovchina.partybuilding.partybuild.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange;
@@ -148,9 +149,9 @@ public class OrgChangeServiceImpl implements OrgChangeService {
         if (dict.getValue().equals("ZZGM")) {
             this.orgRename(tabPbOrgnizeChange);
         } else if (dict.getValue().equals("ZZCX")) {
-            this.orgRestoreOrRevoke(tabPbOrgnizeChange, "0", REVOKE);
+            this.orgRestoreOrRevoke(tabPbOrgnizeChange, CommonConstant.STATUS_NOEBL, REVOKE);
         } else if (dict.getValue().equals("ZZHF")) {
-            this.orgRestoreOrRevoke(tabPbOrgnizeChange, "1", RESTORE);
+            this.orgRestoreOrRevoke(tabPbOrgnizeChange, CommonConstant.STATUS_EBL, RESTORE);
         } else if (dict.getValue().equals("ZZTZ") || dict.getValue().equals("ZJZZY")) {
             this.insertOrgChange(tabPbOrgnizeChange);
         }
