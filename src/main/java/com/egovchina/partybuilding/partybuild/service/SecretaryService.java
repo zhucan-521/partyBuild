@@ -14,7 +14,6 @@ import com.github.pagehelper.PageInfo;
  */
 public interface SecretaryService {
 
-
     /**
      * 根据userId获取书记基本信息
      *
@@ -22,7 +21,6 @@ public interface SecretaryService {
      * @return
      */
     SecretaryInfoVO getSecretaryInfoVOByUserId(Long userId);
-
 
     /**
      * 添加书记
@@ -32,7 +30,6 @@ public interface SecretaryService {
      */
     ReturnEntity insertSecretary(SecretaryMemberDTO secretaryMemberDTO);
 
-
     /**
      * 修改书记
      *
@@ -40,7 +37,6 @@ public interface SecretaryService {
      * @return
      */
     ReturnEntity updateSecretary(SecretaryMemberDTO secretaryMemberDTO);
-
 
     /**
      * 根据书记id获取书记详情
@@ -50,7 +46,6 @@ public interface SecretaryService {
      */
     SecretaryMemberVO selectSecretaryBySecretaryId(Long secretaryId);
 
-
     /**
      * 列表查询书记
      *
@@ -59,13 +54,11 @@ public interface SecretaryService {
      */
     PageInfo<SecretaryMemberVO> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page);
 
-
     /**
      * 删除书记家庭成员和职务以及书记本人
      *
      * @return
      */
     ReturnEntity deleteSecretary(Long secretaryId);
-
 
 }

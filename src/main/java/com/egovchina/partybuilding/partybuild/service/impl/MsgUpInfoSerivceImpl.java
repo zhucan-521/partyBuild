@@ -1,6 +1,5 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
-import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.entity.TabPbAttachment;
@@ -23,6 +22,8 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
+
 @Service
 public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
 
@@ -40,14 +41,13 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
 
     /**
      * 信息实体添加
+     *
      * @param
      * @return
      */
     @Override
     public int insertMsgUpInfo(MsgUpInfoDTO msgUpInfoDTO) {
-        TabPbMsgUpInfo tabPbMsgUpInfo = new TabPbMsgUpInfo();
-        BeanUtil.copyPropertiesIgnoreNull(msgUpInfoDTO, tabPbMsgUpInfo);
-        PaddingBaseFieldUtil.paddingBaseFiled(tabPbMsgUpInfo);
+        TabPbMsgUpInfo tabPbMsgUpInfo = generateTargetCopyPropertiesAndPaddingBaseField(msgUpInfoDTO, TabPbMsgUpInfo.class, false);
         int retVal = tabPbMsgUpInfoMapper.insertSelective(tabPbMsgUpInfo);
         Long id = tabPbMsgUpInfo.getId();
         if (retVal > 0) {
@@ -72,7 +72,6 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
         return 0;
     }
 
-
     /**
      * 返回登录人的姓名，组织名称，上级组织名称，上级组织专干人姓名,党组织名称，党组织id
      *
@@ -80,27 +79,27 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
      */
     @Override
     public TabPbMsgUpInfo retrnUpMember(Long realDeptId) {
-        if(null == realDeptId ){
-            realDeptId= UserContextHolder.getOrgId();
+        if (null == realDeptId) {
+            realDeptId = UserContextHolder.getOrgId();
         }
         TabPbMsgUpInfo tabPbMsgUpInfo = new TabPbMsgUpInfo();
         //党组织
         tabPbMsgUpInfo.setRealDeptId(realDeptId);
         SysDept realSysDept = tabSysDeptMapper.selectAloneByPrimaryKey(realDeptId);
-        tabPbMsgUpInfo.setRealDeptName( realSysDept.getName());
+        tabPbMsgUpInfo.setRealDeptName(realSysDept.getName());
         //上报时间
         tabPbMsgUpInfo.setUpTime(new Date());
         //上报人姓名
         tabPbMsgUpInfo.setUpUserId(UserContextHolder.getUserId());
         tabPbMsgUpInfo.setUpUsername(UserContextHolder.getUserName());
         //上报人组织名称
-        Long upDeptId=UserContextHolder.getOrgId();
+        Long upDeptId = UserContextHolder.getOrgId();
         SysDept upDept = tabSysDeptMapper.selectAloneByPrimaryKey(upDeptId);
         tabPbMsgUpInfo.setUpDeptId(upDeptId);
         tabPbMsgUpInfo.setUpDeptName(upDept.getName());
         //接受组织名称
-        if(null == realSysDept.getParentId()){
-           return tabPbMsgUpInfo;
+        if (null == realSysDept.getParentId()) {
+            return tabPbMsgUpInfo;
         }
         SysDept recDept = tabSysDeptMapper.selectAloneByPrimaryKey(realSysDept.getParentId());
         if (null == recDept) {
@@ -118,34 +117,36 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
         return tabPbMsgUpInfo;
     }
 
-
     /**
      * 条件查询信息报送列表
      *
-     * @param dto
+     * @param msgUpInfoQueryBean
      * @return
      */
     @Override
-    public PageInfo<MsgUpInfoVO> selectMsgUpInfoList(MsgUpInfoQueryBean dto, Page page) {
+    public PageInfo<MsgUpInfoVO> selectMsgUpInfoList(MsgUpInfoQueryBean msgUpInfoQueryBean, Page page) {
+        Long rangeDeptId = msgUpInfoQueryBean.getRangeDeptId();
+        if (rangeDeptId == null || rangeDeptId == 0) {
+            msgUpInfoQueryBean.setRangeDeptId(UserContextHolder.getOrgId());
+        }
         PageHelper.startPage(page);
-        List<MsgUpInfoVO> list = tabPbMsgUpInfoMapper.selectVoActive(dto);
+        List<MsgUpInfoVO> list = tabPbMsgUpInfoMapper.selectVoActive(msgUpInfoQueryBean);
         return new PageInfo<>(list);
     }
 
     /**
      * 条件查询接受信息列表
      *
-     * @param dto
+     * @param msgUpInfoQueryBean
      * @param page
      * @return
      */
     @Override
-    public PageInfo<MsgUpInfoVO> selectReceiveMsgUpInfoList(MsgUpInfoQueryBean dto, Page page) {
+    public PageInfo<MsgUpInfoVO> selectReceiveMsgUpInfoList(MsgUpInfoQueryBean msgUpInfoQueryBean, Page page) {
         PageHelper.startPage(page);
-        List<MsgUpInfoVO> list = tabPbMsgUpInfoMapper.selectActiveVoRec(dto);
+        List<MsgUpInfoVO> list = tabPbMsgUpInfoMapper.selectActiveVoRec(msgUpInfoQueryBean);
         return new PageInfo<>(list);
     }
-
 
     /**
      * 修改
@@ -154,18 +155,14 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
      * @return
      */
     @Override
-    @PaddingBaseField(updateOnly = true)
     public int editMsgUpInfo(MsgUpInfoDTO tabPbMsgUpInfoDto) {
-        TabPbMsgUpInfo tabPbMsgUpInfoUpdate = new TabPbMsgUpInfo();
-        BeanUtil.copyPropertiesIgnoreNull(tabPbMsgUpInfoDto, tabPbMsgUpInfoUpdate);
-        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbMsgUpInfoUpdate);
+        TabPbMsgUpInfo tabPbMsgUpInfoUpdate = generateTargetCopyPropertiesAndPaddingBaseField(tabPbMsgUpInfoDto, TabPbMsgUpInfo.class, true);
         int retVal = tabPbMsgUpInfoMapper.updateByPrimaryKeySelective(tabPbMsgUpInfoUpdate);
         if (retVal > 0) {
             retVal += modifyAttachment(tabPbMsgUpInfoDto);
         }
         return retVal;
     }
-
 
     /**
      * 删除
@@ -174,17 +171,17 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
      * @return
      */
     @Override
-    @PaddingBaseField
     public int deleteMsgUpInfo(Long id) {
         TabPbMsgUpInfo tabPbMsgUpInfo = new TabPbMsgUpInfo();
         tabPbMsgUpInfo.setId(id);
-        tabPbMsgUpInfo.setDelFlag("1");
+        tabPbMsgUpInfo.setDelFlag(CommonConstant.STATUS_DEL);
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbMsgUpInfo);
         return tabPbMsgUpInfoMapper.updateByPrimaryKeySelective(tabPbMsgUpInfo);
     }
 
     /**
      * 单个查询
+     *
      * @param id
      * @return
      */
@@ -195,9 +192,9 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
         return msgUpInfoVO;
     }
 
-
     /**
      * 审核
+     *
      * @param
      * @return
      */
@@ -216,6 +213,5 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
         BeanUtil.copyPropertiesIgnoreNull(msgUpInfoDto, tabPbMsgUpInfo);
         return tabPbMsgUpInfoMapper.updateByPrimaryKeySelective(tabPbMsgUpInfo);
     }
-
 
 }

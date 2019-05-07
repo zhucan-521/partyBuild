@@ -1,12 +1,10 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
-import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.egovchina.partybuilding.partybuild.vo.UserInfoVO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;

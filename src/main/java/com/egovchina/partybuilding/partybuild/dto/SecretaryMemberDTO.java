@@ -64,10 +64,10 @@ public class SecretaryMemberDTO {
     private String rewards;
 
     @ApiModelProperty(value = "党内职务")
-    private List<TabPbPositives> positivesList;
+    private List<PositivesDTO> positivesList;
 
     @ApiModelProperty(value = "家庭成员")
-    private List<TabPbFamily> familyList;
+    private List<FamilyMemberDTO> familyList;
 
     //----------
 

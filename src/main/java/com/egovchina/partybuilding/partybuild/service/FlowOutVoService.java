@@ -10,6 +10,7 @@ public interface FlowOutVoService {
 
     /**
      * 流出党员列表条件查询
+     *
      * @param dto
      * @return
      */
@@ -18,6 +19,7 @@ public interface FlowOutVoService {
 
     /**
      * 登记流出党员信息
+     *
      * @param dto
      * @return 返回流出党员主键
      */
@@ -26,6 +28,7 @@ public interface FlowOutVoService {
 
     /**
      * 修改流出党员
+     *
      * @param dto
      * @return
      */
@@ -34,6 +37,7 @@ public interface FlowOutVoService {
 
     /**
      * 单个查询详情
+     *
      * @param id
      * @return
      */
@@ -41,6 +45,7 @@ public interface FlowOutVoService {
 
     /**
      * 删除根据id
+     *
      * @param id
      * @return
      */

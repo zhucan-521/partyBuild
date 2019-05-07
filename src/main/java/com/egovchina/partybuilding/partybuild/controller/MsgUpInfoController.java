@@ -31,10 +31,6 @@ public class MsgUpInfoController {
     @ApiOperation(value = "上报条件查询信息列表", httpMethod = "GET")
     @GetMapping("/report")
     public PageInfo<MsgUpInfoVO> selectReportMsgUpInfoList(MsgUpInfoQueryBean msgUpInfoQueryBean, Page page) {
-        Long rangeDeptId = msgUpInfoQueryBean.getRangeDeptId();
-        if (rangeDeptId == null || rangeDeptId == 0) {
-            msgUpInfoQueryBean.setRangeDeptId(UserContextHolder.getOrgId());
-        }
         return msgUpInfoSerivce.selectMsgUpInfoList(msgUpInfoQueryBean, page);
     }
 

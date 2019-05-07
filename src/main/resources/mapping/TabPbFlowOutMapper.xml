@@ -559,7 +559,7 @@
         </where>
     </select>
 
-    <select id="CommunityNameById" parameterType="Long" resultType="String">
+    <select id="communityNameById" parameterType="Long" resultType="String">
         select label  from sys_dict where type ='XZQH' and  id= #{id}
     </select>
 
@@ -622,7 +622,7 @@
     </select>
 
     <!--查询待报道流动党员是否在流动-->
-    <select id="checkTabPbFlowOutExixtByUserId" resultMap="BaseResultMap">
-        select  * from tab_pb_flow_out where user_id=#{userId} and flow_out_state in (59413 ,59414 ,59415) and del_flag=0
+    <select id="checkTabPbFlowOutExistsByUserId" resultType="java.lang.Boolean">
+        select  true from tab_pb_flow_out where user_id=#{userId} and flow_out_state in (59413 ,59414 ,59415) and del_flag=0
     </select>
 </mapper>
