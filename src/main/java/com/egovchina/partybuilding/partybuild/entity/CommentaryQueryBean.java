@@ -20,7 +20,7 @@ public class CommentaryQueryBean {
 
     @ApiModelProperty(value = "组织ID", required = true)
     @NotNull(message = "组织ID不能为空")
-    private Long rangeDeptId;
+    private Long orgId;
 
     @ApiModelProperty(value = "所属年度 yyyy")
     private String planYear;
@@ -30,5 +30,11 @@ public class CommentaryQueryBean {
 
     @ApiModelProperty(value = "上报日期-结束 yyyy-MM-dd")
     private String reportEndDate;
+
+    @ApiModelProperty(value = "审核日期-开始 yyyy-MM-dd")
+    private String checkStartDate;
+
+    @ApiModelProperty(value = "审核日期-结束 yyyy-MM-dd")
+    private String checkEndDate;
 
 }
