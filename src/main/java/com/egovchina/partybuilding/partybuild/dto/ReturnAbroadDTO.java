@@ -16,14 +16,15 @@ import java.util.Date;
 @ApiModel("出国出境-数据传输对象")
 public class ReturnAbroadDTO {
 
-    @ApiModelProperty(value = "出国出境(主键)ID")
+    @ApiModelProperty(value = "出国出境(主键)ID", required = true)
+    @NotNull(message = "出国出境(主键)ID不能为空")
     private Long abroadId;
 
-    @ApiModelProperty(value = "组织id", required = true)
+    @ApiModelProperty(value = "组织ID", required = true)
     @NotNull(message = "组织ID不能为空")
     private Long orgId;
 
-    @ApiModelProperty(value = "人员Id")
+    @ApiModelProperty(value = "人员ID", required = true)
     @NotNull(message = "人员ID不能为空")
     private Long userId;
 
@@ -50,7 +51,7 @@ public class ReturnAbroadDTO {
     private Date returnDate;
 
     @ApiModelProperty(value = "组织关系出境时是否转往国外")
-    private Byte isTransOut;
+    private Integer isTransOut;
 
     @ApiModelProperty(value = "党员基本情况")
     private String baseStatus;
@@ -61,5 +62,8 @@ public class ReturnAbroadDTO {
 
     @ApiModelProperty(value = "出国（境）事项说明")
     private String comment;
+
+    @ApiModelProperty(value = "描述")
+    private String description;
 
 }

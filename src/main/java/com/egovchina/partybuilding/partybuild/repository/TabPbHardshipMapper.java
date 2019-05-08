@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.partybuild.entity.HardshipQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbHardship;
 import com.egovchina.partybuilding.partybuild.vo.HardshipPartyVO;
 import org.springframework.stereotype.Repository;
@@ -27,7 +28,7 @@ public interface TabPbHardshipMapper {
 
     int updateByPrimaryKey(TabPbHardship record);
 
-    List<HardshipPartyVO> selectWithConditions(Map<String, Object> conditions);
+    List<HardshipPartyVO> selectWithConditions(HardshipQueryBean hardshipQueryBean);
 
     int updateUserNameById(TabPbHardship userId);
 
@@ -40,4 +41,5 @@ public interface TabPbHardshipMapper {
     int logicDelete(TabPbHardship record);
 
     int logicDeleteByUserId(TabPbHardship tabPbHardship);
+
 }

@@ -1,9 +1,10 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+import com.egovchina.partybuilding.partybuild.entity.PositiveRegisterQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist;
-import com.egovchina.partybuilding.partybuild.entity.PositiveRegistMemberQueryBean;
-import com.egovchina.partybuilding.partybuild.vo.PositiveRegistMemberVO;
+import com.egovchina.partybuilding.partybuild.vo.PositiveRegisterVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,52 +16,50 @@ import java.util.List;
 public interface TabPbPositiveRegistMapper extends BaseMapper<TabPbPositiveRegist> {
 
     /**
-     * 保存申请报到记录
-     * @param positiveRegist
-     */
-    int addPositiveRegist(TabPbPositiveRegist positiveRegist);
-
-    /**
      * 查询list数据(分页)
-     * @param positiveRegist
+     * @param queryBean 查询实体
      * @return
      */
-    List<TabPbPositiveRegist> selectListPage(TabPbPositiveRegist positiveRegist);
-
+    List<PositiveRegisterVO> selectPositiveRegisterMemberVOListByCondition(PositiveRegisterQueryBean queryBean);
 
     /**
-     * 查询list数据(分页)
+     * 根据id查询报到VO信息
      *
-     * @param positiveRegist
+     * @param positiveRegistId id
      * @return
      */
-    List<PositiveRegistMemberVO> selectListVoPage(PositiveRegistMemberQueryBean positiveRegist);
-
-
+    PositiveRegisterVO selectPositiveRegisterVOById(Long positiveRegistId);
 
     /**
-     * 修改报到状态
-     * @param positiveRegist
-     */
-    int editPositive(TabPbPositiveRegist positiveRegist);
-
-    /**
-     * 逻辑删除
-     * @param positiveRegistId
-     */
-    int deleteRegist(TabPbPositiveRegist positiveRegistId);
-
-    TabPbPositiveRegist findById(Long userId);
-
-    TabPbPositiveRegist findByVoId(Long userId);
-
-    /**
-     * 根据主键id查询单条数据
-     * @param positiveRegistId
+     * 检查指定党员是否已存在报道数据
+     *
+     * @param userId 党员id
      * @return
      */
-    TabPbPositiveRegist editFindById(Long positiveRegistId);
+    Boolean checkPartyMemberIsExistRegister(Long userId);
 
-    PositiveRegistMemberVO findPositiveRegistMemberById(Long positiveRegistId);
+    /**
+     * 聚合生成党员报道数据
+     *
+     * @param userId 党员id
+     * @return
+     */
+    TabPbPositiveRegist aggregateGeneratePartyMemberRegisterData(Long userId);
 
+    /**
+     * 同步党员表报到列
+     *
+     * @param userId         用户id
+     * @param registerDeptId 报到组织id
+     * @return
+     */
+    int synchronizePartyMemberTableReportColumns(@Param("userId") Long userId, @Param("registerDeptId") Long registerDeptId);
+
+    /**
+     * 根据id查询报到信息
+     *
+     * @param positiveRegistId id
+     * @return
+     */
+    TabPbPositiveRegist selectPositiveRegisterById(Long positiveRegistId);
 }

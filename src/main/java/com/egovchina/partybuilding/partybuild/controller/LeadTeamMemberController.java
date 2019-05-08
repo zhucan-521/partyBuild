@@ -4,8 +4,10 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.LeadTeamMemberDTO;
+import com.egovchina.partybuilding.partybuild.entity.CommunityPartTimeMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.LeadTeamMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.service.LeadTeamMemberService;
+import com.egovchina.partybuilding.partybuild.vo.CommunityPartTimeMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -71,4 +73,12 @@ public class LeadTeamMemberController {
         List<LeadTeamMemberVO> list = leadTeamMemberService.selectLeadTeamMemberVOListByCondition(queryBean, page);
         return new PageInfo<>(list);
     }
+
+    @ApiOperation(value = "社区兼职委员列表", notes = "社区兼职委员列表", httpMethod = "GET")
+    @GetMapping("/community-part-time-members")
+    public PageInfo<CommunityPartTimeMemberVO> getCommunityPartTimeMemberList(CommunityPartTimeMemberQueryBean queryBean, Page page) {
+        List<CommunityPartTimeMemberVO> list = leadTeamMemberService.selectCommunityPartTimeMemberVOListByCondition(queryBean, page);
+        return new PageInfo<>(list);
+    }
+
 }

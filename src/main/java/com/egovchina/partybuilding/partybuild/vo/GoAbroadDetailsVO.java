@@ -26,11 +26,8 @@ public class GoAbroadDetailsVO {
     @ApiModelProperty(value = "人员Id")
     private Long userId;
 
-    @ApiModelProperty(value = "用户名")
+    @ApiModelProperty(value = "姓名")
     private String userName;
-
-    @ApiModelProperty(value = "真实姓名")
-    private String realName;
 
     @ApiModelProperty(value = "身份证号")
     private String idCardNo;

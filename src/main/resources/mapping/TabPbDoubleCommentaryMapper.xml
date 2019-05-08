@@ -5,7 +5,7 @@
     <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
         <id column="commentary_id" jdbcType="BIGINT" property="commentaryId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
-        <result column="plan_year" jdbcType="CHAR" property="planYear"/>
+        <result column="plan_year" jdbcType="VARCHAR" property="planYear"/>
         <result column="report_date" jdbcType="TIMESTAMP" property="reportDate"/>
         <result column="check_date" jdbcType="TIMESTAMP" property="checkDate"/>
         <result column="check_result" jdbcType="BIGINT" property="checkResult"/>
@@ -51,7 +51,7 @@
     <resultMap id="CommentaryVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.CommentaryVO">
         <id column="commentary_id" jdbcType="BIGINT" property="commentaryId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
-        <result column="plan_year" jdbcType="CHAR" property="planYear"/>
+        <result column="plan_year" jdbcType="VARCHAR" property="planYear"/>
         <result column="report_date" jdbcType="TIMESTAMP" property="reportDate"/>
         <result column="check_date" jdbcType="TIMESTAMP" property="checkDate"/>
         <result column="check_result" jdbcType="BIGINT" property="checkResult"/>
@@ -105,9 +105,7 @@
         <if test="eblFlag != null and eblFlag != ''">
             AND dc.ebl_flag = #{eblFlag}
         </if>
-        <if test="delFlag != null and delFlag != ''">
-            AND dc.del_flag = #{delFlag}
-        </if>
+        AND dc.del_flag = 0
         <if test="orderNum != null and orderNum != ''">
             AND dc.order_num = #{orderNum}
         </if>
@@ -193,7 +191,7 @@
       version, commentary_content, check_result, check_org, check_user,
       check_desc
       )
-    values (#{commentaryId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{planYear,jdbcType=CHAR},
+    values (#{commentaryId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{planYear,jdbcType=BIGINT}, 
       #{reportDate,jdbcType=TIMESTAMP}, #{checkDate,jdbcType=TIMESTAMP}, #{eblFlag,jdbcType=VARCHAR},
       #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
@@ -278,7 +276,7 @@
                 #{orgId,jdbcType=BIGINT},
             </if>
             <if test="planYear != null">
-                #{planYear,jdbcType=CHAR},
+                #{planYear,jdbcType=BIGINT},
             </if>
             <if test="reportDate != null">
                 #{reportDate,jdbcType=TIMESTAMP},
@@ -341,7 +339,7 @@
         update tab_pb_double_commentary
         <set>
             <if test="planYear != null">
-                plan_year = #{planYear,jdbcType=CHAR},
+                plan_year = #{planYear,jdbcType=BIGINT},
             </if>
             <if test="reportDate != null">
                 report_date = #{reportDate,jdbcType=TIMESTAMP},
@@ -404,7 +402,7 @@
             parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
     update tab_pb_double_commentary
     set org_id = #{orgId,jdbcType=BIGINT},
-      plan_year = #{planYear,jdbcType=CHAR},
+      plan_year = #{planYear,jdbcType=BIGINT},
       report_date = #{reportDate,jdbcType=TIMESTAMP},
       check_date = #{checkDate,jdbcType=TIMESTAMP},
       ebl_flag = #{eblFlag,jdbcType=VARCHAR},
@@ -429,7 +427,7 @@
     <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbDoubleCommentary">
     update tab_pb_double_commentary
     set org_id = #{orgId,jdbcType=BIGINT},
-      plan_year = #{planYear,jdbcType=CHAR},
+      plan_year = #{planYear,jdbcType=BIGINT},
       report_date = #{reportDate,jdbcType=TIMESTAMP},
       check_date = #{checkDate,jdbcType=TIMESTAMP},
       ebl_flag = #{eblFlag,jdbcType=VARCHAR},
@@ -478,8 +476,13 @@
     </update>
 
     <!-- 检验数据是否存在 -->
-    <select id="isExist" parameterType="java.lang.Long" resultType="boolean">
+    <select id="checkIsExistByCommentId" parameterType="java.lang.Long" resultType="boolean">
         SELECT COUNT(1) FROM tab_pb_double_commentary WHERE commentary_id = #{commentaryId}
+    </select>
+
+    <!-- 根据年度查询该数据是否存在 -->
+    <select id="checkIsExistByPlanYear" parameterType="java.lang.String" resultType="java.lang.Boolean">
+        SELECT COUNT(1) FROM tab_pb_double_commentary WHERE plan_year = #{planYear}
     </select>
 
 </mapper>
