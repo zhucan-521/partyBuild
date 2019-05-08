@@ -46,7 +46,6 @@ public interface TabPbGrantCommitteMemberMapper {
     StreetCommitteeMemberVO selectStreetCommitteeMemberVOById(Long grantCommitteeMemberId);
 
     int verifyStreetCommitteeMembers(
-            @Param("leadTeamId") Long leadTeamId,
             @Param("grantCommitteeId") Long grantCommitteeId,
             @Param("userId") Long userId);
 }

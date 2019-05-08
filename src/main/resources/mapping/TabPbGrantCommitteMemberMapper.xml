@@ -490,7 +490,6 @@
             tab_pb_grant_committe_member
         WHERE
             del_flag = 0
-            AND lead_team_id = #{leadTeamId,jdbcType=BIGINT}
             AND grant_committee_id = #{grantCommitteeId,jdbcType=BIGINT}
             AND user_id = #{userId,jdbcType=BIGINT}
     </select>

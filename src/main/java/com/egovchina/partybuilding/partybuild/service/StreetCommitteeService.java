@@ -27,14 +27,6 @@ public interface StreetCommitteeService {
     int saveStreetCommittee(StreetCommitteeDTO streetCommitteeDTO);
 
     /**
-     * 添加街道大公委及大公委成员数据
-     *
-     * @param streetCommitteeDTO
-     * @param streetCommitteMemberDTOList
-     */
-    int addStreetCommittee(StreetCommitteeDTO streetCommitteeDTO, List<StreetCommitteeMemberDTO> streetCommitteMemberDTOList);
-
-    /**
      * 通过街道大公委主键删除, 将同时删除用户
      *
      * @param id
@@ -89,10 +81,18 @@ public interface StreetCommitteeService {
     PageInfo<StreetCommitteeMemberVO> getStreetCommitteeMemberList(Long grantCommitteeId, String personName, String positiveName, Page page);
 
     /**
-     * 批量保存大公委成员数据
+     * 判断组织是否可以添加工委成员
      *
-     * @param streetCommitteMemberDTOList
+     * @param orgId
      * @return
      */
-    int addStreetCommitteeMembers(List<StreetCommitteeMemberDTO> streetCommitteMemberDTOList);
+    Boolean checkStreetCommitteeWhetherAddMembers(Long orgId);
+
+    /**
+     * 修改街道大工委信息
+     *
+     * @param streetCommitteeDTO
+     * @return
+     */
+    int updateStreetCommittee(StreetCommitteeDTO streetCommitteeDTO);
 }

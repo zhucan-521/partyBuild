@@ -35,4 +35,14 @@ public interface TabPbGrantCommitteeMapper {
     List<StreetCommitteeVO> selectStreetCommitteeVOList(StreetCommitteeQueryBean streetCommitteeQueryBean);
 
     StreetCommitteeVO selectStreetCommitteeVOById(Long grantCommitteeId);
+
+    Boolean selectStreetCommitteeWhetherAddMembers(Long orgId);
+
+    /**
+     * 根据组织id获取当届大工委id
+     *
+     * @param committeeOrgId
+     * @return
+     */
+    Long selectCommitteeIdByOrgId(Long committeeOrgId);
 }

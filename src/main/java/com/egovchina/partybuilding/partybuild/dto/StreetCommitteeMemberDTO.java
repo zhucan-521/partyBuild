@@ -66,4 +66,8 @@ public class StreetCommitteeMemberDTO {
     @ApiModelProperty(value = "班子职务排序")
     private Long leadMemberOrder;
 
+    @ApiModelProperty(value = "当前工委组织Id",required = true)
+    @NotNull(message = "当前工委组织Id不能为空")
+    private Long committeeOrgId;
+
 }

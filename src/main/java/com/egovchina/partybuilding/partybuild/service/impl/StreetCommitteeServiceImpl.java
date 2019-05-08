@@ -2,7 +2,7 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
-import com.egovchina.partybuilding.common.util.BeanUtil;
+import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.StreetCommitteeDTO;
 import com.egovchina.partybuilding.partybuild.dto.StreetCommitteeMemberDTO;
@@ -23,10 +23,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
-import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField;
 
 /**
  * @author wuyunjie
@@ -48,40 +47,26 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
     @Override
     @Transactional
     public int saveStreetCommittee(StreetCommitteeDTO streetCommitteeDTO) {
-        if (tabSysDeptMapper.selectByPrimaryKey(streetCommitteeDTO.getOrgId()) == null) {
-            throw new BusinessDataIncompleteException("组织不存在");
-        }
 
-        var old = this.tabPbGrantCommitteeMapper.selectByOrgId(streetCommitteeDTO.getOrgId());
+        //判断是否需要修改为往届
+        determineIfItNeedsToBeRevisedToThePast(streetCommitteeDTO);
+
+        //新增大工委班子
         TabPbGrantCommittee tabPbGrantCommittee =
                 generateTargetCopyPropertiesAndPaddingBaseField(
                         streetCommitteeDTO, TabPbGrantCommittee.class, false);
-        int count = 0;
-        if (old == null) {
-            streetCommitteeDTO.setCurrent((byte) 1);
-            count += this.tabPbGrantCommitteeMapper.insertSelectiveAndReturnPrimaryKey(tabPbGrantCommittee);
-            streetCommitteeDTO.setGrantCommitteeId(tabPbGrantCommittee.getGrantCommitteeId());
-        } else {
-            streetCommitteeDTO.setGrantCommitteeId(old.getGrantCommitteeId());
-            count += this.tabPbGrantCommitteeMapper.updateByPrimaryKeySelective(tabPbGrantCommittee);
-        }
-        return count;
+        return this.tabPbGrantCommitteeMapper.insertSelectiveAndReturnPrimaryKey(tabPbGrantCommittee);
     }
 
-    /**
-     * 保存大公委及大公委成员数据
-     *
-     * @param streetCommitteeDTO
-     * @param streetCommitteMemberDTOList
-     */
     @Override
-    @Transactional
-    public int addStreetCommittee(StreetCommitteeDTO streetCommitteeDTO, List<StreetCommitteeMemberDTO> streetCommitteMemberDTOList) {
-        int count = 0;
-        count += this.saveStreetCommittee(streetCommitteeDTO);
-        streetCommitteMemberDTOList.forEach(v -> v.setGrantCommitteeId(streetCommitteeDTO.getGrantCommitteeId()));
-        count += this.addStreetCommitteeMembers(streetCommitteMemberDTOList);
-        return count;
+    public int updateStreetCommittee(StreetCommitteeDTO streetCommitteeDTO) {
+        //判断是否需要修改为往届
+        determineIfItNeedsToBeRevisedToThePast(streetCommitteeDTO);
+
+        TabPbGrantCommittee tabPbGrantCommittee =
+                generateTargetCopyPropertiesAndPaddingBaseField(
+                        streetCommitteeDTO, TabPbGrantCommittee.class, false);
+        return this.tabPbGrantCommitteeMapper.updateByPrimaryKeySelective(tabPbGrantCommittee);
     }
 
     @Override
@@ -89,14 +74,14 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
         int result = 0;
         var tabPbGrantCommittee = new TabPbGrantCommittee()
                 .setGrantCommitteeId(id)
-                .setDelFlag("1");
+                .setDelFlag(CommonConstant.STATUS_DEL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbGrantCommittee);
         result += this.tabPbGrantCommitteeMapper.updateByPrimaryKeySelective(tabPbGrantCommittee);
 
         // 删除关联表
         var tabPbGrantCommitteMember = new TabPbGrantCommitteMember()
                 .setGrantCommitteeId(id)
-                .setDelFlag("1");
+                .setDelFlag(CommonConstant.STATUS_DEL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbGrantCommitteMember);
         result += this.tabPbGrantCommitteMemberMapper.updateByGrantCommitteeSelective(tabPbGrantCommitteMember);
         return result;
@@ -127,12 +112,16 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
         return new PageInfo<>(list);
     }
 
-
     @Override
     public int addStreetCommitteeMember(StreetCommitteeMemberDTO streetCommitteeMemberDTO) {
-        TabPbGrantCommitteMember tabPbGrantCommitteMember = new TabPbGrantCommitteMember();
-        BeanUtil.copyPropertiesIgnoreNull(streetCommitteeMemberDTO, tabPbGrantCommitteMember);
-        PaddingBaseFieldUtil.paddingBaseFiled(tabPbGrantCommitteMember);
+        Long committeeOrgId = streetCommitteeMemberDTO.getCommitteeOrgId();
+        Long grantCommitteId = this.tabPbGrantCommitteeMapper.selectCommitteeIdByOrgId(committeeOrgId);
+        if (grantCommitteId == null) {
+            throw new BusinessDataIncompleteException("没有当届工委班子不能添加成员");
+        }
+        streetCommitteeMemberDTO.setGrantCommitteeId(grantCommitteId);
+        TabPbGrantCommitteMember tabPbGrantCommitteMember =
+                generateTargetCopyPropertiesAndPaddingBaseField(streetCommitteeMemberDTO, TabPbGrantCommitteMember.class, false);
         return this.tabPbGrantCommitteMemberMapper.insertSelective(tabPbGrantCommitteMember);
     }
 
@@ -145,7 +134,7 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
     public int deleteStreetCommitteeMemberById(Long grantCommitteeMemberId) {
         var tabPbGrantCommitteMember = new TabPbGrantCommitteMember()
                 .setGrantCommitteeMemberId(grantCommitteeMemberId)
-                .setDelFlag("1");
+                .setDelFlag(CommonConstant.STATUS_DEL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbGrantCommitteMember);
         return this.tabPbGrantCommitteMemberMapper.updateByPrimaryKeySelective(tabPbGrantCommitteMember);
     }
@@ -162,24 +151,36 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
         return new PageInfo<>(list);
     }
 
+    /**
+     * 判断组织是否可以添加工委成员
+     *
+     * @param orgId
+     * @return
+     */
     @Override
-    @Transactional
-    public int addStreetCommitteeMembers(List<StreetCommitteeMemberDTO> streetCommitteMemberDTOList) {
-        List<TabPbGrantCommitteMember> tabPbGrantCommitteMembers =
-                generateTargetListCopyPropertiesAndPaddingBaseField(streetCommitteMemberDTOList, TabPbGrantCommitteMember.class, false);
-        int count = 0;
-        for (TabPbGrantCommitteMember tabPbGrantCommitteMember : tabPbGrantCommitteMembers.stream()
-                .filter(v -> v.getGrantCommitteeId() != null)
-                .collect(Collectors.toList())) {
-            //校验街道大工委成员是否存在
-            if (this.tabPbGrantCommitteMemberMapper.verifyStreetCommitteeMembers(
-                    tabPbGrantCommitteMember.getLeadTeamId(), tabPbGrantCommitteMember.getGrantCommitteeId(),
-                    tabPbGrantCommitteMember.getUserId()) > 0) {
-                throw new BusinessDataIncompleteException(tabPbGrantCommitteMember.getPersonName() + "已经存在");
-            }
-            count += this.tabPbGrantCommitteMemberMapper.insertSelective(tabPbGrantCommitteMember);
-        }
-        return count;
+    public Boolean checkStreetCommitteeWhetherAddMembers(Long orgId) {
+        return Optional.ofNullable(this.tabPbGrantCommitteeMapper.selectStreetCommitteeWhetherAddMembers(orgId)).orElse(false);
     }
 
+    /**
+     * 判断是否需要修改为往届
+     *
+     * @param streetCommitteeDTO
+     */
+    private void determineIfItNeedsToBeRevisedToThePast(StreetCommitteeDTO streetCommitteeDTO) {
+        //校验组织是否存在
+        Long orgId = streetCommitteeDTO.getOrgId();
+        if (tabSysDeptMapper.selectByPrimaryKey(orgId) == null) {
+            throw new BusinessDataIncompleteException("组织不存在");
+        }
+        Long grantCommitteId = this.tabPbGrantCommitteeMapper.selectCommitteeIdByOrgId(orgId);
+        //修改大工委班子为往届
+        if (grantCommitteId != null && CommonConstant.CURRENT_MARK.equals(streetCommitteeDTO.getCurrent())) {
+            TabPbGrantCommittee modifyPast = new TabPbGrantCommittee();
+            modifyPast.setGrantCommitteeId(grantCommitteId);
+            modifyPast.setCurrent(CommonConstant.PAST_MARK);
+            PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(modifyPast);
+            this.tabPbGrantCommitteeMapper.updateByPrimaryKeySelective(modifyPast);
+        }
+    }
 }
