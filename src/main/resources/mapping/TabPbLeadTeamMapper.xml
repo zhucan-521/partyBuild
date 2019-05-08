@@ -86,7 +86,8 @@
         l.comm_num_parttime, l.parttime_comm_num, l.standing_mem_num, l.back_mem_num, l.description, l.vote_result
     </sql>
 
-    <insert id="insertSelective" keyProperty="leadTeamId" useGeneratedKeys="true" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeam">
+    <insert id="insertSelective" keyProperty="leadTeamId" useGeneratedKeys="true"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeam">
         insert into tab_pb_lead_team
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="leadTeamId != null">
@@ -279,7 +280,8 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeam">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeam">
         update tab_pb_lead_team
         <set>
             <if test="orgId != null">
@@ -383,10 +385,10 @@
         SELECT
         <include refid="LeadTeamVO_Column_List"/>
         ,d.NAME AS org_name,
-            d.orgnize_master,
-            ifnull( lt.class_num, 0 ) AS class_num,
-            ifnull( t.img_num, 0 ) AS img_num,
-            ifnull( t.doc_num, 0 ) AS doc_num
+        d.orgnize_master,
+        ifnull( lt.class_num, 0 ) AS class_num,
+        ifnull( t.img_num, 0 ) AS img_num,
+        ifnull( t.doc_num, 0 ) AS doc_num
         FROM
         tab_pb_lead_team l
         LEFT JOIN sys_dept d ON l.org_id = d.dept_id
@@ -395,21 +397,18 @@
         FROM tab_pb_lead_team_member WHERE del_flag = 0 GROUP BY lead_team_id
         ) lt USING ( lead_team_id )
         LEFT JOIN (
-            SELECT
-            host_id,
-            sum( CASE attachment_file_type WHEN 58992 THEN 1 ELSE 0 END ) AS img_num,
-            sum( CASE attachment_file_type WHEN 58993 THEN 1 ELSE 0 END ) AS doc_num
-            FROM
-            tab_pb_attachment a
-            WHERE
-            a.del_flag = 0 AND attachment_type = 2
-            GROUP BY
-            a.host_id
+        SELECT
+        host_id,
+        sum( CASE attachment_file_type WHEN 58992 THEN 1 ELSE 0 END ) AS img_num,
+        sum( CASE attachment_file_type WHEN 58993 THEN 1 ELSE 0 END ) AS doc_num
+        FROM
+        tab_pb_attachment a
+        WHERE
+        a.del_flag = 0 AND attachment_type = 2
+        GROUP BY
+        a.host_id
         ) t ON t.host_id = l.lead_team_id
         WHERE l.del_flag = 0
-        <if test="orgName != null and orgName != ''">
-            AND d.name like CONCAT('%',#{orgName},'%')
-        </if>
         <if test="sessionYear != null and sessionYear != ''">
             AND l.session_year = #{sessionYear}
         </if>
