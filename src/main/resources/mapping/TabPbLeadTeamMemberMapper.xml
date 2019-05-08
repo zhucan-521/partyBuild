@@ -58,7 +58,8 @@
     </resultMap>
 
     <!--CommunityPartTimeMember VO 结果集-->
-    <resultMap id="CommunityPartTimeMemberVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.CommunityPartTimeMemberVO">
+    <resultMap id="CommunityPartTimeMemberVOResultMap"
+               type="com.egovchina.partybuilding.partybuild.vo.CommunityPartTimeMemberVO">
         <id column="member_id" jdbcType="BIGINT" property="memberId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
@@ -95,7 +96,8 @@
         from tab_pb_lead_team_member
         where member_id = #{memberId,jdbcType=BIGINT}
     </select>
-    <insert id="insertSelective"  useGeneratedKeys="true" keyProperty="memberId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember">
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="memberId"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember">
         insert into tab_pb_lead_team_member
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="memberId != null">
@@ -270,7 +272,8 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective"  parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember">
         update tab_pb_lead_team_member
         <set>
             <if test="orgId != null">
@@ -365,7 +368,7 @@
         <include refid="LeadTeamMemberVO_Column_List"/>
         FROM tab_pb_lead_team_member ltm
         LEFT JOIN sys_dept d ON ltm.org_id = d.dept_id
-        WHERE lead_team_id = #{leadTeamId}
+        WHERE ltm.lead_team_id = #{leadTeamId} AND ltm.del_flag = 0
         ORDER BY ltm.member_id
     </select>
 
@@ -451,7 +454,7 @@
         u.phone
         FROM tab_pb_lead_team_member ltm
         INNER JOIN tab_pb_lead_team t
-          ON ltm.lead_team_id = t.lead_team_id AND ltm.del_flag = t.lead_team_id
+        ON ltm.lead_team_id = t.lead_team_id AND ltm.del_flag = t.lead_team_id
         INNER JOIN sys_dept d ON t.org_id = d.dept_id
         INNER JOIN sys_user u ON ltm.user_id = u.user_id
         WHERE ltm.del_flag = 0 AND t.current = 1
