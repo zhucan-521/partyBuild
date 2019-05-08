@@ -37,7 +37,7 @@ public interface TabPbMsgNoticeDeptMapper {
      * @param record
      * @return
      */
-    List<MsgNoticeDeptVO> ReceivedNotifications(MsgNoticeDeptQueryBean record);
+    List<MsgNoticeDeptVO> receivedNotifications(MsgNoticeDeptQueryBean record);
 
     /**
      * 签收

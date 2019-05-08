@@ -61,7 +61,7 @@
     </select>
 
     <!--收到文件通知列表-->
-    <select id="ReceivedNotifications" parameterType="com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean" resultMap="BaseResultVoMap">
+    <select id="receivedNotifications" parameterType="com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean" resultMap="BaseResultVoMap">
          select
          d.*,
          n.notice_title,
