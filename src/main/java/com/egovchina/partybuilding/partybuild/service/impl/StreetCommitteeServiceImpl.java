@@ -60,9 +60,11 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
 
     @Override
     public int updateStreetCommittee(StreetCommitteeDTO streetCommitteeDTO) {
+        if (streetCommitteeDTO.getGrantCommitteeId() == null) {
+            throw new BusinessDataIncompleteException("工委班子不存在");
+        }
         //判断是否需要修改为往届
         determineIfItNeedsToBeRevisedToThePast(streetCommitteeDTO);
-
         TabPbGrantCommittee tabPbGrantCommittee =
                 generateTargetCopyPropertiesAndPaddingBaseField(
                         streetCommitteeDTO, TabPbGrantCommittee.class, false);
@@ -118,6 +120,11 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
         Long grantCommitteId = this.tabPbGrantCommitteeMapper.selectCommitteeIdByOrgId(committeeOrgId);
         if (grantCommitteId == null) {
             throw new BusinessDataIncompleteException("没有当届工委班子不能添加成员");
+        }
+        //校验工委成员是否存在
+        int count = this.tabPbGrantCommitteMemberMapper.verifyStreetCommitteeMembers(grantCommitteId, streetCommitteeMemberDTO.getUserId());
+        if (count > 0) {
+            throw new BusinessDataIncompleteException(streetCommitteeMemberDTO.getPersonName() + "成员已存在");
         }
         streetCommitteeMemberDTO.setGrantCommitteeId(grantCommitteId);
         TabPbGrantCommitteMember tabPbGrantCommitteMember =

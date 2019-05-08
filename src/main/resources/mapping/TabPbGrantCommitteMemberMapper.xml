@@ -66,6 +66,7 @@
         <result column="as_committee_member" jdbcType="TINYINT" property="asCommitteeMember"/>
         <result column="as_committee_director" jdbcType="TINYINT" property="asCommitteeDirector"/>
         <result column="lead_member_order" jdbcType="BIGINT" property="leadMemberOrder"/>
+        <result column="current" jdbcType="TINYINT" property="current"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -356,6 +357,7 @@
         d.unit_name,
         d.NAME AS org_name,
         A.org_id AS current_org_id,
+        A.current,
         ( SELECT NAME FROM sys_dept WHERE dept_id = A.org_id ) AS current_org_name
         FROM
         tab_pb_grant_committee A
@@ -472,6 +474,7 @@
             d.unit_name,
             d.name AS org_name,
             A.org_id AS current_org_id,
+            A.current,
             ( SELECT name FROM sys_dept WHERE dept_id = A.org_id ) AS current_org_name
         FROM
             tab_pb_grant_committee A
