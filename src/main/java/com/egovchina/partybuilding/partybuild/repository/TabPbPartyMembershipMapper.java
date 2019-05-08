@@ -23,10 +23,10 @@ public interface TabPbPartyMembershipMapper {
     int insertPartyMembershipDTO(TabPbPartyMembership tabPbPartyMembership);
 
     /**
-     * 获取党籍信息
+     * 根据用户id获取党籍列表
      *
      * @return
      */
-    List<MembershipVO> getMembershipVOListByCondition();
+    List<MembershipVO> getMembershipVOListByCondition(Long userId);
 
 }

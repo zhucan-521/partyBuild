@@ -16,6 +16,9 @@ import javax.validation.constraints.NotNull;
 @ApiModel("困难党员模块-查询条件")
 public class HardshipQueryBean {
 
+    @ApiModelProperty(value = "用户ID")
+    private Long userId;
+
     @ApiModelProperty("用户姓名")
     private String username;
 

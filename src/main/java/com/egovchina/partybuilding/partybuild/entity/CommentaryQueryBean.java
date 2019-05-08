@@ -4,6 +4,9 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
+
 /**
  * desc: 双述双评模块-查询条件
  * Created by FanYanGen on 2019/4/24 16:22
@@ -16,7 +19,8 @@ public class CommentaryQueryBean {
     private String orgRange;
 
     @ApiModelProperty(value = "组织ID", required = true)
-    private Long rangeDeptId;
+    @NotNull(message = "组织ID不能为空")
+    private Long orgId;
 
     @ApiModelProperty(value = "所属年度 yyyy")
     private String planYear;
@@ -26,5 +30,11 @@ public class CommentaryQueryBean {
 
     @ApiModelProperty(value = "上报日期-结束 yyyy-MM-dd")
     private String reportEndDate;
+
+    @ApiModelProperty(value = "审核日期-开始 yyyy-MM-dd")
+    private String checkStartDate;
+
+    @ApiModelProperty(value = "审核日期-结束 yyyy-MM-dd")
+    private String checkEndDate;
 
 }

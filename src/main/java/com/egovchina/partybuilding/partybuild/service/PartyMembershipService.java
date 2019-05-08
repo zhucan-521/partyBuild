@@ -14,17 +14,19 @@ public interface PartyMembershipService {
 
     /**
      * 插入党籍信息
+     *
      * @param membershipDTO dto
      * @return
      */
     int insertMembershipDTO(MembershipDTO membershipDTO);
 
     /**
-     * 获取党籍实体类列表
+     * 根据用户id获取党籍列表
      *
-     * @param page
+     * @param userId 用户id
+     * @param page   分页对象
      * @return
      */
-    List<MembershipVO> getMembershipVOListByCondition(Page page);
+    List<MembershipVO> getMembershipVOListByCondition(Long userId, Page page);
 
 }

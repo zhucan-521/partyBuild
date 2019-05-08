@@ -16,8 +16,7 @@ public class StreetCommitteeMemberDTO {
     @ApiModelProperty(value = "班子成员Id")
     private Long grantCommitteeMemberId;
 
-    @ApiModelProperty(value = "大工委主键", required = true)
-    @NotNull(message = "大工委主键不能为空")
+    @ApiModelProperty(value = "大工委主键")
     private Long grantCommitteeId;
 
     @ApiModelProperty(value = "人员Id", required = true)
@@ -27,8 +26,7 @@ public class StreetCommitteeMemberDTO {
     @ApiModelProperty(value = "党组织主键")
     private Long orgId;
 
-    @ApiModelProperty(value = "领导班子Id", required = true)
-    @NotNull(message = "领导班子Id不能为空")
+    @ApiModelProperty(value = "领导班子Id")
     private Long leadTeamId;
 
     @ApiModelProperty(value = "党员Id")
@@ -65,5 +63,9 @@ public class StreetCommitteeMemberDTO {
 
     @ApiModelProperty(value = "班子职务排序")
     private Long leadMemberOrder;
+
+    @ApiModelProperty(value = "当前工委组织Id", required = true)
+    @NotNull(message = "当前工委组织Id不能为空")
+    private Long committeeOrgId;
 
 }

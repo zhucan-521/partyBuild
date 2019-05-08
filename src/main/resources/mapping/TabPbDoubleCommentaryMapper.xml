@@ -102,65 +102,21 @@
         <if test="checkEndDate != null and checkEndDate != ''">
             AND date_format(dc.check_date, '%Y-%m-%d') &lt;= #{checkEndDate}
         </if>
-        <if test="eblFlag != null and eblFlag != ''">
-            AND dc.ebl_flag = #{eblFlag}
-        </if>
         AND dc.del_flag = 0
-        <if test="orderNum != null and orderNum != ''">
-            AND dc.order_num = #{orderNum}
-        </if>
-        <if test="description != null and description != ''">
-            AND dc.description = #{description}
-        </if>
-        <if test="createTime != null and createTime != ''">
-            AND dc.create_time = #{createTime}
-        </if>
-        <if test="createUserid != null and createUserid != ''">
-            AND dc.create_userid = #{createUserid}
-        </if>
-        <if test="createUsername != null and createUsername != ''">
-            AND dc.create_username = #{createUsername}
-        </if>
-        <if test="updateTime != null and updateTime != ''">
-            AND dc.update_time = #{updateTime}
-        </if>
-        <if test="updateUserid != null and updateUserid != ''">
-            AND dc.update_userid = #{updateUserid}
-        </if>
-        <if test="updateUsername != null and updateUsername != ''">
-            AND dc.update_username = #{updateUsername}
-        </if>
-        <if test="version != null and version != ''">
-            AND dc.version = #{version}
-        </if>
-        <if test="commentaryContent != null and commentaryContent != ''">
-            AND dc.commentary_content = #{commentaryContent}
-        </if>
-        <if test="checkResult != null and checkResult != ''">
-            AND dc.check_result = #{checkResult}
-        </if>
-        <if test="checkOrg != null and checkOrg != ''">
-            AND dc.check_org = #{chekOrg}
-        </if>
-        <if test="checkUser != null and checkUser != ''">
-            AND dc.check_user = #{checkUser}
-        </if>
-        <if test="checkDesc != null and checkDesc != ''">
-            AND dc.check_desc = #{checkDesc}
-        </if>
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
         <choose>
             <when test="orgRange == 1">
-                AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                AND (d.dept_id = #{orgId} OR d.parent_id = #{orgId})
             </when>
             <when test="orgRange == 2">
-                AND find_in_set(#{rangeDeptId}, d.full_path)
+                AND find_in_set(#{orgId}, d.full_path)
             </when>
             <otherwise>
-                AND d.dept_id = #{rangeDeptId}
+                AND d.dept_id = #{orgId}
             </otherwise>
         </choose>
     </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="CommentaryVOResultMap">
         select
         <include refid="Base_Column_List"/>

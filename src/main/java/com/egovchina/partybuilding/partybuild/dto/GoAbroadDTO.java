@@ -13,11 +13,10 @@ import java.util.Date;
  * Created by FanYanGen on 2019/4/26 14:37
  */
 @Data
-@ApiModel(" 出国信息-数据传输对象")
+@ApiModel("出国信息-数据传输对象")
 public class GoAbroadDTO {
 
     @ApiModelProperty(value = "出国出境(主键)ID", required = true)
-    @NotNull(message = "出国出境(主键)ID不能为空")
     private Long abroadId;
 
     @ApiModelProperty(value = "组织ID", required = true)

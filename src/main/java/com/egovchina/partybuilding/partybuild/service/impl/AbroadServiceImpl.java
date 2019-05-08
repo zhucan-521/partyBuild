@@ -4,6 +4,7 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.partybuild.dto.AbroadDTO;
 import com.egovchina.partybuilding.partybuild.dto.DeletePartyMemberDTO;
 import com.egovchina.partybuilding.partybuild.dto.GoAbroadDTO;
 import com.egovchina.partybuilding.partybuild.dto.ReturnAbroadDTO;
@@ -94,9 +95,9 @@ public class AbroadServiceImpl implements AbroadService {
     }
 
     @Override
-    public int updateGoAbroad(GoAbroadDTO goAbroadDTO) {
-        verification(goAbroadDTO.getOrgId(), goAbroadDTO.getUserId());
-        TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(goAbroadDTO, TabPbAbroad.class, true);
+    public int updateAbroad(AbroadDTO abroadDTO) {
+        verification(abroadDTO.getOrgId(), abroadDTO.getUserId());
+        TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(abroadDTO, TabPbAbroad.class, true);
         return tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
     }
 
