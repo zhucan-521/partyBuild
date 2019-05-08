@@ -63,7 +63,7 @@ public class DoubleCommentaryController {
 
     @ApiOperation(value = "双述双评审核", notes = "双述双评审核", httpMethod = "PUT")
     @PutMapping("/verify")
-    public ReturnEntity doVerify(@RequestBody @Validated DoubleCommentaryQueryBean doubleCommentaryQueryBean) {
+    public ReturnEntity doVerify(@Validated DoubleCommentaryQueryBean doubleCommentaryQueryBean) {
         return ReturnUtil.buildReturn(commentaryService.verifyCommentary(doubleCommentaryQueryBean));
     }
 
