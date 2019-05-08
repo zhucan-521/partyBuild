@@ -86,4 +86,8 @@ public class StreetCommitteeMemberVO {
 
     @ApiModelProperty(value = "当前大公委名称")
     private String currentOrgName;
+
+    @ApiModelProperty(value = "当届标识")
+    private Byte current;
+
 }

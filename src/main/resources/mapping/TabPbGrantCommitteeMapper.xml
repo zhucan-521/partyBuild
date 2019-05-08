@@ -102,7 +102,8 @@
             AND A.grant_committee_id = #{grantCommitteeId,jdbcType=BIGINT}
     </select>
 
-    <insert id="insertSelectiveAndReturnPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommittee"
+    <insert id="insertSelectiveAndReturnPrimaryKey"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommittee"
             useGeneratedKeys="true" keyProperty="grantCommitteeId">
         insert into tab_pb_grant_committee
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -281,7 +282,8 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommittee">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommittee">
         update tab_pb_grant_committee
         <set>
             <if test="orgId != null">
@@ -390,7 +392,7 @@
         A.grant_committee_id,A.org_id,A.current,A.session_year,A.change_date,A.during_year,A.vote_type,
         A.due_count,A.fact_count,A.vote_count,A.valid_vote_count,A.elected_type,A.elected_time,A.comm_mem_num,
         A.comm_num_parttime,A.parttime_comm_num,A.standing_mem_num,A.back_mem_num,A.founded_date,A.vote_status,
-        d.name as  org_name
+        d.name as org_name
         FROM
         tab_pb_grant_committee A
         LEFT JOIN tab_pb_grant_committe_member B ON A.grant_committee_id = B.grant_committee_id
@@ -426,5 +428,23 @@
         WHERE
             A.del_flag = '0'
             AND A.grant_committee_id = #{grantCommitteeId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectStreetCommitteeWhetherAddMembers" resultType="java.lang.Boolean">
+        SELECT TRUE FROM
+        tab_pb_grant_committee
+        WHERE
+        org_id = #{orgId}
+        and current = 0
+        and del_flag = 0
+    </select>
+
+    <select id="selectCommitteeIdByOrgId" resultType="java.lang.Long">
+        SELECT grant_committee_id FROM
+        tab_pb_grant_committee
+        WHERE
+        org_id = #{orgId}
+        and current = 0
+        and del_flag = 0
     </select>
 </mapper>
