@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
+import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.HardshipPartyMemberDTO;
@@ -85,24 +86,16 @@ public class UserTagServiceImpl implements UserTagService {
         return tabPbUserTagMapper.insertUserTagDTOSelective(userTag);
     }
 
-    @PaddingBaseField(recursive = true)
-    private int updateUserTag(TabPbUserTag userTag) {
-        if (ObjectUtils.isEmpty(userTag.getUsertagId())) {
-            return 0;
-        }
-        return tabPbUserTagMapper.updateByPrimaryKeySelective(userTag);
-    }
-
-    //TODO
+    @Transactional
     @Override
-    public boolean updateUserTagByTagType(List<TabPbUserTag> userTags) {
+    public void updateUserTagByTagType(List<TabPbUserTag> userTags) {
         userTags.forEach(userTag -> {
             Long userTagId = userTag.getUsertagId();
             Long tagType = userTag.getTagType();
             Long userId = userTag.getUserId();
             Integer id = userTag.getId();
             if (ObjectUtils.isEmpty(userId) || ObjectUtils.isEmpty(id)) {
-                return;
+                throw new BusinessDataCheckFailException("用户Id或者id为空");
             }
             if (!ObjectUtils.isEmpty(userTagId) && tagType != null && tagType == 0L) {
                 tabPbUserTagMapper.deleteByPrimaryKey(userTagId);
@@ -111,7 +104,6 @@ public class UserTagServiceImpl implements UserTagService {
                 this.addUserTag(userId, id.longValue());
             }
         });
-        return true;
     }
 
     /**

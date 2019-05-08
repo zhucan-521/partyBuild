@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 工作计划QueryBean
  *
@@ -19,6 +21,7 @@ public class WorkPlanQueryBean {
     private String orgRange;
 
     @ApiModelProperty("组织ID")
+    @NotNull(message = "组织ID不能为空")
     private Long rangeDeptId;
 
     @ApiModelProperty("年度 yyyy")

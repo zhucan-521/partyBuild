@@ -28,7 +28,7 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
         <result column="version" jdbcType="BIGINT" property="version"/>
         <result column="approval_number" jdbcType="VARCHAR" property="approvalNumber"/>
-        <result column="rank" jdbcType="VARCHAR" property="rank"/>
+        <result column="rank" jdbcType="BIGINT" property="rank"/>
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
     </resultMap>
 
@@ -51,7 +51,7 @@
         <result column="lead_member_order" jdbcType="BIGINT" property="leadMemberOrder"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="approval_number" jdbcType="VARCHAR" property="approvalNumber"/>
-        <result column="rank" jdbcType="VARCHAR" property="rank"/>
+        <result column="rank" jdbcType="BIGINT" property="rank"/>
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
         <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
         <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
@@ -66,7 +66,7 @@
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="person_name" jdbcType="VARCHAR" property="personName"/>
         <result column="positive_id" jdbcType="BIGINT" property="positiveId"/>
-        <result column="rank" jdbcType="VARCHAR" property="rank"/>
+        <result column="rank" jdbcType="BIGINT" property="rank"/>
         <result column="gender" jdbcType="BIGINT" property="gender"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
     </resultMap>
@@ -268,7 +268,7 @@
                 #{approvalNumber,jdbcType=VARCHAR},
             </if>
             <if test="rank != null">
-                #{rank,jdbcType=VARCHAR},
+                #{rank,jdbcType=BIGINT},
             </if>
         </trim>
     </insert>
@@ -278,9 +278,6 @@
         <set>
             <if test="orgId != null">
                 org_id = #{orgId,jdbcType=BIGINT},
-            </if>
-            <if test="leadTeamId != null">
-                lead_team_id = #{leadTeamId,jdbcType=BIGINT},
             </if>
             <if test="userId != null">
                 user_id = #{userId,jdbcType=BIGINT},
@@ -355,7 +352,7 @@
                 approval_number= #{approvalNumber,jdbcType=VARCHAR},
             </if>
             <if test="rank != null">
-                rank = #{rank,jdbcType=VARCHAR},
+                rank = #{rank,jdbcType=BIGINT},
             </if>
         </set>
         where member_id = #{memberId,jdbcType=BIGINT}

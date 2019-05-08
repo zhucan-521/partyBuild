@@ -29,7 +29,7 @@ public class TabPbLeadTeamMember {
     /**
      * 职务级别 dict JB
      */
-    private String rank;
+    private Long rank;
 
     /**
      * 人员Id
