@@ -94,7 +94,11 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         int num = reduceListMapper.updateByPrimaryKeySelective(reduceList);
         //查询查询identity_type
         Long identity_type = tabSysUserMapper.selectUserByIdFindIdentity(userId);
+        if (identity_type == null) {
+            throw new BusinessDataNotFoundException("该党员未被删除或者人员类别为空");
+        }
         MembershipDTO membershipDTO = new MembershipDTO();
+        //type DJCL 为2恢复
         membershipDTO.setUserId(userId).setIdentityType(identity_type).setType(2L);
         //新增党籍
         num += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
