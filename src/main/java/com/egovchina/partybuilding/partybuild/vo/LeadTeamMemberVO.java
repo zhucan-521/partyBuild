@@ -79,4 +79,10 @@ public class LeadTeamMemberVO {
     @ApiModelProperty(value = "头像")
     private String avatar;
 
+    @ApiModelProperty("状态")
+    private String eblFlag;
+
+    @ApiModelProperty("身份证号")
+    private String idCardNo;
+
 }

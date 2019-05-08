@@ -26,6 +26,9 @@ import java.util.stream.Collectors;
 @Service
 public class UserTagServiceImpl implements UserTagService {
 
+    //困难党员字典id
+    private final Long HARD_MEMBERSHIP = 59428L;
+
     @Autowired
     private TabPbUserTagMapper tabPbUserTagMapper;
 
@@ -62,7 +65,7 @@ public class UserTagServiceImpl implements UserTagService {
     @Override
     public int delete(Long usertagId) {
         TabPbUserTag tabPbUserTag = tabPbUserTagMapper.selectByPrimaryKey(usertagId);
-        if (tabPbUserTag.getTagType() == 59428L) {
+        if (HARD_MEMBERSHIP.equals(tabPbUserTag.getTagType())) {
             HardshipPartyVO hardshipPartyVO = hardshipService.findHardshipPartyVOByUserId(tabPbUserTag.getUserId());
             hardshipService.deleteByHardshipId(hardshipPartyVO.getHardshipId());
         }
@@ -90,7 +93,7 @@ public class UserTagServiceImpl implements UserTagService {
         return tabPbUserTagMapper.updateByPrimaryKeySelective(userTag);
     }
 
-
+    //TODO
     @Override
     public boolean updateUserTagByTagType(List<TabPbUserTag> userTags) {
         userTags.forEach(userTag -> {
@@ -114,54 +117,138 @@ public class UserTagServiceImpl implements UserTagService {
     /**
      * 批量插入标记
      *
-     * @param userTagDTO
+     * @param userTagDTO 用户表及dto
      * @return
      */
     @Transactional
     @Override
     public int batchInsertUserTagDTO(UserTagDTO userTagDTO) {
-        //困难党员字典id
-        final Long HARD_MEMBERSHIP = 59428L;
-
-        int value = 0;
-
-        //从前端传过来的tagType标签集合
-        List<Long> tagTypes = userTagDTO.getTagTypes();
 
         //如果从前端传过来的tagType标签集合为空则批量删除.
-        if (CollectionUtil.isEmpty(tagTypes)) {
-            return tabPbUserTagMapper.batchDeleteByUserId(userTagDTO.getUserId());
+        boolean judge = quickDelete(userTagDTO);
+        if (judge) {
+            return 1;
         }
-        List<TabPbUserTag> list = tagTypes.stream().map(tagType -> {
-            if (tagType == HARD_MEMBERSHIP) {
-                HardshipPartyMemberDTO hardshipPartyDTO = new HardshipPartyMemberDTO();
-                hardshipPartyDTO.setUserId(userTagDTO.getUserId());
-                hardshipPartyDTO.setOrgId(userTagDTO.getOrgId());
-                hardshipService.insertHardshipPartyMember(hardshipPartyDTO);
-            }
-            TabPbUserTag tabPbUserTag = new TabPbUserTag();
-            tabPbUserTag.setUserId(userTagDTO.getUserId());
-            tabPbUserTag.setTagType(tagType);
-            PaddingBaseFieldUtil.paddingBaseFiled(tabPbUserTag);
-            return tabPbUserTag;
-        }).collect(Collectors.toList());
+
+        //生成用户标签实体集合
+        List<TabPbUserTag> list = generateTabPbUserTagList(userTagDTO);
 
         //获取数据库中原有用户的tagType标签集合(集合中也包含了usertagId)
         List<TabPbUserTag> dbTagList = tabPbUserTagMapper.selectTagTypesList(userTagDTO.getUserId());
 
         //如果数据库中原有用户的tagType集合为空，则批量增加
-        if (CollectionUtil.isEmpty(dbTagList)) {
-            return tabPbUserTagMapper.batchInsertUserTagDTO(list);
+        judge = quickInsert(dbTagList, list);
+        if (judge) {
+            return 1;
         }
 
         List<Long> deleteIds = new ArrayList<>();
         List<TabPbUserTag> insertList = new ArrayList<>();
+        //筛选出待新增和删除的数据
+        filterNewAndDeletedData(userTagDTO, dbTagList, insertList, deleteIds);
+
+        //分别新增和删除标签
+        int value = 0;
+        if (CollectionUtil.isNotEmpty(deleteIds)) {
+            value += tabPbUserTagMapper.batchDeleteById(deleteIds);
+        }
+        if (CollectionUtil.isNotEmpty(insertList)) {
+            value += tabPbUserTagMapper.batchInsertUserTagDTO(insertList);
+        }
+        return value;
+    }
+
+    /**
+     * 快速删除
+     *
+     * @param userTagDTO
+     * @return
+     */
+    private boolean quickDelete(UserTagDTO userTagDTO) {
+        int result = 0;
+        if (CollectionUtil.isEmpty(userTagDTO.getTagTypes())) {
+            result = tabPbUserTagMapper.batchDeleteByUserId(userTagDTO.getUserId());
+        }
+        return result > 0;
+    }
+
+    /**
+     * 快速增加
+     *
+     * @param dbTagList
+     * @param list
+     * @return
+     */
+    private boolean quickInsert(List<TabPbUserTag> dbTagList, List<TabPbUserTag> list) {
+        int result = 0;
+        if (CollectionUtil.isEmpty(dbTagList)) {
+            result = tabPbUserTagMapper.batchInsertUserTagDTO(list);
+        }
+        return result > 0;
+    }
+
+    /**
+     * 困难党员的维护
+     *
+     * @param tagType    标记类型
+     * @param userTagDTO 用户标记dto
+     */
+    private void maintenanceOfDifficultPartyMembers(Long tagType, UserTagDTO userTagDTO) {
+        if (HARD_MEMBERSHIP.equals(tagType)) {
+            HardshipPartyMemberDTO hardshipPartyDTO = new HardshipPartyMemberDTO();
+            hardshipPartyDTO.setUserId(userTagDTO.getUserId());
+            hardshipPartyDTO.setOrgId(userTagDTO.getOrgId());
+            PaddingBaseFieldUtil.paddingBaseFiled(hardshipPartyDTO);
+            hardshipService.insertHardshipPartyMember(hardshipPartyDTO);
+        }
+    }
+
+    /**
+     * 生成TabPbUserTag实体
+     *
+     * @param userId  用户id
+     * @param tagType 标记类型
+     * @return
+     */
+    private TabPbUserTag generateTabPbUserTag(Long userId, Long tagType) {
+        TabPbUserTag tabPbUserTag = new TabPbUserTag();
+        tabPbUserTag.setUserId(userId);
+        tabPbUserTag.setTagType(tagType);
+        PaddingBaseFieldUtil.paddingBaseFiled(tabPbUserTag);
+        return tabPbUserTag;
+    }
+
+    /**
+     * 生成TabPbUserTag实体集合
+     *
+     * @param userTagDTO 用户标记dto
+     * @return
+     */
+    private List<TabPbUserTag> generateTabPbUserTagList(UserTagDTO userTagDTO) {
+        return userTagDTO.getTagTypes().stream().map(tagType -> {
+            //针对困难党员进行处理
+            maintenanceOfDifficultPartyMembers(tagType, userTagDTO);
+            //返回用户标记实体
+            return generateTabPbUserTag(userTagDTO.getUserId(), tagType);
+        }).collect(Collectors.toList());
+    }
+
+    /**
+     * 筛选新增和删除数据
+     *
+     * @param userTagDTO 用户标记dto
+     * @param dbTagList  数据库标记集合
+     * @param insertList 需要添加的标记集合
+     * @param deleteIds  需要删除的标记集合
+     */
+    private void filterNewAndDeletedData(UserTagDTO userTagDTO, List<TabPbUserTag> dbTagList, List<TabPbUserTag> insertList, List<Long> deleteIds) {
         List<Long> dbUserTagList = new ArrayList<>();
+        List<Long> tagTypes = userTagDTO.getTagTypes();
         for (TabPbUserTag tabPbUserTag : dbTagList) {
             //前端没有但是数据库有的，删除
             if (!tagTypes.contains(tabPbUserTag.getTagType())) {
                 deleteIds.add(tabPbUserTag.getUsertagId());
-                if (tabPbUserTag.getTagType() == HARD_MEMBERSHIP) {
+                if (HARD_MEMBERSHIP.equals(tabPbUserTag.getTagType())) {
                     hardshipService.deleteByHardshipId(userTagDTO.getUserId());
                 }
             }
@@ -177,12 +264,5 @@ public class UserTagServiceImpl implements UserTagService {
                 insertList.add(userTag);
             }
         }
-        if (CollectionUtil.isNotEmpty(deleteIds)) {
-            value += tabPbUserTagMapper.batchDeleteById(deleteIds);
-        }
-        if (CollectionUtil.isNotEmpty(insertList)) {
-            value += tabPbUserTagMapper.batchInsertUserTagDTO(insertList);
-        }
-        return value;
     }
 }
