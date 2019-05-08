@@ -53,5 +53,4 @@ public class PositivesDTO {
     @ApiModelProperty(value = "离职方式 dict LZFS")
     private Long leftType;
 
-
 }

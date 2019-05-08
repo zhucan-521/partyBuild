@@ -44,9 +44,6 @@ public class MsgUpInfoVO {
     @ApiModelProperty(value = "报送人id")
     private Long upUserId;
 
-//    @JsonIgnore
-//    private Long upType;
-
     @ApiModelProperty(value = "报送人姓名")
     private String upUsername;
 

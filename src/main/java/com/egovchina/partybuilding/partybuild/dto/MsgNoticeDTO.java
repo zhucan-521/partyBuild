@@ -61,4 +61,5 @@ public class MsgNoticeDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "结束时间", example = "yyyy-MM-dd")
     private Date endTime;
+
 }

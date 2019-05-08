@@ -122,6 +122,9 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
          * 查询明细数据
          */
         if (noticeId != null) {
+            Long temporarily=noticeId;
+            noticeId=id;
+            id=temporarily;
             TabPbMsgNoticeDept noticeDept = deptMapper.findByDept(noticeId);
             TabPbMsgNotice notice = noticeMapper.selectByPrimaryKey(noticeDept.getNoticeId());
             List<TabPbMsgNoticeDept> list = new ArrayList();
@@ -158,40 +161,42 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
 
     @Override
     public List<MsgNoticeVO> selectSendMsgNoticeList(MsgNoticeQueryBean msgNoticeQueryBean, Page page) {
-        if (page != null) {
-            PageHelper.startPage(page);
-        }
+        PageHelper.startPage(page);
         return noticeMapper.selectNoticeVoList(msgNoticeQueryBean);
     }
 
     @Override
-    public int editMsgNoticeState(MsgNoticeDTO record) {
+    public int editMsgNoticeState(MsgNoticeDTO msgNoticeDTO) {
         /**
          * （是|取消）发布
          */
-        record.setPublishTime(new Date());
+        msgNoticeDTO.setPublishTime(new Date());
         TabPbMsgNotice msgNoticeVO = new TabPbMsgNotice();
-        BeanUtil.copyPropertiesIgnoreNull(record, msgNoticeVO);
+        BeanUtil.copyPropertiesIgnoreNull(msgNoticeDTO, msgNoticeVO);
         return noticeMapper.editState(msgNoticeVO);
     }
 
     @Override
-    public int signNotice(MsgNoticeDeptDTO noticeDept) {
-        noticeDept.setRecevieUsername(UserContextHolder.getUserName());
-        noticeDept.setRecevieUserId(UserContextHolder.getUserId().longValue());
-        noticeDept.setRecevieTime(new Date());
+    public int signNotice(MsgNoticeDeptDTO msgNoticeDeptDTO) {
+        msgNoticeDeptDTO.setRecevieUsername(UserContextHolder.getUserName());
+        msgNoticeDeptDTO.setRecevieUserId(UserContextHolder.getUserId().longValue());
+        msgNoticeDeptDTO.setRecevieTime(new Date());
         TabPbMsgNoticeDept tabPbMsgNoticeDept = new TabPbMsgNoticeDept();
-        BeanUtil.copyPropertiesIgnoreNull(noticeDept, tabPbMsgNoticeDept);
+        BeanUtil.copyPropertiesIgnoreNull(msgNoticeDeptDTO, tabPbMsgNoticeDept);
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbMsgNoticeDept);
         return deptMapper.updateSigning(tabPbMsgNoticeDept);
     }
 
+    /**
+     * 收到文件信息列表
+     * @param msgNoticeDeptQueryBean
+     * @param page
+     * @return
+     */
     @Override
-    public List<MsgNoticeDeptVO> selectReceiveMsgNotice(MsgNoticeDeptQueryBean noticeDept, Page page) {
-        if (page != null) {
-            PageHelper.startPage(page);
-        }
-        return deptMapper.selectVoDeptList(noticeDept);
+    public List<MsgNoticeDeptVO> selectReceiveMsgNotice(MsgNoticeDeptQueryBean msgNoticeDeptQueryBean, Page page) {
+        PageHelper.startPage(page);
+        return deptMapper.receivedNotifications(msgNoticeDeptQueryBean);
     }
 
     /**
