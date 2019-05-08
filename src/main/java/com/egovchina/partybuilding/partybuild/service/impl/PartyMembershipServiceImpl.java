@@ -1,7 +1,6 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyMembership;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPartyMembershipMapper;
@@ -34,15 +33,15 @@ public class PartyMembershipServiceImpl implements PartyMembershipService {
     }
 
     /**
-     * 查询党籍信息列表实现方法
+     * 根据用户id获取党籍列表
      *
      * @param page
      * @return
      */
     @Override
-    public List<MembershipVO> getMembershipVOListByCondition(Page page) {
+    public List<MembershipVO> getMembershipVOListByCondition(Long userId, Page page) {
         PageHelper.startPage(page);
-        List<MembershipVO> list = tabPbPartyMembershipMapper.getMembershipVOListByCondition();
+        List<MembershipVO> list = tabPbPartyMembershipMapper.getMembershipVOListByCondition(userId);
         return list;
     }
 }
