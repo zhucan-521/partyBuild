@@ -108,34 +108,10 @@ public class SecretaryServiceImpl implements SecretaryService {
         int flag = tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretaryinsert);
         List<FamilyMemberDTO> familyMemberDTOS = secretaryMemberDTO.getFamilyList();
         List<PositivesDTO> positivesDTOS = secretaryMemberDTO.getPositivesList();
-        if (CollectionUtil.isNotEmpty(familyMemberDTOS)) {
-            for (FamilyMemberDTO familyDTO : familyMemberDTOS) {
-                if (familyDTO.getRelationId() != null) {
-                    TabPbFamily tabPbFamily = new TabPbFamily();
-                    BeanUtil.copyPropertiesIgnoreNull(familyDTO, tabPbFamily);
-                    tabPbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
-                } else {
-                    TabPbFamily tabPbFamily = new TabPbFamily();
-                    BeanUtil.copyPropertiesIgnoreNull(familyDTO, tabPbFamily);
-                    tabPbFamily.setUserId(secretaryMemberDTO.getUserId());
-                    tabPbFamilyMapper.insertSelective(tabPbFamily);
-                }
-            }
-        }
-        if (CollectionUtil.isNotEmpty(secretaryMemberDTO.getPositivesList())) {
-            for (PositivesDTO positivesDTO : positivesDTOS) {
-                if (positivesDTO.getPositiveId() != null) {
-                    TabPbPositives tabPbPositives = new TabPbPositives();
-                    BeanUtil.copyPropertiesIgnoreNull(positivesDTO, tabPbPositives);
-                    tabPbPositivesMapper.updateByPrimaryKeySelective(tabPbPositives);
-                } else {
-                    TabPbPositives tabPbPositives = new TabPbPositives();
-                    BeanUtil.copyPropertiesIgnoreNull(positivesDTO, tabPbPositives);
-                    tabPbPositives.setUserId(secretaryMemberDTO.getUserId());
-                    tabPbPositivesMapper.insertSelective(tabPbPositives);
-                }
-            }
-        }
+        //修改或者添加家庭成员
+        this.updateOrAddFamily(familyMemberDTOS, secretaryMemberDTO);
+        //修改或者添加职务
+        this.updateOrAddPositives(positivesDTOS, secretaryMemberDTO);
         return ReturnUtil.buildReturn(flag);
     }
 
@@ -178,6 +154,52 @@ public class SecretaryServiceImpl implements SecretaryService {
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbDeptSecretary);
         int flag = tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretary);
         return ReturnUtil.buildReturn(flag);
+    }
+
+    /**
+     * 修改或者添加家庭成员
+     *
+     * @param familyMemberDTOS
+     * @param secretaryMemberDTO
+     * @return
+     */
+    private void updateOrAddFamily(List<FamilyMemberDTO> familyMemberDTOS, SecretaryMemberDTO secretaryMemberDTO) {
+        if (CollectionUtil.isNotEmpty(familyMemberDTOS)) {
+            for (FamilyMemberDTO familyDTO : familyMemberDTOS) {
+                if (familyDTO.getRelationId() != null) {
+                    TabPbFamily tabPbFamily = new TabPbFamily();
+                    BeanUtil.copyPropertiesIgnoreNull(familyDTO, tabPbFamily);
+                    tabPbFamilyMapper.updateByPrimaryKeySelective(tabPbFamily);
+                } else {
+                    TabPbFamily tabPbFamily = new TabPbFamily();
+                    BeanUtil.copyPropertiesIgnoreNull(familyDTO, tabPbFamily);
+                    tabPbFamily.setUserId(secretaryMemberDTO.getUserId());
+                    tabPbFamilyMapper.insertSelective(tabPbFamily);
+                }
+            }
+        }
+    }
+
+    /**
+     * 添加或者修改书记
+     * @param positivesDTOS
+     * @param secretaryMemberDTO
+     */
+    private void updateOrAddPositives(List<PositivesDTO> positivesDTOS, SecretaryMemberDTO secretaryMemberDTO) {
+        if (CollectionUtil.isNotEmpty(secretaryMemberDTO.getPositivesList())) {
+            for (PositivesDTO positivesDTO : positivesDTOS) {
+                if (positivesDTO.getPositiveId() != null) {
+                    TabPbPositives tabPbPositives = new TabPbPositives();
+                    BeanUtil.copyPropertiesIgnoreNull(positivesDTO, tabPbPositives);
+                    tabPbPositivesMapper.updateByPrimaryKeySelective(tabPbPositives);
+                } else {
+                    TabPbPositives tabPbPositives = new TabPbPositives();
+                    BeanUtil.copyPropertiesIgnoreNull(positivesDTO, tabPbPositives);
+                    tabPbPositives.setUserId(secretaryMemberDTO.getUserId());
+                    tabPbPositivesMapper.insertSelective(tabPbPositives);
+                }
+            }
+        }
     }
 
 }
