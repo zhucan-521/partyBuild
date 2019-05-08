@@ -412,6 +412,9 @@
         left join sys_dept d on h.org_id = d.dept_id
         <where>
             h.del_flag = 0
+            <if test="userId != null and userId != '' ">
+                AND h.user_id = #{userId}
+            </if>
             <if test="username != null and username != ''">
                 and u.realname LIKE CONCAT('%',#{username},'%')
             </if>
