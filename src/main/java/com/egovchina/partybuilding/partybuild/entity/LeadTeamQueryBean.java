@@ -31,4 +31,7 @@ public class LeadTeamQueryBean {
     @ApiModelProperty("组织名称")
     private String orgName;
 
+    @ApiModelProperty("班子届数")
+    private Long sessionYear;
+
 }
