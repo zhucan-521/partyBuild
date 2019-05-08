@@ -51,7 +51,7 @@ public class JointMeetServiceImpl implements JointMeetService {
     @Transactional
     public Long addJointMeet(JointMeetDTO jointMeetDto) {
         if (isEmpty(jointMeetDto.getOrgId())) {
-            jointMeetDto.setOrgId(Objects.requireNonNull(UserContextHolder.currentUser()).getDeptId().longValue());
+            jointMeetDto.setOrgId(Objects.requireNonNull(UserContextHolder.currentUser()).getDeptId());
         }
 
         // 默认是当前时间

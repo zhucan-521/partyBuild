@@ -309,7 +309,7 @@
                 and  sw.special_worker_id = #{specialWorkerId}
             </if>
             <if test="null != username and ''!=username">
-                and  u.realname like CONCAT(#{username},'%')
+                and  u.realname like CONCAT('%',#{username},'%')
             </if>
             <if test="null != idCardNo and ''!=idCardNo">
                 and   u.id_card_no= #{idCardNo}

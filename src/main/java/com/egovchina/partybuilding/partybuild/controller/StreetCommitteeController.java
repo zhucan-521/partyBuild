@@ -16,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * @author wuyunjie
  * @version 1.0
@@ -37,6 +35,12 @@ public class StreetCommitteeController {
         return ReturnUtil.buildReturn(this.streetCommitteeService.saveStreetCommittee(streetCommitteeDTO));
     }
 
+    @ApiOperation(value = "修改街道大工委",notes = "修改街道大工委")
+    @PutMapping()
+    public ReturnEntity updateStreetCommittee(@ApiParam("街道大公委信息") @RequestBody @Validated StreetCommitteeDTO streetCommitteeDTO){
+        return ReturnUtil.buildReturn(this.streetCommitteeService.updateStreetCommittee(streetCommitteeDTO));
+    }
+
     @ApiOperation(value = "条件查询街道大公委列表")
     @GetMapping
     public PageInfo<StreetCommitteeVO> getStreetCommitteeList(StreetCommitteeQueryBean streetCommitteeQueryBean, Page page) {
@@ -45,13 +49,6 @@ public class StreetCommitteeController {
             streetCommitteeQueryBean.setOrgId(UserContextHolder.getOrgId());
         }
         return this.streetCommitteeService.getStreetCommitteeList(streetCommitteeQueryBean, page);
-    }
-
-    @ApiOperation(value = "添加街道大公委,可批量添加成员", notes = "1. 街道大公委对象, 如果orgId存在则更新, 否则新增街道大公委数据 2. 添加街道大公委成员数据")
-    @PostMapping("/add-members")
-    public ReturnEntity addStreetCommitteeAndMember(@ApiParam("街道大公委和成员集合信息") @RequestBody @Validated StreetCommitteeDTO streetCommitteeDTO) {
-        return ReturnUtil.buildReturn(this.streetCommitteeService.addStreetCommittee(
-                streetCommitteeDTO, streetCommitteeDTO.getStreetCommitteMemberList()));
     }
 
     @ApiOperation(value = "删除街道大公委数据", notes = "删除街道大公委将同时删除该街道大公委的成员")
@@ -74,13 +71,6 @@ public class StreetCommitteeController {
     public ReturnEntity addStreetCommitteeMember(@ApiParam("成员信息")
                                                  @RequestBody @Validated StreetCommitteeMemberDTO streetCommitteeMemberDTO) {
         return ReturnUtil.buildReturn(this.streetCommitteeService.addStreetCommitteeMember(streetCommitteeMemberDTO));
-    }
-
-    @ApiOperation(value = "添加街道大公委成员数据", notes = "grantCommitteeId 和userId 必须存在")
-    @PostMapping("/members")
-    public ReturnEntity addStreetCommitteeMemberList(@ApiParam("成员集合信息")
-                                                     @RequestBody @Validated List<StreetCommitteeMemberDTO> streetCommitteeMemberDTOList) {
-        return ReturnUtil.buildReturn(this.streetCommitteeService.addStreetCommitteeMembers(streetCommitteeMemberDTOList));
     }
 
     @ApiOperation(value = "获取大公委成员数据", notes = "grantCommitteeMemberId为街道大公委成员明细表的主键")
@@ -111,4 +101,10 @@ public class StreetCommitteeController {
         return this.streetCommitteeService.getStreetCommitteeMemberList(grantCommitteeId, personName, positiveName, page);
     }
 
+    @ApiOperation(value = "判断组织是否可以添加工委成员", notes = "判断组织是否可以添加工委成员")
+    @ApiImplicitParam(value = "组织id", name = "orgId", dataType = "Long", paramType = "path", required = true)
+    @GetMapping("/check/{orgId}")
+    public Boolean checkStreetCommitteeWhetherAddMembers(@PathVariable Long orgId) {
+        return this.streetCommitteeService.checkStreetCommitteeWhetherAddMembers(orgId);
+    }
 }

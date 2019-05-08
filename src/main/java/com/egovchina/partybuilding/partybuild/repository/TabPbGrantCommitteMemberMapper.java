@@ -40,13 +40,20 @@ public interface TabPbGrantCommitteMemberMapper {
 
     /**
      * 根据大工委成员id查大工委成员信息
+     *
      * @param grantCommitteeMemberId
      * @return
      */
     StreetCommitteeMemberVO selectStreetCommitteeMemberVOById(Long grantCommitteeMemberId);
 
+    /**
+     * 校验工委成员是否存在
+     *
+     * @param grantCommitteeId
+     * @param userId
+     * @return
+     */
     int verifyStreetCommitteeMembers(
-            @Param("leadTeamId") Long leadTeamId,
             @Param("grantCommitteeId") Long grantCommitteeId,
             @Param("userId") Long userId);
 }
