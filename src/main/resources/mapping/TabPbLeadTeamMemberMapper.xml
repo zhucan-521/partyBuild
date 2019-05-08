@@ -279,9 +279,6 @@
             <if test="orgId != null">
                 org_id = #{orgId,jdbcType=BIGINT},
             </if>
-            <if test="leadTeamId != null">
-                lead_team_id = #{leadTeamId,jdbcType=BIGINT},
-            </if>
             <if test="userId != null">
                 user_id = #{userId,jdbcType=BIGINT},
             </if>
