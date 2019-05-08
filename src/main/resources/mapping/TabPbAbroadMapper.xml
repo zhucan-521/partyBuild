@@ -428,7 +428,7 @@
         </if>
 
         <if test="idCardNo != null and idCardNo != '' ">
-            AND su.id_card_no LIKE concat('%',#{idCardNo},'%')
+            AND su.id_card_no = #{idCardNo}
         </if>
 
         <if test="abroadId != null and abroadId != ''">

@@ -1,9 +1,9 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
+import com.egovchina.partybuilding.partybuild.dto.AbroadDTO;
 import com.egovchina.partybuilding.partybuild.dto.GoAbroadDTO;
 import com.egovchina.partybuilding.partybuild.dto.ReturnAbroadDTO;
 import com.egovchina.partybuilding.partybuild.entity.AbroadQueryBean;
@@ -38,16 +38,16 @@ public class AbroadController {
         return ReturnUtil.buildReturn(abroadService.insertGoAbroad(goAbroadDTO));
     }
 
-    @ApiOperation(value = "更新出国信息", notes = "更新出国信息", httpMethod = "PUT")
-    @PutMapping("/overseas")
-    public ReturnEntity updateGoAbroad(@RequestBody @Validated @ApiParam("出国信息") GoAbroadDTO goAbroadDTO) {
-        return ReturnUtil.buildReturn(abroadService.updateGoAbroad(goAbroadDTO));
-    }
-
-    @ApiOperation(value = "更新（添加）回国信息 - 用作出国信息添加和更新", notes = "更新（添加）回国信息 - 用作出国信息添加和更新", httpMethod = "PUT")
+    @ApiOperation(value = "添加回国信息-(在原出国信息基础上更新)", notes = "添加回国信息-(在原出国信息基础上更新)", httpMethod = "PUT")
     @PutMapping("/repatriations")
     public ReturnEntity updateReturnAbroad(@RequestBody @Validated @ApiParam("回国信息") ReturnAbroadDTO returnAbroadDTO) {
         return ReturnUtil.buildReturn(abroadService.updateReturnAbroad(returnAbroadDTO));
+    }
+
+    @ApiOperation(value = "更新出国回国信息", notes = "更新出国回国信息", httpMethod = "PUT")
+    @PutMapping("/overseas-repatriations")
+    public ReturnEntity updateGoAbroad(@RequestBody @Validated @ApiParam("出国回国信息") AbroadDTO abroadDTO) {
+        return ReturnUtil.buildReturn(abroadService.updateAbroad(abroadDTO));
     }
 
     @ApiOperation(value = "删除指定的出国出境信息", notes = "删除指定的出国出境信息", httpMethod = "DELETE")
