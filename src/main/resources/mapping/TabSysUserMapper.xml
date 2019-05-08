@@ -370,7 +370,7 @@
             and TIMESTAMPDIFF(YEAR,birthday,CURDATE())&lt; #{ageEnd}
         </if>
         <if test="joinTimeBegin != null">
-            and join_time > #{joinTimeBegin}
+            and join_time &gt; #{joinTimeBegin}
         </if>
         <if test="joinTimeEnd != null">
             and join_time &lt; #{joinTimeEnd}
