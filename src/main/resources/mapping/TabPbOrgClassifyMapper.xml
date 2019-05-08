@@ -36,68 +36,27 @@
     c.org_classify_id, c.dept_id, c.org_level, c.level_date, c.ebl_flag, c.del_flag, c.order_num, c.description,
     c.create_time, c.create_userid, c.create_username, c.update_time, c.update_userid, c.update_username,
     c.version
+
   </sql>
     <sql id="Base_WhereCase_List">
-        <if test="orgClassifyId != null and orgClassifyId != ''">
-            AND c.org_classify_id = #{orgClassifyId}
-        </if>
-        <if test="deptId != null and deptId != ''">
-            AND c.dept_id = #{deptId}
-        </if>
         <if test="orgLevel != null and orgLevel != ''">
             AND c.org_level = #{orgLevel}
         </if>
-        <!--定等日期-->
-        <if test="startDate != null and startDate != ''">
-            AND date_format(c.level_date, '%Y-%m-%d') >= #{startDate}
-        </if>
-        <if test="endDate != null and endDate != ''">
-            AND date_format(c.level_date, '%Y-%m-%d') &lt;= #{endDate}
-        </if>
-        <if test="eblFlag != null and eblFlag != ''">
-            AND c.ebl_flag = #{eblFlag}
-        </if>
         AND c.del_flag = 0
-        <if test="orderNum != null and orderNum != ''">
-            AND c.order_num = #{orderNum}
-        </if>
-        <if test="description != null and description != ''">
-            AND c.description like concat('%',#{description},'%')
-        </if>
-        <if test="createTime != null and createTime != ''">
-            AND c.create_time = #{createTime}
-        </if>
-        <if test="createUserid != null and createUserid != ''">
-            AND c.create_userid = #{createUserid}
-        </if>
-        <if test="createUsername != null and createUsername != ''">
-            AND c.create_username = #{createUsername}
-        </if>
-        <if test="updateTime != null and updateTime != ''">
-            AND c.update_time = #{updateTime}
-        </if>
-        <if test="updateUserid != null and updateUserid != ''">
-            AND c.update_userid = #{updateUserid}
-        </if>
-        <if test="updateUsername != null and updateUsername != ''">
-            AND c.update_username = #{udpateUsername}
-        </if>
-        <if test="version != null and version != ''">
-            AND c.version = #{version}
-        </if>
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
         <choose>
             <when test="orgRange == 1">
-                AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                AND (d.dept_id = #{orgId} OR d.parent_id = #{orgId})
             </when>
             <when test="orgRange == 2">
-                AND find_in_set(#{rangeDeptId}, d.full_path)
+                AND find_in_set(#{orgId}, d.full_path)
             </when>
             <otherwise>
-                AND d.dept_id = #{rangeDeptId}
+                AND d.dept_id = #{orgId}
             </otherwise>
         </choose>
     </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -291,7 +250,7 @@
   </update>
 
     <!--根据条件查询-->
-    <select id="selectWithConditions" parameterType="java.util.Map" resultMap="OrgClassifyVOResultMap">
+    <select id="selectWithConditions" resultMap="OrgClassifyVOResultMap">
         select
         <include refid="Base_Column_List"/>
         , d.name as dept_name
