@@ -92,6 +92,4 @@ public class StreetCommitteeDTO {
     @ApiModelProperty(value = "选举情况")
     private String voteStatus;
 
-    @ApiModelProperty(value = "大工委人员List")
-    private List<StreetCommitteeMemberDTO> streetCommitteMemberList;
 }

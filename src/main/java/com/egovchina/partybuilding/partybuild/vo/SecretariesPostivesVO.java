@@ -10,4 +10,8 @@ public class SecretariesPostivesVO {
     @JsonSerialize(using = DictSerializer.class)
     @ApiModelProperty(value = "党内职务 dict DNZW")
     private Long positiveName;
+
+    @ApiModelProperty(value = "任职 机构/党组织 名称")
+    private String positiveOrgName;
+
 }
