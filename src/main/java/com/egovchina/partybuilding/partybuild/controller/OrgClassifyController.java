@@ -56,7 +56,7 @@ public class OrgClassifyController {
 
     @ApiOperation(value = "分类定等列表", notes = "分类定等列表", httpMethod = "GET")
     @GetMapping
-    public PageInfo<OrgClassifyVO> getClassifyList(@RequestBody @Validated ClassifyQueryBean classifyQueryBean, Page page) {
+    public PageInfo<OrgClassifyVO> getClassifyList(@Validated ClassifyQueryBean classifyQueryBean, Page page) {
         return orgClassifyService.findOrgClassifyVOWithConditions(classifyQueryBean, page);
     }
 
