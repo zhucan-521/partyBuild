@@ -25,8 +25,8 @@ public class SysUserQueryBean {
     @ApiModelProperty(value = "身份证号码")
     private String idCardNo;
 
-    @ApiModelProperty(value = "性别")
-    private Long gender;
+    @ApiModelProperty(value = "性别多个逗号隔开")
+    private String gender;
 
     @ApiModelProperty(value = "民族多个逗号隔开")
     private String nation;
@@ -35,7 +35,7 @@ public class SysUserQueryBean {
     private String education;
 
     @ApiModelProperty(value = "是否台湾籍")
-    private Byte isTaiwaner;
+    private String isTaiwaner;
 
     @ApiModelProperty(value = "流动状态 码表值 LDZT")
     private Long flowStatus;
@@ -49,11 +49,11 @@ public class SysUserQueryBean {
     @ApiModelProperty(value = "婚姻状况,多个逗号隔开")
     private String maritalStatus;
 
-    @ApiModelProperty(value = "是否失联")
-    private Byte isLlost;
+    @ApiModelProperty(value = "是否失联,多个逗号隔开")
+    private String isLlost;
 
-    @ApiModelProperty(value = "是否困难")
-    private Byte isPoor;
+    @ApiModelProperty(value = "是否困难,多个逗号隔开")
+    private String isPoor;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "入党时间、预备党员时间", example = "yyyy-MM-dd")
@@ -64,13 +64,11 @@ public class SysUserQueryBean {
     @TableField(exist = false)
     private Date joinTimeEnd;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @ApiModelProperty(value = "开始年龄", example = "yyyy-MM-dd")
-    private Date ageBegin;
+    @ApiModelProperty(value = "开始年龄")
+    private Integer ageBegin;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @ApiModelProperty(value = "结束年龄", example = "yyyy-MM-dd")
-    private Date ageEnd;
+    @ApiModelProperty(value = "结束年龄")
+    private Integer ageEnd;
 
     @ApiModelProperty(value = "列表范围 0 查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织； 不传查本级；3和不传查本级。（所有前提都是有deptid的情况，没有ddeptid就没有党组织筛选）")
     private String orgRange;
