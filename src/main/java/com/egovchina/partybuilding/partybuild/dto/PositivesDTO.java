@@ -28,7 +28,6 @@ public class PositivesDTO {
     private Long positiveOrgId;
 
     @ApiModelProperty(value = "职务名称，字典：党内职务（DNZW）；行政职务（HZZW）", required = true)
-    @NotNull(message = "任职党组织名称不能为空")
     private Long positiveName;
 
     @ApiModelProperty(value = "职务级别 ZWJB")

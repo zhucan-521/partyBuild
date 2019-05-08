@@ -51,7 +51,7 @@
         update_username, version, left_type, business_from, business_id
     </sql>
     <sql id="P_Base_Column_List">
-    p.positive_id, p.user_id, p.positive_type, p.positive_org_id, p.positive_org_name, p.positive_name,
+    p.positive_id, p.user_id, p.positive_type, p.positive_org_id,  p.positive_name,
     p.positive_level, p.positive_start, p.positive_finished, p.ebl_flag, p.del_flag, p.order_num,
     p.description, p.create_time, p.create_userid, p.create_username, p.update_time, p.update_userid,
         p.update_username, p.version,p.left_type,p.left_reason
