@@ -382,16 +382,16 @@
             and flow_status > 0
         </if>
         <if test="gender != null">
-            and gender = #{gender}
+            and find_in_set(gender, #{gender})
         </if>
         <if test="isPoor != null">
-            and is_poor = #{isPoor}
+            and find_in_set(is_poor, #{isPoor})
         </if>
         <if test="isLlost != null">
-            and is_llost = #{isLlost}
+            and find_in_set(is_llost, #{isLlost})
         </if>
         <if test="isTaiwaner != null">
-            and is_taiwaner = #{isTaiwaner}
+            and find_in_set(is_taiwaner, #{isTaiwaner})
         </if>
     </sql>
     <!--查询书记的简单党员信息-->
