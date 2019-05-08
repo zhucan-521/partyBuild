@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author Zhang Fan
  **/
-@ApiModel("领导班子查询实体")
+@ApiModel("领导班子查询对象")
 @Data
 public class LeadTeamQueryBean {
 
@@ -21,15 +21,6 @@ public class LeadTeamQueryBean {
     @ApiModelProperty(value = "组织id", required = true)
     @NotNull(message = "组织id不能为空")
     private Long rangeDeptId;
-
-    @ApiModelProperty("姓名")
-    private String personName;
-
-    @ApiModelProperty("身份证")
-    private String idCardNo;
-
-    @ApiModelProperty("组织名称")
-    private String orgName;
 
     @ApiModelProperty("班子届数")
     private Long sessionYear;

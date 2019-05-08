@@ -1,7 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service;
 
-import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
 import com.egovchina.partybuilding.partybuild.dto.UserTagDTO;
+import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
 
 import java.util.List;
 
@@ -11,27 +11,27 @@ import java.util.List;
  */
 public interface UserTagService {
     /**
-     * 根据用户id以及字典id添加标签
+     * 根据用户id以及标记类型添加标签
      *
-     * @param userId
-     * @param tagType
+     * @param userId  用户id
+     * @param tagType 标记类型
      * @return
      */
     int addUserTag(Long userId, Long tagType);
 
     /**
-     * 根据字典id删除党员标签
+     * 根据用户标记id删除党员标签
      *
-     * @param usertagId
+     * @param usertagId 用户标记id
      * @return
      */
     int delete(Long usertagId);
 
     /**
-     * 根据用户id 和 字典id 删除 标签。
+     * 根据用户id 和 标记类型 删除 标签。
      *
-     * @param userId
-     * @param tagType
+     * @param userId  用户id
+     * @param tagType 标记类型
      * @return
      */
     int delete(Long userId, Long tagType);
@@ -47,7 +47,7 @@ public interface UserTagService {
     /**
      * 批量插入标记
      *
-     * @param userTagDTO
+     * @param userTagDTO 用户标签dto
      * @return
      */
     int batchInsertUserTagDTO(UserTagDTO userTagDTO);
