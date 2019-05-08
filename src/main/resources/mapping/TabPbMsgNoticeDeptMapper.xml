@@ -61,7 +61,7 @@
     </select>
 
     <!--收到文件通知列表-->
-    <select id="selectVoDeptList" parameterType="com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean" resultMap="BaseResultVoMap">
+    <select id="ReceivedNotifications" parameterType="com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean" resultMap="BaseResultVoMap">
          select
          d.*,
          n.notice_title,
@@ -79,12 +79,17 @@
          <if test="stateTime != null">
              n.publish_time between #{stateTime}  and #{endTime}
          </if>
-         <if test="orgRange == 1">
+        <choose>
+            <when test="orgRange == 1">
             AND (dept.dept_id = #{deptId} OR dept.parent_id = #{deptId})
-         </if>
-         <if test="orgRange == 2">
+            </when>
+            <when test="orgRange == 2">
              AND find_in_set(#{deptId}, dept.full_path)
-         </if>
+            </when>
+            <otherwise>
+                AND dept.dept_id = #{deptId}
+            </otherwise>
+        </choose>
          and
          n.del_flag=0
          and

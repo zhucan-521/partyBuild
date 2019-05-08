@@ -32,12 +32,12 @@ public interface TabPbMsgNoticeDeptMapper {
 
 
     /**
-     * 查询list
+     * 收到文件通知列表
      *
      * @param record
      * @return
      */
-    List<MsgNoticeDeptVO> selectVoDeptList(MsgNoticeDeptQueryBean record);
+    List<MsgNoticeDeptVO> ReceivedNotifications(MsgNoticeDeptQueryBean record);
 
     /**
      * 签收

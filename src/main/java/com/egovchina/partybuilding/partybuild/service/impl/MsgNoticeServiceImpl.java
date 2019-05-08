@@ -15,7 +15,6 @@ import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDeptDTO;
 import com.egovchina.partybuilding.partybuild.service.MsgNoticeService;
 import com.egovchina.partybuilding.partybuild.vo.MsgNoticeDeptVO;
 import com.egovchina.partybuilding.partybuild.vo.MsgNoticeVO;
-import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -158,9 +157,6 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
 
     @Override
     public List<MsgNoticeVO> selectSendMsgNoticeList(MsgNoticeQueryBean msgNoticeQueryBean, Page page) {
-        if (page != null) {
-            PageHelper.startPage(page);
-        }
         return noticeMapper.selectNoticeVoList(msgNoticeQueryBean);
     }
 
@@ -186,12 +182,15 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
         return deptMapper.updateSigning(tabPbMsgNoticeDept);
     }
 
+    /**
+     * 收到文件信息列表
+     * @param noticeDept
+     * @param page
+     * @return
+     */
     @Override
     public List<MsgNoticeDeptVO> selectReceiveMsgNotice(MsgNoticeDeptQueryBean noticeDept, Page page) {
-        if (page != null) {
-            PageHelper.startPage(page);
-        }
-        return deptMapper.selectVoDeptList(noticeDept);
+        return deptMapper.ReceivedNotifications(noticeDept);
     }
 
     /**
