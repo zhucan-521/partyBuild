@@ -122,6 +122,9 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
          * 查询明细数据
          */
         if (noticeId != null) {
+            Long temporarily=noticeId;
+            noticeId=id;
+            id=temporarily;
             TabPbMsgNoticeDept noticeDept = deptMapper.findByDept(noticeId);
             TabPbMsgNotice notice = noticeMapper.selectByPrimaryKey(noticeDept.getNoticeId());
             List<TabPbMsgNoticeDept> list = new ArrayList();

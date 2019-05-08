@@ -71,8 +71,10 @@ public class SecretaryServiceImpl implements SecretaryService {
         Long userId = secretaryMemberDTO.getUserId();
         if (userId == null) {
             SysUser sysUser = generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO, SysUser.class, false);
+            sysUser.setUsername(secretaryMemberDTO.getRealname());
             tabSysUserMapper.insertSelective(sysUser);
             userId = sysUser.getUserId();
+            secretaryMemberDTO.setUserId(userId);
         }
         TabPbDeptSecretary tabPbDeptSecretaryinsert = generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO, TabPbDeptSecretary.class, false);
         int flag = tabPbDeptSecretaryMapper.insertSelective(tabPbDeptSecretaryinsert);
@@ -129,6 +131,7 @@ public class SecretaryServiceImpl implements SecretaryService {
                 } else {
                     TabPbPositives tabPbPositives = new TabPbPositives();
                     BeanUtil.copyPropertiesIgnoreNull(positivesDTO, tabPbPositives);
+                    tabPbPositives.setUserId(secretaryMemberDTO.getUserId());
                     tabPbPositivesMapper.insertSelective(tabPbPositives);
                 }
             }
