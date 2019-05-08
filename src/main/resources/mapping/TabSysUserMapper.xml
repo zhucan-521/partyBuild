@@ -364,16 +364,16 @@
             )
         </if>
         <if test="ageBegin != null">
-            and birthday &lt; #{ageBegin}
+            and TIMESTAMPDIFF(YEAR,birthday,CURDATE())> #{ageBegin}
         </if>
         <if test="ageEnd != null">
-            and birthday > #{ageEnd}
+            and TIMESTAMPDIFF(YEAR,birthday,CURDATE())&lt; #{ageEnd}
         </if>
         <if test="joinTimeBegin != null">
-            and join_time &lt; #{joinTimeBegin}
+            and join_time &gt; #{joinTimeBegin}
         </if>
         <if test="joinTimeEnd != null">
-            and join_time > #{joinTimeEnd}
+            and join_time &lt; #{joinTimeEnd}
         </if>
         <if test="flowStatus != null and flowStatus == 0">
             and flow_status = 0
