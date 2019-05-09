@@ -31,6 +31,9 @@ public class PartyGroupVO {
     @ApiModelProperty(value = "组织ID")
     private Long orgId;
 
+    @ApiModelProperty(value = "排序码")
+    private Integer orderNum;
+
     @ApiModelProperty(value = "是否撤销")
     private Integer isRevoke;
 
