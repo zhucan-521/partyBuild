@@ -79,11 +79,12 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
      */
     @Override
     public MsgUpInfoVO returnUpMember(Long realDeptId) {
+        //如果没有党组织则是上报组织为自已组织（没有替别的组织上报）
         if (realDeptId == null) {
             realDeptId = UserContextHolder.getOrgId();
         }
         TabPbMsgUpInfo tabPbMsgUpInfo = new TabPbMsgUpInfo();
-        //党组织
+        //党组织（真实上报组织）
         tabPbMsgUpInfo.setRealDeptId(realDeptId);
         SysDept realSysDept = tabSysDeptMapper.selectAloneByPrimaryKey(realDeptId);
         tabPbMsgUpInfo.setRealDeptName(realSysDept.getName());
@@ -97,30 +98,8 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
         SysDept upDept = tabSysDeptMapper.selectAloneByPrimaryKey(upDeptId);
         tabPbMsgUpInfo.setUpDeptId(upDeptId);
         tabPbMsgUpInfo.setUpDeptName(upDept.getName());
-        //接受组织名称
-        if (realSysDept.getParentId() == null) {
-            MsgUpInfoVO msgUpInfoVO = new MsgUpInfoVO();
-            BeanUtil.copyPropertiesIgnoreNull(tabPbMsgUpInfo, msgUpInfoVO);
-            return msgUpInfoVO;
-        }
-        SysDept recDept = tabSysDeptMapper.selectAloneByPrimaryKey(realSysDept.getParentId());
-        if (recDept == null) {
-            MsgUpInfoVO msgUpInfoVO = new MsgUpInfoVO();
-            BeanUtil.copyPropertiesIgnoreNull(tabPbMsgUpInfo, msgUpInfoVO);
-            return msgUpInfoVO;
-        }
-        tabPbMsgUpInfo.setRecevieDeptId(recDept.getDeptId());
-        tabPbMsgUpInfo.setRecevieDeptName(recDept.getName());
-        //接受人姓名
-        SysUser recSysUser = tabPbMsgUpInfoMapper.selectBydeptId(recDept.getDeptId());
-        if (recSysUser == null) {
-            MsgUpInfoVO msgUpInfoVO = new MsgUpInfoVO();
-            BeanUtil.copyPropertiesIgnoreNull(tabPbMsgUpInfo, msgUpInfoVO);
-            return msgUpInfoVO;
-        }
-        tabPbMsgUpInfo.setRecevieUserId(recSysUser.getUserId());
-        tabPbMsgUpInfo.setRecevieUsername(recSysUser.getUsername());
-        MsgUpInfoVO msgUpInfoVO = new MsgUpInfoVO();
+        //获取接收组织和接收组织的专干人员
+        MsgUpInfoVO msgUpInfoVO = tabPbMsgUpInfoMapper.getReceiveDeptAndWorker(realDeptId);
         BeanUtil.copyPropertiesIgnoreNull(tabPbMsgUpInfo, msgUpInfoVO);
         return msgUpInfoVO;
     }

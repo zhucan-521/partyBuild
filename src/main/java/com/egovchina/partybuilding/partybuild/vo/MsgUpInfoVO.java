@@ -6,9 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +46,6 @@ public class MsgUpInfoVO {
     private String upUsername;
 
     @ApiModelProperty(value = "接收党组织id")
-    @NotNull(message = "没有上级组织，无法上报")
     private Long recevieDeptId;
 
     @ApiModelProperty(value = "接收党组织name")

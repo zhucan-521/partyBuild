@@ -138,7 +138,6 @@ public class SecretaryServiceImpl implements SecretaryService {
     @Override
     public List<SecretarysVO> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
         PageHelper.startPage(page);
-        List<SecretarysVO> list = tabPbDeptSecretaryMapper.selectSecretaryVOList(secretaryMemberQueryBean);
         return tabPbDeptSecretaryMapper.selectSecretaryVOList(secretaryMemberQueryBean);
     }
 
