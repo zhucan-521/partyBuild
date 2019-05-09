@@ -3,12 +3,11 @@ package com.egovchina.partybuilding.partybuild.service;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.dto.StreetCommitteeDTO;
 import com.egovchina.partybuilding.partybuild.dto.StreetCommitteeMemberDTO;
+import com.egovchina.partybuilding.partybuild.entity.StreetCommitteeMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.StreetCommitteeQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.StreetCommitteeMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.StreetCommitteeVO;
 import com.github.pagehelper.PageInfo;
-
-import java.util.List;
 
 /**
  * @author wuyunjie
@@ -74,11 +73,11 @@ public interface StreetCommitteeService {
     /**
      * 通过街道大公委获取其成员列表
      *
-     * @param grantCommitteeId
+     * @param streetCommitteeMemberQueryBean
      * @param page
      * @return
      */
-    PageInfo<StreetCommitteeMemberVO> getStreetCommitteeMemberList(Long grantCommitteeId, String personName, String positiveName, Page page);
+    PageInfo<StreetCommitteeMemberVO> getStreetCommitteeMemberList(StreetCommitteeMemberQueryBean streetCommitteeMemberQueryBean, Page page);
 
     /**
      * 判断组织是否可以添加工委成员

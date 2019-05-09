@@ -6,6 +6,7 @@ import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.StreetCommitteeDTO;
 import com.egovchina.partybuilding.partybuild.dto.StreetCommitteeMemberDTO;
+import com.egovchina.partybuilding.partybuild.entity.StreetCommitteeMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.StreetCommitteeQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember;
 import com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommittee;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetAndCopyProperties;
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
 /**
@@ -148,13 +150,9 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
 
     @Override
     public PageInfo<StreetCommitteeMemberVO> getStreetCommitteeMemberList(
-            Long grantCommitteeId, String personName, String positiveName, Page page) {
+            StreetCommitteeMemberQueryBean streetCommitteeMemberQueryBean, Page page) {
         PageHelper.startPage(page);
-        var tabPbGrantCommitteMember = new TabPbGrantCommitteMember()
-                .setGrantCommitteeId(grantCommitteeId)
-                .setPersonName(personName)
-                .setPositiveName(positiveName);
-        List<StreetCommitteeMemberVO> list = this.tabPbGrantCommitteMemberMapper.selectStreetCommitteeMemberVOList(tabPbGrantCommitteMember);
+        List<StreetCommitteeMemberVO> list = this.tabPbGrantCommitteMemberMapper.selectStreetCommitteeMemberVOList(streetCommitteeMemberQueryBean);
         return new PageInfo<>(list);
     }
 
