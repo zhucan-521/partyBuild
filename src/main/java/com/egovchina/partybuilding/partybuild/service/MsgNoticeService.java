@@ -17,18 +17,18 @@ public interface MsgNoticeService {
     /**
      * 保存
      *
-     * @param notice
+     * @param msgNoticeDTO
      * @return
      */
-    int addMsgNotice(MsgNoticeDTO notice);
+    int addMsgNotice(MsgNoticeDTO msgNoticeDTO);
 
     /**
      * 修改
      *
-     * @param notice
+     * @param msgNoticeDTO
      * @return
      */
-    int editMsgNoticeById(MsgNoticeDTO notice);
+    int editMsgNoticeById(MsgNoticeDTO msgNoticeDTO);
 
     /**
      * 根据主键id查询数据
@@ -50,35 +50,35 @@ public interface MsgNoticeService {
     /**
      * 查询list数据
      *
-     * @param record
+     * @param msgNoticeQueryBean
      * @param page
      * @return
      */
-    List<MsgNoticeVO> selectSendMsgNoticeList(MsgNoticeQueryBean record, Page page);
+    List<MsgNoticeVO> selectSendMsgNoticeList(MsgNoticeQueryBean msgNoticeQueryBean, Page page);
 
     /**
      * 改变状态
      *
-     * @param record
+     * @param msgNoticeDTO
      * @return
      */
-    int editMsgNoticeState(MsgNoticeDTO record);
+    int editMsgNoticeState(MsgNoticeDTO msgNoticeDTO);
 
     /**
      * 根据主键id签收
      *
-     * @param noticeDept
+     * @param msgNoticeDeptDTO
      * @return
      */
-    int signNotice(MsgNoticeDeptDTO noticeDept);
+    int signNotice(MsgNoticeDeptDTO msgNoticeDeptDTO);
 
     /**
      * 接收通知list
      *
-     * @param noticeDept
+     * @param msgNoticeDeptQueryBean
      * @param page
      * @return
      */
-    List<MsgNoticeDeptVO> selectReceiveMsgNotice(MsgNoticeDeptQueryBean noticeDept, Page page);
+    List<MsgNoticeDeptVO> selectReceiveMsgNotice(MsgNoticeDeptQueryBean msgNoticeDeptQueryBean, Page page);
 
 }

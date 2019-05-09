@@ -473,7 +473,6 @@
           positive_id,
           user_id,
           positive_org_id,
-          positive_org,
           positive_name,
           positive_level,
           positive_start,
@@ -523,9 +522,9 @@
         create_userid,update_time,update_userid,update_username,version,description)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.userId},#{item.leftType},#{item.positiveType},#{item.positiveOrgId},#{item.positiveOrg},#{item.positiveName},#{item.positiveLevel},#{item.positiveStart},
-            #{item.positiveFinished},#{item.createTime},
-            #{item.createUsername},#{item.createUserid},#{item.updateTime},#{item.updateUserid},#{item.updateUsername},#{item.version},#{item.description}
+            (#{item.userId},#{item.leftType},#{item.positiveType},#{item.positiveOrgId},#{item.positiveOrgName},#{item.positiveName},#{item.positiveLevel},#{item.positiveStart},
+            #{item.positiveFinished},#{item.createTime},#{item.createUsername},
+            #{item.createUserid},#{item.updateTime},#{item.updateUserid},#{item.updateUsername},#{item.version},#{item.description}
             )
         </foreach>
     </insert>
