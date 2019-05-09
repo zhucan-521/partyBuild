@@ -1,11 +1,10 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.common.entity.SysUser;
-import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
-import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.LeadTeamMemberDTO;
@@ -13,10 +12,7 @@ import com.egovchina.partybuilding.partybuild.entity.CommunityPartTimeMemberQuer
 import com.egovchina.partybuilding.partybuild.entity.LeadTeamMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPositives;
-import com.egovchina.partybuilding.partybuild.repository.TabPbLeadTeamMapper;
-import com.egovchina.partybuilding.partybuild.repository.TabPbLeadTeamMemberMapper;
-import com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper;
-import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
+import com.egovchina.partybuilding.partybuild.repository.*;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.LeadTeamMemberService;
 import com.egovchina.partybuilding.partybuild.vo.CommunityPartTimeMemberVO;
@@ -27,8 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,14 +37,21 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
 
     @Autowired
     private TabPbLeadTeamMemberMapper tabPbLeadTeamMemberMapper;
+
     @Autowired
     private TabSysUserMapper tabSysUserMapper;
+
     @Autowired
     private ITabPbAttachmentService iTabPbAttachmentService;
+
     @Autowired
     private TabPbLeadTeamMapper tabPbLeadTeamMapper;
+
     @Autowired
-    TabPbPositivesMapper tabPbPositivesMapper;
+    private TabPbPositivesMapper tabPbPositivesMapper;
+
+    @Autowired
+    private TabSysDeptMapper tabSysDeptMapper;
 
     @Transactional
     @Override
@@ -88,7 +89,13 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
     @Override
     public List<LeadTeamMemberVO> selectLeadTeamMemberVOListByCondition(LeadTeamMemberQueryBean queryBean, Page page) {
         PageHelper.startPage(page);
-        return tabPbLeadTeamMemberMapper.selectLeadTeamMemberVOListByCondition(queryBean);
+        List<LeadTeamMemberVO> list = tabPbLeadTeamMemberMapper.selectLeadTeamMemberVOListByCondition(queryBean);
+        for (LeadTeamMemberVO leadTeamMemberVO : list) {
+            SysUser sysUser = tabSysUserMapper.selectByPrimaryKey(leadTeamMemberVO.getUserId());
+            SysDept sysDept = tabSysDeptMapper.selectByPrimaryKey(sysUser.getDeptId());
+            leadTeamMemberVO.setOwnerOrgName(sysDept.getName());
+        }
+        return list;
     }
 
     @Transactional
