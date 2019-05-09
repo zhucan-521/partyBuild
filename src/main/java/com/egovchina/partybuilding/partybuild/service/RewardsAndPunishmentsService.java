@@ -28,8 +28,8 @@ public interface RewardsAndPunishmentsService {
 
     RewardsVO selectRewards(Long id);
 
-    List<PunishmentVO> selectPunishmentVOListAndFilesById(Long userId);
+    List<PunishmentVO> selectPunishmentVOListAndFilesById(Long orgId, Long userId);
 
-    List<RewardsVO> getRewardsListAndFiles(Long userId);
+    List<RewardsVO> getRewardsListAndFiles(Long orgId, Long userId);
 
 }

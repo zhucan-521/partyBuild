@@ -77,7 +77,7 @@
          where
          1=1
          <if test="stateTime != null">
-             n.publish_time between #{stateTime}  and #{endTime}
+           and  n.publish_time between #{stateTime}  and #{endTime}
          </if>
         <choose>
             <when test="orgRange == 1">
