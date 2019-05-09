@@ -85,4 +85,6 @@ public class LeadTeamMemberVO {
     @ApiModelProperty("身份证号")
     private String idCardNo;
 
+    @ApiModelProperty("班子届数")
+    private Long sessionYear;
 }
