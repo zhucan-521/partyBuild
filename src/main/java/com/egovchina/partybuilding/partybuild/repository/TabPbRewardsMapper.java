@@ -28,5 +28,5 @@ public interface TabPbRewardsMapper {
 
     RewardsVO selectByPrimaryKeyAndFiles(Long rewardsId);
 
-    List<RewardsVO> selectListAndFile(@Param("userId") Long userId);
+    List<RewardsVO> selectListAndFile(@Param("orgId") Long orgId, @Param("userId") Long userId);
 }

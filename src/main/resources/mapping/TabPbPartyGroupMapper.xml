@@ -30,6 +30,7 @@
         <result column="org_short_name" jdbcType="VARCHAR" property="orgShortName"/>
         <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
         <result column="is_revoke" jdbcType="TINYINT" property="isRevoke"/>
         <result column="revoke_name" jdbcType="VARCHAR" property="revokeName"/>
         <result column="revoke_time" jdbcType="TIMESTAMP" property="revokeTime"/>
@@ -278,11 +279,14 @@
     <!-- 根据主键查询党小组详情 -->
     <select id="selectPartyGroupDetailsByGroupId" parameterType="java.lang.Long" resultMap="PartyGroupVOResultMap">
         SELECT
+            -- 组织表
+            sd.`name` AS org_name,
+            sd.org_short_name,
+            -- 党小组表信息字段
             pg.group_id,
             pg.group_name,
             pg.org_id,
-            sd.`name`,
-            sd.org_short_name,
+            pg.order_num,
             pg.is_revoke,
             pg.revoke_name,
             pg.revoke_time,
@@ -311,11 +315,14 @@
             parameterType="com.egovchina.partybuilding.partybuild.entity.PartyGroupQueryBean"
             resultMap="PartyGroupVOResultMap">
         SELECT
+        -- 组织表
+        sd.`name` AS org_name,
+        sd.org_short_name,
+        -- 党小组表信息字段
         pg.group_id,
         pg.group_name,
         pg.org_id,
-        sd.`name` AS org_name,
-        sd.org_short_name,
+        pg.order_num,
         pg.is_revoke,
         pg.revoke_name,
         pg.revoke_time,
