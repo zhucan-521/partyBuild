@@ -121,6 +121,9 @@ GROUP BY
         <if test="userId != null">
             and p.user_id = #{userId}
         </if>
+        <if test="orgId != null">
+            and p.punish_org_id = #{orgId}
+        </if>
     </select>
 
     <select id="selectList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPunishment"
