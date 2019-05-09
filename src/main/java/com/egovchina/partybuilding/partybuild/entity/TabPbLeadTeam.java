@@ -23,7 +23,7 @@ public class TabPbLeadTeam {
     private Long sessionYear;
 
     /**
-	 * 换届时间", example = "yyyy-MM-dd
+	 * 当选时间", example = "yyyy-MM-dd
 	 */
     private Date changeDate;
 
