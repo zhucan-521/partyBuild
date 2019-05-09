@@ -24,7 +24,7 @@
     </resultMap>
 
     <!-- 返回PartyMemberBaseVO视图对象 -->
-    <resultMap id="PartyMemberBaseVOVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.PartyMemberBaseVO">
+    <resultMap id="PartyMemberBaseVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.PartyMemberBaseVO">
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="realname" jdbcType="VARCHAR" property="realName"/>
     </resultMap>
@@ -219,8 +219,8 @@
             AND gm.del_flag = 0
     </select>
 
-    <!-- 批量删除成员 -->
-    <update id="batchDelete" parameterType="java.lang.Long">
+    <!-- 根据党小组ID批量删除成员 -->
+    <update id="batchDeleteByGroupId" parameterType="java.lang.Long">
         UPDATE tab_pb_party_group_member
         <set>
             <if test="delFlag != null">
@@ -256,25 +256,21 @@
         </foreach>
     </insert>
 
-    <!-- 移除党组成员 -->
-    <update id="removePartyGroupMembers" parameterType="java.util.List">
-        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
-            UPDATE tab_pb_party_group_member
-            <set>
-                del_flag = 1,
-                <if test="item.updateTime != null">
-                    update_time = #{item.updateTime,jdbcType=TIMESTAMP},
-                </if>
-                <if test="item.updateUserid != null">
-                    update_userid = #{item.updateUserid,jdbcType=BIGINT},
-                </if>
-                <if test="item.updateUsername != null">
-                    update_username = #{item.updateUsername,jdbcType=VARCHAR},
-                </if>
-            </set>
-            WHERE member_id = #{item.memberId,jdbcType=BIGINT}
-        </foreach>
-    </update>
+    <!-- 批量删除党组成员 -->
+    <delete id="batchDeleteByUserId" parameterType="java.lang.Long">
+        DELETE
+        FROM
+        tab_pb_party_group_member
+        WHERE
+        <choose>
+            <when test="groupId != null">
+                group_id = #{groupId}
+            </when>
+            <otherwise>
+                group_id = 0
+            </otherwise>
+        </choose>
+    </delete>
 
     <!-- 根据党员ID查询该条数据是否存在 -->
     <select id="checkIsExistByUserId" parameterType="java.lang.Long" resultType="boolean">
@@ -282,16 +278,23 @@
     </select>
 
     <!-- 筛选指定组织中未在任何党组存在的党员 -->
-    <select id="screenPartyGroupMembers" parameterType="java.lang.Long" resultMap="PartyMemberBaseVOVOResultMap">
+    <select id="screenPartyGroupMembers" resultMap="PartyMemberBaseVOResultMap">
         SELECT
             su.user_id,
             su.realname
         FROM
             sys_dept sd
-            LEFT JOIN sys_user su ON sd.dept_id = su.dept_id
+        LEFT JOIN sys_user su ON sd.dept_id = su.dept_id
         WHERE
-            sd.dept_id = #{deptId}
-            AND su.user_id NOT IN (SELECT user_id FROM tab_pb_party_group_member)
+            sd.dept_id = #{deptId} AND NOT EXISTS
+        <choose>
+            <when test="groupId != null">
+                ( SELECT 1 FROM tab_pb_party_group_member pgm WHERE pgm.group_id != #{groupId} AND su.user_id = pgm.user_id )
+            </when>
+            <otherwise>
+                ( SELECT 1 FROM tab_pb_party_group_member pgm WHERE su.user_id = pgm.user_id )
+            </otherwise>
+        </choose>
     </select>
 
 </mapper>

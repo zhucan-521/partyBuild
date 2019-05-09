@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
@@ -35,16 +36,24 @@ public class PartyGroupDTO {
     @ApiModelProperty(value = "撤销人")
     private String revokeName;
 
+    @ApiModelProperty(value = "排序码")
+    private Integer orderNum;
+
     @ApiModelProperty(value = "撤销时间", dataType = "Date", example = "2019-01-01")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date revokeTime;
 
-    @ApiModelProperty(value = "建立时间", dataType = "Date", example = "2019-01-01")
+    @ApiModelProperty(value = "建立时间", required = true, dataType = "Date", example = "2019-01-01")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "党小组建立时间不能为空")
     private Date buildTime;
 
     @ApiModelProperty(value = "说明")
     private String remarks;
+
+    @ApiModelProperty(value = "党小组成员信息")
+    @Valid
+    private List<PartyGroupMemberInfoDTO> members;
 
     @ApiModelProperty(value = "附件实体集合")
     private List<TabPbAttachment> attachments;
