@@ -10,7 +10,6 @@ import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.MsgUpInfoDTO;
 import com.egovchina.partybuilding.partybuild.dto.MsgUpInfoAuditDTO;
 import com.egovchina.partybuilding.partybuild.entity.MsgUpInfoQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo;
 import com.egovchina.partybuilding.partybuild.service.MsgUpInfoSerivce;
 import com.egovchina.partybuilding.partybuild.vo.MsgUpInfoVO;
 import com.github.pagehelper.PageInfo;
@@ -47,8 +46,8 @@ public class MsgUpInfoController {
     @ApiOperation(value = "获取信息上报人（姓名，组织名称id，接受组织名称id，接受组织专干人姓名,党组织名称）", notes = "不填返回登录人的", httpMethod = "GET")
     @ApiImplicitParam(value = "上报组织主键", name = "realDeptId", paramType = "query")
     @GetMapping("/up-member-info")
-    public TabPbMsgUpInfo retrnUpMember(Long realDeptId) {
-        return msgUpInfoSerivce.retrnUpMember(realDeptId);
+    public MsgUpInfoVO retrnUpMember(Long realDeptId) {
+        return msgUpInfoSerivce.returnUpMember(realDeptId);
     }
 
     @ApiOperation(value = "根据主键查询信息详情", notes = "根据主键查询单个详情", httpMethod = "GET")

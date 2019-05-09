@@ -50,7 +50,7 @@ public class SecretaryController {
         return secretaryService.updateSecretary(secretaryMemberDTO);
     }
 
-    @ApiOperation(value = "书记列表", notes = "可指定条件查询", httpMethod = "GET")
+    @ApiOperation(value = "书记列表", notes = "列表中会只显示中如果该书记有多个职务，那么只会显示他高职务", httpMethod = "GET")
     @GetMapping
     public PageInfo<SecretaryMemberVO> secretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
         return secretaryService.selectSecretaryList(secretaryMemberQueryBean, page);

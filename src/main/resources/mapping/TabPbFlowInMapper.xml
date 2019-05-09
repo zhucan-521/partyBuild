@@ -95,7 +95,7 @@
 		t.old_unit_postcode,
 		t.flow_out_id,
 		t.flow_in_state,
-		s.username,
+		s.realname as username,
 		s.id_card_no,
 		s.gender,
 		s.phone,
