@@ -14,7 +14,7 @@ import java.util.Date;
  */
 @ApiModel("书记列表显示")
 @Data
-public class SecretarysVo {
+public class SecretarysVO {
 
     @ApiModelProperty(value = "id主键")
     private Long secretaryId;

@@ -2,12 +2,13 @@ package com.egovchina.partybuilding.partybuild.controller;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
+import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.entity.SecretaryMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.dto.SecretaryMemberDTO;
 import com.egovchina.partybuilding.partybuild.service.SecretaryService;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryInfoVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
-import com.egovchina.partybuilding.partybuild.vo.SecretarysVo;
+import com.egovchina.partybuilding.partybuild.vo.SecretarysVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,26 +43,26 @@ public class SecretaryController {
     @ApiOperation(value = "添加书记需要userId（手动添加书记不需要userId）", notes = "deptId", httpMethod = "POST")
     @PostMapping
     public ReturnEntity insertSecretaries(@ApiParam(value = "保存书记") @RequestBody SecretaryMemberDTO secretaryMemberDTO) {
-        return secretaryService.insertSecretary(secretaryMemberDTO);
+        return ReturnUtil.buildReturn(secretaryService.insertSecretary(secretaryMemberDTO));
     }
 
     @ApiOperation(value = "修改书记", notes = "（书记的家庭成员和职务传他们的id则是修改不传则是添加）", httpMethod = "PUT")
     @PutMapping
     public ReturnEntity updateSecretary(@ApiParam(value = "修改书记") @RequestBody @Validated SecretaryMemberDTO secretaryMemberDTO) {
-        return secretaryService.updateSecretary(secretaryMemberDTO);
+        return ReturnUtil.buildReturn(secretaryService.updateSecretary(secretaryMemberDTO));
     }
 
     @ApiOperation(value = "书记列表", notes = "列表中会只显示中如果该书记有多个职务，那么只会显示他高职务", httpMethod = "GET")
     @GetMapping
-    public PageInfo<SecretarysVo> secretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
-        return secretaryService.selectSecretaryList(secretaryMemberQueryBean, page);
+    public PageInfo<SecretarysVO> secretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
+        return new PageInfo(secretaryService.selectSecretaryList(secretaryMemberQueryBean, page));
     }
 
     @ApiOperation(value = "根据传入的id删除书记", httpMethod = "DELETE")
     @ApiImplicitParam(value = "书记id", name = "secretaryId", paramType = "path")
     @DeleteMapping("/{secretaryId}")
     public ReturnEntity deleteSecretary(@PathVariable Long secretaryId) {
-        return secretaryService.deleteSecretary(secretaryId);
+        return ReturnUtil.buildReturn(secretaryService.deleteSecretary(secretaryId));
     }
 
 }

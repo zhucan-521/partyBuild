@@ -3,7 +3,7 @@ package com.egovchina.partybuilding.partybuild.repository;
 import com.egovchina.partybuilding.partybuild.entity.SecretaryMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbDeptSecretary;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
-import com.egovchina.partybuilding.partybuild.vo.SecretarysVo;
+import com.egovchina.partybuilding.partybuild.vo.SecretarysVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -38,6 +38,6 @@ public interface TabPbDeptSecretaryMapper {
      * @param secretaryMemberQueryBean
      * @return
      */
-    List<SecretarysVo> selectSecretaryVOList(SecretaryMemberQueryBean secretaryMemberQueryBean);
+    List<SecretarysVO> selectSecretaryVOList(SecretaryMemberQueryBean secretaryMemberQueryBean);
 
 }
