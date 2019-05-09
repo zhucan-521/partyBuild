@@ -361,7 +361,7 @@
             AND pg.is_revoke = #{isRevoke}
         </if>
 
-        ORDER BY order_num
+        ORDER BY pg.order_num
     </select>
 
 </mapper>
