@@ -46,7 +46,7 @@ public class SpecialWorkerController {
         return ReturnUtil.buildReturn(specialWorkerService.deleteBySpecialWorkerId(specialWorkerId));
     }
 
-    @ApiOperation(value = "条件分页查询", notes = "status为变更状态，1为在职，-1为离职")
+    @ApiOperation(value = "条件分页查询", notes = "status为变更状态，1为在职，0为离职")
     @GetMapping
     public PageInfo<SpecialWorkerVO> getSpecialWorkerList(Page page, SpecialWorkerQueryBean specialWorkerQueryBean) {
         Long rangeDeptId = specialWorkerQueryBean.getRangeDeptId();
