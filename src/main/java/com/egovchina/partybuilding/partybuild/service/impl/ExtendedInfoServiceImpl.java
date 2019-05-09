@@ -140,12 +140,12 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         //更新历史党员表
         int num = reduceListMapper.updateByPrimaryKeySelective(reduceList);
         //查询查询identity_type
-        Long identity_type = tabSysUserMapper.selectUserByIdFindIdentity(userId);
-        if (identity_type == null) {
+        Long identityType = tabSysUserMapper.selectUserByIdFindIdentity(userId);
+        if (identityType == null) {
             throw new BusinessDataNotFoundException("该党员未被删除或者人员类别为空");
         }
         MembershipDTO membershipDTO = new MembershipDTO();
-        membershipDTO.setUserId(userId).setIdentityType(identity_type).setType(OFFICIALPARTYMEMBER);
+        membershipDTO.setUserId(userId).setIdentityType(identityType).setType(OFFICIALPARTYMEMBER);
         //新增党籍
         num += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
         SysUser user = new SysUser().setUserId(userId).setRegistryStatus(OFFICIALPARTYMEMBER).setDelFlag(CommonConstant.STATUS_NORMAL);
