@@ -100,6 +100,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @Override
     public PageInfo<HistoryPartyVO> historyPartyPage(HistoricalPartyMemberQueryBean queryBean, Page page) {
         PageHelper.startPage(page);
+        //查历史党员
         List<HistoryPartyVO> historyPartyVO = reduceListMapper.historyPartyPage(queryBean);
         PageHelper.startPage(page);
         //用于查询以前历史党员记录
@@ -127,6 +128,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                         }
                     }
                 }
+            } else {
+                age = 0;
             }
             //设置真实党龄
             historyPartyVO.get(i).setPartyStanding(age);
