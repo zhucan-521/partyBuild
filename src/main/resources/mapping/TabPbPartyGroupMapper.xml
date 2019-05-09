@@ -26,6 +26,8 @@
     <!-- 返回PartyGroupVO视图对象 -->
     <resultMap id="PartyGroupVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.PartyGroupVO">
         <id column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="org_short_name" jdbcType="VARCHAR" property="orgShortName"/>
         <result column="group_name" jdbcType="VARCHAR" property="groupName"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="is_revoke" jdbcType="TINYINT" property="isRevoke"/>
@@ -312,7 +314,7 @@
         pg.group_id,
         pg.group_name,
         pg.org_id,
-        sd.`name`,
+        sd.`name` AS org_name,
         sd.org_short_name,
         pg.is_revoke,
         pg.revoke_name,
