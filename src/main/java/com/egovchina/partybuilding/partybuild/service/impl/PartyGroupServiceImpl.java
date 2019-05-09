@@ -5,8 +5,8 @@ import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailExcepti
 import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.PartyGroupDTO;
-import com.egovchina.partybuilding.partybuild.dto.PartyGroupMemberDTO;
-import com.egovchina.partybuilding.partybuild.dto.PartyGroupMemberIdsDTO;
+import com.egovchina.partybuilding.partybuild.dto.PartyGroupMemberInfoDTO;
+import com.egovchina.partybuilding.partybuild.entity.PartyGroupMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.PartyGroupQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroup;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroupMember;
@@ -52,18 +52,12 @@ public class PartyGroupServiceImpl implements PartyGroupService {
     @Override
     public int insertPartyGroup(PartyGroupDTO partyGroupDTO) {
         verificationPartyGroup(partyGroupDTO, false);
-        int result = tabPbPartyGroupMapper.insertSelective(generateTargetCopyPropertiesAndPaddingBaseField(partyGroupDTO, TabPbPartyGroup.class, false));
+        TabPbPartyGroup tabPbPartyGroup = generateTargetCopyPropertiesAndPaddingBaseField(partyGroupDTO, TabPbPartyGroup.class, false);
+        int result = tabPbPartyGroupMapper.insertSelective(tabPbPartyGroup);
         if (result > 0) {
-            result += tabPbAttachmentService.intelligentOperation(partyGroupDTO.getAttachments(), partyGroupDTO.getGroupId(), AttachmentType.DOUBLE_COMMENTARY);
+            maintainInsertPartyGroupAction(partyGroupDTO, tabPbPartyGroup.getGroupId());
         }
         return result;
-    }
-
-    @Override
-    public int insertMemberToPartyGroup(PartyGroupMemberDTO partyGroupMemberDTO) {
-        verificationInsertMemberToPartyGroup(partyGroupMemberDTO);
-        List<TabPbPartyGroupMember> tabPbPartyGroupMembers = generateTargetListCopyPropertiesAndPaddingBaseField(partyGroupMemberDTO.getMembers(), TabPbPartyGroupMember.class, member -> member.setGroupId(partyGroupMemberDTO.getGroupId()), false);
-        return tabPbPartyGroupMemberMapper.batchInsert(tabPbPartyGroupMembers);
     }
 
     @Override
@@ -71,7 +65,7 @@ public class PartyGroupServiceImpl implements PartyGroupService {
         verificationPartyGroup(partyGroupDTO, true);
         int result = tabPbPartyGroupMapper.updateByPrimaryKeySelective(generateTargetCopyPropertiesAndPaddingBaseField(partyGroupDTO, TabPbPartyGroup.class, true));
         if (result > 0) {
-            result += tabPbAttachmentService.intelligentOperation(partyGroupDTO.getAttachments(), partyGroupDTO.getGroupId(), AttachmentType.DOUBLE_COMMENTARY);
+            result += maintainUpdatePartyGroupAction(partyGroupDTO, partyGroupDTO.getGroupId());
         }
         return result;
     }
@@ -91,17 +85,9 @@ public class PartyGroupServiceImpl implements PartyGroupService {
          * 删除党小组及成员
          **/
         if (result > 0) {
-            tabPbPartyGroupMemberMapper.batchDelete(tabPbPartyGroupMember);
+            tabPbPartyGroupMemberMapper.batchDeleteByGroupId(tabPbPartyGroupMember);
         }
         return result;
-    }
-
-    @Override
-    public int removePartyGroupMembers(List<PartyGroupMemberIdsDTO> partyGroupMemberIdsDTOList) {
-        if (partyGroupMemberIdsDTOList.isEmpty()) {
-            throw new BusinessDataCheckFailException("所传ID不能为空");
-        }
-        return tabPbPartyGroupMemberMapper.removePartyGroupMembers(generateTargetListCopyPropertiesAndPaddingBaseField(partyGroupMemberIdsDTOList, TabPbPartyGroupMember.class, true));
     }
 
     @Override
@@ -127,12 +113,11 @@ public class PartyGroupServiceImpl implements PartyGroupService {
     }
 
     @Override
-    public PageInfo<PartyMemberBaseVO> screenPartyGroupMembers(Long deptId, Page page) {
-        if (!tabSysDeptMapper.checkIsExistByOrgId(deptId)) {
+    public PageInfo<PartyMemberBaseVO> screenPartyGroupMembers(PartyGroupMemberQueryBean partyGroupMemberQueryBean) {
+        if (!tabSysDeptMapper.checkIsExistByOrgId(partyGroupMemberQueryBean.getDeptId())) {
             throw new BusinessDataCheckFailException("该党组织不存在");
         }
-        PageHelper.startPage(page);
-        return new PageInfo<>(tabPbPartyGroupMemberMapper.screenPartyGroupMembers(deptId));
+        return new PageInfo<>(tabPbPartyGroupMemberMapper.screenPartyGroupMembers(partyGroupMemberQueryBean));
     }
 
     @Override
@@ -162,10 +147,58 @@ public class PartyGroupServiceImpl implements PartyGroupService {
         }
     }
 
-    private void verificationInsertMemberToPartyGroup(PartyGroupMemberDTO partyGroupMemberDTO) {
-        if (!tabPbPartyGroupMapper.checkIsExistByGroupId(partyGroupMemberDTO.getGroupId())) {
-            throw new BusinessDataCheckFailException("该党组不存在");
+    private void verifyThatTheLeaderIsUnique(List<PartyGroupMemberInfoDTO> memberList) {
+        boolean leaderExist = false;
+        for (PartyGroupMemberInfoDTO member : memberList) {
+            if (member.getIsLeader() == 1) {
+                if (leaderExist) {
+                    throw new BusinessDataCheckFailException("党小组组长不能超过一个");
+                }
+                leaderExist = true;
+            }
         }
+        if (!leaderExist) {
+            throw new BusinessDataCheckFailException("党小组组长不能为空");
+        }
+    }
+
+    /**
+     * desc:
+     * 1- 接收并转换前端传入的值
+     * 2- 验证数据是否合理
+     * 3- 再根据前端传的值添加
+     * 4- 添加附件
+     *
+     * @param partyGroupDTO 党小组dto
+     * @return int
+     * @author FanYanGen
+     * @date 2019/5/8 17:49
+     **/
+    private int maintainInsertPartyGroupAction(PartyGroupDTO partyGroupDTO, Long groupId) {
+        int result = 0;
+        List<PartyGroupMemberInfoDTO> memberList = partyGroupDTO.getMembers();
+        verifyThatTheLeaderIsUnique(memberList);
+        List<TabPbPartyGroupMember> tabPbPartyGroupMembers = generateTargetListCopyPropertiesAndPaddingBaseField(memberList, TabPbPartyGroupMember.class, member -> member.setGroupId(groupId), false);
+        result += tabPbPartyGroupMemberMapper.batchInsert(tabPbPartyGroupMembers);
+        result += tabPbAttachmentService.intelligentOperation(partyGroupDTO.getAttachments(), partyGroupDTO.getGroupId(), AttachmentType.DOUBLE_COMMENTARY);
+        return result;
+    }
+
+    /**
+     * desc:
+     * 1- 根据党组ID删除数据库已有的人员
+     * 2- 调用maintainInsertPartyGroupAction() 方法的操作
+     *
+     * @param partyGroupDTO 党小组dto
+     * @return int
+     * @author FanYanGen
+     * @date 2019/5/8 17:39
+     **/
+    private int maintainUpdatePartyGroupAction(PartyGroupDTO partyGroupDTO, Long groupId) {
+        int result = 0;
+        result += tabPbPartyGroupMemberMapper.batchDeleteByUserId(groupId);
+        result += maintainInsertPartyGroupAction(partyGroupDTO, groupId);
+        return result;
     }
 
 }

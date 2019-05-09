@@ -32,6 +32,7 @@
         <result column="revoke_name" jdbcType="VARCHAR" property="revokeName"/>
         <result column="revoke_time" jdbcType="TIMESTAMP" property="revokeTime"/>
         <result column="build_time" jdbcType="TIMESTAMP" property="buildTime"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
         <collection property="members" ofType="com.egovchina.partybuilding.partybuild.vo.PartyGroupMemberVO">
             <id column="member_id" jdbcType="BIGINT" property="memberId"/>
             <result column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -73,7 +74,8 @@
       #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{remarks,jdbcType=LONGVARCHAR}
       )
   </insert>
-    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroup">
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="groupId" keyColumn="group_id"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroup">
         insert into tab_pb_party_group
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="groupId != null">
@@ -99,6 +101,9 @@
             </if>
             <if test="buildTime != null">
                 build_time,
+            </if>
+            <if test="orderNum != null">
+                order_num,
             </if>
             <if test="createTime != null">
                 create_time,
@@ -147,6 +152,9 @@
             <if test="buildTime != null">
                 #{buildTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=TINYINT},
+            </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
@@ -194,6 +202,9 @@
             </if>
             <if test="buildTime != null">
                 build_time = #{buildTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=TINYINT},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -293,8 +304,10 @@
             AND gm.del_flag = 0
     </select>
 
-    <!-- 根据主键查询党小组详情 -->
-    <select id="selectPartyGroupDetails" parameterType="com.egovchina.partybuilding.partybuild.entity.PartyGroupQueryBean" resultMap="PartyGroupVOResultMap">
+    <!-- 查询党小组列表 -->
+    <select id="selectPartyGroupDetails"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.PartyGroupQueryBean"
+            resultMap="PartyGroupVOResultMap">
         SELECT
         pg.group_id,
         pg.group_name,
@@ -309,7 +322,7 @@
         -- 人员表信息字段
         gm.member_id,
         gm.user_id,
-        su.username,
+        su.realname AS username,
         gm.is_leader
         FROM
         tab_pb_party_group pg
@@ -340,12 +353,15 @@
         </if>
 
         <if test="leaderName != null and leaderName != '' ">
-            AND su.`username` like concat('%', #{leaderName} ,'%')
+            AND su.realname like concat('%', #{leaderName} ,'%')
+            AND gm.is_leader = 1
         </if>
 
         <if test="isRevoke != null and isRevoke != '' ">
             AND pg.is_revoke = #{isRevoke}
         </if>
+
+        ORDER BY pg.order_num
     </select>
 
 </mapper>

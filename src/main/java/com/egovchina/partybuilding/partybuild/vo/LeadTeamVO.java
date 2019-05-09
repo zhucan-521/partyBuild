@@ -36,12 +36,16 @@ public class LeadTeamVO {
     @ApiModelProperty("届数")
     private Long sessionYear;
 
-    @ApiModelProperty(value = "换届时间", example = "yyyy-MM-dd")
+    @ApiModelProperty(value = "当选时间", example = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date changeDate;
 
     @ApiModelProperty("任期年限")
     private Long duringYear;
+
+    @ApiModelProperty(value = "本届期满日期", example = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date expirationDate;
 
     @ApiModelProperty("选举方式 dict XJFS")
     @JsonSerialize(using = DictSerializer.class)
@@ -62,7 +66,7 @@ public class LeadTeamVO {
     @ApiModelProperty("当届标识")
     private Byte current;
 
-    @ApiModelProperty("当选方式")
+    @ApiModelProperty("当选方式 dict YHZSFDX ")
     private Long electedType;
 
     @ApiModelProperty(value = "当选时间", example = "yyyy-MM-dd")

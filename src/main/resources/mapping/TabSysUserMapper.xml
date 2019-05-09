@@ -94,15 +94,6 @@
         <result column="content" jdbcType="LONGVARCHAR" property="content"/>
         <result column="rewards" jdbcType="LONGVARCHAR" property="rewards"/>
         <result column="present_perform" jdbcType="LONGVARCHAR" property="presentPerform"/>
-        <result column="flow_out_date" jdbcType="TIMESTAMP" property="flowOutDate"/>
-        <result column="flow_out_type" jdbcType="BIGINT" property="flowOutType"/>
-        <result column="flow_out_range" jdbcType="BIGINT" property="flowOutRange"/>
-        <result column="flow_out_reason" jdbcType="BIGINT" property="flowOutReason"/>
-        <result column="flow_out_place" jdbcType="BIGINT" property="flowOutPlace"/>
-        <result column="flow_to_unit_name" jdbcType="VARCHAR" property="flowToUnitName"/>
-        <result column="flow_to_orgnize_name" jdbcType="VARCHAR" property="flowToOrgnizeName"/>
-        <result column="flow_to_orgnize_code" jdbcType="VARCHAR" property="flowToOrgnizeCode"/>
-        <result column="flow_to_orgnize_id" jdbcType="BIGINT" property="flowToOrgnizeId"/>
         <result column="registry_status" jdbcType="BIGINT" property="registryStatus"/>
         <result column="join_org_id" jdbcType="BIGINT" property="joinOrgId"/>
         <result column="join_org_name" jdbcType="VARCHAR" property="joinOrgName"/>
@@ -116,12 +107,6 @@
         <result column="report_org_contactor" jdbcType="VARCHAR" property="reportOrgContactor"/>
         <result column="report_org_phone" jdbcType="VARCHAR" property="reportOrgPhone"/>
         <result column="report_org_id" jdbcType="BIGINT" property="reportOrgId"/>
-
-        <!--实体字段，无数据库字段-->
-        <result column="old_place" jdbcType="VARCHAR" property="oldPlace"/>
-        <result column="registry_status_name" jdbcType="VARCHAR" property="registryStatusName"/>
-        <result column="in_where_dept_name" jdbcType="VARCHAR" property="inWhereDeptName"/>
-        <result column="subordinate_dept_name" jdbcType="VARCHAR" property="subordinateDeptName"/>
         <result column="files_manage_unit_id" jdbcType="BIGINT" property="filesManageUnitId"/>
         <result column="files_manage_unit" jdbcType="VARCHAR" property="filesManageUnit"/>
     </resultMap>
@@ -170,7 +155,7 @@
         <result column="identity_type" jdbcType="BIGINT" property="identityType"/>
         <result column="marital_status" jdbcType="BIGINT" property="maritalStatus"/>
         <result column="education" jdbcType="BIGINT" property="education"/>
-        <result column="unit_id" jdbcType="BIGINT" property="unitId"/>
+        <result column="unit_name" jdbcType="BIGINT" property="unitName"/>
         <result column="flow_status" jdbcType="BIGINT" property="flowStatus"/>
         <result column="is_llost" jdbcType="TINYINT" property="isLlost"/>
         <result column="is_taiwaner" jdbcType="TINYINT" property="isTaiwaner"/>
@@ -229,9 +214,6 @@
         <collection property="jobTitles" select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyJobTitleMapper.findAllByUserId" column="user_id"/>
         <collection property="works" select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyWorkMapper.findAllByUserId" column="user_id"/>
     </resultMap>
-
-
-
     <!--历史党员信息-->
     <resultMap id="History_UserInfo" type="com.egovchina.partybuilding.partybuild.vo.HistoryPartyVO">
         <id column="user_id" jdbcType="BIGINT" property="userId"/>
@@ -264,8 +246,6 @@
                     select="com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper.selectPositivesName"
                     column="user_id"/>
     </resultMap>
-
-
     <resultMap id="DirectPartyMemberVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.DirectPartyMemberVO">
         <result column="user_id" property="userId"/>
         <result column="username" property="username"/>
@@ -302,7 +282,7 @@
     <!---分页查询党员信息列表-->
     <sql id="Base_users_info">
         user_id,realname,gender,TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age,nation,id_card_no,join_time,regular_time,report_org_name,phone,identity_type,marital_status,
-        education,unit_id,flow_status,is_llost,is_taiwaner,dept_id,birthday,migrant,stratum,front_line,work_date,ancestor_place,registry_status,family_address,community_addr,
+        education,flow_status,IFNULL(is_llost,'0') as is_llost,IFNULL(is_taiwaner,'0') as is_taiwaner,dd.unit_id,u.dept_id,birthday,migrant,stratum,front_line,work_date,ancestor_place,registry_status,family_address,u.community_addr,
         job_position
     </sql>
     <!--查询部门表防止名字重复-->
@@ -339,12 +319,12 @@
         <if test="orgRange == null and deptId != null">
             AND u.dept_id = #{deptId}
         </if>
-        AND del_flag = '0'
+        AND u.del_flag = '0'
         <if test="idCardNo != null and idCardNo != ''">
             AND id_card_no = #{idCardNo}
         </if>
         <if test="identityType != null and identityType != ''">
-            and  find_in_set(identity_type, #{identityType})
+            and identity_type=#{identityType}
         </if>
         <if test="registryStatus != null and registryStatus != ''">
             and find_in_set(registry_status, #{registryStatus})
@@ -359,7 +339,7 @@
             and find_in_set(nation, #{nation})
         </if>
         <if test="unitType != null">
-            AND EXISTS(select 1 from tab_pb_unit_info ui WHERE u.unit_id=ui.unit_id and
+            AND EXISTS(select 1 from tab_pb_unit_info ui WHERE dd.unit_id=ui.unit_id and
             find_in_set( ui.unit_property , #{unitType})
             )
         </if>
@@ -370,7 +350,7 @@
             and TIMESTAMPDIFF(YEAR,birthday,CURDATE())&lt; #{ageEnd}
         </if>
         <if test="joinTimeBegin != null">
-            and join_time &gt; #{joinTimeBegin}
+            and join_time > #{joinTimeBegin}
         </if>
         <if test="joinTimeEnd != null">
             and join_time &lt; #{joinTimeEnd}
@@ -404,41 +384,6 @@
         where user_id = #{userId,jdbcType=BIGINT}
         and del_flag = '0'
     </select>
-    <!--查询列表WhereCaseList-->
-    <sql id="selectPageWhereCaseList">
-        <if test="username != null">
-            AND realname like concat('%', #{username}, '%')
-        </if>
-        <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）不传查本级 -->
-        <if test="orgRange != null">
-            <choose>
-                <when test="orgRange == 0">
-                    AND u.dept_id is not null
-                </when>
-                <when test="orgRange == 3">
-                    AND u.dept_id = #{deptId}
-                </when>
-            </choose>
-        </if>
-        <if test="orgRange == null and deptId != null">
-            AND d.dept_id = #{deptId}
-        </if>
-        <if test="delFlag != null">
-            AND del_flag = #{delFlag}
-        </if>
-        <if test="identityType != null">
-            AND identity_type = #{identityType}
-        </if>
-        <if test="idCardNo != null and idCardNo != ''">
-            AND id_card_no = #{idCardNo}
-        </if>
-        <if test="status != null">
-            and registry_status in
-            <foreach item="item" index="index" collection="status" open="(" separator="," close=")">
-                #{item, jdbcType=BIGINT}
-            </foreach>
-        </if>
-    </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -448,18 +393,18 @@
         from sys_user
         where user_id = #{userId,jdbcType=BIGINT}
     </select>
-
+    <!--查询党员详细信息-->
     <select id="selectByPrimaryKeyToAll" parameterType="java.lang.Long" resultMap="BaseResultMapExtendsTagsAndSomeOthers">
         select
         <include refid="Base_Column_List_new"/>
         from sys_user
         where user_id = #{userId,jdbcType=BIGINT}
     </select>
-
+    <!--用于列表显示-->
     <select id="selectPageByMap" resultMap="UserInFo">
         select
         <include refid="Base_users_info"/>
-        ,
+        ,dd.unit_name,
         <include refid="dept_name_result"/>
         <choose>
             <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
@@ -483,13 +428,14 @@
         ON fd.in_where_dept_id = u.flow_to_org_id
         LEFT JOIN ( SELECT dept_id AS subordinate_dept_id, NAME AS subordinate_dept_name FROM sys_dept ) sd
         ON sd.subordinate_dept_id = u.dept_id
+        left join sys_dept dd on dd.dept_id =u.dept_id
         <where>
             <include refid="selectPageByMapWhereCaseList"/>
         </where>
         ORDER BY u.dept_id asc, u.join_time desc
 
     </select>
-
+    <!--用于复写mybatis的查询count数-->
     <select id="selectPageByMap_COUNT" parameterType="Map" resultType="java.lang.Long">
         SELECT
         count( u.user_id )
@@ -511,6 +457,11 @@
                 from sys_user u
             </otherwise>
         </choose>
+        LEFT JOIN ( SELECT dept_id AS in_where_dept_id, NAME AS in_where_dept_name FROM sys_dept ) fd
+        ON fd.in_where_dept_id = u.flow_to_org_id
+        LEFT JOIN ( SELECT dept_id AS subordinate_dept_id, NAME AS subordinate_dept_name FROM sys_dept ) sd
+        ON sd.subordinate_dept_id = u.dept_id
+        left join sys_dept dd on dd.dept_id =u.dept_id
         <where>
             <include refid="selectPageByMapWhereCaseList"/>
         </where>

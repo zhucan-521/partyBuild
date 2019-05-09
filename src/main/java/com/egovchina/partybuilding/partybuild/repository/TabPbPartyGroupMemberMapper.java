@@ -1,8 +1,10 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.partybuild.entity.PartyGroupMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroupMember;
 import com.egovchina.partybuilding.partybuild.vo.PartyGroupMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.PartyMemberBaseVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -43,14 +45,24 @@ public interface TabPbPartyGroupMemberMapper {
     List<PartyGroupMemberVO> selectPartyGroupMembersBaseInfoByGroupId(Long groupId);
 
     /**
-     * desc: 批量删除成员
+     * desc: 根据党小组ID批量删除成员
      *
      * @param tabPbPartyGroupMember 党小组成员实体
      * @return int
      * @author FanYanGen
      * @date 2019/4/30 10:47
      **/
-    int batchDelete(TabPbPartyGroupMember tabPbPartyGroupMember);
+    int batchDeleteByGroupId(TabPbPartyGroupMember tabPbPartyGroupMember);
+
+    /**
+     * desc: 根据党员ID批量删除成员
+     *
+     * @param groupId 党组ID
+     * @return int
+     * @author FanYanGen
+     * @date 2019/5/6 9:23
+     **/
+    int batchDeleteByUserId(@Param(value = "groupId") Long groupId);
 
     /**
      * desc: 批量新增成员到党小组
@@ -63,16 +75,6 @@ public interface TabPbPartyGroupMemberMapper {
     int batchInsert(List<TabPbPartyGroupMember> partyGroupMembers);
 
     /**
-     * desc: 移除党组成员
-     *
-     * @param partyGroupMembers 成员ID集合
-     * @return int
-     * @author FanYanGen
-     * @date 2019/5/6 9:23
-     **/
-    int removePartyGroupMembers(List<TabPbPartyGroupMember> partyGroupMembers);
-
-    /**
      * desc: 根据主键查询该条数据是否存在
      *
      * @param userId 党员ID
@@ -83,13 +85,13 @@ public interface TabPbPartyGroupMemberMapper {
     boolean checkIsExistByUserId(Long userId);
 
     /**
-     * desc: 筛选指定组织中未在任何党组存在的党员
+     * desc: 筛选指定组织中未在任何党小组存在的党员
      *
-     * @param deptId 组织ID
+     * @param partyGroupMemberQueryBean 查询条件
      * @return PartyMemberBaseVO
      * @author FanYanGen
      * @date 2019/5/6 15:57
      **/
-    List<PartyMemberBaseVO> screenPartyGroupMembers(Long deptId);
+    List<PartyMemberBaseVO> screenPartyGroupMembers(PartyGroupMemberQueryBean partyGroupMemberQueryBean);
 
 }

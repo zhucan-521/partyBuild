@@ -18,8 +18,7 @@ public class PartyGroupQueryBean {
     @NotNull(message = "组织ID不能为空")
     private Long orgId;
 
-    @ApiModelProperty(value = "组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）", required = true)
-    @NotNull(message = "组织范围不能为空")
+    @ApiModelProperty(value = "组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）")
     private Long orgRange;
 
     @ApiModelProperty(value = "党小组名称")
