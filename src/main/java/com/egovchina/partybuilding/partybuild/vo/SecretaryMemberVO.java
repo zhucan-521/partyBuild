@@ -3,12 +3,14 @@ package com.egovchina.partybuilding.partybuild.vo;
 import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
 
+@ApiModel("书记详情显示")
 @Data
 public class SecretaryMemberVO {
 
@@ -42,16 +44,13 @@ public class SecretaryMemberVO {
     @ApiModelProperty(value = "出生地")
     private String bornPlace;
 
-
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "出生日期", example = "yyyy-hh-dd")
     private Date birthday;
 
-
     @JsonFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "入党时间、预备党员时间")
     private Date joinTime;
-
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "工作时间", example = "yyyy-hh-dd")
@@ -69,15 +68,13 @@ public class SecretaryMemberVO {
     private String rewards;
 
     @ApiModelProperty(value = "党内职务")
-    private List<PositivesVO> positivesList;
+    private List<PositivesVO> positivesVOs;
 
     @ApiModelProperty(value = "家庭成员")
-    private List<FamilyMemberVO> familyList;
+    private List<FamilyMemberVO> familys;
 
     @ApiModelProperty(value = "职务，手动录入：如：中共长沙市委基层党建工作领导小组办公室常务副主任")
     private String postive;
-
-    //----------
 
     @ApiModelProperty(value = "学历学位-全日制教育")
     private String fullTimeSchooling;
@@ -90,7 +87,6 @@ public class SecretaryMemberVO {
 
     @ApiModelProperty(value = "毕业院校系及专业-在职教育")
     private String collegeMajorTwo;
-
 
     @ApiModelProperty(value = "专业技术职称")
     private String professionalTitles;
@@ -110,7 +106,6 @@ public class SecretaryMemberVO {
     @ApiModelProperty(value = "近五年培训情况")
     private String trainingSituation;
 
-
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "任现职时间")
     private Date servingTime;
@@ -118,7 +113,6 @@ public class SecretaryMemberVO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "任同级实职时间", example = "yyyy-hh-dd")
     private Date servingRealTime;
-
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "任现级时间", example = "yyyy-hh-dd")
@@ -148,4 +142,5 @@ public class SecretaryMemberVO {
 
     @ApiModelProperty(value = "排序码")
     private Long orderNum;
+
 }

@@ -63,9 +63,9 @@ public class SecretaryInfoVO {
     private String rewards;
 
     @ApiModelProperty(value = "党内职务")
-    private List<PositivesVO> positivesList;
+    private List<PositivesVO> positivesVOs;
 
     @ApiModelProperty(value = "家庭成员")
-    private List<FamilyMemberVO> familyList;
+    private List<FamilyMemberVO> familys;
 
 }

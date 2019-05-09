@@ -7,6 +7,7 @@ import com.egovchina.partybuilding.partybuild.entity.SecretaryMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.dto.SecretaryMemberDTO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryInfoVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
+import com.egovchina.partybuilding.partybuild.vo.SecretarysVo;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -52,7 +53,7 @@ public interface SecretaryService {
      * @param secretaryMemberQueryBean
      * @return
      */
-    PageInfo<SecretaryMemberVO> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page);
+    PageInfo<SecretarysVo> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page);
 
     /**
      * 删除书记家庭成员和职务以及书记本人

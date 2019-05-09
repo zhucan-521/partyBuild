@@ -1,7 +1,5 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
-import com.egovchina.partybuilding.partybuild.entity.TabPbFamily;
-import com.egovchina.partybuilding.partybuild.entity.TabPbPositives;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -64,12 +62,10 @@ public class SecretaryMemberDTO {
     private String rewards;
 
     @ApiModelProperty(value = "党内职务")
-    private List<PositivesDTO> positivesList;
+    private List<PositivesDTO> positivesVOs;
 
     @ApiModelProperty(value = "家庭成员")
-    private List<FamilyMemberDTO> familyList;
-
-    //----------
+    private List<FamilyMemberDTO> familys;
 
     @ApiModelProperty(value = "学历学位-全日制教育")
     private String fullTimeSchooling;
@@ -138,4 +134,5 @@ public class SecretaryMemberDTO {
 
     @ApiModelProperty(value = "排序码")
     private Long orderNum;
+
 }

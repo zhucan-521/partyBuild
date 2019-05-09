@@ -79,5 +79,4 @@ public class TabPbDeptSecretary implements Serializable {
 
     private SysUser user;
 
-
 }

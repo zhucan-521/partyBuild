@@ -7,6 +7,7 @@ import com.egovchina.partybuilding.partybuild.dto.SecretaryMemberDTO;
 import com.egovchina.partybuilding.partybuild.service.SecretaryService;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryInfoVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
+import com.egovchina.partybuilding.partybuild.vo.SecretarysVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class SecretaryController {
 
     @ApiOperation(value = "书记列表", notes = "列表中会只显示中如果该书记有多个职务，那么只会显示他高职务", httpMethod = "GET")
     @GetMapping
-    public PageInfo<SecretaryMemberVO> secretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
+    public PageInfo<SecretarysVo> secretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
         return secretaryService.selectSecretaryList(secretaryMemberQueryBean, page);
     }
 

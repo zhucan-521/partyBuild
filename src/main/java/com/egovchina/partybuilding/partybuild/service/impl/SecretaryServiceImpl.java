@@ -17,6 +17,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.SecretaryService;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryInfoVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
+import com.egovchina.partybuilding.partybuild.vo.SecretarysVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,13 +80,13 @@ public class SecretaryServiceImpl implements SecretaryService {
         TabPbDeptSecretary tabPbDeptSecretaryinsert = generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO, TabPbDeptSecretary.class, false);
         int flag = tabPbDeptSecretaryMapper.insertSelective(tabPbDeptSecretaryinsert);
         if (flag > 0) {
-            List<FamilyMemberDTO> familyList = secretaryMemberDTO.getFamilyList();
+            List<FamilyMemberDTO> familyList = secretaryMemberDTO.getFamilys();
             final Long finalUserId = userId;
             if (CollectionUtil.isNotEmpty(familyList)) {
                 List<TabPbFamily> familys = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(familyList, TabPbFamily.class, family -> family.setUserId(finalUserId), false);
                 tabPbFamilyMapper.batchInsertFamilyList(familys);
             }
-            List<PositivesDTO> positivesList = secretaryMemberDTO.getPositivesList();
+            List<PositivesDTO> positivesList = secretaryMemberDTO.getPositivesVOs();
             if (CollectionUtil.isNotEmpty(positivesList)) {
                 List<TabPbPositives> positives = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(positivesList, TabPbPositives.class, positive -> positive.setUserId(finalUserId), false);
                 tabPbPositivesMapper.batchInsertPositivesList(positives);
@@ -106,8 +107,8 @@ public class SecretaryServiceImpl implements SecretaryService {
         BeanUtil.copyPropertiesIgnoreNull(secretaryMemberDTO, tabPbDeptSecretaryinsert);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbDeptSecretaryinsert);
         int flag = tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretaryinsert);
-        List<FamilyMemberDTO> familyMemberDTOS = secretaryMemberDTO.getFamilyList();
-        List<PositivesDTO> positivesDTOS = secretaryMemberDTO.getPositivesList();
+        List<FamilyMemberDTO> familyMemberDTOS = secretaryMemberDTO.getFamilys();
+        List<PositivesDTO> positivesDTOS = secretaryMemberDTO.getPositivesVOs();
         //修改或者添加家庭成员
         this.updateOrAddFamily(familyMemberDTOS, secretaryMemberDTO);
         //修改或者添加职务
@@ -133,10 +134,10 @@ public class SecretaryServiceImpl implements SecretaryService {
      * @return
      */
     @Override
-    public PageInfo<SecretaryMemberVO> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
+    public PageInfo<SecretarysVo> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
         PageHelper.startPage(page);
-        List<SecretaryMemberVO> list = tabPbDeptSecretaryMapper.selectSecretaryVOList(secretaryMemberQueryBean);
-        PageInfo<SecretaryMemberVO> pageInfo = new PageInfo(list);
+        List<SecretarysVo> list = tabPbDeptSecretaryMapper.selectSecretaryVOList(secretaryMemberQueryBean);
+        PageInfo<SecretarysVo> pageInfo = new PageInfo(list);
         return pageInfo;
     }
 
@@ -182,11 +183,12 @@ public class SecretaryServiceImpl implements SecretaryService {
 
     /**
      * 添加或者修改书记
+     *
      * @param positivesDTOS
      * @param secretaryMemberDTO
      */
     private void updateOrAddPositives(List<PositivesDTO> positivesDTOS, SecretaryMemberDTO secretaryMemberDTO) {
-        if (CollectionUtil.isNotEmpty(secretaryMemberDTO.getPositivesList())) {
+        if (CollectionUtil.isNotEmpty(secretaryMemberDTO.getPositivesVOs())) {
             for (PositivesDTO positivesDTO : positivesDTOS) {
                 if (positivesDTO.getPositiveId() != null) {
                     TabPbPositives tabPbPositives = new TabPbPositives();
