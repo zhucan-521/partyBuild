@@ -31,7 +31,7 @@ public class LeadTeamDTO {
     @NotNull(message = "届数不能为空")
     private Long sessionYear;
 
-    @ApiModelProperty(value = "换届时间", example = "2019-01-01")
+    @ApiModelProperty(value = "当选时间", example = "2019-01-01")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date changeDate;
 
@@ -57,7 +57,7 @@ public class LeadTeamDTO {
     @ApiModelProperty("当届标识")
     private Byte current = '0';
 
-    @ApiModelProperty("当选方式")
+    @ApiModelProperty("当选方式 dict YHZSFDX")
     private Long electedType;
 
     @ApiModelProperty(value = "当选时间", example = "2019-01-01")
