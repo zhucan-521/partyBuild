@@ -56,7 +56,7 @@ public class PartyInformationController {
 
     @ApiOperation(value = "历史党员列表", notes = "分页查询历史党员信息", httpMethod = "GET")
     @GetMapping("/history-members")
-    public PageInfo<HistoryPartyVO> getPartyHistoryList(@Validated HistoricalPartyMemberQueryBean queryBean, Page page) {
+    public PageInfo<HistoryPartyVO> getPartyHistoryList(@Validated @ApiParam("历史党员查询实体") HistoricalPartyMemberQueryBean queryBean, Page page) {
         return partyInformationService.historyPartyPage(queryBean, page);
     }
 

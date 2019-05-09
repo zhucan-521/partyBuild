@@ -3,6 +3,7 @@ package com.egovchina.partybuilding.partybuild.repository;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList;
 import com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.HistoryPartyVO;
+import com.egovchina.partybuilding.partybuild.vo.MemberReducesVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,4 +29,6 @@ public interface TabPbMemberReduceListMapper {
     List<TabPbMemberReduceList> selectListByUserId(Long userId);
 
     List<HistoryPartyVO> historyPartyPage(HistoricalPartyMemberQueryBean record);
+
+    List<MemberReducesVO> historyPartyPageDel(HistoricalPartyMemberQueryBean record);
 }

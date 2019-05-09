@@ -60,9 +60,6 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     private TabPbPartyWorkMapper tabPbPartyWorkMapper;
 
     @Autowired
-    private TabPbAbroadMapper tabPbAbroadMapper;
-
-    @Autowired
     private TabSysDeptMapper tabSysDeptMapper;
 
     //长沙市组织id
@@ -104,24 +101,27 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     public PageInfo<HistoryPartyVO> historyPartyPage(HistoricalPartyMemberQueryBean queryBean, Page page) {
         PageHelper.startPage(page);
         List<HistoryPartyVO> historyPartyVO = reduceListMapper.historyPartyPage(queryBean);
-        //获取党员出国记录
-        List<MemberReducesVO> memberReducesVO = tabPbAbroadMapper.findAbroadDetailsByPartyId(queryBean);
+        PageHelper.startPage(page);
+        //用于查询以前历史党员记录
+        List<MemberReducesVO> memberReducesVO = reduceListMapper.historyPartyPageDel(queryBean);
         //计算党龄
         for (int i = 0; i < historyPartyVO.size(); i++) {
-            //理论党龄
+            //理论党龄 (加入党组织时间-当前减少时间)
             Integer age = historyPartyVO.get(i).getPartyStanding();
             if (age != null) {
-                //党龄减去出国时间
+                //党龄减去以前党员减少的情况
                 if (memberReducesVO != null && memberReducesVO.size() > 0) {
                     for (int j = 0; j < memberReducesVO.size(); j++) {
                         if (memberReducesVO.get(j) != null && memberReducesVO.get(j).getUserId() != null) {
                             if (memberReducesVO.get(j).getUserId().equals(historyPartyVO.get(i).getUserId())) {
-                                if (age <= 0) {
-                                    age = 0;
-                                    break;
-                                }
                                 if (memberReducesVO.get(j).getAge() != null) {
-                                    age -= memberReducesVO.get(j).getAge();
+                                    //党龄为负数逻辑控制
+                                    if (age - memberReducesVO.get(j).getAge() <= 0) {
+                                        age = 0;
+                                        break;
+                                    } else {
+                                        age -= memberReducesVO.get(j).getAge();
+                                    }
                                 }
                             }
                         }
@@ -201,7 +201,6 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             if (partyInfoDTO.getParty().getUserTags() != null && partyInfoDTO.getParty().getUserTags().size() > 0) {
                 this.userTagService.updateUserTagByTagType(BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(partyInfoDTO.getParty().getUserTags(), TabPbUserTag.class, true));
             }
-
             //新增学历信息
             if (partyInfoDTO.getEducations() != null) {
                 //分别判断新增或者修改
