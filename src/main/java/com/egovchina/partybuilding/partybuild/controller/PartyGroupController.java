@@ -43,7 +43,7 @@ public class PartyGroupController {
     }
 
     @ApiOperation(value = "删除党小组", notes = "删除党小组", httpMethod = "DELETE")
-    @ApiImplicitParam(name = "groupId", value = "党组ID", paramType = "path", required = true)
+    @ApiImplicitParam(name = "groupId", value = "党小组ID", paramType = "path", required = true)
     @DeleteMapping("/{groupId}")
     public ReturnEntity deletePartyGroup(@PathVariable Long groupId) {
         return ReturnUtil.buildReturn(partyGroupService.deletePartyGroup(groupId));

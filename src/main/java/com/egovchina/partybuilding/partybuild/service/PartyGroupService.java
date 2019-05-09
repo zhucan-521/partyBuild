@@ -15,7 +15,7 @@ import com.github.pagehelper.PageInfo;
 public interface PartyGroupService {
 
     /**
-     * desc: 添加党组
+     * desc: 添加党小组
      *
      * @param partyGroupDTO 党小组信息dto
      * @return int
@@ -25,7 +25,7 @@ public interface PartyGroupService {
     int insertPartyGroup(PartyGroupDTO partyGroupDTO);
 
     /**
-     * desc: 更新党组
+     * desc: 更新党小组
      *
      * @param partyGroupDTO 党小组信息dto
      * @return int
@@ -35,7 +35,7 @@ public interface PartyGroupService {
     int updatePartyGroup(PartyGroupDTO partyGroupDTO);
 
     /**
-     * desc: 删除党组
+     * desc: 删除党小组
      *
      * @param groupId 主键ID
      * @return int
@@ -45,7 +45,7 @@ public interface PartyGroupService {
     int deletePartyGroup(Long groupId);
 
     /**
-     * desc: 撤销党组
+     * desc: 撤销党小组
      *
      * @param groupId 主键ID
      * @return int
@@ -55,7 +55,7 @@ public interface PartyGroupService {
     int revokePartyGroup(Long groupId);
 
     /**
-     * desc: 恢复党组
+     * desc: 恢复党小组
      *
      * @param groupId 主键ID
      * @return int
@@ -65,7 +65,7 @@ public interface PartyGroupService {
     int recoveryPartyGroup(Long groupId);
 
     /**
-     * desc: 筛选指定组织中未在任何党组存在的党员
+     * desc: 筛选指定组织中未在任何党小组存在的党员
      *
      * @param partyGroupMemberQueryBean 查询条件
      * @return PartyMemberBaseVO
@@ -75,7 +75,7 @@ public interface PartyGroupService {
     PageInfo<PartyMemberBaseVO> screenPartyGroupMembers(PartyGroupMemberQueryBean partyGroupMemberQueryBean);
 
     /**
-     * desc: 根据主键ID查询党组详情
+     * desc: 根据主键ID查询党小组详情
      *
      * @param groupId 主键ID
      * @return int
@@ -85,7 +85,7 @@ public interface PartyGroupService {
     PartyGroupVO getPartyGroupDetails(Long groupId);
 
     /**
-     * desc: 根据条件分页查询党组信息
+     * desc: 根据条件分页查询党小组信息
      *
      * @param partyGroupQueryBean 查询条件实体
      * @param page                分页实体
