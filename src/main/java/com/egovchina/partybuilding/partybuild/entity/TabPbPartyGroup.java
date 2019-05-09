@@ -27,6 +27,8 @@ public class TabPbPartyGroup {
 
     private String remarks;
 
+    private Integer orderNum;
+
     // base field
 
     private Date createTime;
