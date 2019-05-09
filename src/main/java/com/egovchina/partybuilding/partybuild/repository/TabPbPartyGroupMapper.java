@@ -45,7 +45,7 @@ public interface TabPbPartyGroupMapper {
     PartyGroupVO selectPartyGroupDetailsByGroupId(Long groupId);
 
     /**
-     * desc: 获取党小组详情
+     * desc: 查询党小组列表
      *
      * @param partyGroupQueryBean 条件实体
      * @return List<PartyGroupVO>
