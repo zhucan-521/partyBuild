@@ -90,5 +90,4 @@ public interface TabPbPositivesMapper {
      */
     int logicDeletePositiveByCondition(TabPbPositives delete);
 
-
 }

@@ -64,10 +64,10 @@ public class LeadTeamMemberDTO {
     private String approvalNumber;
 
     @ApiModelProperty("是否兼任村委会委员")
-    private Byte asCommitteeMember;
+    private Byte asCommitteeMember = new Byte("0");
 
     @ApiModelProperty("是否兼任村委主任")
-    private Byte asCommitteeDirector;
+    private Byte asCommitteeDirector = new Byte("0");;
 
     @ApiModelProperty("班子职务排序")
     private Long leadMemberOrder;

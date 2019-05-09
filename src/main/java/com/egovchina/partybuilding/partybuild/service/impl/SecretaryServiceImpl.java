@@ -2,7 +2,10 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysUser;
-import com.egovchina.partybuilding.common.util.*;
+import com.egovchina.partybuilding.common.util.BeanUtil;
+import com.egovchina.partybuilding.common.util.CollectionUtil;
+import com.egovchina.partybuilding.common.util.CommonConstant;
+import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.FamilyMemberDTO;
 import com.egovchina.partybuilding.partybuild.dto.PositivesDTO;
 import com.egovchina.partybuilding.partybuild.dto.SecretaryMemberDTO;
@@ -17,8 +20,8 @@ import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.SecretaryService;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryInfoVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
+import com.egovchina.partybuilding.partybuild.vo.SecretarysVO;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,7 +70,7 @@ public class SecretaryServiceImpl implements SecretaryService {
      * @return
      */
     @Override
-    public ReturnEntity insertSecretary(SecretaryMemberDTO secretaryMemberDTO) {
+    public int insertSecretary(SecretaryMemberDTO secretaryMemberDTO) {
         Long userId = secretaryMemberDTO.getUserId();
         if (userId == null) {
             SysUser sysUser = generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO, SysUser.class, false);
@@ -79,19 +82,19 @@ public class SecretaryServiceImpl implements SecretaryService {
         TabPbDeptSecretary tabPbDeptSecretaryinsert = generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO, TabPbDeptSecretary.class, false);
         int flag = tabPbDeptSecretaryMapper.insertSelective(tabPbDeptSecretaryinsert);
         if (flag > 0) {
-            List<FamilyMemberDTO> familyList = secretaryMemberDTO.getFamilyList();
+            List<FamilyMemberDTO> familyList = secretaryMemberDTO.getFamilys();
             final Long finalUserId = userId;
             if (CollectionUtil.isNotEmpty(familyList)) {
                 List<TabPbFamily> familys = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(familyList, TabPbFamily.class, family -> family.setUserId(finalUserId), false);
                 tabPbFamilyMapper.batchInsertFamilyList(familys);
             }
-            List<PositivesDTO> positivesList = secretaryMemberDTO.getPositivesList();
+            List<PositivesDTO> positivesList = secretaryMemberDTO.getPositivesVOs();
             if (CollectionUtil.isNotEmpty(positivesList)) {
                 List<TabPbPositives> positives = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(positivesList, TabPbPositives.class, positive -> positive.setUserId(finalUserId), false);
                 tabPbPositivesMapper.batchInsertPositivesList(positives);
             }
         }
-        return ReturnUtil.buildReturn(flag);
+        return flag;
     }
 
     /**
@@ -101,18 +104,18 @@ public class SecretaryServiceImpl implements SecretaryService {
      * @return
      */
     @Override
-    public ReturnEntity updateSecretary(SecretaryMemberDTO secretaryMemberDTO) {
+    public int updateSecretary(SecretaryMemberDTO secretaryMemberDTO) {
         TabPbDeptSecretary tabPbDeptSecretaryinsert = new TabPbDeptSecretary();
         BeanUtil.copyPropertiesIgnoreNull(secretaryMemberDTO, tabPbDeptSecretaryinsert);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbDeptSecretaryinsert);
         int flag = tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretaryinsert);
-        List<FamilyMemberDTO> familyMemberDTOS = secretaryMemberDTO.getFamilyList();
-        List<PositivesDTO> positivesDTOS = secretaryMemberDTO.getPositivesList();
+        List<FamilyMemberDTO> familyMemberDTOS = secretaryMemberDTO.getFamilys();
+        List<PositivesDTO> positivesDTOS = secretaryMemberDTO.getPositivesVOs();
         //修改或者添加家庭成员
         this.updateOrAddFamily(familyMemberDTOS, secretaryMemberDTO);
         //修改或者添加职务
         this.updateOrAddPositives(positivesDTOS, secretaryMemberDTO);
-        return ReturnUtil.buildReturn(flag);
+        return flag;
     }
 
     /**
@@ -133,11 +136,10 @@ public class SecretaryServiceImpl implements SecretaryService {
      * @return
      */
     @Override
-    public PageInfo<SecretaryMemberVO> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
+    public List<SecretarysVO> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
         PageHelper.startPage(page);
-        List<SecretaryMemberVO> list = tabPbDeptSecretaryMapper.selectSecretaryVOList(secretaryMemberQueryBean);
-        PageInfo<SecretaryMemberVO> pageInfo = new PageInfo(list);
-        return pageInfo;
+        List<SecretarysVO> list = tabPbDeptSecretaryMapper.selectSecretaryVOList(secretaryMemberQueryBean);
+        return tabPbDeptSecretaryMapper.selectSecretaryVOList(secretaryMemberQueryBean);
     }
 
     /**
@@ -147,13 +149,12 @@ public class SecretaryServiceImpl implements SecretaryService {
      * @return
      */
     @Override
-    public ReturnEntity deleteSecretary(Long secretaryId) {
+    public int deleteSecretary(Long secretaryId) {
         TabPbDeptSecretary tabPbDeptSecretary = new TabPbDeptSecretary();
         tabPbDeptSecretary.setSecretaryId(secretaryId);
         tabPbDeptSecretary.setDelFlag(CommonConstant.STATUS_DEL);
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbDeptSecretary);
-        int flag = tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretary);
-        return ReturnUtil.buildReturn(flag);
+        return tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretary);
     }
 
     /**
@@ -182,11 +183,12 @@ public class SecretaryServiceImpl implements SecretaryService {
 
     /**
      * 添加或者修改书记
+     *
      * @param positivesDTOS
      * @param secretaryMemberDTO
      */
     private void updateOrAddPositives(List<PositivesDTO> positivesDTOS, SecretaryMemberDTO secretaryMemberDTO) {
-        if (CollectionUtil.isNotEmpty(secretaryMemberDTO.getPositivesList())) {
+        if (CollectionUtil.isNotEmpty(secretaryMemberDTO.getPositivesVOs())) {
             for (PositivesDTO positivesDTO : positivesDTOS) {
                 if (positivesDTO.getPositiveId() != null) {
                     TabPbPositives tabPbPositives = new TabPbPositives();

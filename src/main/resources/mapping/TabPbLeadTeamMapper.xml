@@ -61,6 +61,7 @@
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
         <result column="img_num" jdbcType="INTEGER" property="imgNum"/>
         <result column="doc_num" jdbcType="INTEGER" property="docNum"/>
+        <result column="expiration_date" jdbcType="TIMESTAMP" property="expirationDate"/>
     </resultMap>
     <!--包含附件LeadTeamVO ResultMap-->
     <resultMap extends="LeadTeamVOResultMap" id="ContainsAttachmentLeadTeamVOResultMap"
@@ -385,6 +386,7 @@
         SELECT
         <include refid="LeadTeamVO_Column_List"/>
         ,d.NAME AS org_name,
+        DATE_ADD(l.elected_time,INTERVAL l.during_year YEAR ) AS expiration_date,
         d.orgnize_master,
         ifnull( lt.class_num, 0 ) AS class_num,
         ifnull( t.img_num, 0 ) AS img_num,

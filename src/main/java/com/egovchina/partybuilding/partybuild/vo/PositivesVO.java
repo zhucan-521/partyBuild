@@ -1,7 +1,5 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.enums.IdType;
 import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -59,6 +57,5 @@ public class PositivesVO {
 
     @ApiModelProperty(value = "排序码")
     private Long orderNum;
-
 
 }
