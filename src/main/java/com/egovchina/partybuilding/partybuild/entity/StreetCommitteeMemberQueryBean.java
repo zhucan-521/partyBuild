@@ -12,7 +12,7 @@ public class StreetCommitteeMemberQueryBean {
     @ApiModelProperty(value = "列表范围 0 查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织")
     private Long orgRange;
 
-    @ApiModelProperty(value = "组织主键")
+    @ApiModelProperty(value = "组织主键",required = true)
     @NotNull(message = "组织主键不能为空")
     private Long orgId;
 
