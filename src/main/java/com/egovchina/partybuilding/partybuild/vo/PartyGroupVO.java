@@ -16,6 +16,12 @@ import java.util.List;
 @ApiModel("党小组-视图对象")
 public class PartyGroupVO {
 
+    @ApiModelProperty(value = "组织名字")
+    private String orgName;
+
+    @ApiModelProperty(value = "组织简称")
+    private String orgShortName;
+
     @ApiModelProperty(value = "党小组ID")
     private Long groupId;
 
