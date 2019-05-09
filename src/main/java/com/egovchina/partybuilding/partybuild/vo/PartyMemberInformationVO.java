@@ -77,7 +77,8 @@ public class PartyMemberInformationVO {
     private Long education;
 
     @ApiModelProperty(value = "工作单位")
-    private Long unitId;
+    @TableField(exist = false)
+    private String unitName;
 
     @ApiModelProperty(value = "流动状态 码表值 LDZT")
     @JsonSerialize(using = DictSerializer.class)
