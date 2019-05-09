@@ -57,7 +57,7 @@ public class LeadTeamDTO {
     @ApiModelProperty("当届标识")
     private Byte current = '0';
 
-    @ApiModelProperty("当选方式")
+    @ApiModelProperty("当选方式 dict YHZSFDX")
     private Long electedType;
 
     @ApiModelProperty(value = "当选时间", example = "2019-01-01")

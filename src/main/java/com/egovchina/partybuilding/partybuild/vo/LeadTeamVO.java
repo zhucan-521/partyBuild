@@ -62,7 +62,7 @@ public class LeadTeamVO {
     @ApiModelProperty("当届标识")
     private Byte current;
 
-    @ApiModelProperty("当选方式")
+    @ApiModelProperty("当选方式 dict YHZSFDX ")
     private Long electedType;
 
     @ApiModelProperty(value = "当选时间", example = "yyyy-MM-dd")

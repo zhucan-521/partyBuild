@@ -63,7 +63,7 @@ public class TabPbLeadTeam {
     private Byte current;
 
     /**
-	 * 当选方式
+	 * 当选方式 dict YHZSFDX
 	 */
     private Long electedType;
 
