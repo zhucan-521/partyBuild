@@ -55,7 +55,7 @@ public class SecretaryController {
     @ApiOperation(value = "书记列表", notes = "列表中会只显示中如果该书记有多个职务，那么只会显示他高职务", httpMethod = "GET")
     @GetMapping
     public PageInfo<SecretarysVO> secretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
-        return new PageInfo(secretaryService.selectSecretaryList(secretaryMemberQueryBean, page));
+        return new PageInfo<>(secretaryService.selectSecretaryList(secretaryMemberQueryBean, page));
     }
 
     @ApiOperation(value = "根据传入的id删除书记", httpMethod = "DELETE")
