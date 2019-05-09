@@ -279,8 +279,10 @@
     <!-- 根据主键查询党小组详情 -->
     <select id="selectPartyGroupDetailsByGroupId" parameterType="java.lang.Long" resultMap="PartyGroupVOResultMap">
         SELECT
+            -- 组织表
             sd.`name` AS org_name,
             sd.org_short_name,
+            -- 党小组表信息字段
             pg.group_id,
             pg.group_name,
             pg.org_id,
@@ -313,8 +315,10 @@
             parameterType="com.egovchina.partybuilding.partybuild.entity.PartyGroupQueryBean"
             resultMap="PartyGroupVOResultMap">
         SELECT
+        -- 组织表
         sd.`name` AS org_name,
         sd.org_short_name,
+        -- 党小组表信息字段
         pg.group_id,
         pg.group_name,
         pg.org_id,
