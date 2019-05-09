@@ -42,7 +42,7 @@ public interface UserTagService {
      * @param userTags -- TagType  1真  0假
      * @return
      */
-    boolean updateUserTagByTagType(List<TabPbUserTag> userTags);
+    void updateUserTagByTagType(List<TabPbUserTag> userTags);
 
     /**
      * 批量插入标记

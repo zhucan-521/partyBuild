@@ -36,7 +36,7 @@ public class CommunityPartTimeMemberVO {
 
     @ApiModelProperty("职务级别 dict JB")
     @JsonSerialize(using = DictSerializer.class)
-    private String rank;
+    private Long rank;
 
     @ApiModelProperty(value = "性别")
     @JsonSerialize(using = DictSerializer.class)

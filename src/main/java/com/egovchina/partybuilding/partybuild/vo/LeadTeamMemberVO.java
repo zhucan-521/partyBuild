@@ -32,7 +32,7 @@ public class LeadTeamMemberVO {
 
     @ApiModelProperty("职务级别 dict JB")
     @JsonSerialize(using = DictSerializer.class)
-    private String rank;
+    private Long rank;
 
     @ApiModelProperty(value = "人员Id")
     private Long userId;
@@ -85,4 +85,6 @@ public class LeadTeamMemberVO {
     @ApiModelProperty("身份证号")
     private String idCardNo;
 
+    @ApiModelProperty("班子届数")
+    private Long sessionYear;
 }
