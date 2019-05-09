@@ -50,9 +50,9 @@ public class AbroadServiceImpl implements AbroadService {
     private ExtendedInfoService extendedInfoService;
 
     /**
-     * 减少方式为出国出境
+     * 减少方式为停止党籍
      **/
-    private final Long OUT_TYPE = 7L;
+    private final Long OUT_TYPE = 4L;
 
     /**
      * 出党方式为出国出境
