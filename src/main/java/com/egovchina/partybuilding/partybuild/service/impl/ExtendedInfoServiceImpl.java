@@ -83,7 +83,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public int InvalidByUserId(DeletePartyMemberDTO reduce) {
+    public int invalidByUserId(DeletePartyMemberDTO reduce) {
         SysUser user =
                 BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(reduce, SysUser.class, false);
         //设置无效状态

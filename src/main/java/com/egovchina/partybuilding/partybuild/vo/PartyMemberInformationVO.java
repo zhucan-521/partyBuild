@@ -90,6 +90,9 @@ public class PartyMemberInformationVO {
     @ApiModelProperty(value = "是否台湾籍")
     private Byte isTaiwaner;
 
+    @ApiModelProperty(value = "是否困难")
+    private Byte isPoor;
+
     @ApiModelProperty(value = "基础资料完成度")
     private Integer complete;
 
