@@ -90,6 +90,9 @@ public class SysUserVO {
     @ApiModelProperty(value = "工作简历")
     private String workResumes;
 
+    @ApiModelProperty(value = "是否困难")
+    private Byte isPoor;
+
     @ApiModelProperty(value = "是否失联")
     private Byte isLlost;
 
