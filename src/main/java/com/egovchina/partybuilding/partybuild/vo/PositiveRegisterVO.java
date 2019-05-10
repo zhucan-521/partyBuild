@@ -76,6 +76,9 @@ public class PositiveRegisterVO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date revokeDate;
 
+    @ApiModelProperty(value = "可返回标识")
+    private Byte canReturn;
+
     @ApiModelProperty(value = "附件")
     private List<TabPbAttachment> attachments;
 }
