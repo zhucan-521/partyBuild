@@ -92,6 +92,6 @@ public interface TabPbPartyGroupMemberMapper {
      * @author FanYanGen
      * @date 2019/5/6 15:57
      **/
-    List<PartyMemberBaseVO> screenPartyGroupMembers(PartyGroupMemberQueryBean partyGroupMemberQueryBean);
+    List<PartyMemberBaseVO> screenPartyGroupMembers(@Param("orgId") Long orgId, @Param("groupId") Long groupId);
 
 }

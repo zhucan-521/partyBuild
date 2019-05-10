@@ -67,12 +67,13 @@ public interface PartyGroupService {
     /**
      * desc: 筛选指定组织中未在任何党小组存在的党员
      *
-     * @param partyGroupMemberQueryBean 查询条件
+     * @param orgId   组织ID
+     * @param groupId 党小组ID
      * @return PartyMemberBaseVO
      * @author FanYanGen
      * @date 2019/5/6 15:55
      **/
-    PageInfo<PartyMemberBaseVO> screenPartyGroupMembers(PartyGroupMemberQueryBean partyGroupMemberQueryBean);
+    PageInfo<PartyMemberBaseVO> screenPartyGroupMembers(Long orgId, Long groupId);
 
     /**
      * desc: 根据主键ID查询党小组详情

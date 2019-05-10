@@ -72,13 +72,9 @@ public class PartyGroupServiceImpl implements PartyGroupService {
 
     @Override
     public int deletePartyGroup(Long groupId) {
-        TabPbPartyGroup tabPbPartyGroup = new TabPbPartyGroup();
-        tabPbPartyGroup.setGroupId(groupId);
-        tabPbPartyGroup.setDelFlag(1);
+        TabPbPartyGroup tabPbPartyGroup = new TabPbPartyGroup().setGroupId(groupId).setDelFlag(1);
         generateTargetCopyPropertiesAndPaddingBaseField(tabPbPartyGroup, TabPbPartyGroup.class, true);
-        TabPbPartyGroupMember tabPbPartyGroupMember = new TabPbPartyGroupMember();
-        tabPbPartyGroupMember.setGroupId(groupId);
-        tabPbPartyGroupMember.setDelFlag(1);
+        TabPbPartyGroupMember tabPbPartyGroupMember = new TabPbPartyGroupMember().setGroupId(groupId).setDelFlag(1);
         generateTargetCopyPropertiesAndPaddingBaseField(tabPbPartyGroupMember, TabPbPartyGroupMember.class, true);
         int result = tabPbPartyGroupMapper.updateByPrimaryKeySelective(tabPbPartyGroup);
         /**
@@ -92,32 +88,20 @@ public class PartyGroupServiceImpl implements PartyGroupService {
 
     @Override
     public int revokePartyGroup(Long groupId) {
-        TabPbPartyGroup tabPbPartyGroup = new TabPbPartyGroup();
-        tabPbPartyGroup.setGroupId(groupId);
-        tabPbPartyGroup.setDelFlag(1);
-        tabPbPartyGroup.setRevokeName(UserContextHolder.getUserName());
-        tabPbPartyGroup.setRevokeTime(new Date());
-        generateTargetCopyPropertiesAndPaddingBaseField(tabPbPartyGroup, TabPbPartyGroup.class, true);
-        return tabPbPartyGroupMapper.updateByPrimaryKeySelective(tabPbPartyGroup);
+        return tabPbPartyGroupMapper.updateByPrimaryKeySelective(maintainRevocationOfPartyGroups(groupId, 1));
     }
 
     @Override
     public int recoveryPartyGroup(Long groupId) {
-        TabPbPartyGroup tabPbPartyGroup = new TabPbPartyGroup();
-        tabPbPartyGroup.setGroupId(groupId);
-        tabPbPartyGroup.setDelFlag(0);
-        tabPbPartyGroup.setRevokeName(UserContextHolder.getUserName());
-        tabPbPartyGroup.setRevokeTime(new Date());
-        generateTargetCopyPropertiesAndPaddingBaseField(tabPbPartyGroup, TabPbPartyGroup.class, true);
-        return tabPbPartyGroupMapper.updateByPrimaryKeySelective(tabPbPartyGroup);
+        return tabPbPartyGroupMapper.updateByPrimaryKeySelective(maintainRevocationOfPartyGroups(groupId, 0));
     }
 
     @Override
-    public PageInfo<PartyMemberBaseVO> screenPartyGroupMembers(PartyGroupMemberQueryBean partyGroupMemberQueryBean) {
-        if (!tabSysDeptMapper.checkIsExistByOrgId(partyGroupMemberQueryBean.getDeptId())) {
+    public PageInfo<PartyMemberBaseVO> screenPartyGroupMembers(Long orgId, Long groupId) {
+        if (!tabSysDeptMapper.checkIsExistByOrgId(orgId)) {
             throw new BusinessDataCheckFailException("该党组织不存在");
         }
-        return new PageInfo<>(tabPbPartyGroupMemberMapper.screenPartyGroupMembers(partyGroupMemberQueryBean));
+        return new PageInfo<>(tabPbPartyGroupMemberMapper.screenPartyGroupMembers(orgId, groupId));
     }
 
     @Override
@@ -142,8 +126,11 @@ public class PartyGroupServiceImpl implements PartyGroupService {
         if (!tabSysDeptMapper.checkIsExistByOrgId(partyGroupDTO.getOrgId())) {
             throw new BusinessDataCheckFailException("该党组织不存在");
         }
+        if (tabPbPartyGroupMapper.checkIsExistByGroupName(partyGroupDTO.getGroupName())) {
+            throw new BusinessDataCheckFailException("该党小组名称已存在");
+        }
         if (isCheckPrimaryKey && !tabPbPartyGroupMapper.checkIsExistByGroupId(partyGroupDTO.getGroupId())) {
-            throw new BusinessDataCheckFailException("该党组不存在");
+            throw new BusinessDataCheckFailException("该党小组不存在");
         }
     }
 
@@ -160,6 +147,24 @@ public class PartyGroupServiceImpl implements PartyGroupService {
         if (!leaderExist) {
             throw new BusinessDataCheckFailException("党小组组长不能为空");
         }
+    }
+
+    /**
+     * desc: 维护党小组撤销功能
+     *
+     * @param groupId  党小组ID
+     * @param isRevoke 撤销标识
+     * @return
+     * @auther FANYANGEN
+     * @date 2019-05-10 09:44
+     */
+    private TabPbPartyGroup maintainRevocationOfPartyGroups(Long groupId, Integer isRevoke) {
+        TabPbPartyGroup tabPbPartyGroup = new TabPbPartyGroup();
+        tabPbPartyGroup.setGroupId(groupId);
+        tabPbPartyGroup.setIsRevoke(isRevoke);
+        tabPbPartyGroup.setRevokeName(UserContextHolder.getUserName());
+        tabPbPartyGroup.setRevokeTime(new Date());
+        return generateTargetCopyPropertiesAndPaddingBaseField(tabPbPartyGroup, TabPbPartyGroup.class, true);
     }
 
     /**
