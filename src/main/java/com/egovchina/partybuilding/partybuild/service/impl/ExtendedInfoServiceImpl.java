@@ -140,10 +140,10 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(reduceList);
         //更新历史党员表
         int num = reduceListMapper.updateByPrimaryKeySelective(reduceList);
-        //查询查询identity_type 只能查询党员状态为无效的
+        //查询查询identity_type 只能查询党员状态为无效并且未被删除的
         Long identityType = tabSysUserMapper.selectUserByIdFindIdentity(userId);
         if (identityType == null) {
-            throw new BusinessDataNotFoundException("该党员未被删除或者人员类别为空");
+            throw new BusinessDataNotFoundException("该党员不需要恢复或者人员类别为空");
         }
         MembershipDTO membershipDTO = new MembershipDTO();
         membershipDTO.setUserId(userId).setIdentityType(identityType).setType(OFFICIAL_PARTY_MEMBER);

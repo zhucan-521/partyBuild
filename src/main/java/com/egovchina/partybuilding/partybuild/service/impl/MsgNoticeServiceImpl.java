@@ -3,16 +3,16 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.util.*;
+import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDTO;
+import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDeptDTO;
+import com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.MsgNoticeQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMsgNoticeDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMsgNoticeMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
-import com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.MsgNoticeQueryBean;
-import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDTO;
-import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDeptDTO;
 import com.egovchina.partybuilding.partybuild.service.MsgNoticeService;
 import com.egovchina.partybuilding.partybuild.vo.MsgNoticeDeptVO;
 import com.egovchina.partybuilding.partybuild.vo.MsgNoticeVO;
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import java.security.PrivateKey;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -229,7 +228,7 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
         Long orgId= UserContextHolder.getOrgId();
         noticeDeptList.forEach(item->{
             if(!orgId.equals(tabSysDeptMapper.selectAloneByPrimaryKey(item.getDeptId()).getParentId())) {
-               throw new BusinessDataIncompleteException("不是它的直属下级");
+               throw new BusinessDataIncompleteException("文件只能下达直属组织");
              }
         });
     }
