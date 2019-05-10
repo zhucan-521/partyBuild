@@ -16,25 +16,35 @@ import java.util.List;
 public interface JointPointInfoService {
 
     /**
-    *
-    *
-    * @return: com.egovchina.partybuilding.partybuild.vo.UserDeptPositionVO
-    * @Author: WuYunJie
-    * @Date: 2019/5/10
-    */
+     * 查询领导职务信息
+     *
+     * @param userId 用户id
+     * @return
+     */
     UserDeptPositionVO selectJointByUserId(Long userId);
 
+
     /**
-    *
-    *
-    *
-    * @return: java.util.List<com.egovchina.partybuilding.partybuild.vo.LinkLeaderVO>
-    * @Author: WuYunJie
-    * @Date: 2019/5/10
-    */
+     * 查询联点领导信息
+     *
+     * @param deptId 组织id
+     * @return
+     */
     List<LinkLeaderVO> selectUserDeptByDeptId(Long deptId);
 
+    /**
+     * 删除联点领导
+     *
+     * @param linkLedaerId 联点领导id
+     * @return
+     */
     int delJointPointInfoByLinkLedaerId(Long linkLedaerId);
 
+    /**
+     * 保存联点领导
+     *
+     * @param linkLeaderDTO 联点领导DTO
+     * @return
+     */
     int saveJointPointInfo(LinkLeaderDTO linkLeaderDTO);
 }
