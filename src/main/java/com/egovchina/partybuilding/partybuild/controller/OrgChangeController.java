@@ -41,8 +41,9 @@ public class OrgChangeController {
                     "2. <font color=\"red\">组织撤销(字典id=59007, value=ZZCX, type=ZZDB)</font><br/> " +
                     "3. <font color=\"red\">组织恢复(字典id=59008, value=ZZHF, type=ZZDB)</font><br/>" +
                     "4. <font color=\"red\">组织调整(字典id=59009, value=ZZTZ, type=ZZDB)</font><br/>" +
-                    "5. <font color=\"red\">整建制转移(字典id=59585, value=ZJZZY, type=ZZDB)</font>")
-    @PostMapping()
+                    "5. <font color=\"red\">组织调整(字典id=59567, value=QTTZ, type=ZZDB)</font><br/>" +
+                    "6. <font color=\"red\">整建制转移(字典id=59585, value=ZJZZY, type=ZZDB)</font>")
+    @PostMapping
     public ReturnEntity addOrgChange(@ApiParam("组织变动信息") @RequestBody @Validated OrgChangeDTO change) {
         return ReturnUtil.buildReturn(this.orgChangeService.addOrgChange(change));
     }
