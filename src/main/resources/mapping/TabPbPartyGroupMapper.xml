@@ -271,6 +271,18 @@
     where group_id = #{groupId,jdbcType=BIGINT}
   </update>
 
+    <!--逻辑删除党组级联成员-->
+    <update id="logicDeletePartyGroupCascadeMembers"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroup">
+        UPDATE tab_pb_party_group pg
+        LEFT JOIN tab_pb_party_group_member pgm ON pg.group_id = pgm.group_id
+        SET pg.del_flag = 1, pgm.del_flag = 1,
+            pg.update_time = #{updateTime}, pgm.update_time = #{updateTime},
+            pg.update_userid = #{updateUserid}, pg.update_username = #{updateUsername},
+            pgm.update_userid = #{updateUserid}, pgm.update_username = #{updateUsername}
+        WHERE pg.group_id = #{groupId}
+    </update>
+
     <!-- 根据主键查询该条数据是否存在 -->
     <select id="checkIsExistByGroupId" parameterType="java.lang.Long" resultType="boolean">
         SELECT COUNT(1) FROM tab_pb_party_group WHERE group_id = #{groupId,jdbcType=BIGINT}

@@ -3,10 +3,10 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
+import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.PartyGroupDTO;
 import com.egovchina.partybuilding.partybuild.dto.PartyGroupMemberInfoDTO;
-import com.egovchina.partybuilding.partybuild.entity.PartyGroupMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.PartyGroupQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroup;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroupMember;
@@ -72,18 +72,9 @@ public class PartyGroupServiceImpl implements PartyGroupService {
 
     @Override
     public int deletePartyGroup(Long groupId) {
-        TabPbPartyGroup tabPbPartyGroup = new TabPbPartyGroup().setGroupId(groupId).setDelFlag(1);
-        generateTargetCopyPropertiesAndPaddingBaseField(tabPbPartyGroup, TabPbPartyGroup.class, true);
-        TabPbPartyGroupMember tabPbPartyGroupMember = new TabPbPartyGroupMember().setGroupId(groupId).setDelFlag(1);
-        generateTargetCopyPropertiesAndPaddingBaseField(tabPbPartyGroupMember, TabPbPartyGroupMember.class, true);
-        int result = tabPbPartyGroupMapper.updateByPrimaryKeySelective(tabPbPartyGroup);
-        /**
-         * 删除党小组及成员
-         **/
-        if (result > 0) {
-            tabPbPartyGroupMemberMapper.batchDeleteByGroupId(tabPbPartyGroupMember);
-        }
-        return result;
+        TabPbPartyGroup tabPbPartyGroup = new TabPbPartyGroup().setGroupId(groupId);
+        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbPartyGroup);
+        return tabPbPartyGroupMapper.logicDeletePartyGroupCascadeMembers(tabPbPartyGroup);
     }
 
     @Override
@@ -154,7 +145,7 @@ public class PartyGroupServiceImpl implements PartyGroupService {
      *
      * @param groupId  党小组ID
      * @param isRevoke 撤销标识
-     * @return
+     * @return TabPbPartyGroup
      * @auther FANYANGEN
      * @date 2019-05-10 09:44
      */

@@ -2,7 +2,6 @@ package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.dto.PartyGroupDTO;
-import com.egovchina.partybuilding.partybuild.entity.PartyGroupMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.PartyGroupQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.PartyGroupVO;
 import com.egovchina.partybuilding.partybuild.vo.PartyMemberBaseVO;

@@ -1,6 +1,5 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
-import com.egovchina.partybuilding.partybuild.entity.PartyGroupMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroupMember;
 import com.egovchina.partybuilding.partybuild.vo.PartyGroupMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.PartyMemberBaseVO;
