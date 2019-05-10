@@ -1,11 +1,9 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
-import com.egovchina.partybuilding.common.config.DictSerializer;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -39,7 +37,6 @@ public class FlowOutMemberDTO {
     private Long flowOutReason;
 
     @ApiModelProperty(value = "流动类型 码表LDQK")
-    @JsonSerialize(using = DictSerializer.class)
     private Long flowOutType;
 
     @ApiModelProperty(value = "流出范围 码表WCHY")
@@ -52,7 +49,7 @@ public class FlowOutMemberDTO {
     @ApiModelProperty(value = "流出组织Id")
     private Long orgId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "流出日期",example = "yyyy-MM-dd")
     private Date flowOutDate;
 
@@ -78,7 +75,7 @@ public class FlowOutMemberDTO {
     @ApiModelProperty(value = "流入党支部联系人")
     private String flowToOrgContactor;
 
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "失联时间",example = "yyyy-MM-dd")
     private Date lostTime;
 
@@ -89,7 +86,7 @@ public class FlowOutMemberDTO {
     private Long flowOutState;
 
     @ApiModelProperty(value = "流入时间",example = "yyyy-MM-dd")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date flowInDate;
 
 }
