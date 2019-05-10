@@ -6,6 +6,7 @@ import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.StreetCommitteeDTO;
 import com.egovchina.partybuilding.partybuild.dto.StreetCommitteeMemberDTO;
+import com.egovchina.partybuilding.partybuild.entity.StreetCommitteeMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.StreetCommitteeQueryBean;
 import com.egovchina.partybuilding.partybuild.service.StreetCommitteeService;
 import com.egovchina.partybuilding.partybuild.vo.StreetCommitteeMemberVO;
@@ -35,9 +36,9 @@ public class StreetCommitteeController {
         return ReturnUtil.buildReturn(this.streetCommitteeService.saveStreetCommittee(streetCommitteeDTO));
     }
 
-    @ApiOperation(value = "修改街道大工委",notes = "修改街道大工委")
+    @ApiOperation(value = "修改街道大工委", notes = "修改街道大工委")
     @PutMapping()
-    public ReturnEntity updateStreetCommittee(@ApiParam("街道大公委信息") @RequestBody @Validated StreetCommitteeDTO streetCommitteeDTO){
+    public ReturnEntity updateStreetCommittee(@ApiParam("街道大公委信息") @RequestBody @Validated StreetCommitteeDTO streetCommitteeDTO) {
         return ReturnUtil.buildReturn(this.streetCommitteeService.updateStreetCommittee(streetCommitteeDTO));
     }
 
@@ -90,15 +91,10 @@ public class StreetCommitteeController {
     }
 
     @ApiOperation(value = "条件查询成员列表", notes = "grantCommitteeId为街道大公委成员明细表的主键")
-    @ApiImplicitParams({
-            @ApiImplicitParam(value = "大公委主键", name = "grantCommitteeId", dataType = "Long"),
-            @ApiImplicitParam(value = "人员名称", name = "personName", dataType = "String"),
-            @ApiImplicitParam(value = "职务名称", name = "positiveName", dataType = "String"),
-    })
     @GetMapping("/members")
     public PageInfo<StreetCommitteeMemberVO> getStreetCommitteeMemberList(
-            Long grantCommitteeId, String personName, String positiveName, Page page) {
-        return this.streetCommitteeService.getStreetCommitteeMemberList(grantCommitteeId, personName, positiveName, page);
+            @Validated  StreetCommitteeMemberQueryBean streetCommitteeMemberQueryBean, Page page) {
+        return this.streetCommitteeService.getStreetCommitteeMemberList(streetCommitteeMemberQueryBean, page);
     }
 
     @ApiOperation(value = "判断组织是否可以添加工委成员", notes = "判断组织是否可以添加工委成员")
