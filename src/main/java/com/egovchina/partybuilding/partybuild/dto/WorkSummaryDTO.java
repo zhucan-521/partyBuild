@@ -4,9 +4,11 @@ import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,4 +30,8 @@ public class WorkSummaryDTO {
 
     @ApiModelProperty(value = "附件")
     private List<TabPbAttachment> attachments;
+
+    @ApiModelProperty(value = "总结日期")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date summaryDate;
 }

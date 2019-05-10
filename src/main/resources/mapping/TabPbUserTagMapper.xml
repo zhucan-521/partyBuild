@@ -58,13 +58,6 @@
             and tag_type = #{tagType}
         </if>
     </select>
-    <select id="selectAllListSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbUserTag"
-            resultType="com.egovchina.partybuilding.partybuild.vo.UserTagVO">
-        SELECT t.usertag_id,if(usertag_id is not null,1,0) as tag_type,t.user_id,id, parent_id, value, label, type, description, sort, remarks
-         from (SELECT * FROM sys_dict WHERE parent_id = 59381 and del_flag = 0 and remarks = '1') d
-        left join tab_pb_user_tag t on d.id = t.tag_type and t.user_id = #{userId,jdbcType=BIGINT}
-        ORDER BY d.sort
-    </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -80,9 +73,6 @@
     <select id="selectTabPbUserTagListByUserId"
             resultType="com.egovchina.partybuilding.partybuild.entity.TabPbUserTag" parameterType="long">
         select * from tab_pb_user_tag where user_id = #{userId, jdbcType=BIGINT}
-    </select>
-    <select id="selectUsertagIdList" resultType="java.lang.Long" parameterType="long">
-          select usertag_id from tab_pb_user_tag where user_id = #{userId, jdbcType=BIGINT}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -314,6 +304,5 @@
             ${item}
         </foreach>
     </delete>
-
 
 </mapper>

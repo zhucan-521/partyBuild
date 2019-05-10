@@ -1,7 +1,6 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
@@ -90,11 +89,6 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
     public List<LeadTeamMemberVO> selectLeadTeamMemberVOListByCondition(LeadTeamMemberQueryBean queryBean, Page page) {
         PageHelper.startPage(page);
         List<LeadTeamMemberVO> list = tabPbLeadTeamMemberMapper.selectLeadTeamMemberVOListByCondition(queryBean);
-        for (LeadTeamMemberVO leadTeamMemberVO : list) {
-            SysUser sysUser = tabSysUserMapper.selectByPrimaryKey(leadTeamMemberVO.getUserId());
-            SysDept sysDept = tabSysDeptMapper.selectByPrimaryKey(sysUser.getDeptId());
-            leadTeamMemberVO.setOwnerOrgName(sysDept.getName());
-        }
         return list;
     }
 

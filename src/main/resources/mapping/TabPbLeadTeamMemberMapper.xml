@@ -56,7 +56,6 @@
         <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
         <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
         <result column="session_year" jdbcType="VARCHAR" property="sessionYear"/>
-        <result column="owner_org_name" jdbcType="VARCHAR" property="ownerOrgName"/>
         <result column="gender" jdbcType="BIGINT" property="gender"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
     </resultMap>
@@ -392,6 +391,7 @@
         SELECT
         <include refid="LeadTeamMemberVO_Column_List"/>
         ,d.name as org_name,
+        ud.name as owner_org_name,
         u.id_card_no AS id_card_no,
         t.session_year,
         u.gender,
@@ -400,6 +400,7 @@
         LEFT JOIN sys_user u ON ltm.user_id = u.user_id
         LEFT JOIN tab_pb_lead_team t ON ltm.lead_team_id = t.lead_team_id
         LEFT JOIN sys_dept d ON t.org_id = d.dept_id
+        LEFT JOIN sys_dept ud ON u.dept_id = ud.dept_id
         WHERE ltm.del_flag = 0
         <if test="sessionYear != null and sessionYear != ''">
             AND t.session_year = #{sessionYear}
