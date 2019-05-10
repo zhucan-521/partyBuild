@@ -153,8 +153,6 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @Transactional(rollbackFor = Exception.class)
     public int savePartyInfo(PartyInfoDTO partyInfoDTO) {
         if (!tabSysUserMapper.checkIsExistByIdCard(partyInfoDTO.getParty().getIdCardNo())) {
-            //补录成非党员
-            partyInfoDTO.getParty().setIdentityType(TYPE_STATE);
             SysUser sys = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyInfoDTO.getParty(), SysUser.class, false);
             //检测组织Id
             checkIsExist(sys);

@@ -78,7 +78,7 @@ public class PartyMemberInformationVO {
 
     @ApiModelProperty(value = "单位类别")
     @JsonSerialize(using = DictSerializer.class)
-    private String unitProperty;
+    private Long unitProperty;
 
     @ApiModelProperty(value = "流动状态 码表值 LDZT")
     @JsonSerialize(using = DictSerializer.class)
