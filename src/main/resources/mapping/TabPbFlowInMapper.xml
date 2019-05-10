@@ -95,6 +95,7 @@
 		t.old_contact_phone,
 		t.old_unit_postcode,
 		t.flow_out_id,
+		t.return_date,
 		t.flow_in_state,
 		s.realname as username,
 		s.id_card_no,
@@ -109,6 +110,7 @@
         s.flow_from_org_phone,
         f.flow_out_date ,
         (case  when f.flow_out_date &lt;= now() then 1 else 0 end) as isEnableAccept,
+        (case  when t.flow_in_date > now() then 0 else 1 end) as isEnableBack,
 		f.out_profession
     </sql>
 
