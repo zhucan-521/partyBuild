@@ -290,7 +290,12 @@
 
     <!-- 根据党小组名称该条数据是否存在 -->
     <select id="checkIsExistByGroupName" resultType="java.lang.Boolean">
-        SELECT COUNT(1) FROM tab_pb_party_group WHERE group_name = #{groupName,jdbcType=VARCHAR} AND del_flag = 0
+        SELECT
+        COUNT( 1 )
+        FROM
+        tab_pb_party_group
+        WHERE
+        group_name = #{groupName,jdbcType=VARCHAR} AND org_id = #{orgId} AND del_flag = 0
         <if test="excludeGroupId != null">
             AND group_id != #{excludeGroupId}
         </if>
@@ -386,7 +391,7 @@
         </if>
 
         <if test="isRevoke != null and isRevoke != '' ">
-            AND pg.is_revoke = #{isRevoke}
+            AND is_revoke = #{isRevoke}
         </if>
 
         ORDER BY pg.order_num
