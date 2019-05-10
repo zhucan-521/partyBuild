@@ -45,11 +45,11 @@ public class OrgChangeServiceImpl implements OrgChangeService {
     //组织所在单位类型 上级党组织相同
     private final Long UNIT_SAME = 59139L;
 
-    //组织撤消字典
+    //组织撤消状态
     private final Long REVOKE = 59123L;
 
-    //组织恢复字典
-    private final Long RESTORE = 59123L;
+    //组织正常状态
+    private final Long RESTORE = 59122L;
 
     //组织更名 ZZGM
     private final String ORG_RENAME = "ZZGM";
@@ -62,6 +62,9 @@ public class OrgChangeServiceImpl implements OrgChangeService {
 
     //组织调整 ZZTZ
     private final String ORG_ADJUST = "ZZTZ";
+
+    //组织其他调整 QTTZ
+    private final String OTHER_CHANGE = "QTTZ";
 
     //整建制转移 ZJZZY
     private final String ORG_SHIFT = "ZJZZY";
@@ -130,7 +133,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
     }
 
     /**
-     * 组织变动 (分为组织更名 ZZGM, 组织撤销 ZZCX, 组织恢复 ZZHF， 组织调整 ZZTZ，整建制转移 ZJZZY)
+     * 组织变动 (分为组织更名 ZZGM, 组织撤销 ZZCX, 组织恢复 ZZHF， 组织调整 ZZTZ， 整建制转移 ZJZZY)
      *
      * @param orgChangeDTO
      * @return
@@ -162,6 +165,8 @@ public class OrgChangeServiceImpl implements OrgChangeService {
                 break;
             case ORG_RESTORE:
                 this.orgRestoreOrRevoke(tabPbOrgnizeChange, CommonConstant.STATUS_EBL, RESTORE);
+                break;
+            case OTHER_CHANGE:
                 break;
             case ORG_ADJUST:
             case ORG_SHIFT:
@@ -203,7 +208,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
      * @return
      */
     private int orgRestoreOrRevoke(TabPbOrgnizeChange org, String eblFlag, Long orgStatus) {
-        if (Objects.equals(orgStatus, REVOKE)) {
+        if (REVOKE.equals(orgStatus)) {
             SysDept sysDept = this.tabSysDeptMapper.selectByPrimaryKey(org.getDeptId());
             if (sysDept.getIsParent() == 1) {
                 throw new BusinessDataInvalidException("该组织存在下级组织，撤消失败");
