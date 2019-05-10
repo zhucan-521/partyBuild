@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author zhucan
+ * @author liu tang gang
  */
 @Service
 public class PartyInformationServiceImpl implements PartyInformationService {
@@ -98,13 +98,13 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     }
 
     @Override
-    public PageInfo<HistoryPartyVO> historyPartyPage(HistoricalPartyMemberQueryBean queryBean, Page page) {
+    public PageInfo<HistoryPartyVO> getPartyHistoryList(HistoricalPartyMemberQueryBean queryBean, Page page) {
         PageHelper.startPage(page);
         //查历史党员
-        List<HistoryPartyVO> historyPartyVO = reduceListMapper.historyPartyPage(queryBean);
+        List<HistoryPartyVO> historyPartyVO = reduceListMapper.selectPartyHistoryList(queryBean);
         PageHelper.startPage(page);
         //用于查询以前历史党员记录
-        List<MemberReducesVO> memberReducesVO = reduceListMapper.historyPartyPageDel(queryBean);
+        List<MemberReducesVO> memberReducesVO = reduceListMapper.selectInvalidPartyHistoryList(queryBean);
         //计算党龄
         for (int i = 0; i < historyPartyVO.size(); i++) {
             //理论党龄 (加入党组织时间-当前减少时间 因为偏差问题返回月份)
@@ -161,8 +161,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             //新增用户信息
             tabSysUserMapper.insertSelective(sys);
             //新增或者删除标签信息
-            if (partyInfoDTO.getParty().getUserTags() != null && partyInfoDTO.getParty().getUserTags().size() > 0) {
-                this.userTagService.updateUserTagByTagType(BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(partyInfoDTO.getParty().getUserTags(), TabPbUserTag.class, true));
+            if (partyInfoDTO.getParty().getUserTags() != null) {
+                this.userTagService.batchInsertUserTagDTO(partyInfoDTO.getParty().getUserTags());
             }
             int effected = 0;
             if (partyInfoDTO.getEducations() != null && partyInfoDTO.getEducations().size() > 0) {
@@ -203,8 +203,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             checkIsExist(sys);
             effected += tabSysUserMapper.updateByPrimaryKeySelective(sys);
             //新增或者删除标签信息
-            if (partyInfoDTO.getParty().getUserTags() != null && partyInfoDTO.getParty().getUserTags().size() > 0) {
-                this.userTagService.updateUserTagByTagType(BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(partyInfoDTO.getParty().getUserTags(), TabPbUserTag.class, true));
+            if (partyInfoDTO.getParty().getUserTags() != null) {
+                this.userTagService.batchInsertUserTagDTO(partyInfoDTO.getParty().getUserTags());
             }
             //新增学历信息
             if (partyInfoDTO.getEducations() != null) {
@@ -376,6 +376,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         }
         throw new BusinessDataIncompleteException("用户ID不存在");
     }
+
     @Override
     public PageInfo<PartyMemberInformationVO> getPartyList(SysUserQueryBean queryBean, Page page) {
         String deptId = String.valueOf(queryBean.getDeptId());

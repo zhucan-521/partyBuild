@@ -70,6 +70,6 @@ public class SysUserQueryBean {
     @ApiModelProperty(value = "结束年龄")
     private Integer ageEnd;
 
-    @ApiModelProperty(value = "列表范围 0 查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织； 不传查本级；3和不传查本级。（所有前提都是有deptid的情况，没有ddeptid就没有党组织筛选）")
+    @ApiModelProperty(value = "1 查当前组织及其直属组织； 2 查当前组织及所有下级组织； 不传查本级；3和不传查本级。（所有前提都是有deptid的情况，没有ddeptid就没有党组织筛选）")
     private String orgRange;
 }

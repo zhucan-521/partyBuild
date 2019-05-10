@@ -26,6 +26,6 @@ public class HistoricalPartyMemberQueryBean {
     @ApiModelProperty(value = "出党方式 字典")
     private Long quitType;
 
-    @ApiModelProperty("列表范围 0 查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织；不传查本级")
+    @ApiModelProperty("1 查当前组织及其直属组织； 2 查当前组织及所有下级组织；不传查本级")
     private String orgRange;
 }

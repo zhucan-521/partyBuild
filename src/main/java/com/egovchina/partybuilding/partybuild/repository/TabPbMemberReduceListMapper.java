@@ -28,7 +28,7 @@ public interface TabPbMemberReduceListMapper {
 
     List<TabPbMemberReduceList> selectListByUserId(Long userId);
 
-    List<HistoryPartyVO> historyPartyPage(HistoricalPartyMemberQueryBean record);
+    List<HistoryPartyVO> selectPartyHistoryList(HistoricalPartyMemberQueryBean record);
 
-    List<MemberReducesVO> historyPartyPageDel(HistoricalPartyMemberQueryBean record);
+    List<MemberReducesVO> selectInvalidPartyHistoryList(HistoricalPartyMemberQueryBean record);
 }

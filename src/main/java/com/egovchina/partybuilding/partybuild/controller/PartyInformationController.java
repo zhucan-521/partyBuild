@@ -2,7 +2,6 @@ package com.egovchina.partybuilding.partybuild.controller;
 
 
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.CommunityDTO;
@@ -16,18 +15,14 @@ import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
-
-import java.util.List;
 
 /**
  * 党员信息
  *
- * @Author zhu can
+ * @Author liu tang gang
  **/
 @Api(tags = "党员-党员信息模块v1-刘唐港")
 @RestController
@@ -41,7 +36,7 @@ public class PartyInformationController {
 
     @ApiOperation(value = "分页查询党员信息", notes = "分页查询党员信息", httpMethod = "GET")
     @GetMapping("/party-members")
-    public PageInfo<PartyMemberInformationVO> getPartyMemberList(@Validated SysUserQueryBean queryBean, Page page) {
+    public PageInfo<PartyMemberInformationVO> getPartyMemberList(@Validated @ApiParam("党员信息查询实体") SysUserQueryBean queryBean, Page page) {
         return partyInformationService.getPartyList(queryBean, page);
     }
 
@@ -57,14 +52,14 @@ public class PartyInformationController {
     @ApiOperation(value = "历史党员列表", notes = "分页查询历史党员信息", httpMethod = "GET")
     @GetMapping("/history-members")
     public PageInfo<HistoryPartyVO> getPartyHistoryList(@Validated @ApiParam("历史党员查询实体") HistoricalPartyMemberQueryBean queryBean, Page page) {
-        return partyInformationService.historyPartyPage(queryBean, page);
+        return partyInformationService.getPartyHistoryList(queryBean, page);
     }
 
     @ApiOperation(value = "根据id获取党员信息附带学历等信息", notes = "根据id获取党员信息附带学历等信息", httpMethod = "GET")
     @ApiImplicitParam(value = "党员id", name = "id", dataType = "long", paramType = "path", required = true)
     @GetMapping("/party-members/{id}")
     public PartyMemberVO getParty(@PathVariable Long id) {
-        return extendedInfoService.selectPartyMemberVOById(id);
+        return extendedInfoService.selectPartyMemberDetailsById(id);
     }
 
     @ApiOperation(value = "根据id获取组织信息列表里面的书记的简单信息", notes = "根据id获取组织信息列表里面的书记的简单信息", httpMethod = "GET")
@@ -86,8 +81,8 @@ public class PartyInformationController {
 
     @ApiOperation(value = "根据id删除 user信息")
     @PostMapping("/history-members")
-    public ReturnEntity deleteUser(@ApiParam("历史党员信息") @RequestBody @Validated DeletePartyMemberDTO deletePartyMemberDTO) {
-        return ReturnUtil.buildReturn(extendedInfoService.deleteByUserId(deletePartyMemberDTO));
+    public ReturnEntity deleteUser(@RequestBody @Validated @ApiParam("删除党员信息实体") DeletePartyMemberDTO deletePartyMemberDTO) {
+        return ReturnUtil.buildReturn(extendedInfoService.InvalidByUserId(deletePartyMemberDTO));
     }
 
     @ApiOperation(value = "根据id恢复党员信息")
@@ -103,7 +98,7 @@ public class PartyInformationController {
             @ApiImplicitParam(name = "id", value = "id", paramType = "query"),
             @ApiImplicitParam(name = "label", value = "社区名字", paramType = "query")
     })
-    public PageInfo<CommunityVO> getCommunity(@ApiIgnore CommunityDTO communityDTO, Page page) {
+    public PageInfo<CommunityVO> getCommunity(@ApiParam("社区模糊查询实体") CommunityDTO communityDTO, Page page) {
         PageHelper.startPage(page);
         return new PageInfo<>(partyInformationService.selectCommunityVO(communityDTO));
     }

@@ -24,8 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetAndCopyProperties;
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
@@ -73,7 +71,7 @@ public class AbroadServiceImpl implements AbroadService {
             deletePartyMemberDTO.setUserId(userId);
             deletePartyMemberDTO.setOutType(OUT_TYPE);
             deletePartyMemberDTO.setQuitType(QUIT_TYPE);
-            extendedInfoService.deleteByUserId(deletePartyMemberDTO);
+            extendedInfoService.InvalidByUserId(deletePartyMemberDTO);
         }
         return result;
     }
