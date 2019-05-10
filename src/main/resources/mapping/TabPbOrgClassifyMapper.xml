@@ -266,10 +266,13 @@
     <select id="checkIsMoreThanAYear" resultType="java.lang.Boolean">
         SELECT
         IF
-            ( datediff( #{levelDate} , MAX(level_date)) >= 365, TRUE, FALSE ) AS `result`
+            ( datediff( #{levelDate} , MAX(level_date) ) >= 365, TRUE, FALSE ) AS `result`
         FROM
             tab_pb_org_classify
         WHERE dept_id = #{deptId}
+        <if test="orgClassifyId != null">
+            AND org_classify_id != #{orgClassifyId}
+        </if>
     </select>
 
 </mapper>
