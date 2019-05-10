@@ -188,6 +188,7 @@
             <result column="community_addr" jdbcType="BIGINT" property="communityAddr"/>
             <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
             <result column="phone" jdbcType="VARCHAR" property="phone"/>
+            <result column="is_poor" jdbcType="TINYINT" property="isPoor"/>
             <result column="age" jdbcType="VARCHAR" property="age"/>
             <result column="fix_phone" jdbcType="VARCHAR" property="fixPhone"/>
             <result column="family_address" jdbcType="VARCHAR" property="familyAddress"/>

@@ -71,7 +71,7 @@ public class AbroadServiceImpl implements AbroadService {
             deletePartyMemberDTO.setUserId(userId);
             deletePartyMemberDTO.setOutType(OUT_TYPE);
             deletePartyMemberDTO.setQuitType(QUIT_TYPE);
-            extendedInfoService.InvalidByUserId(deletePartyMemberDTO);
+            extendedInfoService.invalidByUserId(deletePartyMemberDTO);
         }
         return result;
     }

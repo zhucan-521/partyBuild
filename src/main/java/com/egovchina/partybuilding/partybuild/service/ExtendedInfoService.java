@@ -43,7 +43,7 @@ public interface ExtendedInfoService {
      * @param reduce 减少原因实体
      * @return
      */
-    int InvalidByUserId(DeletePartyMemberDTO reduce);
+    int invalidByUserId(DeletePartyMemberDTO reduce);
 
     /**
      * 查询书记党员的简单详情信息
