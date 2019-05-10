@@ -11,6 +11,8 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbHardshipMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.HardshipPartyMemberService;
+import com.egovchina.partybuilding.partybuild.service.UserTagService;
+import com.egovchina.partybuilding.partybuild.util.UserTagType;
 import com.egovchina.partybuilding.partybuild.vo.HardshipPartyVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -38,6 +40,9 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
     @Autowired
     private TabSysUserMapper tabSysUserMapper;
 
+    @Autowired
+    private UserTagService userTagService;
+
     @Override
     public PageInfo<HardshipPartyVO> findHardshipPartyVOWithConditions(HardshipQueryBean hardshipQueryBean, Page page) {
         PageHelper.startPage(page);
@@ -49,10 +54,11 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
         verification(hardshipPartyMemberDTO);
         TabPbHardship tabPbHardship = generateTargetCopyPropertiesAndPaddingBaseField(hardshipPartyMemberDTO, TabPbHardship.class, false);
         /**
-         * 新增困难党员时 修改党员困难标识
+         * 新增困难党员时 添加党员困难标识,并在党员表修改是否困难党员的字段
          **/
         int result = tabPbHardshipMapper.insertSelective(tabPbHardship);
         if (result > 0) {
+            result += userTagService.addUserTag(tabPbHardship.getUserId(), UserTagType.DIFFICULT);
             result += tabSysUserMapper.updateUserIsPoorByHardshipId(1, tabPbHardship.getHardshipId());
         }
         return result;
@@ -66,9 +72,10 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(hardship);
         int result = tabPbHardshipMapper.updateByPrimaryKeySelective(hardship);
         /**
-         * 困难党员删除时 党员困难标识也随之被修改
+         * 困难党员删除时 移除党员困难标识,并在党员表修改是否困难党员的字段
          **/
         if (result > 0) {
+            result += userTagService.delete(tabPbHardshipMapper.selectByPrimaryKey(hardshipId).getUserId(), UserTagType.DIFFICULT);
             result += tabSysUserMapper.updateUserIsPoorByHardshipId(0, hardshipId);
         }
         return result;
