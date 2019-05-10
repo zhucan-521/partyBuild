@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class ActivitiesVO {
     private String subject;
 
     @ApiModelProperty(value = "活动开始时间")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date startTime;
 
     @ApiModelProperty(value = "活动组织id")

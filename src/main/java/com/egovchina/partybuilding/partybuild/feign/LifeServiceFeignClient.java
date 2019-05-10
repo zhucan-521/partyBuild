@@ -26,7 +26,7 @@ public interface LifeServiceFeignClient {
      * @Date: 2019/5/10
      */
     @ApiOperation(value = "活动修改/新增联点领导", notes = "活动修改/新增联点领导")
-    @PutMapping("/v1/activities/addLianDianLeadership")
+    @PutMapping("/v1/activities/leader")
     @ResponseBody
     ReturnEntity updateLianDianLeadership(@RequestParam("activitiesId") List<Long> activitiesId,
                                           @RequestParam("userId") Long userId,
