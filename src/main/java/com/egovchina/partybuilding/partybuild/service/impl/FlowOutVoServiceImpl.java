@@ -209,7 +209,7 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
             }
             return flag;
         }
-        throw new BusinessDataCheckFailException("只有带报道的流动党员才可以删除！");
+        throw new BusinessDataCheckFailException("只有带报道的流动党员才可以删除");
     }
 
 }
