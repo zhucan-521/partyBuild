@@ -27,5 +27,5 @@ public interface TabPbPunishmentMapper {
 
     PunishmentVO selectByPrimaryKeyAndFiles(Long punishmentId);
 
-    List<PunishmentVO> selectListAndFileVO(@Param("userId") Long userId);
+    List<PunishmentVO> selectListAndFileVO(@Param("orgId") Long orgId, @Param("userId") Long userId);
 }

@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.partybuild.entity.StreetCommitteeMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember;
 import com.egovchina.partybuilding.partybuild.vo.StreetCommitteeMemberVO;
 import org.apache.ibatis.annotations.Param;
@@ -33,10 +34,10 @@ public interface TabPbGrantCommitteMemberMapper {
     /**
      * 通过关联的主表id查询
      *
-     * @param member
+     * @param streetCommitteeMemberQueryBean
      * @return
      */
-    List<StreetCommitteeMemberVO> selectStreetCommitteeMemberVOList(TabPbGrantCommitteMember member);
+    List<StreetCommitteeMemberVO> selectStreetCommitteeMemberVOList(StreetCommitteeMemberQueryBean streetCommitteeMemberQueryBean);
 
     /**
      * 根据大工委成员id查大工委成员信息

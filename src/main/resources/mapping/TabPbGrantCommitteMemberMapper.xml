@@ -76,6 +76,22 @@
     del_flag, order_num, description, create_time, create_userid, create_username, update_time, 
     update_userid, update_username, version
     </sql>
+
+    <sql id="column_dept">
+        <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <choose>
+            <when test="orgRange == 1">
+                AND (d.dept_id = #{orgId} OR d.parent_id = #{orgId})
+            </when>
+            <when test="orgRange == 2">
+                AND find_in_set(#{orgId}, d.full_path)
+            </when>
+            <otherwise>
+                AND d.dept_id = #{orgId}
+            </otherwise>
+        </choose>
+    </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     SELECT
         B.*,
@@ -345,7 +361,7 @@
     </select>
 
     <select id="selectStreetCommitteeMemberVOList"
-            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbGrantCommitteMember"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.StreetCommitteeMemberQueryBean"
             resultMap="StreetCommitteeMemberVOResultMap">
         SELECT
         B.grant_committee_member_id,B.grant_committee_id,B.user_id,B.org_id,B.lead_team_id,B.party_member_id,
@@ -366,10 +382,6 @@
         INNER JOIN sys_dept d ON B.org_id = d.dept_id
         WHERE
         B.del_flag = '0'
-        <if test=" grantCommitteeId!= null">
-            and A.grant_committee_id = #{grantCommitteeId,jdbcType=BIGINT}
-        </if>
-
         <if test="personName != null and personName != ''">
             and B.person_name like concat('%', #{personName}, '%')
         </if>
@@ -377,6 +389,8 @@
         <if test="positiveName != null and positiveName != ''">
             and B.positive_name like concat('%',#{positiveName},'%')
         </if>
+        <include refid="column_dept"/>
+        ORDER BY A.current DESC
     </select>
 
     <update id="updateByGrantCommitteeSelective"
