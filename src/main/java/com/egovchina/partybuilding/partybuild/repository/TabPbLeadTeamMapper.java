@@ -56,5 +56,5 @@ public interface TabPbLeadTeamMapper {
      * @param orgId
      * @return
      */
-    List<TabPbLeadTeam> chechLeadTeamIsExist(Long sessionYear, Long orgId);
+    Boolean chechLeadTeamIsExist(Long sessionYear, Long orgId);
 }
