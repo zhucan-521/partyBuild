@@ -52,6 +52,7 @@
         <result column="punish_org" jdbcType="VARCHAR" property="punishOrg"/>
         <result column="punish_org_id" jdbcType="BIGINT" property="punishOrgId"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="realname" jdbcType="VARCHAR" property="realName"/>
         <result column="punish_name" jdbcType="VARCHAR" property="punishName"/>
         <result column="judiciary_flag" jdbcType="VARCHAR" property="judiciaryFlag"/>
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
@@ -113,10 +114,12 @@ GROUP BY
     <select id="selectListAndFileVO" resultMap="ResultMapWithMoreBLOBAll">
         select
         <include refid="Easy_Column_List"/>,
+        u.realname,
         vac.doc_num,
         vac.img_num
         from tab_pb_punishment p
         left join view_attachment_count vac on p.punishment_id = vac.host_id and vac.attachment_type = 12
+        left join sys_user u on p.user_id =u.user_id
         where p.del_flag = '0'
         <if test="userId != null">
             and p.user_id = #{userId}

@@ -27,6 +27,9 @@ public class RewardsVO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date rewardsDate;
 
+    @ApiModelProperty(value = "用户名")
+    private String realName;
+
     @ApiModelProperty(value = "奖励机构")
     private String rewardsOrgnize;
 

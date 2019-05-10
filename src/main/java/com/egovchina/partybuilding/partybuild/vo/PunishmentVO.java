@@ -42,6 +42,9 @@ public class PunishmentVO {
     @ApiModelProperty(value = "userId", required = true)
     private Long userId;
 
+    @ApiModelProperty(value = "用户名")
+    private String realName;
+
     @ApiModelProperty(value = "备注：处分说明")
     private String comment;
 

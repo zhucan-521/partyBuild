@@ -53,6 +53,7 @@
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="rewards_name" jdbcType="VARCHAR" property="rewardsName"/>
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
+        <result column="realname" jdbcType="VARCHAR" property="realName"/>
         <result column="img_num" jdbcType="BIGINT" property="imgTool"/>
         <result column="doc_num" jdbcType="BIGINT" property="fileTool"/>
     </resultMap>
@@ -135,13 +136,15 @@ GROUP BY
     <select id="selectListAndFile" resultMap="ResultMapWithMoreBLOBAll">
         select
         <include refid="Easy_Colum_List"/>
+        ,u.realname
         ,vac.doc_num,
         vac.img_num
         from tab_pb_rewards r
         left join view_attachment_count vac on r.rewards_id = vac.host_id and vac.attachment_type = 11
+        left join sys_user u on u.user_id = r.user_id
         where r.del_flag = '0'
         <if test="userId != null">
-            and user_id = #{userId}
+            and p.user_id = #{userId}
         </if>
         <if test="orgId != null">
             and rewards_orgnize_id = #{orgId}
