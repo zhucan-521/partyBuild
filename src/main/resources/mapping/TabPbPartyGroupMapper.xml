@@ -285,12 +285,15 @@
 
     <!-- 根据主键查询该条数据是否存在 -->
     <select id="checkIsExistByGroupId" parameterType="java.lang.Long" resultType="boolean">
-        SELECT COUNT(1) FROM tab_pb_party_group WHERE group_id = #{groupId,jdbcType=BIGINT}
+        SELECT COUNT(1) FROM tab_pb_party_group WHERE group_id = #{groupId,jdbcType=BIGINT} AND del_flag = 0
     </select>
 
     <!-- 根据党小组名称该条数据是否存在 -->
     <select id="checkIsExistByGroupName" resultType="java.lang.Boolean">
         SELECT COUNT(1) FROM tab_pb_party_group WHERE group_name = #{groupName,jdbcType=VARCHAR}
+        <if test="excludeGroupId != null">
+            AND group_id != #{excludeGroupId}
+        </if>
     </select>
 
     <!-- 根据主键查询党小组详情 -->
