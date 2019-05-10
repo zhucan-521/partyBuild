@@ -425,7 +425,7 @@
         </if>
 
         <if test="isRevoke != null and isRevoke != '' ">
-            AND pg.is_revoke = #{isRevoke}
+            AND is_revoke = #{isRevoke}
         </if>
 
     </select>
