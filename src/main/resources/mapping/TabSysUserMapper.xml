@@ -194,7 +194,7 @@
             <result column="family_address" jdbcType="VARCHAR" property="familyAddress"/>
             <result column="positived" jdbcType="VARCHAR" property="positived"/>
             <result column="identity_type" jdbcType="BIGINT" property="identityType"/>
-            <result column="files_manage_unit" jdbcType="VARCHAR" property="filesManageUnit"/>
+            <result column="files_manage_unit" jdbcType="BIGINT" property="filesManageUnit"/>
             <result column="registry_status" jdbcType="BIGINT" property="registryStatus"/>
             <result column="join_time" jdbcType="TIMESTAMP" property="joinTime"/>
             <result column="regular_time" jdbcType="TIMESTAMP" property="regularTime"/>
