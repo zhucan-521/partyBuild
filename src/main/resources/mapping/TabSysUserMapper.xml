@@ -155,7 +155,7 @@
         <result column="identity_type" jdbcType="BIGINT" property="identityType"/>
         <result column="marital_status" jdbcType="BIGINT" property="maritalStatus"/>
         <result column="education" jdbcType="BIGINT" property="education"/>
-        <result column="unit_name" jdbcType="BIGINT" property="unitName"/>
+        <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
         <result column="flow_status" jdbcType="BIGINT" property="flowStatus"/>
         <result column="is_llost" jdbcType="TINYINT" property="isLlost"/>
         <result column="is_taiwaner" jdbcType="TINYINT" property="isTaiwaner"/>
@@ -225,6 +225,8 @@
         <result column="in_where_dept_name" jdbcType="VARCHAR" property="inWhereDeptName"/>
         <result column="age" jdbcType="BIGINT" property="partyStanding"/>
         <result column="reduce_time" jdbcType="TIMESTAMP" property="reduceTime"/>
+        <result column="out_type" jdbcType="BIGINT" property="outType"/>
+        <result column="quit_type" jdbcType="BIGINT" property="quitType"/>
     </resultMap>
     <!--查询组织书记的简单信息-->
     <resultMap id="BaseSecretariesPartyResultMap"
@@ -319,7 +321,8 @@
         <if test="orgRange == null and deptId != null">
             AND u.dept_id = #{deptId}
         </if>
-        AND u.del_flag = '0'
+        AND u.ebl_flag = '1'
+        and u.del_flag ='0'
         <if test="idCardNo != null and idCardNo != ''">
             AND id_card_no = #{idCardNo}
         </if>
@@ -382,6 +385,7 @@
         join_org_name,marital_status,ancestor_place,join_org_time
         from sys_user
         where user_id = #{userId,jdbcType=BIGINT}
+        and ebl_flag = '1'
         and del_flag = '0'
     </select>
 
@@ -404,7 +408,7 @@
     <select id="selectPageByMap" resultMap="UserInFo">
         select
         <include refid="Base_users_info"/>
-        ,dd.unit_name,
+        ,t.unit_property,
         <include refid="dept_name_result"/>
         <choose>
             <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
@@ -429,11 +433,11 @@
         LEFT JOIN ( SELECT dept_id AS subordinate_dept_id, NAME AS subordinate_dept_name FROM sys_dept ) sd
         ON sd.subordinate_dept_id = u.dept_id
         left join sys_dept dd on dd.dept_id =u.dept_id
+        left join tab_pb_unit_info t on dd.unit_id = t.unit_id
         <where>
             <include refid="selectPageByMapWhereCaseList"/>
         </where>
         ORDER BY u.dept_id asc, u.join_time desc
-
     </select>
     <!--用于复写mybatis的查询count数-->
     <select id="selectPageByMap_COUNT" parameterType="Map" resultType="java.lang.Long">
@@ -462,6 +466,7 @@
         LEFT JOIN ( SELECT dept_id AS subordinate_dept_id, NAME AS subordinate_dept_name FROM sys_dept ) sd
         ON sd.subordinate_dept_id = u.dept_id
         left join sys_dept dd on dd.dept_id =u.dept_id
+        left join tab_pb_unit_info t on dd.unit_id = t.unit_id
         <where>
             <include refid="selectPageByMapWhereCaseList"/>
         </where>
@@ -1659,7 +1664,7 @@
     </update>
     <update id="updateByUserId" parameterType="java.lang.Long">
     update sys_user
-    set del_flag = 1
+    set ebl_flag = 1
     where user_id = #{user_id}
    </update>
 
@@ -1675,7 +1680,7 @@
 
     <!--根据身份証查找identity信息-->
     <select id="selectUserByIdFindIdentity" parameterType="java.lang.Long" resultType="java.lang.Long">
-        select identity_type from sys_user where user_id =#{user_id} and del_flag = 1
+        select identity_type from sys_user where user_id =#{user_id} and ebl_flag = 1
     </select>
 
     <!--通过用户名或者身份证查询用户信息-->
@@ -1684,7 +1689,8 @@
         select
         <include refid="Base_Column_List_new"/>
         from sys_user
-        where del_flag = 0
+        where del_flag = '0'
+        and ebl_flag = '1'
         <if test="username != null and username != ''">
             AND realname like concat(concat("%",#{username,jdbcType=VARCHAR}),"%")
         </if>
