@@ -51,7 +51,7 @@ public class PartyGroupServiceImpl implements PartyGroupService {
 
     @Override
     public int insertPartyGroup(PartyGroupDTO partyGroupDTO) {
-        verificationPartyGroup(partyGroupDTO, false);
+        verificationPartyGroup(partyGroupDTO);
         TabPbPartyGroup tabPbPartyGroup = generateTargetCopyPropertiesAndPaddingBaseField(partyGroupDTO, TabPbPartyGroup.class, false);
         int result = tabPbPartyGroupMapper.insertSelective(tabPbPartyGroup);
         if (result > 0) {
@@ -62,7 +62,7 @@ public class PartyGroupServiceImpl implements PartyGroupService {
 
     @Override
     public int updatePartyGroup(PartyGroupDTO partyGroupDTO) {
-        verificationPartyGroup(partyGroupDTO, true);
+        verificationPartyGroup(partyGroupDTO);
         int result = tabPbPartyGroupMapper.updateByPrimaryKeySelective(generateTargetCopyPropertiesAndPaddingBaseField(partyGroupDTO, TabPbPartyGroup.class, true));
         if (result > 0) {
             result += maintainUpdatePartyGroupAction(partyGroupDTO, partyGroupDTO.getGroupId());
@@ -113,14 +113,14 @@ public class PartyGroupServiceImpl implements PartyGroupService {
      * @author FanYanGen
      * @date 2019/4/29 14:28
      **/
-    private void verificationPartyGroup(PartyGroupDTO partyGroupDTO, boolean isCheckPrimaryKey) {
+    private void verificationPartyGroup(PartyGroupDTO partyGroupDTO) {
         if (!tabSysDeptMapper.checkIsExistByOrgId(partyGroupDTO.getOrgId())) {
             throw new BusinessDataCheckFailException("该党组织不存在");
         }
         if (tabPbPartyGroupMapper.checkIsExistByGroupName(partyGroupDTO.getGroupName(), partyGroupDTO.getGroupId())) {
             throw new BusinessDataCheckFailException("该党小组名称已存在");
         }
-        if (isCheckPrimaryKey && !tabPbPartyGroupMapper.checkIsExistByGroupId(partyGroupDTO.getGroupId())) {
+        if (partyGroupDTO.getGroupId() != null && !tabPbPartyGroupMapper.checkIsExistByGroupId(partyGroupDTO.getGroupId())) {
             throw new BusinessDataCheckFailException("该党小组不存在");
         }
     }
