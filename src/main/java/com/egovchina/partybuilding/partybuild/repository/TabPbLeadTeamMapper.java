@@ -48,4 +48,13 @@ public interface TabPbLeadTeamMapper {
      * @param leadTeamId 班子id
      */
     void correctTheNumberOfTeamsAccordingToTheTeamId(Long leadTeamId);
+
+    /**
+     * 判断新增的领导班子在数据库中是否已经存在
+     *
+     * @param sessionYear
+     * @param orgId
+     * @return
+     */
+    Boolean chechLeadTeamIsExist(Long sessionYear, Long orgId);
 }
