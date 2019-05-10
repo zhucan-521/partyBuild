@@ -993,4 +993,13 @@
         SELECT COUNT(1) FROM sys_dept WHERE dept_id = #{deptId} AND del_flag = 0
     </select>
 
+    <!--检查是否存在非直属-->
+    <select id="checkIsExistUnDirectSub" resultType="java.lang.Boolean">
+        SELECT COUNT(1) FROM sys_dept WHERE del_flag = 0 AND dept_id IN
+        <foreach collection="subOrgIds" item="item" open="(" separator="," close=")">
+            ${item}
+        </foreach>
+        AND parent_id != #{orgId}
+    </select>
+
 </mapper>
