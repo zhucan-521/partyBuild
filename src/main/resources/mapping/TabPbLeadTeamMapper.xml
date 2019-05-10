@@ -447,4 +447,8 @@
         left join sys_dept d on l.org_id = d.dept_id
         where l.del_flag = 0 and lead_team_id = #{leadTeamId}
     </select>
+
+    <select id="chechLeadTeamIsExist" resultType="com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeam" parameterType="long">
+        select * from tab_pb_lead_team where session_year = #{sessionYear} and org_id = #{orgId} and del_flag = '0'
+    </select>
 </mapper>

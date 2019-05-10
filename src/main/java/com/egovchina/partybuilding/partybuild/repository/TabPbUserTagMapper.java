@@ -26,13 +26,6 @@ public interface TabPbUserTagMapper {
 
     List<TabPbUserTag> selectListSelective(TabPbUserTag userTag);
 
-    /**
-     * 以字典为主的返回
-     *
-     * @param userTag 只有userId有用
-     * @return
-     */
-    List<TabPbUserTag> selectAllListSelective(TabPbUserTag userTag);
 
     boolean exist(@Param("userId") Long userId, @Param("tagType") Long tagType);
 
@@ -45,8 +38,6 @@ public interface TabPbUserTagMapper {
     int batchInsertUserTagDTO(List<TabPbUserTag> list);
 
     List<TabPbUserTag> selectTagTypesList(Long userId);
-
-    List selectUsertagIdList(Long userId);
 
     List<TabPbUserTag> selectTabPbUserTagListByUserId(Long userId);
 
@@ -67,4 +58,5 @@ public interface TabPbUserTagMapper {
      * @return
      */
     int batchDeleteById(List<Long> deleteIds);
+
 }

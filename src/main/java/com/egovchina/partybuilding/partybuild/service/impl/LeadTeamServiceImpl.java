@@ -1,6 +1,8 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysDept;
+import com.egovchina.partybuilding.common.exception.BusinessDataInvalidException;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.CommonConstant;
@@ -68,6 +70,12 @@ public class LeadTeamServiceImpl implements LeadTeamService {
     @Transactional
     @Override
     public int insertLeadTeam(LeadTeamDTO leadTeamDTO) {
+        //判断新增的领导班子在数据库中是否已经存在,如果存在则不能新增
+        List<TabPbLeadTeam> list = tabPbLeadTeamMapper.chechLeadTeamIsExist(leadTeamDTO.getSessionYear(), leadTeamDTO.getOrgId());
+        int result = list.size();
+        if (result > 0) {
+            throw new BusinessDataInvalidException(String.format("该组织在%d届中已经存在了", leadTeamDTO.getSessionYear()));
+        }
         TabPbLeadTeam tabPbLeadTeam =
                 generateTargetCopyPropertiesAndPaddingBaseField(leadTeamDTO, TabPbLeadTeam.class, false);
         int judgment = tabPbLeadTeamMapper.insertSelective(tabPbLeadTeam);
