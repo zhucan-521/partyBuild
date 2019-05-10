@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class LeadTeamMemberQueryBean {
 
-    @ApiModelProperty("列表范围 0 查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织")
+    @ApiModelProperty("列表范围 1 查当前组织及其直属组织； 2 查当前组织及所有下级组织 默认查当前")
     private String orgRange;
 
     @ApiModelProperty("班子届数")
