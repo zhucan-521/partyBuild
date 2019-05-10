@@ -52,7 +52,7 @@ public class AbroadServiceImpl implements AbroadService {
     /**
      * 减少方式为停止党籍
      **/
-    private final Long OUT_TYPE = 4L;
+    private final Long OUT_TYPE = 59591L;
 
     /**
      * 出党方式为出国出境
@@ -73,7 +73,7 @@ public class AbroadServiceImpl implements AbroadService {
             deletePartyMemberDTO.setUserId(userId);
             deletePartyMemberDTO.setOutType(OUT_TYPE);
             deletePartyMemberDTO.setQuitType(QUIT_TYPE);
-            extendedInfoService.updateByUserId(deletePartyMemberDTO);
+            extendedInfoService.deleteByUserId(deletePartyMemberDTO);
         }
         return result;
     }

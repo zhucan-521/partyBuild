@@ -16,7 +16,7 @@ public interface ExtendedInfoService {
 
     PartyMemberVO selectPartyMemberVOById(Long userId);
 
-    int updateByUserId(DeletePartyMemberDTO reduce);
+    int deleteByUserId(DeletePartyMemberDTO reduce);
 
     SecretariesPartyMemberVO selectSecretariesPartyMemberVO(Long userId);
 }

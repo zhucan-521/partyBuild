@@ -107,7 +107,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         List<MemberReducesVO> memberReducesVO = reduceListMapper.historyPartyPageDel(queryBean);
         //计算党龄
         for (int i = 0; i < historyPartyVO.size(); i++) {
-            //理论党龄 (加入党组织时间-当前减少时间)
+            //理论党龄 (加入党组织时间-当前减少时间 因为偏差问题返回月份)
             Integer age = historyPartyVO.get(i).getPartyStanding();
             if (age != null) {
                 //党龄减去以前党员减少的情况
@@ -127,6 +127,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                             }
                         }
                     }
+                    //计算年,未满一年 不计算
+                    age = age / 12;
                 }
             } else {
                 age = 0;

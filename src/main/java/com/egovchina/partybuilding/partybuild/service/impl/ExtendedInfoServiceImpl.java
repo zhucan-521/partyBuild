@@ -85,10 +85,11 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public int updateByUserId(DeletePartyMemberDTO reduce) {
+    public int deleteByUserId(DeletePartyMemberDTO reduce) {
         SysUser user =
                 BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(reduce, SysUser.class, false);
-        user.setDelFlag(CommonConstant.STATUS_DEL);
+        //设置无效状态
+        user.setEblFlag(CommonConstant.STATUS_NOEBL);
         //停止党籍
         if (STOPPARTYREDUCTION.equals(reduce.getOutType())) {
             user.setRegistryStatus(STOPPARTYMEMBERSHIP);
@@ -107,6 +108,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         if (flag > 0) {
             TabPbMemberReduceList tabPbMemberReduceList =
                     BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(reduce, TabPbMemberReduceList.class, false);
+            //获取用户名+组织id
             newuser = tabSysUserMapper.selectByPrimaryKey(reduce.getUserId());
             if (newuser != null) {
                 tabPbMemberReduceList.setDeptId(newuser.getDeptId());
@@ -135,11 +137,12 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         if (DISMISSALOFPARTYMEMBERSHIP.equals(reduceList.getQuitType())) {
             throw new BusinessDataNotFoundException("该党员已被开除党籍,无法恢复");
         }
-        reduceList.setDelFlag(CommonConstant.STATUS_DEL);
+        //设置无效状态
+        reduceList.setEblFlag(CommonConstant.STATUS_NOEBL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(reduceList);
         //更新历史党员表
         int num = reduceListMapper.updateByPrimaryKeySelective(reduceList);
-        //查询查询identity_type
+        //查询查询identity_type 只能查询党员状态为无效的
         Long identityType = tabSysUserMapper.selectUserByIdFindIdentity(userId);
         if (identityType == null) {
             throw new BusinessDataNotFoundException("该党员未被删除或者人员类别为空");
@@ -148,7 +151,8 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         membershipDTO.setUserId(userId).setIdentityType(identityType).setType(OFFICIALPARTYMEMBER);
         //新增党籍
         num += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
-        SysUser user = new SysUser().setUserId(userId).setRegistryStatus(OFFICIALPARTYMEMBER).setDelFlag(CommonConstant.STATUS_NORMAL);
+        //党员状态设置有效
+        SysUser user = new SysUser().setUserId(userId).setRegistryStatus(OFFICIALPARTYMEMBER).setEblFlag(CommonConstant.STATUS_EBL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(user);
         //更新党员表
         num += tabSysUserMapper.updateByPrimaryKeySelective(user);

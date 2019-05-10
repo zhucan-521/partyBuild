@@ -47,12 +47,13 @@
             resultMap="com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper.History_UserInfo">
         select
         r.user_id,u.realname,u.id_card_no,u.gender,u.nation,r.dept_id
-        ,d.name as in_where_dept_name,TIMESTAMPDIFF(YEAR, u.join_org_time,r.reduce_time) AS
+        ,d.name as in_where_dept_name,TIMESTAMPDIFF(month,
+        DATE_FORMAT(u.join_org_time,'%Y-%m-%d'),DATE_FORMAT(r.reduce_time,'%Y-%m-%d')) AS
         age,r.update_time,r.reduce_time,r.out_type,r.quit_type
         from tab_pb_member_reduce_list r
         JOIN sys_user u on r.user_id = u.user_id
         JOIN sys_dept d on r.dept_id = d.dept_id
-        where r.del_flag = '0'
+        where r.ebl_flag = '1'
         <if test="orgRange != null and orgRange != '' and deptId != null">
             <choose>
             <when test="orgRange == 1">
@@ -85,11 +86,12 @@
             parameterType="com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean"
             resultType="com.egovchina.partybuilding.partybuild.vo.MemberReducesVO">
         select
-        r.user_id,TIMESTAMPDIFF(YEAR, r.reduce_time, r.update_time) AS age
+        r.user_id,TIMESTAMPDIFF(month, DATE_FORMAT(r.reduce_time,'%Y-%m-%d') ,DATE_FORMAT(r.update_time,'%Y-%m-%d')) AS
+        age
         from tab_pb_member_reduce_list r
         JOIN sys_user u on r.user_id = u.user_id
         JOIN sys_dept d on r.dept_id = d.dept_id
-        where r.del_flag = '1'
+        where r.ebl_flag = '0'
         <if test="orgRange != null and orgRange != '' and deptId != null">
             <choose>
                 <when test="orgRange == 1">

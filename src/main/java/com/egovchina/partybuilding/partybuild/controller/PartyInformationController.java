@@ -87,7 +87,7 @@ public class PartyInformationController {
     @ApiOperation(value = "根据id删除 user信息")
     @PostMapping("/history-members")
     public ReturnEntity deleteUser(@ApiParam("历史党员信息") @RequestBody @Validated DeletePartyMemberDTO deletePartyMemberDTO) {
-        return ReturnUtil.buildReturn(extendedInfoService.updateByUserId(deletePartyMemberDTO));
+        return ReturnUtil.buildReturn(extendedInfoService.deleteByUserId(deletePartyMemberDTO));
     }
 
     @ApiOperation(value = "根据id恢复党员信息")
