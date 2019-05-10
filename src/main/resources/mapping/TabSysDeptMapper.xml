@@ -990,7 +990,7 @@
 
     <!-- 检查数据是否存在 -->
     <select id="checkIsExistByOrgId" parameterType="java.lang.Long" resultType="boolean">
-        SELECT COUNT(1) FROM sys_dept WHERE dept_id = #{deptId}
+        SELECT COUNT(1) FROM sys_dept WHERE dept_id = #{deptId} AND del_flag = 0
     </select>
 
 </mapper>
