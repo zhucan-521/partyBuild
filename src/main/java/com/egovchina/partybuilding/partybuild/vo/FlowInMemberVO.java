@@ -30,11 +30,9 @@ public class FlowInMemberVO {
     @ApiModelProperty(value = "流往组织名称")
     private String flowToOrgName;
 
-
     @ApiModelProperty(value = "原职业 码表ZY")
     @JsonSerialize(using = DictSerializer.class)
     private Long outProfession;
-
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "流出日期", example = "yyyy-hh-dd")
@@ -109,7 +107,6 @@ public class FlowInMemberVO {
     @JsonSerialize(using = DictSerializer.class)
     private Long flowInState;
 
-
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "失联时间", example = "yyyy-hh-dd")
     private Date lostTime;
@@ -120,4 +117,5 @@ public class FlowInMemberVO {
 
     @ApiModelProperty(value = "0流出日期大于当前日期，1流出日期小于等于当前日期")
     private Long isEnableAccept;
+
 }

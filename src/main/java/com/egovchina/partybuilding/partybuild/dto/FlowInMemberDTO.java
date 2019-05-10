@@ -117,5 +117,4 @@ public class FlowInMemberDTO {
     @ApiModelProperty(value = "失联情况 码表值LXQK")
     private Long linkStatus;
 
-
 }

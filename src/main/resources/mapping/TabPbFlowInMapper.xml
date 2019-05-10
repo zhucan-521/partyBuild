@@ -75,7 +75,8 @@
   </sql>
     <sql id="Base_FlowIn_List">
         s.flow_from_org_name AS old_orgnize_name,
-        s.flow_to_org_name AS flow_to_org_name,
+        -- s.flow_to_org_name AS flow_to_org_name,
+        (case when IFNULL(t.org_id,1)=1  then  s.flow_to_org_name else (select name from  sys_dept where dept_id=t.org_id)  end)flow_to_org_name,
         t.flow_in_id,
 		t.org_id,
 		t.old_orgnize_id,
