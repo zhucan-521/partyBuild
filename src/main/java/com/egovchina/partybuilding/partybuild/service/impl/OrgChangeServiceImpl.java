@@ -21,7 +21,6 @@ import com.egovchina.partybuilding.partybuild.service.SysDictService;
 import com.egovchina.partybuilding.partybuild.vo.DirectPartyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
 import com.github.pagehelper.PageHelper;
-import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +41,7 @@ import static com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil.paddi
  */
 @Service("orgChangeService")
 public class OrgChangeServiceImpl implements OrgChangeService {
+
     //组织所在单位类型 上级党组织相同
     private final Long UNIT_SAME = 59139L;
 
@@ -153,14 +153,22 @@ public class OrgChangeServiceImpl implements OrgChangeService {
         //restful 属性拷贝，填充基本字段
         TabPbOrgnizeChange tabPbOrgnizeChange = new TabPbOrgnizeChange();
         copyPropertiesIgnoreNullAndPaddingBaseField(orgChangeDTO, tabPbOrgnizeChange, true);
-        if (ORG_RENAME.equals(dict.getValue())) {
-            this.orgRename(tabPbOrgnizeChange);
-        } else if (ORG_REVOKE.equals(dict.getValue())) {
-            this.orgRestoreOrRevoke(tabPbOrgnizeChange, CommonConstant.STATUS_NOEBL, REVOKE);
-        } else if (ORG_RESTORE.equals(dict.getValue())) {
-            this.orgRestoreOrRevoke(tabPbOrgnizeChange, CommonConstant.STATUS_EBL, RESTORE);
-        } else if (ORG_ADJUST.equals(dict.getValue()) || ORG_SHIFT.equals(dict.getValue())) {
-            this.insertOrgChange(tabPbOrgnizeChange);
+        switch (dict.getValue()) {
+            case ORG_RENAME:
+                this.orgRename(tabPbOrgnizeChange);
+                break;
+            case ORG_REVOKE:
+                this.orgRestoreOrRevoke(tabPbOrgnizeChange, CommonConstant.STATUS_NOEBL, REVOKE);
+                break;
+            case ORG_RESTORE:
+                this.orgRestoreOrRevoke(tabPbOrgnizeChange, CommonConstant.STATUS_EBL, RESTORE);
+                break;
+            case ORG_ADJUST:
+            case ORG_SHIFT:
+                this.insertOrgChange(tabPbOrgnizeChange);
+                break;
+            default:
+                throw new BusinessDataInvalidException("组织变动类型不存在");
         }
         paddingBaseFiled(tabPbOrgnizeChange);
         int count = 0;
@@ -177,11 +185,11 @@ public class OrgChangeServiceImpl implements OrgChangeService {
      * @return
      */
     private int orgRename(TabPbOrgnizeChange org) {
-        if (this.tabSysDeptMapper.checkOrgNameAvailability(org.getOrgnizeName(), org.getDeptId())) {
+        if (tabSysDeptMapper.checkNameOrShortName(org.getOrgnizeName(), org.getDeptId()) > 0) {
             throw new BusinessDataInvalidException("组织名称已存在");
         }
 
-        var newDept = new SysDept();
+        SysDept newDept = new SysDept();
         newDept.setDeptId(org.getDeptId());
         newDept.setName(org.getOrgnizeName());
         newDept.setOrgShortName(org.getShortName());
@@ -205,7 +213,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
                 throw new BusinessDataInvalidException("该组织存在党员，撤消失败");
             }
         }
-        var newDept = new SysDept();
+        SysDept newDept = new SysDept();
         newDept.setDeptId(org.getDeptId());
         newDept.setEblFlag(eblFlag);
         newDept.setOrgStatus(orgStatus);
