@@ -55,12 +55,13 @@ public class RewardsAndPunishmentsController {
     @ApiOperation(value = "查询处分信息列表", notes = "查询处分信息", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "orgId", value = "组织id", paramType = "query"),
-            @ApiImplicitParam(name = "userId", value = "用户id", paramType = "query")
+            @ApiImplicitParam(name = "userId", value = "用户id", paramType = "query"),
+            @ApiImplicitParam(name = "userName", value = "用户名称", paramType = "query")
     })
     @GetMapping("/punishments/users")
-    public PageInfo<PunishmentVO> selectPunishmentList(Long orgId, Long userId, Page page) {
+    public PageInfo<PunishmentVO> selectPunishmentList(Long orgId, Long userId, String userName, Page page) {
         PageHelper.startPage(page);
-        return new PageInfo<>(rewardsAndPunishmentsService.selectPunishmentVOListAndFilesById(orgId, userId));
+        return new PageInfo<>(rewardsAndPunishmentsService.selectPunishmentVOListAndFilesById(orgId, userId, userName));
     }
 
     @ApiOperation(value = "添加奖励", notes = "奖励新增", httpMethod = "POST")
@@ -92,11 +93,12 @@ public class RewardsAndPunishmentsController {
     @ApiOperation(value = "查询奖励信息列表", notes = "查询奖励信息", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "orgId", value = "组织id", paramType = "query"),
-            @ApiImplicitParam(name = "userId", value = "用户id", paramType = "query")
+            @ApiImplicitParam(name = "userId", value = "用户id", paramType = "query"),
+            @ApiImplicitParam(name = "userName", value = "用户名称", paramType = "query")
     })
     @GetMapping("/rewards/users")
-    public PageInfo<RewardsVO> selectRewardsList(Long orgId, Long userId, Page page) {
+    public PageInfo<RewardsVO> selectRewardsList(Long orgId, Long userId, String userName, Page page) {
         PageHelper.startPage(page);
-        return new PageInfo<>(rewardsAndPunishmentsService.getRewardsListAndFiles(orgId, userId));
+        return new PageInfo<>(rewardsAndPunishmentsService.getRewardsListAndFiles(orgId, userId, userName));
     }
 }
