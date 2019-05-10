@@ -15,11 +15,36 @@ import java.util.List;
  */
 public interface JointPointInfoService {
 
+    /**
+     * 查询领导职务信息
+     *
+     * @param userId 用户id
+     * @return
+     */
     UserDeptPositionVO selectJointByUserId(Long userId);
 
+
+    /**
+     * 查询联点领导信息
+     *
+     * @param deptId 组织id
+     * @return
+     */
     List<LinkLeaderVO> selectUserDeptByDeptId(Long deptId);
 
+    /**
+     * 删除联点领导
+     *
+     * @param linkLedaerId 联点领导id
+     * @return
+     */
     int delJointPointInfoByLinkLedaerId(Long linkLedaerId);
 
+    /**
+     * 保存联点领导
+     *
+     * @param linkLeaderDTO 联点领导DTO
+     * @return
+     */
     int saveJointPointInfo(LinkLeaderDTO linkLeaderDTO);
 }

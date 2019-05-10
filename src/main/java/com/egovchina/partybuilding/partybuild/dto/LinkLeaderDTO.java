@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 描述:
@@ -51,4 +52,7 @@ public class LinkLeaderDTO {
 
     @ApiModelProperty(value = "组织名称")
     private String name;
+
+    @ApiModelProperty(value = "活动id集合")
+    private List<Long> activitiesId;
 }
