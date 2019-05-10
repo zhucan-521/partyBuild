@@ -655,27 +655,15 @@
 
     <!--根据传入的deptId获取它的上级部门和上级部门的专干-->
     <select id="getReceiveDeptAndWorker" parameterType="Long" resultMap="MsgUpInfoDtoResultVoMap">
-        select
-        (select parent_id from sys_dept where dept_id=#{deptId}) recevie_dept_id ,
-        (select name from sys_dept where dept_id = (select parent_id from sys_dept where dept_id=#{deptId})) recevie_dept_name ,
-        u.user_id as recevie_user_id,
-        u.realname as recevie_username
-        from
-        tab_pb_spcial_worker t
-        LEFT JOIN
-        sys_user u
-        on u.user_id=t.user_id
-        where
-        t.del_flag = 0
-        and
-        u.del_flag=0
-        and
-        manage_org_id =(select parent_id from sys_dept where dept_id=#{deptId})
-        and
-        IFNULL(t.left_time,now()) >=now()
-        ORDER BY
-        arrive_time
-        DESC
-        limit 1
+     select
+        (select parent_id from sys_dept d  where dept_id=#{deptId} and d.del_flag=0) recevie_dept_id ,
+        (select name from sys_dept d where dept_id = recevie_dept_id ) recevie_dept_name ,
+        (select user_id from tab_pb_spcial_worker where manage_org_id=recevie_dept_id
+         and tab_pb_spcial_worker.del_flag=0 and IFNULL(left_time,now())>=now() ORDER BY arrive_time DESC
+        ) recevie_user_id,
+        (select realname from sys_user where user_id=recevie_user_id
+        ) recevie_username
+    from
+    dual
     </select>
 </mapper>
