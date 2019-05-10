@@ -18,7 +18,7 @@ public class SysDictServiceImpl implements SysDictService {
     TabSysDictMapper tabSysDictMapper;
 
     @Override
-    public SysDict selectById(Integer id) {
+    public SysDict selectById(Long id) {
         return tabSysDictMapper.selectByPrimaryKey(id);
     }
 

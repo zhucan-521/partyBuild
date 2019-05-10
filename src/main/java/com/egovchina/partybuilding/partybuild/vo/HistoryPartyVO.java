@@ -37,9 +37,9 @@ public class HistoryPartyVO {
     @ApiModelProperty(value = "党龄")
     private Integer partyStanding;
 
-    @ApiModelProperty(value = "党籍 0无、1刚入党、2转正、3出党、4停止党籍、5死亡、6其他、 7发展中的党员")
+    @ApiModelProperty(value = "减少方式")
     @JsonSerialize(using = DictSerializer.class)
-    private Long registryStatus;
+    private Long outType;
 
     @ApiModelProperty(value = "原所在支部")
     private String inWhereDeptName;
@@ -47,4 +47,8 @@ public class HistoryPartyVO {
     @ApiModelProperty(value = "离开党组织时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date reduceTime;
+
+    @ApiModelProperty(value = "出党方式")
+    @JsonSerialize(using = DictSerializer.class)
+    private Long quitType;
 }

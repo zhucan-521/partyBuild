@@ -4,16 +4,12 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.PartyGroupDTO;
-import com.egovchina.partybuilding.partybuild.entity.PartyGroupMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.PartyGroupQueryBean;
 import com.egovchina.partybuilding.partybuild.service.PartyGroupService;
 import com.egovchina.partybuilding.partybuild.vo.PartyGroupVO;
 import com.egovchina.partybuilding.partybuild.vo.PartyMemberBaseVO;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -64,9 +60,13 @@ public class PartyGroupController {
     }
 
     @ApiOperation(value = "筛选指定组织中未在任何党小组存在的党员（更新时需要传入党小组ID）", notes = "筛选指定组织中未在任何党小组存在的党员", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orgId", value = "组织ID", paramType = "query", required = true),
+            @ApiImplicitParam(name = "groupId", value = "党小组ID", paramType = "query")
+    })
     @GetMapping("/candidate")
-    public PageInfo<PartyMemberBaseVO> screenPartyGroupMembers(@Validated PartyGroupMemberQueryBean partyGroupMemberQueryBean) {
-        return partyGroupService.screenPartyGroupMembers(partyGroupMemberQueryBean);
+    public PageInfo<PartyMemberBaseVO> screenPartyGroupMembers(Long orgId, Long groupId) {
+        return partyGroupService.screenPartyGroupMembers(orgId, groupId);
     }
 
     @ApiOperation(value = "获取党小组详情", notes = "获取党小组详情", httpMethod = "GET")

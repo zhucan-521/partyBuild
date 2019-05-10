@@ -24,7 +24,7 @@ public class DeletePartyMemberDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date reduceTime = new Date();
 
-    @ApiModelProperty(value = "出党方式 dict", required = true)
-    @NotNull(message = "出党方式不能为空")
+    @ApiModelProperty(value = "出党方式 dict")
     private Long quitType;
+
 }
