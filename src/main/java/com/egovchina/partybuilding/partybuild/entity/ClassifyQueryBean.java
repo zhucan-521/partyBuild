@@ -19,6 +19,6 @@ public class ClassifyQueryBean {
     private Long orgId;
 
     @ApiModelProperty(value = "定等级别 dict FLDD")
-    String orgLevel;
+    private String orgLevel;
 
 }

@@ -78,7 +78,7 @@ public class OrgClassifyServiceImpl implements OrgClassifyService {
         if (!tabSysDeptMapper.checkIsExistByOrgId(orgClassifyDTO.getDeptId())) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
-        if (!tabPbOrgClassifyMapper.checkIsMoreThanAYear(orgClassifyDTO.getDeptId(), orgClassifyDTO.getLevelDate())) {
+        if (!tabPbOrgClassifyMapper.checkIsMoreThanAYear(orgClassifyDTO.getOrgClassifyId(), orgClassifyDTO.getDeptId(), orgClassifyDTO.getLevelDate())) {
             throw new BusinessDataCheckFailException("该次定等操作与最近一次定等操作，周期未相隔一年");
         }
     }
