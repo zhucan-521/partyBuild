@@ -14,7 +14,7 @@ public interface SysDictService {
      * @param id
      * @return
      */
-    SysDict selectById(Integer id);
+    SysDict selectById(Long id);
 
     /**
      * 根据字典类型和字典值查询字典信息

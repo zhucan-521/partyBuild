@@ -692,6 +692,7 @@
         <if test="orgId != null and orgId != 0">
             AND dept_id != #{orgId}
         </if>
+        limit 1
     </select>
 
 
@@ -854,7 +855,16 @@
 
     <!--检查名称或名称简称是否存在-->
     <select id="checkNameOrShortName" resultType="java.lang.Integer">
-        SELECT count(*) FROM sys_dept WHERE del_flag = '0' AND (`name` =#{name}  OR org_short_name= #{name})
+        SELECT
+        count(*)
+        FROM
+        sys_dept
+        WHERE
+        del_flag = '0'
+        <if test="orgId != null and orgId != 0">
+            AND dept_id != #{orgId}
+        </if>
+        AND (`name` =#{name} OR org_short_name= #{name})
     </select>
 
     <!--修改指定组织的结对组织-->

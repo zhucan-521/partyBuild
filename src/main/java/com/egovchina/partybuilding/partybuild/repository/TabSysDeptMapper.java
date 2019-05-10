@@ -87,12 +87,12 @@ public interface TabSysDeptMapper {
     List<HashMap<String, Object>> selectToMapByCondition(Map<String, Object> conditions);
 
     /**
-     * 检查
+     * 检查组织名称或简称是否重复
      *
      * @param name
-     * @return
+     * @return int
      */
-    int checkNameOrShortName(@Param("name") String name);
+    int checkNameOrShortName(@Param("name") String name, @Param("orgId") Long orgId);
 
     /**
      * 推送结对组织ID到组织表
