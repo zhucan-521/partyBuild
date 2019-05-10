@@ -144,7 +144,7 @@ GROUP BY
         left join sys_user u on u.user_id = r.user_id
         where r.del_flag = '0'
         <if test="userId != null">
-            and p.user_id = #{userId}
+            and r.user_id = #{userId}
         </if>
         <if test="orgId != null">
             and rewards_orgnize_id = #{orgId}
