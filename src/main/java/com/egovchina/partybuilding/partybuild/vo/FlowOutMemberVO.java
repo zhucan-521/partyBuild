@@ -49,7 +49,7 @@ public class FlowOutMemberVO {
     private Long outIndustry;
 
     @ApiModelProperty(value = "流出组织名称")
-    @NotNull(message = "请选择流出组织名称！")
+    @NotNull(message = "请选择流出组织名称")
     private String flowFromOrgName;
 
     @ApiModelProperty(value = "流出组织Id")
@@ -66,7 +66,7 @@ public class FlowOutMemberVO {
     private String flowFromOrgPhone;
 
     @ApiModelProperty(value = "流入组织名称")
-    @NotNull(message = "请选择流入组织名称！")
+    @NotNull(message = "请选择流入组织名称")
     private String flowToOrgName;
 
     @ApiModelProperty(value = "流入组织Id")

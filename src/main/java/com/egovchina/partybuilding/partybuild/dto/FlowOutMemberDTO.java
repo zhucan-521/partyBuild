@@ -27,18 +27,15 @@ public class FlowOutMemberDTO {
     private String flowToOrgnizeCode;
 
     @ApiModelProperty(value = "性别")
-    @JsonSerialize(using = DictSerializer.class)
     private Long gender;
 
     @ApiModelProperty(value = "身份证号码")
     private String idCardNo;
 
     @ApiModelProperty(value = "原职业 码表ZY")
-    @JsonSerialize(using = DictSerializer.class)
     private Long outProfession;
 
     @ApiModelProperty(value = "外出原因 码表LDYY")
-    @JsonSerialize(using = DictSerializer.class)
     private Long flowOutReason;
 
     @ApiModelProperty(value = "流动类型 码表LDQK")
@@ -49,14 +46,14 @@ public class FlowOutMemberDTO {
     private Long outIndustry;
 
     @ApiModelProperty(value = "流出组织名称")
-    @NotNull(message = "请选择流出组织名称！")
+    @NotNull(message = "请选择流出组织名称")
     private String flowFromOrgName;
 
     @ApiModelProperty(value = "流出组织Id")
     private Long orgId;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "流出日期")
+    @ApiModelProperty(value = "流出日期",example = "yyyy-MM-dd")
     private Date flowOutDate;
 
     @ApiModelProperty(value = "流出组织联系人")
@@ -66,7 +63,7 @@ public class FlowOutMemberDTO {
     private String flowFromOrgPhone;
 
     @ApiModelProperty(value = "流入组织名称")
-    @NotNull(message = "请选择流入组织名称！")
+    @NotNull(message = "请选择流入组织名称")
     private String flowToOrgName;
 
     @ApiModelProperty(value = "流入组织Id")
@@ -82,18 +79,16 @@ public class FlowOutMemberDTO {
     private String flowToOrgContactor;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "失联时间")
+    @ApiModelProperty(value = "失联时间",example = "yyyy-MM-dd")
     private Date lostTime;
 
     @ApiModelProperty(value = "联系情况  码表LXQK")
-    @JsonSerialize(using = DictSerializer.class)
     private Long linkStatus;
 
     @ApiModelProperty(value = "状态 码表值LDGC")
-    @JsonSerialize(using = DictSerializer.class)
     private Long flowOutState;
 
-    @ApiModelProperty(value = "流入时间")
+    @ApiModelProperty(value = "流入时间",example = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date flowInDate;
 
