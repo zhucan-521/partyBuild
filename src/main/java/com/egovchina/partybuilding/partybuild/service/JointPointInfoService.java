@@ -15,8 +15,23 @@ import java.util.List;
  */
 public interface JointPointInfoService {
 
+    /**
+    *
+    *
+    * @return: com.egovchina.partybuilding.partybuild.vo.UserDeptPositionVO
+    * @Author: WuYunJie
+    * @Date: 2019/5/10
+    */
     UserDeptPositionVO selectJointByUserId(Long userId);
 
+    /**
+    *
+    *
+    *
+    * @return: java.util.List<com.egovchina.partybuilding.partybuild.vo.LinkLeaderVO>
+    * @Author: WuYunJie
+    * @Date: 2019/5/10
+    */
     List<LinkLeaderVO> selectUserDeptByDeptId(Long deptId);
 
     int delJointPointInfoByLinkLedaerId(Long linkLedaerId);

@@ -3,8 +3,10 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.common.exception.BusinessDataInvalidException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.CommonConstant;
+import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.partybuild.dto.LinkLeaderDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader;
+import com.egovchina.partybuilding.partybuild.feign.LifeServiceFeignClient;
 import com.egovchina.partybuilding.partybuild.repository.TabPbLinkLeaderMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
@@ -31,10 +33,15 @@ public class JointPointInfoServiceImpl implements JointPointInfoService {
 
     @Autowired
     private TabSysDeptMapper deptMapper;
+
     @Autowired
     private TabSysUserMapper tabSysUserMapper;
+
     @Autowired
     private TabPbLinkLeaderMapper tabPbLinkLeaderMapper;
+
+    @Autowired
+    private LifeServiceFeignClient lifeServiceFeignClient;
 
     /**
      * 根据userId查询组织id、职务，联点信息
@@ -82,29 +89,35 @@ public class JointPointInfoServiceImpl implements JointPointInfoService {
      * @param linkLeaderDTO
      * @return
      */
-    @Override
     @Transactional
+    @Override
     public int saveJointPointInfo(LinkLeaderDTO linkLeaderDTO) {
+        if (deptMapper.selectByPrimaryKey(linkLeaderDTO.getDeptId()) == null
+                || tabSysUserMapper.selectByPrimaryKey(linkLeaderDTO.getUserId()) == null) {
+            throw new BusinessDataInvalidException("组织或人员不存在");
+        }
         TabPbLinkLeader tabPbLinkLeader = new TabPbLinkLeader();
         BeanUtil.copyPropertiesIgnoreNull(linkLeaderDTO, tabPbLinkLeader);
+        //调用活动服务 修改活动信息
+        ReturnEntity returnEntity =
+                lifeServiceFeignClient.updateLianDianLeadership(
+                        linkLeaderDTO.getActivitiesId(), linkLeaderDTO.getUserId(), linkLeaderDTO.getRealName());
+        if (returnEntity.unOkResp()) {
+            throw returnEntity.exception();
+        }
+        TabPbLinkLeader record = new TabPbLinkLeader();
+        record.setDeptId(linkLeaderDTO.getDeptId());
+        record.setUserId(linkLeaderDTO.getUserId());
+        BeanUtil.copyPropertiesIgnoreNull(linkLeaderDTO, record);
+        List<TabPbLinkLeader> tabPbLinkLeaders = tabPbLinkLeaderMapper.selectByUserIdAndDeptId(record);
         int count = 0;
-        if (deptMapper.selectByPrimaryKey(linkLeaderDTO.getDeptId()) != null
-                && tabSysUserMapper.selectByPrimaryKey(linkLeaderDTO.getUserId()) != null) {
-            TabPbLinkLeader record = new TabPbLinkLeader();
-            record.setDeptId(linkLeaderDTO.getDeptId());
-            record.setUserId(linkLeaderDTO.getUserId());
-            BeanUtil.copyPropertiesIgnoreNull(linkLeaderDTO, record);
-            List<TabPbLinkLeader> tabPbLinkLeaders = tabPbLinkLeaderMapper.selectByUserIdAndDeptId(record);
-            if (tabPbLinkLeaders.size() == 0) {
-                count += tabPbLinkLeaderMapper.insertSelective(tabPbLinkLeader);
-            } else {
-                for (TabPbLinkLeader linkLeader : tabPbLinkLeaders) {
-                    record.setLinkLedaerId(linkLeader.getLinkLedaerId());
-                    count += tabPbLinkLeaderMapper.updateByPrimaryKeySelective(record);
-                }
-            }
+        if (tabPbLinkLeaders.size() == 0) {
+            count += tabPbLinkLeaderMapper.insertSelective(tabPbLinkLeader);
         } else {
-            throw new BusinessDataInvalidException("组织或人员不存在");
+            for (TabPbLinkLeader linkLeader : tabPbLinkLeaders) {
+                record.setLinkLedaerId(linkLeader.getLinkLedaerId());
+                count += tabPbLinkLeaderMapper.updateByPrimaryKeySelective(record);
+            }
         }
         return count;
     }
