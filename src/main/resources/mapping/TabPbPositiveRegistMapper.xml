@@ -53,6 +53,7 @@
     <result column="revoke_tag" jdbcType="TINYINT" property="revokeTag"/>
     <result column="revoke_tomment" jdbcType="VARCHAR" property="revokeTomment"/>
     <result column="revoke_date" jdbcType="TIMESTAMP" property="revokeDate"/>
+    <result column="can_return" jdbcType="TINYINT" property="canReturn"/>
   </resultMap>
 
   <!--包含附件的VO ResultMap-->
@@ -86,7 +87,8 @@
       pr.from_orgnize_place,
       pr.revoke_tag,
       pr.revoke_tomment,
-      pr.revoke_date
+      pr.revoke_date,
+      CASE WHEN TIMESTAMPDIFF(SECOND, now(), pr.regist_date) > 0 THEN '1' ELSE '0' END AS can_return
     FROM tab_pb_positive_regist pr
     LEFT JOIN sys_user u ON u.user_id = pr.user_id
     LEFT JOIN sys_dept d ON d.dept_id = pr.dept_id

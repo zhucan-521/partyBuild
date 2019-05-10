@@ -1,5 +1,7 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
+import com.egovchina.partybuilding.common.config.DictSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -20,5 +22,9 @@ public class SecretaryMemberQueryBean {
 
     @ApiModelProperty(value = "党内职务 dict DNZW")
     private Long positiveName;
+
+    @ApiModelProperty(value = "单位类别 码表值DWLB")
+    @JsonSerialize(using = DictSerializer.class)
+    private Long unitProperty;
 
 }

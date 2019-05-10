@@ -13,6 +13,7 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 public class StreetCommitteeMemberDTO {
+
     @ApiModelProperty(value = "班子成员Id")
     private Long grantCommitteeMemberId;
 
@@ -44,14 +45,14 @@ public class StreetCommitteeMemberDTO {
     @ApiModelProperty(value = "任职方式, 字典RZFS")
     private Long tenureMode;
 
-    @ApiModelProperty(value = "任职时间")
+    @ApiModelProperty(value = "任职时间", example = "2019-05-12")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date tenureBegin;
 
     @ApiModelProperty(value = "任期年限")
     private Long tenureDuration;
 
-    @ApiModelProperty(value = "离任时间")
+    @ApiModelProperty(value = "离任时间", example = "2019-05-12")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date tenureLeave;
 

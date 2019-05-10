@@ -1,6 +1,5 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
-import com.egovchina.partybuilding.partybuild.entity.PartyGroupMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroupMember;
 import com.egovchina.partybuilding.partybuild.vo.PartyGroupMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.PartyMemberBaseVO;
@@ -92,6 +91,6 @@ public interface TabPbPartyGroupMemberMapper {
      * @author FanYanGen
      * @date 2019/5/6 15:57
      **/
-    List<PartyMemberBaseVO> screenPartyGroupMembers(PartyGroupMemberQueryBean partyGroupMemberQueryBean);
+    List<PartyMemberBaseVO> screenPartyGroupMembers(@Param("orgId") Long orgId, @Param("groupId") Long groupId);
 
 }

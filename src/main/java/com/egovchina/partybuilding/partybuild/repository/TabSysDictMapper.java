@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TabSysDictMapper {
 
-    SysDict selectByPrimaryKey(Integer id);
+    SysDict selectByPrimaryKey(Long id);
 
     Dictionary findOneUseForDictSerialization(@Param("dictType") String dictType, @Param("dictValue") String dictValue);
 }

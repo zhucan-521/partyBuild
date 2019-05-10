@@ -18,7 +18,7 @@
     id, parent_id, value, label, type, description, sort, create_time, update_time, remarks, 
     del_flag
   </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from sys_dict

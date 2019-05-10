@@ -2007,11 +2007,11 @@
     </update>
 
     <select id="checkIsExistByUserId" parameterType="java.lang.Long" resultType="java.lang.Boolean">
-        SELECT COUNT(1) FROM sys_user WHERE user_id = #{userId}
+        SELECT COUNT(1) FROM sys_user WHERE user_id = #{userId} AND del_flag = 0
     </select>
 
     <select id="checkIsExistByIdCard" parameterType="java.lang.String" resultType="java.lang.Boolean">
-        SELECT COUNT(1) FROM sys_user WHERE id_card_no = #{idCard}
+        SELECT COUNT(1) FROM sys_user WHERE id_card_no = #{idCard} AND del_flag = 0
     </select>
 
     <update id="updateUserIsPoorByHardshipId">

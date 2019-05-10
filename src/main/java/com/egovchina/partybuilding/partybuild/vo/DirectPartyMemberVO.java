@@ -12,7 +12,7 @@ import lombok.Data;
  * @author wuyunjie
  * Date 2019-01-16 17:51
  */
-@ApiModel("升格人员VO")
+@ApiModel("直属党员VO")
 @Data
 public class DirectPartyMemberVO {
     @ApiModelProperty(value = "用户ID")
