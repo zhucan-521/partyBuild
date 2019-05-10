@@ -226,11 +226,11 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
      */
     private void  judgeDirectSubordinate(List<TabPbMsgNoticeDept> noticeDeptList){
         Long orgId= UserContextHolder.getOrgId();
-        noticeDeptList.forEach(item->{
-            if(!orgId.equals(tabSysDeptMapper.selectAloneByPrimaryKey(item.getDeptId()).getParentId())) {
-               throw new BusinessDataIncompleteException("文件只能下达直属组织");
-             }
-        });
+        boolean unDirectSub = tabSysDeptMapper.checkIsExistUnDirectSub(orgId,
+                noticeDeptList.stream().map(TabPbMsgNoticeDept::getDeptId).collect(Collectors.toList()));
+        if (unDirectSub) {
+            throw new BusinessDataIncompleteException("文件只能下达直属组织");
+        }
     }
 
 }

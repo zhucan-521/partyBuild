@@ -110,20 +110,20 @@ public class RewardsAndPunishmentsServiceImpl implements RewardsAndPunishmentsSe
 
 
     @Override
-    public List<PunishmentVO> selectPunishmentVOListAndFilesById(Long orgId, Long userId) {
-        checkCondition(orgId, userId);
-        return tabPbPunishmentMapper.selectListAndFileVO(orgId, userId);
+    public List<PunishmentVO> selectPunishmentVOListAndFilesById(Long orgId, Long userId, String userName) {
+        checkCondition(orgId, userId, userName);
+        return tabPbPunishmentMapper.selectListAndFileVO(orgId, userId, userName);
     }
 
     @Override
-    public List<RewardsVO> getRewardsListAndFiles(Long orgId, Long userId) {
-        checkCondition(orgId, userId);
-        return tabPbRewardsMapper.selectListAndFile(orgId, userId);
+    public List<RewardsVO> getRewardsListAndFiles(Long orgId, Long userId, String userName) {
+        checkCondition(orgId, userId, userName);
+        return tabPbRewardsMapper.selectListAndFile(orgId, userId, userName);
     }
 
-    public void checkCondition(Long orgId, Long userId) {
-        if (orgId == null && userId == null) {
-            throw new BusinessDataNotFoundException("用户id和机构Id不能同时为空");
+    public void checkCondition(Long orgId, Long userId, String userNmae) {
+        if (orgId == null && userId == null && userNmae == null) {
+            throw new BusinessDataNotFoundException("用户id,机构Id,用户名不能同时为空");
         }
     }
 }

@@ -129,4 +129,11 @@ public interface TabSysDeptMapper {
      **/
     boolean checkIsExistByOrgId(Long deptId);
 
+    /**
+     * 检查是否存在非直属
+     * @param orgId 组织id
+     * @param subOrgIds 直属组织id集合
+     * @return
+     */
+    boolean checkIsExistUnDirectSub(Long orgId, List<Long> subOrgIds);
 }
