@@ -88,7 +88,7 @@ public class PartyDTO {
 
     @TableField(exist = false)
     @ApiModelProperty(value = "用户标签列表")
-    private List<UserTagDTO> userTags;
+    private UserTagDTO userTags;
 
     @ApiModelProperty(value = "组织ID ,党支部Id", required = true)
     private Long deptId;

@@ -27,16 +27,19 @@ public class RewardsVO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date rewardsDate;
 
-    @ApiModelProperty(value = "奖励机构", required = true)
+    @ApiModelProperty(value = "用户名")
+    private String realName;
+
+    @ApiModelProperty(value = "奖励机构")
     private String rewardsOrgnize;
 
-    @ApiModelProperty(value = "奖励机构Id", required = true)
+    @ApiModelProperty(value = "奖励机构Id")
     private Long rewardsOrgnizeId;
 
-    @ApiModelProperty(value = "userId", required = true)
+    @ApiModelProperty(value = "userId")
     private Long userId;
 
-    @ApiModelProperty(value = "奖励名称 dict DYJCJL", required = true)
+    @ApiModelProperty(value = "奖励名称 dict DYJCJL")
     @JsonSerialize(using = DictSerializer.class)
     private String rewardsName;
 

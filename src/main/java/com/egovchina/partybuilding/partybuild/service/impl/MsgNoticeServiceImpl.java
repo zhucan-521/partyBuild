@@ -3,15 +3,16 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.util.*;
+import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDTO;
+import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDeptDTO;
+import com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.MsgNoticeQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMsgNoticeDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMsgNoticeMapper;
+import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
-import com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.MsgNoticeQueryBean;
-import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDTO;
-import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDeptDTO;
 import com.egovchina.partybuilding.partybuild.service.MsgNoticeService;
 import com.egovchina.partybuilding.partybuild.vo.MsgNoticeDeptVO;
 import com.egovchina.partybuilding.partybuild.vo.MsgNoticeVO;
@@ -44,12 +45,16 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
     @Autowired
     private TabPbMsgNoticeDeptMapper deptMapper;
 
+    @Autowired
+    private TabSysDeptMapper tabSysDeptMapper;
+
     @Transactional
     @Override
     public int addMsgNotice(MsgNoticeDTO msgNoticeDTO) {
         if (CollectionUtils.isEmpty(msgNoticeDTO.getNoticeDeptList())) {
             throw new BusinessDataIncompleteException("请选择接收通知组织");
         }
+        this.judgeDirectSubordinate(msgNoticeDTO.getNoticeDeptList());
         TabPbMsgNotice tabPbMsgNotice = generateTargetCopyPropertiesAndPaddingBaseField(msgNoticeDTO, TabPbMsgNotice.class, false);
         int count = noticeMapper.insertSelective(tabPbMsgNotice);
         /**
@@ -71,6 +76,7 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
         if (CollectionUtils.isEmpty(msgNoticeDTO.getNoticeDeptList())) {
             throw new BusinessDataIncompleteException("请选择接收通知组织");
         }
+
         TabPbMsgNotice tabPbMsgNoticeUpdate = new TabPbMsgNotice();
         BeanUtil.copyPropertiesIgnoreNull(msgNoticeDTO, tabPbMsgNoticeUpdate);
         tabPbMsgNoticeUpdate.setUpdateTime(new Date());
@@ -211,6 +217,20 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
             retVal += deptMapper.insertSelective(noticeDept);
         }
         return retVal;
+    }
+
+    /**
+     * 判断是否当前登录组织的直属下级
+     * @param noticeDeptList
+     * @return
+     */
+    private void  judgeDirectSubordinate(List<TabPbMsgNoticeDept> noticeDeptList){
+        Long orgId= UserContextHolder.getOrgId();
+        noticeDeptList.forEach(item->{
+            if(!orgId.equals(tabSysDeptMapper.selectAloneByPrimaryKey(item.getDeptId()).getParentId())) {
+               throw new BusinessDataIncompleteException("文件只能下达直属组织");
+             }
+        });
     }
 
 }

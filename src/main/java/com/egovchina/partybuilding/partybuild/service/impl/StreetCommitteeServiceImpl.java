@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetAndCopyProperties;
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
 /**
@@ -46,8 +45,8 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
     @Autowired
     private TabSysDeptMapper tabSysDeptMapper;
 
-    @Override
     @Transactional
+    @Override
     public int saveStreetCommittee(StreetCommitteeDTO streetCommitteeDTO) {
 
         //判断是否需要修改为往届
@@ -73,42 +72,30 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
         return this.tabPbGrantCommitteeMapper.updateByPrimaryKeySelective(tabPbGrantCommittee);
     }
 
+    @Transactional
     @Override
-    public int deleteStreetCommittee(Long id) {
+    public int deleteStreetCommittee(Long grantCommitteeId) {
         int result = 0;
-        var tabPbGrantCommittee = new TabPbGrantCommittee()
-                .setGrantCommitteeId(id)
+        TabPbGrantCommittee tabPbGrantCommittee = new TabPbGrantCommittee()
+                .setGrantCommitteeId(grantCommitteeId)
                 .setDelFlag(CommonConstant.STATUS_DEL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbGrantCommittee);
         result += this.tabPbGrantCommitteeMapper.updateByPrimaryKeySelective(tabPbGrantCommittee);
 
         // 删除关联表
-        var tabPbGrantCommitteMember = new TabPbGrantCommitteMember()
-                .setGrantCommitteeId(id)
+        TabPbGrantCommitteMember tabPbGrantCommitteMember = new TabPbGrantCommitteMember()
+                .setGrantCommitteeId(grantCommitteeId)
                 .setDelFlag(CommonConstant.STATUS_DEL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbGrantCommitteMember);
         result += this.tabPbGrantCommitteMemberMapper.updateByGrantCommitteeSelective(tabPbGrantCommitteMember);
         return result;
     }
 
-    /**
-     * 通过id查询街道大公委数据
-     *
-     * @param grantCommitteeId
-     * @return
-     */
     @Override
     public StreetCommitteeVO getStreetCommitteeById(Long grantCommitteeId) {
         return this.tabPbGrantCommitteeMapper.selectStreetCommitteeVOById(grantCommitteeId);
     }
 
-    /**
-     * 分页查询街道大公委数据
-     *
-     * @param streetCommitteeQueryBean
-     * @param page                     分页
-     * @return 街道大公委数据
-     */
     @Override
     public PageInfo<StreetCommitteeVO> getStreetCommitteeList(StreetCommitteeQueryBean streetCommitteeQueryBean, Page page) {
         PageHelper.startPage(page);
@@ -156,22 +143,11 @@ public class StreetCommitteeServiceImpl implements StreetCommitteeService {
         return new PageInfo<>(list);
     }
 
-    /**
-     * 判断组织是否可以添加工委成员
-     *
-     * @param orgId
-     * @return
-     */
     @Override
     public Boolean checkStreetCommitteeWhetherAddMembers(Long orgId) {
         return Optional.ofNullable(this.tabPbGrantCommitteeMapper.selectStreetCommitteeWhetherAddMembers(orgId)).orElse(false);
     }
 
-    /**
-     * 判断是否需要修改为往届
-     *
-     * @param streetCommitteeDTO
-     */
     private void determineIfItNeedsToBeRevisedToThePast(StreetCommitteeDTO streetCommitteeDTO) {
         //校验组织是否存在
         Long orgId = streetCommitteeDTO.getOrgId();

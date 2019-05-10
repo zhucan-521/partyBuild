@@ -28,11 +28,22 @@ public interface TabPbPartyGroupMapper {
      * desc: 根据主键查询该条数据是否存在
      *
      * @param groupId 主键ID
-     * @return int
+     * @return boolean
      * @author FanYanGen
      * @date 2019/4/29 14:42
      **/
     boolean checkIsExistByGroupId(Long groupId);
+
+    /**
+     * desc: 根据党小组名称该条数据是否存在
+     *
+     * @param groupName 党组名称
+     * @param excludeGroupId 排除的组织id
+     * @return boolean
+     * @auther FANYANGEN
+     * @date 2019-05-10 09:35
+     */
+    boolean checkIsExistByGroupName(String groupName, Long excludeGroupId);
 
     /**
      * desc: 根据主键获取党小组详情
@@ -53,5 +64,15 @@ public interface TabPbPartyGroupMapper {
      * @date 2019/4/29 16:40
      **/
     List<PartyGroupVO> selectPartyGroupDetails(PartyGroupQueryBean partyGroupQueryBean);
+
+    /**
+     * desc: 逻辑删除党组级联成员
+     *
+     * @param tabPbPartyGroup 党小组实体
+     * @return List<PartyGroupVO>
+     * @author FanYanGen
+     * @date 2019/5/10 10:40
+     **/
+    int logicDeletePartyGroupCascadeMembers(TabPbPartyGroup tabPbPartyGroup);
 
 }

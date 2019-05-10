@@ -76,8 +76,9 @@ public class PartyMemberInformationVO {
     @JsonSerialize(using = DictSerializer.class)
     private Long education;
 
-    @ApiModelProperty(value = "工作单位")
-    private String unitName;
+    @ApiModelProperty(value = "单位类别")
+    @JsonSerialize(using = DictSerializer.class)
+    private Long unitProperty;
 
     @ApiModelProperty(value = "流动状态 码表值 LDZT")
     @JsonSerialize(using = DictSerializer.class)
@@ -88,6 +89,9 @@ public class PartyMemberInformationVO {
 
     @ApiModelProperty(value = "是否台湾籍")
     private Byte isTaiwaner;
+
+    @ApiModelProperty(value = "是否困难")
+    private Byte isPoor;
 
     @ApiModelProperty(value = "基础资料完成度")
     private Integer complete;

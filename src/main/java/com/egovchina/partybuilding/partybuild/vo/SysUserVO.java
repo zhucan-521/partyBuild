@@ -68,7 +68,8 @@ public class SysUserVO {
     @ApiModelProperty(value = "人员类别 码表值 RYLB")
     private Long identityType;
 
-    @ApiModelProperty(value = "档案管理单位名称")
+    @ApiModelProperty(value = "档案管理单位")
+    @JsonSerialize(using = DictSerializer.class)
     private String filesManageUnit;
 
     @ApiModelProperty(value = "党籍 0无、1刚入党、2转正、3出党、4停止党籍、5死亡、6其他、 7发展中的党员")
@@ -89,6 +90,9 @@ public class SysUserVO {
 
     @ApiModelProperty(value = "工作简历")
     private String workResumes;
+
+    @ApiModelProperty(value = "是否困难")
+    private Byte isPoor;
 
     @ApiModelProperty(value = "是否失联")
     private Byte isLlost;

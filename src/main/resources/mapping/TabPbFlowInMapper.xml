@@ -75,7 +75,8 @@
   </sql>
     <sql id="Base_FlowIn_List">
         s.flow_from_org_name AS old_orgnize_name,
-        s.flow_to_org_name AS flow_to_org_name,
+        -- s.flow_to_org_name AS flow_to_org_name,
+        (case when IFNULL(t.org_id,1)=1  then  s.flow_to_org_name else (select name from  sys_dept where dept_id=t.org_id)  end)flow_to_org_name,
         t.flow_in_id,
 		t.org_id,
 		t.old_orgnize_id,
@@ -94,6 +95,7 @@
 		t.old_contact_phone,
 		t.old_unit_postcode,
 		t.flow_out_id,
+		t.return_date,
 		t.flow_in_state,
 		s.realname as username,
 		s.id_card_no,
@@ -108,6 +110,7 @@
         s.flow_from_org_phone,
         f.flow_out_date ,
         (case  when f.flow_out_date &lt;= now() then 1 else 0 end) as isEnableAccept,
+        (case  when t.flow_in_date > now() then 0 else 1 end) as isEnableBack,
 		f.out_profession
     </sql>
 

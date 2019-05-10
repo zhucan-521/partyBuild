@@ -42,41 +42,78 @@
     <sql id="Blob_Column_List">
     comment, person_status
   </sql>
-    <select id="historyPartyPage" parameterType="com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean"
+    <!--查询历史党员记录-->
+    <select id="selectPartyHistoryList"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean"
             resultMap="com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper.History_UserInfo">
         select
-        u.user_id,u.realname,u.id_card_no,u.gender,u.nation,u.dept_id
-        ,d.name as in_where_dept_name,TIMESTAMPDIFF(YEAR, u.join_org_time, CURDATE()) AS
-        age,u.registry_status,r.update_time,r.reduce_time,
-        <include refid="com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper.registry_status_name"/>
+        r.user_id,u.realname,u.id_card_no,u.gender,u.nation,r.dept_id
+        ,d.name as in_where_dept_name,TIMESTAMPDIFF(month,
+        DATE_FORMAT(u.join_org_time,'%Y-%m-%d'),DATE_FORMAT(r.reduce_time,'%Y-%m-%d')) AS
+        age,r.update_time,r.reduce_time,r.out_type,r.quit_type
         from tab_pb_member_reduce_list r
         JOIN sys_user u on r.user_id = u.user_id
         JOIN sys_dept d on r.dept_id = d.dept_id
-        where r.del_flag = 0
+        where
+        r.ebl_flag = '1'
+        and r.del_flag ='0'
         <if test="orgRange != null and orgRange != '' and deptId != null">
             <choose>
-            <when test="orgRange == 1">
-                AND (d.dept_id = #{deptId} OR d.parent_id = #{deptId})
-            </when>
-            <when test="orgRange == 2">
-                AND find_in_set(#{deptId}, d.full_path)
-            </when>
-            <when test="orgRange == 3">
-                AND d.dept_id = #{deptId}
-            </when>
+                <when test="orgRange == 1">
+                    AND (d.dept_id = #{deptId} OR d.parent_id = #{deptId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{deptId}, d.full_path)
+                </when>
+                <when test="orgRange == 3">
+                    AND d.dept_id = #{deptId}
+                </when>
             </choose>
         </if>
-        <if test="orgRange == null and deptId != null">
-            AND d.dept_id = #{deptId}
+        <if test="(orgRange == null or orgRange=='') and deptId != null ">
+            AND r.dept_id = #{deptId}
         </if>
         <if test="realName !=null and realName != ''">
-            AND r.real_name = #{realName}
+            AND u.realname like concat('%', #{realName}, '%')
         </if>
         <if test="outType !=null and outType != ''">
             AND r.out_type = #{outType}
         </if>
+        <if test="quitType !=null and quitType != ''">
+            AND r.quit_type = #{quitType}
+        </if>
         ORDER BY r.update_time DESC
     </select>
+    <!--用于查询以前成为历史党员的记录-->
+    <select id="selectInvalidPartyHistoryList"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean"
+            resultType="com.egovchina.partybuilding.partybuild.vo.MemberReducesVO">
+        select
+        r.user_id,TIMESTAMPDIFF(month, DATE_FORMAT(r.reduce_time,'%Y-%m-%d') ,DATE_FORMAT(r.update_time,'%Y-%m-%d')) AS
+        age
+        from tab_pb_member_reduce_list r
+        JOIN sys_user u on r.user_id = u.user_id
+        JOIN sys_dept d on r.dept_id = d.dept_id
+        where r.ebl_flag = '0'
+        <if test="orgRange != null and orgRange != '' and deptId != null">
+            <choose>
+                <when test="orgRange == 1">
+                    AND (d.dept_id = #{deptId} OR d.parent_id = #{deptId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{deptId}, d.full_path)
+                </when>
+                <when test="orgRange == 3">
+                    AND d.dept_id = #{deptId}
+                </when>
+            </choose>
+        </if>
+        <if test="(orgRange == null or orgRange=='') and deptId != null ">
+            AND r.dept_id = #{deptId}
+        </if>
+        ORDER BY r.update_time DESC
+    </select>
+
     <select id="selectByUserId" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
         SELECT
         <include refid="Base_Column_List"/>
@@ -89,7 +126,7 @@
         <include refid="Base_Column_List"/>
         ,
         <include refid="Blob_Column_List"/>
-         FROM tab_pb_member_reduce_list WHERE user_id = #{userId,jdbcType=BIGINT} ORDER BY reduce_time DESC
+        FROM tab_pb_member_reduce_list WHERE user_id = #{userId,jdbcType=BIGINT} ORDER BY reduce_time DESC
     </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
         select
@@ -294,7 +331,8 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
         update tab_pb_member_reduce_list
         <set>
             <if test="deptId != null">
@@ -378,7 +416,8 @@
         </set>
         where member_reduce_id = #{memberReduceId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
+    <update id="updateByPrimaryKeyWithBLOBs"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
     update tab_pb_member_reduce_list
     set dept_id = #{deptId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},

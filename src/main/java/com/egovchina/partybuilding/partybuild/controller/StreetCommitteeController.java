@@ -37,7 +37,7 @@ public class StreetCommitteeController {
     }
 
     @ApiOperation(value = "修改街道大工委", notes = "修改街道大工委")
-    @PutMapping()
+    @PutMapping
     public ReturnEntity updateStreetCommittee(@ApiParam("街道大公委信息") @RequestBody @Validated StreetCommitteeDTO streetCommitteeDTO) {
         return ReturnUtil.buildReturn(this.streetCommitteeService.updateStreetCommittee(streetCommitteeDTO));
     }

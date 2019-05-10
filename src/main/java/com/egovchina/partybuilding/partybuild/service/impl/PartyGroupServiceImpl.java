@@ -3,10 +3,10 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
+import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.PartyGroupDTO;
 import com.egovchina.partybuilding.partybuild.dto.PartyGroupMemberInfoDTO;
-import com.egovchina.partybuilding.partybuild.entity.PartyGroupMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.PartyGroupQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroup;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroupMember;
@@ -51,7 +51,7 @@ public class PartyGroupServiceImpl implements PartyGroupService {
 
     @Override
     public int insertPartyGroup(PartyGroupDTO partyGroupDTO) {
-        verificationPartyGroup(partyGroupDTO, false);
+        verificationPartyGroup(partyGroupDTO);
         TabPbPartyGroup tabPbPartyGroup = generateTargetCopyPropertiesAndPaddingBaseField(partyGroupDTO, TabPbPartyGroup.class, false);
         int result = tabPbPartyGroupMapper.insertSelective(tabPbPartyGroup);
         if (result > 0) {
@@ -62,7 +62,7 @@ public class PartyGroupServiceImpl implements PartyGroupService {
 
     @Override
     public int updatePartyGroup(PartyGroupDTO partyGroupDTO) {
-        verificationPartyGroup(partyGroupDTO, true);
+        verificationPartyGroup(partyGroupDTO);
         int result = tabPbPartyGroupMapper.updateByPrimaryKeySelective(generateTargetCopyPropertiesAndPaddingBaseField(partyGroupDTO, TabPbPartyGroup.class, true));
         if (result > 0) {
             result += maintainUpdatePartyGroupAction(partyGroupDTO, partyGroupDTO.getGroupId());
@@ -72,52 +72,27 @@ public class PartyGroupServiceImpl implements PartyGroupService {
 
     @Override
     public int deletePartyGroup(Long groupId) {
-        TabPbPartyGroup tabPbPartyGroup = new TabPbPartyGroup();
-        tabPbPartyGroup.setGroupId(groupId);
-        tabPbPartyGroup.setDelFlag(1);
-        generateTargetCopyPropertiesAndPaddingBaseField(tabPbPartyGroup, TabPbPartyGroup.class, true);
-        TabPbPartyGroupMember tabPbPartyGroupMember = new TabPbPartyGroupMember();
-        tabPbPartyGroupMember.setGroupId(groupId);
-        tabPbPartyGroupMember.setDelFlag(1);
-        generateTargetCopyPropertiesAndPaddingBaseField(tabPbPartyGroupMember, TabPbPartyGroupMember.class, true);
-        int result = tabPbPartyGroupMapper.updateByPrimaryKeySelective(tabPbPartyGroup);
-        /**
-         * 删除党小组及成员
-         **/
-        if (result > 0) {
-            tabPbPartyGroupMemberMapper.batchDeleteByGroupId(tabPbPartyGroupMember);
-        }
-        return result;
+        TabPbPartyGroup tabPbPartyGroup = new TabPbPartyGroup().setGroupId(groupId);
+        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbPartyGroup);
+        return tabPbPartyGroupMapper.logicDeletePartyGroupCascadeMembers(tabPbPartyGroup);
     }
 
     @Override
     public int revokePartyGroup(Long groupId) {
-        TabPbPartyGroup tabPbPartyGroup = new TabPbPartyGroup();
-        tabPbPartyGroup.setGroupId(groupId);
-        tabPbPartyGroup.setDelFlag(1);
-        tabPbPartyGroup.setRevokeName(UserContextHolder.getUserName());
-        tabPbPartyGroup.setRevokeTime(new Date());
-        generateTargetCopyPropertiesAndPaddingBaseField(tabPbPartyGroup, TabPbPartyGroup.class, true);
-        return tabPbPartyGroupMapper.updateByPrimaryKeySelective(tabPbPartyGroup);
+        return tabPbPartyGroupMapper.updateByPrimaryKeySelective(maintainRevocationOfPartyGroups(groupId, 1));
     }
 
     @Override
     public int recoveryPartyGroup(Long groupId) {
-        TabPbPartyGroup tabPbPartyGroup = new TabPbPartyGroup();
-        tabPbPartyGroup.setGroupId(groupId);
-        tabPbPartyGroup.setDelFlag(0);
-        tabPbPartyGroup.setRevokeName(UserContextHolder.getUserName());
-        tabPbPartyGroup.setRevokeTime(new Date());
-        generateTargetCopyPropertiesAndPaddingBaseField(tabPbPartyGroup, TabPbPartyGroup.class, true);
-        return tabPbPartyGroupMapper.updateByPrimaryKeySelective(tabPbPartyGroup);
+        return tabPbPartyGroupMapper.updateByPrimaryKeySelective(maintainRevocationOfPartyGroups(groupId, 0));
     }
 
     @Override
-    public PageInfo<PartyMemberBaseVO> screenPartyGroupMembers(PartyGroupMemberQueryBean partyGroupMemberQueryBean) {
-        if (!tabSysDeptMapper.checkIsExistByOrgId(partyGroupMemberQueryBean.getDeptId())) {
+    public PageInfo<PartyMemberBaseVO> screenPartyGroupMembers(Long orgId, Long groupId) {
+        if (!tabSysDeptMapper.checkIsExistByOrgId(orgId)) {
             throw new BusinessDataCheckFailException("该党组织不存在");
         }
-        return new PageInfo<>(tabPbPartyGroupMemberMapper.screenPartyGroupMembers(partyGroupMemberQueryBean));
+        return new PageInfo<>(tabPbPartyGroupMemberMapper.screenPartyGroupMembers(orgId, groupId));
     }
 
     @Override
@@ -138,12 +113,15 @@ public class PartyGroupServiceImpl implements PartyGroupService {
      * @author FanYanGen
      * @date 2019/4/29 14:28
      **/
-    private void verificationPartyGroup(PartyGroupDTO partyGroupDTO, boolean isCheckPrimaryKey) {
+    private void verificationPartyGroup(PartyGroupDTO partyGroupDTO) {
         if (!tabSysDeptMapper.checkIsExistByOrgId(partyGroupDTO.getOrgId())) {
             throw new BusinessDataCheckFailException("该党组织不存在");
         }
-        if (isCheckPrimaryKey && !tabPbPartyGroupMapper.checkIsExistByGroupId(partyGroupDTO.getGroupId())) {
-            throw new BusinessDataCheckFailException("该党组不存在");
+        if (tabPbPartyGroupMapper.checkIsExistByGroupName(partyGroupDTO.getGroupName(), partyGroupDTO.getGroupId())) {
+            throw new BusinessDataCheckFailException("该党小组名称已存在");
+        }
+        if (partyGroupDTO.getGroupId() != null && !tabPbPartyGroupMapper.checkIsExistByGroupId(partyGroupDTO.getGroupId())) {
+            throw new BusinessDataCheckFailException("该党小组不存在");
         }
     }
 
@@ -160,6 +138,24 @@ public class PartyGroupServiceImpl implements PartyGroupService {
         if (!leaderExist) {
             throw new BusinessDataCheckFailException("党小组组长不能为空");
         }
+    }
+
+    /**
+     * desc: 维护党小组撤销功能
+     *
+     * @param groupId  党小组ID
+     * @param isRevoke 撤销标识
+     * @return TabPbPartyGroup
+     * @auther FANYANGEN
+     * @date 2019-05-10 09:44
+     */
+    private TabPbPartyGroup maintainRevocationOfPartyGroups(Long groupId, Integer isRevoke) {
+        TabPbPartyGroup tabPbPartyGroup = new TabPbPartyGroup();
+        tabPbPartyGroup.setGroupId(groupId);
+        tabPbPartyGroup.setIsRevoke(isRevoke);
+        tabPbPartyGroup.setRevokeName(UserContextHolder.getUserName());
+        tabPbPartyGroup.setRevokeTime(new Date());
+        return generateTargetCopyPropertiesAndPaddingBaseField(tabPbPartyGroup, TabPbPartyGroup.class, true);
     }
 
     /**

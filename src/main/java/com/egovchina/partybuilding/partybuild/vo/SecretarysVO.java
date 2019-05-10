@@ -44,4 +44,8 @@ public class SecretarysVO {
     @ApiModelProperty(value = "任职 机构/党组织 名称")
     private String positiveOrgName;
 
+    @ApiModelProperty(value = "单位类别 码表值DWLB")
+    @JsonSerialize(using = DictSerializer.class)
+    private Long unitProperty;
+
 }
