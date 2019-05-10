@@ -28,4 +28,7 @@ public class SpecialWorkerQueryBean {
 
     @ApiModelProperty(value = "列表范围 0查所有；1 查当前组织及其直属组织； 2 查当前组织及所有下级组织")
     private String orgRange;
+
+    @ApiModelProperty(value = "在职状态")
+    private Long status;
 }

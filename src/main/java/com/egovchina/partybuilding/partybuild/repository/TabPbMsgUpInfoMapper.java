@@ -67,4 +67,12 @@ public interface TabPbMsgUpInfoMapper {
      * @return
      */
     TabPbMsgUpInfoDto selectWithAboutById(Long id);
+
+    /**
+     * 根据传入的deptId获取它的上级部门和上级部门的专干
+     * @param deptId
+     * @return
+     */
+    MsgUpInfoVO getReceiveDeptAndWorker(Long deptId);
+
 }

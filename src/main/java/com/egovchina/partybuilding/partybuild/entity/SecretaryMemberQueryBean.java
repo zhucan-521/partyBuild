@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 public class SecretaryMemberQueryBean {
 
-
     @ApiModelProperty(value = "身份证")
     private String idCardNo;
 
@@ -19,8 +18,7 @@ public class SecretaryMemberQueryBean {
     @ApiModelProperty("组织ID")
     private Long rangeDeptId;
 
-    @ApiModelProperty(value = "职务，手动录入：如：中共长沙市委基层党建工作领导小组办公室常务副主任")
-    private String postive;
-
+    @ApiModelProperty(value = "党内职务 dict DNZW")
+    private Long positiveName;
 
 }

@@ -61,7 +61,8 @@
     delete from tab_pb_spcial_worker
     where special_worker_id = #{specialWorkerId,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" useGeneratedKeys="true"  keyProperty="specialWorkerId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="specialWorkerId"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker">
     insert into tab_pb_spcial_worker (special_worker_id, user_id, manage_org_id, 
       arrive_time, left_time, ebl_flag, 
       del_flag, order_num, description, 
@@ -184,7 +185,8 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker">
         update tab_pb_spcial_worker
         <set>
             <if test="userId != null">
@@ -238,7 +240,8 @@
         </set>
         where special_worker_id = #{specialWorkerId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker">
+    <update id="updateByPrimaryKeyWithBLOBs"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbSpcialWorker">
     update tab_pb_spcial_worker
     set user_id = #{userId,jdbcType=BIGINT},
       manage_org_id = #{manageOrgId,jdbcType=BIGINT},
@@ -293,26 +296,42 @@
         u.user_id,
         sw.arrive_time,
         sw.manage_org_id,
-        (case WHEN NOW() > sw.left_time THEN -1
-        WHEN IFNULL( sw.left_time, 1) = 1 or NOW() &lt;= sw.left_time  THEN 1 end
-        ) status,
-        (select name from sys_dept where dept_id= sw.manage_org_id) dept_name,
+        s.status,
+        ( SELECT NAME FROM sys_dept WHERE dept_id = sw.manage_org_id ) dept_name,
         u.dept_id,
-        (select name from sys_dept where dept_id= u.dept_id) manage_org_name,
+        ( SELECT NAME FROM sys_dept WHERE dept_id = u.dept_id ) manage_org_name,
         sw.left_time
         FROM
         tab_pb_spcial_worker sw
-        LEFT JOIN sys_user u on u.user_id=sw.user_id
-        left  join sys_dept d on sw.manage_org_id = d.dept_id
+        LEFT JOIN sys_user u ON u.user_id = sw.user_id
+        LEFT JOIN sys_dept d ON sw.manage_org_id = d.dept_id
+        LEFT JOIN (
+        SELECT
+        (
+        CASE
+        WHEN NOW( ) > left_time THEN
+        0
+        WHEN IFNULL( left_time, 1 ) = 1
+        OR NOW( ) &lt;= left_time THEN
+        1
+        END
+        ) status,
+        special_worker_id
+        FROM
+        tab_pb_spcial_worker
+        ) s ON sw.special_worker_id = s.special_worker_id
         <where>
             <if test="null != specialWorkerId and ''!=specialWorkerId">
-                and  sw.special_worker_id = #{specialWorkerId}
+                AND sw.special_worker_id = #{specialWorkerId}
             </if>
             <if test="null != username and ''!=username">
-                and  u.realname like CONCAT('%',#{username},'%')
+                AND u.realname like CONCAT('%',#{username},'%')
             </if>
             <if test="null != idCardNo and ''!=idCardNo">
-                and   u.id_card_no= #{idCardNo}
+                AND u.id_card_no= #{idCardNo}
+            </if>
+            <if test="status != null">
+                AND status= #{status}
             </if>
             <choose>
                 <when test="orgRange == 1">
@@ -351,7 +370,7 @@
         sw.arrive_time,
         sw.manage_org_id,
         (case WHEN NOW() > sw.left_time THEN -1
-        WHEN IFNULL( sw.left_time, 1) = 1 or NOW() &lt;= sw.left_time  THEN 1 end
+        WHEN IFNULL( sw.left_time, 1) = 1 or NOW() &lt;= sw.left_time THEN 1 end
         ) status,
         (select name from sys_dept where dept_id= sw.manage_org_id) dept_name,
         u.dept_id,
@@ -360,7 +379,7 @@
         FROM
         tab_pb_spcial_worker sw
         LEFT JOIN sys_user u on u.user_id=sw.user_id
-        left  join sys_dept d on sw.manage_org_id = d.dept_id
+        left join sys_dept d on sw.manage_org_id = d.dept_id
         <where>
             sw.special_worker_id = #{specialWorkerId}
         </where>

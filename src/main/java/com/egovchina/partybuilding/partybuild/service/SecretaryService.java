@@ -7,7 +7,10 @@ import com.egovchina.partybuilding.partybuild.entity.SecretaryMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.dto.SecretaryMemberDTO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryInfoVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
+import com.egovchina.partybuilding.partybuild.vo.SecretarysVO;
 import com.github.pagehelper.PageInfo;
+
+import java.util.List;
 
 /**
  * @author YangYingXiang on 2019/03/01
@@ -28,7 +31,7 @@ public interface SecretaryService {
      * @param secretaryMemberDTO
      * @return
      */
-    ReturnEntity insertSecretary(SecretaryMemberDTO secretaryMemberDTO);
+    int insertSecretary(SecretaryMemberDTO secretaryMemberDTO);
 
     /**
      * 修改书记
@@ -36,7 +39,7 @@ public interface SecretaryService {
      * @param secretaryMemberDTO
      * @return
      */
-    ReturnEntity updateSecretary(SecretaryMemberDTO secretaryMemberDTO);
+    int updateSecretary(SecretaryMemberDTO secretaryMemberDTO);
 
     /**
      * 根据书记id获取书记详情
@@ -52,13 +55,13 @@ public interface SecretaryService {
      * @param secretaryMemberQueryBean
      * @return
      */
-    PageInfo<SecretaryMemberVO> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page);
+    List<SecretarysVO> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page);
 
     /**
      * 删除书记家庭成员和职务以及书记本人
      *
      * @return
      */
-    ReturnEntity deleteSecretary(Long secretaryId);
+    int deleteSecretary(Long secretaryId);
 
 }

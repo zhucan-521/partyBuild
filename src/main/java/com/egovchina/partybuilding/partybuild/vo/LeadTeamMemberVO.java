@@ -87,4 +87,15 @@ public class LeadTeamMemberVO {
 
     @ApiModelProperty("班子届数")
     private Long sessionYear;
+
+    @ApiModelProperty("成员所在组织名称")
+    private String ownerOrgName;
+
+    @ApiModelProperty("性别")
+    @JsonSerialize(using = DictSerializer.class)
+    private Long gender;
+
+    @ApiModelProperty("联系电话")
+    private String phone;
+
 }

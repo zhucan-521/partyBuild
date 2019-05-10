@@ -23,7 +23,7 @@ public class TabPbLeadTeam {
     private Long sessionYear;
 
     /**
-	 * 换届时间", example = "yyyy-MM-dd
+	 * 当选时间", example = "yyyy-MM-dd
 	 */
     private Date changeDate;
 
@@ -63,7 +63,7 @@ public class TabPbLeadTeam {
     private Byte current;
 
     /**
-	 * 当选方式
+	 * 当选方式 dict YHZSFDX
 	 */
     private Long electedType;
 

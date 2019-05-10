@@ -435,7 +435,7 @@
         tab_pb_grant_committee
         WHERE
         org_id = #{orgId}
-        and current = 0
+        and current = 1
         and del_flag = 0
     </select>
 
@@ -444,7 +444,7 @@
         tab_pb_grant_committee
         WHERE
         org_id = #{orgId}
-        and current = 0
+        and current = 1
         and del_flag = 0
     </select>
 </mapper>

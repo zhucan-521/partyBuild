@@ -466,8 +466,7 @@
         where user_id = #{userId}
     </update>
 
-
-    <!--根据用户Id查找用户相应的职位-->
+    <!--根据用户Id查找用户最高的职位-->
     <select id="selectMaxTabPbPositivesByUserId" parameterType="Long" resultMap="BaseMoreResultMap">
           select
           positive_id,
@@ -497,7 +496,7 @@
           user_id,
           positive_type,
           positive_org_id,
-          positive_org_name,
+          (select name from  sys_dept where dept_id = positive_org_id)positive_org_name,
           positive_name,
           positive_level,
           positive_start,
@@ -528,7 +527,6 @@
             )
         </foreach>
     </insert>
-
 
     <!--根据条件删除职务-->
     <update id="logicDeletePositiveByCondition"
