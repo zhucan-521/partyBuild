@@ -72,4 +72,7 @@ public class SysUserQueryBean {
 
     @ApiModelProperty(value = "1 查当前组织及其直属组织； 2 查当前组织及所有下级组织； 不传查本级；3和不传查本级。（所有前提都是有deptid的情况，没有ddeptid就没有党组织筛选）")
     private String orgRange;
+
+    @ApiModelProperty(value = "党员标识")
+    private String tagTypes;
 }
