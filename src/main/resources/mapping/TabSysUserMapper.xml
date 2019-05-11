@@ -373,7 +373,7 @@
         <if test="isTaiwaner != null">
             and find_in_set(IFNULL(is_taiwaner,'0'), #{isTaiwaner})
         </if>
-        <if test="tagTypes != null">
+        <if test="tagTypes != null and tagTypes != ''">
             and find_in_set( tt.tag_type , #{tagTypes})
         </if>
     </sql>
