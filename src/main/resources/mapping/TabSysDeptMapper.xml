@@ -646,7 +646,7 @@
         <set>
             <include refid="Base_Set_Column_List"/>
         </set>
-        where d.dept_id = #{deptId,jdbcType=BIGINT}
+        where  d.dept_id = #{deptId,jdbcType=BIGINT}
     </update>
     <!--根据主键修改-->
     <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.common.entity.SysDept">
@@ -863,17 +863,19 @@
     </update>
 
     <!--检查名称或名称简称是否存在-->
-    <select id="checkNameOrShortName" resultType="java.lang.Integer">
+    <select id="checkNameOrShortName" resultType="java.lang.Boolean">
         SELECT
-        count(*)
+        TRUE
         FROM
         sys_dept
         WHERE
         del_flag = '0'
+        AND ebl_flag = '1'
         <if test="orgId != null and orgId != 0">
             AND dept_id != #{orgId}
         </if>
         AND (`name` =#{name} OR org_short_name= #{name})
+        LIMIT 1
     </select>
 
     <!--修改指定组织的结对组织-->

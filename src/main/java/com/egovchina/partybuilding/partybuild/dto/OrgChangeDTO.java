@@ -33,11 +33,11 @@ public class OrgChangeDTO {
     @NotNull(message = "变动类型不能为空")
     private Long changeType;
 
-    @ApiModelProperty(value = "原上级Id")
+    @ApiModelProperty(value = "原上级组织Id")
     private Long oldSuperiorId;
 
-    @ApiModelProperty(value = "现上级Id",required = true)
-    @NotNull(message = "现上级Id不能为空")
+    @ApiModelProperty(value = "现上级组织Id",required = true)
+    @NotNull(message = "现上级组织Id不能为空")
     private Long nowSuperiorId;
 
     @ApiModelProperty(value = "组织全称", required = true)
