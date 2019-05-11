@@ -37,13 +37,14 @@ public interface TabPbPartyGroupMapper {
     /**
      * desc: 根据党小组名称该条数据是否存在
      *
-     * @param groupName 党组名称
-     * @param excludeGroupId 排除的组织id
+     * @param groupName      党组名称
+     * @param excludeGroupId 排除的党小组id
+     * @param orgId          组织Id
      * @return boolean
      * @auther FANYANGEN
      * @date 2019-05-10 09:35
      */
-    boolean checkIsExistByGroupName(String groupName, Long excludeGroupId);
+    boolean checkIsExistByGroupName(Long orgId, String groupName, Long excludeGroupId);
 
     /**
      * desc: 根据主键获取党小组详情

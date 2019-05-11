@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.exception.BusinessDataInvalidException;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.CommonConstant;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
@@ -68,6 +70,11 @@ public class LeadTeamServiceImpl implements LeadTeamService {
     @Transactional
     @Override
     public int insertLeadTeam(LeadTeamDTO leadTeamDTO) {
+        //判断新增的领导班子在数据库中是否已经存在,如果存在则不能新增
+        boolean result = Optional.ofNullable(tabPbLeadTeamMapper.chechLeadTeamIsExist(leadTeamDTO.getSessionYear(), leadTeamDTO.getOrgId())).orElse(false);
+        if (result) {
+            throw new BusinessDataInvalidException(String.format("该组织在%d届中已经存在了", leadTeamDTO.getSessionYear()));
+        }
         TabPbLeadTeam tabPbLeadTeam =
                 generateTargetCopyPropertiesAndPaddingBaseField(leadTeamDTO, TabPbLeadTeam.class, false);
         int judgment = tabPbLeadTeamMapper.insertSelective(tabPbLeadTeam);

@@ -67,4 +67,5 @@ public interface TabPbUserTagMapper {
      * @return
      */
     int batchDeleteById(List<Long> deleteIds);
+
 }
