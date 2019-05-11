@@ -516,8 +516,11 @@
             <if test="upTime !=null">
                 and mup.up_time between #{upTime} and #{upTimeOver}
             </if>
-            <if test="titleLabel !=null and  ''!=titleLabel">
-                and mup.title_label=#{titleLabel}
+            <if test="labels !=null">
+                and
+                <foreach collection="labels" open="(" item="item" separator=" or " close=")">
+                  find_in_set(${item}, mup.title_label)
+                </foreach>
             </if>
             <if test="orgRange != null and orgRange != '' ">
                 <choose>
