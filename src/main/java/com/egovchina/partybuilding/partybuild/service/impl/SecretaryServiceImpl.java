@@ -47,7 +47,6 @@ public class SecretaryServiceImpl implements SecretaryService {
     @Autowired
     private TabPbRewardsMapper tabPbRewardsMapper;
 
-
     /**
      * 根据用户id获取书记基本信息
      *
@@ -106,10 +105,8 @@ public class SecretaryServiceImpl implements SecretaryService {
         int flag = tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretaryinsert);
         List<FamilyMemberDTO> familyMemberDTOS = secretaryMemberDTO.getFamilys();
         List<PositivesDTO> positivesDTOS = secretaryMemberDTO.getPositivesVOs();
-        //修改或者添加家庭成员
-        this.updateOrAddFamily(familyMemberDTOS, secretaryMemberDTO);
-        //修改或者添加职务
-        this.updateOrAddPositives(positivesDTOS, secretaryMemberDTO);
+        //修改或者添加家庭成员和职务
+        this.updateOrAddFamilyAndPositives(positivesDTOS, familyMemberDTOS, secretaryMemberDTO);
         return flag;
     }
 
@@ -152,13 +149,13 @@ public class SecretaryServiceImpl implements SecretaryService {
     }
 
     /**
-     * 修改或者添加家庭成员
+     * 添加或者修改书记家庭和职务
      *
+     * @param positivesDTOS
      * @param familyMemberDTOS
      * @param secretaryMemberDTO
-     * @return
      */
-    private void updateOrAddFamily(List<FamilyMemberDTO> familyMemberDTOS, SecretaryMemberDTO secretaryMemberDTO) {
+    private void updateOrAddFamilyAndPositives(List<PositivesDTO> positivesDTOS, List<FamilyMemberDTO> familyMemberDTOS, SecretaryMemberDTO secretaryMemberDTO) {
         if (CollectionUtil.isNotEmpty(familyMemberDTOS)) {
             for (FamilyMemberDTO familyDTO : familyMemberDTOS) {
                 if (familyDTO.getRelationId() != null) {
@@ -173,15 +170,6 @@ public class SecretaryServiceImpl implements SecretaryService {
                 }
             }
         }
-    }
-
-    /**
-     * 添加或者修改书记
-     *
-     * @param positivesDTOS
-     * @param secretaryMemberDTO
-     */
-    private void updateOrAddPositives(List<PositivesDTO> positivesDTOS, SecretaryMemberDTO secretaryMemberDTO) {
         if (CollectionUtil.isNotEmpty(secretaryMemberDTO.getPositivesVOs())) {
             for (PositivesDTO positivesDTO : positivesDTOS) {
                 if (positivesDTO.getPositiveId() != null) {
@@ -200,6 +188,7 @@ public class SecretaryServiceImpl implements SecretaryService {
 
     /**
      * 添加书记奖励和惩罚和职务和家庭
+     *
      * @param rewardsDTOs
      * @param punishmentDTOs
      * @param userId
@@ -209,19 +198,13 @@ public class SecretaryServiceImpl implements SecretaryService {
     private void addRewardAndPunishmentAndFamilyAndPosition(List<RewardsDTO> rewardsDTOs, List<PunishmentDTO> punishmentDTOs, Long userId, List<FamilyMemberDTO> familieDTOs, List<PositivesDTO> PositivesDTOs) {
         //添加书记奖励
         if (CollectionUtil.isNotEmpty(rewardsDTOs)) {
-            rewardsDTOs.stream().forEach(item -> {
-                item.setUserId(userId);
-                TabPbRewards tabPbRewards = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(item, TabPbRewards.class, false);
-                tabPbRewardsMapper.insertSelective(tabPbRewards);
-            });
+            List<TabPbRewards> tabPbRewards = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(rewardsDTOs, TabPbRewards.class, reward -> reward.setUserId(userId), false);
+            tabPbRewardsMapper.batchInsertTabPbRewardList(tabPbRewards);
         }
         //添加书记惩罚
         if (CollectionUtil.isNotEmpty(punishmentDTOs)) {
-            rewardsDTOs.stream().forEach(item -> {
-                item.setUserId(userId);
-                TabPbPunishment tabPbPunishment = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(item, TabPbPunishment.class, false);
-                tabPbPunishmentMapper.insertSelective(tabPbPunishment);
-            });
+            List<TabPbPunishment> tabPbPunishments = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(punishmentDTOs, TabPbPunishment.class, tabPbPunishment -> tabPbPunishment.setUserId(userId), false);
+            tabPbPunishmentMapper.batchInsertTabPbPunishment(tabPbPunishments);
         }
         //添加书记家庭
         if (CollectionUtil.isNotEmpty(familieDTOs)) {

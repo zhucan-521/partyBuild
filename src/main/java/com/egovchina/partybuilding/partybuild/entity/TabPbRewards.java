@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 
@@ -8,6 +9,7 @@ import java.util.Date;
  * @author Administrator
  */
 @Data
+@Accessors(chain = true)
 public class TabPbRewards {
 
     private static final long serialVersionUID = 1L;
