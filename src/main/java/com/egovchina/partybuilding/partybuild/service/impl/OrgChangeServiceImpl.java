@@ -22,6 +22,7 @@ import com.egovchina.partybuilding.partybuild.vo.DirectPartyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,7 @@ import java.util.Objects;
 import static com.egovchina.partybuilding.common.util.BeanUtil.copyPropertiesIgnoreNullAndPaddingBaseField;
 import static com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil.paddingBaseFiled;
 import static com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled;
+import static com.egovchina.partybuilding.common.util.RedisKeyConstant.ORGANIZATION_LIST_FOR_PARENT;
 
 /**
  * 描述:
@@ -138,6 +140,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
      * @param orgChangeDTO
      * @return
      */
+    @CacheEvict(value = ORGANIZATION_LIST_FOR_PARENT, key = "#orgChangeDTO.getNowSuperiorId()")
     @Transactional
     @Override
     public int addOrgChange(OrgChangeDTO orgChangeDTO) {
@@ -222,6 +225,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
         newDept.setDeptId(org.getDeptId());
         newDept.setEblFlag(eblFlag);
         newDept.setOrgStatus(orgStatus);
+        paddingUpdateRelatedBaseFiled(newDept);
         return this.tabSysDeptMapper.updateByPrimaryKeySelective(newDept);
     }
 

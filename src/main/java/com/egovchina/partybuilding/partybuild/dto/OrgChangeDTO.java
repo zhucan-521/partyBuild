@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 描述:
@@ -35,7 +36,8 @@ public class OrgChangeDTO {
     @ApiModelProperty(value = "原上级Id")
     private Long oldSuperiorId;
 
-    @ApiModelProperty(value = "现上级Id")
+    @ApiModelProperty(value = "现上级Id",required = true)
+    @NotNull(message = "现上级Id不能为空")
     private Long nowSuperiorId;
 
     @ApiModelProperty(value = "组织全称", required = true)
