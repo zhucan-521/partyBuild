@@ -1,12 +1,11 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.common.entity.SysUser;
+import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.egovchina.partybuilding.common.util.*;
 import com.egovchina.partybuilding.partybuild.dto.MsgUpInfoDTO;
 import com.egovchina.partybuilding.partybuild.entity.MsgUpInfoQueryBean;
-import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgUpInfo;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMsgUpInfoMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
@@ -16,9 +15,11 @@ import com.egovchina.partybuilding.partybuild.service.MsgUpInfoSerivce;
 import com.egovchina.partybuilding.partybuild.vo.MsgUpInfoVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -117,6 +118,11 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
             msgUpInfoQueryBean.setRangeDeptId(UserContextHolder.getOrgId());
         }
         PageHelper.startPage(page);
+
+        if (StringUtils.isNotEmpty(msgUpInfoQueryBean.getTitleLabel())) {
+            msgUpInfoQueryBean.setLabels(Arrays.asList(msgUpInfoQueryBean.getTitleLabel().split(",")));
+        }
+
         List<MsgUpInfoVO> list = tabPbMsgUpInfoMapper.selectVoActive(msgUpInfoQueryBean);
         return new PageInfo<>(list);
     }
