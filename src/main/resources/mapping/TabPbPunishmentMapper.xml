@@ -508,4 +508,37 @@ GROUP BY
       version = #{version,jdbcType=BIGINT}
     where punishment_id = #{punishmentId,jdbcType=BIGINT}
   </update>
+
+    <!--批量添加惩罚-->
+    <insert id="batchInsertTabPbPunishment" parameterType="list">
+        insert into tab_pb_punishment (punishment_id, punish_date, punish_org,
+        punish_org_id, user_id, approved_level,
+        punish_reason, punish_result, revoke_date,
+        ebl_flag, del_flag, order_num,
+        description, create_time, create_userid,
+        create_username, update_time, update_userid,
+        update_username, version, base_status,
+        mistake, follow_up, comment,punish_name,
+        judiciary_flag,punish_type
+        ) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.punishmentId,jdbcType=BIGINT}, #{item.punishDate,jdbcType=TIMESTAMP},
+            #{item.punishOrg,jdbcType=VARCHAR},
+            #{item.punishOrgId,jdbcType=BIGINT}, #{item.userId,jdbcType=BIGINT}, #{item.approvedLevel,jdbcType=BIGINT},
+            #{item.punishReason,jdbcType=BIGINT}, #{item.punishResult,jdbcType=BIGINT},
+            #{item.revokeDate,jdbcType=TIMESTAMP},
+            #{item.eblFlag,jdbcType=VARCHAR}, 0, #{item.orderNum,jdbcType=BIGINT},
+            #{item.description,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.createUserid,jdbcType=BIGINT},
+            #{item.createUsername,jdbcType=VARCHAR}, #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.updateUserid,jdbcType=BIGINT},
+            #{item.updateUsername,jdbcType=VARCHAR}, #{item.version,jdbcType=BIGINT},
+            #{item.baseStatus,jdbcType=LONGVARCHAR},
+            #{item.mistake,jdbcType=LONGVARCHAR}, #{item.followUp,jdbcType=LONGVARCHAR},
+            #{item.comment,jdbcType=LONGVARCHAR},
+            #{item.punishName,jdbcType=VARCHAR},#{item.judiciaryFlag,jdbcType=VARCHAR},
+            #{item.punishType,jdbcType=BIGINT}
+            )
+        </foreach>
+    </insert>
 </mapper>

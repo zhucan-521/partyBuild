@@ -30,4 +30,12 @@ public interface TabPbRewardsMapper {
     RewardsVO selectByPrimaryKeyAndFiles(Long rewardsId);
 
     List<RewardsVO> selectListAndFile(RewardsAndPunishmentsQueryBean rewardsAndPunishmentsQueryBean);
+
+    /**
+     * 批量添加奖励
+     *
+     * @param rewardsList
+     * @return
+     */
+    int batchInsertTabPbRewardList(List<TabPbRewards> rewardsList);
 }

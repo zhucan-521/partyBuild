@@ -74,6 +74,7 @@
         <result column="office_size" jdbcType="BIGINT" property="officeSize"/>
         <result column="address" jdbcType="VARCHAR" property="address"/>
         <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
+        <result column="unit_code" jdbcType="VARCHAR" property="unitCode"/>
         <result column="unit_id" jdbcType="BIGINT" property="unitId"/>
         <result column="unit_state" jdbcType="BIGINT" property="unitState"/>
         <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
@@ -142,6 +143,9 @@
         <if test="orgCode != null and orgCode != ''">
             AND d.org_code = #{orgCode}
         </if>
+        <if test="orgStatus != null and orgStatus != ''">
+            AND d.org_status = #{orgStatus}
+        </if>
         <if test="orgnizeProperty != null and orgnizeProperty != ''">
             AND find_in_set(d.orgnize_property,#{orgnizeProperty})
         </if>
@@ -172,6 +176,9 @@
         </if>
         <if test="unitName != null and unitName != ''">
             AND u.unit_name like concat('%',#{unitName},'%')
+        </if>
+        <if test="unitCode != null and unitCode != ''">
+            AND u.unit_code = #{unitCode}
         </if>
     </sql>
     <sql id="Selective_Column_List">
@@ -712,6 +719,7 @@
         select
         <include refid="VO_Column_List"/>
         , pd.`name` as parent_name,
+        u.unit_code,
         u.unit_property,
         case when d.orgnize_property in ( 989, 992, 995, 1002, 1003, 1007, 1008) then 1 else 0 end AS is_branch
         from sys_dept d
@@ -760,6 +768,7 @@
         ,
         <include refid="Blob_Column_List"/>
         , d2.name as parent_name,
+        u.unit_code,
         u.unit_property,
         case when d.orgnize_property in ( 989, 992, 995, 1002, 1003, 1007, 1008) then 1 else 0 end AS is_branch
         from sys_dept d
@@ -854,17 +863,19 @@
     </update>
 
     <!--检查名称或名称简称是否存在-->
-    <select id="checkNameOrShortName" resultType="java.lang.Integer">
+    <select id="checkNameOrShortName" resultType="java.lang.Boolean">
         SELECT
-        count(*)
+        TRUE
         FROM
         sys_dept
         WHERE
         del_flag = '0'
+        AND ebl_flag = '1'
         <if test="orgId != null and orgId != 0">
             AND dept_id != #{orgId}
         </if>
         AND (`name` =#{name} OR org_short_name= #{name})
+        LIMIT 1
     </select>
 
     <!--修改指定组织的结对组织-->

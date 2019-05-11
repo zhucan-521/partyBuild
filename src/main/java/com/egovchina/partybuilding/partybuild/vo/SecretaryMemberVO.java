@@ -63,10 +63,6 @@ public class SecretaryMemberVO {
     @ApiModelProperty(value = "头像")
     private String avatar;
 
-    @ApiModelProperty(value = "奖惩情况 dict DYJC")
-    @JsonSerialize(using = DictSerializer.class)
-    private String rewards;
-
     @ApiModelProperty(value = "党内职务")
     private List<PositivesVO> positivesVOs;
 
@@ -139,6 +135,12 @@ public class SecretaryMemberVO {
 
     @ApiModelProperty(value = "两代表-委员职务")
     private String committeeDuties;
+
+    @ApiModelProperty(value = "书记奖励")
+    private List<RewardsVO> rewardsVOs;
+
+    @ApiModelProperty(value = "书记惩罚")
+    private List<PunishmentVO> punishmentVOs;
 
     @ApiModelProperty(value = "排序码")
     private Long orderNum;

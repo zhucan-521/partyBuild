@@ -3,12 +3,14 @@ package com.egovchina.partybuilding.partybuild.vo;
 import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
 
+@ApiModel("书记信息显示")
 @Data
 public class SecretaryInfoVO {
 
@@ -58,14 +60,16 @@ public class SecretaryInfoVO {
     @ApiModelProperty(value = "头像")
     private String avatar;
 
-    @ApiModelProperty(value = "奖惩情况 dict DYJC")
-    @JsonSerialize(using = DictSerializer.class)
-    private String rewards;
-
     @ApiModelProperty(value = "党内职务")
     private List<PositivesVO> positivesVOs;
 
     @ApiModelProperty(value = "家庭成员")
     private List<FamilyMemberVO> familys;
+
+    @ApiModelProperty(value = "书记奖励")
+    private List<RewardsVO> rewardsVOs;
+
+    @ApiModelProperty(value = "书记惩罚")
+    private List<PunishmentVO> punishmentVOs;
 
 }

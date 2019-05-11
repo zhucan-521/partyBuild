@@ -44,7 +44,7 @@ public class SysUserQueryBean {
     private String registryStatus;
 
     @ApiModelProperty(value = "单位类型")
-    private String unitType;
+    private String unitProperty;
 
     @ApiModelProperty(value = "婚姻状况,多个逗号隔开")
     private String maritalStatus;
