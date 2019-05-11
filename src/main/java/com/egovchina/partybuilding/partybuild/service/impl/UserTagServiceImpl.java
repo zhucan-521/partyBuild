@@ -141,7 +141,7 @@ public class UserTagServiceImpl implements UserTagService {
         filterNewAndDeletedData(userTagDTO, dbTagList, insertList, deleteIds);
 
         //分别新增和删除标签
-        int value = 0;
+        int value = 1;
         if (CollectionUtil.isNotEmpty(deleteIds)) {
             value += tabPbUserTagMapper.batchDeleteById(deleteIds);
         }
