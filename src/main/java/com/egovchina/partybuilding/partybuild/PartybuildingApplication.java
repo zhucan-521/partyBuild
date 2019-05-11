@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
-@EnableAspectJAutoProxy
+@EnableAspectJAutoProxy(exposeProxy = true)
 @EnableDiscoveryClient
 @MapperScan({"com.egovchina.partybuilding.partybuild.repository", "com.egovchina.partybuilding.partybuild.system.mapper"})
 @ComponentScan(basePackages = "com.egovchina")
