@@ -390,8 +390,8 @@
             AND gm.is_leader = 1
         </if>
 
-        <if test="isRevoke != null and isRevoke != '' ">
-            AND is_revoke = #{isRevoke}
+        <if test="isRevoke != null">
+            AND pg.is_revoke = #{isRevoke}
         </if>
 
         ORDER BY pg.order_num
@@ -424,8 +424,8 @@
             AND pg.group_name like concat('%', #{groupName} ,'%')
         </if>
 
-        <if test="isRevoke != null and isRevoke != '' ">
-            AND is_revoke = #{isRevoke}
+        <if test="isRevoke != null">
+            AND pg.is_revoke = #{isRevoke}
         </if>
 
     </select>
