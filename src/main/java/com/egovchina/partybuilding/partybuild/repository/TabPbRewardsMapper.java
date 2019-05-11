@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.partybuild.entity.RewardsAndPunishmentsQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbRewards;
 import com.egovchina.partybuilding.partybuild.vo.RewardsVO;
 import org.apache.ibatis.annotations.Param;
@@ -28,13 +29,13 @@ public interface TabPbRewardsMapper {
 
     RewardsVO selectByPrimaryKeyAndFiles(Long rewardsId);
 
-    List<RewardsVO> selectListAndFile(@Param("orgId") Long orgId, @Param("userId") Long userId, @Param("userName") String userName);
+    List<RewardsVO> selectListAndFile(RewardsAndPunishmentsQueryBean rewardsAndPunishmentsQueryBean);
 
     /**
      * 批量添加奖励
+     *
      * @param rewardsList
      * @return
      */
     int batchInsertTabPbRewardList(List<TabPbRewards> rewardsList);
-
 }

@@ -519,7 +519,7 @@
             <if test="labels !=null">
                 and
                 <foreach collection="labels" open="(" item="item" separator=" or " close=")">
-                  find_in_set(${item}, mup.title_label)
+                    find_in_set(${item}, mup.title_label)
                 </foreach>
             </if>
             <if test="orgRange != null and orgRange != '' ">

@@ -36,7 +36,7 @@ public class OrgChangeDTO {
     @ApiModelProperty(value = "原上级组织Id")
     private Long oldSuperiorId;
 
-    @ApiModelProperty(value = "现上级组织Id",required = true)
+    @ApiModelProperty(value = "现上级组织Id", required = true)
     @NotNull(message = "现上级组织Id不能为空")
     private Long nowSuperiorId;
 

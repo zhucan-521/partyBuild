@@ -1,5 +1,8 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.common.config.PaddingBaseField;
+import com.egovchina.partybuilding.partybuild.entity.RewardsAndPunishmentsQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.RewardsAndPunishmentsQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPunishment;
 import com.egovchina.partybuilding.partybuild.vo.PunishmentVO;
 import org.apache.ibatis.annotations.Param;
@@ -27,13 +30,13 @@ public interface TabPbPunishmentMapper {
 
     PunishmentVO selectByPrimaryKeyAndFiles(Long punishmentId);
 
-    List<PunishmentVO> selectListAndFileVO(@Param("orgId") Long orgId, @Param("userId") Long userId, @Param("userName") String userName);
+    List<PunishmentVO> selectListAndFileVO(RewardsAndPunishmentsQueryBean rewardsAndPunishmentsQueryBean);
 
     /**
      * 批量添加惩罚
+     *
      * @param tabPbPunishmentList
      * @return
      */
     int batchInsertTabPbPunishment(List<TabPbPunishment> tabPbPunishmentList);
-
 }

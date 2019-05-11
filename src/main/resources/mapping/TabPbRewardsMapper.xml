@@ -139,19 +139,28 @@ GROUP BY
         ,u.realname
         ,IFNULL(vac.doc_num,0) as doc_num,
         IFNULL(vac.img_num,0) as img_num
-        from tab_pb_rewards r
+        from sys_dept d
+        inner join tab_pb_rewards r on r.rewards_orgnize_id = d.dept_id
         left join view_attachment_count vac on r.rewards_id = vac.host_id and vac.attachment_type = 11
         left join sys_user u on u.user_id = r.user_id
         where r.del_flag = '0'
         <if test="userId != null">
             and r.user_id = #{userId}
         </if>
-        <if test="orgId != null">
-            and r.rewards_orgnize_id = #{orgId}
+        <if test="realName!=null and realName!=''">
+            and u.realname like concat('%', #{realName}, '%')
         </if>
-        <if test="userName!=null and userName!=''">
-            and u.realname like concat('%', #{userName}, '%')
-        </if>
+        <choose>
+            <when test="orgRange == 1">
+                AND (d.dept_id = #{orgId} OR d.parent_id = #{orgId})
+            </when>
+            <when test="orgRange == 2">
+                AND find_in_set(#{orgId}, d.full_path)
+            </when>
+            <otherwise>
+                AND d.dept_id = #{orgId}
+            </otherwise>
+        </choose>
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tab_pb_rewards
@@ -469,25 +478,25 @@ GROUP BY
     <!--批量插入奖励-->
     <insert id="batchInsertTabPbRewardList" parameterType="List">
         insert into tab_pb_rewards
-            (rewards_date, rewards_orgnize,
-            rewards_orgnize_id, user_id, rewards,
-            rewards_reason, approved_level, revoke_date,
-            ebl_flag, del_flag, order_num,
-            description, create_time, create_userid,
-            create_username, update_time, update_userid,
-            update_username, version, rewards_name,
-            rewards_type, base_status, deed,
-            comment
+        (rewards_date, rewards_orgnize,
+        rewards_orgnize_id, user_id, rewards,
+        rewards_reason, approved_level, revoke_date,
+        ebl_flag, del_flag, order_num,
+        description, create_time, create_userid,
+        create_username, update_time, update_userid,
+        update_username, version, rewards_name,
+        rewards_type, base_status, deed,
+        comment
         ) values
-        <foreach collection="list"  separator=","  item="item">
-            ( #{item.rewardsDate},   #{item.rewardsOrgnize},
-            #{item.rewardsOrgnizeId},#{item.userId},        #{item.rewards},
-            #{item.rewardsReason},   #{item.approvedLevel}, #{item.revokeDate},
-            #{item.eblFlag},         0,       #{item.orderNum},
-            #{item.description},     #{item.createTime},    #{item.createUserid},
-            #{item.createUsername},  #{item.updateTime},    #{item.updateUserid},
-            #{item.updateUsername},  #{item.version},       #{item.rewardsName},
-            #{item.rewardsType},     #{item.baseStatus},    #{item.deed},
+        <foreach collection="list" separator="," item="item">
+            ( #{item.rewardsDate}, #{item.rewardsOrgnize},
+            #{item.rewardsOrgnizeId},#{item.userId}, #{item.rewards},
+            #{item.rewardsReason}, #{item.approvedLevel}, #{item.revokeDate},
+            #{item.eblFlag}, 0, #{item.orderNum},
+            #{item.description}, #{item.createTime}, #{item.createUserid},
+            #{item.createUsername}, #{item.updateTime}, #{item.updateUserid},
+            #{item.updateUsername}, #{item.version}, #{item.rewardsName},
+            #{item.rewardsType}, #{item.baseStatus}, #{item.deed},
             #{item.comment}
             )
         </foreach>
