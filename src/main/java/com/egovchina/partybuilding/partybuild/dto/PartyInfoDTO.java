@@ -21,12 +21,15 @@ public class PartyInfoDTO {
     private PartyDTO party;
 
     @ApiModelProperty(value = "学历信息")
+    @Valid
     private List<PartyEducationDTO> educations;
 
     @ApiModelProperty(value = "技术职务")
+    @Valid
     private List<PartyJobTitleDTO> jobTitles;
 
     @ApiModelProperty(value = "工作信息")
+    @Valid
     private List<PartyWorkDTO> works;
 
 

@@ -1,11 +1,16 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
 import com.egovchina.partybuilding.common.config.DictSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+
 @ApiModel(value = "学历返回实体")
 @Data
 public class PartyEducationVO {
@@ -30,4 +35,12 @@ public class PartyEducationVO {
 
     @ApiModelProperty(value = "专业")
     private String spec;
+
+    @ApiModelProperty(value = "入学时间 ")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date admissionTime;
+
+    @ApiModelProperty(value = "毕业时间 ")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date graduateTime;
 }

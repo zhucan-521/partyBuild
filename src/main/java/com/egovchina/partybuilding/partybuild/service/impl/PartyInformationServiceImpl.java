@@ -153,16 +153,16 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @Transactional(rollbackFor = Exception.class)
     public int savePartyInfo(PartyInfoDTO partyInfoDTO) {
         if (!tabSysUserMapper.checkIsExistByIdCard(partyInfoDTO.getParty().getIdCardNo())) {
+            int effected = 0;
             SysUser sys = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyInfoDTO.getParty(), SysUser.class, false);
             //检测组织Id
             checkIsExist(sys);
             //新增用户信息
-            tabSysUserMapper.insertSelective(sys);
+            effected += tabSysUserMapper.insertSelective(sys);
             //新增或者删除标签信息
             if (partyInfoDTO.getParty().getUserTags() != null) {
                 this.userTagService.batchInsertUserTagDTO(partyInfoDTO.getParty().getUserTags());
             }
-            int effected = 0;
             if (partyInfoDTO.getEducations() != null && partyInfoDTO.getEducations().size() > 0) {
                 //赋值主键
                 partyInfoDTO.getEducations().forEach(education -> {
