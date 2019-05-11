@@ -3,6 +3,7 @@ package com.egovchina.partybuilding.partybuild.service;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.dto.OrgChangeDTO;
+import com.egovchina.partybuilding.partybuild.entity.OrgChangeQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange;
 import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
 
@@ -19,13 +20,12 @@ public interface OrgChangeService {
     /**
      * 根据组织id、变动类型查询最新的变动记录
      *
-     * @param deptId     组织id
-     * @param changeType 调整类型
+     * @param changeId 调整id
      * @return OrgChangeVO
      * @auther WuYunJie
      * @date 2019/5/11 14:22
      */
-    OrgChangeVO selectOrgChangeByDeptIdOrderTime(Long deptId, Long changeType);
+    OrgChangeVO selectOrgChangeById(Long changeId);
 
     /**
      * 添加组织变动
@@ -40,13 +40,13 @@ public interface OrgChangeService {
     /**
      * 查询组织调整记录
      *
-     * @param orgId 组织id
-     * @param page  分页
+     * @param orgChangeQueryBean 组织变动查询实体
+     * @param page               分页
      * @return List<OrgChangeVO>
      * @auther WuYunJie
      * @date 2019/5/11 14:33
      */
-    List<OrgChangeVO> selectOrgChangeList(Long orgId, Page page);
+    List<OrgChangeVO> selectOrgChangeList(OrgChangeQueryBean orgChangeQueryBean, Page page);
 
     /**
      * 添加组织变动记录

@@ -10,6 +10,7 @@ import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.OrgChangeDTO;
+import com.egovchina.partybuilding.partybuild.entity.OrgChangeQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.SysDict;
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange;
 import com.egovchina.partybuilding.partybuild.repository.TabPbOrgnizeChangeMapper;
@@ -70,8 +71,8 @@ public class OrgChangeServiceImpl implements OrgChangeService {
     private ITabPbAttachmentService iTabPbAttachmentService;
 
     @Override
-    public OrgChangeVO selectOrgChangeByDeptIdOrderTime(Long deptId, Long changeType) {
-        return tabPbOrgnizeChangeMapper.selectOrgChangeByDeptIdOrderTime(deptId, changeType);
+    public OrgChangeVO selectOrgChangeById(Long changeId) {
+        return tabPbOrgnizeChangeMapper.selectOrgChangeById(changeId);
     }
 
     @Transactional
@@ -219,8 +220,8 @@ public class OrgChangeServiceImpl implements OrgChangeService {
     }
 
     @Override
-    public List<OrgChangeVO> selectOrgChangeList(Long deptId, Page page) {
+    public List<OrgChangeVO> selectOrgChangeList(OrgChangeQueryBean orgChangeQueryBean, Page page) {
         PageHelper.startPage(page);
-        return tabPbOrgnizeChangeMapper.selectOrgChangeVOList(deptId);
+        return tabPbOrgnizeChangeMapper.selectOrgChangeVOList(orgChangeQueryBean);
     }
 }
