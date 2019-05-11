@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,6 +140,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         tabPbOrgnizeChange.setOrgnizeName(organizationDTO.getName());
         tabPbOrgnizeChange.setFileNumber(organizationDTO.getFoundedFileNumber());
         tabPbOrgnizeChange.setChangeType(59525L);
+        tabPbOrgnizeChange.setChangeDate(new Date());
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbOrgnizeChange);
         orgChangeService.insertSelective(tabPbOrgnizeChange);
     }
