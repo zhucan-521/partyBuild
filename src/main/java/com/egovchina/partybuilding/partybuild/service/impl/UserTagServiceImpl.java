@@ -158,11 +158,11 @@ public class UserTagServiceImpl implements UserTagService {
      * @return
      */
     private boolean quickDelete(UserTagDTO userTagDTO) {
-        int result = 0;
         if (CollectionUtil.isEmpty(userTagDTO.getTagTypes())) {
-            result = tabPbUserTagMapper.batchDeleteByUserId(userTagDTO.getUserId());
+            tabPbUserTagMapper.batchDeleteByUserId(userTagDTO.getUserId());
+            return true;
         }
-        return result > 0;
+        return false;
     }
 
     /**
@@ -173,11 +173,11 @@ public class UserTagServiceImpl implements UserTagService {
      * @return
      */
     private boolean quickInsert(List<TabPbUserTag> dbTagList, List<TabPbUserTag> list) {
-        int result = 0;
         if (CollectionUtil.isEmpty(dbTagList)) {
-            result = tabPbUserTagMapper.batchInsertUserTagDTO(list);
+            tabPbUserTagMapper.batchInsertUserTagDTO(list);
+            return true;
         }
-        return result > 0;
+        return false;
     }
 
     /**
