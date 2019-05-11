@@ -285,7 +285,7 @@
     </sql>
     <!---分页查询党员信息列表-->
     <sql id="Base_users_info">
-        user_id,realname,gender,TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age,nation,id_card_no,join_time,regular_time,report_org_name,phone,identity_type,marital_status,
+        u.user_id,realname,gender,TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age,nation,id_card_no,join_time,regular_time,report_org_name,phone,identity_type,marital_status,
         education,flow_status,IFNULL(is_llost,'0') as is_llost,IFNULL(is_poor,'0') as is_poor,IFNULL(is_taiwaner,'0') as is_taiwaner,dd.unit_id,u.dept_id,birthday,migrant,stratum,front_line,work_date,ancestor_place,registry_status,family_address,u.community_addr,
         job_position
     </sql>
@@ -332,7 +332,7 @@
         <if test="nation != null and nation != ''">
             and find_in_set(nation, #{nation})
         </if>
-        <if test="unitType != null">
+        <if test="unitType != null and unitType!=''">
             AND EXISTS(select 1 from tab_pb_unit_info ui WHERE dd.unit_id=ui.unit_id and
             find_in_set( ui.unit_property , #{unitType})
             )
@@ -366,6 +366,11 @@
         </if>
         <if test="isTaiwaner != null">
             and find_in_set(IFNULL(is_taiwaner,'0'), #{isTaiwaner})
+        </if>
+        <if test="tagTypes != null">
+            AND EXISTS(select 1 from tab_pb_user_tag m WHERE m.tag_type =s.id and
+            find_in_set( m.tag_type , #{tagTypes})
+            )
         </if>
     </sql>
     <!--查询书记的简单党员信息-->
@@ -425,6 +430,10 @@
         ON sd.subordinate_dept_id = u.dept_id
         left join sys_dept dd on dd.dept_id =u.dept_id
         left join tab_pb_unit_info t on dd.unit_id = t.unit_id
+        <if test="tagTypes != null and tagTypes!=''">
+            left join tab_pb_user_tag tt on tt.user_id=u.user_id
+            left join sys_dict s on tt.tag_type =s.id
+        </if>
         <where>
             <include refid="selectPageByMapWhereCaseList"/>
         </where>
@@ -458,6 +467,10 @@
         ON sd.subordinate_dept_id = u.dept_id
         left join sys_dept dd on dd.dept_id =u.dept_id
         left join tab_pb_unit_info t on dd.unit_id = t.unit_id
+        <if test="tagTypes != null and tagTypes!='' ">
+            left join tab_pb_user_tag tt on tt.user_id=u.user_id
+            left join sys_dict s on tt.tag_type =s.id
+        </if>
         <where>
             <include refid="selectPageByMapWhereCaseList"/>
         </where>
