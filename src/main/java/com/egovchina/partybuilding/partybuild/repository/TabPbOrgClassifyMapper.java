@@ -29,16 +29,4 @@ public interface TabPbOrgClassifyMapper {
 
     List<OrgClassifyVO> selectWithConditions(ClassifyQueryBean classifyQueryBean);
 
-    /**
-     * desc: 检查本次定等日期是否与上次定等日期相隔一年
-     *
-     * @param orgClassifyId 主键ID
-     * @param deptId        组织ID
-     * @param levelDate     定等日期
-     * @return boolean
-     * @author FanYanGen
-     * @date 2019/5/7 16:01
-     **/
-    boolean checkIsMoreThanAYear(Long orgClassifyId, Long deptId, Date levelDate);
-
 }
