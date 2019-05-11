@@ -73,7 +73,7 @@ public class LeadTeamServiceImpl implements LeadTeamService {
         //判断新增的领导班子在数据库中是否已经存在,如果存在则不能新增
         boolean result = Optional.ofNullable(tabPbLeadTeamMapper.chechLeadTeamIsExist(leadTeamDTO.getSessionYear(), leadTeamDTO.getOrgId())).orElse(false);
         if (result) {
-            throw new BusinessDataInvalidException(String.format("该组织在%d届中已经存在了", leadTeamDTO.getSessionYear()));
+            throw new BusinessDataInvalidException(String.format("该领导班子在%d届中已经存在了", leadTeamDTO.getSessionYear()));
         }
         TabPbLeadTeam tabPbLeadTeam =
                 generateTargetCopyPropertiesAndPaddingBaseField(leadTeamDTO, TabPbLeadTeam.class, false);
