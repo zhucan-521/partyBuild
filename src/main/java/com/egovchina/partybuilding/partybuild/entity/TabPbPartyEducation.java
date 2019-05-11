@@ -12,38 +12,31 @@ public class TabPbPartyEducation {
 
     private Long userId;
 
-
     private Long level;
 
     private String levelName;
 
-
     private Long degree;
-
 
     private String graduatedSchool;
 
-
     private String spec;
-
 
     private Boolean delFlag;
 
-
     private Date createTime;
-
 
     private Long createUserid;
 
-
     private String createUsername;
-
 
     private Date updateTime;
 
-
     private Long updateUserid;
 
-
     private String updateUsername;
+
+    private Date admissionTime;
+
+    private Date graduateTime;
 }

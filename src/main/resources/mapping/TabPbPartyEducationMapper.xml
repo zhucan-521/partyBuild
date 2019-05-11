@@ -10,6 +10,8 @@
         <result column="spec" jdbcType="VARCHAR" property="spec"/>
         <result column="del_flag" jdbcType="BIT" property="delFlag"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="admission_time" jdbcType="TIMESTAMP" property="admissionTime"/>
+        <result column="graduate_time" jdbcType="TIMESTAMP" property="graduateTime"/>
         <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
         <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
@@ -18,7 +20,7 @@
     </resultMap>
     <sql id="Base_Column_List">
     education_id, user_id, level, degree, graduated_school, spec, del_flag, create_time, 
-    create_userid, create_username, update_time, update_userid, update_username
+    create_userid, create_username, update_time, update_userid, update_username,admissionTime,graduateTime
   </sql>
 
     <!-- base method -->
@@ -38,12 +40,12 @@
       degree, graduated_school, spec, 
       del_flag, create_time, create_userid, 
       create_username, update_time, update_userid, 
-      update_username)
+      update_username,admission_time,graduate_time)
     values (#{educationId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{level,jdbcType=BIGINT},
       #{degree,jdbcType=BIGINT}, #{graduatedSchool,jdbcType=VARCHAR}, #{spec,jdbcType=VARCHAR}, 
       #{delFlag,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, 
       #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, 
-      #{updateUsername,jdbcType=VARCHAR})
+      #{updateUsername,jdbcType=VARCHAR},#{admissionTime,jdbcType=TIMESTAMP},#{graduateTime,jdbcType=TIMESTAMP})
   </insert>
     <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyEducation">
         insert into tab_pb_party_education
@@ -87,6 +89,13 @@
             <if test="updateUsername != null">
                 update_username,
             </if>
+            <if test="admissionTime != null">
+                admission_time,
+            </if>
+            <if test="graduateTime != null">
+                graduate_time,
+            </if>
+
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="educationId != null">
@@ -127,6 +136,12 @@
             </if>
             <if test="updateUsername != null">
                 #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="admissionTime != null">
+                #{admissionTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="graduateTime != null">
+                #{graduateTime,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
@@ -170,6 +185,12 @@
             <if test="updateUsername != null">
                 update_username = #{updateUsername,jdbcType=VARCHAR},
             </if>
+            <if test="admissionTime != null">
+                admission_time = #{admissionTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="graduateTime != null">
+                graduate_time= #{graduateTime,jdbcType=TIMESTAMP},
+            </if>
         </set>
         where education_id = #{educationId,jdbcType=BIGINT}
     </update>
@@ -186,7 +207,9 @@
       create_username = #{createUsername,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       update_userid = #{updateUserid,jdbcType=BIGINT},
-      update_username = #{updateUsername,jdbcType=VARCHAR}
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+       admission_time = #{admissionTime,jdbcType=TIMESTAMP},
+      graduate_time= #{graduateTime,jdbcType=TIMESTAMP}
     where education_id = #{educationId,jdbcType=BIGINT}
   </update>
 
@@ -203,7 +226,8 @@
     <insert id="batchInsert" parameterType="java.util.List">
         insert into tab_pb_party_education
         (user_id, level,degree, graduated_school, spec,
-        create_time, create_userid,create_username, update_time, update_userid,update_username)
+        create_time, create_userid,create_username, update_time,
+        update_userid,update_username,admission_time,graduate_time)
         values
         <foreach collection="list" item="item" separator=",">
             (
@@ -212,7 +236,9 @@
             #{item.createTime,jdbcType=TIMESTAMP},
             #{item.createUserid,jdbcType=BIGINT}, #{item.createUsername,jdbcType=VARCHAR},
             #{item.updateTime,jdbcType=TIMESTAMP},
-            #{item.updateUserid,jdbcType=BIGINT}, #{item.updateUsername,jdbcType=VARCHAR}
+            #{item.updateUserid,jdbcType=BIGINT}, #{item.updateUsername,jdbcType=VARCHAR},
+            #{admissionTime,jdbcType=TIMESTAMP},
+            #{graduateTime,jdbcType=TIMESTAMP}
             )
         </foreach>
     </insert>
