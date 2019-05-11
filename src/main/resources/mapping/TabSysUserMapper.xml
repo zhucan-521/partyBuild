@@ -338,10 +338,10 @@
             )
         </if>
         <if test="ageBegin != null">
-            and TIMESTAMPDIFF(YEAR,birthday,CURDATE())> #{ageBegin}
+            and TIMESTAMPDIFF(YEAR,birthday,CURDATE())>= #{ageBegin}
         </if>
         <if test="ageEnd != null">
-            and TIMESTAMPDIFF(YEAR,birthday,CURDATE())&lt; #{ageEnd}
+            and TIMESTAMPDIFF(YEAR,birthday,CURDATE())&lt;= #{ageEnd}
         </if>
         <if test="joinTimeBegin != null">
             and join_time > #{joinTimeBegin}

@@ -146,16 +146,22 @@ public class PartyGroupServiceImpl implements PartyGroupService {
      * @param groupId  党小组ID
      * @param isRevoke 撤销标识
      * @return TabPbPartyGroup
-     * @auther FANYANGEN
+     * @auther FanYanGen
      * @date 2019-05-10 09:44
      */
     private TabPbPartyGroup maintainRevocationOfPartyGroups(Long groupId, Integer isRevoke) {
         TabPbPartyGroup tabPbPartyGroup = new TabPbPartyGroup();
         tabPbPartyGroup.setGroupId(groupId);
         tabPbPartyGroup.setIsRevoke(isRevoke);
-        tabPbPartyGroup.setRevokeName(UserContextHolder.getUserName());
-        tabPbPartyGroup.setRevokeTime(new Date());
-        return generateTargetCopyPropertiesAndPaddingBaseField(tabPbPartyGroup, TabPbPartyGroup.class, true);
+        if (isRevoke == 0) {
+            tabPbPartyGroup.setRevokeName("");
+            tabPbPartyGroup.setRevokeTime(null);
+        } else {
+            tabPbPartyGroup.setRevokeName(UserContextHolder.getUserName());
+            tabPbPartyGroup.setRevokeTime(new Date());
+        }
+        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbPartyGroup);
+        return tabPbPartyGroup;
     }
 
     /**
