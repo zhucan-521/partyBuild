@@ -194,7 +194,7 @@
             <result column="family_address" jdbcType="VARCHAR" property="familyAddress"/>
             <result column="positived" jdbcType="VARCHAR" property="positived"/>
             <result column="identity_type" jdbcType="BIGINT" property="identityType"/>
-            <result column="files_manage_unit" jdbcType="BIGINT" property="filesManageUnit"/>
+            <result column="files_manage_unit_name" jdbcType="VARCHAR" property="filesManageUnitName"/>
             <result column="registry_status" jdbcType="BIGINT" property="registryStatus"/>
             <result column="join_time" jdbcType="TIMESTAMP" property="joinTime"/>
             <result column="regular_time" jdbcType="TIMESTAMP" property="regularTime"/>
@@ -207,7 +207,7 @@
             <result column="ancestor_place" jdbcType="BIGINT" property="ancestorPlace"/>
             <result column="work_date" jdbcType="TIMESTAMP" property="workDate"/>
             <result column="org_addr_name" jdbcType="BIGINT" property="orgAddrName"/>
-            <result column="org_name" jdbcType="VARCHAR" property="joinOrgName"/>
+            <result column="org_name" jdbcType="VARCHAR" property="deptName"/>
             <result column="is_taiwaner" jdbcType="BIGINT" property="isTaiwaner"/>
             <result column="migrant" jdbcType="BIGINT" property="migrant"/>
             <collection property="tabPbUserTags" select="com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper.selectAllListSelective"
@@ -340,7 +340,7 @@
         <if test="nation != null and nation != ''">
             and find_in_set(nation, #{nation})
         </if>
-        <if test="unitType != null and unitType!=''">
+        <if test="unitProperty != null and unitProperty!=''">
             AND find_in_set(t.unit_property , #{unitType})
         </if>
         <if test="ageBegin != null">
@@ -402,9 +402,11 @@
         select
         d.name as org_name,
         d.community_addr as org_addr_name,
+        t.unit_name as files_manage_unit_name,
         <include refid="Member_Details"/>
         from sys_user u
         left join sys_dept d on d.dept_id=u.dept_id
+        left join tab_pb_unit_info t on t.unit_id = u.files_manage_unit
         where u.user_id = #{userId,jdbcType=BIGINT}
     </select>
     <!--用于列表显示-->

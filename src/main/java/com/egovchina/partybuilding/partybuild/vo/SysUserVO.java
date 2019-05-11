@@ -59,7 +59,7 @@ public class SysUserVO {
 
     @TableField(exist = false)
     @ApiModelProperty(value = "入党所在支部名称")
-    private String joinOrgName;
+    private String deptName;
 
     @ApiModelProperty(value = "曾任职务")
     private String positived;
@@ -69,8 +69,7 @@ public class SysUserVO {
     private Long identityType;
 
     @ApiModelProperty(value = "档案管理单位")
-    @JsonSerialize(using = DictSerializer.class)
-    private String filesManageUnit;
+    private String filesManageUnitName;
 
     @ApiModelProperty(value = "党籍 0无、1刚入党、2转正、3出党、4停止党籍、5死亡、6其他、 7发展中的党员")
     @JsonSerialize(using = DictSerializer.class)

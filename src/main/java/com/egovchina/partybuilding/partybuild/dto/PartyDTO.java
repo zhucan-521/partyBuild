@@ -78,9 +78,9 @@ public class PartyDTO {
     @ApiModelProperty(value = "曾任职务")
     private String positived;
 
-    @ApiModelProperty(value = "档案管理单位名称", required = true)
+    @ApiModelProperty(value = "档案管理单位名称 ", required = true)
     @NotNull(message = "档案管理单位名称不能为空")
-    private String filesManageUnit;
+    private Long filesManageUnit;
 
     @ApiModelProperty(value = "党籍 0无、1刚入党、2转正、3出党、4停止党籍、5死亡、6其他、 7发展中的党员", required = true)
     @NotNull(message = "党籍不能为空")
