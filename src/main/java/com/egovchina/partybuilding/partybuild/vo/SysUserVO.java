@@ -121,4 +121,13 @@ public class SysUserVO {
     @ApiModelProperty(value = "工作时间")
     private Date workDate;
 
+    @ApiModelProperty(value = "党组织所在社区   码表值XZQH")
+    @JsonSerialize(using = DictSerializer.class)
+    private Long orgAddrName;
+
+    @ApiModelProperty(value = "是否台湾籍")
+    private Byte isTaiwaner;
+
+    @ApiModelProperty(value = "是否农民工")
+    private Byte migrant;
 }

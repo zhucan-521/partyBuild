@@ -237,8 +237,8 @@
             #{item.createUserid,jdbcType=BIGINT}, #{item.createUsername,jdbcType=VARCHAR},
             #{item.updateTime,jdbcType=TIMESTAMP},
             #{item.updateUserid,jdbcType=BIGINT}, #{item.updateUsername,jdbcType=VARCHAR},
-            #{admissionTime,jdbcType=TIMESTAMP},
-            #{graduateTime,jdbcType=TIMESTAMP}
+            #{item.admissionTime,jdbcType=TIMESTAMP},
+            #{item.graduateTime,jdbcType=TIMESTAMP}
             )
         </foreach>
     </insert>

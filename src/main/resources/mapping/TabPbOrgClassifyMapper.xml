@@ -262,17 +262,4 @@
         order by c.create_time
     </select>
 
-    <!--检查本次定等日期是否与上次定等日期相隔一年-->
-    <select id="checkIsMoreThanAYear" resultType="java.lang.Boolean">
-        SELECT
-        IF
-            ( datediff( #{levelDate} , MAX(level_date) ) >= 365, TRUE, FALSE ) AS `result`
-        FROM
-            tab_pb_org_classify
-        WHERE dept_id = #{deptId}
-        <if test="orgClassifyId != null">
-            AND org_classify_id != #{orgClassifyId}
-        </if>
-    </select>
-
 </mapper>
