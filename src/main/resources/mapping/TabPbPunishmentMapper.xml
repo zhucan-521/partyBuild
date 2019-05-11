@@ -117,7 +117,8 @@ GROUP BY
         u.realname,
         IFNULL(vac.doc_num,0) as doc_num,
         IFNULL(vac.img_num,0) as img_num
-        from tab_pb_punishment p
+        from sys_dept d
+        inner join tab_pb_punishment p on p.punish_org_id =d.dept_id
         left join view_attachment_count vac on p.punishment_id = vac.host_id and vac.attachment_type = 12
         left join sys_user u on p.user_id =u.user_id
         where p.del_flag = '0'
@@ -127,9 +128,20 @@ GROUP BY
         <if test="orgId != null">
             and p.punish_org_id = #{orgId}
         </if>
-        <if test="userName!=null and userName!=''">
-            and u.realname like concat('%', #{userName}, '%')
+        <if test="realName!=null and realName!=''">
+            and u.realname like concat('%', #{realName}, '%')
         </if>
+        <choose>
+            <when test="orgRange == 1">
+                AND (d.dept_id = #{orgId} OR d.parent_id = #{orgId})
+            </when>
+            <when test="orgRange == 2">
+                AND find_in_set(#{orgId}, d.full_path)
+            </when>
+            <otherwise>
+                AND d.dept_id = #{orgId}
+            </otherwise>
+        </choose>
     </select>
 
     <select id="selectList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPunishment"

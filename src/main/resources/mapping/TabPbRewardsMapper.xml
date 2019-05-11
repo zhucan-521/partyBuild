@@ -139,19 +139,28 @@ GROUP BY
         ,u.realname
         ,IFNULL(vac.doc_num,0) as doc_num,
         IFNULL(vac.img_num,0) as img_num
-        from tab_pb_rewards r
+        from sys_dept d
+        inner join tab_pb_rewards r on r.rewards_orgnize_id = d.dept_id
         left join view_attachment_count vac on r.rewards_id = vac.host_id and vac.attachment_type = 11
         left join sys_user u on u.user_id = r.user_id
         where r.del_flag = '0'
         <if test="userId != null">
             and r.user_id = #{userId}
         </if>
-        <if test="orgId != null">
-            and r.rewards_orgnize_id = #{orgId}
+        <if test="realName!=null and realName!=''">
+            and u.realname like concat('%', #{realName}, '%')
         </if>
-        <if test="userName!=null and userName!=''">
-            and u.realname like concat('%', #{userName}, '%')
-        </if>
+        <choose>
+            <when test="orgRange == 1">
+                AND (d.dept_id = #{orgId} OR d.parent_id = #{orgId})
+            </when>
+            <when test="orgRange == 2">
+                AND find_in_set(#{orgId}, d.full_path)
+            </when>
+            <otherwise>
+                AND d.dept_id = #{orgId}
+            </otherwise>
+        </choose>
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tab_pb_rewards
