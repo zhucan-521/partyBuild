@@ -163,7 +163,6 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         int flag = 0;
         //设置有效状态,删除状态
         TabPbMemberReduceList reduceList = reduceListMapper.selectByUserId(userId);
-        ;
         if (reduceList == null) {
             throw new BusinessDataNotFoundException("查不到该党员减少记录");
         }
@@ -174,10 +173,8 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         //删除历史记录
         flag += reduceListMapper.updateByPrimaryKeySelective(reduceList);
         if (flag > 0) {
-
+            //TODO
         }
-
-
         return 0;
     }
 }
