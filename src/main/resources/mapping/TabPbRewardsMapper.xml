@@ -465,4 +465,31 @@ GROUP BY
         rewards_type = #{rewardsType,jdbcType=VARCHAR}
     where rewards_id = #{rewardsId,jdbcType=BIGINT}
   </update>
+
+    <!--批量插入奖励-->
+    <insert id="batchInsertTabPbRewardList" parameterType="List">
+        insert into tab_pb_rewards
+            (rewards_date, rewards_orgnize,
+            rewards_orgnize_id, user_id, rewards,
+            rewards_reason, approved_level, revoke_date,
+            ebl_flag, del_flag, order_num,
+            description, create_time, create_userid,
+            create_username, update_time, update_userid,
+            update_username, version, rewards_name,
+            rewards_type, base_status, deed,
+            comment
+        ) values
+        <foreach collection="list"  separator=","  item="item">
+            ( #{item.rewardsDate},   #{item.rewardsOrgnize},
+            #{item.rewardsOrgnizeId},#{item.userId},        #{item.rewards},
+            #{item.rewardsReason},   #{item.approvedLevel}, #{item.revokeDate},
+            #{item.eblFlag},         0,       #{item.orderNum},
+            #{item.description},     #{item.createTime},    #{item.createUserid},
+            #{item.createUsername},  #{item.updateTime},    #{item.updateUserid},
+            #{item.updateUsername},  #{item.version},       #{item.rewardsName},
+            #{item.rewardsType},     #{item.baseStatus},    #{item.deed},
+            #{item.comment}
+            )
+        </foreach>
+    </insert>
 </mapper>

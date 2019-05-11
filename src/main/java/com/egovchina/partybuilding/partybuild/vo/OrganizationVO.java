@@ -93,6 +93,9 @@ public class OrganizationVO {
     @ApiModelProperty(value = "所在单位")
     private String unitName;
 
+    @ApiModelProperty(value = "所在单位编码")
+    private String unitCode;
+
     @ApiModelProperty(value = "所在单位ID")
     private Long unitId;
 

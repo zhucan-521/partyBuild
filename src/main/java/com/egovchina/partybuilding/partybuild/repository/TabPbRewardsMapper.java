@@ -29,4 +29,12 @@ public interface TabPbRewardsMapper {
     RewardsVO selectByPrimaryKeyAndFiles(Long rewardsId);
 
     List<RewardsVO> selectListAndFile(@Param("orgId") Long orgId, @Param("userId") Long userId, @Param("userName") String userName);
+
+    /**
+     * 批量添加奖励
+     * @param rewardsList
+     * @return
+     */
+    int batchInsertTabPbRewardList(List<TabPbRewards> rewardsList);
+
 }

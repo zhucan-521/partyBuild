@@ -425,18 +425,18 @@
             <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
             <choose>
                 <when test="orgRange == 1">
-                    AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                    AND (d.dept_id = #{orgId} OR d.parent_id = #{orgId})
                 </when>
                 <when test="orgRange == 2">
-                    AND find_in_set(#{rangeDeptId}, d.full_path)
+                    AND find_in_set(#{orgId}, d.full_path)
                 </when>
                 <otherwise>
-                    AND d.dept_id = #{rangeDeptId}
+                    AND d.dept_id = #{orgId}
                 </otherwise>
             </choose>
         </where>
 
-        ORDER BY h.ORDER BY create_time DESC
+        ORDER BY h.create_time DESC
     </select>
 
     <!-- 根据主键ID查询 -->
