@@ -6,17 +6,9 @@ import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
-import com.egovchina.partybuilding.partybuild.dto.FamilyMemberDTO;
-import com.egovchina.partybuilding.partybuild.dto.PositivesDTO;
-import com.egovchina.partybuilding.partybuild.dto.SecretaryMemberDTO;
-import com.egovchina.partybuilding.partybuild.entity.SecretaryMemberQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.TabPbDeptSecretary;
-import com.egovchina.partybuilding.partybuild.entity.TabPbFamily;
-import com.egovchina.partybuilding.partybuild.entity.TabPbPositives;
-import com.egovchina.partybuilding.partybuild.repository.TabPbDeptSecretaryMapper;
-import com.egovchina.partybuilding.partybuild.repository.TabPbFamilyMapper;
-import com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper;
-import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
+import com.egovchina.partybuilding.partybuild.dto.*;
+import com.egovchina.partybuilding.partybuild.entity.*;
+import com.egovchina.partybuilding.partybuild.repository.*;
 import com.egovchina.partybuilding.partybuild.service.SecretaryService;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryInfoVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
@@ -38,16 +30,22 @@ import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCop
 public class SecretaryServiceImpl implements SecretaryService {
 
     @Autowired
-    TabPbDeptSecretaryMapper tabPbDeptSecretaryMapper;
+    private TabPbDeptSecretaryMapper tabPbDeptSecretaryMapper;
 
     @Autowired
-    TabPbFamilyMapper tabPbFamilyMapper;
+    private TabPbFamilyMapper tabPbFamilyMapper;
 
     @Autowired
-    TabPbPositivesMapper tabPbPositivesMapper;
+    private TabPbPositivesMapper tabPbPositivesMapper;
 
     @Autowired
-    TabSysUserMapper tabSysUserMapper;
+    private TabSysUserMapper tabSysUserMapper;
+
+    @Autowired
+    private TabPbPunishmentMapper tabPbPunishmentMapper;
+
+    @Autowired
+    private TabPbRewardsMapper tabPbRewardsMapper;
 
     /**
      * 根据用户id获取书记基本信息
@@ -83,16 +81,12 @@ public class SecretaryServiceImpl implements SecretaryService {
         int flag = tabPbDeptSecretaryMapper.insertSelective(tabPbDeptSecretaryinsert);
         if (flag > 0) {
             List<FamilyMemberDTO> familyList = secretaryMemberDTO.getFamilys();
-            final Long finalUserId = userId;
-            if (CollectionUtil.isNotEmpty(familyList)) {
-                List<TabPbFamily> familys = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(familyList, TabPbFamily.class, family -> family.setUserId(finalUserId), false);
-                tabPbFamilyMapper.batchInsertFamilyList(familys);
-            }
             List<PositivesDTO> positivesList = secretaryMemberDTO.getPositivesVOs();
-            if (CollectionUtil.isNotEmpty(positivesList)) {
-                List<TabPbPositives> positives = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(positivesList, TabPbPositives.class, positive -> positive.setUserId(finalUserId), false);
-                tabPbPositivesMapper.batchInsertPositivesList(positives);
-            }
+            List<RewardsDTO> rewardsDTOs = secretaryMemberDTO.getRewardsDTOs();
+            List<PunishmentDTO> punishmentDTO = secretaryMemberDTO.getPunishmentDTOs();
+            final Long finalUserId = userId;
+            //添加书记奖励和处分和职务和家庭成员
+            this.addRewardAndPunishmentAndFamilyAndPosition(rewardsDTOs, punishmentDTO, finalUserId, familyList, positivesList);
         }
         return flag;
     }
@@ -111,10 +105,8 @@ public class SecretaryServiceImpl implements SecretaryService {
         int flag = tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretaryinsert);
         List<FamilyMemberDTO> familyMemberDTOS = secretaryMemberDTO.getFamilys();
         List<PositivesDTO> positivesDTOS = secretaryMemberDTO.getPositivesVOs();
-        //修改或者添加家庭成员
-        this.updateOrAddFamily(familyMemberDTOS, secretaryMemberDTO);
-        //修改或者添加职务
-        this.updateOrAddPositives(positivesDTOS, secretaryMemberDTO);
+        //修改或者添加家庭成员和职务
+        this.updateOrAddFamilyAndPositives(positivesDTOS, familyMemberDTOS, secretaryMemberDTO);
         return flag;
     }
 
@@ -157,13 +149,13 @@ public class SecretaryServiceImpl implements SecretaryService {
     }
 
     /**
-     * 修改或者添加家庭成员
+     * 添加或者修改书记家庭和职务
      *
+     * @param positivesDTOS
      * @param familyMemberDTOS
      * @param secretaryMemberDTO
-     * @return
      */
-    private void updateOrAddFamily(List<FamilyMemberDTO> familyMemberDTOS, SecretaryMemberDTO secretaryMemberDTO) {
+    private void updateOrAddFamilyAndPositives(List<PositivesDTO> positivesDTOS, List<FamilyMemberDTO> familyMemberDTOS, SecretaryMemberDTO secretaryMemberDTO) {
         if (CollectionUtil.isNotEmpty(familyMemberDTOS)) {
             for (FamilyMemberDTO familyDTO : familyMemberDTOS) {
                 if (familyDTO.getRelationId() != null) {
@@ -178,15 +170,6 @@ public class SecretaryServiceImpl implements SecretaryService {
                 }
             }
         }
-    }
-
-    /**
-     * 添加或者修改书记
-     *
-     * @param positivesDTOS
-     * @param secretaryMemberDTO
-     */
-    private void updateOrAddPositives(List<PositivesDTO> positivesDTOS, SecretaryMemberDTO secretaryMemberDTO) {
         if (CollectionUtil.isNotEmpty(secretaryMemberDTO.getPositivesVOs())) {
             for (PositivesDTO positivesDTO : positivesDTOS) {
                 if (positivesDTO.getPositiveId() != null) {
@@ -200,6 +183,38 @@ public class SecretaryServiceImpl implements SecretaryService {
                     tabPbPositivesMapper.insertSelective(tabPbPositives);
                 }
             }
+        }
+    }
+
+    /**
+     * 添加书记奖励和惩罚和职务和家庭
+     *
+     * @param rewardsDTOs
+     * @param punishmentDTOs
+     * @param userId
+     * @param familieDTOs
+     * @param PositivesDTOs
+     */
+    private void addRewardAndPunishmentAndFamilyAndPosition(List<RewardsDTO> rewardsDTOs, List<PunishmentDTO> punishmentDTOs, Long userId, List<FamilyMemberDTO> familieDTOs, List<PositivesDTO> PositivesDTOs) {
+        //添加书记奖励
+        if (CollectionUtil.isNotEmpty(rewardsDTOs)) {
+            List<TabPbRewards> tabPbRewards = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(rewardsDTOs, TabPbRewards.class, reward -> reward.setUserId(userId), false);
+            tabPbRewardsMapper.batchInsertTabPbRewardList(tabPbRewards);
+        }
+        //添加书记惩罚
+        if (CollectionUtil.isNotEmpty(punishmentDTOs)) {
+            List<TabPbPunishment> tabPbPunishments = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(punishmentDTOs, TabPbPunishment.class, tabPbPunishment -> tabPbPunishment.setUserId(userId), false);
+            tabPbPunishmentMapper.batchInsertTabPbPunishment(tabPbPunishments);
+        }
+        //添加书记家庭
+        if (CollectionUtil.isNotEmpty(familieDTOs)) {
+            List<TabPbFamily> familys = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(familieDTOs, TabPbFamily.class, family -> family.setUserId(userId), false);
+            tabPbFamilyMapper.batchInsertFamilyList(familys);
+        }
+        //添加书记职务
+        if (CollectionUtil.isNotEmpty(PositivesDTOs)) {
+            List<TabPbPositives> positives = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(PositivesDTOs, TabPbPositives.class, positive -> positive.setUserId(userId), false);
+            tabPbPositivesMapper.batchInsertPositivesList(positives);
         }
     }
 

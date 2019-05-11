@@ -58,9 +58,6 @@ public class SecretaryMemberDTO {
     @ApiModelProperty(value = "头像")
     private String avatar;
 
-    @ApiModelProperty(value = "奖惩情况 dict DYJC")
-    private String rewards;
-
     @ApiModelProperty(value = "党内职务")
     private List<PositivesDTO> positivesVOs;
 
@@ -78,7 +75,6 @@ public class SecretaryMemberDTO {
 
     @ApiModelProperty(value = "毕业院校系及专业-在职教育")
     private String collegeMajorTwo;
-
 
     @ApiModelProperty(value = "专业技术职称")
     private String professionalTitles;
@@ -134,5 +130,11 @@ public class SecretaryMemberDTO {
 
     @ApiModelProperty(value = "排序码")
     private Long orderNum;
+
+    @ApiModelProperty(value = "书记奖励")
+    private List<RewardsDTO> rewardsDTOs;
+
+    @ApiModelProperty(value = "书记惩罚")
+    private List<PunishmentDTO> punishmentDTOs;
 
 }
