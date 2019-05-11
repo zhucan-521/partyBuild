@@ -20,7 +20,7 @@
     </resultMap>
     <sql id="Base_Column_List">
     education_id, user_id, level, degree, graduated_school, spec, del_flag, create_time, 
-    create_userid, create_username, update_time, update_userid, update_username,admissionTime,graduateTime
+    create_userid, create_username, update_time, update_userid, update_username,admission_time,graduate_time
   </sql>
 
     <!-- base method -->
