@@ -125,9 +125,6 @@ GROUP BY
         <if test="userId != null">
             and p.user_id = #{userId}
         </if>
-        <if test="orgId != null">
-            and p.punish_org_id = #{orgId}
-        </if>
         <if test="realName!=null and realName!=''">
             and u.realname like concat('%', #{realName}, '%')
         </if>
