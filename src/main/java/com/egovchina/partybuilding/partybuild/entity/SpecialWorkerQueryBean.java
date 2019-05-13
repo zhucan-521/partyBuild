@@ -1,8 +1,11 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -31,4 +34,11 @@ public class SpecialWorkerQueryBean {
 
     @ApiModelProperty(value = "在职状态")
     private Long status;
+
+    @ApiModelProperty(value = "单位类别")
+    private String unitProperty;
+
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private List<String> unitProperties;
 }
