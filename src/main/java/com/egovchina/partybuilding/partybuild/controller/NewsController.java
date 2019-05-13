@@ -43,7 +43,7 @@ public class NewsController {
             @ApiImplicitParam(name = "newsId", value = "党建资讯ID", paramType = "query", required = true),
             @ApiImplicitParam(name = "hostId", value = "主图附件ID", paramType = "query", required = true)
     })
-    @PostMapping("/issues")
+    @PostMapping("/publications")
     public ReturnEntity publishNews(Long newsId, Long hostId) {
         return ReturnUtil.buildReturn(newsService.publishNews(newsId, hostId));
     }
