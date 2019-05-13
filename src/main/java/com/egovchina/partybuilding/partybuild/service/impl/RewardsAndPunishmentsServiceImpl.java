@@ -7,6 +7,7 @@ import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.PunishmentDTO;
 import com.egovchina.partybuilding.partybuild.dto.RewardsDTO;
+import com.egovchina.partybuilding.partybuild.entity.RewardsAndPunishmentsQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPunishment;
 import com.egovchina.partybuilding.partybuild.entity.TabPbRewards;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPunishmentMapper;
@@ -110,19 +111,19 @@ public class RewardsAndPunishmentsServiceImpl implements RewardsAndPunishmentsSe
 
 
     @Override
-    public List<PunishmentVO> selectPunishmentVOListAndFilesById(Long orgId, Long userId, String userName) {
-        checkCondition(orgId, userId, userName);
-        return tabPbPunishmentMapper.selectListAndFileVO(orgId, userId, userName);
+    public List<PunishmentVO> selectPunishmentVOListAndFilesById(RewardsAndPunishmentsQueryBean rewardsAndPunishmentsQueryBean) {
+        checkCondition(rewardsAndPunishmentsQueryBean);
+        return tabPbPunishmentMapper.selectListAndFileVO(rewardsAndPunishmentsQueryBean);
     }
 
     @Override
-    public List<RewardsVO> getRewardsListAndFiles(Long orgId, Long userId, String userName) {
-        checkCondition(orgId, userId, userName);
-        return tabPbRewardsMapper.selectListAndFile(orgId, userId, userName);
+    public List<RewardsVO> getRewardsListAndFiles(RewardsAndPunishmentsQueryBean rewardsAndPunishmentsQueryBean) {
+        checkCondition(rewardsAndPunishmentsQueryBean);
+        return tabPbRewardsMapper.selectListAndFile(rewardsAndPunishmentsQueryBean);
     }
 
-    public void checkCondition(Long orgId, Long userId, String userNmae) {
-        if (orgId == null && userId == null && userNmae == null) {
+    public void checkCondition(RewardsAndPunishmentsQueryBean rewardsAndPunishmentsQueryBean) {
+        if (rewardsAndPunishmentsQueryBean.getOrgId() == null && rewardsAndPunishmentsQueryBean.getUserId() == null && rewardsAndPunishmentsQueryBean.getRealName() == null) {
             throw new BusinessDataNotFoundException("用户id,机构Id,用户名不能同时为空");
         }
     }

@@ -157,4 +157,24 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         return num;
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int deleteByUserId(Long userId) {
+        int flag = 0;
+        //设置有效状态,删除状态
+        TabPbMemberReduceList reduceList = reduceListMapper.selectByUserId(userId);
+        if (reduceList == null) {
+            throw new BusinessDataNotFoundException("查不到该党员减少记录");
+        }
+        reduceList.setEblFlag(CommonConstant.STATUS_DEL);
+        reduceList.setDelFlag(CommonConstant.STATUS_NOEBL);
+        //基本字段维护
+        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(reduceList);
+        //删除历史记录
+        flag += reduceListMapper.updateByPrimaryKeySelective(reduceList);
+        if (flag > 0) {
+            //TODO
+        }
+        return 0;
+    }
 }

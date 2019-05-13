@@ -223,6 +223,7 @@
         from tab_pb_party_work
         where user_id = #{userId,jdbcType=BIGINT}
         and del_flag=0
+        order by end_date desc
     </select>
     <!--批量新增工作信息-->
     <insert id="batchInsert" parameterType="java.util.List">

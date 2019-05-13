@@ -5,6 +5,7 @@ import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.PunishmentDTO;
 import com.egovchina.partybuilding.partybuild.dto.RewardsDTO;
+import com.egovchina.partybuilding.partybuild.entity.RewardsAndPunishmentsQueryBean;
 import com.egovchina.partybuilding.partybuild.service.RewardsAndPunishmentsService;
 import com.egovchina.partybuilding.partybuild.vo.PunishmentVO;
 import com.egovchina.partybuilding.partybuild.vo.RewardsVO;
@@ -53,15 +54,10 @@ public class RewardsAndPunishmentsController {
     }
 
     @ApiOperation(value = "查询处分信息列表", notes = "查询处分信息", httpMethod = "GET")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "orgId", value = "组织id", paramType = "query"),
-            @ApiImplicitParam(name = "userId", value = "用户id", paramType = "query"),
-            @ApiImplicitParam(name = "userName", value = "用户名称", paramType = "query")
-    })
     @GetMapping("/punishments/users")
-    public PageInfo<PunishmentVO> selectPunishmentList(Long orgId, Long userId, String userName, Page page) {
+    public PageInfo<PunishmentVO> selectPunishmentList(@ApiParam(value = "奖惩查询实体") RewardsAndPunishmentsQueryBean rewardsAndPunishmentsQueryBean, Page page) {
         PageHelper.startPage(page);
-        return new PageInfo<>(rewardsAndPunishmentsService.selectPunishmentVOListAndFilesById(orgId, userId, userName));
+        return new PageInfo<>(rewardsAndPunishmentsService.selectPunishmentVOListAndFilesById(rewardsAndPunishmentsQueryBean));
     }
 
     @ApiOperation(value = "添加奖励", notes = "奖励新增", httpMethod = "POST")
@@ -91,14 +87,9 @@ public class RewardsAndPunishmentsController {
     }
 
     @ApiOperation(value = "查询奖励信息列表", notes = "查询奖励信息", httpMethod = "GET")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "orgId", value = "组织id", paramType = "query"),
-            @ApiImplicitParam(name = "userId", value = "用户id", paramType = "query"),
-            @ApiImplicitParam(name = "userName", value = "用户名称", paramType = "query")
-    })
     @GetMapping("/rewards/users")
-    public PageInfo<RewardsVO> selectRewardsList(Long orgId, Long userId, String userName, Page page) {
+    public PageInfo<RewardsVO> selectRewardsList(@ApiParam(value = "奖惩查询实体") RewardsAndPunishmentsQueryBean rewardsAndPunishmentsQueryBean, Page page) {
         PageHelper.startPage(page);
-        return new PageInfo<>(rewardsAndPunishmentsService.getRewardsListAndFiles(orgId, userId, userName));
+        return new PageInfo<>(rewardsAndPunishmentsService.getRewardsListAndFiles(rewardsAndPunishmentsQueryBean));
     }
 }

@@ -194,7 +194,7 @@
             <result column="family_address" jdbcType="VARCHAR" property="familyAddress"/>
             <result column="positived" jdbcType="VARCHAR" property="positived"/>
             <result column="identity_type" jdbcType="BIGINT" property="identityType"/>
-            <result column="files_manage_unit" jdbcType="BIGINT" property="filesManageUnit"/>
+            <result column="files_manage_unit_name" jdbcType="VARCHAR" property="filesManageUnitName"/>
             <result column="registry_status" jdbcType="BIGINT" property="registryStatus"/>
             <result column="join_time" jdbcType="TIMESTAMP" property="joinTime"/>
             <result column="regular_time" jdbcType="TIMESTAMP" property="regularTime"/>
@@ -206,11 +206,12 @@
             <result column="health" jdbcType="BIGINT" property="health"/>
             <result column="ancestor_place" jdbcType="BIGINT" property="ancestorPlace"/>
             <result column="work_date" jdbcType="TIMESTAMP" property="workDate"/>
+            <result column="org_addr_name" jdbcType="BIGINT" property="orgAddrName"/>
+            <result column="org_name" jdbcType="VARCHAR" property="deptName"/>
+            <result column="is_taiwaner" jdbcType="BIGINT" property="isTaiwaner"/>
+            <result column="migrant" jdbcType="BIGINT" property="migrant"/>
             <collection property="tabPbUserTags" select="com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper.selectAllListSelective"
                         column="{userId=user_id}"/>
-            <collection property="joinOrgName"
-                        select="com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper.selectDeptNameByPrimaryKey"
-                        column="dept_id"/>
         </association>
         <collection property="educations" select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyEducationMapper.findAllByUserId" column="user_id"/>
         <collection property="jobTitles" select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyJobTitleMapper.findAllByUserId" column="user_id"/>
@@ -280,12 +281,19 @@
       join_org_name,join_org_id,positived,identity_type,files_manage_unit,registry_status,join_time,registry_status,is_poor,
       regular_time,work_resumes,is_llost,flow_status,marital_status,health,ancestor_place,work_date,join_org_time
     </sql>
+    <!--查询党员详细信息-->
+    <sql id="Member_Details">
+       u.user_id,u.dept_id,u.realname,u.gender,u.id_card_no,u.birthday, TIMESTAMPDIFF(YEAR, u.birthday, CURDATE()) AS age ,u.nation,u.community_addr,u.avatar,u.phone,u.fix_phone,u.family_address,
+      u.join_org_name,u.join_org_id,u.positived,u.identity_type,u.files_manage_unit,u.registry_status,u.join_time,u.registry_status,u.is_poor,
+      u.regular_time,u.work_resumes,u.is_llost,u.flow_status,u.marital_status,u.health,u.ancestor_place,u.work_date,u.join_org_time,u.is_taiwaner,u.migrant
+    </sql>
+
     <sql id="Blob_Column_List">
     post_reason, work_resumes, comment, content, rewards, present_perform
     </sql>
     <!---分页查询党员信息列表-->
     <sql id="Base_users_info">
-        user_id,realname,gender,TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age,nation,id_card_no,join_time,regular_time,report_org_name,phone,identity_type,marital_status,
+        u.user_id,realname,gender,TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age,nation,id_card_no,join_time,regular_time,report_org_name,phone,identity_type,marital_status,
         education,flow_status,IFNULL(is_llost,'0') as is_llost,IFNULL(is_poor,'0') as is_poor,IFNULL(is_taiwaner,'0') as is_taiwaner,dd.unit_id,u.dept_id,birthday,migrant,stratum,front_line,work_date,ancestor_place,registry_status,family_address,u.community_addr,
         job_position
     </sql>
@@ -332,10 +340,8 @@
         <if test="nation != null and nation != ''">
             and find_in_set(nation, #{nation})
         </if>
-        <if test="unitType != null">
-            AND EXISTS(select 1 from tab_pb_unit_info ui WHERE dd.unit_id=ui.unit_id and
-            find_in_set( ui.unit_property , #{unitType})
-            )
+        <if test="unitProperty != null and unitProperty!=''">
+            AND find_in_set(t.unit_property , #{unitType})
         </if>
         <if test="ageBegin != null">
             and TIMESTAMPDIFF(YEAR,birthday,CURDATE())>= #{ageBegin}
@@ -367,6 +373,9 @@
         <if test="isTaiwaner != null">
             and find_in_set(IFNULL(is_taiwaner,'0'), #{isTaiwaner})
         </if>
+        <if test="tagTypes != null and tagTypes != ''">
+            and find_in_set( tt.tag_type , #{tagTypes})
+        </if>
     </sql>
     <!--查询书记的简单党员信息-->
     <select id="selectSecretariesPartyByPrimaryKey" parameterType="java.lang.Long"
@@ -391,9 +400,14 @@
     <!--查询党员详细信息-->
     <select id="selectByPrimaryKeyToAll" parameterType="java.lang.Long" resultMap="BaseResultMapExtendsTagsAndSomeOthers">
         select
-        <include refid="Base_Column_List_new"/>
-        from sys_user
-        where user_id = #{userId,jdbcType=BIGINT}
+        d.name as org_name,
+        d.community_addr as org_addr_name,
+        t.unit_name as files_manage_unit_name,
+        <include refid="Member_Details"/>
+        from sys_user u
+        left join sys_dept d on d.dept_id=u.dept_id
+        left join tab_pb_unit_info t on t.unit_id = u.files_manage_unit
+        where u.user_id = #{userId,jdbcType=BIGINT}
     </select>
     <!--用于列表显示-->
     <select id="selectPageByMap" resultMap="UserInFo">
@@ -425,6 +439,9 @@
         ON sd.subordinate_dept_id = u.dept_id
         left join sys_dept dd on dd.dept_id =u.dept_id
         left join tab_pb_unit_info t on dd.unit_id = t.unit_id
+        <if test="tagTypes != null and tagTypes!=''">
+            left join tab_pb_user_tag tt on tt.user_id=u.user_id
+        </if>
         <where>
             <include refid="selectPageByMapWhereCaseList"/>
         </where>
@@ -458,6 +475,9 @@
         ON sd.subordinate_dept_id = u.dept_id
         left join sys_dept dd on dd.dept_id =u.dept_id
         left join tab_pb_unit_info t on dd.unit_id = t.unit_id
+        <if test="tagTypes != null and tagTypes!='' ">
+            left join tab_pb_user_tag tt on tt.user_id=u.user_id
+        </if>
         <where>
             <include refid="selectPageByMapWhereCaseList"/>
         </where>

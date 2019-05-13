@@ -92,7 +92,7 @@ public interface TabSysDeptMapper {
      * @param name
      * @return int
      */
-    int checkNameOrShortName(@Param("name") String name, @Param("orgId") Long orgId);
+    Boolean checkNameOrShortName(@Param("name") String name, @Param("orgId") Long orgId);
 
     /**
      * 推送结对组织ID到组织表
@@ -131,7 +131,8 @@ public interface TabSysDeptMapper {
 
     /**
      * 检查是否存在非直属
-     * @param orgId 组织id
+     *
+     * @param orgId     组织id
      * @param subOrgIds 直属组织id集合
      * @return
      */

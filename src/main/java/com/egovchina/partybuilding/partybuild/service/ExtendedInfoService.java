@@ -51,4 +51,12 @@ public interface ExtendedInfoService {
      * @return
      */
     SecretariesPartyMemberVO selectSecretariesPartyMemberVO(Long userId);
+
+    /**
+     * 删除历史信息
+     *
+     * @param userId 用户id
+     * @return
+     */
+    int deleteByUserId(Long userId);
 }
