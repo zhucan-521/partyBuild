@@ -321,10 +321,14 @@
             pg.build_time,
             pg.remarks,
             -- 附件信息
-            '66' as attachment_type
+            '66' as attachment_type,
+            ifnull(t.video_num, 0) video_num,
+            ifnull(t.img_num, 0) img_num,
+            ifnull(t.doc_num, 0) doc_num
         FROM
             tab_pb_party_group pg
             INNER JOIN sys_dept sd ON pg.org_id = sd.dept_id
+            LEFT JOIN view_attachment_count t ON pg.group_id = t.host_id AND t.attachment_type = 66
         WHERE
             pg.group_id = #{groupId,jdbcType=BIGINT}
             AND pg.del_flag = 0
@@ -349,10 +353,14 @@
         pg.build_time,
         pg.remarks,
         -- 附件信息
-        '66' as attachment_type
+        '66' as attachment_type,
+        ifnull(t.video_num, 0) video_num,
+        ifnull(t.img_num, 0) img_num,
+        ifnull(t.doc_num, 0) doc_num
         FROM
         tab_pb_party_group pg
         INNER JOIN sys_dept sd ON pg.org_id = sd.dept_id
+        LEFT JOIN view_attachment_count t ON pg.group_id = t.host_id AND t.attachment_type = 66
         WHERE
         pg.del_flag = 0
 
