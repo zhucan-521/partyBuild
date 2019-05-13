@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.partybuild.entity.OrgChangeQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange;
 import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
 import org.apache.ibatis.annotations.Param;
@@ -23,16 +24,26 @@ public interface TabPbOrgnizeChangeMapper {
 
     /**
      * 根据组织主键查询最新的变更记录
-     * @param deptId
-     * @return
+     *
+     * @param changeId 变动id
+     * @return OrgChangeVO
      */
-    OrgChangeVO selectOrgChangeByDeptIdOrderTime(@Param("deptId") Long deptId,
-                                                        @Param("changeType") Long changeType);
+    OrgChangeVO selectOrgChangeById(@Param("changeId") Long changeId);
 
     /**
      * 查询组织变动记录
-     * @param deptId
-     * @return
+     *
+     * @param orgChangeQueryBean 查询实体
+     * @return List<OrgChangeVO>
      */
-    List<OrgChangeVO> selectOrgChangeVOList(@Param("deptId") Long deptId);
+    List<OrgChangeVO> selectOrgChangeVOList(OrgChangeQueryBean orgChangeQueryBean);
+
+    /**
+     * 根据组织主键查询最新的变更记录
+     *
+     * @param deptId     组织id
+     * @param changeType 变动类型
+     * @return OrgChangeVO
+     */
+    OrgChangeVO selectOrgChangeByDeptIdOrderTime(@Param("deptId") Long deptId, @Param("changeType") Long changeType);
 }
