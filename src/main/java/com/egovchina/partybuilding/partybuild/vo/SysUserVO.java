@@ -33,7 +33,7 @@ public class SysUserVO {
     @ApiModelProperty(value = "身份证号码")
     private String idCardNo;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "出生日期")
     private Date birthday;
 
@@ -78,11 +78,11 @@ public class SysUserVO {
     @JsonSerialize(using = DictSerializer.class)
     private Long registryStatus;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "入党时间、预备党员时间")
     private Date joinTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "加入党组织时间")
     private Date joinOrgTime;
 
