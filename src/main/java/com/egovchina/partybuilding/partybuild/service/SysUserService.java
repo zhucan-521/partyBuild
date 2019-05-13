@@ -1,6 +1,5 @@
 package com.egovchina.partybuilding.partybuild.service;
 
-import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
 
 import java.util.List;
@@ -10,14 +9,6 @@ import java.util.List;
  * @description
  */
 public interface SysUserService {
-
-    /**
-     * 根据组织Id 获取党务工作者信息
-     *
-     * @param deptId
-     * @return
-     */
-    TransferUserDeptInfo getDWRoleUserInfoByDeptId(Long deptId);
 
     /**
      * 根据多个组织id获取，多个党务工作者
@@ -32,22 +23,4 @@ public interface SysUserService {
      */
     void updateDeptIdByUserId(Integer userId, Integer deptId);
 
-    SysUser getRegistryId(Long userId);
-
-    /**
-     * 获取党籍列表
-     *
-     * @param userId
-     * @return
-     */
-    SysUser getRegistryByUserId(Long userId);
-
-
-    /**
-     * 社区活动选人接口(通过组织主键来获取)
-     *
-     * @param user
-     * @return
-     */
-    List<SysUser> selectAllRegister(SysUser user);
 }
