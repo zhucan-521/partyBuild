@@ -27,4 +27,6 @@ public class DeletePartyMemberDTO {
     @ApiModelProperty(value = "出党方式 dict")
     private Long quitType;
 
+    @ApiModelProperty(value = "减少党员id")
+    private Long memberReduceId;
 }

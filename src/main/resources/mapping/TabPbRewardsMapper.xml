@@ -161,6 +161,7 @@ GROUP BY
                 AND d.dept_id = #{orgId}
             </otherwise>
         </choose>
+        order by r.update_time desc
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tab_pb_rewards

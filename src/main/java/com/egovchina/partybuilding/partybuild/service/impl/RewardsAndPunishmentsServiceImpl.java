@@ -5,6 +5,7 @@ import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundExceptio
 import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.partybuild.dto.DeletePartyMemberDTO;
 import com.egovchina.partybuilding.partybuild.dto.PunishmentDTO;
 import com.egovchina.partybuilding.partybuild.dto.RewardsDTO;
 import com.egovchina.partybuilding.partybuild.entity.RewardsAndPunishmentsQueryBean;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,13 +37,32 @@ public class RewardsAndPunishmentsServiceImpl implements RewardsAndPunishmentsSe
     @Autowired
     ITabPbAttachmentService tabPbAttachmentService;
 
+    @Autowired
+    ExtendedInfoServiceImpl extendedInfoServiceImpl;
 
+    //开除党籍
+    private final String DISMISSALOFPARTYMEMBERSHIP = "28";
+    //开除党籍的出党类型
+    private final Long DISMISSALOFPARTYMEMBERSHIPTYPE = 30019L;
+    //出党
+    private final Long OUTOFTHEPARTY = 59590L;
+
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int insertPunishment(PunishmentDTO punishmentDTO) {
         TabPbPunishment tabPbPunishment = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(punishmentDTO, TabPbPunishment.class, false);
         int insertRow = tabPbPunishmentMapper.insertSelective(tabPbPunishment);
         if (insertRow > 0) {
             insertRow += tabPbAttachmentService.intelligentOperation(punishmentDTO.getAttachments(), tabPbPunishment.getPunishmentId(), AttachmentType.PUNISHMENT);
+        }
+        //判断处分是不是开除党籍,若是新增历史党员
+        if (DISMISSALOFPARTYMEMBERSHIP.equals(punishmentDTO.getPunishName())) {
+            DeletePartyMemberDTO deletePartyMemberDTO = new DeletePartyMemberDTO();
+            deletePartyMemberDTO.setUserId(punishmentDTO.getUserId());
+            deletePartyMemberDTO.setOutType(OUTOFTHEPARTY);
+            deletePartyMemberDTO.setReduceTime(new Date());
+            deletePartyMemberDTO.setQuitType(DISMISSALOFPARTYMEMBERSHIPTYPE);
+            insertRow += extendedInfoServiceImpl.invalidByUserId(deletePartyMemberDTO);
         }
         return insertRow;
     }

@@ -139,6 +139,7 @@ GROUP BY
                 AND d.dept_id = #{orgId}
             </otherwise>
         </choose>
+        order by p.update_time desc
     </select>
 
     <select id="selectList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPunishment"

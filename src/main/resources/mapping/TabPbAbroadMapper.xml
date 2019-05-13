@@ -467,5 +467,8 @@
         </if>
     </select>
 
+    <select id="findAbroadIdByUserId" parameterType="java.lang.Long" resultType="java.lang.Long">
+        SELECT abroad_id FROM tab_pb_abroad WHERE user_id = #{userId} AND del_flag = '0' order by update_time desc limit 1
+    </select>
 
 </mapper>

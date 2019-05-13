@@ -47,7 +47,7 @@
             parameterType="com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean"
             resultMap="com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper.History_UserInfo">
         select
-        r.user_id,u.realname,u.id_card_no,u.gender,u.nation,r.dept_id
+        r.user_id,u.registry_status,u.realname,u.id_card_no,u.gender,u.nation,r.dept_id
         ,d.name as in_where_dept_name,TIMESTAMPDIFF(month,
         DATE_FORMAT(u.join_org_time,'%Y-%m-%d'),DATE_FORMAT(r.reduce_time,'%Y-%m-%d')) AS
         age,r.update_time,r.reduce_time,r.out_type,r.quit_type
@@ -120,6 +120,19 @@
         ,
         <include refid="Blob_Column_List"/>
         FROM tab_pb_member_reduce_list WHERE user_id = #{userId,jdbcType=BIGINT} ORDER BY reduce_time DESC LIMIT 1
+    </select>
+    <select id="selectHistoryPartyVOByUserId" parameterType="java.lang.Long"
+            resultMap="com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper.History_UserInfo">
+        SELECT
+         r.user_id,u.registry_status,u.realname,u.id_card_no,u.gender,u.nation,r.dept_id
+        ,d.name as in_where_dept_name,r.update_time,r.reduce_time,r.out_type,r.quit_type
+        from tab_pb_member_reduce_list r
+        JOIN sys_user u on r.user_id = u.user_id
+        JOIN sys_dept d on r.dept_id = d.dept_id
+        WHERE r.user_id = #{userId,jdbcType=BIGINT}
+        and r.ebl_flag = '1'
+        and r.del_flag ='0'
+        ORDER BY r.update_time DESC LIMIT 1
     </select>
     <select id="selectListByUserId" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
         SELECT
