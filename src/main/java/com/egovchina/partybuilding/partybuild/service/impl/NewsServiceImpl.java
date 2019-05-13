@@ -55,8 +55,13 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public int updateNewsViews(Long newsId) {
-        return newsMapper.updateNewsViews(newsId);
+    public int publishNews(Long newsId, Long hostId) {
+        return newsMapper.updatePublishStatus(newsId, hostId, 1L);
+    }
+
+    @Override
+    public int obtainedNews(Long newsId) {
+        return newsMapper.updatePublishStatus(newsId, 0L, 0L);
     }
 
     @Override

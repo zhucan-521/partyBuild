@@ -9,11 +9,11 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * desc: 新闻资讯-查询条件
+ * desc: 党建资讯-查询条件
  * Created by FanYanGen on 2019-05-11 16:53
  */
 @Data
-@ApiModel("新闻资讯-查询条件")
+@ApiModel("党建资讯-查询条件")
 public class NewsQueryBean {
 
     @ApiModelProperty(value = "组织ID", required = true)

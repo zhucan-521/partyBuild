@@ -7,15 +7,15 @@ import com.egovchina.partybuilding.partybuild.vo.NewsVO;
 import java.util.List;
 
 /**
- * desc: 新闻资讯-服务接口
+ * desc: 党建资讯-服务接口
  * Created by FanYanGen on 2019-05-11 17:33
  */
 public interface NewsService {
 
     /**
-     * desc: 新增新闻资讯
+     * desc: 新增党建资讯
      *
-     * @param newsDTO 新闻资讯dto
+     * @param newsDTO 党建资讯dto
      * @return int
      * @auther FanYanGen
      * @date 2019-05-11 17:35
@@ -23,9 +23,9 @@ public interface NewsService {
     int insertNews(NewsDTO newsDTO);
 
     /**
-     * desc: 更新新闻资讯
+     * desc: 更新党建资讯
      *
-     * @param newsDTO 新闻资讯dto
+     * @param newsDTO 党建资讯dto
      * @return int
      * @auther FanYanGen
      * @date 2019-05-11 17:35
@@ -33,17 +33,28 @@ public interface NewsService {
     int updateNews(NewsDTO newsDTO);
 
     /**
-     * desc: 更新新闻资讯浏览次数
+     * desc: 发布党建资讯
+     *
+     * @param newsId 主键id
+     * @param attachmentId 附件id
+     * @return int
+     * @auther FanYanGen
+     * @date 2019-05-13 22:10
+     */
+    int publishNews(Long newsId, Long attachmentId);
+
+    /**
+     * desc: 取消发布党建资讯
      *
      * @param newsId 主键id
      * @return int
      * @auther FanYanGen
-     * @date 2019-05-11 19:12
+     * @date 2019-05-13 22:11
      */
-    int updateNewsViews(Long newsId);
+    int obtainedNews(Long newsId);
 
     /**
-     * desc: 更新新闻资讯
+     * desc: 删除党建资讯
      *
      * @param newsId 主键id
      * @return int
@@ -53,7 +64,7 @@ public interface NewsService {
     int deleteNews(Long newsId);
 
     /**
-     * desc: 新闻资讯详情
+     * desc: 党建资讯详情
      *
      * @param newsId 主键id
      * @return NewsVO
@@ -63,7 +74,7 @@ public interface NewsService {
     NewsVO getNewsVODetails(Long newsId);
 
     /**
-     * desc: 询新闻资讯列表
+     * desc: 党建资讯列表
      *
      * @param newsQueryBean 查询条件
      * @return list
