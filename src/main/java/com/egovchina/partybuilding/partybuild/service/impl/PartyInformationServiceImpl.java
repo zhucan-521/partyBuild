@@ -33,13 +33,13 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     public static final int COMPLETE_SEED = 4;
 
     @Autowired
-    TabSysUserMapper tabSysUserMapper;
+    private TabSysUserMapper tabSysUserMapper;
 
     @Autowired
-    TabPbFlowOutMapper tabPbFlowOutMapper;
+    private TabPbFlowOutMapper tabPbFlowOutMapper;
 
     @Autowired
-    UserTagService userTagService;
+    private UserTagService userTagService;
 
     @Autowired
     private TabPbMemberReduceListMapper reduceListMapper;
