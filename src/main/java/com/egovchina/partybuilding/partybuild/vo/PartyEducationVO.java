@@ -37,10 +37,10 @@ public class PartyEducationVO {
     private String spec;
 
     @ApiModelProperty(value = "入学时间 ")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date admissionTime;
 
     @ApiModelProperty(value = "毕业时间 ")
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date graduateTime;
 }
