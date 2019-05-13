@@ -28,5 +28,5 @@ public class LeadTeamQueryBean {
     private Long sessionYear;
 
     @ApiModelProperty(value = "单位类别 码表值 DWLB")
-    private Long unitProperty;
+    private String unitProperty;
 }
