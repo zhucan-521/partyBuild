@@ -3,6 +3,7 @@ package com.egovchina.partybuilding.partybuild.repository;
 import com.egovchina.partybuilding.partybuild.entity.NewsQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbNews;
 import com.egovchina.partybuilding.partybuild.vo.NewsVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -55,13 +56,15 @@ public interface NewsMapper {
     List<NewsVO> getNewsVOList(NewsQueryBean newsQueryBean);
 
     /**
-     * desc: 更新新闻资讯浏览次数
+     * desc: 修改党建资讯发布状态
      *
      * @param newsId 主键id
+     * @param hostId 封面附件id
+     * @param status 状态
      * @return int
      * @auther FanYanGen
-     * @date 2019-05-11 19:13
+     * @date 2019-05-13 22:10
      */
-    int updateNewsViews(Long newsId);
+    int updatePublishStatus(@Param("newsId") Long newsId, @Param("hostId") Long hostId, @Param("status") Long status);
 
 }
