@@ -41,13 +41,10 @@
         <result column="doc_num" jdbcType="INTEGER" property="docNum"/>
         <collection property="attachments"
                     select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
-                    column="{hostId=commentary_id,attachmentType=attachment_type}"/>
-        <collection property="members" ofType="com.egovchina.partybuilding.partybuild.vo.PartyGroupMemberVO">
-            <id column="member_id" jdbcType="BIGINT" property="memberId"/>
-            <result column="user_id" jdbcType="BIGINT" property="userId"/>
-            <result column="is_leader" jdbcType="TINYINT" property="isLeader"/>
-            <result column="username" jdbcType="VARCHAR" property="username"/>
-        </collection>
+                    column="{hostId=group_id,attachmentType=attachment_type}"/>
+        <collection property="members"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyGroupMemberMapper.selectPartyGroupMembersDetailsInfoByGroupId"
+                    column="group_id"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -307,7 +304,7 @@
         </if>
     </select>
 
-    <!-- 根据主键查询党小组详情 -->
+    <!-- 根据查询党小组详情 -->
     <select id="selectPartyGroupDetailsByGroupId" parameterType="java.lang.Long" resultMap="PartyGroupVOResultMap">
         SELECT
             -- 组织表
@@ -323,22 +320,14 @@
             pg.revoke_time,
             pg.build_time,
             pg.remarks,
-            -- 人员表信息字段
-            gm.member_id,
-            gm.user_id,
-            su.realname AS username,
-            gm.is_leader
+            -- 附件信息
+            '66' as attachment_type
         FROM
             tab_pb_party_group pg
-            INNER JOIN sys_dept sd ON pg.org_id = dept_id
-            LEFT JOIN tab_pb_party_group_member gm ON pg.group_id = gm.group_id
-            INNER JOIN sys_user su ON gm.user_id = su.user_id
+            INNER JOIN sys_dept sd ON pg.org_id = sd.dept_id
         WHERE
             pg.group_id = #{groupId,jdbcType=BIGINT}
             AND pg.del_flag = 0
-            AND sd.del_flag = '0'
-            AND su.del_flag = '0'
-            AND gm.del_flag = 0
     </select>
 
     <!-- 查询党小组列表 -->
@@ -359,20 +348,13 @@
         pg.revoke_time,
         pg.build_time,
         pg.remarks,
-        -- 人员表信息字段
-        gm.member_id,
-        gm.user_id,
-        su.realname AS username,
-        gm.is_leader
+        -- 附件信息
+        '66' as attachment_type
         FROM
         tab_pb_party_group pg
-        INNER JOIN sys_dept sd ON pg.org_id = dept_id
-        LEFT JOIN tab_pb_party_group_member gm ON pg.group_id = gm.group_id
-        INNER JOIN sys_user su ON gm.user_id = su.user_id
+        INNER JOIN sys_dept sd ON pg.org_id = sd.dept_id
         WHERE
         pg.del_flag = 0
-        AND sd.del_flag = '0'
-        AND gm.del_flag = 0
 
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
         <choose>
@@ -392,8 +374,18 @@
         </if>
 
         <if test="leaderName != null and leaderName != '' ">
-            AND su.realname like concat('%', #{leaderName} ,'%')
+            AND EXISTS (
+            SELECT
+            1
+            FROM
+            tab_pb_party_group_member gm
+            INNER JOIN sys_user su ON gm.user_id = su.user_id
+            WHERE
+            gm.group_id = pg.group_id
+            AND gm.del_flag = 0
+            AND su.realname LIKE concat('%',#{leaderName} ,'%')
             AND gm.is_leader = 1
+            )
         </if>
 
         <if test="isRevoke != null">
@@ -401,39 +393,6 @@
         </if>
 
         ORDER BY pg.order_num
-    </select>
-
-    <select id="selectPartyGroupDetails_COUNT" parameterType="com.egovchina.partybuilding.partybuild.entity.PartyGroupQueryBean" resultType="int">
-        SELECT
-        COUNT(1)
-        FROM
-        tab_pb_party_group pg
-        INNER JOIN sys_dept sd ON pg.org_id = sd.dept_id
-        WHERE
-        pg.del_flag = 0
-        AND sd.del_flag = '0'
-
-        <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
-        <choose>
-            <when test="orgRange == 1">
-                AND (sd.dept_id = #{orgId} OR sd.parent_id = #{orgId})
-            </when>
-            <when test="orgRange == 2">
-                AND find_in_set(#{orgId}, sd.full_path)
-            </when>
-            <otherwise>
-                AND sd.dept_id = #{orgId}
-            </otherwise>
-        </choose>
-
-        <if test="groupName != null and groupName != '' ">
-            AND pg.group_name like concat('%', #{groupName} ,'%')
-        </if>
-
-        <if test="isRevoke != null">
-            AND pg.is_revoke = #{isRevoke}
-        </if>
-
     </select>
 
 </mapper>

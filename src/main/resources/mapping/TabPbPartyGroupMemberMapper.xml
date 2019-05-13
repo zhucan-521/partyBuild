@@ -196,7 +196,7 @@
         SELECT
             gm.member_id,
             gm.user_id,
-            su.username,
+            su.realname AS username,
             gm.is_leader
         FROM
             tab_pb_party_group_member gm
