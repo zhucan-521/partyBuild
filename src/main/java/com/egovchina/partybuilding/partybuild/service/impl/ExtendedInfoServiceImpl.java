@@ -114,7 +114,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
             //获取用户名+组织id
             newuser = tabSysUserMapper.selectByPrimaryKey(reduce.getUserId());
             if (newuser != null) {
-                if (reduce.getMemberReduceId() != null) {
+                if (reduce.getMemberReduceId() != null && !"".equals(reduce.getMemberReduceId())) {
                     //修改历史党员
                     tabPbMemberReduceList.setDeptId(newuser.getDeptId());
                     tabPbMemberReduceList.setRealName(newuser.getRealname());
