@@ -86,7 +86,8 @@ public interface TabPbPartyGroupMemberMapper {
     /**
      * desc: 筛选指定组织中未在任何党小组存在的党员
      *
-     * @param partyGroupMemberQueryBean 查询条件
+     * @param orgId   组织ID
+     * @param groupId 党小组ID
      * @return PartyMemberBaseVO
      * @author FanYanGen
      * @date 2019/5/6 15:57
