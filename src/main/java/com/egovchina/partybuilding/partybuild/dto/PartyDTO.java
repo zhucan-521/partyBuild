@@ -85,7 +85,7 @@ public class PartyDTO {
     @NotNull(message = "档案管理单位名称不能为空")
     private String filesManageUnit;
 
-    @ApiModelProperty(value = "党籍 0无、1刚入党、2转正、3出党、4停止党籍、5死亡、6其他、 7发展中的党员", required = true)
+    @ApiModelProperty(value = "党籍码表值", required = true)
     @NotNull(message = "党籍不能为空")
     private Long registryStatus;
 
