@@ -69,7 +69,7 @@ public class SysUserVO {
     private Long identityType;
 
     @ApiModelProperty(value = "档案管理单位")
-    private String filesManageUnitName;
+    private String filesManageUnit;
 
     @ApiModelProperty(value = "党籍 0无、1刚入党、2转正、3出党、4停止党籍、5死亡、6其他、 7发展中的党员")
     @JsonSerialize(using = DictSerializer.class)
