@@ -68,10 +68,13 @@ public class SysUserVO {
     @ApiModelProperty(value = "人员类别 码表值 RYLB")
     private Long identityType;
 
+    @ApiModelProperty(value = "档案管理单位id ")
+    private Long filesManageUnitId;
+
     @ApiModelProperty(value = "档案管理单位")
     private String filesManageUnit;
 
-    @ApiModelProperty(value = "党籍 0无、1刚入党、2转正、3出党、4停止党籍、5死亡、6其他、 7发展中的党员")
+    @ApiModelProperty(value = "党籍 码表值 DJZT")
     @JsonSerialize(using = DictSerializer.class)
     private Long registryStatus;
 

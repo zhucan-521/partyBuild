@@ -31,4 +31,6 @@ public interface TabPbMemberReduceListMapper {
     List<HistoryPartyVO> selectPartyHistoryList(HistoricalPartyMemberQueryBean record);
 
     List<MemberReducesVO> selectInvalidPartyHistoryList(HistoricalPartyMemberQueryBean record);
+
+    HistoryPartyVO selectHistoryPartyVOByUserId(Long userId);
 }

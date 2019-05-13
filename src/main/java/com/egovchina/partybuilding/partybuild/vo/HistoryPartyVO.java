@@ -51,4 +51,8 @@ public class HistoryPartyVO {
     @ApiModelProperty(value = "出党方式")
     @JsonSerialize(using = DictSerializer.class)
     private Long quitType;
+
+    @ApiModelProperty(value = "党籍 码表值 DJZT")
+    @JsonSerialize(using = DictSerializer.class)
+    private Long registryStatus;
 }

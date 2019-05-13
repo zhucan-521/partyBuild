@@ -39,16 +39,10 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     TabPbFlowOutMapper tabPbFlowOutMapper;
 
     @Autowired
-    TabPbFlowInMapper tabPbFlowInMapper;
-
-    @Autowired
     UserTagService userTagService;
 
     @Autowired
     private TabPbMemberReduceListMapper reduceListMapper;
-
-    @Autowired
-    TabPbPositivesMapper positivesMapper;
 
     @Autowired
     private TabPbPartyEducationMapper tabPbPartyEducationMapper;
@@ -148,9 +142,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         return new PageInfo<>(tabSysUserMapper.partyIdentityVerification(username, idCardNo, phone));
     }
 
-
-    @Override
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public int savePartyInfo(PartyInfoDTO partyInfoDTO) {
         if (!tabSysUserMapper.checkIsExistByIdCard(partyInfoDTO.getParty().getIdCardNo())) {
             int effected = 0;
@@ -190,8 +183,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         throw new BusinessDataCheckFailException("该党员已存在");
     }
 
-    @Override
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public int updatePartyInfo(PartyInfoDTO partyInfoDTO) {
         Long id = partyInfoDTO.getParty().getUserId();
         if (tabSysUserMapper.checkIsExistByUserId(id)) {
