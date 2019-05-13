@@ -58,13 +58,13 @@ public interface NewsMapper {
     /**
      * desc: 修改党建资讯发布状态
      *
-     * @param newsId 主键id
-     * @param hostId 封面附件id
-     * @param status 状态
+     * @param newsId       主键id
+     * @param attachmentId 附件id
+     * @param status       状态
      * @return int
      * @auther FanYanGen
      * @date 2019-05-13 22:10
      */
-    int updatePublishStatus(@Param("newsId") Long newsId, @Param("hostId") Long hostId, @Param("status") Long status);
+    int updatePublishStatus(@Param("newsId") Long newsId, @Param("attachmentId") Long attachmentId, @Param("status") Long status);
 
 }

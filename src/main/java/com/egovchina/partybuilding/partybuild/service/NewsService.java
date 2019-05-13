@@ -36,12 +36,12 @@ public interface NewsService {
      * desc: 发布党建资讯
      *
      * @param newsId 主键id
-     * @param hostId 封面附件id
+     * @param attachmentId 附件id
      * @return int
      * @auther FanYanGen
      * @date 2019-05-13 22:10
      */
-    int publishNews(Long newsId, Long hostId);
+    int publishNews(Long newsId, Long attachmentId);
 
     /**
      * desc: 取消发布党建资讯
