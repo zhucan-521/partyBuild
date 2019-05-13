@@ -182,7 +182,7 @@ public class PartyGroupServiceImpl implements PartyGroupService {
         verifyThatTheLeaderIsUnique(memberList);
         List<TabPbPartyGroupMember> tabPbPartyGroupMembers = generateTargetListCopyPropertiesAndPaddingBaseField(memberList, TabPbPartyGroupMember.class, member -> member.setGroupId(groupId), false);
         result += tabPbPartyGroupMemberMapper.batchInsert(tabPbPartyGroupMembers);
-        result += tabPbAttachmentService.intelligentOperation(partyGroupDTO.getAttachments(), partyGroupDTO.getGroupId(), AttachmentType.DOUBLE_COMMENTARY);
+        result += tabPbAttachmentService.intelligentOperation(partyGroupDTO.getAttachments(), partyGroupDTO.getGroupId(), AttachmentType.PARTY_GROUP);
         return result;
     }
 
