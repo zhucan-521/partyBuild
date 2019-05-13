@@ -37,4 +37,7 @@ public class LeadTeamMemberQueryBean {
     @ApiModelProperty("状态")
     private String eblFlag;
 
+    @ApiModelProperty(value = "单位类别 码表值 DWLB")
+    private Long unitProperty;
+
 }

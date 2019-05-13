@@ -417,6 +417,9 @@
         <if test="positiveId != null and positiveId != ''">
             AND ltm.positive_id = #{positiveId}
         </if>
+        <if test="unitProperty != null and unitProperty != ''">
+            AND (select unit_property from tab_pb_unit_info where org_id= ltm.org_id) = #{unitProperty}
+        </if>
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
         <choose>
             <when test="orgRange == 1">

@@ -1,5 +1,7 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
+import com.egovchina.partybuilding.common.config.DictSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -25,4 +27,6 @@ public class LeadTeamQueryBean {
     @ApiModelProperty("班子届数")
     private Long sessionYear;
 
+    @ApiModelProperty(value = "单位类别 码表值 DWLB")
+    private Long unitProperty;
 }
