@@ -3,7 +3,6 @@ package com.egovchina.partybuilding.partybuild.repository;
 import com.egovchina.partybuilding.partybuild.entity.RewardsAndPunishmentsQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbRewards;
 import com.egovchina.partybuilding.partybuild.vo.RewardsVO;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -38,4 +37,11 @@ public interface TabPbRewardsMapper {
      * @return
      */
     int batchInsertTabPbRewardList(List<TabPbRewards> rewardsList);
+
+    /**
+     *根据用户Id查询奖励
+     * @param userId
+     * @return
+     */
+    List<RewardsVO> getRewardsVOByUserId(Long userId);
 }
