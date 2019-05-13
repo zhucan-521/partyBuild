@@ -36,6 +36,12 @@
         <result column="revoke_time" jdbcType="TIMESTAMP" property="revokeTime"/>
         <result column="build_time" jdbcType="TIMESTAMP" property="buildTime"/>
         <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="video_num" jdbcType="INTEGER" property="videoNum"/>
+        <result column="img_num" jdbcType="INTEGER" property="imgNum"/>
+        <result column="doc_num" jdbcType="INTEGER" property="docNum"/>
+        <collection property="attachments"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=commentary_id,attachmentType=attachment_type}"/>
         <collection property="members" ofType="com.egovchina.partybuilding.partybuild.vo.PartyGroupMemberVO">
             <id column="member_id" jdbcType="BIGINT" property="memberId"/>
             <result column="user_id" jdbcType="BIGINT" property="userId"/>
