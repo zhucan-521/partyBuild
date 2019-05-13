@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.NewsMapper">
+
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbNews">
+        <id column="news_id" jdbcType="BIGINT" property="newsId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="type" jdbcType="BIGINT" property="type"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
+        <result column="publish_status" jdbcType="BIT" property="publishStatus"/>
+        <result column="watch_num" jdbcType="BIGINT" property="watchNum"/>
+        <result column="top_status" jdbcType="BIT" property="topStatus"/>
+        <result column="del_flag" jdbcType="BIT" property="delFlag"/>
+        <result column="order_num" jdbcType="INTEGER" property="orderNum"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+    </resultMap>
+
+    <!-- NewsVOResultMap -->
+    <resultMap id="NewsVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.NewsVO">
+        <id column="news_id" jdbcType="BIGINT" property="newsId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="type" jdbcType="BIGINT" property="type"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="org_short_name" jdbcType="VARCHAR" property="orgShortName"/>
+        <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
+        <result column="publish_status" jdbcType="BIT" property="publishStatus"/>
+        <result column="watch_num" jdbcType="BIGINT" property="watchNum"/>
+        <result column="top_status" jdbcType="BIT" property="topStatus"/>
+        <result column="order_num" jdbcType="INTEGER" property="orderNum"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+    </resultMap>
+
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbNews">
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    news_id, title, type, org_id, publish_time, publish_status, watch_num, top_status, 
+    del_flag, order_num, create_time, create_userid, create_username, update_time, update_userid, 
+    update_username
+  </sql>
+
+    <sql id="Blob_Column_List">
+    content
+  </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from tab_pb_party_news
+        where news_id = #{newsId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_party_news
+    where news_id = #{newsId,jdbcType=BIGINT}
+  </delete>
+
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbNews">
+    insert into tab_pb_party_news (news_id, title, type, 
+      org_id, publish_time, publish_status, 
+      watch_num, top_status, del_flag, 
+      order_num, create_time, create_userid, 
+      create_username, update_time, update_userid, 
+      update_username, content)
+    values (#{newsId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{type,jdbcType=BIGINT}, 
+      #{orgId,jdbcType=BIGINT}, #{publishTime,jdbcType=TIMESTAMP}, #{publishStatus,jdbcType=BIT}, 
+      #{watchNum,jdbcType=BIGINT}, #{topStatus,jdbcType=BIT}, #{delFlag,jdbcType=BIT}, 
+      #{orderNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, 
+      #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, 
+      #{updateUsername,jdbcType=VARCHAR}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbNews">
+        insert into tab_pb_party_news
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="newsId != null">
+                news_id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="publishTime != null">
+                publish_time,
+            </if>
+            <if test="publishStatus != null">
+                publish_status,
+            </if>
+            <if test="watchNum != null">
+                watch_num,
+            </if>
+            <if test="topStatus != null">
+                top_status,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="newsId != null">
+                #{newsId,jdbcType=BIGINT},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=BIGINT},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="publishTime != null">
+                #{publishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="publishStatus != null">
+                #{publishStatus,jdbcType=BIT},
+            </if>
+            <if test="watchNum != null">
+                #{watchNum,jdbcType=BIGINT},
+            </if>
+            <if test="topStatus != null">
+                #{topStatus,jdbcType=BIT},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=BIT},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbNews">
+        update tab_pb_party_news
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=BIGINT},
+            </if>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="publishTime != null">
+                publish_time = #{publishTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="publishStatus != null">
+                publish_status = #{publishStatus,jdbcType=BIT},
+            </if>
+            <if test="watchNum != null">
+                watch_num = #{watchNum,jdbcType=BIGINT},
+            </if>
+            <if test="topStatus != null">
+                top_status = #{topStatus,jdbcType=BIT},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=BIT},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where news_id = #{newsId,jdbcType=BIGINT}
+    </update>
+
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbNews">
+    update tab_pb_party_news
+    set title = #{title,jdbcType=VARCHAR},
+      type = #{type,jdbcType=BIGINT},
+      org_id = #{orgId,jdbcType=BIGINT},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      publish_status = #{publishStatus,jdbcType=BIT},
+      watch_num = #{watchNum,jdbcType=BIGINT},
+      top_status = #{topStatus,jdbcType=BIT},
+      del_flag = #{delFlag,jdbcType=BIT},
+      order_num = #{orderNum,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where news_id = #{newsId,jdbcType=BIGINT}
+  </update>
+
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbNews">
+    update tab_pb_party_news
+    set title = #{title,jdbcType=VARCHAR},
+      type = #{type,jdbcType=BIGINT},
+      org_id = #{orgId,jdbcType=BIGINT},
+      publish_time = #{publishTime,jdbcType=TIMESTAMP},
+      publish_status = #{publishStatus,jdbcType=BIT},
+      watch_num = #{watchNum,jdbcType=BIGINT},
+      top_status = #{topStatus,jdbcType=BIT},
+      del_flag = #{delFlag,jdbcType=BIT},
+      order_num = #{orderNum,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR}
+    where news_id = #{newsId,jdbcType=BIGINT}
+  </update>
+
+    <!-- 校验数据是否存在 -->
+    <select id="checkIsExistByNewsId" resultType="java.lang.Boolean">
+
+        SELECT
+            COUNT( 1 )
+        FROM
+            tab_pb_party_news
+        WHERE
+            news_id = #{newsId,jdbcType=BIGINT}
+
+    </select>
+
+    <!-- 查询详情 -->
+    <select id="getNewsVODetails" resultMap="NewsVOResultMap">
+
+        SELECT
+            -- 组织表
+            d.`name` AS org_name,
+            d.org_short_name,
+            -- 新闻资讯表
+            n.news_id,
+            n.title,
+            n.type,
+            n.content,
+            n.publish_time,
+            n.publish_status,
+            n.watch_num,
+            n.top_status,
+            n.order_num
+        FROM
+            tab_pb_party_news n
+            INNER JOIN sys_dept d ON n.org_id = d.dept_id
+        WHERE
+            n.del_flag = 0 AND
+            n.news_id = #{newsId,jdbcType=BIGINT}
+
+    </select>
+
+    <select id="getNewsVOList" resultType="com.egovchina.partybuilding.partybuild.entity.NewsQueryBean"
+            resultMap="NewsVOResultMap">
+
+        SELECT
+        -- 组织表
+        d.`name` AS org_name,
+        d.org_short_name,
+        -- 新闻资讯表
+        n.news_id,
+        n.title,
+        n.type,
+        n.content,
+        n.publish_time,
+        n.publish_status,
+        n.watch_num,
+        n.top_status,
+        n.order_num
+        FROM
+        tab_pb_party_news n
+        INNER JOIN sys_dept d ON n.org_id = d.dept_id
+        WHERE
+        n.del_flag = 0
+
+        <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+        <choose>
+            <when test="orgRange == 1">
+                AND (d.dept_id = #{orgId} OR d.parent_id = #{orgId})
+            </when>
+            <when test="orgRange == 2">
+                AND find_in_set(#{orgId}, d.full_path)
+            </when>
+            <otherwise>
+                AND d.dept_id = #{orgId}
+            </otherwise>
+        </choose>
+
+        <if test="publishTime != null">
+            AND date_format(publish_time, '%Y-%m-%d') = #{publishTime}
+        </if>
+
+        <if test="title != null">
+            AND title like concat('%',#{title},'%')
+        </if>
+
+        ORDER BY n.top_status DESC,n.order_num
+
+    </select>
+
+    <update id="updateNewsViews">
+
+        UPDATE tab_pb_party_news
+        SET watch_num = watch_num + 1
+        WHERE news_id = #{newsId}
+
+    </update>
+
+</mapper>

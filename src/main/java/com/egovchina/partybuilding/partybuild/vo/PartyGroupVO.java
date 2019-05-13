@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
+import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -53,5 +54,17 @@ public class PartyGroupVO {
 
     @ApiModelProperty(value = "该党小组成员集合")
     private List<PartyGroupMemberVO> members;
+
+    @ApiModelProperty(value = "文档数")
+    private Integer docNum;
+
+    @ApiModelProperty(value = "图片数")
+    private Integer imgNum;
+
+    @ApiModelProperty(value = "视频数")
+    private Integer videoNum;
+
+    @ApiModelProperty(value = "附件实体集合")
+    private List<TabPbAttachment> attachments;
 
 }
