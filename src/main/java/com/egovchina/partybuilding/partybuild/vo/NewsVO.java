@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
 import com.egovchina.partybuilding.common.config.DictSerializer;
+import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
@@ -8,6 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * desc: 新闻资讯-视图对象
@@ -51,5 +53,17 @@ public class NewsVO {
 
     @ApiModelProperty(value = "资讯内容")
     private String content;
+
+    @ApiModelProperty(value = "文档数")
+    private Integer docNum;
+
+    @ApiModelProperty(value = "图片数")
+    private Integer imgNum;
+
+    @ApiModelProperty(value = "视频数")
+    private Integer videoNum;
+
+    @ApiModelProperty(value = "附件实体集合")
+    private List<TabPbAttachment> attachments;
 
 }

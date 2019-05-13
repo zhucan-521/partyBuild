@@ -1,12 +1,14 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
+import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.NewsDTO;
 import com.egovchina.partybuilding.partybuild.entity.NewsQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbNews;
 import com.egovchina.partybuilding.partybuild.repository.NewsMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
+import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.NewsService;
 import com.egovchina.partybuilding.partybuild.vo.NewsVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,16 +31,27 @@ public class NewsServiceImpl implements NewsService {
     @Autowired
     private TabSysDeptMapper tabSysDeptMapper;
 
+    @Autowired
+    private ITabPbAttachmentService tabPbAttachmentService;
+
     @Override
     public int insertNews(NewsDTO newsDTO) {
         verifyAdditionsAndUpdates(newsDTO);
-        return newsMapper.insertSelective(generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, false));
+        int result = newsMapper.insertSelective(generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, false));
+        if (result > 0) {
+            result += tabPbAttachmentService.intelligentOperation(newsDTO.getAttachments(), newsDTO.getNewsId(), AttachmentType.NEWS);
+        }
+        return result;
     }
 
     @Override
     public int updateNews(NewsDTO newsDTO) {
         verifyAdditionsAndUpdates(newsDTO);
-        return newsMapper.updateByPrimaryKeySelective(generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, true));
+        int result = newsMapper.updateByPrimaryKeySelective(generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, true));
+        if (result > 0) {
+            result += tabPbAttachmentService.intelligentOperation(newsDTO.getAttachments(), newsDTO.getNewsId(), AttachmentType.NEWS);
+        }
+        return result;
     }
 
     @Override
