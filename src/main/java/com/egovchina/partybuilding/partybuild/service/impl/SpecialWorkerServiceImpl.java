@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 
+import com.baomidou.mybatisplus.toolkit.StringUtils;
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysUser;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -116,6 +118,9 @@ public class SpecialWorkerServiceImpl implements SpecialWorkerService {
     @Override
     public PageInfo<SpecialWorkerVO> getSpecialWorkerList(Page page, SpecialWorkerQueryBean specialWorkerQueryBean) {
         PageHelper.startPage(page);
+        if (StringUtils.isNotEmpty(specialWorkerQueryBean.getUnitProperty())) {
+            specialWorkerQueryBean.setUnitProperties(Arrays.asList(specialWorkerQueryBean.getUnitProperty().split(",")));
+        }
         List<SpecialWorkerVO> list = tabPbSpcialWorkerMapper.selectSpecialWorkerVOList(specialWorkerQueryBean);
         return new PageInfo<>(list);
     }

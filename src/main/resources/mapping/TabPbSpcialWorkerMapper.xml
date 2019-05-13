@@ -309,10 +309,11 @@
         SELECT
         (
         CASE
-        WHEN NOW( ) > left_time THEN
+        WHEN NOW( ) > left_time
+        OR arrive_time > NOW( ) THEN
         0
-        WHEN IFNULL( left_time, 1 ) = 1
-        OR NOW( ) &lt;= left_time THEN
+        WHEN ( IFNULL( left_time, 1 ) AND arrive_time &lt; NOW( ) )
+        OR ( NOW( ) &lt;= left_time AND arrive_time &lt; NOW( ) ) THEN
         1
         END
         ) status,
@@ -330,8 +331,14 @@
             <if test="null != idCardNo and ''!=idCardNo">
                 AND u.id_card_no= #{idCardNo}
             </if>
-            <if test="status != null">
+            <if test="status != null and '' != status">
                 AND status= #{status}
+            </if>
+            <if test="unitProperty != null and '' != unitProperty">
+                and
+                <foreach collection="unitProperties" open="(" item="item" separator=" or " close=")">
+                    find_in_set(${item}, (select unit_property from tab_pb_unit_info where org_id = sw.manage_org_id))
+                </foreach>
             </if>
             <choose>
                 <when test="orgRange == 1">

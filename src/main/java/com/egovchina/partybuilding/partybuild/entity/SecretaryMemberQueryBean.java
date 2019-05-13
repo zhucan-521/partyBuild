@@ -1,9 +1,10 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
-import com.egovchina.partybuilding.common.config.DictSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class SecretaryMemberQueryBean {
@@ -24,7 +25,10 @@ public class SecretaryMemberQueryBean {
     private Long positiveName;
 
     @ApiModelProperty(value = "单位类别 码表值DWLB")
-    @JsonSerialize(using = DictSerializer.class)
-    private Long unitProperty;
+    private String unitProperty;
+
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private List<String> unitProperties;
 
 }

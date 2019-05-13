@@ -1,5 +1,4 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
-
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
@@ -7,11 +6,14 @@ import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.DeletePartyMemberDTO;
 import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
+import com.egovchina.partybuilding.partybuild.entity.TabPbAbroad;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList;
+import com.egovchina.partybuilding.partybuild.repository.TabPbAbroadMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMemberReduceListMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
 import com.egovchina.partybuilding.partybuild.util.CommonConstant;
+import com.egovchina.partybuilding.partybuild.vo.HistoryPartyVO;
 import com.egovchina.partybuilding.partybuild.vo.PartyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretariesPartyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.SysUserVO;
@@ -36,6 +38,9 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
 
     @Autowired
     private PartyMembershipServiceImpl partyMembershipServiceImpl;
+
+    @Autowired
+    private TabPbAbroadMapper tabPbAbroadMapper;
 
     //停止党籍 党籍状态
     private final Long STOP_PARTY_MEMBERSHIP = 59328L;
@@ -109,11 +114,20 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
             //获取用户名+组织id
             newuser = tabSysUserMapper.selectByPrimaryKey(reduce.getUserId());
             if (newuser != null) {
-                tabPbMemberReduceList.setDeptId(newuser.getDeptId());
-                tabPbMemberReduceList.setRealName(newuser.getRealname());
-                tabPbMemberReduceList.setReduceTime(new Date());
-                PaddingBaseFieldUtil.paddingBaseFiled(tabPbMemberReduceList);
-                flag += reduceListMapper.insertSelective(tabPbMemberReduceList);
+                if (reduce.getMemberReduceId() != null && !"".equals(reduce.getMemberReduceId())) {
+                    //修改历史党员
+                    tabPbMemberReduceList.setDeptId(newuser.getDeptId());
+                    tabPbMemberReduceList.setRealName(newuser.getRealname());
+                    PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbMemberReduceList);
+                    flag += reduceListMapper.updateByPrimaryKeySelective(tabPbMemberReduceList);
+                } else {
+                    //新增历史党员
+                    tabPbMemberReduceList.setDeptId(newuser.getDeptId());
+                    tabPbMemberReduceList.setRealName(newuser.getRealname());
+                    tabPbMemberReduceList.setReduceTime(new Date());
+                    PaddingBaseFieldUtil.paddingBaseFiled(tabPbMemberReduceList);
+                    flag += reduceListMapper.insertSelective(tabPbMemberReduceList);
+                }
             }
             //添加一条党籍
             MembershipDTO membershipDTO = new MembershipDTO();
@@ -157,4 +171,43 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         return num;
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int deleteByUserId(Long userId) {
+        int flag = 0;
+        //设置有效状态,删除状态
+        TabPbMemberReduceList reduceList = reduceListMapper.selectByUserId(userId);
+        if (reduceList == null) {
+            throw new BusinessDataNotFoundException("查不到该党员减少记录");
+        }
+        reduceList.setEblFlag(CommonConstant.STATUS_DEL);
+        reduceList.setDelFlag(CommonConstant.STATUS_NOEBL);
+        //基本字段维护
+        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(reduceList);
+        //删除历史记录
+        flag += reduceListMapper.updateByPrimaryKeySelective(reduceList);
+        if (flag > 0) {
+            //删除出国出境信息
+            Long abroadId = tabPbAbroadMapper.findAbroadIdByUserId(userId);
+            if (abroadId != null) {
+                TabPbAbroad tabPbAbroad = new TabPbAbroad();
+                tabPbAbroad.setAbroadId(abroadId);
+                tabPbAbroad.setDelFlag(CommonConstant.STATUS_DEL);
+                PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbAbroad);
+                flag += tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
+            }
+            //删除用户信息
+            SysUser sysUser = new SysUser();
+            sysUser.setUserId(userId);
+            sysUser.setDelFlag(CommonConstant.STATUS_DEL);
+            PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(sysUser);
+            flag += tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
+        }
+        return flag;
+    }
+
+    @Override
+    public HistoryPartyVO selectHistoryPartyVO(Long userId) {
+        return reduceListMapper.selectHistoryPartyVOByUserId(userId);
+    }
 }

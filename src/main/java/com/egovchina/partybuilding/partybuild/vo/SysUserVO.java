@@ -33,7 +33,7 @@ public class SysUserVO {
     @ApiModelProperty(value = "身份证号码")
     private String idCardNo;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "出生日期")
     private Date birthday;
 
@@ -59,7 +59,7 @@ public class SysUserVO {
 
     @TableField(exist = false)
     @ApiModelProperty(value = "入党所在支部名称")
-    private String joinOrgName;
+    private String deptName;
 
     @ApiModelProperty(value = "曾任职务")
     private String positived;
@@ -68,19 +68,21 @@ public class SysUserVO {
     @ApiModelProperty(value = "人员类别 码表值 RYLB")
     private Long identityType;
 
+    @ApiModelProperty(value = "档案管理单位id ")
+    private Long filesManageUnitId;
+
     @ApiModelProperty(value = "档案管理单位")
-    @JsonSerialize(using = DictSerializer.class)
     private String filesManageUnit;
 
-    @ApiModelProperty(value = "党籍 0无、1刚入党、2转正、3出党、4停止党籍、5死亡、6其他、 7发展中的党员")
+    @ApiModelProperty(value = "党籍 码表值 DJZT")
     @JsonSerialize(using = DictSerializer.class)
     private Long registryStatus;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "入党时间、预备党员时间")
     private Date joinTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "加入党组织时间")
     private Date joinOrgTime;
 

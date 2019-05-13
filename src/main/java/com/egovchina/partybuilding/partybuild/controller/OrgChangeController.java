@@ -4,10 +4,14 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.OrgChangeDTO;
+import com.egovchina.partybuilding.partybuild.entity.OrgChangeQueryBean;
 import com.egovchina.partybuilding.partybuild.service.OrgChangeService;
 import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +31,10 @@ public class OrgChangeController {
     private OrgChangeService orgChangeService;
 
     @ApiOperation(value = "查看最新组织变动信息", notes = "查看最新组织变动信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "deptId", value = "组织ID", paramType = "query", dataType = "Long", required = true),
-            @ApiImplicitParam(name = "changeType", value = "变动类型", paramType = "query", dataType = "Long", required = true)
-    })
-    @GetMapping("/newest")
-    public OrgChangeVO getOrgChange(Long deptId, Long changeType) {
-        return orgChangeService.selectOrgChangeByDeptIdOrderTime(deptId, changeType);
+    @ApiImplicitParam(name = "changeId", value = "变动id", paramType = "path", dataType = "Long", required = true)
+    @GetMapping("/{changeId}")
+    public OrgChangeVO getOrgChangeById(@PathVariable Long changeId) {
+        return orgChangeService.selectOrgChangeById(changeId);
     }
 
     @ApiOperation(value = "新增组织变动",
@@ -41,7 +42,7 @@ public class OrgChangeController {
                     "2. <font color=\"red\">组织撤销(字典id=59007, value=ZZCX, type=ZZDB)</font><br/> " +
                     "3. <font color=\"red\">组织恢复(字典id=59008, value=ZZHF, type=ZZDB)</font><br/>" +
                     "4. <font color=\"red\">组织调整(字典id=59009, value=ZZTZ, type=ZZDB)</font><br/>" +
-                    "5. <font color=\"red\">组织调整(字典id=59567, value=QTTZ, type=ZZDB)</font><br/>" +
+                    "5. <font color=\"red\">其他调整(字典id=59567, value=QTTZ, type=ZZDB)</font><br/>" +
                     "6. <font color=\"red\">整建制转移(字典id=59603, value=ZJZZY, type=ZZDB)</font>")
     @PostMapping
     public ReturnEntity addOrgChange(@ApiParam("组织变动信息") @RequestBody @Validated OrgChangeDTO change) {
@@ -49,9 +50,8 @@ public class OrgChangeController {
     }
 
     @ApiOperation(value = "获取组织变动信息列表")
-    @ApiImplicitParam(value = "组织id", name = "orgId", paramType = "path", required = true)
-    @GetMapping("/{orgId}")
-    public PageInfo<OrgChangeVO> getOrgChangeList(@PathVariable Long orgId, Page page) {
-        return new PageInfo<>(this.orgChangeService.selectOrgChangeList(orgId, page));
+    @GetMapping
+    public PageInfo<OrgChangeVO> getOrgChangeList(@Validated OrgChangeQueryBean orgChangeQueryBean, Page page) {
+        return new PageInfo<>(this.orgChangeService.selectOrgChangeList(orgChangeQueryBean, page));
     }
 }

@@ -55,6 +55,13 @@ public class PartyInformationController {
         return partyInformationService.getPartyHistoryList(queryBean, page);
     }
 
+    @ApiOperation(value = "查看单个历史党员", notes = "查看单个历史党员", httpMethod = "GET")
+    @GetMapping("/history-members/{userId}")
+    @ApiImplicitParam(name = "userId", value = "用户id", paramType = "path", required = true, dataType = "long")
+    public HistoryPartyVO getPartyHistoryVO(@PathVariable Long userId) {
+        return extendedInfoService.selectHistoryPartyVO(userId);
+    }
+
     @ApiOperation(value = "根据id获取党员信息附带学历等信息", notes = "根据id获取党员信息附带学历等信息", httpMethod = "GET")
     @ApiImplicitParam(value = "党员id", name = "id", dataType = "long", paramType = "path", required = true)
     @GetMapping("/party-members/{id}")

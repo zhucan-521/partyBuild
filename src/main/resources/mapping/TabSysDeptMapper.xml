@@ -155,6 +155,9 @@
         <if test="orgnizeMaster != null and orgnizeMaster != ''">
             AND d.orgnize_master like concat('%',#{orgnizeMaster},'%')
         </if>
+        <if test="domainCategory != null and domainCategory != ''">
+            AND find_in_set(d.domain_category,#{domainCategory})
+        </if>
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
         <if test="orgRange != null and orgRange != ''">
             <choose>
@@ -646,7 +649,7 @@
         <set>
             <include refid="Base_Set_Column_List"/>
         </set>
-        where  d.dept_id = #{deptId,jdbcType=BIGINT}
+        where d.dept_id = #{deptId,jdbcType=BIGINT}
     </update>
     <!--根据主键修改-->
     <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.common.entity.SysDept">

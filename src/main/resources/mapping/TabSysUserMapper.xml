@@ -194,7 +194,8 @@
             <result column="family_address" jdbcType="VARCHAR" property="familyAddress"/>
             <result column="positived" jdbcType="VARCHAR" property="positived"/>
             <result column="identity_type" jdbcType="BIGINT" property="identityType"/>
-            <result column="files_manage_unit" jdbcType="BIGINT" property="filesManageUnit"/>
+            <result column="files_manage_unit_id" jdbcType="VARCHAR" property="filesManageUnitId"/>
+            <result column="files_manage_unit" jdbcType="VARCHAR" property="filesManageUnit"/>
             <result column="registry_status" jdbcType="BIGINT" property="registryStatus"/>
             <result column="join_time" jdbcType="TIMESTAMP" property="joinTime"/>
             <result column="regular_time" jdbcType="TIMESTAMP" property="regularTime"/>
@@ -207,7 +208,7 @@
             <result column="ancestor_place" jdbcType="BIGINT" property="ancestorPlace"/>
             <result column="work_date" jdbcType="TIMESTAMP" property="workDate"/>
             <result column="org_addr_name" jdbcType="BIGINT" property="orgAddrName"/>
-            <result column="org_name" jdbcType="VARCHAR" property="joinOrgName"/>
+            <result column="org_name" jdbcType="VARCHAR" property="deptName"/>
             <result column="is_taiwaner" jdbcType="BIGINT" property="isTaiwaner"/>
             <result column="migrant" jdbcType="BIGINT" property="migrant"/>
             <collection property="tabPbUserTags" select="com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper.selectAllListSelective"
@@ -221,6 +222,7 @@
     <resultMap id="History_UserInfo" type="com.egovchina.partybuilding.partybuild.vo.HistoryPartyVO">
         <id column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="realname" jdbcType="VARCHAR" property="realname"/>
+        <result column="registry_status" jdbcType="BIGINT" property="registryStatus"/>
         <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
         <result column="gender" jdbcType="BIGINT" property="gender"/>
         <result column="nation" jdbcType="BIGINT" property="nation"/>
@@ -284,7 +286,7 @@
     <!--查询党员详细信息-->
     <sql id="Member_Details">
        u.user_id,u.dept_id,u.realname,u.gender,u.id_card_no,u.birthday, TIMESTAMPDIFF(YEAR, u.birthday, CURDATE()) AS age ,u.nation,u.community_addr,u.avatar,u.phone,u.fix_phone,u.family_address,
-      u.join_org_name,u.join_org_id,u.positived,u.identity_type,u.files_manage_unit,u.registry_status,u.join_time,u.registry_status,u.is_poor,
+      u.join_org_name,u.join_org_id,u.positived,u.identity_type,u.files_manage_unit,u.registry_status,u.join_time,u.registry_status,u.is_poor,u.files_manage_unit_id,
       u.regular_time,u.work_resumes,u.is_llost,u.flow_status,u.marital_status,u.health,u.ancestor_place,u.work_date,u.join_org_time,u.is_taiwaner,u.migrant
     </sql>
 
@@ -340,8 +342,8 @@
         <if test="nation != null and nation != ''">
             and find_in_set(nation, #{nation})
         </if>
-        <if test="unitType != null and unitType!=''">
-            AND find_in_set(t.unit_property , #{unitType})
+        <if test="unitProperty != null and unitProperty!=''">
+            AND find_in_set(t.unit_property , #{unitProperty})
         </if>
         <if test="ageBegin != null">
             and TIMESTAMPDIFF(YEAR,birthday,CURDATE())>= #{ageBegin}
@@ -402,6 +404,7 @@
         select
         d.name as org_name,
         d.community_addr as org_addr_name,
+        u.files_manage_unit,
         <include refid="Member_Details"/>
         from sys_user u
         left join sys_dept d on d.dept_id=u.dept_id

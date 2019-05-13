@@ -25,4 +25,5 @@ public interface TabPbAbroadMapper {
 
     List<MemberReducesVO> findAbroadDetailsByPartyId(HistoricalPartyMemberQueryBean historicalPartyMemberQueryBean);
 
+    Long findAbroadIdByUserId(Long userId);
 }

@@ -364,9 +364,22 @@
             parameterType="com.egovchina.partybuilding.partybuild.entity.StreetCommitteeMemberQueryBean"
             resultMap="StreetCommitteeMemberVOResultMap">
         SELECT
-        B.grant_committee_member_id,B.grant_committee_id,B.user_id,B.org_id,B.lead_team_id,B.party_member_id,
-        B.person_name,B.positive_id,B.positive_name,B.tenure_mode,B.tenure_begin,B.tenure_duration,
-        B.tenure_leave,B.as_committee_member,B.as_committee_director,B.lead_member_order,
+        B.grant_committee_member_id,
+        B.grant_committee_id,
+        B.user_id,
+        A.org_id,
+        B.lead_team_id,
+        B.party_member_id,
+        B.person_name,
+        B.positive_id,
+        B.positive_name,
+        B.tenure_mode,
+        B.tenure_begin,
+        B.tenure_duration,
+        B.tenure_leave,
+        B.as_committee_member,
+        B.as_committee_director,
+        B.lead_member_order,
         U.gender,
         U.phone,
         d.unit_id,
@@ -379,13 +392,16 @@
         tab_pb_grant_committee A
         INNER JOIN tab_pb_grant_committe_member B ON A.grant_committee_id = B.grant_committee_id
         INNER JOIN sys_user U ON B.user_id = U.user_id
-        INNER JOIN sys_dept d ON B.org_id = d.dept_id
+        INNER JOIN sys_dept d ON A.org_id = d.dept_id
         WHERE
-        B.del_flag = '0'
+        B.del_flag = 0
+        AND A.del_flag = 0
+        AND U.del_flag = 0
+        AND d.del_flag = 0
+        AND d.ebl_flag = 1
         <if test="personName != null and personName != ''">
             and B.person_name like concat('%', #{personName}, '%')
         </if>
-
         <if test="positiveName != null and positiveName != ''">
             and B.positive_name like concat('%',#{positiveName},'%')
         </if>
@@ -479,24 +495,40 @@
     <select id="selectStreetCommitteeMemberVOById" parameterType="java.lang.Long"
             resultMap="StreetCommitteeMemberVOResultMap">
         SELECT
-            B.grant_committee_member_id,B.grant_committee_id,B.user_id,B.org_id,B.lead_team_id,B.party_member_id,
-            B.person_name,B.positive_id,B.positive_name,B.tenure_mode,B.tenure_begin,B.tenure_duration,
-            B.tenure_leave,B.as_committee_member,B.as_committee_director,B.lead_member_order,
+            B.grant_committee_member_id,
+            B.grant_committee_id,
+            B.user_id,
+            B.org_id,
+            B.lead_team_id,
+            B.party_member_id,
+            B.person_name,
+            B.positive_id,
+            B.positive_name,
+            B.tenure_mode,
+            B.tenure_begin,
+            B.tenure_duration,
+            B.tenure_leave,
+            B.as_committee_member,
+            B.as_committee_director,
+            B.lead_member_order,
             U.gender,
             U.phone,
             d.unit_id,
             d.unit_name,
-            d.name AS org_name,
+            d.NAME AS org_name,
             A.org_id AS current_org_id,
             A.current,
-            ( SELECT name FROM sys_dept WHERE dept_id = A.org_id ) AS current_org_name
+            ( SELECT NAME FROM sys_dept WHERE dept_id = A.org_id ) AS current_org_name
         FROM
-            tab_pb_grant_committee A
-            INNER JOIN tab_pb_grant_committe_member B ON A.grant_committee_id = B.grant_committee_id
+            tab_pb_grant_committe_member B
+            INNER JOIN tab_pb_grant_committee A ON A.grant_committee_id = B.grant_committee_id
+            AND A.del_flag = 0
             INNER JOIN sys_user U ON B.user_id = U.user_id
-            INNER JOIN sys_dept d ON B.org_id = d.dept_id
+            AND U.del_flag = 0
+            INNER JOIN sys_dept d ON A.org_id = d.dept_id
+            AND d.del_flag = 0 AND d.ebl_flag = 1
         WHERE
-            B.del_flag = '0'
+            B.del_flag = 0
             AND B.grant_committee_member_id = #{grantCommitteeMemberId,jdbcType=BIGINT}
     </select>
 

@@ -47,8 +47,9 @@
         <result column="change_reason" jdbcType="LONGVARCHAR" property="changeReason"/>
         <result column="short_name" jdbcType="VARCHAR" property="shortName"/>
         <!--关联附件数据-->
-        <association property="attachments" select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
-                     column="{hostId=change_id,attachmentType=attachment_type}" />
+        <association property="attachments"
+                     select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+                     column="{hostId=change_id,attachmentType=attachment_type}"/>
     </resultMap>
     <sql id="Base_Column_List">
     change_id, dept_id, change_type, old_superior_id, now_superior_id, orgnize_name, 
@@ -59,6 +60,30 @@
     <sql id="Blob_Column_List">
     change_reason
   </sql>
+    <select id="selectOrgChangeById" resultMap="OrgChangeVOResultMap">
+        SELECT
+        '64' as attachment_type,
+        A.change_id,
+        A.dept_id,
+        d.`name` AS orgnize_name,
+        d.org_short_name AS short_name,
+        (select `name` from sys_dept where dept_id = A.now_superior_id) now_superior_name,
+        (SELECT `name` FROM sys_dept WHERE dept_id = A.old_superior_id) AS old_superior_name,
+        A.change_type,
+        A.change_date,
+        A.file_number,
+        A.create_username,
+        A.description,
+        A.change_reason
+        FROM
+        tab_pb_orgnize_change A left join sys_dept d on A.dept_id = d.dept_id and d.del_flag = 0
+        WHERE
+        A.del_flag = 0
+        and A.change_id = #{changeId}
+        ORDER BY
+        A.update_time DESC
+        LIMIT 1
+    </select>
     <select id="selectOrgChangeByDeptIdOrderTime" resultMap="OrgChangeVOResultMap">
         SELECT
         '64' as attachment_type,
@@ -252,7 +277,8 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange">
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange">
         update tab_pb_orgnize_change
         <set>
             <if test="deptId != null">
@@ -318,7 +344,8 @@
         </set>
         where change_id = #{changeId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange">
+    <update id="updateByPrimaryKeyWithBLOBs"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange">
     update tab_pb_orgnize_change
     set dept_id = #{deptId,jdbcType=BIGINT},
       change_type = #{changeType,jdbcType=BIGINT},
@@ -366,45 +393,79 @@
     where change_id = #{changeId,jdbcType=BIGINT}
   </update>
 
-    <select id="selectOrgChangeVOList" parameterType="java.lang.Long" resultMap="OrgChangeVOResultMap">
-          SELECT * FROM (SELECT
-            '64' AS attachment_type,
-            t.change_id,
-            t.dept_id,
-            d.`name` AS orgnize_name,
-            d.org_short_name AS short_name,
-            (SELECT `name` FROM sys_dept WHERE dept_id = t.now_superior_id) AS now_superior_name,
-            (SELECT `name` FROM sys_dept WHERE dept_id = t.old_superior_id) AS old_superior_name,
-            t.change_type,
-            t.change_date,
-            t.file_number,
-            t.create_username,
-            t.description,
-            t.change_reason
+    <select id="selectOrgChangeVOList" parameterType="com.egovchina.partybuilding.partybuild.entity.OrgChangeQueryBean"
+            resultMap="OrgChangeVOResultMap">
+        SELECT * FROM (SELECT
+        '64' AS attachment_type,
+        t.change_id,
+        t.dept_id,
+        d.`name` AS orgnize_name,
+        d.org_short_name AS short_name,
+        (SELECT `name` FROM sys_dept WHERE dept_id = t.now_superior_id) AS now_superior_name,
+        (SELECT `name` FROM sys_dept WHERE dept_id = t.old_superior_id) AS old_superior_name,
+        t.change_type,
+        t.change_date,
+        t.file_number,
+        t.create_username,
+        t.description,
+        t.change_reason
         FROM
-            tab_pb_orgnize_change t
+        tab_pb_orgnize_change t
         JOIN sys_dept d ON t.dept_id = d.dept_id
         WHERE
-            t.del_flag = 0
-            AND t.change_type != 59424
-            and t.dept_id = #{deptId}
+        t.del_flag = 0
+        AND t.change_type != 59424
+        <if test="changeType != null">
+            AND t.change_type = #{changeType}
+        </if>
+        <if test="orgRange != null and orgRange != '' ">
+            <choose>
+                <when test="orgRange == 1">
+                    AND (d.dept_id = #{orgId} OR d.parent_id = #{orgId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{orgId}, d.full_path)
+                </when>
+            </choose>
+        </if>
+        <if test="orgRange == null or orgRange.toString() == ''">
+            AND d.dept_id = #{orgId}
+        </if>
         UNION
-          SELECT
-                '64' AS attachment_type,
-                ch.change_id,
-                ch.dept_id,
-                up.upgrade_dept_name AS `name`,
-                up.upgrade_short_name AS short_name,
-                (SELECT `name` FROM sys_dept WHERE dept_id = ch.now_superior_id) AS now_superior_name,
-                (SELECT `name` FROM sys_dept WHERE dept_id = ch.old_superior_id) AS old_superior_name,
-                ch.change_type,
-                ch.change_date,
-                ch.file_number,
-                up.create_username,
-                ch.description,
-                ch.change_reason
-                from sys_dept_upgrade_temp up
-                LEFT JOIN tab_pb_orgnize_change ch ON up.dept_id = ch.dept_id AND ch.change_type = 59424 AND ch.del_flag = 0
-                where up.del_flag = 0 and ch.dept_id = #{deptId}) a order by change_date asc
+        SELECT
+        '64' AS attachment_type,
+        ch.change_id,
+        ch.dept_id,
+        up.upgrade_dept_name AS `name`,
+        up.upgrade_short_name AS short_name,
+        (SELECT `name` FROM sys_dept WHERE dept_id = ch.now_superior_id) AS now_superior_name,
+        (SELECT `name` FROM sys_dept WHERE dept_id = ch.old_superior_id) AS old_superior_name,
+        ch.change_type,
+        ch.change_date,
+        ch.file_number,
+        up.create_username,
+        ch.description,
+        ch.change_reason
+        from sys_dept_upgrade_temp up
+        LEFT JOIN tab_pb_orgnize_change ch ON up.dept_id = ch.dept_id AND ch.change_type = 59424 AND ch.del_flag = 0
+        LEFT JOIN sys_dept d ON up.dept_id = d.dept_id
+        where up.del_flag = 0
+        <if test="changeType != null">
+            AND ch.change_type = #{changeType}
+        </if>
+        <if test="orgRange != null and orgRange != '' ">
+            <choose>
+                <when test="orgRange == 1">
+                    AND (d.dept_id = #{orgId} OR d.parent_id = #{orgId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{orgId}, d.full_path)
+                </when>
+            </choose>
+        </if>
+        <if test="orgRange == null or orgRange.toString() == ''">
+            AND d.dept_id = #{orgId}
+        </if>
+        ) a order by change_date asc
     </select>
 </mapper>

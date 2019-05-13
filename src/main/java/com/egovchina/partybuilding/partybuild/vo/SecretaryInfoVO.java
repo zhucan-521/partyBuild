@@ -45,7 +45,7 @@ public class SecretaryInfoVO {
     @ApiModelProperty(value = "出生日期")
     private Date birthday;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "入党时间、预备党员时间")
     private Date joinTime;
 
