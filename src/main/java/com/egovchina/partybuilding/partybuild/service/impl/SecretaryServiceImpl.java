@@ -14,10 +14,12 @@ import com.egovchina.partybuilding.partybuild.vo.SecretaryInfoVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretarysVO;
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
@@ -130,6 +132,9 @@ public class SecretaryServiceImpl implements SecretaryService {
     @Override
     public List<SecretarysVO> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
         PageHelper.startPage(page);
+        if(StringUtils.isNotEmpty(secretaryMemberQueryBean.getUnitProperty())){
+            secretaryMemberQueryBean.setUnitProperties(Arrays.asList(secretaryMemberQueryBean.getUnitProperty().split(",")));
+        }
         return tabPbDeptSecretaryMapper.selectSecretaryVOList(secretaryMemberQueryBean);
     }
 
