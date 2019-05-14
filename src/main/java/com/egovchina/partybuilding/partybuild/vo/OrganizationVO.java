@@ -150,10 +150,6 @@ public class OrganizationVO {
     @ApiModelProperty(value = "单位列表")
     private List<UnitInfoVO> units;
 
-    @ApiModelProperty("领域类别 dict LYLB 多个用,号拼接")
-    @JsonSerialize(using = DictSerializer.class)
-    private String domainCategory;
-
     @ApiModelProperty("组织标签集合")
     private List<OrgTagVO> orgTagVOS;
 

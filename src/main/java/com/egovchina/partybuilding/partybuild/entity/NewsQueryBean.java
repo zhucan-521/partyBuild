@@ -26,8 +26,7 @@ public class NewsQueryBean {
     @ApiModelProperty(value = "标题")
     private String title;
 
-    @ApiModelProperty(value = "发布时间 yyyy-MM-dd HH:mm")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private Date publishTime;
+    @ApiModelProperty(value = "发布时间 yyyy-MM-dd")
+    private String publishTime;
 
 }

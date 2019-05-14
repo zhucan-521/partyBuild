@@ -22,6 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetAndCopyProperties;
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
+import java.util.List;
+
 import static com.egovchina.partybuilding.common.util.BeanUtil.*;
 
 /**
@@ -111,6 +115,11 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
         if (!tabSysUserMapper.checkIsExistByUserId(hardshipPartyMemberDTO.getUserId())) {
             throw new BusinessDataCheckFailException("该用户不存在");
         }
+    }
+
+    @Override
+    public List<HardshipPartyVO> findHardshipPartyConsolation(Long userId) {
+        return tabPbHardshipMapper.findHardshipPartyVOByUserId(userId);
     }
 
 }
