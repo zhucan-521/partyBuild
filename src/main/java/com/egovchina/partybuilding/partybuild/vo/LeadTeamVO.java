@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -108,5 +107,9 @@ public class LeadTeamVO {
 
     @ApiModelProperty(value = "附件")
     private List<TabPbAttachment> attachments;
+
+    @ApiModelProperty(value = "单位类别 码表值 DWLB")
+    @JsonSerialize(using = DictSerializer.class)
+    private Long unitProperty;
 
 }

@@ -137,6 +137,9 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
     @Override
     public PageInfo<MsgUpInfoVO> selectReceiveMsgUpInfoList(MsgUpInfoQueryBean msgUpInfoQueryBean, Page page) {
         PageHelper.startPage(page);
+        if (StringUtils.isNotEmpty(msgUpInfoQueryBean.getTitleLabel())) {
+            msgUpInfoQueryBean.setLabels(Arrays.asList(msgUpInfoQueryBean.getTitleLabel().split(",")));
+        }
         List<MsgUpInfoVO> list = tabPbMsgUpInfoMapper.selectActiveVoRec(msgUpInfoQueryBean);
         return new PageInfo<>(list);
     }

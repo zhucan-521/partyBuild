@@ -1,6 +1,8 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
+import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -120,4 +122,5 @@ public class OrganizationDTO {
 
     @ApiModelProperty(value = "单位信息实体")
     private List<UnitInfoDTO> units;
+
 }

@@ -62,6 +62,7 @@
         <result column="img_num" jdbcType="INTEGER" property="imgNum"/>
         <result column="doc_num" jdbcType="INTEGER" property="docNum"/>
         <result column="expiration_date" jdbcType="TIMESTAMP" property="expirationDate"/>
+        <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
     </resultMap>
     <!--包含附件LeadTeamVO ResultMap-->
     <resultMap extends="LeadTeamVOResultMap" id="ContainsAttachmentLeadTeamVOResultMap"
@@ -386,6 +387,7 @@
         SELECT
         <include refid="LeadTeamVO_Column_List"/>
         ,d.NAME AS org_name,
+        tpi.unit_property,
         DATE_ADD(l.elected_time,INTERVAL l.during_year YEAR ) AS expiration_date,
         d.orgnize_master,
         ifnull( lt.class_num, 0 ) AS class_num,
@@ -394,6 +396,7 @@
         FROM
         tab_pb_lead_team l
         LEFT JOIN sys_dept d ON l.org_id = d.dept_id
+        LEFT JOIN tab_pb_unit_info tpi ON tpi.org_id = l.org_id
         LEFT JOIN (
         SELECT user_id, lead_team_id, count( 1 ) AS class_num
         FROM tab_pb_lead_team_member WHERE del_flag = 0 GROUP BY lead_team_id
@@ -413,6 +416,9 @@
         WHERE l.del_flag = 0
         <if test="sessionYear != null and sessionYear != ''">
             AND l.session_year = #{sessionYear}
+        </if>
+        <if test="unitProperty != null and unitProperty != ''">
+            AND find_in_set(tpi.unit_property, #{unitProperty})
         </if>
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
         <choose>

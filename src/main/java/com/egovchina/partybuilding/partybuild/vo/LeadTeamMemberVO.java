@@ -98,4 +98,8 @@ public class LeadTeamMemberVO {
     @ApiModelProperty("联系电话")
     private String phone;
 
+    @ApiModelProperty(value = "单位类别 码表值 DWLB")
+    @JsonSerialize(using = DictSerializer.class)
+    private Long unitProperty;
+
 }

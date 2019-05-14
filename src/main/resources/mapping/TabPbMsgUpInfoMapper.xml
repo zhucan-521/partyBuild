@@ -581,8 +581,11 @@
             <if test="upTime !=null">
                 and mup.up_time between #{upTime} and #{upTimeOver}
             </if>
-            <if test="titleLabel !=null and  ''!=titleLabel">
-                and mup.title_label=#{titleLabel}
+            <if test="labels !=null">
+                and
+                <foreach collection="labels" open="(" item="item" separator=" or " close=")">
+                    find_in_set(${item}, mup.title_label)
+                </foreach>
             </if>
             <if test="orgRange != null and orgRange != '' ">
                 <choose>
@@ -663,7 +666,7 @@
         (select name from sys_dept d where dept_id = recevie_dept_id ) recevie_dept_name ,
         (select user_id from tab_pb_spcial_worker where manage_org_id=recevie_dept_id
          and tab_pb_spcial_worker.del_flag=0 and IFNULL(left_time,now())>=now() ORDER BY arrive_time DESC
-        ) recevie_user_id,
+         limit 1) recevie_user_id,
         (select realname from sys_user where user_id=recevie_user_id
         ) recevie_username
     from

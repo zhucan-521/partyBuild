@@ -80,7 +80,6 @@ public class StreetCommitteeMemberVO {
     @ApiModelProperty(value = "单位名称")
     private String unitName;
 
-
     @ApiModelProperty(value = "组织当前大公委组织id")
     private Long currentOrgId;
 

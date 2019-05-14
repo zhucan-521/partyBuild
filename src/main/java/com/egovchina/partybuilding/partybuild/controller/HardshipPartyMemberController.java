@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * desc: 困难党员模块-v1
  * Created by FanYanGen on 2019/4/20 11:49
@@ -48,16 +50,17 @@ public class HardshipPartyMemberController {
     }
 
     @ApiOperation(value = "根据困难ID查询党员困难详情", notes = "根据困难ID查询党员困难详情", httpMethod = "GET")
-    @ApiImplicitParam(name = "hardshipId", value = "困难党员ID", paramType = "path", required = true)
+    @ApiImplicitParam(name = "hardshipId", value = "困难记录ID", paramType = "path", required = true)
     @GetMapping("/{hardshipId}")
     public HardshipPartyVO getDifficultyPartyDetailsByHardshipId(@PathVariable Long hardshipId) {
         return hardshipPartyMemberService.findHardshipPartyVOByHardshipId(hardshipId);
     }
 
+    @Deprecated
     @ApiOperation(value = "根据用户ID查询党员困难详情", notes = "根据用户ID查询党员困难详情", httpMethod = "GET")
-    @ApiImplicitParam(value = "userId", name = "用户ID", paramType = "path", required = true)
+    @ApiImplicitParam(name = "userId", value = "用户ID", paramType = "path", required = true)
     @GetMapping("/party-members/{userId}")
-    public HardshipPartyVO getDifficultyPartyDetailsByUserId(@PathVariable Long userId) {
+    public List<HardshipPartyVO> getDifficultyPartyDetailsByUserId(@PathVariable Long userId) {
         return hardshipPartyMemberService.findHardshipPartyVOByUserId(userId);
     }
 
@@ -65,6 +68,12 @@ public class HardshipPartyMemberController {
     @GetMapping
     public PageInfo<HardshipPartyVO> getDifficultyPartyList(@Validated HardshipQueryBean hardshipQueryBean, Page page) {
         return hardshipPartyMemberService.findHardshipPartyVOWithConditions(hardshipQueryBean, page);
+    }
+
+    @ApiOperation(value = "困难党员慰问情况" , httpMethod = "GET")
+    @GetMapping("/condolences/{userId}")
+    public List<HardshipPartyVO> getDifficultyPartyCondolences(@PathVariable Long userId) {
+        return hardshipPartyMemberService.findHardshipPartyConsolation(userId);
     }
 
 }

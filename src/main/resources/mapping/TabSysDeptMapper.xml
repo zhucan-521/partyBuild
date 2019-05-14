@@ -90,6 +90,9 @@
         <result column="position" jdbcType="LONGVARCHAR" property="position"/>
         <result column="position_range" jdbcType="LONGVARCHAR" property="positionRange"/>
         <result column="founded_reason" jdbcType="LONGVARCHAR" property="foundedReason"/>
+        <collection property="orgTagVOS"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbOrgTagMapper.selectOrgTagByOrgId"
+                    column="dept_id"/>
     </resultMap>
     <!--包含组织关联信息的ResultMap-->
     <resultMap extends="OrganizationVOResultMap" id="OrganizationVOWithAboutInfoResultMap"
@@ -154,6 +157,12 @@
         </if>
         <if test="orgnizeMaster != null and orgnizeMaster != ''">
             AND d.orgnize_master like concat('%',#{orgnizeMaster},'%')
+        </if>
+        <if test="domainCategory != null and '' != domainCategory">
+            and
+            <foreach collection="domainCategorys" open="(" item="item" separator=" or " close=")">
+                #{item} in ( select org_tag_type from tab_pb_org_tag where org_id = d.dept_id and del_flag = 0 )
+            </foreach>
         </if>
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
         <if test="orgRange != null and orgRange != ''">
@@ -841,18 +850,6 @@
     <select id="selectDeptNameByPrimaryKey" parameterType="java.lang.Long" resultType="string">
         select name from sys_dept where dept_id = #{deptId}
     </select>
-
-    <!--修改组织信息的同时修改 relation 表-->
-    <update id="updateWithRelationByPrimaryKeySelective"
-            parameterType="com.egovchina.partybuilding.common.entity.SysDept">
-        update sys_dept d
-        inner join sys_dept_relation dr on d.dept_id = dr.descendant
-        <set>
-            <include refid="Base_Set_Column_List"/>
-            dr.ancestor = #{parentId}
-        </set>
-        where d.dept_id = #{deptId,jdbcType=BIGINT}
-    </update>
 
     <!--修改所有下级组织的 full_path 字段-->
     <update id="updateFullPathForSubs">

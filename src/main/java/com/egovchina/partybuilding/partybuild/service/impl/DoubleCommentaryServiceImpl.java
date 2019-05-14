@@ -48,7 +48,7 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
         TabPbDoubleCommentary tabPbDoubleCommentary = generateTargetCopyPropertiesAndPaddingBaseField(doubleCommentaryDTO, TabPbDoubleCommentary.class, false);
         int result = tabPbDoubleCommentaryMapper.insertSelective(tabPbDoubleCommentary);
         if (result > 0) {
-            result += tabPbAttachmentService.intelligentOperation(doubleCommentaryDTO.getAttachments(), doubleCommentaryDTO.getCommentaryId(), AttachmentType.DOUBLE_COMMENTARY);
+            result += updatingFiles(doubleCommentaryDTO, tabPbDoubleCommentary.getCommentaryId());
         }
         return result;
     }
@@ -59,7 +59,7 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
         TabPbDoubleCommentary tabPbDoubleCommentary = generateTargetCopyPropertiesAndPaddingBaseField(doubleCommentaryDTO, TabPbDoubleCommentary.class, true);
         int result = tabPbDoubleCommentaryMapper.updateByPrimaryKeySelective(tabPbDoubleCommentary);
         if (result > 0) {
-            result += tabPbAttachmentService.intelligentOperation(doubleCommentaryDTO.getAttachments(), doubleCommentaryDTO.getCommentaryId(), AttachmentType.DOUBLE_COMMENTARY);
+            result += updatingFiles(doubleCommentaryDTO, doubleCommentaryDTO.getCommentaryId());
         }
         return result;
     }
@@ -126,6 +126,18 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
         if (!tabPbDoubleCommentaryMapper.checkIsExistByCommentId(doubleCommentaryDTO.getCommentaryId())) {
             throw new BusinessDataCheckFailException("该数据不存在无法修改");
         }
+    }
+
+    /**
+     * desc: 维护附件上传
+     *
+     * @param doubleCommentaryDTO dto
+     * @param commentaryId        主键id
+     * @auther FanYanGen
+     * @date 2019-05-14 10:14
+     */
+    private int updatingFiles(DoubleCommentaryDTO doubleCommentaryDTO, Long commentaryId) {
+        return tabPbAttachmentService.intelligentOperation(doubleCommentaryDTO.getAttachments(), commentaryId, AttachmentType.DOUBLE_COMMENTARY);
     }
 
 }
