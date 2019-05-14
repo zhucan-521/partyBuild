@@ -1,9 +1,12 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
 import com.egovchina.partybuilding.common.util.UserContextHolder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * 组织查询实体
@@ -49,6 +52,13 @@ public class OrganizationQueryBean {
 
     @ApiModelProperty("是否包含统计信息")
     private Boolean containsStatistics = Boolean.FALSE;
+
+    @ApiModelProperty("领域类别 dict LYLB 多个用,号拼接")
+    private String domainCategory;
+
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private List<String> domainCategorys;
 
     public Long getRangeDeptId() {
         if (rangeDeptId == null) {

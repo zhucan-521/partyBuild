@@ -20,8 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetAndCopyProperties;
-import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
+import java.util.List;
+
+import static com.egovchina.partybuilding.common.util.BeanUtil.*;
 
 /**
  * desc: 困难党员-服务接口实现
@@ -66,9 +67,7 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
 
     @Override
     public int deleteByHardshipId(Long hardshipId) {
-        TabPbHardship hardship = new TabPbHardship();
-        hardship.setDelFlag(CommonConstant.STATUS_DEL);
-        hardship.setHardshipId(hardshipId);
+        TabPbHardship hardship = new TabPbHardship().setDelFlag(CommonConstant.STATUS_DEL).setHardshipId(hardshipId);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(hardship);
         int result = tabPbHardshipMapper.updateByPrimaryKeySelective(hardship);
         /**
@@ -94,8 +93,8 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
     }
 
     @Override
-    public HardshipPartyVO findHardshipPartyVOByUserId(Long userId) {
-        return generateTargetAndCopyProperties(tabPbHardshipMapper.findByUserId(userId), HardshipPartyVO.class);
+    public List<HardshipPartyVO> findHardshipPartyVOByUserId(Long userId) {
+        return generateTargetListAndCopyProperties(tabPbHardshipMapper.findByUserId(userId), HardshipPartyVO.class);
     }
 
     /**

@@ -6,7 +6,11 @@ import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundExceptio
 import com.egovchina.partybuilding.common.util.*;
 import com.egovchina.partybuilding.partybuild.dto.OrganizationDTO;
 import com.egovchina.partybuilding.partybuild.dto.OrganizationPositionDTO;
-import com.egovchina.partybuilding.partybuild.entity.*;
+import com.egovchina.partybuilding.partybuild.dto.UnitInfoDTO;
+import com.egovchina.partybuilding.partybuild.entity.OrganizationQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify;
+import com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange;
+import com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo;
 import com.egovchina.partybuilding.partybuild.repository.TabPbOrgClassifyMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbUnitInfoMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
@@ -24,10 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
@@ -62,6 +63,9 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public List<OrganizationVO> selectOrganizationVOWithCondition(OrganizationQueryBean queryBean, Page page) {
         PageHelper.startPage(page);
+        if (queryBean.getDomainCategory() != null) {
+            queryBean.setDomainCategorys(Arrays.asList(queryBean.getDomainCategory().split(",")));
+        }
         List<OrganizationVO> list = tabSysDeptMapper.selectOrganizationVOWithCondition(queryBean);
         return calculationComplete(list);
     }
@@ -164,10 +168,10 @@ public class OrganizationServiceImpl implements OrganizationService {
     public int updateOrganization(OrganizationDTO organizationDTO) {
         int judgment = 0;
 
-        List<TabPbUnitInfo> tabPbUnitInfoList =
-                generateTargetListCopyPropertiesAndPaddingBaseField(organizationDTO.getUnits(), TabPbUnitInfo.class, false);
-        ;
-        if (CollectionUtil.isNotEmpty(tabPbUnitInfoList)) {
+        List<UnitInfoDTO> units = organizationDTO.getUnits();
+        if (CollectionUtil.isNotEmpty(units)) {
+            List<TabPbUnitInfo> tabPbUnitInfoList =
+                    generateTargetListCopyPropertiesAndPaddingBaseField(units, TabPbUnitInfo.class, false);
             List<Long> pendingUnitIdList = tabPbUnitInfoList.stream().map(TabPbUnitInfo::getUnitId).collect(Collectors.toList());
             List<TabPbUnitInfo> dbTabPbUnitInfoList = tabPbUnitInfoMapper.selectByOrgId(organizationDTO.getDeptId());
             if (CollectionUtil.isNotEmpty(dbTabPbUnitInfoList)) { //数据库存在
@@ -194,7 +198,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
         SysDept sysDept = generateTargetCopyPropertiesAndPaddingBaseField(organizationDTO, SysDept.class, true);
         modifyFullPathAndSubDeptIfNecessary(sysDept);
-        judgment += tabSysDeptMapper.updateWithRelationByPrimaryKeySelective(sysDept);
+        judgment += tabSysDeptMapper.updateByPrimaryKeySelective(sysDept);
         return judgment;
     }
 

@@ -110,6 +110,19 @@ GROUP BY
         and p.del_flag='0'
     </select>
 
+    <select id="getPunishmentVOByUserId" resultMap="ResultMapWithMoreBLOBAll">
+        select
+        *
+        from
+        tab_pb_punishment p
+        where
+        p.del_flag = '0'
+        <if test="userId != null">
+            and p.user_id = #{userId}
+        </if>
+        order by p.update_time desc
+    </select>
+
     <!--通过用户id或者机构查询处分,返回附带附件-->
     <select id="selectListAndFileVO" resultMap="ResultMapWithMoreBLOBAll">
         select

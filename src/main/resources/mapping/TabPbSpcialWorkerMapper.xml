@@ -39,6 +39,7 @@
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
         <result column="manage_org_name" jdbcType="VARCHAR" property="manageOrgName"/>
+        <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -286,41 +287,42 @@
             parameterType="com.egovchina.partybuilding.partybuild.entity.SpecialWorkerQueryBean"
             resultMap="SpecialWorkerVOMap">
         SELECT
-            sw.special_worker_id,
-            d.contactor,
-            d.contact_number,
-            u.id_card_no,
-            u.gender,
-            u.realname AS username,
-            u.phone,
-            u.user_id,
-            sw.arrive_time,
-            sw.manage_org_id,
-            s.status,
-            ( SELECT NAME FROM sys_dept WHERE dept_id = sw.manage_org_id ) dept_name,
-            u.dept_id,
-            ( SELECT NAME FROM sys_dept WHERE dept_id = u.dept_id ) manage_org_name,
-            sw.left_time
+        sw.special_worker_id,
+        d.contactor,
+        d.contact_number,
+        u.id_card_no,
+        u.gender,
+        u.realname AS username,
+        u.phone,
+        u.user_id,
+        sw.arrive_time,
+        sw.manage_org_id,
+        s.status,
+        ( SELECT NAME FROM sys_dept WHERE dept_id = sw.manage_org_id ) dept_name,
+        u.dept_id,
+        ( SELECT NAME FROM sys_dept WHERE dept_id = u.dept_id ) manage_org_name,
+        sw.left_time,
+        ( select unit_property from tab_pb_unit_info where org_id = d.unit_id ) as unit_property
         FROM
-            tab_pb_spcial_worker sw
-            LEFT JOIN sys_user u ON u.user_id = sw.user_id
-            LEFT JOIN sys_dept d ON sw.manage_org_id = d.dept_id
-            LEFT JOIN (
-            SELECT
-                (
-                CASE
-                WHEN NOW( ) > left_time
-                OR arrive_time > NOW( ) THEN
-                0
-                WHEN ( IFNULL( left_time, 1 ) AND arrive_time &lt; NOW( ) )
-                OR ( NOW( ) &lt;= left_time AND arrive_time &lt; NOW( ) ) THEN
-                1
-                END
-                ) status,
-                special_worker_id
-            FROM
-                tab_pb_spcial_worker
-                ) s ON sw.special_worker_id = s.special_worker_id
+        tab_pb_spcial_worker sw
+        LEFT JOIN sys_user u ON u.user_id = sw.user_id
+        LEFT JOIN sys_dept d ON sw.manage_org_id = d.dept_id
+        LEFT JOIN (
+        SELECT
+        (
+        CASE
+        WHEN NOW( ) > left_time
+        OR arrive_time > NOW( ) THEN
+        0
+        WHEN ( IFNULL( left_time, 1 ) AND arrive_time &lt; NOW( ) )
+        OR ( NOW( ) &lt;= left_time AND arrive_time &lt; NOW( ) ) THEN
+        1
+        END
+        ) status,
+        special_worker_id
+        FROM
+        tab_pb_spcial_worker
+        ) s ON sw.special_worker_id = s.special_worker_id
         <where>
             <if test="null != specialWorkerId and ''!=specialWorkerId">
                 AND sw.special_worker_id = #{specialWorkerId}
@@ -331,8 +333,14 @@
             <if test="null != idCardNo and ''!=idCardNo">
                 AND u.id_card_no= #{idCardNo}
             </if>
-            <if test="status != null">
+            <if test="status != null and '' != status">
                 AND status= #{status}
+            </if>
+            <if test="unitProperty != null and '' != unitProperty">
+                and
+                <foreach collection="unitProperties" open="(" item="item" separator=" or " close=")">
+                    find_in_set(${item}, (select unit_property from tab_pb_unit_info where org_id = d.unit_id))
+                </foreach>
             </if>
             <choose>
                 <when test="orgRange == 1">
@@ -376,7 +384,8 @@
         (select name from sys_dept where dept_id= sw.manage_org_id) dept_name,
         u.dept_id,
         (select name from sys_dept where dept_id= u.dept_id) manage_org_name,
-        sw.left_time
+        sw.left_time,
+        ( select unit_property from tab_pb_unit_info where org_id = d.unit_id ) as unit_property
         FROM
         tab_pb_spcial_worker sw
         LEFT JOIN sys_user u on u.user_id=sw.user_id

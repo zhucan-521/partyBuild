@@ -1,7 +1,6 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
 import com.egovchina.partybuilding.common.config.DictSerializer;
-import com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
@@ -150,4 +149,12 @@ public class OrganizationVO {
 
     @ApiModelProperty(value = "单位列表")
     private List<UnitInfoVO> units;
+
+    @ApiModelProperty("领域类别 dict LYLB 多个用,号拼接")
+    @JsonSerialize(using = DictSerializer.class)
+    private String domainCategory;
+
+    @ApiModelProperty("组织标签集合")
+    private List<OrgTagVO> orgTagVOS;
+
 }
