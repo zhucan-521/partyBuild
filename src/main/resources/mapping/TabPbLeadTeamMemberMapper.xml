@@ -58,6 +58,7 @@
         <result column="session_year" jdbcType="VARCHAR" property="sessionYear"/>
         <result column="gender" jdbcType="BIGINT" property="gender"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
     </resultMap>
 
     <!--CommunityPartTimeMember VO 结果集-->
@@ -85,7 +86,7 @@
     <sql id="LeadTeamMemberVO_Column_List">
         ltm.member_id, ltm.org_id, ltm.lead_team_id, ltm.user_id, ltm.person_name, ltm.positive_id, ltm.positive_name,
         ltm.tenure_mode, ltm.tenure_begin, ltm.tenure_duration, ltm.tenure_leave, ltm.as_committee_member, ltm.as_committee_director,
-        ltm.lead_member_order, ltm.description, ltm.rank, ltm.approval_number, ltm.avatar, ltm.ebl_flag
+        ltm.lead_member_order, ltm.description, ltm.rank, ltm.approval_number, ltm.avatar, ltm.ebl_flag, tpi.unit_property
     </sql>
 
     <!--CommunityPartTimeMemberVO ResultMap-->
@@ -401,6 +402,7 @@
         LEFT JOIN tab_pb_lead_team t ON ltm.lead_team_id = t.lead_team_id
         LEFT JOIN sys_dept d ON t.org_id = d.dept_id
         LEFT JOIN sys_dept ud ON u.dept_id = ud.dept_id
+        LEFT JOIN tab_pb_unit_info tpi ON tpi.org_id = ltm.org_id
         WHERE ltm.del_flag = 0
         <if test="sessionYear != null and sessionYear != ''">
             AND t.session_year = #{sessionYear}
@@ -418,7 +420,7 @@
             AND ltm.positive_id = #{positiveId}
         </if>
         <if test="unitProperty != null and unitProperty != ''">
-            AND find_in_set((select unit_property from tab_pb_unit_info where org_id= ltm.org_id), #{unitProperty})
+            AND find_in_set(tpi.unit_property, #{unitProperty})
         </if>
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
         <choose>
