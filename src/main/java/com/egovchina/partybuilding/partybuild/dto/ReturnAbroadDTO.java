@@ -42,10 +42,6 @@ public class ReturnAbroadDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date applyActivitiesDate;
 
-    @ApiModelProperty(value = "应归时间", dataType = "Date", example = "2019-01-01")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date planReturn;
-
     @ApiModelProperty(value = "实归时间", dataType = "Date", example = "2019-01-01")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date returnDate;
