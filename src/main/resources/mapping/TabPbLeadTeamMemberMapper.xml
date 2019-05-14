@@ -86,7 +86,7 @@
     <sql id="LeadTeamMemberVO_Column_List">
         ltm.member_id, ltm.org_id, ltm.lead_team_id, ltm.user_id, ltm.person_name, ltm.positive_id, ltm.positive_name,
         ltm.tenure_mode, ltm.tenure_begin, ltm.tenure_duration, ltm.tenure_leave, ltm.as_committee_member, ltm.as_committee_director,
-        ltm.lead_member_order, ltm.description, ltm.rank, ltm.approval_number, ltm.avatar, ltm.ebl_flag, tpi.unit_property
+        ltm.lead_member_order, ltm.description, ltm.rank, ltm.approval_number, ltm.avatar, ltm.ebl_flag
     </sql>
 
     <!--CommunityPartTimeMemberVO ResultMap-->
@@ -396,6 +396,7 @@
         u.id_card_no AS id_card_no,
         t.session_year,
         u.gender,
+        tpi.unit_property,
         u.phone
         FROM tab_pb_lead_team_member ltm
         LEFT JOIN sys_user u ON ltm.user_id = u.user_id
