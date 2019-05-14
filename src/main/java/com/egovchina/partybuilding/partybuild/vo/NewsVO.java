@@ -29,6 +29,9 @@ public class NewsVO {
     @JsonSerialize(using = DictSerializer.class)
     private Long type;
 
+    @ApiModelProperty(value = "发布组织id")
+    private String orgId;
+
     @ApiModelProperty(value = "发布组织名称")
     private String orgName;
 
