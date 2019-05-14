@@ -6,6 +6,7 @@ import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
+import com.egovchina.partybuilding.common.util.PageInfoWrapper;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.*;
 import com.egovchina.partybuilding.partybuild.entity.*;
@@ -398,7 +399,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         }
         PageHelper.startPage(page);
         List<SystemDetailsVO> systemDetailsVO = tabSysUserMapper.selectPageByMap(queryBean);
-        return new PageInfo<>(calculationComplete(systemDetailsVO));
+        List<PartyMemberInformationVO> partyMemberInformationVOS = calculationComplete(systemDetailsVO);
+        return PageInfoWrapper.wrapper(systemDetailsVO, partyMemberInformationVOS);
     }
 
     //检查id是否存在
@@ -549,9 +551,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             if (ObjectUtils.isEmpty(user.getAvatar())) {
                 tool -= COMPLETE_SEED;
             }
-
             user.setComplete(tool);
         });
-        return BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(userList, PartyMemberInformationVO.class, false);
+        return BeanUtil.generateTargetListAndCopyProperties(userList, PartyMemberInformationVO.class);
     }
 }
