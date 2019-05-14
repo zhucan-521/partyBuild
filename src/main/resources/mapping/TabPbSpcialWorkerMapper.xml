@@ -39,6 +39,7 @@
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
         <result column="manage_org_name" jdbcType="VARCHAR" property="manageOrgName"/>
+        <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -300,7 +301,8 @@
         ( SELECT NAME FROM sys_dept WHERE dept_id = sw.manage_org_id ) dept_name,
         u.dept_id,
         ( SELECT NAME FROM sys_dept WHERE dept_id = u.dept_id ) manage_org_name,
-        sw.left_time
+        sw.left_time,
+        ( select unit_property from tab_pb_unit_info where org_id = d.unit_id ) as unit_property
         FROM
         tab_pb_spcial_worker sw
         LEFT JOIN sys_user u ON u.user_id = sw.user_id
@@ -337,7 +339,7 @@
             <if test="unitProperty != null and '' != unitProperty">
                 and
                 <foreach collection="unitProperties" open="(" item="item" separator=" or " close=")">
-                    find_in_set(${item}, (select unit_property from tab_pb_unit_info where org_id = sw.manage_org_id))
+                    find_in_set(${item}, (select unit_property from tab_pb_unit_info where org_id = d.unit_id))
                 </foreach>
             </if>
             <choose>
@@ -382,7 +384,8 @@
         (select name from sys_dept where dept_id= sw.manage_org_id) dept_name,
         u.dept_id,
         (select name from sys_dept where dept_id= u.dept_id) manage_org_name,
-        sw.left_time
+        sw.left_time,
+        ( select unit_property from tab_pb_unit_info where org_id = d.unit_id ) as unit_property
         FROM
         tab_pb_spcial_worker sw
         LEFT JOIN sys_user u on u.user_id=sw.user_id
