@@ -25,8 +25,6 @@ public interface TabSysDeptMapper {
 
     int updateByPrimaryKeySelective(SysDept record);
 
-    int updateByPrimaryKeyWithBLOBs(SysDept record);
-
     int updateByPrimaryKey(SysDept record);
 
     /**
@@ -64,8 +62,6 @@ public interface TabSysDeptMapper {
     int updateLeaderUserIdByDeptId(@Param("deptId") Long deptId, @Param("leaderUserId") Long leaderUserId);
 
     SysDept selectAloneByPrimaryKey(Long deptId);
-
-    int updateWithRelationByPrimaryKeySelective(SysDept sysDept);
 
     /**
      * 修改下级组织的 full_path
