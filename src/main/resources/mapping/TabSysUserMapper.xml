@@ -415,6 +415,8 @@
         select
         <include refid="Base_users_info"/>
         ,t.unit_property,
+        dd.order_num,
+        length( dd.full_path ) - length( REPLACE ( dd.full_path, ',', '' ) ) as lev,
         <include refid="dept_name_result"/>
         <choose>
             <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
@@ -446,12 +448,13 @@
         <where>
             <include refid="selectPageByMapWhereCaseList"/>
         </where>
-        ORDER BY u.dept_id asc, u.join_time desc
+        ORDER BY lev,dd.order_num,u.join_time desc
     </select>
     <!--用于复写mybatis的查询count数-->
     <select id="selectPageByMap_COUNT" parameterType="Map" resultType="java.lang.Long">
         SELECT
-        count( u.user_id )
+        count( u.user_id ),
+        length( dd.full_path ) - length( REPLACE ( dd.full_path, ',', '' ) ) as lev
         <choose>
             <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
             <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
@@ -482,7 +485,7 @@
         <where>
             <include refid="selectPageByMapWhereCaseList"/>
         </where>
-        ORDER BY u.dept_id asc, u.join_time desc
+        ORDER BY lev,dd.order_num,u.join_time desc
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -1857,7 +1860,8 @@
         sys_user u
         INNER JOIN sys_dept d USING ( dept_id )
         <where>
-            u.del_flag = 0
+            u.del_flag = '0'
+            AND u.ebl_flag='1'
             AND u.identity_type = 223
             <if test="username != null and username != ''">
                 AND u.realname LIKE concat( '%', #{username}, '%' )
