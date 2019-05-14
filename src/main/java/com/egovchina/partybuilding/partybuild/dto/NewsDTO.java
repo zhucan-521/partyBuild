@@ -33,17 +33,6 @@ public class NewsDTO {
     @NotNull(message = "发布组织不能为空")
     private Long orgId;
 
-    @ApiModelProperty(value = "发布时间", dataType = "Date", example = "2019-05-11", required = true)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message = "发布时间日期不能为空")
-    private Date publishTime;
-
-    @ApiModelProperty(value = "发布状态 1发布；0未发布；默认0", required = true)
-    private Integer publishStatus;
-
-    @ApiModelProperty(value = "置顶状态 1是；0否；默认0", required = true)
-    private Integer topStatus;
-
     @ApiModelProperty(value = "排序码", required = true)
     @NotNull(message = "排序码不能为空")
     private Integer orderNum;

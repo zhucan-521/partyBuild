@@ -26,6 +26,7 @@
         <id column="news_id" jdbcType="BIGINT" property="newsId"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="type" jdbcType="BIGINT" property="type"/>
+        <result column="dept_id" jdbcType="BIGINT" property="orgId"/>
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
         <result column="org_short_name" jdbcType="VARCHAR" property="orgShortName"/>
         <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
@@ -309,6 +310,7 @@
 
         SELECT
             -- 组织表
+            d.`dept_id`,
             d.`name` AS org_name,
             d.org_short_name,
             -- 新闻资讯表
@@ -342,6 +344,7 @@
 
         SELECT
         -- 组织表
+        d.`dept_id`,
         d.`name` AS org_name,
         d.org_short_name,
         -- 新闻资讯表
@@ -391,12 +394,13 @@
 
     </select>
 
-    <!-- 修改发布状态 -->
-    <update id="updatePublishStatus">
+    <!-- 发布 -->
+    <update id="publishNews">
 
         -- 修改发布状态
         UPDATE tab_pb_party_news
-        SET publish_status = #{status}
+        SET publish_status = 1,
+        publish_time = #{publishTime}
         WHERE news_id = #{newsId};
 
         -- 修改封面图信息
@@ -404,6 +408,29 @@
         SET if_cover = 1
         WHERE attachment_id = #{attachmentId}
 
+    </update>
+
+    <!-- 取消发布 -->
+    <update id="obtainedNews">
+
+        -- 修改发布状态
+        UPDATE tab_pb_party_news
+        SET publish_status = 0,
+        publish_time = NULL
+        WHERE news_id = #{newsId};
+
+        -- 修改封面图信息
+        UPDATE tab_pb_attachment
+        SET if_cover = 0
+        WHERE host_id = #{newsId}
+
+    </update>
+
+    <!-- 修改置顶状态 -->
+    <update id="updateTopStatus">
+        UPDATE tab_pb_party_news
+        SET top_status = #{topStatus}
+        WHERE news_id = #{newsId};
     </update>
 
 </mapper>

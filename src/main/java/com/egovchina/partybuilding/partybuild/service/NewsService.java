@@ -35,7 +35,7 @@ public interface NewsService {
     /**
      * desc: 发布党建资讯
      *
-     * @param newsId 主键id
+     * @param newsId       主键id
      * @param attachmentId 附件id
      * @return int
      * @auther FanYanGen
@@ -52,6 +52,26 @@ public interface NewsService {
      * @date 2019-05-13 22:11
      */
     int obtainedNews(Long newsId);
+
+    /**
+     * desc: 置顶党建资讯
+     *
+     * @param newsId 主键id
+     * @return int
+     * @auther FanYanGen
+     * @date 2019-05-14 11:25
+     */
+    int topNews(Long newsId);
+
+    /**
+     * desc: 取消置顶党建资讯
+     *
+     * @param newsId 主键id
+     * @return int
+     * @auther FanYanGen
+     * @date 2019-05-14 11:25
+     */
+    int unTopNews(Long newsId);
 
     /**
      * desc: 删除党建资讯

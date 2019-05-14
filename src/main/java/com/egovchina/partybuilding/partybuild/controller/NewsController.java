@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * desc: 党建资讯管理模块-v1
  * Created by FanYanGen on 2019-05-11 16:35
  */
-@Api(tags = "党组织-党建资讯管理模块-v1-范焱根")
+@Api(tags = "党组织-党建资讯管理-v1-范焱根")
 @RequestMapping("/v1/news")
 @RestController
 public class NewsController {
@@ -41,11 +41,11 @@ public class NewsController {
     @ApiOperation(value = "发布党建资讯", notes = "发布党建资讯-(需要指定封面图的 hostId)", httpMethod = "POST")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "newsId", value = "党建资讯ID", paramType = "query", required = true),
-            @ApiImplicitParam(name = "hostId", value = "主图附件ID", paramType = "query", required = true)
+            @ApiImplicitParam(name = "attachmentId", value = "主图附件ID", paramType = "query", required = true)
     })
     @PostMapping("/publications")
-    public ReturnEntity publishNews(Long newsId, Long hostId) {
-        return ReturnUtil.buildReturn(newsService.publishNews(newsId, hostId));
+    public ReturnEntity publishNews(Long newsId, Long attachmentId) {
+        return ReturnUtil.buildReturn(newsService.publishNews(newsId, attachmentId));
     }
 
     @ApiOperation(value = "取消发布党建资讯", notes = "取消发布党建资讯", httpMethod = "POST")
@@ -53,6 +53,20 @@ public class NewsController {
     @PostMapping("/recalls/{newsId}")
     public ReturnEntity obtainedNews(@PathVariable Long newsId) {
         return ReturnUtil.buildReturn(newsService.obtainedNews(newsId));
+    }
+
+    @ApiOperation(value = "置顶党建资讯", notes = "置顶党建资讯", httpMethod = "POST")
+    @ApiImplicitParam(name = "newsId", value = "党建资讯ID", paramType = "path", required = true)
+    @PostMapping("/tops/{newsId}")
+    public ReturnEntity toppingNews(@PathVariable Long newsId) {
+        return ReturnUtil.buildReturn(newsService.topNews(newsId));
+    }
+
+    @ApiOperation(value = "取消置顶党建资讯", notes = "取消置顶党建资讯", httpMethod = "POST")
+    @ApiImplicitParam(name = "newsId", value = "党建资讯ID", paramType = "path", required = true)
+    @PostMapping("/un-tops/{newsId}")
+    public ReturnEntity unToppingNews(@PathVariable Long newsId) {
+        return ReturnUtil.buildReturn(newsService.unTopNews(newsId));
     }
 
     @ApiOperation(value = "删除党建资讯", notes = "删除党建资讯", httpMethod = "DELETE")
