@@ -65,4 +65,8 @@ public class SpecialWorkerVO {
 
     @ApiModelProperty(value = "党员Id")
     private Long userId;
+
+    @ApiModelProperty(value = "单位类别 码表值 DWLB")
+    @JsonSerialize(using = DictSerializer.class)
+    private Long unitProperty;
 }
