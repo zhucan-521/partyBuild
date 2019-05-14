@@ -49,6 +49,10 @@ public class GoAbroadDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date registryReverseDate;
 
+    @ApiModelProperty(value = "应归时间", dataType = "Date", example = "2019-01-01")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date planReturn;
+
     @ApiModelProperty(value = "党员基本情况")
     private String baseStatus;
 
