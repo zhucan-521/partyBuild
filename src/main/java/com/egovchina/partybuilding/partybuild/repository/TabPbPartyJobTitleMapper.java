@@ -24,7 +24,7 @@ public interface TabPbPartyJobTitleMapper {
      * desc: 根据党员id查询该党员职务信息
      *
      * @param userId 党员ID
-     * @return list
+     * @return regions
      * @author FanYanGen
      * @date 2019/4/11 14:31
      **/

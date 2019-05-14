@@ -862,16 +862,6 @@
         select name from sys_dept where dept_id = #{deptId}
     </select>
 
-    <!--修改组织信息的同时修改 relation 表-->
-    <update id="updateWithRelationByPrimaryKeySelective"
-            parameterType="com.egovchina.partybuilding.common.entity.SysDept">
-        update sys_dept d
-        <set>
-            <include refid="Base_Set_Column_List"/>
-        </set>
-        where d.dept_id = #{deptId,jdbcType=BIGINT}
-    </update>
-
     <!--修改所有下级组织的 full_path 字段-->
     <update id="updateFullPathForSubs">
         update sys_dept

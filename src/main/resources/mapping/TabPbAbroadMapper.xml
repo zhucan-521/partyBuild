@@ -434,7 +434,7 @@
             AND pa.abroad_id = #{abroadId,jdbcType=BIGINT}
         </if>
 
-        order by pa.order_num
+        order by pa.create_time DESC
     </select>
 
     <!-- 根据主键ID查询详情 -->
