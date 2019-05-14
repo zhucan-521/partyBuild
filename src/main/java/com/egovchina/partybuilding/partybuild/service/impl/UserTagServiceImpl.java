@@ -1,8 +1,6 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
-import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
-import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.HardshipPartyMemberDTO;
@@ -11,7 +9,6 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
 import com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper;
 import com.egovchina.partybuilding.partybuild.service.HardshipPartyMemberService;
 import com.egovchina.partybuilding.partybuild.service.UserTagService;
-import com.egovchina.partybuilding.partybuild.vo.HardshipPartyVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
