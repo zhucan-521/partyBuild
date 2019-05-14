@@ -37,9 +37,10 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public int insertNews(NewsDTO newsDTO) {
         verifyAdditionsAndUpdates(newsDTO);
-        int result = newsMapper.insertSelective(generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, false));
+        TabPbNews tabPbNews = generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, false);
+        int result = newsMapper.insertSelective(tabPbNews);
         if (result > 0) {
-            result += tabPbAttachmentService.intelligentOperation(newsDTO.getAttachments(), newsDTO.getNewsId(), AttachmentType.NEWS);
+            result += updatingFiles(newsDTO, tabPbNews.getNewsId());
         }
         return result;
     }
@@ -49,7 +50,7 @@ public class NewsServiceImpl implements NewsService {
         verifyAdditionsAndUpdates(newsDTO);
         int result = newsMapper.updateByPrimaryKeySelective(generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, true));
         if (result > 0) {
-            result += tabPbAttachmentService.intelligentOperation(newsDTO.getAttachments(), newsDTO.getNewsId(), AttachmentType.NEWS);
+            result += updatingFiles(newsDTO, newsDTO.getNewsId());
         }
         return result;
     }
@@ -108,6 +109,17 @@ public class NewsServiceImpl implements NewsService {
         if (!tabSysDeptMapper.checkIsExistByOrgId(newsDTO.getOrgId())) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
+    }
+
+    /**
+     * desc: 维护附件上传
+     *
+     * @param newsId 主键id
+     * @auther FanYanGen
+     * @date 2019-05-14 10:14
+     */
+    private int updatingFiles(NewsDTO newsDTO, Long newsId) {
+        return tabPbAttachmentService.intelligentOperation(newsDTO.getAttachments(), newsId, AttachmentType.NEWS);
     }
 
 }
