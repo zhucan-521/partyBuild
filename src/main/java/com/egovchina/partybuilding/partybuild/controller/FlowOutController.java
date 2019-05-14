@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 public class FlowOutController {
 
     @Autowired
-    private FlowOutVoService flowOutVoService;
+    private FlowOutVoService  flowOutVoService;
 
     @ApiOperation(value = "根据flowOutId主键查询流出党员单个详情", httpMethod = "GET")
     @ApiImplicitParam(name = "flowOutId", value = "流出主键", paramType = "path", required = true)

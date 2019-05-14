@@ -70,4 +70,10 @@ public class HardshipPartyMemberController {
         return hardshipPartyMemberService.findHardshipPartyVOWithConditions(hardshipQueryBean, page);
     }
 
+    @ApiOperation(value = "困难党员慰问情况" , httpMethod = "GET")
+    @GetMapping("/condolences/{userId}")
+    public List<HardshipPartyVO> getDifficultyPartyCondolences(@PathVariable Long userId) {
+        return hardshipPartyMemberService.findHardshipPartyConsolation(userId);
+    }
+
 }

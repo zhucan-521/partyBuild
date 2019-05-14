@@ -6,7 +6,6 @@ import com.egovchina.partybuilding.partybuild.vo.HardshipPartyVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by FanYanGen on 2019/4/22 17:26
@@ -35,6 +34,13 @@ public interface TabPbHardshipMapper {
     int logicDelete(TabPbHardship record);
 
     int logicDeleteByUserId(TabPbHardship tabPbHardship);
+
+    /**
+     * 根据用户Id查询用户慰问情况
+     * @param userId
+     * @return
+     */
+    List<HardshipPartyVO> findHardshipPartyVOByUserId(Long userId);
 
     /**
      * desc: 查询单条困难记录

@@ -451,6 +451,24 @@
       where h.hardship_Id = #{hardshipId} AND h.del_flag = 0
     </select>
 
+    <!--根据用户id查询用户困难情况-->
+    <select id="findHardshipPartyVOByUserId" parameterType="Long" resultMap="HardshipPartyResultMap">
+        select
+        implementation,
+        if_allowances,
+        if_pension
+        from
+        tab_pb_hardship
+        <where>
+            user_id=#{userId}
+        </where>
+        and
+        del_flag=0
+        ORDER BY
+        create_time
+        desc
+    </select>
+
     <!-- 根据用户ID修改用户名 -->
     <update id="updateUserNameById" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
         update sys_user set username = #{username} where user_id = #{userId}
