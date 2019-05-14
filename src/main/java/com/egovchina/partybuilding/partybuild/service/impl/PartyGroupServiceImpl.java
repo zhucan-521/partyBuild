@@ -1,10 +1,8 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
-import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.PartyGroupDTO;
@@ -184,10 +182,7 @@ public class PartyGroupServiceImpl implements PartyGroupService {
         verifyThatTheLeaderIsUnique(memberList);
         List<TabPbPartyGroupMember> tabPbPartyGroupMembers = generateTargetListCopyPropertiesAndPaddingBaseField(memberList, TabPbPartyGroupMember.class, member -> member.setGroupId(groupId), false);
         result += tabPbPartyGroupMemberMapper.batchInsert(tabPbPartyGroupMembers);
-        List<TabPbAttachment> attachments = partyGroupDTO.getAttachments();
-        if (CollectionUtil.isNotEmpty(attachments)) {
-            result += tabPbAttachmentService.intelligentOperation(attachments, groupId, AttachmentType.PARTY_GROUP);
-        }
+        result += tabPbAttachmentService.intelligentOperation(partyGroupDTO.getAttachments(), groupId, AttachmentType.PARTY_GROUP);
         return result;
     }
 
