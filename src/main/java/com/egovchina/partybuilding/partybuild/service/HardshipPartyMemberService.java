@@ -6,6 +6,8 @@ import com.egovchina.partybuilding.partybuild.entity.HardshipQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.HardshipPartyVO;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  * desc: 困难党员-服务接口
  * Created by FanYanGen on 2019/4/20 17:21
@@ -60,7 +62,7 @@ public interface HardshipPartyMemberService {
      * @author FanYanGen
      * @date 2019/4/22 17:23
      **/
-    HardshipPartyVO findHardshipPartyVOByUserId(Long userId);
+    List<HardshipPartyVO> findHardshipPartyVOByUserId(Long userId);
 
     /**
      * desc: 根据条件查询困难党员列表

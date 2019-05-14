@@ -57,23 +57,6 @@ public class UserTagServiceImpl implements UserTagService {
         return addUserTag(userTag);
     }
 
-    /**
-     * 根据标签id删除用户标记
-     *
-     * @param usertagId
-     * @return
-     */
-    @Transactional
-    @Override
-    public int delete(Long usertagId) {
-        TabPbUserTag tabPbUserTag = tabPbUserTagMapper.selectByPrimaryKey(usertagId);
-        if (HARD_MEMBERSHIP.equals(tabPbUserTag.getTagType())) {
-            HardshipPartyVO hardshipPartyVO = hardshipService.findHardshipPartyVOByUserId(tabPbUserTag.getUserId());
-            hardshipService.deleteByHardshipId(hardshipPartyVO.getHardshipId());
-        }
-        return tabPbUserTagMapper.deleteByPrimaryKey(usertagId);
-    }
-
     @Override
     public int delete(Long userId, Long tagType) {
         return tabPbUserTagMapper.deleteByUserIdAndTagType(userId, tagType);
@@ -85,26 +68,6 @@ public class UserTagServiceImpl implements UserTagService {
             return 0;
         }
         return tabPbUserTagMapper.insertUserTagDTOSelective(userTag);
-    }
-
-    @Transactional
-    @Override
-    public void updateUserTagByTagType(List<TabPbUserTag> userTags) {
-        userTags.forEach(userTag -> {
-            Long userTagId = userTag.getUsertagId();
-            Long tagType = userTag.getTagType();
-            Long userId = userTag.getUserId();
-            Integer id = userTag.getId();
-            if (ObjectUtils.isEmpty(userId) || ObjectUtils.isEmpty(id)) {
-                throw new BusinessDataCheckFailException("用户Id或者id为空");
-            }
-            if (!ObjectUtils.isEmpty(userTagId) && tagType != null && tagType == 0L) {
-                tabPbUserTagMapper.deleteByPrimaryKey(userTagId);
-            }
-            if (ObjectUtils.isEmpty(userTagId) && tagType != null && tagType == 1L) {
-                this.addUserTag(userId, id.longValue());
-            }
-        });
     }
 
     /**

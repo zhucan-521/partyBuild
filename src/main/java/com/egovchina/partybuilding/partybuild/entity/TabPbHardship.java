@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 
@@ -9,6 +10,7 @@ import java.util.Date;
  * Created by FanYanGen on 2019/4/22 14:04
  */
 @Data
+@Accessors(chain = true)
 public class TabPbHardship {
 
     private Long difficultyLevel;
