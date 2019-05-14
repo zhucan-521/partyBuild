@@ -150,7 +150,19 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             SysUser sys = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyInfoDTO.getParty(), SysUser.class, false);
             //检测组织Id
             checkIsExist(sys);
-            //新增用户信息
+            if (partyInfoDTO.getEducations() != null && partyInfoDTO.getEducations().size() > 0) {
+                //取最近的学历信息 排序
+                sortEducationDTO(partyInfoDTO.getEducations(), sys, false);
+            }
+            if (partyInfoDTO.getJobTitles() != null && partyInfoDTO.getJobTitles().size() > 0) {
+                //维护用户表 技术职务名称
+                sortPartyJobTitleDTO(partyInfoDTO.getJobTitles(), sys, false);
+            }
+            if (partyInfoDTO.getWorks() != null && partyInfoDTO.getWorks().size() > 0) {
+                //取得最近的 工作信息
+                sortPartyWorkDTO(partyInfoDTO.getWorks(), sys, false);
+            }
+            //新增
             effected += tabSysUserMapper.insertSelective(sys);
             //新增或者删除标签信息
             if (partyInfoDTO.getParty().getUserTags() != null) {
@@ -166,18 +178,17 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             if (partyInfoDTO.getJobTitles() != null && partyInfoDTO.getJobTitles().size() > 0) {
                 //赋值主键
                 partyInfoDTO.getJobTitles().forEach(job -> {
-                    job.setUserId(sys.getUserId().longValue());
+                    job.setUserId(sys.getUserId());
                 });
                 effected += tabPbPartyJobTitleMapper.batchInsert(BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(partyInfoDTO.getJobTitles(), TabPbPartyJobTitle.class, false));
             }
             if (partyInfoDTO.getWorks() != null && partyInfoDTO.getWorks().size() > 0) {
                 //赋值主键
                 partyInfoDTO.getWorks().forEach(work -> {
-                    work.setUserId(sys.getUserId().longValue());
+                    work.setUserId(sys.getUserId());
                 });
                 effected += tabPbPartyWorkMapper.batchInsert(BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(partyInfoDTO.getWorks(), TabPbPartyWork.class, false));
             }
-
             return effected;
         }
         throw new BusinessDataCheckFailException("该党员已存在");
@@ -192,7 +203,6 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             SysUser sys = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyInfoDTO.getParty(), SysUser.class, true);
             //检测组织Id
             checkIsExist(sys);
-            effected += tabSysUserMapper.updateByPrimaryKeySelective(sys);
             //新增或者删除标签信息
             if (partyInfoDTO.getParty().getUserTags() != null) {
                 this.userTagService.batchInsertUserTagDTO(partyInfoDTO.getParty().getUserTags());
@@ -241,6 +251,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                     }
                     effected += tabPbPartyEducationMapper.batchUpdate(deleteSource);
                 }
+                //排序+考虑维护用户表的学历,毕业院校,学位字段
+                sortEducationDTO(partyInfoDTO.getEducations(), sys, false);
             } else {
                 //非空判断
                 List<PartyEducationVO> partyEducationVOS = tabPbPartyEducationMapper.findAllByUserId(id);
@@ -253,6 +265,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                     }
                     effected += tabPbPartyEducationMapper.batchUpdate(deleteSource);
                 }
+                //维护用户表学历字段
+                sortEducationDTO(null, sys, true);
             }
             //新增技术信息
             if (partyInfoDTO.getJobTitles() != null) {
@@ -262,7 +276,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 //考虑删除  获取原先所有数据
                 List<PartyJobTitleVO> delete = tabPbPartyJobTitleMapper.findAllByUserId(id);
                 for (int i = 0; i < partyInfoDTO.getJobTitles().size(); i++) {
-                    partyInfoDTO.getJobTitles().get(i).setUserId(id.longValue());
+                    partyInfoDTO.getJobTitles().get(i).setUserId(id);
                     //若为空或者0新增
                     if (partyInfoDTO.getJobTitles().get(i).getJobTitleId() == null || partyInfoDTO.getJobTitles().get(i).getJobTitleId() == 0) {
                         inserts.add(partyInfoDTO.getJobTitles().get(i));
@@ -297,6 +311,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                     }
                     effected += tabPbPartyJobTitleMapper.batchUpdate(deleteSource);
                 }
+                //排序 维护用户表的技术职务信息,职务资格,离岗时间
+                sortPartyJobTitleDTO(partyInfoDTO.getJobTitles(), sys, false);
             } else {
                 List<PartyJobTitleVO> partyJobTitleVOs = tabPbPartyJobTitleMapper.findAllByUserId(id);
                 if (partyJobTitleVOs != null && partyJobTitleVOs.size() > 0) {
@@ -308,7 +324,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                     }
                     effected += tabPbPartyJobTitleMapper.batchUpdate(deleteSource);
                 }
-
+                //维护用户表字段
+                sortPartyJobTitleDTO(null, sys, true);
             }
             //新增工作信息
             if (partyInfoDTO.getWorks() != null) {
@@ -318,7 +335,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 //考虑删除
                 List<PartyWorkVO> delete = tabPbPartyWorkMapper.findAllByUserId(id);
                 for (int i = 0; i < partyInfoDTO.getWorks().size(); i++) {
-                    partyInfoDTO.getWorks().get(i).setUserId(id.longValue());
+                    partyInfoDTO.getWorks().get(i).setUserId(id);
                     if (partyInfoDTO.getWorks().get(i).getWorkId() == null || partyInfoDTO.getWorks().get(i).getWorkId() == 0) {
                         //补充到新增
                         inserts.add(partyInfoDTO.getWorks().get(i));
@@ -351,6 +368,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                     }
                     effected += tabPbPartyWorkMapper.batchUpdate(deleteSource);
                 }
+                //维护用户表的 新阶段 一线情况
+                sortPartyWorkDTO(partyInfoDTO.getWorks(), sys, false);
             } else {
                 List<PartyWorkVO> partyWorkVOS = tabPbPartyWorkMapper.findAllByUserId(id);
                 if (partyWorkVOS != null && partyWorkVOS.size() > 0) {
@@ -362,7 +381,9 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                     }
                     effected += tabPbPartyWorkMapper.batchUpdate(deleteSource);
                 }
+                sortPartyWorkDTO(null, sys, true);
             }
+            effected += tabSysUserMapper.updateByPrimaryKeySelectiveSpecialModification(sys);
             return effected;
         }
         throw new BusinessDataIncompleteException("用户ID不存在");
@@ -376,8 +397,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             queryBean.setOrgRange(RANGE_STATE_LEVEL);
         }
         PageHelper.startPage(page);
-        List<PartyMemberInformationVO> partyMemberInformationVO = tabSysUserMapper.selectPageByMap(queryBean);
-        return new PageInfo<>(calculationComplete(partyMemberInformationVO));
+        List<SystemDetailsVO> systemDetailsVO = tabSysUserMapper.selectPageByMap(queryBean);
+        return new PageInfo<>(calculationComplete(systemDetailsVO));
     }
 
     //检查id是否存在
@@ -387,7 +408,70 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         }
     }
 
-    public List<PartyMemberInformationVO> calculationComplete(List<PartyMemberInformationVO> userList) {
+    //排序学历
+    public void sortEducationDTO(List<PartyEducationDTO> partyEducationDTO, SysUser sys, Boolean isDelete) {
+        if (!isDelete) {
+            partyEducationDTO.sort((o1, o2) -> {
+                if (o1.getGraduateTime().after(o2.getGraduateTime())) {
+                    return -1;
+                } else if (o1.getGraduateTime().before(o2.getGraduateTime())) {
+                    return 1;
+                }
+                return 0;
+            });
+            sys.setEducation(partyEducationDTO.get(0).getLevel());
+            sys.setGraduatedFrom(partyEducationDTO.get(0).getGraduatedSchool());
+            sys.setDegree(partyEducationDTO.get(0).getDegree());
+        } else {
+            sys.setEducation(null);
+            sys.setGraduatedFrom(null);
+            sys.setDegree(null);
+        }
+    }
+
+    //排序工作信息
+    public void sortPartyJobTitleDTO(List<PartyJobTitleDTO> partyJobTitleDTO, SysUser sys, Boolean isDelete) {
+        if (!isDelete) {
+            partyJobTitleDTO.sort((o1, o2) -> {
+                if (o1.getAppointEndDate().after(o2.getAppointEndDate())) {
+                    return -1;
+                } else if (o1.getAppointEndDate().before(o2.getAppointEndDate())) {
+                    return 1;
+                }
+                return 0;
+            });
+            sys.setProfession(partyJobTitleDTO.get(0).getPost());
+            sys.setTechnician(partyJobTitleDTO.get(0).getQualifications());
+            sys.setPostTime(partyJobTitleDTO.get(0).getAppointEndDate());
+        } else {
+            sys.setTechnician(null);
+            sys.setProfession(null);
+            sys.setPostTime(null);
+        }
+    }
+
+    //排序职业职称
+    public void sortPartyWorkDTO(List<PartyWorkDTO> partyWorkDTO, SysUser sys, Boolean isDelete) {
+        if (!isDelete) {
+            partyWorkDTO.sort((o1, o2) -> {
+                if (o1.getEndDate().after(o2.getEndDate())) {
+                    return -1;
+                } else if (o1.getEndDate().before(o2.getEndDate())) {
+                    return 1;
+                }
+                return 0;
+            });
+            sys.setStratum(partyWorkDTO.get(0).getStratum());
+            sys.setFrontLine(partyWorkDTO.get(0).getFrontLine());
+            sys.setJobPosition(partyWorkDTO.get(0).getPost());
+        } else {
+            sys.setStratum(null);
+            sys.setFrontLine(null);
+            sys.setJobPosition(null);
+        }
+    }
+
+    public List<PartyMemberInformationVO> calculationComplete(List<SystemDetailsVO> userList) {
         userList.forEach(user -> {
             int tool = 100;
             if (ObjectUtils.isEmpty(user.getGender())) {
@@ -405,7 +489,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             if (ObjectUtils.isEmpty(user.getIdentityType())) {
                 tool -= COMPLETE_SEED;
             }
-            if (ObjectUtils.isEmpty(user.getDeptId())) {
+            if (ObjectUtils.isEmpty(user.getFixPhone())) {
                 tool -= COMPLETE_SEED;
             }
             if (ObjectUtils.isEmpty(user.getJoinTime())) {
@@ -423,19 +507,19 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             if (ObjectUtils.isEmpty(user.getJobPosition())) {
                 tool -= COMPLETE_SEED;
             }
-            if (ObjectUtils.isEmpty(user.getCommunityAddr())) {
+            if (ObjectUtils.isEmpty(user.getPositived())) {
                 tool -= COMPLETE_SEED;
             }
             if (ObjectUtils.isEmpty(user.getPhone())) {
                 tool -= COMPLETE_SEED;
             }
-            if (ObjectUtils.isEmpty(user.getFamilyAddress())) {
+            if (ObjectUtils.isEmpty(user.getEducation())) {
                 tool -= COMPLETE_SEED;
             }
             if (ObjectUtils.isEmpty(user.getIsLlost())) {
                 tool -= COMPLETE_SEED;
             }
-            if (ObjectUtils.isEmpty(user.getRegistryStatus())) {
+            if (ObjectUtils.isEmpty(user.getWorkResumes())) {
                 tool -= COMPLETE_SEED;
             }
             if (ObjectUtils.isEmpty(user.getAncestorPlace())) {
@@ -453,18 +537,21 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             if (ObjectUtils.isEmpty(user.getWorkDate())) {
                 tool -= COMPLETE_SEED;
             }
-            if (ObjectUtils.isEmpty(user.getFrontLine())) {
+            if (ObjectUtils.isEmpty(user.getProfession())) {
                 tool -= COMPLETE_SEED;
             }
             if (ObjectUtils.isEmpty(user.getStratum())) {
                 tool -= COMPLETE_SEED;
             }
-            if (ObjectUtils.isEmpty(user.getMigrant())) {
+            if (ObjectUtils.isEmpty(user.getHealth())) {
                 tool -= COMPLETE_SEED;
             }
+            if (ObjectUtils.isEmpty(user.getAvatar())) {
+                tool -= COMPLETE_SEED;
+            }
+
             user.setComplete(tool);
         });
-        return userList;
+        return BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(userList, PartyMemberInformationVO.class, false);
     }
-
 }

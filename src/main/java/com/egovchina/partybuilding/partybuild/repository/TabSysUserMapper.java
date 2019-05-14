@@ -23,13 +23,15 @@ public interface TabSysUserMapper {
 
     int updateByPrimaryKeySelective(SysUser record);
 
+    int updateByPrimaryKeySelectiveSpecialModification(SysUser user);
+
     int updateByPrimaryKeyWithBLOBs(SysUser record);
 
     int updateByPrimaryKey(SysUser record);
 
     int updateByPrimaryKeyId(SysUser record);
 
-    List<PartyMemberInformationVO> selectPageByMap(SysUserQueryBean sysUserQueryBean);
+    List<SystemDetailsVO> selectPageByMap(SysUserQueryBean sysUserQueryBean);
 
     /**
      * 根据身份证查询人员ID

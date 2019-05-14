@@ -140,7 +140,7 @@
     </resultMap>
 
     <!--用于分页查询党员信息-->
-    <resultMap id="UserInFo" type="com.egovchina.partybuilding.partybuild.vo.PartyMemberInformationVO">
+    <resultMap id="UserInFo" type="com.egovchina.partybuilding.partybuild.vo.SystemDetailsVO">
         <id column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="realname" jdbcType="VARCHAR" property="realname"/>
@@ -171,6 +171,13 @@
         <result column="family_address" jdbcType="VARCHAR" property="familyAddress"/>
         <result column="community_addr" jdbcType="BIGINT" property="communityAddr"/>
         <result column="job_position" jdbcType="VARCHAR" property="jobPosition"/>
+        <result column="health" jdbcType="BIGINT" property="health"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="fix_phone" jdbcType="VARCHAR" property="fixPhone"/>
+        <result column="positived" jdbcType="VARCHAR" property="positived"/>
+        <result column="files_manage_unit" jdbcType="VARCHAR" property="filesManageUnit"/>
+        <result column="work_resumes" jdbcType="LONGVARCHAR" property="workResumes"/>
+        <result column="profession" jdbcType="BIGINT" property="profession"/>
         <collection property="tabPbUserTags" select="com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper.selectAllListSelective"
                     column="{userId=user_id}"/>
     </resultMap>
@@ -297,7 +304,7 @@
     <sql id="Base_users_info">
         u.user_id,realname,gender,TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age,nation,id_card_no,join_time,regular_time,report_org_name,phone,identity_type,marital_status,
         education,flow_status,IFNULL(is_llost,'0') as is_llost,IFNULL(is_poor,'0') as is_poor,IFNULL(is_taiwaner,'0') as is_taiwaner,dd.unit_id,u.dept_id,birthday,migrant,stratum,front_line,work_date,ancestor_place,registry_status,family_address,u.community_addr,
-        job_position
+        job_position,u.health,u.avatar,u.fix_phone,u.positived,u.files_manage_unit,u.work_resumes
     </sql>
     <!--查询部门表防止名字重复-->
     <sql id="dept_name_result">
@@ -307,17 +314,6 @@
     <sql id="selectPageByMapWhereCaseList">
         <if test="username != null">
             AND realname like concat('%', #{username}, '%')
-        </if>
-        <!--组织范围  3 或不传查本级 -->
-        <if test="orgRange != null">
-            <choose>
-                <when test="orgRange == 0">
-                    AND u.dept_id is not null
-                </when>
-                <when test="orgRange == 3">
-                    AND u.dept_id = #{deptId}
-                </when>
-            </choose>
         </if>
         <if test="orgRange == null and deptId != null">
             AND u.dept_id = #{deptId}
@@ -415,8 +411,6 @@
         select
         <include refid="Base_users_info"/>
         ,t.unit_property,
-        dd.order_num,
-        length( dd.full_path ) - length( REPLACE ( dd.full_path, ',', '' ) ) as lev,
         <include refid="dept_name_result"/>
         <choose>
             <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
@@ -448,13 +442,12 @@
         <where>
             <include refid="selectPageByMapWhereCaseList"/>
         </where>
-        ORDER BY lev,dd.order_num,u.join_time desc
+        ORDER BY realname
     </select>
     <!--用于复写mybatis的查询count数-->
     <select id="selectPageByMap_COUNT" parameterType="Map" resultType="java.lang.Long">
         SELECT
-        count( u.user_id ),
-        length( dd.full_path ) - length( REPLACE ( dd.full_path, ',', '' ) ) as lev
+        count( u.user_id )
         <choose>
             <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
             <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
@@ -485,7 +478,7 @@
         <where>
             <include refid="selectPageByMapWhereCaseList"/>
         </where>
-        ORDER BY lev,dd.order_num,u.join_time desc
+        ORDER BY realname
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
@@ -1473,6 +1466,316 @@
         </set>
         where user_id = #{userId,jdbcType=BIGINT}
     </update>
+    <!--修改用户表的修改方法,用于维护数据 -->
+    <update id="updateByPrimaryKeySelectiveSpecialModification"
+            parameterType="com.egovchina.partybuilding.common.entity.SysUser">
+        update sys_user
+        <set>
+            <if test="deptId != null">
+                dept_id = #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="likes != null">
+                likes= #{likes,jdbcType=BIGINT},
+            </if>
+            <if test="registryStatus != null">
+                registry_status = #{registryStatus,jdbcType=BIGINT},
+            </if>
+            <if test="lostTime != null">
+                lost_time = #{lostTime},
+            </if>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="realname != null">
+                realname = #{realname,jdbcType=VARCHAR},
+            </if>
+            <if test="identityType != null">
+                identity_type = #{identityType,jdbcType=BIGINT},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null">
+                salt = #{salt,jdbcType=VARCHAR},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="idCardNo != null">
+                id_card_no = #{idCardNo,jdbcType=VARCHAR},
+            </if>
+            <if test="usedName != null">
+                used_name = #{usedName,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=BIGINT},
+            </if>
+            <if test="nation != null">
+                nation = #{nation,jdbcType=BIGINT},
+            </if>
+            <if test="registeredresidence != null">
+                registeredresidence = #{registeredresidence,jdbcType=VARCHAR},
+            </if>
+            <if test="ancestorPlace != null">
+                ancestor_place = #{ancestorPlace,jdbcType=BIGINT},
+            </if>
+            <if test="bornPlace != null">
+                born_place = #{bornPlace,jdbcType=VARCHAR},
+            </if>
+            <if test="health != null">
+                health = #{health,jdbcType=BIGINT},
+            </if>
+            <if test="familyorigin != null">
+                familyorigin = #{familyorigin,jdbcType=BIGINT},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday,jdbcType=TIMESTAMP},
+            </if>
+            <if test="maritalStatus != null">
+                marital_status = #{maritalStatus,jdbcType=BIGINT},
+            </if>
+            <if test="unitId != null">
+                unit_id = #{unitId,jdbcType=BIGINT},
+            </if>
+            <if test="unitName != null">
+                unit_name = #{unitName,jdbcType=VARCHAR},
+            </if>
+            <if test="workDate != null">
+                work_date = #{workDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="fixPhone != null">
+                fix_phone = #{fixPhone,jdbcType=VARCHAR},
+            </if>
+            education = #{education,jdbcType=BIGINT},
+            degree = #{degree,jdbcType=BIGINT},
+            <if test="familyAddress != null">
+                family_address = #{familyAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="communityAddr != null">
+                community_addr = #{communityAddr,jdbcType=BIGINT},
+            </if>
+            profession = #{profession,jdbcType=BIGINT},
+            <if test="positive != null">
+                positive = #{positive,jdbcType=BIGINT},
+            </if>
+            <if test="democraticParty != null">
+                democratic_party = #{democraticParty,jdbcType=BIGINT},
+            </if>
+            technician = #{technician,jdbcType=BIGINT},
+            <if test="migrant != null">
+                migrant = #{migrant,jdbcType=VARCHAR},
+            </if>
+            graduated_from = #{graduatedFrom,jdbcType=VARCHAR},
+            <if test="contact != null">
+                contact = #{contact,jdbcType=BIGINT},
+            </if>
+            <if test="joinelsetime != null">
+                joinelsetime = #{joinelsetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="policeOffice != null">
+                police_office = #{policeOffice,jdbcType=VARCHAR},
+            </if>
+            <if test="retiredTime != null">
+                retired_time = #{retiredTime,jdbcType=TIMESTAMP},
+            </if>
+            post_time = #{postTime,jdbcType=TIMESTAMP},
+            <if test="portrait != null">
+                portrait = #{portrait,jdbcType=VARCHAR},
+            </if>
+            <if test="personIdentity != null">
+                person_identity = #{personIdentity,jdbcType=BIGINT},
+            </if>
+            stratum = #{stratum,jdbcType=BIGINT},
+            front_line = #{frontLine,jdbcType=BIGINT},
+            <if test="qqNumber != null">
+                qq_number = #{qqNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="wxOpenid != null">
+                wx_openid = #{wxOpenid,jdbcType=VARCHAR},
+            </if>
+            <if test="qqOpenid != null">
+                qq_openid = #{qqOpenid,jdbcType=VARCHAR},
+            </if>
+            <if test="pmCode != null">
+                pm_code = #{pmCode,jdbcType=VARCHAR},
+            </if>
+            <if test="joinTime != null">
+                join_time = #{joinTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="regularTime != null">
+                regular_time = #{regularTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="regularStatus != null">
+                regular_status = #{regularStatus,jdbcType=BIGINT},
+            </if>
+            <if test="developType != null">
+                develop_type = #{developType,jdbcType=BIGINT},
+            </if>
+            <if test="reference != null">
+                reference = #{reference,jdbcType=VARCHAR},
+            </if>
+            <if test="feeRatio != null">
+                fee_ratio = #{feeRatio,jdbcType=DECIMAL},
+            </if>
+            <if test="joinAfterAugust != null">
+                join_after_august = #{joinAfterAugust,jdbcType=TINYINT},
+            </if>
+            <if test="isPoor != null">
+                is_poor = #{isPoor,jdbcType=TINYINT},
+            </if>
+            <if test="isLlost != null">
+                is_llost = #{isLlost,jdbcType=TINYINT},
+            </if>
+            <if test="flowStatus != null">
+                flow_status = #{flowStatus,jdbcType=BIGINT},
+            </if>
+            <if test="flowFromOrgId != null">
+                flow_from_org_id = #{flowFromOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="flowFromOrgName != null">
+                flow_from_org_name = #{flowFromOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="flowFromOrgContactor != null">
+                flow_from_org_contactor = #{flowFromOrgContactor,jdbcType=VARCHAR},
+            </if>
+            <if test="flowFromOrgPhone != null">
+                flow_from_org_phone = #{flowFromOrgPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="flowToOrgId != null">
+                flow_to_org_id = #{flowToOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="flowToOrgName != null">
+                flow_to_org_name = #{flowToOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="flowToOrgContactor != null">
+                flow_to_org_contactor = #{flowToOrgContactor,jdbcType=VARCHAR},
+            </if>
+            <if test="flowToOrgPhone != null">
+                flow_to_org_phone = #{flowToOrgPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="policyFace != null">
+                policy_face = #{policyFace,jdbcType=BIGINT},
+            </if>
+            <if test="joinOrgTime != null">
+                join_org_time = #{joinOrgTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="positived != null">
+                positived = #{positived,jdbcType=VARCHAR},
+            </if>
+            <if test="joinContactId != null">
+                join_contact_id = #{joinContactId,jdbcType=BIGINT},
+            </if>
+            <if test="contactor != null">
+                contactor = #{contactor,jdbcType=VARCHAR},
+            </if>
+            <if test="appDate != null">
+                app_date = #{appDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expActivistDate != null">
+                exp_activist_date = #{expActivistDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="activistDate != null">
+                activist_date = #{activistDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expDevDate != null">
+                exp_dev_date = #{expDevDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="devDate != null">
+                dev_date = #{devDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="devStage != null">
+                dev_stage = #{devStage,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="postReason != null">
+                post_reason = #{postReason,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="workResumes != null">
+                work_resumes = #{workResumes,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="comment != null">
+                comment = #{comment,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="rewards != null">
+                rewards = #{rewards,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="presentPerform != null">
+                present_perform = #{presentPerform,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="joinOrgId != null">
+                join_org_id = #{joinOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="joinOrgName != null">
+                join_org_name = #{joinOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="joinOrgType != null">
+                join_org_type = #{joinOrgType,jdbcType=BIGINT},
+            </if>
+            <if test="joinOrgContactor != null">
+                join_org_contactor = #{joinOrgContactor,jdbcType=VARCHAR},
+            </if>
+            <if test="joinOrgPhone != null">
+                join_org_phone = #{joinOrgPhone,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="isSelfDev != null">
+                is_self_dev = #{isSelfDev,jdbcType=TINYINT},
+            </if>
+            <if test="filesManageUnitId != null">
+                files_manage_unit_id = #{filesManageUnitId,jdbcType=BIGINT},
+            </if>
+            <if test="filesManageUnit != null">
+                files_manage_unit = #{filesManageUnit,jdbcType=VARCHAR},
+            </if>
+            <if test="isTaiwaner != null">
+                is_taiwaner = #{isTaiwaner,jdbcType=TINYINT},
+            </if>
+            job_position = #{jobPosition,jdbcType=VARCHAR},
+        </set>
+        where user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.common.entity.SysUser">
     update sys_user
     set dept_id = #{deptId,jdbcType=BIGINT},

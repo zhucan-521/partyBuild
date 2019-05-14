@@ -186,6 +186,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(reduceList);
         //删除历史记录
         flag += reduceListMapper.updateByPrimaryKeySelective(reduceList);
+        //TODO 暂时需求设置删除历史党员 删除出国出境 删除用户
         if (flag > 0) {
             //删除出国出境信息
             Long abroadId = tabPbAbroadMapper.findAbroadIdByUserId(userId);
