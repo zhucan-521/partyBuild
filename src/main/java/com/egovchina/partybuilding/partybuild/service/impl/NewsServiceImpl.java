@@ -1,12 +1,14 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
+import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.NewsDTO;
 import com.egovchina.partybuilding.partybuild.entity.NewsQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbNews;
 import com.egovchina.partybuilding.partybuild.repository.NewsMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
+import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.NewsService;
 import com.egovchina.partybuilding.partybuild.vo.NewsVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,21 +31,38 @@ public class NewsServiceImpl implements NewsService {
     @Autowired
     private TabSysDeptMapper tabSysDeptMapper;
 
+    @Autowired
+    private ITabPbAttachmentService tabPbAttachmentService;
+
     @Override
     public int insertNews(NewsDTO newsDTO) {
         verifyAdditionsAndUpdates(newsDTO);
-        return newsMapper.insertSelective(generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, false));
+        TabPbNews tabPbNews = generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, false);
+        int result = newsMapper.insertSelective(tabPbNews);
+        if (result > 0) {
+            result += updatingFiles(newsDTO, tabPbNews.getNewsId());
+        }
+        return result;
     }
 
     @Override
     public int updateNews(NewsDTO newsDTO) {
         verifyAdditionsAndUpdates(newsDTO);
-        return newsMapper.updateByPrimaryKeySelective(generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, true));
+        int result = newsMapper.updateByPrimaryKeySelective(generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, true));
+        if (result > 0) {
+            result += updatingFiles(newsDTO, newsDTO.getNewsId());
+        }
+        return result;
     }
 
     @Override
-    public int updateNewsViews(Long newsId) {
-        return newsMapper.updateNewsViews(newsId);
+    public int publishNews(Long newsId, Long hostId) {
+        return newsMapper.updatePublishStatus(newsId, hostId, 1L);
+    }
+
+    @Override
+    public int obtainedNews(Long newsId) {
+        return newsMapper.updatePublishStatus(newsId, 0L, 0L);
     }
 
     @Override
@@ -90,6 +109,17 @@ public class NewsServiceImpl implements NewsService {
         if (!tabSysDeptMapper.checkIsExistByOrgId(newsDTO.getOrgId())) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
+    }
+
+    /**
+     * desc: 维护附件上传
+     *
+     * @param newsId 主键id
+     * @auther FanYanGen
+     * @date 2019-05-14 10:14
+     */
+    private int updatingFiles(NewsDTO newsDTO, Long newsId) {
+        return tabPbAttachmentService.intelligentOperation(newsDTO.getAttachments(), newsId, AttachmentType.NEWS);
     }
 
 }

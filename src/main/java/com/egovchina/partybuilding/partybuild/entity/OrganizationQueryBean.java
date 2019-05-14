@@ -50,6 +50,9 @@ public class OrganizationQueryBean {
     @ApiModelProperty("是否包含统计信息")
     private Boolean containsStatistics = Boolean.FALSE;
 
+    @ApiModelProperty("领域类别 dict LYLB 多个用,号拼接")
+    private String domainCategory;
+
     public Long getRangeDeptId() {
         if (rangeDeptId == null) {
             return UserContextHolder.getOrgId();

@@ -34,6 +34,12 @@
         <result column="top_status" jdbcType="BIT" property="topStatus"/>
         <result column="order_num" jdbcType="INTEGER" property="orderNum"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="video_num" jdbcType="INTEGER" property="videoNum"/>
+        <result column="img_num" jdbcType="INTEGER" property="imgNum"/>
+        <result column="doc_num" jdbcType="INTEGER" property="docNum"/>
+        <collection property="attachments"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+                    column="{hostId=news_id,attachmentType=attachment_type}"/>
     </resultMap>
 
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
@@ -314,16 +320,23 @@
             n.publish_status,
             n.watch_num,
             n.top_status,
-            n.order_num
+            n.order_num,
+            -- 附件信息
+            '65' as attachment_type,
+            ifnull(t.video_num, 0) video_num,
+            ifnull(t.img_num, 0) img_num,
+            ifnull(t.doc_num, 0) doc_num
         FROM
             tab_pb_party_news n
             INNER JOIN sys_dept d ON n.org_id = d.dept_id
+            LEFT JOIN view_attachment_count t ON n.news_id = t.host_id AND t.attachment_type = 65
         WHERE
-            n.del_flag = 0 AND
-            n.news_id = #{newsId,jdbcType=BIGINT}
+            n.del_flag = 0
+            AND n.news_id = #{newsId,jdbcType=BIGINT}
 
     </select>
 
+    <!-- 查询列表 -->
     <select id="getNewsVOList" resultType="com.egovchina.partybuilding.partybuild.entity.NewsQueryBean"
             resultMap="NewsVOResultMap">
 
@@ -340,10 +353,16 @@
         n.publish_status,
         n.watch_num,
         n.top_status,
-        n.order_num
+        n.order_num,
+        -- 附件信息
+        '65' as attachment_type,
+        ifnull(t.video_num, 0) video_num,
+        ifnull(t.img_num, 0) img_num,
+        ifnull(t.doc_num, 0) doc_num
         FROM
         tab_pb_party_news n
         INNER JOIN sys_dept d ON n.org_id = d.dept_id
+        LEFT JOIN view_attachment_count t ON n.news_id = t.host_id AND t.attachment_type = 65
         WHERE
         n.del_flag = 0
 
@@ -372,11 +391,18 @@
 
     </select>
 
-    <update id="updateNewsViews">
+    <!-- 修改发布状态 -->
+    <update id="updatePublishStatus">
 
+        -- 修改发布状态
         UPDATE tab_pb_party_news
-        SET watch_num = watch_num + 1
-        WHERE news_id = #{newsId}
+        SET publish_status = #{status}
+        WHERE news_id = #{newsId};
+
+        -- 修改封面图信息
+        UPDATE tab_pb_attachment
+        SET if_cover = 1
+        WHERE attachment_id = #{attachmentId}
 
     </update>
 
