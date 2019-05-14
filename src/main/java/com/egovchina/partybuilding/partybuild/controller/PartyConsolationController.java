@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,9 +30,9 @@ public class PartyConsolationController {
         return partyConsolationService.getPartyConsolationVO(userId);
     }
 
-    @ApiOperation(value = "添加慰问党员",  httpMethod = "POST")
+    @ApiOperation(value = "添加慰问党员", httpMethod = "POST")
     @PostMapping
-    public ReturnEntity addPartyConsolationVO(@RequestBody  @ApiParam(value = "被慰问党员") PartyConsolationDTO partyConsolationDTO) {
+    public ReturnEntity addPartyConsolationVO(@RequestBody @ApiParam(value = "被慰问党员") @Validated PartyConsolationDTO partyConsolationDTO) {
         return ReturnUtil.buildReturn(partyConsolationService.addPartyConsolationDTO(partyConsolationDTO));
     }
 
