@@ -27,15 +27,9 @@ public interface TabPbHardshipMapper {
 
     int updateByPrimaryKey(TabPbHardship record);
 
-    List<HardshipPartyVO> selectWithConditions(HardshipQueryBean hardshipQueryBean);
-
     int updateUserNameById(TabPbHardship userId);
 
-    HardshipPartyVO findByHardshipId(Long hardshipId);
-
     int deleteByHardshipId(Long hardshipId);
-
-    HardshipPartyVO findByUserId(Long userId);
 
     int logicDelete(TabPbHardship record);
 
@@ -47,5 +41,35 @@ public interface TabPbHardshipMapper {
      * @return
      */
     List<HardshipPartyVO> findHardshipPartyVOByUserId(Long userId);
+
+    /**
+     * desc: 查询单条困难记录
+     *
+     * @param hardshipId 主键id
+     * @return HardshipPartyVO
+     * @auther FanYanGen
+     * @date 2019-05-14 14:32
+     */
+    HardshipPartyVO findByHardshipId(Long hardshipId);
+
+    /**
+     * desc: 根据用户id查询党员的困难记录
+     *
+     * @param userId 用户id
+     * @return List<HardshipPartyVO>
+     * @auther FanYanGen
+     * @date 2019-05-14 14:30
+     */
+    List<HardshipPartyVO> findByUserId(Long userId);
+
+    /**
+     * desc: 根据条件查询困难记录列表
+     *
+     * @param hardshipQueryBean querybean
+     * @return List<HardshipPartyVO>
+     * @auther FanYanGen
+     * @date 2019-05-14 14:34
+     */
+    List<HardshipPartyVO> selectWithConditions(HardshipQueryBean hardshipQueryBean);
 
 }

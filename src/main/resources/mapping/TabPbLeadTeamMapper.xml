@@ -62,6 +62,7 @@
         <result column="img_num" jdbcType="INTEGER" property="imgNum"/>
         <result column="doc_num" jdbcType="INTEGER" property="docNum"/>
         <result column="expiration_date" jdbcType="TIMESTAMP" property="expirationDate"/>
+        <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
     </resultMap>
     <!--包含附件LeadTeamVO ResultMap-->
     <resultMap extends="LeadTeamVOResultMap" id="ContainsAttachmentLeadTeamVOResultMap"
@@ -84,7 +85,7 @@
     <sql id="LeadTeamVO_Column_List">
         l.lead_team_id, l.org_id, l.session_year, l.change_date, l.during_year, l.vote_type, l.due_count,
         l.fact_count, l.vote_count, l.valid_vote_count, l.current, l.elected_type, l.elected_time, l.comm_mem_num,
-        l.comm_num_parttime, l.parttime_comm_num, l.standing_mem_num, l.back_mem_num, l.description, l.vote_result
+        l.comm_num_parttime, l.parttime_comm_num, l.standing_mem_num, l.back_mem_num, l.description, l.vote_result, tpi.unit_property
     </sql>
 
     <insert id="insertSelective" keyProperty="leadTeamId" useGeneratedKeys="true"
@@ -394,6 +395,7 @@
         FROM
         tab_pb_lead_team l
         LEFT JOIN sys_dept d ON l.org_id = d.dept_id
+        LEFT JOIN tab_pb_unit_info tpi ON tpi.org_id = l.org_id
         LEFT JOIN (
         SELECT user_id, lead_team_id, count( 1 ) AS class_num
         FROM tab_pb_lead_team_member WHERE del_flag = 0 GROUP BY lead_team_id
@@ -415,7 +417,7 @@
             AND l.session_year = #{sessionYear}
         </if>
         <if test="unitProperty != null and unitProperty != ''">
-            AND find_in_set((select unit_property from tab_pb_unit_info where org_id= l.org_id), #{unitProperty})
+            AND find_in_set(tpi.unit_property, #{unitProperty})
         </if>
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
         <choose>

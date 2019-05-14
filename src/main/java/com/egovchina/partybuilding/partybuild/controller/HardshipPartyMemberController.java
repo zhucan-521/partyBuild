@@ -50,16 +50,17 @@ public class HardshipPartyMemberController {
     }
 
     @ApiOperation(value = "根据困难ID查询党员困难详情", notes = "根据困难ID查询党员困难详情", httpMethod = "GET")
-    @ApiImplicitParam(name = "hardshipId", value = "困难党员ID", paramType = "path", required = true)
+    @ApiImplicitParam(name = "hardshipId", value = "困难记录ID", paramType = "path", required = true)
     @GetMapping("/{hardshipId}")
     public HardshipPartyVO getDifficultyPartyDetailsByHardshipId(@PathVariable Long hardshipId) {
         return hardshipPartyMemberService.findHardshipPartyVOByHardshipId(hardshipId);
     }
 
+    @Deprecated
     @ApiOperation(value = "根据用户ID查询党员困难详情", notes = "根据用户ID查询党员困难详情", httpMethod = "GET")
-    @ApiImplicitParam(value = "userId", name = "用户ID", paramType = "path", required = true)
+    @ApiImplicitParam(name = "userId", value = "用户ID", paramType = "path", required = true)
     @GetMapping("/party-members/{userId}")
-    public HardshipPartyVO getDifficultyPartyDetailsByUserId(@PathVariable Long userId) {
+    public List<HardshipPartyVO> getDifficultyPartyDetailsByUserId(@PathVariable Long userId) {
         return hardshipPartyMemberService.findHardshipPartyVOByUserId(userId);
     }
 

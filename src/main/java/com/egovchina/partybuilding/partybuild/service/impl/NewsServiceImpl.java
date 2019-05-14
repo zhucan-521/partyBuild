@@ -14,6 +14,8 @@ import com.egovchina.partybuilding.partybuild.vo.NewsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
@@ -57,12 +59,22 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public int publishNews(Long newsId, Long hostId) {
-        return newsMapper.updatePublishStatus(newsId, hostId, 1L);
+        return newsMapper.publishNews(newsId, hostId, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
     }
 
     @Override
     public int obtainedNews(Long newsId) {
-        return newsMapper.updatePublishStatus(newsId, 0L, 0L);
+        return newsMapper.obtainedNews(newsId);
+    }
+
+    @Override
+    public int topNews(Long newsId) {
+        return newsMapper.updateTopStatus(newsId, 1L);
+    }
+
+    @Override
+    public int unTopNews(Long newsId) {
+        return newsMapper.updateTopStatus(newsId, 0L);
     }
 
     @Override

@@ -62,7 +62,7 @@ public interface HardshipPartyMemberService {
      * @author FanYanGen
      * @date 2019/4/22 17:23
      **/
-    HardshipPartyVO findHardshipPartyVOByUserId(Long userId);
+    List<HardshipPartyVO> findHardshipPartyVOByUserId(Long userId);
 
     /**
      * desc: 根据条件查询困难党员列表
