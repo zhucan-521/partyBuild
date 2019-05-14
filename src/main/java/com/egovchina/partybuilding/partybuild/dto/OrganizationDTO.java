@@ -120,6 +120,4 @@ public class OrganizationDTO {
     @ApiModelProperty(value = "单位信息实体")
     private List<UnitInfoDTO> units;
 
-    @ApiModelProperty("领域类别 dict LYLB 多个用,号拼接")
-    private String domainCategory;
 }

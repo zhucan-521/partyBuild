@@ -86,7 +86,7 @@ public class PartyInformationController {
         return extendedInfoService.selectPartyByIdCardNoOrUserName(idCardNo, username, page);
     }
 
-    @ApiOperation(value = "根据id删除 user信息")
+    @ApiOperation(value = "根据id删除user信息或者历史党员编辑")
     @PostMapping("/history-members")
     public ReturnEntity deleteUser(@RequestBody @Validated @ApiParam("删除党员信息实体") DeletePartyMemberDTO deletePartyMemberDTO) {
         return ReturnUtil.buildReturn(extendedInfoService.invalidByUserId(deletePartyMemberDTO));

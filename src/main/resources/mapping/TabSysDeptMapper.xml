@@ -51,7 +51,6 @@
         <result column="position" jdbcType="LONGVARCHAR" property="position"/>
         <result column="position_range" jdbcType="LONGVARCHAR" property="positionRange"/>
         <result column="founded_reason" jdbcType="LONGVARCHAR" property="foundedReason"/>
-        <result column="domain_category" jdbcType="VARCHAR" property="domainCategory"/>
     </resultMap>
 
     <!--组织VO结果集-->
@@ -91,7 +90,6 @@
         <result column="position" jdbcType="LONGVARCHAR" property="position"/>
         <result column="position_range" jdbcType="LONGVARCHAR" property="positionRange"/>
         <result column="founded_reason" jdbcType="LONGVARCHAR" property="foundedReason"/>
-        <result column="domain_category" jdbcType="VARCHAR" property="domainCategory"/>
         <collection property="orgTagVOS"
                     select="com.egovchina.partybuilding.partybuild.repository.TabPbOrgTagMapper.selectOrgTagByOrgId"
                     column="dept_id"/>
@@ -132,14 +130,14 @@
         d.create_username, d.update_time, d.update_userid, d.update_username, d.version, d.is_parent
     </sql>
     <sql id="Blob_Column_List">
-      d.position, d.position_range, d.founded_reason,d.domain_category
+      d.position, d.position_range, d.founded_reason
     </sql>
     <sql id="VO_Column_List">
         d.dept_id, d.name, d.org_short_name, d.org_code, d.parent_id, d.is_team, d.org_level,
         d.level_date, d.org_status, d.is_city, d.orgnize_property, d.dependency_relation, d.orgnize_master_id,
         d.orgnize_master, d.contactor_id, d.contactor, d.office_size, d.address, d.unit_name, d.unit_id, d.unit_state,
         d.community_addr, d.founded_date, d.founded_file_number, d.contact_number, d.fax_number, d.post_code,
-        d.description, d.is_parent, d.position, d.position_range, d.founded_reason,d.domain_category
+        d.description, d.is_parent, d.position, d.position_range, d.founded_reason
     </sql>
     <sql id="Base_WhereCase_List">
         <if test="orgName != null and orgName != ''">
@@ -163,7 +161,7 @@
         <if test="domainCategory != null and '' != domainCategory">
             and
             <foreach collection="domainCategorys" open="(" item="item" separator=" or " close=")">
-                find_in_set(${item}, d.domain_category)
+                #{item} in ( select org_tag_type from tab_pb_org_tag where org_id = d.dept_id and del_flag = 0 )
             </foreach>
         </if>
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
@@ -326,9 +324,6 @@
             <if test="foundedReason != null">
                 founded_reason,
             </if>
-            <if test="domainCategory != null">
-                domain_category,
-            </if>
         </trim>
     </sql>
     <sql id="Selective_Values_List">
@@ -465,9 +460,6 @@
             <if test="foundedReason != null">
                 #{foundedReason,jdbcType=LONGVARCHAR},
             </if>
-            <if test="domainCategory != null">
-                #{domainCategory,jdbcType=VARCHAR},
-            </if>
         </trim>
     </sql>
     <sql id="Base_Set_Column_List">
@@ -602,9 +594,6 @@
         </if>
         <if test="foundedReason != null">
             d.founded_reason = #{foundedReason,jdbcType=LONGVARCHAR},
-        </if>
-        <if test="domainCategory != null">
-            d.domain_category = #{domainCategory,jdbcType=VARCHAR},
         </if>
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">

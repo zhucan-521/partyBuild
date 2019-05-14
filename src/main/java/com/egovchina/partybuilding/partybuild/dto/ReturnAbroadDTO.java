@@ -42,23 +42,12 @@ public class ReturnAbroadDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date applyActivitiesDate;
 
-    @ApiModelProperty(value = "应归时间", dataType = "Date", example = "2019-01-01")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date planReturn;
-
     @ApiModelProperty(value = "实归时间", dataType = "Date", example = "2019-01-01")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date returnDate;
 
     @ApiModelProperty(value = "组织关系出境时是否转往国外")
     private Integer isTransOut;
-
-    @ApiModelProperty(value = "党员基本情况")
-    private String baseStatus;
-
-    @ApiModelProperty(value = "出国境定居时间", dataType = "Date", example = "2019-01-01")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date settleTime;
 
     @ApiModelProperty(value = "出国（境）事项说明")
     private String comment;

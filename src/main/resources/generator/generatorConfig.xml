@@ -276,23 +276,23 @@
         </table>
  -->
         <!--<table tableName="test_generator_table" domainObjectName="TestGeneratorTable" enableCountByExample="false"-->
-               <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-               <!--selectByExampleQueryId="false"></table>-->
+        <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--selectByExampleQueryId="false"></table>-->
 
-<!--        <table tableName="tab_pb_party_education" domainObjectName="TabPbPartyEducation" swaggerModelName="党员学历实体" enableCountByExample="false"-->
-<!--               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-<!--               selectByExampleQueryId="false"></table>-->
+        <!--        <table tableName="tab_pb_party_education" domainObjectName="TabPbPartyEducation" swaggerModelName="党员学历实体" enableCountByExample="false"-->
+        <!--               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false"></table>-->
 
-<!--        <table tableName="tab_pb_party_job_title" domainObjectName="TabPbPartyJobTitle" swaggerModelName="党员技术职务实体" enableCountByExample="false"-->
-<!--               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-<!--               selectByExampleQueryId="false"></table>-->
+        <!--        <table tableName="tab_pb_party_job_title" domainObjectName="TabPbPartyJobTitle" swaggerModelName="党员技术职务实体" enableCountByExample="false"-->
+        <!--               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false"></table>-->
 
-<!--        <table tableName="tab_pb_party_work" domainObjectName="TabPbPartyWork" swaggerModelName="党员工作信息实体" enableCountByExample="false"-->
-<!--               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
-<!--               selectByExampleQueryId="false"></table>-->
-
-
+        <!--        <table tableName="tab_pb_party_work" domainObjectName="TabPbPartyWork" swaggerModelName="党员工作信息实体" enableCountByExample="false"-->
+        <!--               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->
+        <!--               selectByExampleQueryId="false"></table>-->
 
 
-</context>
+
+
+    </context>
 </generatorConfiguration>
