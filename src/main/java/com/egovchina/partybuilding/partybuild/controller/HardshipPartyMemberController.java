@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * desc: 困难党员模块-v1
  * Created by FanYanGen on 2019/4/20 11:49
@@ -65,6 +67,12 @@ public class HardshipPartyMemberController {
     @GetMapping
     public PageInfo<HardshipPartyVO> getDifficultyPartyList(@Validated HardshipQueryBean hardshipQueryBean, Page page) {
         return hardshipPartyMemberService.findHardshipPartyVOWithConditions(hardshipQueryBean, page);
+    }
+
+    @ApiOperation(value = "困难党员慰问情况" , httpMethod = "GET")
+    @GetMapping("/condolences/{userId}")
+    public List<HardshipPartyVO> getDifficultyPartyCondolences(@PathVariable Long userId) {
+        return hardshipPartyMemberService.findHardshipPartyConsolation(userId);
     }
 
 }
