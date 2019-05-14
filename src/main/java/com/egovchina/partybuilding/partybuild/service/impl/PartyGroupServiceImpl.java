@@ -65,7 +65,7 @@ public class PartyGroupServiceImpl implements PartyGroupService {
         verificationPartyGroup(partyGroupDTO);
         int result = tabPbPartyGroupMapper.updateByPrimaryKeySelective(generateTargetCopyPropertiesAndPaddingBaseField(partyGroupDTO, TabPbPartyGroup.class, true));
         if (result > 0) {
-            result += maintainUpdatePartyGroupAction(partyGroupDTO, partyGroupDTO.getGroupId());
+            result += maintainUpdatePartyGroupAction(partyGroupDTO);
         }
         return result;
     }
@@ -182,7 +182,7 @@ public class PartyGroupServiceImpl implements PartyGroupService {
         verifyThatTheLeaderIsUnique(memberList);
         List<TabPbPartyGroupMember> tabPbPartyGroupMembers = generateTargetListCopyPropertiesAndPaddingBaseField(memberList, TabPbPartyGroupMember.class, member -> member.setGroupId(groupId), false);
         result += tabPbPartyGroupMemberMapper.batchInsert(tabPbPartyGroupMembers);
-        result += tabPbAttachmentService.intelligentOperation(partyGroupDTO.getAttachments(), partyGroupDTO.getGroupId(), AttachmentType.PARTY_GROUP);
+        result += tabPbAttachmentService.intelligentOperation(partyGroupDTO.getAttachments(), groupId, AttachmentType.PARTY_GROUP);
         return result;
     }
 
@@ -196,8 +196,9 @@ public class PartyGroupServiceImpl implements PartyGroupService {
      * @author FanYanGen
      * @date 2019/5/8 17:39
      **/
-    private int maintainUpdatePartyGroupAction(PartyGroupDTO partyGroupDTO, Long groupId) {
+    private int maintainUpdatePartyGroupAction(PartyGroupDTO partyGroupDTO) {
         int result = 0;
+        Long groupId = partyGroupDTO.getGroupId();
         result += tabPbPartyGroupMemberMapper.batchDeleteByUserId(groupId);
         result += maintainInsertPartyGroupAction(partyGroupDTO, groupId);
         return result;
