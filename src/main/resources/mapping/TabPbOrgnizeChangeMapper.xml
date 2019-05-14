@@ -466,6 +466,6 @@
         <if test="orgRange == null or orgRange.toString() == ''">
             AND d.dept_id = #{orgId}
         </if>
-        ) a order by change_date asc
+        ) a order by change_date desc
     </select>
 </mapper>
