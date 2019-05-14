@@ -85,7 +85,7 @@
     <sql id="LeadTeamVO_Column_List">
         l.lead_team_id, l.org_id, l.session_year, l.change_date, l.during_year, l.vote_type, l.due_count,
         l.fact_count, l.vote_count, l.valid_vote_count, l.current, l.elected_type, l.elected_time, l.comm_mem_num,
-        l.comm_num_parttime, l.parttime_comm_num, l.standing_mem_num, l.back_mem_num, l.description, l.vote_result, tpi.unit_property
+        l.comm_num_parttime, l.parttime_comm_num, l.standing_mem_num, l.back_mem_num, l.description, l.vote_result
     </sql>
 
     <insert id="insertSelective" keyProperty="leadTeamId" useGeneratedKeys="true"
@@ -387,6 +387,7 @@
         SELECT
         <include refid="LeadTeamVO_Column_List"/>
         ,d.NAME AS org_name,
+        tpi.unit_property,
         DATE_ADD(l.elected_time,INTERVAL l.during_year YEAR ) AS expiration_date,
         d.orgnize_master,
         ifnull( lt.class_num, 0 ) AS class_num,
