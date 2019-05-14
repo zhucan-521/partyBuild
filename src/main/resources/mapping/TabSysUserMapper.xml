@@ -160,6 +160,7 @@
         <result column="is_llost" jdbcType="TINYINT" property="isLlost"/>
         <result column="is_taiwaner" jdbcType="TINYINT" property="isTaiwaner"/>
         <result column="is_poor" jdbcType="TINYINT" property="isPoor"/>
+        <result column="stratum" jdbcType="BIGINT" property="stratum"/>
         <!--该字段进行用于完整度判断-->
         <result column="migrant" jdbcType="VARCHAR" property="migrant"/>
         <result column="stratum" jdbcType="BIGINT" property="stratum"/>
@@ -302,9 +303,9 @@
     </sql>
     <!---分页查询党员信息列表-->
     <sql id="Base_users_info">
-        u.user_id,realname,gender,TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age,nation,id_card_no,join_time,regular_time,report_org_name,phone,identity_type,marital_status,
+        u.user_id,realname,gender,TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age,nation,id_card_no,join_time,join_org_time,regular_time,report_org_name,phone,identity_type,marital_status,
         education,flow_status,IFNULL(is_llost,'0') as is_llost,IFNULL(is_poor,'0') as is_poor,IFNULL(is_taiwaner,'0') as is_taiwaner,dd.unit_id,u.dept_id,birthday,migrant,stratum,front_line,work_date,ancestor_place,registry_status,family_address,u.community_addr,
-        job_position,u.health,u.avatar,u.fix_phone,u.positived,u.files_manage_unit,u.work_resumes
+        job_position,u.health,u.avatar,u.fix_phone,u.positived,u.files_manage_unit,u.work_resumes,u.stratum
     </sql>
     <!--查询部门表防止名字重复-->
     <sql id="dept_name_result">
