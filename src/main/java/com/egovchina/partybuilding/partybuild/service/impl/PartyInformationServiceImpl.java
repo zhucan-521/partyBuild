@@ -209,7 +209,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 this.userTagService.batchInsertUserTagDTO(partyInfoDTO.getParty().getUserTags());
             }
             //新增学历信息
-            if (partyInfoDTO.getEducations() != null) {
+            if (partyInfoDTO.getEducations() != null && partyInfoDTO.getEducations().size() > 0) {
                 //分别判断新增或者修改
                 List<PartyEducationDTO> inserts = new ArrayList<PartyEducationDTO>();
                 List<PartyEducationDTO> updates = new ArrayList<PartyEducationDTO>();
@@ -270,7 +270,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 sortEducationDTO(null, sys, true);
             }
             //新增技术信息
-            if (partyInfoDTO.getJobTitles() != null) {
+            if (partyInfoDTO.getJobTitles() != null && partyInfoDTO.getJobTitles().size() > 0) {
                 //分别判断新增或者修改
                 List<PartyJobTitleDTO> inserts = new ArrayList<PartyJobTitleDTO>();
                 List<PartyJobTitleDTO> updates = new ArrayList<PartyJobTitleDTO>();
@@ -329,7 +329,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 sortPartyJobTitleDTO(null, sys, true);
             }
             //新增工作信息
-            if (partyInfoDTO.getWorks() != null) {
+            if (partyInfoDTO.getWorks() != null && partyInfoDTO.getWorks().size() > 0) {
                 //分别判断新增或者修改
                 List<PartyWorkDTO> inserts = new ArrayList<PartyWorkDTO>();
                 List<PartyWorkDTO> updates = new ArrayList<PartyWorkDTO>();
