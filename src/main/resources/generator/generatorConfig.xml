@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
     <!-- 数据库驱动:选择你的本地硬盘上面的数据库驱动包-->
-    <classPathEntry  location="D:\demo\mysql-connector-java-5.1.6.jar"/>
+    <classPathEntry  location="D:\tools\mysql-connector-java-5.1.47\mysql-connector-java-5.1.47-bin.jar"/>
     <context id="DB2Tables"  targetRuntime="MyBatis3" defaultModelType="flat">
         <property name="ignoreFields" value="createTime,createUserid,createUsername,updateTime,updateUserid,updateUsername,delFlag"/>
         <commentGenerator>
@@ -14,7 +14,7 @@
         </commentGenerator>
         <!--数据库链接URL，用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver" userId="root" password="123456"
-                        connectionURL="jdbc:mysql://192.168.4.102:8017/partybuilding?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;allowMultiQueries=true">
+                        connectionURL="jdbc:mysql://192.168.1.251:8017/partybuilding?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;allowMultiQueries=true">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
@@ -293,6 +293,8 @@
 
 
 
-
+                <table tableName="tab_pb_org_tag" domainObjectName="TabPbOrgTag" enableCountByExample="false"
+                       enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+                       selectByExampleQueryId="false"></table>
 </context>
 </generatorConfiguration>
