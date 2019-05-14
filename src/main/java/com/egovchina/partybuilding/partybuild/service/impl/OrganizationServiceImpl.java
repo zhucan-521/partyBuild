@@ -198,7 +198,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 
         SysDept sysDept = generateTargetCopyPropertiesAndPaddingBaseField(organizationDTO, SysDept.class, true);
         modifyFullPathAndSubDeptIfNecessary(sysDept);
-        judgment += tabSysDeptMapper.updateWithRelationByPrimaryKeySelective(sysDept);
+        judgment += tabSysDeptMapper.updateByPrimaryKeySelective(sysDept);
         return judgment;
     }
 
