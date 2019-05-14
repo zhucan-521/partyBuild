@@ -31,7 +31,7 @@ public interface AbroadService {
      *
      * @param abroadQueryBean 条件查询实体
      * @param page            分页实体
-     * @return list
+     * @return regions
      * @author FanYanGen
      * @date 2019/4/22 17:01
      **/

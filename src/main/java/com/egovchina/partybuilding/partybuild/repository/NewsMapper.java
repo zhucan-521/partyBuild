@@ -48,7 +48,7 @@ public interface NewsMapper {
      * desc: 根据查询条件查询新闻资讯列表
      *
      * @param newsQueryBean 查询条件
-     * @return list
+     * @return regions
      * @auther FanYanGen
      * @date 2019-05-11 18:32
      */

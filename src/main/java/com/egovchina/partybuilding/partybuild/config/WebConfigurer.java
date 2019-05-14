@@ -33,7 +33,7 @@ public class WebConfigurer implements WebMvcConfigurer {
 
     /**
      * 不需要拦截的地址
-     * @return list
+     * @return regions
      */
     private List<String> getExcludePath() {
         List<String> excludeList = new ArrayList<>();

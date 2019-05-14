@@ -66,7 +66,7 @@ public interface NewsService {
      * desc: 询新闻资讯列表
      *
      * @param newsQueryBean 查询条件
-     * @return list
+     * @return regions
      * @auther FanYanGen
      * @date 2019-05-11 17:37
      */
