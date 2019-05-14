@@ -92,6 +92,9 @@
         <result column="position_range" jdbcType="LONGVARCHAR" property="positionRange"/>
         <result column="founded_reason" jdbcType="LONGVARCHAR" property="foundedReason"/>
         <result column="domain_category" jdbcType="VARCHAR" property="domainCategory"/>
+        <collection property="orgTagVOS"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbOrgTagMapper.selectOrgTagByOrgId"
+                    column="dept_id"/>
     </resultMap>
     <!--包含组织关联信息的ResultMap-->
     <resultMap extends="OrganizationVOResultMap" id="OrganizationVOWithAboutInfoResultMap"

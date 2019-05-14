@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbOrgTagMapper">
+    <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbOrgTag">
+        <id column="org_tag_id" jdbcType="BIGINT" property="orgTagId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="org_tag_type" jdbcType="BIGINT" property="orgTagType"/>
+        <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
+        <result column="del_flag" jdbcType="VARCHAR" property="delFlag"/>
+        <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
+        <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
+        <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+    </resultMap>
+
+    <resultMap id="OrgTagVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.OrgTagVO">
+        <id column="org_tag_id" jdbcType="BIGINT" property="orgTagId"/>
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="value" jdbcType="VARCHAR" property="value"/>
+        <result column="label" jdbcType="VARCHAR" property="label"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    org_tag_id, org_id, org_tag_type, ebl_flag, del_flag, order_num, create_time, create_userid, 
+    create_username, update_time, update_userid, update_username, version
+    </sql>
+
+    <sql id="OrgTagVO_Column_List">
+    d.id,d.label,d.value,t.org_tag_id
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tab_pb_org_tag
+        where org_tag_id = #{orgTagId,jdbcType=BIGINT}
+    </select>
+    <select id="selectByOrgId" resultType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgTag">
+    select
+        *
+    from
+        tab_pb_org_tag
+    where
+        del_flag = 0
+        and org_id = #{orgId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_org_tag
+    where org_tag_id = #{orgTagId,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgTag">
+    insert into tab_pb_org_tag (org_tag_id, org_id, org_tag_type, 
+      ebl_flag, del_flag, order_num, 
+      create_time, create_userid, create_username, 
+      update_time, update_userid, update_username, 
+      version)
+    values (#{orgTagId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{orgTagType,jdbcType=BIGINT}, 
+      #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
+      #{version,jdbcType=BIGINT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgTag">
+        insert into tab_pb_org_tag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orgTagId != null">
+                org_tag_id,
+            </if>
+            <if test="orgId != null">
+                org_id,
+            </if>
+            <if test="orgTagType != null">
+                org_tag_type,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orgTagId != null">
+                #{orgTagId,jdbcType=BIGINT},
+            </if>
+            <if test="orgId != null">
+                #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="orgTagType != null">
+                #{orgTagType,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <insert id="batchInsertSelective">
+        insert into tab_pb_org_tag
+        (org_id, org_tag_type,
+        create_time, create_userid,create_username,update_time, update_userid,update_username)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.orgId,jdbcType=BIGINT}, #{item.orgTagType,jdbcType=BIGINT},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.createUserid,jdbcType=BIGINT}, #{item.createUsername,jdbcType=VARCHAR},
+            #{item.updateTime,jdbcType=TIMESTAMP},
+            #{item.updateUserid,jdbcType=BIGINT}, #{item.updateUsername,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgTag">
+        update tab_pb_org_tag
+        <set>
+            <if test="orgId != null">
+                org_id = #{orgId,jdbcType=BIGINT},
+            </if>
+            <if test="orgTagType != null">
+                org_tag_type = #{orgTagType,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+        </set>
+        where org_tag_id = #{orgTagId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgTag">
+    update tab_pb_org_tag
+    set org_id = #{orgId,jdbcType=BIGINT},
+      org_tag_type = #{orgTagType,jdbcType=BIGINT},
+      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      order_num = #{orderNum,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      version = #{version,jdbcType=BIGINT}
+    where org_tag_id = #{orgTagId,jdbcType=BIGINT}
+    </update>
+    <update id="batchUpdateOrgTagByOrgId">
+    update tab_pb_org_tag
+    set
+      del_flag = #{delFlag,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR}
+    where org_id = #{orgId,jdbcType=BIGINT}
+    </update>
+    <update id="batchDelOrgTag" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbOrgTag">
+        <foreach collection="list" separator=";" item="item">
+            update tab_pb_org_tag set
+            del_flag = #{item.delFlag,jdbcType=VARCHAR},
+            update_time = #{item.updateTime,jdbcType=TIMESTAMP},
+            update_userid = #{item.updateUserid,jdbcType=BIGINT},
+            update_username = #{item.updateUsername,jdbcType=VARCHAR}
+            where org_tag_id = #{item.orgTagId}
+        </foreach>
+    </update>
+
+    <!--根据组织ID查询-->
+    <select id="selectOrgTagByOrgId" parameterType="java.lang.Long" resultMap="OrgTagVOResultMap">
+        select
+        <include refid="OrgTagVO_Column_List"/>
+        from tab_pb_org_tag t
+        left join sys_dict d on t.org_tag_type = d.id
+        where t.org_id = #{orgId} and t.del_flag = 0 and d.del_flag = 0
+    </select>
+</mapper>
