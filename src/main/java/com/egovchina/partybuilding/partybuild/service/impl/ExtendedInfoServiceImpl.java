@@ -1,4 +1,5 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
+
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
@@ -89,6 +90,10 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int invalidByUserId(DeletePartyMemberDTO reduce) {
+        SysUser sysUser = tabSysUserMapper.selectByPrimaryKey(reduce.getUserId());
+        if (sysUser == null) {
+            throw new BusinessDataNotFoundException("查不到该党员记录");
+        }
         SysUser user =
                 BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(reduce, SysUser.class, false);
         //设置无效状态
@@ -107,31 +112,27 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
             user.setRegistryStatus(OTHER_WAYS_TO_REDUCE_PARTY_STATUS);
         }
         int flag = tabSysUserMapper.updateByPrimaryKeySelective(user);
-        SysUser newuser = null;
+
         if (flag > 0) {
             TabPbMemberReduceList tabPbMemberReduceList =
                     BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(reduce, TabPbMemberReduceList.class, false);
-            //获取用户名+组织id
-            newuser = tabSysUserMapper.selectByPrimaryKey(reduce.getUserId());
-            if (newuser != null) {
-                if (reduce.getMemberReduceId() != null && !"".equals(reduce.getMemberReduceId())) {
-                    //修改历史党员
-                    tabPbMemberReduceList.setDeptId(newuser.getDeptId());
-                    tabPbMemberReduceList.setRealName(newuser.getRealname());
-                    PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbMemberReduceList);
-                    flag += reduceListMapper.updateByPrimaryKeySelective(tabPbMemberReduceList);
-                } else {
-                    //新增历史党员
-                    tabPbMemberReduceList.setDeptId(newuser.getDeptId());
-                    tabPbMemberReduceList.setRealName(newuser.getRealname());
-                    tabPbMemberReduceList.setReduceTime(new Date());
-                    PaddingBaseFieldUtil.paddingBaseFiled(tabPbMemberReduceList);
-                    flag += reduceListMapper.insertSelective(tabPbMemberReduceList);
-                }
+            if (reduce.getMemberReduceId() != null && !"".equals(reduce.getMemberReduceId())) {
+                //修改历史党员
+                tabPbMemberReduceList.setDeptId(sysUser.getDeptId());
+                tabPbMemberReduceList.setRealName(sysUser.getRealname());
+                PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbMemberReduceList);
+                flag += reduceListMapper.updateByPrimaryKeySelective(tabPbMemberReduceList);
+            } else {
+                //新增历史党员
+                tabPbMemberReduceList.setDeptId(sysUser.getDeptId());
+                tabPbMemberReduceList.setRealName(sysUser.getRealname());
+                tabPbMemberReduceList.setReduceTime(new Date());
+                PaddingBaseFieldUtil.paddingBaseFiled(tabPbMemberReduceList);
+                flag += reduceListMapper.insertSelective(tabPbMemberReduceList);
             }
             //添加一条党籍
             MembershipDTO membershipDTO = new MembershipDTO();
-            membershipDTO.setUserId(reduce.getUserId()).setIdentityType(newuser.getIdentityType()).setType(user.getRegistryStatus());
+            membershipDTO.setUserId(reduce.getUserId()).setIdentityType(sysUser.getIdentityType()).setType(user.getRegistryStatus());
             flag += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
         }
         return flag;
