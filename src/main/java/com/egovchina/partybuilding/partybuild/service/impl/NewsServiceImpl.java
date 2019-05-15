@@ -38,7 +38,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public int insertNews(NewsDTO newsDTO) {
-        verifyAdditionsAndUpdates(newsDTO);
+        verifyAdd(newsDTO);
         TabPbNews tabPbNews = generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, false);
         int result = newsMapper.insertSelective(tabPbNews);
         if (result > 0) {
@@ -49,7 +49,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public int updateNews(NewsDTO newsDTO) {
-        verifyAdditionsAndUpdates(newsDTO);
+        verifyUpdates(newsDTO);
         int result = newsMapper.updateByPrimaryKeySelective(generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, true));
         if (result > 0) {
             result += updatingFiles(newsDTO, newsDTO.getNewsId());
@@ -109,7 +109,13 @@ public class NewsServiceImpl implements NewsService {
         }
     }
 
-    private void verifyAdditionsAndUpdates(NewsDTO newsDTO) {
+    private void verifyAdd(NewsDTO newsDTO) {
+        if (!tabSysDeptMapper.checkIsExistByOrgId(newsDTO.getOrgId())) {
+            throw new BusinessDataCheckFailException("该组织不存在");
+        }
+    }
+
+    private void verifyUpdates(NewsDTO newsDTO) {
         Long newsId = newsDTO.getNewsId();
         if (newsId == null) {
             throw new BusinessDataCheckFailException("新闻资讯ID不能为空");
