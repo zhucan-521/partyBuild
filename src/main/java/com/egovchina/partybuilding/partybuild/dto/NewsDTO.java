@@ -23,10 +23,6 @@ public class NewsDTO {
     @NotNull(message = "标题不能为空")
     private String title;
 
-    @ApiModelProperty(value = "资讯类型 dict NEWS", required = true)
-    @NotNull(message = "资讯类型不能为空")
-    private Long type;
-
     @ApiModelProperty(value = "发布组织id", required = true)
     @NotNull(message = "发布组织不能为空")
     private Long orgId;
