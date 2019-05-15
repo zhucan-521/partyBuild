@@ -10,14 +10,16 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
+ * 慰问党员实体
+ *
  * @author zhucan
  */
 @Data
-@ApiModel(value = "慰问党员实体")
+@ApiModel("慰问党员实体")
 public class PartyConsolationDTO {
 
     @ApiModelProperty(value = "主键")
-    @NotNull(groups = Update.class,message = "主键不能为空")
+    @NotNull(groups = Update.class,message = "主键id不能为空")
     private Long id;
 
     @ApiModelProperty(value = "被慰问的人 user_id")
