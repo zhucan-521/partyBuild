@@ -138,9 +138,6 @@
             parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroupMember">
         update tab_pb_party_group_member
         <set>
-            <if test="userId != null">
-                user_id = #{userId,jdbcType=BIGINT},
-            </if>
             <if test="groupId != null">
                 group_id = #{groupId,jdbcType=BIGINT},
             </if>
@@ -149,9 +146,6 @@
             </if>
             <if test="delFlag != null">
                 del_flag = #{delFlag,jdbcType=TINYINT},
-            </if>
-            <if test="username != null">
-                username = #{username,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -172,7 +166,7 @@
                 update_username = #{updateUsername,jdbcType=VARCHAR},
             </if>
         </set>
-        where member_id = #{memberId,jdbcType=BIGINT}
+        where user_id = #{userId,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroupMember">
     update tab_pb_party_group_member
@@ -180,7 +174,6 @@
       group_id = #{groupId,jdbcType=BIGINT},
       is_leader = #{isLeader,jdbcType=TINYINT},
       del_flag = #{delFlag,jdbcType=TINYINT},
-      username = #{username,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       create_userid = #{createUserid,jdbcType=BIGINT},
       create_username = #{createUsername,jdbcType=VARCHAR},
