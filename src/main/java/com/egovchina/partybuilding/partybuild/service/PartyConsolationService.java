@@ -38,4 +38,10 @@ public interface PartyConsolationService {
      */
     int deletePartyConsolationById(Long id);
 
+    /**
+     * 根据id查询慰问党员
+     * @param id
+     * @return
+     */
+    PartyConsolationVO getPartyConsolationVOById(Long id);
 }

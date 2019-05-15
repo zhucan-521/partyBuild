@@ -1,8 +1,8 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -19,7 +19,7 @@ public class PartyConsolationVO {
     private Long userId;
 
     @ApiModelProperty(value = "慰问时间 yyyy-MM-dd",example ="yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat (pattern = "yyyy-MM-dd")
     private Date consolationTime;
 
     @ApiModelProperty(value = "慰问情况")

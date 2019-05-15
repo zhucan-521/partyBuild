@@ -40,7 +40,7 @@ public class PartyConsolationController {
     @ApiOperation(value = "修改慰问党员", httpMethod = "PUT")
     @PutMapping
     public ReturnEntity updatePartyConsolation(@RequestBody @ApiParam(value = "被慰问党员") @Validated({Update.class}) PartyConsolationDTO partyConsolationDTO) {
-        return ReturnUtil.buildReturn(partyConsolationService.addPartyConsolationDTO(partyConsolationDTO));
+        return ReturnUtil.buildReturn(partyConsolationService.updatePartyConsolationDTO(partyConsolationDTO));
     }
 
     @ApiOperation(value = "删除慰问党员", httpMethod = "DELETE")
@@ -48,6 +48,13 @@ public class PartyConsolationController {
     @DeleteMapping("/{id}")
     public ReturnEntity deletePartyConsolation(@PathVariable  Long id) {
         return ReturnUtil.buildReturn(partyConsolationService.deletePartyConsolationById(id));
+    }
+
+    @ApiOperation(value = "根据主键id获取他慰问情况", httpMethod = "GET")
+    @ApiImplicitParam(value = "主键id", name = "id", paramType = "query", required = true)
+    @GetMapping
+    public PartyConsolationVO getPartyConsolationVOById(@ApiParam(value = "主键id") Long id) {
+        return partyConsolationService.getPartyConsolationVOById(id);
     }
 
 }

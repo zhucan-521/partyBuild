@@ -42,4 +42,9 @@ public class PartyConsolationImpl implements PartyConsolationService {
         return tabPbPartyConsolationMapper.deleteByPrimaryKey(id);
     }
 
+    @Override
+    public PartyConsolationVO getPartyConsolationVOById(Long id) {
+        return tabPbPartyConsolationMapper.selectPartyConsolationVOById(id);
+    }
+
 }
