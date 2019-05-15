@@ -21,6 +21,7 @@ public class PartyEducationDTO {
     private Long level;
 
     @ApiModelProperty(value = "学位 dict ")
+    @NotNull(message = "学位不能为空")
     private Long degree;
 
     @ApiModelProperty(value = "毕业院校")
