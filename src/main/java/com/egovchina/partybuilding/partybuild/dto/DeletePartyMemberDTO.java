@@ -3,12 +3,14 @@ package com.egovchina.partybuilding.partybuild.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @ApiModel(value = "删除党员实体")
+@Accessors(chain = true)
 @Data
 public class DeletePartyMemberDTO {
 

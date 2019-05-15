@@ -10,7 +10,9 @@ import com.egovchina.partybuilding.partybuild.dto.GoAbroadDTO;
 import com.egovchina.partybuilding.partybuild.dto.ReturnAbroadDTO;
 import com.egovchina.partybuilding.partybuild.entity.AbroadQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbAbroad;
+import com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroupMember;
 import com.egovchina.partybuilding.partybuild.repository.TabPbAbroadMapper;
+import com.egovchina.partybuilding.partybuild.repository.TabPbPartyGroupMemberMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.AbroadService;
@@ -47,6 +49,9 @@ public class AbroadServiceImpl implements AbroadService {
     @Autowired
     private ExtendedInfoService extendedInfoService;
 
+    @Autowired
+    private TabPbPartyGroupMemberMapper tabPbPartyGroupMemberMapper;
+
     /**
      * 减少方式为停止党籍
      **/
@@ -64,14 +69,16 @@ public class AbroadServiceImpl implements AbroadService {
         TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(goAbroadDTO, TabPbAbroad.class, false);
         int result = tabPbAbroadMapper.insertSelective(tabPbAbroad);
         /**
-         * 党员出国后将该党员移至历史党员并且修改党籍
+         * 党员出国后将该党员移至历史党员和从党小组中删除
          **/
         if (result > 0) {
-            DeletePartyMemberDTO deletePartyMemberDTO = new DeletePartyMemberDTO();
-            deletePartyMemberDTO.setUserId(userId);
-            deletePartyMemberDTO.setOutType(OUT_TYPE);
-            deletePartyMemberDTO.setQuitType(QUIT_TYPE);
-            extendedInfoService.invalidByUserId(deletePartyMemberDTO);
+            // 移到历史党员
+            DeletePartyMemberDTO deletePartyMemberDTO = new DeletePartyMemberDTO().setUserId(userId).setOutType(OUT_TYPE).setQuitType(QUIT_TYPE);
+            result += extendedInfoService.invalidByUserId(deletePartyMemberDTO);
+            // 移出党小组
+            TabPbPartyGroupMember tabPbPartyGroupMember = new TabPbPartyGroupMember().setUserId(userId).setDelFlag(1);
+            PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbPartyGroupMember);
+            result += tabPbPartyGroupMemberMapper.updateByPrimaryKeySelective(tabPbPartyGroupMember);
         }
         return result;
     }
@@ -85,11 +92,13 @@ public class AbroadServiceImpl implements AbroadService {
 
     @Override
     public int deleteAbroad(Long abroadId) {
-        TabPbAbroad tabPbAbroad = new TabPbAbroad();
-        tabPbAbroad.setDelFlag(CommonConstant.STATUS_DEL);
-        tabPbAbroad.setAbroadId(abroadId);
+        TabPbAbroad tabPbAbroad = new TabPbAbroad().setAbroadId(abroadId).setDelFlag(CommonConstant.STATUS_DEL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbAbroad);
-        return tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
+        int result = tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
+        if (result > 0) {
+            result += recoveryIdentity(tabPbAbroadMapper.selectByPrimaryKey(abroadId).getUserId());
+        }
+        return result;
     }
 
     @Override
@@ -101,14 +110,15 @@ public class AbroadServiceImpl implements AbroadService {
 
     @Override
     public int updateReturnAbroad(ReturnAbroadDTO returnAbroadDTO) {
-        verification(returnAbroadDTO.getOrgId(), returnAbroadDTO.getUserId());
+        Long userId = returnAbroadDTO.getUserId();
+        verification(returnAbroadDTO.getOrgId(), userId);
         TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(returnAbroadDTO, TabPbAbroad.class, true);
         /**
          * 党员回国后将该党员恢复成出国前的状态
          **/
         int result = tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
         if (result > 0) {
-            extendedInfoService.restoreUser(tabPbAbroad.getUserId());
+            result += recoveryIdentity(userId);
         }
         return result;
     }
@@ -138,6 +148,25 @@ public class AbroadServiceImpl implements AbroadService {
         if (!tabSysUserMapper.checkIsExistByUserId(userId)) {
             throw new BusinessDataCheckFailException("该用户不存在");
         }
+    }
+
+    /**
+     * desc: 恢复党员身份
+     *
+     * @param userId 用户ID
+     * @return int
+     * @auther FanYanGen
+     * @date 2019-05-15 11:12
+     */
+    private int recoveryIdentity(Long userId) {
+        int result = 0;
+        // 从历史党员中恢复
+        result += extendedInfoService.restoreUser(userId);
+        // 恢复到党小组
+        TabPbPartyGroupMember tabPbPartyGroupMember = new TabPbPartyGroupMember().setUserId(userId).setDelFlag(0);
+        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbPartyGroupMember);
+        result += tabPbPartyGroupMemberMapper.updateByPrimaryKeySelective(tabPbPartyGroupMember);
+        return result;
     }
 
 }

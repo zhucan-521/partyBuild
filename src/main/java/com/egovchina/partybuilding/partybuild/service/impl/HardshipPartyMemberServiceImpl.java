@@ -22,10 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetAndCopyProperties;
-import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
-import java.util.List;
-
 import static com.egovchina.partybuilding.common.util.BeanUtil.*;
 
 /**
