@@ -44,9 +44,9 @@ public class PartyConsolationController {
     }
 
     @ApiOperation(value = "删除慰问党员", httpMethod = "DELETE")
-    @ApiImplicitParam(value = "主键" ,name = "id",paramType = "path",required = true)
+    @ApiImplicitParam(value = "主键", name = "id", paramType = "path", required = true)
     @DeleteMapping("/{id}")
-    public ReturnEntity deletePartyConsolation(@PathVariable  Long id) {
+    public ReturnEntity deletePartyConsolation(@PathVariable Long id) {
         return ReturnUtil.buildReturn(partyConsolationService.deletePartyConsolationById(id));
     }
 

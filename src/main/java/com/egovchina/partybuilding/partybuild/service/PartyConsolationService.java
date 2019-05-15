@@ -12,6 +12,7 @@ public interface PartyConsolationService {
 
     /**
      * 添加慰问情况
+     *
      * @param partyConsolationDTO
      * @return
      */
@@ -19,6 +20,7 @@ public interface PartyConsolationService {
 
     /**
      * 根据用户获取慰问情况
+     *
      * @param userId
      * @return
      */
@@ -26,6 +28,7 @@ public interface PartyConsolationService {
 
     /**
      * 修改用户慰问
+     *
      * @param partyConsolationDTO
      * @return
      */
@@ -33,6 +36,7 @@ public interface PartyConsolationService {
 
     /**
      * 根据id删除主键
+     *
      * @param id
      * @return
      */
@@ -40,6 +44,7 @@ public interface PartyConsolationService {
 
     /**
      * 根据id查询慰问党员
+     *
      * @param id
      * @return
      */

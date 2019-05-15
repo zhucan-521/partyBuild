@@ -22,7 +22,7 @@ public class PartyConsolationImpl implements PartyConsolationService {
 
     @Override
     public int addPartyConsolationDTO(PartyConsolationDTO partyConsolationDTO) {
-        TabPbPartyConsolation tabPbPartyConsolation=  BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyConsolationDTO, TabPbPartyConsolation.class, false);
+        TabPbPartyConsolation tabPbPartyConsolation = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyConsolationDTO, TabPbPartyConsolation.class, false);
         return tabPbPartyConsolationMapper.insertSelective(tabPbPartyConsolation);
     }
 
@@ -33,7 +33,7 @@ public class PartyConsolationImpl implements PartyConsolationService {
 
     @Override
     public int updatePartyConsolationDTO(PartyConsolationDTO partyConsolationDTO) {
-        TabPbPartyConsolation tabPbPartyConsolation= BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyConsolationDTO,TabPbPartyConsolation.class,false);
+        TabPbPartyConsolation tabPbPartyConsolation = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyConsolationDTO, TabPbPartyConsolation.class, false);
         return tabPbPartyConsolationMapper.updateByPrimaryKeySelective(tabPbPartyConsolation);
     }
 
