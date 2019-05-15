@@ -114,13 +114,15 @@ public class PartyGroupServiceImpl implements PartyGroupService {
      * @date 2019/4/29 14:28
      **/
     private void verificationPartyGroup(PartyGroupDTO partyGroupDTO) {
-        if (!tabSysDeptMapper.checkIsExistByOrgId(partyGroupDTO.getOrgId())) {
+        Long orgId = partyGroupDTO.getOrgId();
+        Long groupId = partyGroupDTO.getGroupId();
+        if (!tabSysDeptMapper.checkIsExistByOrgId(orgId)) {
             throw new BusinessDataCheckFailException("该党组织不存在");
         }
-        if (tabPbPartyGroupMapper.checkIsExistByGroupName(partyGroupDTO.getOrgId(), partyGroupDTO.getGroupName(), partyGroupDTO.getGroupId())) {
+        if (tabPbPartyGroupMapper.checkIsExistByGroupName(orgId, partyGroupDTO.getGroupName(), groupId)) {
             throw new BusinessDataCheckFailException("该党小组名称已存在");
         }
-        if (partyGroupDTO.getGroupId() != null && !tabPbPartyGroupMapper.checkIsExistByGroupId(partyGroupDTO.getGroupId())) {
+        if (groupId != null && !tabPbPartyGroupMapper.checkIsExistByGroupId(groupId)) {
             throw new BusinessDataCheckFailException("该党小组不存在");
         }
     }
