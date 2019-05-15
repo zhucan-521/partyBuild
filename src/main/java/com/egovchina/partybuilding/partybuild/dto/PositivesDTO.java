@@ -40,8 +40,7 @@ public class PositivesDTO {
     private Date positiveStart;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @ApiModelProperty(value = "任职结束", required = true,example ="yyyy-MM-dd")
-    @NotNull(message = "任职结束日期不能为空")
+    @ApiModelProperty(value = "任职结束", example = "yyyy-MM-dd")
     private Date positiveFinished;
 
     @ApiModelProperty(value = "描述")
