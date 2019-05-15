@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbPartyConsolationMapper" >
+  <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbPartyConsolation" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="consolation_time" property="consolationTime" jdbcType="TIMESTAMP" />
+    <result column="consolation_info" property="consolationInfo" jdbcType="VARCHAR" />
+    <result column="del_flag" property="delFlag" jdbcType="BIT" />
+    <result column="create_userid" property="createUserid" jdbcType="BIGINT" />
+    <result column="create_username" property="createUsername" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_userid" property="updateUserid" jdbcType="BIGINT" />
+    <result column="update_username" property="updateUsername" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="BaseResultVOMap"  extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.vo.PartyConsolationVO">
+    <result column="username" property="username" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, consolation_time, consolation_info, del_flag, create_userid, create_username, 
+    create_time, update_userid, update_username, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from tab_pb_party_consolation
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from tab_pb_party_consolation
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyConsolation" >
+    insert into tab_pb_party_consolation (id, user_id, consolation_time, 
+      consolation_info, del_flag, create_userid, 
+      create_username, create_time, update_userid, 
+      update_username, update_time)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{consolationTime,jdbcType=TIMESTAMP}, 
+      #{consolationInfo,jdbcType=VARCHAR}, #{delFlag,jdbcType=BIT}, #{createUserid,jdbcType=BIGINT}, 
+      #{createUsername,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, 
+      #{updateUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyConsolation" >
+    insert into tab_pb_party_consolation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="consolationTime != null" >
+        consolation_time,
+      </if>
+      <if test="consolationInfo != null" >
+        consolation_info,
+      </if>
+      <if test="delFlag != null" >
+        del_flag,
+      </if>
+      <if test="createUserid != null" >
+        create_userid,
+      </if>
+      <if test="createUsername != null" >
+        create_username,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateUserid != null" >
+        update_userid,
+      </if>
+      <if test="updateUsername != null" >
+        update_username,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="consolationTime != null" >
+        #{consolationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consolationInfo != null" >
+        #{consolationInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        #{delFlag,jdbcType=BIT},
+      </if>
+      <if test="createUserid != null" >
+        #{createUserid,jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null" >
+        #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null" >
+        #{updateUserid,jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null" >
+        #{updateUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyConsolation" >
+    update tab_pb_party_consolation
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="consolationTime != null" >
+        consolation_time = #{consolationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="consolationInfo != null" >
+        consolation_info = #{consolationInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null" >
+        del_flag = #{delFlag,jdbcType=BIT},
+      </if>
+      <if test="createUserid != null" >
+        create_userid = #{createUserid,jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null" >
+        create_username = #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null" >
+        update_userid = #{updateUserid,jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null" >
+        update_username = #{updateUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyConsolation" >
+    update tab_pb_party_consolation
+    set user_id = #{userId,jdbcType=BIGINT},
+      consolation_time = #{consolationTime,jdbcType=TIMESTAMP},
+      consolation_info = #{consolationInfo,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=BIT},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectPartyConsolationVOByUserId" parameterType="Long" resultMap="BaseResultVOMap">
+    select
+     c.id,
+     c.user_id,
+     c.consolation_time,
+     c.consolation_info,
+     u.realname as username
+     from
+     tab_pb_party_consolation c
+     left join sys_user u  on u.user_id=c.user_id
+     where
+     u.del_flag=0 and c.del_flag=0 and c.user_id=#{userId}
+     ORDER BY  c.consolation_time DESC
+  </select>
+
+  <select id="selectPartyConsolationVOById" parameterType="Long" resultMap="BaseResultVOMap">
+    select
+     c.id,
+     c.user_id,
+     c.consolation_time,
+     c.consolation_info,
+     u.realname as username
+     from
+     tab_pb_party_consolation c
+     left join sys_user u  on u.user_id=c.user_id
+     where
+     u.del_flag=0
+     and
+     c.del_flag=0
+     and
+     c.id=#{id}
+  </select>
+
+</mapper>
