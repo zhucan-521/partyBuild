@@ -24,4 +24,18 @@ public interface PartyConsolationService {
      */
     List<PartyConsolationVO> getPartyConsolationVO(Long userId);
 
+    /**
+     * 修改用户慰问
+     * @param partyConsolationDTO
+     * @return
+     */
+    int updatePartyConsolationDTO(PartyConsolationDTO partyConsolationDTO);
+
+    /**
+     * 根据id删除主键
+     * @param id
+     * @return
+     */
+    int deletePartyConsolationById(Long id);
+
 }

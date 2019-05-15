@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,19 @@ public class PartyConsolationController {
     @PostMapping
     public ReturnEntity addPartyConsolationVO(@RequestBody @ApiParam(value = "被慰问党员") @Validated PartyConsolationDTO partyConsolationDTO) {
         return ReturnUtil.buildReturn(partyConsolationService.addPartyConsolationDTO(partyConsolationDTO));
+    }
+
+    @ApiOperation(value = "修改慰问党员", httpMethod = "PUT")
+    @PutMapping
+    public ReturnEntity updatePartyConsolation(@RequestBody @ApiParam(value = "被慰问党员") @Validated({Update.class}) PartyConsolationDTO partyConsolationDTO) {
+        return ReturnUtil.buildReturn(partyConsolationService.addPartyConsolationDTO(partyConsolationDTO));
+    }
+
+    @ApiOperation(value = "删除慰问党员", httpMethod = "DELETE")
+    @ApiImplicitParam(value = "主键" ,name = "id",paramType = "path",required = true)
+    @DeleteMapping("/{id}")
+    public ReturnEntity deletePartyConsolation(@PathVariable  Long id) {
+        return ReturnUtil.buildReturn(partyConsolationService.deletePartyConsolationById(id));
     }
 
 }

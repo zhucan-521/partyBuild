@@ -2,6 +2,7 @@ package com.egovchina.partybuilding.partybuild.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
@@ -14,6 +15,7 @@ import java.util.Date;
 public class PartyConsolationDTO {
 
     @ApiModelProperty(value = "主键")
+    @NotNull(groups = Update.class,message = "请传入主键")
     private Long id;
 
     @ApiModelProperty(value = "被慰问的人 user_id")

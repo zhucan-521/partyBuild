@@ -31,4 +31,15 @@ public class PartyConsolationImpl implements PartyConsolationService {
         return tabPbPartyConsolationMapper.selectPartyConsolationVOByUserId(userId);
     }
 
+    @Override
+    public int updatePartyConsolationDTO(PartyConsolationDTO partyConsolationDTO) {
+        TabPbPartyConsolation tabPbPartyConsolation= BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyConsolationDTO,TabPbPartyConsolation.class,false);
+        return tabPbPartyConsolationMapper.updateByPrimaryKeySelective(tabPbPartyConsolation);
+    }
+
+    @Override
+    public int deletePartyConsolationById(Long id) {
+        return tabPbPartyConsolationMapper.deleteByPrimaryKey(id);
+    }
+
 }
