@@ -18,7 +18,7 @@ import java.util.List;
 
 @Api(value = "党员-慰问情况", tags = {"党员-慰问情况-v1-朱灿"})
 @RestController
-@RequestMapping("/v1/partyconsolation")
+@RequestMapping("/v1/party_consolations")
 public class PartyConsolationController {
 
     @Autowired
