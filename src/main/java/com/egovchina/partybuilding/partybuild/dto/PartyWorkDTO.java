@@ -34,7 +34,7 @@ public class PartyWorkDTO {
 
     @ApiModelProperty(value = "开始时间 yyyy-MM-dd",example ="yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message = "开始时间")
+    @NotNull(message = "开始时间不能为空")
     private Date startDate;
 
     @ApiModelProperty(value = "结束时间 yyyy-MM-dd",example ="yyyy-MM-dd")
