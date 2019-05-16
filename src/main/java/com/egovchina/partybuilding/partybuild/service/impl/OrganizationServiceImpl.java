@@ -16,6 +16,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbUnitInfoMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.OrgChangeService;
+import com.egovchina.partybuilding.partybuild.service.OrgTagService;
 import com.egovchina.partybuilding.partybuild.service.OrganizationService;
 import com.egovchina.partybuilding.partybuild.vo.ContainsStatisticsOrganizationVO;
 import com.egovchina.partybuilding.partybuild.vo.OrganizationPartyBuildingWorkVO;
@@ -59,6 +60,9 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Autowired
     private ITabPbAttachmentService iTabPbAttachmentService;
+
+    @Autowired
+    private OrgTagService orgTagService;
 
     @Override
     public List<OrganizationVO> selectOrganizationVOWithCondition(OrganizationQueryBean queryBean, Page page) {
@@ -149,13 +153,18 @@ public class OrganizationServiceImpl implements OrganizationService {
         orgChangeService.insertSelective(tabPbOrgnizeChange);
     }
 
+    @Transactional
     @Override
     public int logicDeleteById(Long orgId) {
         SysDept update = new SysDept();
         update.setDeptId(orgId);
         update.setDelFlag(CommonConstant.STATUS_DEL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(update);
-        return tabSysDeptMapper.updateByPrimaryKeySelective(update);
+        int judgment = 0;
+        //删除已有标签
+        judgment += orgTagService.batchUpdateOrgTagByOrgId(orgId);
+        judgment += tabSysDeptMapper.updateByPrimaryKeySelective(update);
+        return judgment;
     }
 
     @Override
@@ -197,6 +206,12 @@ public class OrganizationServiceImpl implements OrganizationService {
         }
 
         SysDept sysDept = generateTargetCopyPropertiesAndPaddingBaseField(organizationDTO, SysDept.class, true);
+
+        //编辑后不是支部就把已有标签删除
+        if (!sysDept.ifBranch()) {
+            judgment += orgTagService.batchUpdateOrgTagByOrgId(organizationDTO.getDeptId());
+        }
+
         modifyFullPathAndSubDeptIfNecessary(sysDept);
         judgment += tabSysDeptMapper.updateByPrimaryKeySelective(sysDept);
         return judgment;
@@ -311,6 +326,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         return tabSysDeptMapper.selectOrganizationPositionVOAndAttachmentsById(orgId);
     }
 
+    @Transactional
     @Override
     public int updateOrganizationPosition(OrganizationPositionDTO organizationPositionDTO) {
         SysDept dbSysDept = tabSysDeptMapper.selectByPrimaryKey(organizationPositionDTO.getDeptId());
