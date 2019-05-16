@@ -205,12 +205,13 @@ public class OrganizationServiceImpl implements OrganizationService {
             });
         }
 
+        SysDept sysDept = generateTargetCopyPropertiesAndPaddingBaseField(organizationDTO, SysDept.class, true);
+
         //编辑后不是支部就把已有标签删除
-        if (!organizationDTO.ifBranch()) {
+        if (!sysDept.ifBranch()) {
             judgment += orgTagService.batchUpdateOrgTagByOrgId(organizationDTO.getDeptId());
         }
 
-        SysDept sysDept = generateTargetCopyPropertiesAndPaddingBaseField(organizationDTO, SysDept.class, true);
         modifyFullPathAndSubDeptIfNecessary(sysDept);
         judgment += tabSysDeptMapper.updateByPrimaryKeySelective(sysDept);
         return judgment;

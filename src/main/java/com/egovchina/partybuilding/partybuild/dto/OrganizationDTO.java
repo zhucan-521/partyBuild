@@ -120,14 +120,4 @@ public class OrganizationDTO {
     @ApiModelProperty(value = "单位信息实体")
     private List<UnitInfoDTO> units;
 
-    /**
-     * 是否支部
-     */
-    public boolean ifBranch() {
-        return this.orgnizeProperty == 989L || this.orgnizeProperty == 992L
-                || this.orgnizeProperty == 995L || this.orgnizeProperty == 1002L
-                || this.orgnizeProperty == 1003L || this.orgnizeProperty == 1007L
-                || this.orgnizeProperty == 1008L;
-    }
-
 }
