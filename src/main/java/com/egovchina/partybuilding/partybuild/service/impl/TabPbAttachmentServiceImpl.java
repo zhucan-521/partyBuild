@@ -137,11 +137,11 @@ public class TabPbAttachmentServiceImpl implements ITabPbAttachmentService {
                 .collect(Collectors.toList());
 
         List<TabPbAttachment> pendingAddList = pendingList.stream()
-                .filter(tabPbAttachment -> !dbInstanceList.contains(tabPbAttachment.getAttachmentInstance()))
+                .filter(tabPbAttachment -> !dbInstanceList.contains(tabPbAttachment.getAttachmentInstance()) || tabPbAttachment.getAttachmentId() == null)
                 .collect(Collectors.toList());
 
         List<TabPbAttachment> pendingUpdateList = finalPendingList.stream().filter(attachment -> dbList.stream().anyMatch(dbAttachment -> dbAttachment.getAttachmentInstance()
-                .equals(attachment.getAttachmentInstance())
+                .equals(attachment.getAttachmentInstance()) && dbAttachment.getAttachmentId().equals(attachment.getAttachmentId())
                 && (!dbAttachment.getRotate().equals(attachment.getRotate())
                 || !dbAttachment.getOrderNum().equals(attachment.getOrderNum())))).collect(Collectors.toList());
 
