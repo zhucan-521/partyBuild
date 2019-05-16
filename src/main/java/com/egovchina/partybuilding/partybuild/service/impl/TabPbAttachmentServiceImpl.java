@@ -132,7 +132,9 @@ public class TabPbAttachmentServiceImpl implements ITabPbAttachmentService {
 
         //筛选
         List<Long> pendingRemoveIDList = dbList.stream()
-                .filter(tabPbAttachment -> !pendingInstanceList.contains(tabPbAttachment.getAttachmentInstance()))
+//                .filter(tabPbAttachment -> !pendingInstanceList.contains(tabPbAttachment.getAttachmentInstance()))
+                .filter(attachment -> pendingList.stream().noneMatch(dbAttachment -> dbAttachment.getAttachmentInstance()
+                        .equals(attachment.getAttachmentInstance()) && dbAttachment.getAttachmentId().equals(attachment.getAttachmentId())))
                 .map(TabPbAttachment::getAttachmentId)
                 .collect(Collectors.toList());
 
