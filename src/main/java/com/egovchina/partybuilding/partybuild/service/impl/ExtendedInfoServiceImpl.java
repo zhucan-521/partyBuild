@@ -126,7 +126,6 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
                 //新增历史党员
                 tabPbMemberReduceList.setDeptId(sysUser.getDeptId());
                 tabPbMemberReduceList.setRealName(sysUser.getRealname());
-                tabPbMemberReduceList.setReduceTime(new Date());
                 PaddingBaseFieldUtil.paddingBaseFiled(tabPbMemberReduceList);
                 flag += reduceListMapper.insertSelective(tabPbMemberReduceList);
             }
