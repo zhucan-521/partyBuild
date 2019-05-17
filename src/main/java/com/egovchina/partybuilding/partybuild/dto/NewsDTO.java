@@ -16,7 +16,7 @@ import java.util.List;
 @ApiModel("新闻资讯-数据传输对象")
 public class NewsDTO {
 
-    @ApiModelProperty(value = "资讯id", required = true)
+    @ApiModelProperty(value = "资讯id")
     private Long newsId;
 
     @ApiModelProperty(value = "标题", required = true)
