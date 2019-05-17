@@ -60,7 +60,7 @@ public class AbroadServiceImpl implements AbroadService {
     /**
      * 出党方式为出国出境
      **/
-    private final Long QUIT_TYPE = 30034L;
+    private final Long QUIT_TYPE = 59624L;
 
     @Override
     public int insertGoAbroad(GoAbroadDTO goAbroadDTO) {
