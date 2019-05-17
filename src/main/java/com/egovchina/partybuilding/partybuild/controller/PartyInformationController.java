@@ -102,7 +102,7 @@ public class PartyInformationController {
     @ApiOperation(value = "历史党员修改")
     @PutMapping("/history-members")
     public ReturnEntity upadteUser(@RequestBody @Validated @ApiParam("修改历史党员信息实体") UpdateHistoryDTO updateHistoryDTO) {
-        return ReturnUtil.buildReturn(extendedInfoService.updateHistoryB(updateHistoryDTO));
+        return ReturnUtil.buildReturn(extendedInfoService.updateHistoryParty(updateHistoryDTO));
     }
 
     @ApiOperation(value = "根据id恢复党员信息")

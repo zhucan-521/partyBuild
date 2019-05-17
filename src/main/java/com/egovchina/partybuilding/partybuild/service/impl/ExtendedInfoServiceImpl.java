@@ -214,7 +214,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
     }
 
     @Override
-    public int updateHistoryB(UpdateHistoryDTO updateHistoryDTO) {
+    public int updateHistoryParty(UpdateHistoryDTO updateHistoryDTO) {
         //查询现在该历史党员修改之前的信息
         TabPbMemberReduceList tabPbMemberReduceList1 = reduceListMapper.selectByPrimaryKey(updateHistoryDTO.getMemberReduceId());
         if (tabPbMemberReduceList1 == null) {

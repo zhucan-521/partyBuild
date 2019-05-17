@@ -78,5 +78,5 @@ public interface ExtendedInfoService {
      * @param updateHistoryDTO
      * @return
      */
-    int updateHistoryB(UpdateHistoryDTO updateHistoryDTO);
+    int updateHistoryParty(UpdateHistoryDTO updateHistoryDTO);
 }
