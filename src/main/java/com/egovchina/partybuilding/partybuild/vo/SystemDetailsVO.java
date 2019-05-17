@@ -149,7 +149,7 @@ public class SystemDetailsVO {
     @ApiModelProperty(value = "工作简历")
     private String workResumes;
 
-    @ApiModelProperty(value = "聘用职务技术职务")
-    private Long profession;
+    @ApiModelProperty(value = "专业")
+    private String profession;
 
 }

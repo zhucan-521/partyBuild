@@ -92,8 +92,6 @@ public class RewardsAndPunishmentsServiceImpl implements RewardsAndPunishmentsSe
         return tabPbPunishmentMapper.selectByPrimaryKeyAndFiles(id);
     }
 
-
-    @PaddingBaseField(recursive = true)
     @Override
     public int insertRewards(RewardsDTO rewards) {
         TabPbRewards tabPbRewards = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(rewards, TabPbRewards.class, false);
