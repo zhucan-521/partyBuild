@@ -78,7 +78,22 @@ public class LeadTeamServiceImpl implements LeadTeamService {
         TabPbLeadTeam tabPbLeadTeam =
                 generateTargetCopyPropertiesAndPaddingBaseField(leadTeamDTO, TabPbLeadTeam.class, false);
         int judgment = tabPbLeadTeamMapper.insertSelective(tabPbLeadTeam);
+        return setCurrentAndAttachment(leadTeamDTO, tabPbLeadTeam, judgment);
+    }
+
+    /**
+     * 设置以前的班子信息为往届并且传递附件信息
+     *
+     * @param leadTeamDTO   新增班子成员dto
+     * @param tabPbLeadTeam 新增班子成员实体
+     * @param judgment      判断条件
+     * @return
+     */
+    private int setCurrentAndAttachment(LeadTeamDTO leadTeamDTO, TabPbLeadTeam tabPbLeadTeam, int judgment) {
         if (judgment > 0) {
+            if (tabPbLeadTeam.getCurrent() == 1) {
+                tabPbLeadTeamMapper.setPreviousLeadTeamForThePast(tabPbLeadTeam.getOrgId(), tabPbLeadTeam.getLeadTeamId());
+            }
             judgment += iTabPbAttachmentService.intelligentOperation(leadTeamDTO.getAttachments(),
                     tabPbLeadTeam.getLeadTeamId(), AttachmentType.LEADERSHIP_TEAM);
         }
@@ -95,11 +110,7 @@ public class LeadTeamServiceImpl implements LeadTeamService {
         TabPbLeadTeam tabPbLeadTeam =
                 generateTargetCopyPropertiesAndPaddingBaseField(leadTeamDTO, TabPbLeadTeam.class, true);
         int judgment = tabPbLeadTeamMapper.updateByPrimaryKeySelective(tabPbLeadTeam);
-        if (judgment > 0) {
-            judgment += iTabPbAttachmentService.intelligentOperation(leadTeamDTO.getAttachments(),
-                    tabPbLeadTeam.getLeadTeamId(), AttachmentType.LEADERSHIP_TEAM);
-        }
-        return judgment;
+        return setCurrentAndAttachment(leadTeamDTO, tabPbLeadTeam, judgment);
     }
 
     @Override
