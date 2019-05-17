@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @ApiModel(value = "历史党员查询实体")
@@ -15,6 +16,9 @@ import java.util.Date;
 public class HistoryPartyVO {
     @ApiModelProperty(value = "申请人姓名")
     private String realname;
+
+    @ApiModelProperty(value = "减少党员id")
+    private Long memberReduceId;
 
     @ApiModelProperty(value = "用户ID")
     private Long userId;

@@ -228,7 +228,8 @@
     </resultMap>
     <!--历史党员信息-->
     <resultMap id="History_UserInfo" type="com.egovchina.partybuilding.partybuild.vo.HistoryPartyVO">
-        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <id column="member_reduce_id" jdbcType="BIGINT" property="memberReduceId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="realname" jdbcType="VARCHAR" property="realname"/>
         <result column="registry_status" jdbcType="BIGINT" property="registryStatus"/>
         <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
@@ -484,77 +485,6 @@
         ORDER BY realname
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from sys_user
-    where user_id = #{userId,jdbcType=BIGINT}
-    </delete>
-    <insert id="insert" parameterType="com.egovchina.partybuilding.common.entity.SysUser">
-    insert into sys_user (user_id, dept_id, username,
-      identity_type, password, salt,
-      avatar, id_card_no, used_name,
-      gender, nation, registeredresidence,
-      ancestor_place, born_place, health,
-      familyorigin, birthday, marital_status,
-      unit_id, unit_name, work_date,
-      phone, fix_phone, education,
-      degree, family_address, community_addr,
-      profession, positive, democratic_party,
-      technician, migrant, graduated_from,
-      contact, joinelsetime, police_office,
-      retired_time, post_time, portrait,
-      person_identity, stratum, front_line,
-      qq_number, email, wx_openid,
-      qq_openid, pm_code, join_time,
-      regular_time, regular_status, develop_type,
-      reference, fee_ratio, join_after_august,
-      is_poor, is_llost, flow_status,
-      flow_from_org_id, flow_from_org_name, flow_from_org_contactor,
-      flow_from_org_phone, flow_to_org_id, flow_to_org_name,
-      flow_to_org_contactor, flow_to_org_phone, policy_face,
-      join_org_time, positived, join_contact_id,
-      contactor, app_date, exp_activist_date,
-      activist_date, exp_dev_date, dev_date,
-      dev_stage, ebl_flag, del_flag,
-      order_num, description, create_time,
-      create_userid, create_username, update_time,
-      update_userid, update_username, version,
-      post_reason, work_resumes, comment,
-      content, rewards, present_perform,is_taiwaner,job_position
-      )
-    values (#{userId,jdbcType=BIGINT}, #{deptId,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR},
-      #{identityType,jdbcType=BIGINT}, #{password,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR},
-      #{avatar,jdbcType=VARCHAR}, #{idCardNo,jdbcType=VARCHAR}, #{usedName,jdbcType=VARCHAR},
-      #{gender,jdbcType=BIGINT}, #{nation,jdbcType=BIGINT}, #{registeredresidence,jdbcType=VARCHAR},
-      #{ancestorPlace,jdbcType=BIGINT}, #{bornPlace,jdbcType=VARCHAR}, #{health,jdbcType=BIGINT},
-      #{familyorigin,jdbcType=BIGINT}, #{birthday,jdbcType=TIMESTAMP}, #{maritalStatus,jdbcType=BIGINT},
-      #{unitId,jdbcType=BIGINT}, #{unitName,jdbcType=VARCHAR}, #{workDate,jdbcType=TIMESTAMP},
-      #{phone,jdbcType=VARCHAR}, #{fixPhone,jdbcType=VARCHAR}, #{education,jdbcType=BIGINT},
-      #{degree,jdbcType=BIGINT}, #{familyAddress,jdbcType=VARCHAR}, #{communityAddr,jdbcType=BIGINT},
-      #{profession,jdbcType=BIGINT}, #{positive,jdbcType=BIGINT}, #{democraticParty,jdbcType=BIGINT},
-      #{technician,jdbcType=BIGINT}, #{migrant,jdbcType=VARCHAR}, #{graduatedFrom,jdbcType=VARCHAR},
-      #{contact,jdbcType=BIGINT}, #{joinelsetime,jdbcType=TIMESTAMP}, #{policeOffice,jdbcType=VARCHAR},
-      #{retiredTime,jdbcType=TIMESTAMP}, #{postTime,jdbcType=TIMESTAMP}, #{portrait,jdbcType=VARCHAR},
-      #{personIdentity,jdbcType=BIGINT}, #{stratum,jdbcType=BIGINT}, #{frontLine,jdbcType=BIGINT},
-      #{qqNumber,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{wxOpenid,jdbcType=VARCHAR},
-      #{qqOpenid,jdbcType=VARCHAR}, #{pmCode,jdbcType=VARCHAR}, #{joinTime,jdbcType=TIMESTAMP},
-      #{regularTime,jdbcType=TIMESTAMP}, #{regularStatus,jdbcType=BIGINT}, #{developType,jdbcType=BIGINT},
-      #{reference,jdbcType=VARCHAR}, #{feeRatio,jdbcType=DECIMAL}, #{joinAfterAugust,jdbcType=TINYINT},
-      #{isPoor,jdbcType=TINYINT}, #{isLlost,jdbcType=TINYINT}, #{flowStatus,jdbcType=BIGINT},
-      #{flowFromOrgId,jdbcType=BIGINT}, #{flowFromOrgName,jdbcType=VARCHAR}, #{flowFromOrgContactor,jdbcType=VARCHAR},
-      #{flowFromOrgPhone,jdbcType=VARCHAR}, #{flowToOrgId,jdbcType=BIGINT}, #{flowToOrgName,jdbcType=VARCHAR},
-      #{flowToOrgContactor,jdbcType=VARCHAR}, #{flowToOrgPhone,jdbcType=VARCHAR}, #{policyFace,jdbcType=BIGINT},
-      #{joinOrgTime,jdbcType=TIMESTAMP}, #{positived,jdbcType=VARCHAR}, #{joinContactId,jdbcType=BIGINT},
-      #{contactor,jdbcType=VARCHAR}, #{appDate,jdbcType=TIMESTAMP}, #{expActivistDate,jdbcType=TIMESTAMP},
-      #{activistDate,jdbcType=TIMESTAMP}, #{expDevDate,jdbcType=TIMESTAMP}, #{devDate,jdbcType=TIMESTAMP},
-      #{devStage,jdbcType=BIGINT}, #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR},
-      #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
-      #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT},
-      #{postReason,jdbcType=LONGVARCHAR}, #{workResumes,jdbcType=LONGVARCHAR}, #{comment,jdbcType=LONGVARCHAR},
-      #{content,jdbcType=LONGVARCHAR}, #{rewards,jdbcType=LONGVARCHAR}, #{presentPerform,jdbcType=LONGVARCHAR},
-       #{isTaiwaner,jdbcType=TINYINT},#{jobPosition,jdbcType=VARCHAR}
-      )
-    </insert>
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="userId"
             parameterType="com.egovchina.partybuilding.common.entity.SysUser">
         insert into sys_user
@@ -934,7 +864,7 @@
                 #{communityAddr,jdbcType=BIGINT},
             </if>
             <if test="profession != null">
-                #{profession,jdbcType=BIGINT},
+                #{profession,jdbcType=VARCHAR},
             </if>
             <if test="positive != null">
                 #{positive,jdbcType=BIGINT},
@@ -1239,7 +1169,7 @@
                 community_addr = #{communityAddr,jdbcType=BIGINT},
             </if>
             <if test="profession != null">
-                profession = #{profession,jdbcType=BIGINT},
+                profession = #{profession,jdbcType=VARCHAR},
             </if>
             <if test="positive != null">
                 positive = #{positive,jdbcType=BIGINT},
@@ -1560,7 +1490,7 @@
             <if test="communityAddr != null">
                 community_addr = #{communityAddr,jdbcType=BIGINT},
             </if>
-            profession = #{profession,jdbcType=BIGINT},
+            profession = #{profession,jdbcType=VARCHAR},
             <if test="positive != null">
                 positive = #{positive,jdbcType=BIGINT},
             </if>
@@ -1778,218 +1708,6 @@
         where user_id = #{userId,jdbcType=BIGINT}
     </update>
 
-
-    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.common.entity.SysUser">
-    update sys_user
-    set dept_id = #{deptId,jdbcType=BIGINT},
-      username = #{username,jdbcType=VARCHAR},
-      identity_type = #{identityType,jdbcType=BIGINT},
-      password = #{password,jdbcType=VARCHAR},
-      salt = #{salt,jdbcType=VARCHAR},
-      avatar = #{avatar,jdbcType=VARCHAR},
-      id_card_no = #{idCardNo,jdbcType=VARCHAR},
-      used_name = #{usedName,jdbcType=VARCHAR},
-      gender = #{gender,jdbcType=BIGINT},
-      nation = #{nation,jdbcType=BIGINT},
-      registeredresidence = #{registeredresidence,jdbcType=VARCHAR},
-      ancestor_place = #{ancestorPlace,jdbcType=BIGINT},
-      born_place = #{bornPlace,jdbcType=VARCHAR},
-      health = #{health,jdbcType=BIGINT},
-      familyorigin = #{familyorigin,jdbcType=BIGINT},
-      birthday = #{birthday,jdbcType=TIMESTAMP},
-      marital_status = #{maritalStatus,jdbcType=BIGINT},
-      unit_id = #{unitId,jdbcType=BIGINT},
-      unit_name = #{unitName,jdbcType=VARCHAR},
-      work_date = #{workDate,jdbcType=TIMESTAMP},
-      phone = #{phone,jdbcType=VARCHAR},
-      fix_phone = #{fixPhone,jdbcType=VARCHAR},
-      education = #{education,jdbcType=BIGINT},
-      degree = #{degree,jdbcType=BIGINT},
-      family_address = #{familyAddress,jdbcType=VARCHAR},
-      community_addr = #{communityAddr,jdbcType=BIGINT},
-      profession = #{profession,jdbcType=BIGINT},
-      positive = #{positive,jdbcType=BIGINT},
-      democratic_party = #{democraticParty,jdbcType=BIGINT},
-      technician = #{technician,jdbcType=BIGINT},
-      migrant = #{migrant,jdbcType=VARCHAR},
-      graduated_from = #{graduatedFrom,jdbcType=VARCHAR},
-      contact = #{contact,jdbcType=BIGINT},
-      joinelsetime = #{joinelsetime,jdbcType=TIMESTAMP},
-      police_office = #{policeOffice,jdbcType=VARCHAR},
-      retired_time = #{retiredTime,jdbcType=TIMESTAMP},
-      post_time = #{postTime,jdbcType=TIMESTAMP},
-      portrait = #{portrait,jdbcType=VARCHAR},
-      person_identity = #{personIdentity,jdbcType=BIGINT},
-      stratum = #{stratum,jdbcType=BIGINT},
-      front_line = #{frontLine,jdbcType=BIGINT},
-      qq_number = #{qqNumber,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      wx_openid = #{wxOpenid,jdbcType=VARCHAR},
-      qq_openid = #{qqOpenid,jdbcType=VARCHAR},
-      pm_code = #{pmCode,jdbcType=VARCHAR},
-      join_time = #{joinTime,jdbcType=TIMESTAMP},
-      regular_time = #{regularTime,jdbcType=TIMESTAMP},
-      regular_status = #{regularStatus,jdbcType=BIGINT},
-      develop_type = #{developType,jdbcType=BIGINT},
-      reference = #{reference,jdbcType=VARCHAR},
-      fee_ratio = #{feeRatio,jdbcType=DECIMAL},
-      join_after_august = #{joinAfterAugust,jdbcType=TINYINT},
-      is_poor = #{isPoor,jdbcType=TINYINT},
-      is_llost = #{isLlost,jdbcType=TINYINT},
-      flow_status = #{flowStatus,jdbcType=BIGINT},
-      flow_from_org_id = #{flowFromOrgId,jdbcType=BIGINT},
-      flow_from_org_name = #{flowFromOrgName,jdbcType=VARCHAR},
-      flow_from_org_contactor = #{flowFromOrgContactor,jdbcType=VARCHAR},
-      flow_from_org_phone = #{flowFromOrgPhone,jdbcType=VARCHAR},
-      flow_to_org_id = #{flowToOrgId,jdbcType=BIGINT},
-      flow_to_org_name = #{flowToOrgName,jdbcType=VARCHAR},
-      flow_to_org_contactor = #{flowToOrgContactor,jdbcType=VARCHAR},
-      flow_to_org_phone = #{flowToOrgPhone,jdbcType=VARCHAR},
-      policy_face = #{policyFace,jdbcType=BIGINT},
-      join_org_time = #{joinOrgTime,jdbcType=TIMESTAMP},
-      positived = #{positived,jdbcType=VARCHAR},
-      join_contact_id = #{joinContactId,jdbcType=BIGINT},
-      contactor = #{contactor,jdbcType=VARCHAR},
-      app_date = #{appDate,jdbcType=TIMESTAMP},
-      exp_activist_date = #{expActivistDate,jdbcType=TIMESTAMP},
-      activist_date = #{activistDate,jdbcType=TIMESTAMP},
-      exp_dev_date = #{expDevDate,jdbcType=TIMESTAMP},
-      dev_date = #{devDate,jdbcType=TIMESTAMP},
-      dev_stage = #{devStage,jdbcType=BIGINT},
-      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
-      del_flag = #{delFlag,jdbcType=VARCHAR},
-      order_num = #{orderNum,jdbcType=BIGINT},
-      description = #{description,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_userid = #{createUserid,jdbcType=BIGINT},
-      create_username = #{createUsername,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_userid = #{updateUserid,jdbcType=BIGINT},
-      update_username = #{updateUsername,jdbcType=VARCHAR},
-      version = #{version,jdbcType=BIGINT},
-      post_reason = #{postReason,jdbcType=LONGVARCHAR},
-      work_resumes = #{workResumes,jdbcType=LONGVARCHAR},
-      comment = #{comment,jdbcType=LONGVARCHAR},
-      content = #{content,jdbcType=LONGVARCHAR},
-      rewards = #{rewards,jdbcType=LONGVARCHAR},
-      is_taiwaner = #{isTaiwaner,jdbcType=TINYINT},
-      present_perform = #{presentPerform,jdbcType=LONGVARCHAR},
-      job_position = #{jobPosition,jdbcType=VARCHAR}
-    where user_id = #{userId,jdbcType=BIGINT}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.common.entity.SysUser">
-    update sys_user
-    set dept_id = #{deptId,jdbcType=BIGINT},
-      username = #{username,jdbcType=VARCHAR},
-      identity_type = #{identityType,jdbcType=BIGINT},
-      password = #{password,jdbcType=VARCHAR},
-      salt = #{salt,jdbcType=VARCHAR},
-      avatar = #{avatar,jdbcType=VARCHAR},
-      id_card_no = #{idCardNo,jdbcType=VARCHAR},
-      used_name = #{usedName,jdbcType=VARCHAR},
-      gender = #{gender,jdbcType=BIGINT},
-      nation = #{nation,jdbcType=BIGINT},
-      registeredresidence = #{registeredresidence,jdbcType=VARCHAR},
-      ancestor_place = #{ancestorPlace,jdbcType=BIGINT},
-      born_place = #{bornPlace,jdbcType=VARCHAR},
-      health = #{health,jdbcType=BIGINT},
-      familyorigin = #{familyorigin,jdbcType=BIGINT},
-      birthday = #{birthday,jdbcType=TIMESTAMP},
-      marital_status = #{maritalStatus,jdbcType=BIGINT},
-      unit_id = #{unitId,jdbcType=BIGINT},
-      unit_name = #{unitName,jdbcType=VARCHAR},
-      work_date = #{workDate,jdbcType=TIMESTAMP},
-      phone = #{phone,jdbcType=VARCHAR},
-      fix_phone = #{fixPhone,jdbcType=VARCHAR},
-      education = #{education,jdbcType=BIGINT},
-      degree = #{degree,jdbcType=BIGINT},
-      family_address = #{familyAddress,jdbcType=VARCHAR},
-      community_addr = #{communityAddr,jdbcType=BIGINT},
-      profession = #{profession,jdbcType=BIGINT},
-      positive = #{positive,jdbcType=BIGINT},
-      democratic_party = #{democraticParty,jdbcType=BIGINT},
-      technician = #{technician,jdbcType=BIGINT},
-      migrant = #{migrant,jdbcType=VARCHAR},
-      graduated_from = #{graduatedFrom,jdbcType=VARCHAR},
-      contact = #{contact,jdbcType=BIGINT},
-      joinelsetime = #{joinelsetime,jdbcType=TIMESTAMP},
-      police_office = #{policeOffice,jdbcType=VARCHAR},
-      retired_time = #{retiredTime,jdbcType=TIMESTAMP},
-      post_time = #{postTime,jdbcType=TIMESTAMP},
-      portrait = #{portrait,jdbcType=VARCHAR},
-      person_identity = #{personIdentity,jdbcType=BIGINT},
-      stratum = #{stratum,jdbcType=BIGINT},
-      front_line = #{frontLine,jdbcType=BIGINT},
-      qq_number = #{qqNumber,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      wx_openid = #{wxOpenid,jdbcType=VARCHAR},
-      qq_openid = #{qqOpenid,jdbcType=VARCHAR},
-      pm_code = #{pmCode,jdbcType=VARCHAR},
-      join_time = #{joinTime,jdbcType=TIMESTAMP},
-      regular_time = #{regularTime,jdbcType=TIMESTAMP},
-      regular_status = #{regularStatus,jdbcType=BIGINT},
-      develop_type = #{developType,jdbcType=BIGINT},
-      reference = #{reference,jdbcType=VARCHAR},
-      fee_ratio = #{feeRatio,jdbcType=DECIMAL},
-      join_after_august = #{joinAfterAugust,jdbcType=TINYINT},
-      is_poor = #{isPoor,jdbcType=TINYINT},
-      is_llost = #{isLlost,jdbcType=TINYINT},
-      flow_status = #{flowStatus,jdbcType=BIGINT},
-      flow_from_org_id = #{flowFromOrgId,jdbcType=BIGINT},
-      flow_from_org_name = #{flowFromOrgName,jdbcType=VARCHAR},
-      flow_from_org_contactor = #{flowFromOrgContactor,jdbcType=VARCHAR},
-      flow_from_org_phone = #{flowFromOrgPhone,jdbcType=VARCHAR},
-      flow_to_org_id = #{flowToOrgId,jdbcType=BIGINT},
-      flow_to_org_name = #{flowToOrgName,jdbcType=VARCHAR},
-      flow_to_org_contactor = #{flowToOrgContactor,jdbcType=VARCHAR},
-      flow_to_org_phone = #{flowToOrgPhone,jdbcType=VARCHAR},
-      policy_face = #{policyFace,jdbcType=BIGINT},
-      join_org_time = #{joinOrgTime,jdbcType=TIMESTAMP},
-      positived = #{positived,jdbcType=VARCHAR},
-      join_contact_id = #{joinContactId,jdbcType=BIGINT},
-      contactor = #{contactor,jdbcType=VARCHAR},
-      app_date = #{appDate,jdbcType=TIMESTAMP},
-      exp_activist_date = #{expActivistDate,jdbcType=TIMESTAMP},
-      activist_date = #{activistDate,jdbcType=TIMESTAMP},
-      exp_dev_date = #{expDevDate,jdbcType=TIMESTAMP},
-      dev_date = #{devDate,jdbcType=TIMESTAMP},
-      dev_stage = #{devStage,jdbcType=BIGINT},
-      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
-      del_flag = #{delFlag,jdbcType=VARCHAR},
-      order_num = #{orderNum,jdbcType=BIGINT},
-      description = #{description,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_userid = #{createUserid,jdbcType=BIGINT},
-      create_username = #{createUsername,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_userid = #{updateUserid,jdbcType=BIGINT},
-      update_username = #{updateUsername,jdbcType=VARCHAR},
-      is_taiwaner = #{isTaiwaner,jdbcType=TINYINT},
-      job_position = #{jobPosition,jdbcType=VARCHAR},
-      version = #{version,jdbcType=BIGINT}
-    where user_id = #{userId}
-    </update>
-    <update id="updateByPrimaryKeyId" parameterType="com.egovchina.partybuilding.common.entity.SysUser">
-    update sys_user
-    set ancestor_place = #{ancestorPlace,jdbcType=BIGINT},
-    front_line = #{frontLine,jdbcType=BIGINT},
-    marital_status = #{maritalStatus,jdbcType=BIGINT},
-    migrant = #{migrant,jdbcType=VARCHAR},
-    portrait = #{portrait,jdbcType=VARCHAR},
-    stratum = #{stratum,jdbcType=BIGINT},
-    technician = #{technician,jdbcType=BIGINT},
-    unit_name = #{unitName,jdbcType=VARCHAR},
-    work_date = #{workDate,jdbcType=TIMESTAMP},
-    is_taiwaner = #{isTaiwaner},
-    files_manage_unit = #{filesManageUnit}
-    where user_id = #{userId}
-    </update>
-    <update id="updateByUserId" parameterType="java.lang.Long">
-    update sys_user
-    set ebl_flag = 1
-    where user_id = #{user_id}
-   </update>
-
     <!--根据身份政查找userId-->
     <select id="SelectUserIdByIDcard" resultType="Long">
         select user_id from sys_user where id_card_no =#{idCardNo}
@@ -2124,14 +1842,6 @@
        select  IFNULL(s.likes,'0') from sys_user s where user_id = #{userId}
     </select>
 
-    <update id="updateByisPoor" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
-           update sys_user set is_poor =1 where user_id=#{userId,jdbcType=BIGINT}
-
-    </update>
-
-    <update id="updateNoPoor" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
-          update sys_user set is_poor =0 where user_id=#{userId,jdbcType=BIGINT}
-    </update>
     <!--批量修改党员所在组织-->
     <update id="batchDeptIdByUserId">
         update sys_user
@@ -2180,125 +1890,6 @@
             </if>
         </where>
     </select>
-    <insert id="saveEntity" useGeneratedKeys="true" keyProperty="userId"
-            parameterType="com.egovchina.partybuilding.common.entity.SysUser">
-        insert into sys_user
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="username != null">
-                username,
-            </if>
-            <if test="realname != null">
-                realname,
-            </if>
-            <if test="gender != null">
-                gender,
-            </if>
-            <if test="idCardNo != null">
-                id_card_no,
-            </if>
-            <if test="nation != null">
-                nation,
-            </if>
-            <if test="policyFace != null">
-                policy_face,
-            </if>
-            <if test="phone != null">
-                phone,
-            </if>
-            <if test="positive != null">
-                positive,
-            </if>
-            <if test="birthday != null">
-                birthday,
-            </if>
-            <if test="orderNum != null">
-                order_num,
-            </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
-            <if test="createUserid != null">
-                create_userid,
-            </if>
-            <if test="createUsername != null">
-                create_username,
-            </if>
-            <if test="updateTime != null">
-                update_time,
-            </if>
-            <if test="updateUserid != null">
-                update_userid,
-            </if>
-            <if test="updateUsername != null">
-                update_username,
-            </if>
-            <if test="version != null">
-                version,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="username != null">
-                #{username},
-            </if>
-            <if test="realname != null">
-                #{realname},
-            </if>
-            <if test="gender != null">
-                #{gender},
-            </if>
-            <if test="idCardNo != null">
-                #{idCardNo},
-            </if>
-            <if test="nation != null">
-                #{nation},
-            </if>
-            <if test="policyFace != null">
-                #{policyFace},
-            </if>
-            <if test="phone != null">
-                #{phone},
-            </if>
-            <if test="positive != null">
-                #{positive},
-            </if>
-            <if test="birthday != null">
-                #{birthday},
-            </if>
-            <if test="orderNum != null">
-                #{orderNum},
-            </if>
-            <if test="createTime != null">
-                #{createTime},
-            </if>
-            <if test="createUserid != null">
-                #{createUserid},
-            </if>
-            <if test="createUsername != null">
-                #{createUsername},
-            </if>
-            <if test="updateTime != null">
-                #{updateTime},
-            </if>
-            <if test="updateUserid != null">
-                #{updateUserid},
-            </if>
-            <if test="updateUsername != null">
-                #{updateUsername},
-            </if>
-            <if test="version != null">
-                #{version},
-            </if>
-        </trim>
-    </insert>
-    <update id="flagDelete" parameterType="java.lang.Long">
-        update sys_user
-        <set>
-            ebl_flag = 0,
-            del_flag = 1,
-
-        </set>
-        where user_id = #{userId}
-    </update>
     <update id="editUserRegister" parameterType="com.egovchina.partybuilding.common.entity.SysUser">
         update sys_user
         <set>
@@ -2309,33 +1900,10 @@
         </set>
         where user_id = #{userId}
     </update>
-    <select id="selectAllRegister" parameterType="com.egovchina.partybuilding.common.entity.SysUser"
-            resultMap="BaseResultMap">
-        SELECT user.*,hard.hardship_type FROM sys_user user
-        LEFT JOIN tab_pb_hardship hard ON `user`.user_id = hard.user_id AND hard.del_flag = '0'
-        WHERE `user`.del_flag = '0'
-        <choose>
-            <when test="deptId != null and deptId != '' ">
-                and dept_id =#{deptId}
-            </when>
-            <otherwise>
-                and report_org_id = #{reportOrgId}
-            </otherwise>
-        </choose>
-    </select>
     <!--判断是否属于org的组织-->
     <select id="verification" resultType="boolean" parameterType="java.lang.Long">
         <![CDATA[ SELECT COUNT(1) FROM sys_dept WHERE dept_id = #{orgId} AND FIND_IN_SET(#{orgId},(SELECT full_path FROM sys_dept WHERE dept_id = #{deptId} and del_flag = 0))]]>
     </select>
-
-    <!--修改头像-->
-    <update id="editAvatar" parameterType="java.lang.String">
-        update sys_user
-        <set>
-            avatar = #{avatar},
-        </set>
-        where user_id = #{userId}
-    </update>
 
     <select id="checkIsExistByUserId" parameterType="java.lang.Long" resultType="java.lang.Boolean">
         SELECT COUNT(1) FROM sys_user WHERE user_id = #{userId} AND del_flag = 0
@@ -2343,6 +1911,9 @@
 
     <select id="checkIsExistByIdCard" parameterType="java.lang.String" resultType="java.lang.Boolean">
         SELECT COUNT(1) FROM sys_user WHERE id_card_no = #{idCard} AND del_flag = 0
+    </select>
+    <select id="checkIsExistByPhone" parameterType="java.lang.String" resultType="java.lang.Boolean">
+        SELECT COUNT(1) FROM sys_user WHERE phone = #{phone} AND del_flag = 0
     </select>
 
     <update id="updateUserIsPoorByHardshipId">
