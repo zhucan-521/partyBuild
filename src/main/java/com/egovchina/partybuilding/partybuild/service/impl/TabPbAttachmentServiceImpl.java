@@ -132,16 +132,18 @@ public class TabPbAttachmentServiceImpl implements ITabPbAttachmentService {
 
         //筛选
         List<Long> pendingRemoveIDList = dbList.stream()
-                .filter(tabPbAttachment -> !pendingInstanceList.contains(tabPbAttachment.getAttachmentInstance()))
+//                .filter(tabPbAttachment -> !pendingInstanceList.contains(tabPbAttachment.getAttachmentInstance()))
+                .filter(attachment -> pendingList.stream().noneMatch(dbAttachment -> dbAttachment.getAttachmentInstance()
+                        .equals(attachment.getAttachmentInstance()) && dbAttachment.getAttachmentId().equals(attachment.getAttachmentId())))
                 .map(TabPbAttachment::getAttachmentId)
                 .collect(Collectors.toList());
 
         List<TabPbAttachment> pendingAddList = pendingList.stream()
-                .filter(tabPbAttachment -> !dbInstanceList.contains(tabPbAttachment.getAttachmentInstance()))
+                .filter(tabPbAttachment -> !dbInstanceList.contains(tabPbAttachment.getAttachmentInstance()) || tabPbAttachment.getAttachmentId() == null)
                 .collect(Collectors.toList());
 
         List<TabPbAttachment> pendingUpdateList = finalPendingList.stream().filter(attachment -> dbList.stream().anyMatch(dbAttachment -> dbAttachment.getAttachmentInstance()
-                .equals(attachment.getAttachmentInstance())
+                .equals(attachment.getAttachmentInstance()) && dbAttachment.getAttachmentId().equals(attachment.getAttachmentId())
                 && (!dbAttachment.getRotate().equals(attachment.getRotate())
                 || !dbAttachment.getOrderNum().equals(attachment.getOrderNum())))).collect(Collectors.toList());
 

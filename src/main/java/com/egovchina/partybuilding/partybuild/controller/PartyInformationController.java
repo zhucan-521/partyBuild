@@ -7,6 +7,7 @@ import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.CommunityDTO;
 import com.egovchina.partybuilding.partybuild.dto.DeletePartyMemberDTO;
 import com.egovchina.partybuilding.partybuild.dto.PartyInfoDTO;
+import com.egovchina.partybuilding.partybuild.dto.UpdateHistoryDTO;
 import com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.SysUserQueryBean;
 import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
@@ -86,10 +87,22 @@ public class PartyInformationController {
         return extendedInfoService.selectPartyByIdCardNoOrUserName(idCardNo, username, page);
     }
 
-    @ApiOperation(value = "根据id删除user信息或者历史党员编辑")
+    @ApiOperation(value = "根据id删除user信息")
     @PostMapping("/history-members")
     public ReturnEntity deleteUser(@RequestBody @Validated @ApiParam("删除党员信息实体") DeletePartyMemberDTO deletePartyMemberDTO) {
         return ReturnUtil.buildReturn(extendedInfoService.invalidByUserId(deletePartyMemberDTO));
+    }
+
+    @ApiOperation(value = "根据id删除历史user信息")
+    @DeleteMapping("/history-members/{userId}")
+    public ReturnEntity deleteHistoryUser(@PathVariable Long userId) {
+        return ReturnUtil.buildReturn(extendedInfoService.deleteByUserId(userId));
+    }
+
+    @ApiOperation(value = "历史党员修改")
+    @PutMapping("/history-members")
+    public ReturnEntity upadteUser(@RequestBody @Validated @ApiParam("修改历史党员信息实体") UpdateHistoryDTO updateHistoryDTO) {
+        return ReturnUtil.buildReturn(extendedInfoService.updateHistoryParty(updateHistoryDTO));
     }
 
     @ApiOperation(value = "根据id恢复党员信息")

@@ -47,7 +47,7 @@
             parameterType="com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean"
             resultMap="com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper.History_UserInfo">
         select
-        r.user_id,u.registry_status,u.realname,u.id_card_no,u.gender,u.nation,r.dept_id
+        r.member_reduce_id,r.user_id,u.registry_status,u.realname,u.id_card_no,u.gender,u.nation,r.dept_id
         ,d.name as in_where_dept_name,TIMESTAMPDIFF(month,
         DATE_FORMAT(u.join_org_time,'%Y-%m-%d'),DATE_FORMAT(r.reduce_time,'%Y-%m-%d')) AS
         age,r.update_time,r.reduce_time,r.out_type,r.quit_type
@@ -120,7 +120,10 @@
         <include refid="Base_Column_List"/>
         ,
         <include refid="Blob_Column_List"/>
-        FROM tab_pb_member_reduce_list WHERE user_id = #{userId,jdbcType=BIGINT} ORDER BY reduce_time DESC LIMIT 1
+        FROM tab_pb_member_reduce_list WHERE user_id = #{userId,jdbcType=BIGINT}
+        and ebl_flag = '1'
+        and del_flag = '0'
+        ORDER BY update_time DESC LIMIT 1
     </select>
     <select id="selectHistoryPartyVOByUserId" parameterType="java.lang.Long"
             resultMap="com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper.History_UserInfo">
@@ -135,13 +138,6 @@
         and r.del_flag ='0'
         ORDER BY r.update_time DESC LIMIT 1
     </select>
-    <select id="selectListByUserId" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
-        SELECT
-        <include refid="Base_Column_List"/>
-        ,
-        <include refid="Blob_Column_List"/>
-        FROM tab_pb_member_reduce_list WHERE user_id = #{userId,jdbcType=BIGINT} ORDER BY reduce_time DESC
-    </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
@@ -149,33 +145,10 @@
         <include refid="Blob_Column_List"/>
         from tab_pb_member_reduce_list
         where member_reduce_id = #{memberReduceId,jdbcType=BIGINT}
+        and del_flag='0'
+        and ebl_flag='1'
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from tab_pb_member_reduce_list
-    where member_reduce_id = #{memberReduceId,jdbcType=BIGINT}
-  </delete>
-    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
-    insert into tab_pb_member_reduce_list (member_reduce_id, dept_id, user_id, 
-      real_name, reduce_time, out_type, 
-      to_org_id, to_org_code, to_org_name, 
-      to_org_place, reduce_reason, old_identity, 
-      quit_type, quit_reason, ebl_flag, 
-      del_flag, order_num, description, 
-      create_time, create_userid, create_username, 
-      update_time, update_userid, update_username, 
-      version, comment, person_status
-      )
-    values (#{memberReduceId,jdbcType=BIGINT}, #{deptId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
-      #{realName,jdbcType=VARCHAR}, #{reduceTime,jdbcType=TIMESTAMP}, #{outType,jdbcType=BIGINT}, 
-      #{toOrgId,jdbcType=BIGINT}, #{toOrgCode,jdbcType=VARCHAR}, #{toOrgName,jdbcType=VARCHAR}, 
-      #{toOrgPlace,jdbcType=VARCHAR}, #{reduceReason,jdbcType=BIGINT}, #{oldIdentity,jdbcType=BIGINT}, 
-      #{quitType,jdbcType=BIGINT}, #{quitReason,jdbcType=BIGINT}, #{eblFlag,jdbcType=VARCHAR}, 
-      #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
-      #{version,jdbcType=BIGINT}, #{comment,jdbcType=LONGVARCHAR}, #{personStatus,jdbcType=LONGVARCHAR}
-      )
-  </insert>
+
     <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
         insert into tab_pb_member_reduce_list
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -430,63 +403,88 @@
         </set>
         where member_reduce_id = #{memberReduceId,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKeyWithBLOBs"
+    <update id="updateByPrimaryKeySelectiveCondition"
             parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
-    update tab_pb_member_reduce_list
-    set dept_id = #{deptId,jdbcType=BIGINT},
-      user_id = #{userId,jdbcType=BIGINT},
-      real_name = #{realName,jdbcType=VARCHAR},
-      reduce_time = #{reduceTime,jdbcType=TIMESTAMP},
-      out_type = #{outType,jdbcType=BIGINT},
-      to_org_id = #{toOrgId,jdbcType=BIGINT},
-      to_org_code = #{toOrgCode,jdbcType=VARCHAR},
-      to_org_name = #{toOrgName,jdbcType=VARCHAR},
-      to_org_place = #{toOrgPlace,jdbcType=VARCHAR},
-      reduce_reason = #{reduceReason,jdbcType=BIGINT},
-      old_identity = #{oldIdentity,jdbcType=BIGINT},
-      quit_type = #{quitType,jdbcType=BIGINT},
-      quit_reason = #{quitReason,jdbcType=BIGINT},
-      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
-      del_flag = #{delFlag,jdbcType=VARCHAR},
-      order_num = #{orderNum,jdbcType=BIGINT},
-      description = #{description,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_userid = #{createUserid,jdbcType=BIGINT},
-      create_username = #{createUsername,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_userid = #{updateUserid,jdbcType=BIGINT},
-      update_username = #{updateUsername,jdbcType=VARCHAR},
-      version = #{version,jdbcType=BIGINT},
-      comment = #{comment,jdbcType=LONGVARCHAR},
-      person_status = #{personStatus,jdbcType=LONGVARCHAR}
-    where member_reduce_id = #{memberReduceId,jdbcType=BIGINT}
-  </update>
-    <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
-    update tab_pb_member_reduce_list
-    set dept_id = #{deptId,jdbcType=BIGINT},
-      user_id = #{userId,jdbcType=BIGINT},
-      real_name = #{realName,jdbcType=VARCHAR},
-      reduce_time = #{reduceTime,jdbcType=TIMESTAMP},
-      out_type = #{outType,jdbcType=BIGINT},
-      to_org_id = #{toOrgId,jdbcType=BIGINT},
-      to_org_code = #{toOrgCode,jdbcType=VARCHAR},
-      to_org_name = #{toOrgName,jdbcType=VARCHAR},
-      to_org_place = #{toOrgPlace,jdbcType=VARCHAR},
-      reduce_reason = #{reduceReason,jdbcType=BIGINT},
-      old_identity = #{oldIdentity,jdbcType=BIGINT},
-      quit_type = #{quitType,jdbcType=BIGINT},
-      quit_reason = #{quitReason,jdbcType=BIGINT},
-      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
-      del_flag = #{delFlag,jdbcType=VARCHAR},
-      order_num = #{orderNum,jdbcType=BIGINT},
-      description = #{description,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_userid = #{createUserid,jdbcType=BIGINT},
-      create_username = #{createUsername,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_userid = #{updateUserid,jdbcType=BIGINT},
-      update_username = #{updateUsername,jdbcType=VARCHAR},
-      version = #{version,jdbcType=BIGINT}
-    where member_reduce_id = #{memberReduceId,jdbcType=BIGINT}
-  </update>
+        update tab_pb_member_reduce_list
+        <set>
+            <if test="deptId != null">
+                dept_id = #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="realName != null">
+                real_name = #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="reduceTime != null">
+                reduce_time = #{reduceTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="outType != null">
+                out_type = #{outType,jdbcType=BIGINT},
+            </if>
+            <if test="toOrgId != null">
+                to_org_id = #{toOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="toOrgCode != null">
+                to_org_code = #{toOrgCode,jdbcType=VARCHAR},
+            </if>
+            <if test="toOrgName != null">
+                to_org_name = #{toOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="toOrgPlace != null">
+                to_org_place = #{toOrgPlace,jdbcType=VARCHAR},
+            </if>
+            <if test="reduceReason != null">
+                reduce_reason = #{reduceReason,jdbcType=BIGINT},
+            </if>
+            <if test="oldIdentity != null">
+                old_identity = #{oldIdentity,jdbcType=BIGINT},
+            </if>
+            quit_type = #{quitType,jdbcType=BIGINT},
+            <if test="quitReason != null">
+                quit_reason = #{quitReason,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=BIGINT},
+            </if>
+            <if test="comment != null">
+                comment = #{comment,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="personStatus != null">
+                person_status = #{personStatus,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where member_reduce_id = #{memberReduceId,jdbcType=BIGINT}
+    </update>
+
 </mapper>
