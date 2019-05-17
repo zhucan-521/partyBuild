@@ -28,7 +28,7 @@
         <result column="degree" jdbcType="BIGINT" property="degree"/>
         <result column="family_address" jdbcType="VARCHAR" property="familyAddress"/>
         <result column="community_addr" jdbcType="BIGINT" property="communityAddr"/>
-        <result column="profession" jdbcType="BIGINT" property="profession"/>
+        <result column="profession" jdbcType="VARCHAR" property="profession"/>
         <result column="positive" jdbcType="BIGINT" property="positive"/>
         <result column="democratic_party" jdbcType="BIGINT" property="democraticParty"/>
         <result column="technician" jdbcType="BIGINT" property="technician"/>
@@ -178,7 +178,7 @@
         <result column="positived" jdbcType="VARCHAR" property="positived"/>
         <result column="files_manage_unit" jdbcType="VARCHAR" property="filesManageUnit"/>
         <result column="work_resumes" jdbcType="LONGVARCHAR" property="workResumes"/>
-        <result column="profession" jdbcType="BIGINT" property="profession"/>
+        <result column="profession" jdbcType="VARCHAR" property="profession"/>
         <collection property="tabPbUserTags" select="com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper.selectAllListSelective"
                     column="{userId=user_id}"/>
     </resultMap>
@@ -306,7 +306,7 @@
     <sql id="Base_users_info">
         u.user_id,realname,gender,TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age,nation,id_card_no,join_time,join_org_time,regular_time,report_org_name,phone,identity_type,marital_status,
         education,flow_status,IFNULL(is_llost,'0') as is_llost,IFNULL(is_poor,'0') as is_poor,IFNULL(is_taiwaner,'0') as is_taiwaner,dd.unit_id,u.dept_id,birthday,migrant,stratum,front_line,work_date,ancestor_place,registry_status,family_address,u.community_addr,
-        job_position,u.health,u.avatar,u.fix_phone,u.positived,u.files_manage_unit,u.work_resumes,u.stratum
+        job_position,u.health,u.avatar,u.fix_phone,u.positived,u.files_manage_unit,u.work_resumes,u.stratum,u.profession
     </sql>
     <!--查询部门表防止名字重复-->
     <sql id="dept_name_result">
