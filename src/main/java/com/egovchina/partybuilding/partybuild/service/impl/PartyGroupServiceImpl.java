@@ -201,7 +201,7 @@ public class PartyGroupServiceImpl implements PartyGroupService {
     private int maintainUpdatePartyGroupAction(PartyGroupDTO partyGroupDTO) {
         int result = 0;
         Long groupId = partyGroupDTO.getGroupId();
-        result += tabPbPartyGroupMemberMapper.batchDeleteByUserId(groupId);
+        result += tabPbPartyGroupMemberMapper.batchDeleteByGroupId(groupId);
         result += maintainInsertPartyGroupAction(partyGroupDTO, groupId);
         return result;
     }

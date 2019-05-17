@@ -199,39 +199,6 @@
             AND gm.del_flag = 0
     </select>
 
-    <!-- 根据党小组ID获取该小组下所有成员基本信息 -->
-    <select id="selectPartyGroupMembersBaseInfoByGroupId" parameterType="java.lang.Long"
-            resultMap="PartyGroupMemberVOResultMap">
-        SELECT
-            gm.member_id,
-        FROM
-            tab_pb_party_group_member gm
-            INNER JOIN sys_user su ON gm.user_id = su.user_id
-        WHERE
-            gm.group_id = #{groupId,jdbcType=BIGINT}
-            AND gm.del_flag = 0
-    </select>
-
-    <!-- 根据党小组ID批量删除成员 -->
-    <update id="batchDeleteByGroupId" parameterType="java.lang.Long">
-        UPDATE tab_pb_party_group_member
-        <set>
-            <if test="delFlag != null">
-                del_flag = #{delFlag,jdbcType=TINYINT},
-            </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateUserid != null">
-                update_userid = #{updateUserid,jdbcType=BIGINT},
-            </if>
-            <if test="updateUsername != null">
-                update_username = #{updateUsername,jdbcType=VARCHAR},
-            </if>
-        </set>
-        WHERE group_id = #{groupId,jdbcType=BIGINT}
-    </update>
-
     <!-- 批量新增成员到党小组 -->
     <insert id="batchInsert" parameterType="java.util.List">
         INSERT INTO tab_pb_party_group_member
@@ -250,7 +217,7 @@
     </insert>
 
     <!-- 批量删除党组成员 -->
-    <delete id="batchDeleteByUserId" parameterType="java.lang.Long">
+    <delete id="batchDeleteByGroupId" parameterType="java.lang.Long">
         DELETE
         FROM
         tab_pb_party_group_member
@@ -264,11 +231,6 @@
             </otherwise>
         </choose>
     </delete>
-
-    <!-- 根据党员ID查询该条数据是否存在 -->
-    <select id="checkIsExistByUserId" parameterType="java.lang.Long" resultType="boolean">
-        SELECT COUNT(1) FROM tab_pb_party_group_member WHERE user_id = #{userId,jdbcType=BIGINT}
-    </select>
 
     <!-- 筛选指定组织中未在任何党组存在的党员 -->
     <select id="screenPartyGroupMembers" resultMap="PartyMemberBaseVOResultMap">
