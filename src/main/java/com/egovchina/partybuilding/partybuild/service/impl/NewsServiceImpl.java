@@ -38,7 +38,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public int insertNews(NewsDTO newsDTO) {
-        verifyAdd(newsDTO);
+        verifyAddOrUpdate(newsDTO, true);
         TabPbNews tabPbNews = generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, false);
         int result = newsMapper.insertSelective(tabPbNews);
         if (result > 0) {
@@ -49,7 +49,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public int updateNews(NewsDTO newsDTO) {
-        verifyUpdates(newsDTO);
+        verifyAddOrUpdate(newsDTO, false);
         int result = newsMapper.updateByPrimaryKeySelective(generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, true));
         if (result > 0) {
             result += updatingFiles(newsDTO, newsDTO.getNewsId());
@@ -109,19 +109,15 @@ public class NewsServiceImpl implements NewsService {
         }
     }
 
-    private void verifyAdd(NewsDTO newsDTO) {
-        if (!tabSysDeptMapper.checkIsExistByOrgId(newsDTO.getOrgId())) {
-            throw new BusinessDataCheckFailException("该组织不存在");
-        }
-    }
-
-    private void verifyUpdates(NewsDTO newsDTO) {
+    private void verifyAddOrUpdate(NewsDTO newsDTO, boolean isInsert) {
         Long newsId = newsDTO.getNewsId();
-        if (newsId == null) {
-            throw new BusinessDataCheckFailException("新闻资讯ID不能为空");
-        } else {
-            if (!newsMapper.checkIsExistByNewsId(newsId)) {
-                throw new BusinessDataCheckFailException("该新闻数据不存在");
+        if (!isInsert) {
+            if (newsId == null) {
+                throw new BusinessDataCheckFailException("新闻资讯ID不能为空");
+            } else {
+                if (!newsMapper.checkIsExistByNewsId(newsId)) {
+                    throw new BusinessDataCheckFailException("该新闻数据不存在");
+                }
             }
         }
         if (!tabSysDeptMapper.checkIsExistByOrgId(newsDTO.getOrgId())) {

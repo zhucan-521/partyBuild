@@ -442,7 +442,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 }
                 return 0;
             });
-            sys.setProfession(partyJobTitleDTO.get(0).getPost());
+//            sys.setProfession(partyJobTitleDTO.get(0).getPost());
             sys.setTechnician(partyJobTitleDTO.get(0).getQualifications());
             sys.setPostTime(partyJobTitleDTO.get(0).getAppointEndDate());
         } else {
