@@ -441,6 +441,10 @@
         WHERE lt.lead_team_id = #{leadTeamId}
     </update>
 
+    <update id="setPreviousLeadTeamForThePast">
+       update tab_pb_lead_team set current = 0 where org_id = #{orgId} and del_flag = '0' and lead_team_id != #{leadTeamId}
+    </update>
+
     <!--根据id查询班子详情-->
     <select id="selectLeadTeamVOById" parameterType="java.lang.Long" resultMap="ContainsAttachmentLeadTeamVOResultMap">
         select

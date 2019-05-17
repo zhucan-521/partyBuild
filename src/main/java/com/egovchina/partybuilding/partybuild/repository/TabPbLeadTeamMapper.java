@@ -3,6 +3,7 @@ package com.egovchina.partybuilding.partybuild.repository;
 import com.egovchina.partybuilding.partybuild.entity.LeadTeamQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeam;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -57,4 +58,13 @@ public interface TabPbLeadTeamMapper {
      * @return
      */
     Boolean chechLeadTeamIsExist(Long sessionYear, Long orgId);
+
+    /**
+     * 如果当前组织传入的领导班子为当届，那么就将当前组织以前的领导班子设置为往届
+     *
+     * @param orgId 组织id
+     * @param leadTeamId 领导班子id
+     * @return
+     */
+    int setPreviousLeadTeamForThePast(@Param("orgId") Long orgId, @Param("leadTeamId") Long leadTeamId);
 }
