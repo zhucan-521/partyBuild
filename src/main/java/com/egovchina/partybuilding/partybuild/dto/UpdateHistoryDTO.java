@@ -9,11 +9,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-@ApiModel(value = "删除党员实体")
+@ApiModel(value = "编辑历史党员实体")
 @Accessors(chain = true)
 @Data
-public class DeletePartyMemberDTO {
-
+public class UpdateHistoryDTO {
     @ApiModelProperty(value = "用户id", required = true)
     @NotNull(message = "用户id不能为空")
     private Long userId;
@@ -29,4 +28,7 @@ public class DeletePartyMemberDTO {
     @ApiModelProperty(value = "出党方式 dict")
     private Long quitType;
 
+    @ApiModelProperty(value = "减少党员id")
+    @NotNull(message = "减少党员id不能为空")
+    private Long memberReduceId;
 }

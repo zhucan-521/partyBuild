@@ -13,24 +13,45 @@ import java.util.List;
 
 @Repository
 public interface TabSysUserMapper {
-    int deleteByPrimaryKey(Long userId);
 
-    int insert(SysUser record);
-
+    /**
+     * 新增
+     *
+     * @param record
+     * @return
+     */
     int insertSelective(SysUser record);
 
+    /**
+     * 通过主键查询
+     *
+     * @param userId
+     * @return
+     */
     SysUser selectByPrimaryKey(Long userId);
 
+    /**
+     * 通过条件更新用户
+     *
+     * @param record
+     * @return
+     */
     int updateByPrimaryKeySelective(SysUser record);
 
+    /**
+     * 用于维护新增或修改时,关联的学历,工作信息,职务数据
+     *
+     * @param user
+     * @return
+     */
     int updateByPrimaryKeySelectiveSpecialModification(SysUser user);
 
-    int updateByPrimaryKeyWithBLOBs(SysUser record);
-
-    int updateByPrimaryKey(SysUser record);
-
-    int updateByPrimaryKeyId(SysUser record);
-
+    /**
+     * 用于党员列表显示,获取完整度度字段查询
+     *
+     * @param sysUserQueryBean
+     * @return
+     */
     List<SystemDetailsVO> selectPageByMap(SysUserQueryBean sysUserQueryBean);
 
     /**
@@ -41,7 +62,6 @@ public interface TabSysUserMapper {
      */
     Long SelectUserIdByIDcard(String IDcard);
 
-
     /**
      * 根据身份证查询人员信息
      *
@@ -51,12 +71,19 @@ public interface TabSysUserMapper {
     SysUser selectUserByIdCardNo(String idCardNo);
 
     /**
-     * 根据身份证查询人员信息
+     * 根据身份証查找identity信息
      *
      * @return
      */
     Long selectUserByIdFindIdentity(Long userId);
 
+    /**
+     * 通过用户名 或者身份证查询用户列表
+     *
+     * @param idCardNo
+     * @param username
+     * @return
+     */
     List<SysUserVO> selectPartyByIdCardNoOnUserName(@Param("idCardNo") String idCardNo, @Param("username") String username);
 
     //根据组织Id 获取党务工作者信息
@@ -84,8 +111,6 @@ public interface TabSysUserMapper {
      */
     List<UserDeptPositiveDTO> selectUserDeptByDeptId(Long deptId);
 
-    int updateByUserId(Long userId);
-
     /**
      * 判断党员兴趣爱好是否选择
      *
@@ -94,8 +119,6 @@ public interface TabSysUserMapper {
      */
     String checkedSysUserLikes(Long userId);
 
-
-    int updateByisPoor(Long userId);
 
     /**
      * 批量修改党员所在组织
@@ -114,39 +137,15 @@ public interface TabSysUserMapper {
      */
     List<DirectPartyMemberVO> selectDirectPartyMemberVOByDeptId(@Param("deptId") Long deptId);
 
-    void updateNoPoor(Long userId);
-
+    /**
+     * 党员信息核查
+     *
+     * @param username
+     * @param idCardNo
+     * @param phone
+     * @return
+     */
     List<PersonnelVO> partyIdentityVerification(@Param("username") String username, @Param("idCardNo") String idCardNo, @Param("phone") String phone);
-
-    /**
-     * 选人接口(根据主键id或者报到组织id进行筛选必填其中一项)
-     *
-     * @param user
-     * @return
-     */
-    List<SysUser> selectAllRegister(SysUser user);
-
-    /**
-     * 修改社区报到信息
-     *
-     * @param user
-     */
-    void editUserRegister(SysUser user);
-
-    /**
-     * 根据id逻辑删除
-     *
-     * @param userId
-     */
-    void flagDelete(Long userId);
-
-    /**
-     * 保存家庭成员信息并返回自增长Id
-     *
-     * @param sysUser
-     * @return
-     */
-    int saveEntity(SysUser sysUser);
 
     /**
      * 判断是否属于此节点
@@ -156,15 +155,6 @@ public interface TabSysUserMapper {
      * @return
      */
     Boolean verification(@Param("orgId") Long ordId, @Param("deptId") Long deptId);
-
-    /**
-     * 修改头像
-     *
-     * @param avatar
-     * @param userId
-     * @return
-     */
-    int editAvatar(@Param("avatar") String avatar, @Param("userId") String userId);
 
     /**
      * desc: 根据用户Id查询该用户是否存在
@@ -177,14 +167,20 @@ public interface TabSysUserMapper {
     boolean checkIsExistByUserId(Long userId);
 
     /**
-     * desc: 根据身份证号码查询该用户是否存在
+     * 根据身份证查询用户是否存在
      *
-     * @param idCard 身份证号码
-     * @return true or false
-     * @author FanYanGen
-     * @date 2019/4/17 9:32
-     **/
+     * @param idCard
+     * @return
+     */
     boolean checkIsExistByIdCard(String idCard);
+
+    /**
+     * 根据手机号码查询用户是否存在
+     *
+     * @param phone
+     * @return
+     */
+    boolean checkIsExistByPhone(String phone);
 
     /**
      * 查询附带 工作 学历信息
@@ -194,18 +190,21 @@ public interface TabSysUserMapper {
      */
     PartyMemberVO selectByPrimaryKeyToAll(Long userId);
 
-
+    /**
+     * 查询书记个人简单信息
+     *
+     * @param userId
+     * @return
+     */
     SecretariesPartyMemberVO selectSecretariesPartyByPrimaryKey(Long userId);
 
     /**
-     * desc: 修改党员困难标识
+     * 修改困难标识
      *
-     * @param isPoor     贫困标识
-     * @param hardshipId 困难ID
-     * @return int
-     * @author FanYanGen
-     * @date 2019/4/29 10:47
-     **/
+     * @param isPoor
+     * @param hardshipId
+     * @return
+     */
     int updateUserIsPoorByHardshipId(Integer isPoor, Long hardshipId);
 
 }

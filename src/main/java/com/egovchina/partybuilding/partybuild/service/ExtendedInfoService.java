@@ -2,6 +2,7 @@ package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.dto.DeletePartyMemberDTO;
+import com.egovchina.partybuilding.partybuild.dto.UpdateHistoryDTO;
 import com.egovchina.partybuilding.partybuild.vo.HistoryPartyVO;
 import com.egovchina.partybuilding.partybuild.vo.PartyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretariesPartyMemberVO;
@@ -25,6 +26,7 @@ public interface ExtendedInfoService {
 
     /**
      * 恢复党员 从历史党员重新恢复成党员
+     *
      * @param userId 党员id
      * @return
      */
@@ -39,7 +41,7 @@ public interface ExtendedInfoService {
     PartyMemberVO selectPartyMemberDetailsById(Long userId);
 
     /**
-     * 党员失效,改变是否有效
+     * 党员失效,改变是否有效状态
      *
      * @param reduce 减少原因实体
      * @return
@@ -48,6 +50,7 @@ public interface ExtendedInfoService {
 
     /**
      * 查询书记党员的简单详情信息
+     *
      * @param userId 党员id
      * @return
      */
@@ -61,5 +64,19 @@ public interface ExtendedInfoService {
      */
     int deleteByUserId(Long userId);
 
+    /**
+     * 查看历史党员信息
+     *
+     * @param userId
+     * @return
+     */
     HistoryPartyVO selectHistoryPartyVO(Long userId);
+
+    /**
+     * 修改历史党员信息
+     *
+     * @param updateHistoryDTO
+     * @return
+     */
+    int updateHistoryB(UpdateHistoryDTO updateHistoryDTO);
 }
