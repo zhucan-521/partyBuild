@@ -2,6 +2,7 @@ package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.partybuild.dto.NewsDTO;
 import com.egovchina.partybuilding.partybuild.entity.NewsQueryBean;
+import com.egovchina.partybuilding.partybuild.vo.NewsDetailsVO;
 import com.egovchina.partybuilding.partybuild.vo.NewsVO;
 
 import java.util.List;
@@ -35,13 +36,12 @@ public interface NewsService {
     /**
      * desc: 发布党建资讯
      *
-     * @param newsId       主键id
-     * @param attachmentId 附件id
+     * @param newsId 主键id
      * @return int
      * @auther FanYanGen
      * @date 2019-05-13 22:10
      */
-    int publishNews(Long newsId, Long attachmentId);
+    int publishNews(Long newsId);
 
     /**
      * desc: 取消发布党建资讯
@@ -91,7 +91,7 @@ public interface NewsService {
      * @auther FanYanGen
      * @date 2019-05-11 17:36
      */
-    NewsVO getNewsVODetails(Long newsId);
+    NewsDetailsVO getNewsVODetails(Long newsId);
 
     /**
      * desc: 党建资讯列表

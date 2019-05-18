@@ -12,6 +12,7 @@
         <result column="rotate" jdbcType="INTEGER" property="rotate"/>
         <result column="order_num" jdbcType="BIGINT" property="orderNum"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="if_cover" jdbcType="BIGINT" property="ifCover"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="create_userid" jdbcType="BIGINT" property="createUserid"/>
         <result column="create_username" jdbcType="VARCHAR" property="createUsername"/>
@@ -20,17 +21,18 @@
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
         <result column="version" jdbcType="BIGINT" property="version"/>
     </resultMap>
-    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.common.entity.TabPbAttachment">
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.egovchina.partybuilding.common.entity.TabPbAttachment">
         <result column="attachment_description" jdbcType="LONGVARCHAR" property="attachmentDescription"/>
     </resultMap>
     <sql id="Base_Column_List">
-    attachment_id, host_id, attachment_instance, attachment_type, attachment_file_type, 
-    ebl_flag, del_flag, rotate, order_num, description, create_time, create_userid, create_username,
+        attachment_id, host_id, attachment_instance, attachment_type, attachment_file_type,
+    ebl_flag, del_flag, rotate, order_num, description,if_cover, create_time, create_userid, create_username,
     update_time, update_userid, update_username, version
-  </sql>
+    </sql>
     <sql id="Blob_Column_List">
-    attachment_description
-  </sql>
+        attachment_description
+    </sql>
     <select id="selectById" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
@@ -51,19 +53,21 @@
     </select>
 
     <insert id="insert" parameterType="com.egovchina.partybuilding.common.entity.TabPbAttachment">
-    insert into tab_pb_attachment (attachment_id, host_id, attachment_instance, 
-      attachment_type, attachment_file_type, ebl_flag, 
-      del_flag, rotate, order_num, description,
-      create_time, create_userid, create_username, 
-      update_time, update_userid, update_username, 
-      version, attachment_description)
-    values (#{attachmentId,jdbcType=BIGINT}, #{hostId,jdbcType=BIGINT}, #{attachmentInstance,jdbcType=VARCHAR}, 
-      #{attachmentType,jdbcType=BIGINT}, #{attachmentFileType,jdbcType=BIGINT}, #{eblFlag,jdbcType=VARCHAR}, 
-      #{delFlag,jdbcType=VARCHAR}, #{rotate,jdbcType=INTEGER}, #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR},
-      #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
-      #{version,jdbcType=BIGINT}, #{attachmentDescription,jdbcType=LONGVARCHAR})
-  </insert>
+        insert into tab_pb_attachment (attachment_id, host_id, attachment_instance,
+                                       attachment_type, attachment_file_type, ebl_flag,
+                                       del_flag, rotate, order_num, description, if_cover,
+                                       create_time, create_userid, create_username,
+                                       update_time, update_userid, update_username,
+                                       version, attachment_description)
+        values (#{attachmentId,jdbcType=BIGINT}, #{hostId,jdbcType=BIGINT}, #{attachmentInstance,jdbcType=VARCHAR},
+                #{attachmentType,jdbcType=BIGINT}, #{attachmentFileType,jdbcType=BIGINT}, #{eblFlag,jdbcType=VARCHAR},
+                #{delFlag,jdbcType=VARCHAR}, #{rotate,jdbcType=INTEGER}, #{orderNum,jdbcType=BIGINT},
+                #{description,jdbcType=VARCHAR},
+                #{ifCover,jdbcType=BIGINT},
+                #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR},
+                #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR},
+                #{version,jdbcType=BIGINT}, #{attachmentDescription,jdbcType=LONGVARCHAR})
+    </insert>
 
     <insert id="insertSelective" parameterType="com.egovchina.partybuilding.common.entity.TabPbAttachment"
             useGeneratedKeys="true"
@@ -99,6 +103,9 @@
             </if>
             <if test="description != null">
                 description,
+            </if>
+            <if test="ifCover != null">
+                if_cover,
             </if>
             <if test="createTime != null">
                 create_time,
@@ -156,6 +163,9 @@
             <if test="description != null">
                 #{description,jdbcType=VARCHAR},
             </if>
+            <if test="ifCover != null">
+                #{ifCover,jdbcType=BIGINT},
+            </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
@@ -212,6 +222,9 @@
             <if test="description != null">
                 description = #{description,jdbcType=VARCHAR},
             </if>
+            <if test="ifCover != null">
+                if_cover = #{ifCover,jdbcType=BIGINT},
+            </if>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
@@ -240,46 +253,48 @@
         where attachment_id = #{attachmentId,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.common.entity.TabPbAttachment">
-    update tab_pb_attachment
-    set host_id = #{hostId,jdbcType=BIGINT},
-      attachment_instance = #{attachmentInstance,jdbcType=VARCHAR},
-      attachment_type = #{attachmentType,jdbcType=BIGINT},
-      attachment_file_type = #{attachmentFileType,jdbcType=BIGINT},
-      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
-      del_flag = #{delFlag,jdbcType=VARCHAR},
-      rotate = #{rotate,jdbcType=INTEGER},
-      order_num = #{orderNum,jdbcType=BIGINT},
-      description = #{description,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_userid = #{createUserid,jdbcType=BIGINT},
-      create_username = #{createUsername,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_userid = #{updateUserid,jdbcType=BIGINT},
-      update_username = #{updateUsername,jdbcType=VARCHAR},
-      version = #{version,jdbcType=BIGINT},
-      attachment_description = #{attachmentDescription,jdbcType=LONGVARCHAR}
-    where attachment_id = #{attachmentId,jdbcType=BIGINT}
-  </update>
+        update tab_pb_attachment
+        set host_id                = #{hostId,jdbcType=BIGINT},
+            attachment_instance    = #{attachmentInstance,jdbcType=VARCHAR},
+            attachment_type        = #{attachmentType,jdbcType=BIGINT},
+            attachment_file_type   = #{attachmentFileType,jdbcType=BIGINT},
+            ebl_flag               = #{eblFlag,jdbcType=VARCHAR},
+            del_flag               = #{delFlag,jdbcType=VARCHAR},
+            rotate                 = #{rotate,jdbcType=INTEGER},
+            order_num              = #{orderNum,jdbcType=BIGINT},
+            description            = #{description,jdbcType=VARCHAR},
+            if_cover               = #{ifCover,jdbcType=BIGINT},
+            create_time            = #{createTime,jdbcType=TIMESTAMP},
+            create_userid          = #{createUserid,jdbcType=BIGINT},
+            create_username        = #{createUsername,jdbcType=VARCHAR},
+            update_time            = #{updateTime,jdbcType=TIMESTAMP},
+            update_userid          = #{updateUserid,jdbcType=BIGINT},
+            update_username        = #{updateUsername,jdbcType=VARCHAR},
+            version                = #{version,jdbcType=BIGINT},
+            attachment_description = #{attachmentDescription,jdbcType=LONGVARCHAR}
+        where attachment_id = #{attachmentId,jdbcType=BIGINT}
+    </update>
     <update id="updateById" parameterType="com.egovchina.partybuilding.common.entity.TabPbAttachment">
-    update tab_pb_attachment
-    set host_id = #{hostId,jdbcType=BIGINT},
-      attachment_instance = #{attachmentInstance,jdbcType=VARCHAR},
-      attachment_type = #{attachmentType,jdbcType=BIGINT},
-      attachment_file_type = #{attachmentFileType,jdbcType=BIGINT},
-      ebl_flag = #{eblFlag,jdbcType=VARCHAR},
-      del_flag = #{delFlag,jdbcType=VARCHAR},
-      rotate = #{rotate,jdbcType=INTEGER},
-      order_num = #{orderNum,jdbcType=BIGINT},
-      description = #{description,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      create_userid = #{createUserid,jdbcType=BIGINT},
-      create_username = #{createUsername,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
-      update_userid = #{updateUserid,jdbcType=BIGINT},
-      update_username = #{updateUsername,jdbcType=VARCHAR},
-      version = #{version,jdbcType=BIGINT}
-    where attachment_id = #{attachmentId,jdbcType=BIGINT}
-  </update>
+        update tab_pb_attachment
+        set host_id              = #{hostId,jdbcType=BIGINT},
+            attachment_instance  = #{attachmentInstance,jdbcType=VARCHAR},
+            attachment_type      = #{attachmentType,jdbcType=BIGINT},
+            attachment_file_type = #{attachmentFileType,jdbcType=BIGINT},
+            ebl_flag             = #{eblFlag,jdbcType=VARCHAR},
+            del_flag             = #{delFlag,jdbcType=VARCHAR},
+            rotate               = #{rotate,jdbcType=INTEGER},
+            order_num            = #{orderNum,jdbcType=BIGINT},
+            description          = #{description,jdbcType=VARCHAR},
+            if_cover             = #{ifCover,jdbcType=BIGINT},
+            create_time          = #{createTime,jdbcType=TIMESTAMP},
+            create_userid        = #{createUserid,jdbcType=BIGINT},
+            create_username      = #{createUsername,jdbcType=VARCHAR},
+            update_time          = #{updateTime,jdbcType=TIMESTAMP},
+            update_userid        = #{updateUserid,jdbcType=BIGINT},
+            update_username      = #{updateUsername,jdbcType=VARCHAR},
+            version              = #{version,jdbcType=BIGINT}
+        where attachment_id = #{attachmentId,jdbcType=BIGINT}
+    </update>
 
     <!-- 根据id删除附件，改变删除标识 -->
     <update id="deleteById" parameterType="com.egovchina.partybuilding.common.entity.TabPbAttachment">
@@ -296,12 +311,16 @@
 
     <!--批量新增-->
     <insert id="batchInsert" parameterType="java.util.List">
-        insert into tab_pb_attachment(host_id, attachment_instance, attachment_description, attachment_type, attachment_file_type,
-        rotate, order_num, description, create_time, create_userid, create_username, update_time, update_userid, update_username)
+        insert into tab_pb_attachment(host_id, attachment_instance, attachment_description, attachment_type,
+        attachment_file_type,
+        rotate, order_num, description, if_cover,create_time, create_userid, create_username, update_time, update_userid,
+        update_username)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.hostId}, #{item.attachmentInstance}, #{item.attachmentDescription}, #{item.attachmentType}, #{item.attachmentFileType},
-            #{item.rotate}, #{item.orderNum}, #{item.description}, #{item.createTime}, #{item.createUserid}, #{item.createUsername}, #{item.updateTime}, #{item.updateUserid},
+            (#{item.hostId}, #{item.attachmentInstance}, #{item.attachmentDescription}, #{item.attachmentType},
+            #{item.attachmentFileType},
+            #{item.rotate}, #{item.orderNum}, #{item.description}, #{item.ifCover,jdbcType=BIGINT}, #{item.createTime}, #{item.createUserid},
+            #{item.createUsername}, #{item.updateTime}, #{item.updateUserid},
             #{item.updateUsername})
         </foreach>
     </insert>
@@ -416,7 +435,9 @@
 
     <!--逻辑删除根据HostId和AttType-->
     <update id="batchLogicDeleteByHostIdAndAttType">
-        update tab_pb_attachment set del_flag = 1
-        where host_id = #{hostId} and attachment_type = #{attType}
+        update tab_pb_attachment
+        set del_flag = 1
+        where host_id = #{hostId}
+          and attachment_type = #{attType}
     </update>
 </mapper>

@@ -10,12 +10,11 @@ import com.egovchina.partybuilding.partybuild.repository.NewsMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.NewsService;
+import com.egovchina.partybuilding.partybuild.vo.NewsDetailsVO;
 import com.egovchina.partybuilding.partybuild.vo.NewsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
@@ -58,8 +57,8 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public int publishNews(Long newsId, Long hostId) {
-        return newsMapper.publishNews(newsId, hostId, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+    public int publishNews(Long newsId) {
+        return newsMapper.publishNews(newsId);
     }
 
     @Override
@@ -86,7 +85,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public NewsVO getNewsVODetails(Long newsId) {
+    public NewsDetailsVO getNewsVODetails(Long newsId) {
         verification(newsId);
         return newsMapper.getNewsVODetails(newsId);
     }
