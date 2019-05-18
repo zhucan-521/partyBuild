@@ -20,8 +20,8 @@
     <sql id="Base_Column_List">
     id, notice_id, dept_id, dept_name, recevie_user_id, recevie_username, recevie_time
     </sql>
-    <!--查询list-->
-    <select id="selectList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept" resultMap="BaseResultMap">
+    <!--查询接受党组织集合-->
+    <select id="selectMsgNoticeDeptList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept" resultMap="BaseResultMap">
         SELECT
         dept.*,
         notice.notice_title,
@@ -61,7 +61,7 @@
     </select>
 
     <!--收到文件通知列表-->
-    <select id="receivedNotifications" parameterType="com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean" resultMap="BaseResultVoMap">
+    <select id="selectReceiveMsgNotice" parameterType="com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean" resultMap="BaseResultVoMap">
          select
          d.*,
          n.notice_title,
@@ -97,36 +97,31 @@
     </select>
 
     <!--查询单条数据-->
-    <select id="findByDept" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="getTabPbMsgNoticeDeptById" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from tab_pb_msg_notice_dept
         where id = #{id}
     </select>
 
-    <!--根据主表id查询list数据-->
-    <select id="selectDeptList" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--根据noticeId获取接受党组织集合-->
+    <select id="getMsgNoticeDeptListByNoticeId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from tab_pb_msg_notice_dept
         where notice_id = #{noticeId};
     </select>
 
-    <!--删除-->
-    <delete id="deleteByPrimaryKey" parameterType="java.util.List">
-    delete from tab_pb_msg_notice_dept
-    where id in
-    <foreach collection="list" item="item" open="(" close=")" separator=",">
-        ${item}
-    </foreach>
+    <delete id="batchDeleteMsgNoticeDept" parameterType="list">
+         delete from tab_pb_msg_notice_dept where id in
+         <foreach collection="list" item="item" open="(" separator="," close=")">
+             #{item}
+         </foreach>
     </delete>
 
     <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept">
         insert into tab_pb_msg_notice_dept
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
             <if test="noticeId != null">
                 notice_id,
             </if>
@@ -147,9 +142,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=BIGINT},
-            </if>
             <if test="noticeId != null">
                 #{noticeId,jdbcType=BIGINT},
             </if>
