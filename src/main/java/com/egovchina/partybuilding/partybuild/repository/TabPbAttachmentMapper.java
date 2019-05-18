@@ -29,7 +29,7 @@ public interface TabPbAttachmentMapper {
 
     int batchInsert(List<TabPbAttachment> pendingList);
 
-    int batchLogicDelete(List<Long> pendingRemoveIDList);
+    int batchLogicDelete(List<TabPbAttachment> pendingRemoveIDList);
 
     int batchUpdate(List<TabPbAttachment> pendingUpdateList);
 

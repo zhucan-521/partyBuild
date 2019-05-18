@@ -3,6 +3,7 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
 import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.egovchina.partybuilding.common.util.CollectionUtil;
+import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import org.apache.commons.lang3.StringUtils;
@@ -131,12 +132,13 @@ public class TabPbAttachmentServiceImpl implements ITabPbAttachmentService {
                 .collect(Collectors.toList());
 
         //筛选
-        List<Long> pendingRemoveIDList = dbList.stream()
+        List<TabPbAttachment> pendingRemoveList = dbList.stream()
 //                .filter(tabPbAttachment -> !pendingInstanceList.contains(tabPbAttachment.getAttachmentInstance()))
                 .filter(attachment -> pendingList.stream().noneMatch(dbAttachment -> dbAttachment.getAttachmentInstance()
                         .equals(attachment.getAttachmentInstance()) && dbAttachment.getAttachmentId().equals(attachment.getAttachmentId())))
-                .map(TabPbAttachment::getAttachmentId)
+//                .map(TabPbAttachment::getAttachmentId)
                 .collect(Collectors.toList());
+
 
         List<TabPbAttachment> pendingAddList = pendingList.stream()
                 .filter(tabPbAttachment -> !dbInstanceList.contains(tabPbAttachment.getAttachmentInstance()) || tabPbAttachment.getAttachmentId() == null)
@@ -151,9 +153,10 @@ public class TabPbAttachmentServiceImpl implements ITabPbAttachmentService {
             //批量新增
             retVal += tabPbAttachmentMapper.batchInsert(pendingAddList);
         }
-        if (CollectionUtil.isNotEmpty(pendingRemoveIDList)) {
+        if (CollectionUtil.isNotEmpty(pendingRemoveList)) {
             //批量删除
-            retVal += tabPbAttachmentMapper.batchLogicDelete(pendingRemoveIDList);
+            PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(pendingRemoveList);
+            retVal += tabPbAttachmentMapper.batchLogicDelete(pendingRemoveList);
         }
         if (CollectionUtil.isNotEmpty(pendingUpdateList)) {
             retVal += tabPbAttachmentMapper.batchUpdate(pendingUpdateList);

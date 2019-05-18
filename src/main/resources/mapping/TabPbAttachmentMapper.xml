@@ -308,9 +308,21 @@
 
     <!--批量逻辑删除-->
     <update id="batchLogicDelete" parameterType="java.util.List">
-        update tab_pb_attachment set del_flag = 1 where attachment_id in
-        <foreach collection="list" item="item" open="(" close=")" separator=",">
-            ${item}
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update tab_pb_attachment
+                <set>
+                    <if test="item.updateTime != null">
+                        update_time = #{item.updateTime,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.updateUserid != null">
+                        update_userid = #{item.updateUserid,jdbcType=BIGINT},
+                    </if>
+                    <if test="item.updateUsername != null">
+                        update_username = #{item.updateUsername,jdbcType=VARCHAR},
+                    </if>
+                        del_flag = 1,
+                </set>
+            where attachment_id = #{item.attachmentId,jdbcType=BIGINT}
         </foreach>
     </update>
 
