@@ -1,21 +1,21 @@
 package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDTO;
 import com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.MsgNoticeQueryBean;
-import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDTO;
-import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDeptDTO;
 import com.egovchina.partybuilding.partybuild.vo.MsgNoticeDeptVO;
 import com.egovchina.partybuilding.partybuild.vo.MsgNoticeVO;
 
 import java.util.List;
 
 /**
- * @author YangYingXiang on 2018/12/28
+ * @author zhucan on 2018/12/28
  */
 public interface MsgNoticeService {
+
     /**
-     * 保存
+     * 发布文件
      *
      * @param msgNoticeDTO
      * @return
@@ -23,7 +23,7 @@ public interface MsgNoticeService {
     int addMsgNotice(MsgNoticeDTO msgNoticeDTO);
 
     /**
-     * 修改
+     * 修改文件
      *
      * @param msgNoticeDTO
      * @return
@@ -31,10 +31,10 @@ public interface MsgNoticeService {
     int editMsgNoticeById(MsgNoticeDTO msgNoticeDTO);
 
     /**
-     * 根据主键id查询数据
+     * 查询发出文件通知只需要传id，查询收到文件通知需要传id和noticeId
      *
-     * @param id       主表主键id
-     * @param noticeId 明细主键id
+     * @param id       主键id
+     * @param noticeId 下达文件通知id
      * @return
      */
     MsgNoticeVO getMsgNotice(Long id, Long noticeId);
@@ -48,7 +48,7 @@ public interface MsgNoticeService {
     int deleteMsgNotice(Long id);
 
     /**
-     * 查询list数据
+     * 发布文件通知列表
      *
      * @param msgNoticeQueryBean
      * @param page
@@ -57,7 +57,7 @@ public interface MsgNoticeService {
     List<MsgNoticeVO> selectSendMsgNoticeList(MsgNoticeQueryBean msgNoticeQueryBean, Page page);
 
     /**
-     * 改变状态
+     * 改变文件发布状态
      *
      * @param msgNoticeDTO
      * @return
@@ -67,13 +67,13 @@ public interface MsgNoticeService {
     /**
      * 根据主键id签收
      *
-     * @param msgNoticeDeptDTO
+     * @param id
      * @return
      */
-    int signNotice(MsgNoticeDeptDTO msgNoticeDeptDTO);
+    int signNotice(Long id);
 
     /**
-     * 接收通知list
+     * 接收文件通知列表
      *
      * @param msgNoticeDeptQueryBean
      * @param page

@@ -3,10 +3,9 @@ package com.egovchina.partybuilding.partybuild.controller;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
+import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDTO;
 import com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.MsgNoticeQueryBean;
-import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDTO;
-import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDeptDTO;
 import com.egovchina.partybuilding.partybuild.service.MsgNoticeService;
 import com.egovchina.partybuilding.partybuild.vo.MsgNoticeDeptVO;
 import com.egovchina.partybuilding.partybuild.vo.MsgNoticeVO;
@@ -34,25 +33,25 @@ public class MsgNoticeController {
         return new PageInfo<>(noticeService.selectReceiveMsgNotice(msgNoticeDeptQueryBean, page));
     }
 
-    @ApiOperation(value = "发出文件通知列表信息(分页)", httpMethod = "GET")
+    @ApiOperation(value = "发布文件通知列表信息(分页)", httpMethod = "GET")
     @GetMapping("/sends")
     public PageInfo<MsgNoticeVO> selectSendMsgNoticeList(MsgNoticeQueryBean msgNoticeQueryBean, Page page) {
         return new PageInfo<>(noticeService.selectSendMsgNoticeList(msgNoticeQueryBean, page));
     }
 
-    @ApiOperation(value = "根据主键和明细id查询文件数据", httpMethod = "GET", notes = "需要多条明细传id，单条明细传noticeId")
+    @ApiOperation(value = "查询发出文件通知只需要传id，查询收到文件通知需要传id和noticeId", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键id", paramType = "path", required = true),
-            @ApiImplicitParam(name = "noticeId", value = "明细id", paramType = "query"),
+            @ApiImplicitParam(name = "noticeId", value = "下达文件通知noticeId", paramType = "query"),
     })
     @GetMapping("/{id}")
     public MsgNoticeVO getMsgNotice(@PathVariable Long id, Long noticeId) {
         return noticeService.getMsgNotice(id, noticeId);
     }
 
-    @ApiOperation(value = "添加文件", httpMethod = "POST")
+    @ApiOperation(value = "发布文件", httpMethod = "POST")
     @PostMapping
-    public ReturnEntity addMsgNotice(@ApiParam(name = "保存信息") @RequestBody MsgNoticeDTO msgNoticeDTO) {
+    public ReturnEntity addMsgNotice(@ApiParam(name = "保存信息") @RequestBody @Validated MsgNoticeDTO msgNoticeDTO) {
         return ReturnUtil.buildReturn(noticeService.addMsgNotice(msgNoticeDTO));
     }
 
@@ -62,7 +61,7 @@ public class MsgNoticeController {
         return ReturnUtil.buildReturn(noticeService.editMsgNoticeById(msgNoticeDTO));
     }
 
-    @ApiOperation(value = "改变文件状态", httpMethod = "PUT")
+    @ApiOperation(value = "改变文件发布状态", httpMethod = "PUT")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "主键id", paramType = "path", required = true),
             @ApiImplicitParam(name = "state", value = "状态值 0.未发布、1.已发布(发布后可以取消)", paramType = "query"),
@@ -79,9 +78,7 @@ public class MsgNoticeController {
     @ApiImplicitParam(name = "id", required = true, value = "签收需要传主键id", paramType = "path")
     @PutMapping("/{id}")
     public ReturnEntity signNotice(@PathVariable Long id) {
-        MsgNoticeDeptDTO noticeDept = new MsgNoticeDeptDTO();
-        noticeDept.setId(id);
-        return ReturnUtil.buildReturn(noticeService.signNotice(noticeDept));
+        return ReturnUtil.buildReturn(noticeService.signNotice(id));
     }
 
     @ApiOperation(value = "删除文件", httpMethod = "DELETE")

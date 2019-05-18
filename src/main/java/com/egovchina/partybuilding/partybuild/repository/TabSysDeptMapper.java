@@ -132,5 +132,5 @@ public interface TabSysDeptMapper {
      * @param subOrgIds 直属组织id集合
      * @return
      */
-    boolean checkIsExistUnDirectSub(Long orgId, List<Long> subOrgIds);
+    boolean checkIsExistUnDirectSub(@Param("orgId")Long orgId, @Param("subOrgIds")List<Long> subOrgIds);
 }

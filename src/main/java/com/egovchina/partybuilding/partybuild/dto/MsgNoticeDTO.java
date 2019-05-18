@@ -4,8 +4,10 @@ import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.List;
 public class MsgNoticeDTO {
 
     @ApiModelProperty(value = "主键ID", required = true)
-    @NotNull(message = "请附带id")
+    @NotNull(message = "请附带id" ,groups = Update.class)
     private Long id;
 
     @ApiModelProperty(value = "发布党组织名称id")
@@ -43,6 +45,7 @@ public class MsgNoticeDTO {
     private List<TabPbAttachment> attachments;
 
     @ApiModelProperty(value = "组织list")
+    @NotEmpty(message = "接受党组织不能为空")
     private List<TabPbMsgNoticeDept> noticeDeptList;
 
     @ApiModelProperty(value = "签收情况")
