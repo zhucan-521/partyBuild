@@ -2,6 +2,7 @@ package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.NewsQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbNews;
+import com.egovchina.partybuilding.partybuild.vo.NewsDetailsVO;
 import com.egovchina.partybuilding.partybuild.vo.NewsVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -43,7 +44,7 @@ public interface NewsMapper {
      * @auther FanYanGen
      * @date 2019-05-11 17:36
      */
-    NewsVO getNewsVODetails(Long newsId);
+    NewsDetailsVO getNewsVODetails(Long newsId);
 
     /**
      * desc: 根据查询条件查询新闻资讯列表
@@ -58,14 +59,12 @@ public interface NewsMapper {
     /**
      * desc: 发布
      *
-     * @param newsId       主键id
-     * @param attachmentId 附件id
-     * @param publishTime  发布时间
+     * @param newsId 主键id
      * @return int
      * @auther FanYanGen
      * @date 2019-05-13 22:10
      */
-    int publishNews(@Param("newsId") Long newsId, @Param("attachmentId") Long attachmentId, @Param("publishTime") String publishTime);
+    int publishNews(Long newsId);
 
     /**
      * desc: 取消发布

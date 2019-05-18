@@ -6,10 +6,14 @@ import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.NewsDTO;
 import com.egovchina.partybuilding.partybuild.entity.NewsQueryBean;
 import com.egovchina.partybuilding.partybuild.service.NewsService;
+import com.egovchina.partybuilding.partybuild.vo.NewsDetailsVO;
 import com.egovchina.partybuilding.partybuild.vo.NewsVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,14 +42,11 @@ public class NewsController {
         return ReturnUtil.buildReturn(newsService.updateNews(newsDTO));
     }
 
-    @ApiOperation(value = "发布党建资讯", notes = "发布党建资讯-(需要指定封面图的 hostId)", httpMethod = "POST")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "newsId", value = "党建资讯ID", paramType = "query", required = true),
-            @ApiImplicitParam(name = "attachmentId", value = "主图附件ID", paramType = "query", required = true)
-    })
-    @PostMapping("/publications")
-    public ReturnEntity publishNews(Long newsId, Long attachmentId) {
-        return ReturnUtil.buildReturn(newsService.publishNews(newsId, attachmentId));
+    @ApiOperation(value = "发布党建资讯", notes = "发布党建资讯", httpMethod = "POST")
+    @ApiImplicitParam(name = "newsId", value = "党建资讯ID", paramType = "path", required = true)
+    @PostMapping("/publications/{newsId}")
+    public ReturnEntity publishNews(@PathVariable Long newsId) {
+        return ReturnUtil.buildReturn(newsService.publishNews(newsId));
     }
 
     @ApiOperation(value = "取消发布党建资讯", notes = "取消发布党建资讯", httpMethod = "POST")
@@ -79,7 +80,7 @@ public class NewsController {
     @ApiOperation(value = "获取党建资讯详情", notes = "获取党建资讯详情", httpMethod = "GET")
     @ApiImplicitParam(name = "newsId", value = "党建资讯ID", paramType = "path", required = true)
     @GetMapping("/{newsId}")
-    public NewsVO getNewsDetails(@PathVariable Long newsId) {
+    public NewsDetailsVO getNewsDetails(@PathVariable Long newsId) {
         return newsService.getNewsVODetails(newsId);
     }
 
