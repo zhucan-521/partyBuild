@@ -27,6 +27,8 @@ public class TabPbNews {
 
     private Integer topStatus;
 
+    private String cover;
+
     private Integer delFlag;
 
     private Integer orderNum;

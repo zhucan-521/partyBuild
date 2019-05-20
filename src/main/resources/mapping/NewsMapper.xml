@@ -5,6 +5,7 @@
     <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbNews">
         <id column="news_id" jdbcType="BIGINT" property="newsId"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="cover" jdbcType="VARCHAR" property="cover"/>
         <result column="type" jdbcType="BIGINT" property="type"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="publish_time" jdbcType="TIMESTAMP" property="publishTime"/>
@@ -25,6 +26,7 @@
     <resultMap id="NewsVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.NewsVO">
         <id column="news_id" jdbcType="BIGINT" property="newsId"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="cover" jdbcType="VARCHAR" property="cover"/>
         <result column="type" jdbcType="BIGINT" property="type"/>
         <result column="dept_id" jdbcType="BIGINT" property="orgId"/>
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
@@ -47,6 +49,7 @@
     <resultMap id="NewsDetailsVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.NewsDetailsVO">
         <id column="news_id" jdbcType="BIGINT" property="newsId"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="cover" jdbcType="VARCHAR" property="cover"/>
         <result column="dept_id" jdbcType="BIGINT" property="orgId"/>
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
         <result column="org_short_name" jdbcType="VARCHAR" property="orgShortName"/>
@@ -138,6 +141,9 @@
             <if test="topStatus != null">
                 top_status,
             </if>
+            <if test="cover != null">
+                cover,
+            </if>
             <if test="delFlag != null">
                 del_flag,
             </if>
@@ -190,6 +196,9 @@
             </if>
             <if test="topStatus != null">
                 #{topStatus,jdbcType=BIT},
+            </if>
+            <if test="cover != null">
+                #{cover,jdbcType=VARCHAR},
             </if>
             <if test="delFlag != null">
                 #{delFlag,jdbcType=BIT},
@@ -244,6 +253,9 @@
             </if>
             <if test="topStatus != null">
                 top_status = #{topStatus,jdbcType=BIT},
+            </if>
+            <if test="cover != null">
+                cover = #{cover,jdbcType=VARCHAR},
             </if>
             <if test="delFlag != null">
                 del_flag = #{delFlag,jdbcType=BIT},
@@ -342,6 +354,7 @@
             -- 新闻资讯表
             n.news_id,
             n.title,
+            n.cover,
             n.type,
             n.content,
             n.publish_time,
@@ -378,6 +391,7 @@
         -- 新闻资讯表
         n.news_id,
         n.title,
+        n.cover,
         n.type,
         n.content,
         n.publish_time,
@@ -426,7 +440,8 @@
     <update id="publishNews">
 
         UPDATE tab_pb_party_news
-        SET publish_status = 1, publish_time = NOW()
+        SET publish_status = 1,
+            publish_time   = NOW()
         WHERE news_id = #{newsId}
 
     </update>
@@ -435,7 +450,8 @@
     <update id="obtainedNews">
 
         UPDATE tab_pb_party_news
-        SET publish_status = 0, publish_time   = NULL
+        SET publish_status = 0,
+            publish_time   = NULL
         WHERE news_id = #{newsId}
 
     </update>
