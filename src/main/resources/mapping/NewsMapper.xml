@@ -198,7 +198,7 @@
                 #{topStatus,jdbcType=BIT},
             </if>
             <if test="cover != null">
-                concat('http://175.6.46.184:9007/api/hget/' , #{cover,jdbcType=VARCHAR}),
+                #{cover,jdbcType=VARCHAR},
             </if>
             <if test="delFlag != null">
                 #{delFlag,jdbcType=BIT},
@@ -255,7 +255,7 @@
                 top_status = #{topStatus,jdbcType=BIT},
             </if>
             <if test="cover != null">
-                cover = concat('http://175.6.46.184:9007/api/hget/' , #{cover,jdbcType=VARCHAR}),
+                cover = #{cover,jdbcType=VARCHAR},
             </if>
             <if test="delFlag != null">
                 del_flag = #{delFlag,jdbcType=BIT},
@@ -354,7 +354,7 @@
             -- 新闻资讯表
             n.news_id,
             n.title,
-            n.cover,
+            IF(n.cover IS NOT NULL, CONCAT('http://175.6.46.184:9007/api/hget/', n.cover), n.cover) AS cover,
             n.type,
             n.content,
             n.publish_time,
@@ -391,7 +391,7 @@
         -- 新闻资讯表
         n.news_id,
         n.title,
-        n.cover,
+        IF(n.cover IS NOT NULL, CONCAT('http://175.6.46.184:9007/api/hget/', n.cover), n.cover) AS cover,
         n.type,
         n.content,
         n.publish_time,
