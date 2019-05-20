@@ -54,6 +54,9 @@ public class NewsVO {
     @ApiModelProperty(value = "排序码")
     private Integer orderNum;
 
+    @ApiModelProperty(value = "封面图")
+    private String cover;
+
     @ApiModelProperty(value = "资讯内容")
     private String content;
 

@@ -31,6 +31,9 @@ public class NewsDTO {
     @NotNull(message = "排序码不能为空")
     private Integer orderNum;
 
+    @ApiModelProperty(value = "封面图")
+    private String cover;
+
     @ApiModelProperty(value = "资讯内容", required = true)
     @NotNull(message = "资讯内容不能为空")
     private String content;
