@@ -24,6 +24,7 @@ import com.egovchina.partybuilding.partybuild.vo.OrganizationPositionVO;
 import com.egovchina.partybuilding.partybuild.vo.OrganizationVO;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField;
 import static com.egovchina.partybuilding.common.util.RedisKeyConstant.ORGANIZATION_COUNT_PARTY_MAN;
+import static com.egovchina.partybuilding.common.util.RedisKeyConstant.ORGANIZATION_LIST_FOR_PARENT;
 
 /**
  * 组织信息service实现
@@ -89,6 +91,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         return tabSysDeptMapper.selectByPrimaryKey(deptId);
     }
 
+    @CacheEvict(value = ORGANIZATION_LIST_FOR_PARENT, key = "#organizationDTO.getParentId()")
     @Transactional
     @Override
     public int insertOrganization(OrganizationDTO organizationDTO) {

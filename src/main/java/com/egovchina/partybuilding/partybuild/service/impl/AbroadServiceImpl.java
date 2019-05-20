@@ -73,7 +73,7 @@ public class AbroadServiceImpl implements AbroadService {
          **/
         if (result > 0) {
             // 移到历史党员
-            DeletePartyMemberDTO deletePartyMemberDTO = new DeletePartyMemberDTO().setUserId(userId).setOutType(OUT_TYPE).setQuitType(QUIT_TYPE);
+            DeletePartyMemberDTO deletePartyMemberDTO = new DeletePartyMemberDTO().setUserId(userId).setOutType(OUT_TYPE).setQuitType(QUIT_TYPE).setWhetherThisClass(false);
             result += extendedInfoService.invalidByUserId(deletePartyMemberDTO);
             // 移出党小组
             TabPbPartyGroupMember tabPbPartyGroupMember = new TabPbPartyGroupMember().setUserId(userId).setDelFlag(1);
