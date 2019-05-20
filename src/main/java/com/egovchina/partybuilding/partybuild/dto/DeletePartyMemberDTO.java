@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -28,5 +29,8 @@ public class DeletePartyMemberDTO {
 
     @ApiModelProperty(value = "出党方式 dict")
     private Long quitType;
+
+    @JsonIgnore
+    private Boolean whetherThisClass = true;
 
 }
