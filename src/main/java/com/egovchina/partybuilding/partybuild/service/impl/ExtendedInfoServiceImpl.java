@@ -126,7 +126,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
             PaddingBaseFieldUtil.paddingBaseFiled(tabPbMemberReduceList);
             flag += reduceListMapper.insertSelective(tabPbMemberReduceList);
             //如果出党方式为出国出境
-            if (GOINGABROAD.equals(reduce.getQuitType())) {
+            if (reduce.getWhetherThisClass() && GOINGABROAD.equals(reduce.getQuitType())) {
                 TabPbAbroad tabPbAbroad = new TabPbAbroad().setUserId(sysUser.getUserId()).setOrgId(sysUser.getDeptId());
                 PaddingBaseFieldUtil.paddingBaseFiled(tabPbAbroad);
                 flag += tabPbAbroadMapper.insertSelective(tabPbAbroad);
