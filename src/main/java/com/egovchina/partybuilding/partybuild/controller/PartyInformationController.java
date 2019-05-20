@@ -4,14 +4,12 @@ package com.egovchina.partybuilding.partybuild.controller;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
-import com.egovchina.partybuilding.partybuild.dto.CommunityDTO;
-import com.egovchina.partybuilding.partybuild.dto.DeletePartyMemberDTO;
-import com.egovchina.partybuilding.partybuild.dto.PartyInfoDTO;
-import com.egovchina.partybuilding.partybuild.dto.UpdateHistoryDTO;
+import com.egovchina.partybuilding.partybuild.dto.*;
 import com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.SysUserQueryBean;
 import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
 import com.egovchina.partybuilding.partybuild.service.PartyInformationService;
+import com.egovchina.partybuilding.partybuild.service.UserTagService;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -34,6 +32,9 @@ public class PartyInformationController {
     PartyInformationService partyInformationService;
     @Autowired
     private ExtendedInfoService extendedInfoService;
+
+    @Autowired
+    private UserTagService userTagService;
 
     @ApiOperation(value = "分页查询党员信息", notes = "分页查询党员信息", httpMethod = "GET")
     @GetMapping("/party-members")
