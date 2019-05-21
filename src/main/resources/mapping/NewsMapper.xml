@@ -432,7 +432,7 @@
             AND title like concat('%',#{title},'%')
         </if>
 
-        ORDER BY n.order_num,n.top_status DESC,n.publish_time DESC
+        ORDER BY n.top_status DESC,n.order_num,n.publish_time DESC
 
     </select>
 
