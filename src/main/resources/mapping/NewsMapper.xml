@@ -354,7 +354,7 @@
             -- 新闻资讯表
             n.news_id,
             n.title,
-            n.cover,
+            IF(n.cover IS NOT NULL, CONCAT('http://175.6.46.184:9007/api/hget/', n.cover), n.cover) AS cover,
             n.type,
             n.content,
             n.publish_time,
@@ -391,7 +391,7 @@
         -- 新闻资讯表
         n.news_id,
         n.title,
-        n.cover,
+        IF(n.cover IS NOT NULL, CONCAT('http://175.6.46.184:9007/api/hget/', n.cover), n.cover) AS cover,
         n.type,
         n.content,
         n.publish_time,
@@ -432,7 +432,7 @@
             AND title like concat('%',#{title},'%')
         </if>
 
-        ORDER BY n.order_num,n.top_status DESC,n.publish_time DESC
+        ORDER BY n.top_status DESC,n.order_num,n.publish_time DESC
 
     </select>
 
