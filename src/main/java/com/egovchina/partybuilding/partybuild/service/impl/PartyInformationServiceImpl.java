@@ -57,6 +57,9 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @Autowired
     private TabSysDeptMapper tabSysDeptMapper;
 
+    @Autowired
+    private PartyMembershipServiceImpl partyMembershipServiceImpl;
+
     //长沙市组织id
     private final String ORG_ID = "14307";
 
@@ -65,9 +68,6 @@ public class PartyInformationServiceImpl implements PartyInformationService {
 
     //当前组织包含所有下级
     private final String RANGE_STATE_SUBORDINATE = "2";
-
-    //非党员
-    private final Long TYPE_STATE = 59423L;
 
     @Override
     public UserInfoVO getUserInfoVO() {
@@ -191,6 +191,10 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                     });
                     effected += tabPbPartyWorkMapper.batchInsert(BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(partyInfoDTO.getWorks(), TabPbPartyWork.class, false));
                 }
+                MembershipDTO membershipDTO = new MembershipDTO();
+                //添加一条党籍
+                membershipDTO.setUserId(sys.getUserId()).setIdentityType(sys.getIdentityType()).setType(sys.getRegistryStatus());
+                effected += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
                 return effected;
             }
             throw new BusinessDataCheckFailException("该手机号码已存在");
@@ -308,7 +312,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 }
                 //删除处理
                 if (delete != null && delete.size() > 0) {
-                    List<TabPbPartyJobTitle> deleteSource = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(tabPbPartyJobTitleMapper.findAllByUserId(id), TabPbPartyJobTitle.class, true);
+                    List<TabPbPartyJobTitle> deleteSource = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(delete, TabPbPartyJobTitle.class, true);
                     //设置删除状态
                     for (int i = 0; i < deleteSource.size(); i++) {
                         deleteSource.get(i).setDelFlag(true);
@@ -365,7 +369,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 }
                 //删除处理
                 if (delete != null && delete.size() > 0) {
-                    List<TabPbPartyWork> deleteSource = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(tabPbPartyWorkMapper.findAllByUserId(id), TabPbPartyWork.class, true);
+                    List<TabPbPartyWork> deleteSource = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(delete, TabPbPartyWork.class, true);
                     //设置删除状态
                     for (int i = 0; i < deleteSource.size(); i++) {
                         deleteSource.get(i).setDelFlag(true);

@@ -1,9 +1,6 @@
 package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.partybuild.dto.UserTagDTO;
-import com.egovchina.partybuilding.partybuild.entity.TabPbUserTag;
-
-import java.util.List;
 
 /**
  * @author: GuanYingxin
