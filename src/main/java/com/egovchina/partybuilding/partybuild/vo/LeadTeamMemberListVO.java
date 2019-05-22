@@ -17,7 +17,7 @@ import java.util.Date;
 @ApiModel("班子换届班子成员列表VO")
 @Data
 @Accessors(chain = true)
-public class LeadTeamMemberNoIdCardVO {
+public class LeadTeamMemberListVO {
 
     @ApiModelProperty("班子成员id")
     private Long memberId;

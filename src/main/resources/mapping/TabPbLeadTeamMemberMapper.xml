@@ -62,7 +62,7 @@
     </resultMap>
 
     <!--VO 不包含身份证结果集-->
-    <resultMap id="LeadTeamMemberVONoIdCardNoResultMap" type="com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberNoIdCardVO">
+    <resultMap id="LeadTeamMemberVONoIdCardNoResultMap" type="com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberListVO">
         <id column="member_id" jdbcType="BIGINT" property="memberId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="lead_team_id" jdbcType="BIGINT" property="leadTeamId"/>
@@ -96,11 +96,19 @@
         create_username, update_time, update_userid, update_username, version,rank, approval_number, avatar
     </sql>
 
-    <!--VO ResultMap-->
-    <sql id="LeadTeamMemberVO_Column_List">
+    <!--VO List ResultMap-->
+    <sql id="LeadTeamMemberListVO_Column_List">
         ltm.member_id, ltm.org_id, ltm.lead_team_id, ltm.user_id, ltm.person_name, ltm.positive_id, ltm.positive_name,
         ltm.tenure_begin, ltm.rank,ltm.avatar
     </sql>
+
+    <!--VO ResultMap-->
+    <sql id="LeadTeamMemberVO_Column_List">
+        ltm.member_id, ltm.org_id, ltm.lead_team_id, ltm.user_id, ltm.person_name, ltm.positive_id, ltm.positive_name,
+        ltm.tenure_mode, ltm.tenure_begin, ltm.tenure_duration, ltm.tenure_leave, ltm.as_committee_member, ltm.as_committee_director,
+        ltm.lead_member_order, ltm.description, ltm.rank, ltm.approval_number, ltm.avatar, ltm.ebl_flag,
+        ltm.tenure_begin, ltm.rank,ltm.avatar
+     </sql>
 
     <!--CommunityPartTimeMemberVO ResultMap-->
     <sql id="CommunityPartTimeMemberVO_Column_List">
@@ -379,7 +387,7 @@
     <select id="selectTeamMemberVOListByTeamId" parameterType="java.lang.Long"
             resultMap="LeadTeamMemberVONoIdCardNoResultMap">
         SELECT
-        <include refid="LeadTeamMemberVO_Column_List"/>
+        <include refid="LeadTeamMemberListVO_Column_List"/>
         FROM tab_pb_lead_team_member ltm
         LEFT JOIN sys_dept d ON ltm.org_id = d.dept_id
         WHERE ltm.lead_team_id = #{leadTeamId} AND ltm.del_flag = 0

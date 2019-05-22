@@ -5,7 +5,7 @@ import com.egovchina.partybuilding.partybuild.dto.LeadTeamMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.CommunityPartTimeMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.LeadTeamMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.CommunityPartTimeMemberVO;
-import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberNoIdCardVO;
+import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberListVO;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public interface LeadTeamMemberService {
      * @param page
      * @return
      */
-    List<LeadTeamMemberNoIdCardVO> selectLeadTeamMemberVOListByLeadTeamId(Long leadTeamId, Page page);
+    List<LeadTeamMemberListVO> selectLeadTeamMemberVOListByLeadTeamId(Long leadTeamId, Page page);
 
     /**
      * 根据id查询班子成员信息
