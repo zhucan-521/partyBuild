@@ -61,6 +61,20 @@
         <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
     </resultMap>
 
+    <!--VO 不包含身份证结果集-->
+    <resultMap id="LeadTeamMemberVONoIdCardNoResultMap" type="com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberListVO">
+        <id column="member_id" jdbcType="BIGINT" property="memberId"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="lead_team_id" jdbcType="BIGINT" property="leadTeamId"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="person_name" jdbcType="VARCHAR" property="personName"/>
+        <result column="positive_id" jdbcType="BIGINT" property="positiveId"/>
+        <result column="positive_name" jdbcType="VARCHAR" property="positiveName"/>
+        <result column="tenure_begin" jdbcType="TIMESTAMP" property="tenureBegin"/>
+        <result column="rank" jdbcType="BIGINT" property="rank"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+    </resultMap>
+
     <!--CommunityPartTimeMember VO 结果集-->
     <resultMap id="CommunityPartTimeMemberVOResultMap"
                type="com.egovchina.partybuilding.partybuild.vo.CommunityPartTimeMemberVO">
@@ -82,12 +96,19 @@
         create_username, update_time, update_userid, update_username, version,rank, approval_number, avatar
     </sql>
 
+    <!--VO List ResultMap-->
+    <sql id="LeadTeamMemberListVO_Column_List">
+        ltm.member_id, ltm.org_id, ltm.lead_team_id, ltm.user_id, ltm.person_name, ltm.positive_id, ltm.positive_name,
+        ltm.tenure_begin, ltm.rank,ltm.avatar
+    </sql>
+
     <!--VO ResultMap-->
     <sql id="LeadTeamMemberVO_Column_List">
         ltm.member_id, ltm.org_id, ltm.lead_team_id, ltm.user_id, ltm.person_name, ltm.positive_id, ltm.positive_name,
         ltm.tenure_mode, ltm.tenure_begin, ltm.tenure_duration, ltm.tenure_leave, ltm.as_committee_member, ltm.as_committee_director,
-        ltm.lead_member_order, ltm.description, ltm.rank, ltm.approval_number, ltm.avatar, ltm.ebl_flag
-    </sql>
+        ltm.lead_member_order, ltm.description, ltm.rank, ltm.approval_number, ltm.avatar, ltm.ebl_flag,
+        ltm.tenure_begin, ltm.rank,ltm.avatar
+     </sql>
 
     <!--CommunityPartTimeMemberVO ResultMap-->
     <sql id="CommunityPartTimeMemberVO_Column_List">
@@ -364,9 +385,9 @@
 
     <!--根据领导班子ID查询班子成员-->
     <select id="selectTeamMemberVOListByTeamId" parameterType="java.lang.Long"
-            resultMap="LeadTeamMemberVOResultMap">
+            resultMap="LeadTeamMemberVONoIdCardNoResultMap">
         SELECT
-        <include refid="LeadTeamMemberVO_Column_List"/>
+        <include refid="LeadTeamMemberListVO_Column_List"/>
         FROM tab_pb_lead_team_member ltm
         LEFT JOIN sys_dept d ON ltm.org_id = d.dept_id
         WHERE ltm.lead_team_id = #{leadTeamId} AND ltm.del_flag = 0
