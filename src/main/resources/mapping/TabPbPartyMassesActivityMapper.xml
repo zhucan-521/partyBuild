@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbPartyMassesActivityMapper">
+  <!-- 数据库字段对象关系映射 -->
+  <resultMap id="BaseResultMap"
+             type="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesActivity">
+    <result column="party_masses_activity_id" property="partyMassesActivityId"/>
+    <result column="party_masses_id" property="partyMassesId"/>
+    <result column="place_id" property="placeId"/>
+    <result column="subject" property="subject"/>
+    <result column="content" property="content"/>
+    <result column="start_time" property="startTime"/>
+    <result column="finished_time" property="finishedTime"/>
+    <result column="address" property="address"/>
+    <result column="ebl_flag" property="eblFlag"/>
+    <result column="del_flag" property="delFlag"/>
+    <result column="order_num" property="orderNum"/>
+    <result column="description" property="description"/>
+    <result column="create_time" property="createTime"/>
+    <result column="create_userid" property="createUserid"/>
+    <result column="create_username" property="createUsername"/>
+    <result column="update_time" property="updateTime"/>
+    <result column="update_userid" property="updateUserid"/>
+    <result column="update_username" property="updateUsername"/>
+    <result column="version" property="version"/>
+  </resultMap>
+
+  <!-- VO对象 -->
+  <resultMap id="VoResultMap"
+             type="com.egovchina.partybuilding.partybuild.vo.PartyMassesActivityVO">
+    <result column="party_masses_activity_id" property="partyMassesActivityId"/>
+    <result column="party_masses_id" property="partyMassesId"/>
+    <result column="place_id" property="placeId"/>
+    <result column="subject" property="subject"/>
+    <result column="status" property="status"/>
+    <result column="content" property="content"/>
+    <result column="start_time" property="startTime"/>
+    <result column="finished_time" property="finishedTime"/>
+    <result column="address" property="address"/>
+  </resultMap>
+
+  <!-- base查询字段  -->
+  <sql id="Base_Column_List">
+    <trim suffixOverrides=",">
+      party_masses_activity_id,
+      party_masses_id,
+      place_id,
+      subject,
+      content,
+      start_time,
+      finished_time,
+      address,
+      ebl_flag,
+      del_flag,
+      order_num,
+      description,
+      create_time,
+      create_userid,
+      create_username,
+      update_time,
+      update_userid,
+      update_username,
+      version,
+    </trim>
+  </sql>
+
+  <!-- vo查询字段  -->
+  <sql id="Vo_Column_List">
+    <trim suffixOverrides=",">
+      party_masses_activity_id,
+      party_masses_id,
+      place_id,
+      ( case
+      when now() &lt; start_time then 1
+      when  start_time &lt;= now() and now() &lt;= finished_time then 2
+      when finished_time &lt; now() then 3
+      else 4
+      end ) as status,
+      subject,
+      content,
+      start_time,
+      finished_time,
+      address,
+    </trim>
+  </sql>
+
+  <!--新增-->
+  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesActivity" useGeneratedKeys="true" keyProperty="id">
+    insert into tab_pb_party_masses_activity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="partyMassesActivityId != null ">
+        party_masses_activity_id,
+      </if>
+      <if test="partyMassesId != null ">
+        party_masses_id,
+      </if>
+      <if test="placeId != null ">
+        place_id,
+      </if>
+      <if test="subject != null ">
+        subject,
+      </if>
+      <if test="content != null ">
+        content,
+      </if>
+      <if test="startTime != null ">
+        start_time,
+      </if>
+      <if test="finishedTime != null ">
+        finished_time,
+      </if>
+      <if test="address != null ">
+        address,
+      </if>
+      <if test="eblFlag != null ">
+        ebl_flag,
+      </if>
+      <if test="delFlag != null ">
+        del_flag,
+      </if>
+      <if test="orderNum != null ">
+        order_num,
+      </if>
+      <if test="description != null ">
+        description,
+      </if>
+      <if test="createTime != null ">
+        create_time,
+      </if>
+      <if test="createUserid != null ">
+        create_userid,
+      </if>
+      <if test="createUsername != null ">
+        create_username,
+      </if>
+      <if test="updateTime != null ">
+        update_time,
+      </if>
+      <if test="updateUserid != null ">
+        update_userid,
+      </if>
+      <if test="updateUsername != null ">
+        update_username,
+      </if>
+      <if test="version != null ">
+        version,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="partyMassesActivityId != null">
+        #{partyMassesActivityId, jdbcType=BIGINT},
+      </if>
+      <if test="partyMassesId != null">
+        #{partyMassesId, jdbcType=BIGINT},
+      </if>
+      <if test="placeId != null">
+        #{placeId, jdbcType=BIGINT},
+      </if>
+      <if test="subject != null">
+        #{subject, jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content, jdbcType=LONGVARCHAR},
+      </if>
+      <if test="startTime != null">
+        #{startTime, jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishedTime != null">
+        #{finishedTime, jdbcType=TIMESTAMP},
+      </if>
+      <if test="address != null">
+        #{address, jdbcType=VARCHAR},
+      </if>
+      <if test="eblFlag != null">
+        #{eblFlag, jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag, jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null">
+        #{orderNum, jdbcType=BIGINT},
+      </if>
+      <if test="description != null">
+        #{description, jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime, jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserid != null">
+        #{createUserid, jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null">
+        #{createUsername, jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime, jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        #{updateUserid, jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        #{updateUsername, jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version, jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+
+  <!--根据id修改-->
+  <update id="updateById" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesActivity">
+    update tab_pb_party_masses_activity
+    <set>
+      <if test="partyMassesId != null">
+        party_masses_id = #{partyMassesId, jdbcType=BIGINT},
+      </if>
+      <if test="placeId != null">
+        place_id = #{placeId, jdbcType=BIGINT},
+      </if>
+      <if test="subject != null">
+        subject = #{subject, jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content, jdbcType=LONGVARCHAR},
+      </if>
+      <if test="startTime != null">
+        start_time = #{startTime, jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishedTime != null">
+        finished_time = #{finishedTime, jdbcType=TIMESTAMP},
+      </if>
+      <if test="address != null">
+        address = #{address, jdbcType=VARCHAR},
+      </if>
+      <if test="eblFlag != null">
+        ebl_flag = #{eblFlag, jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag, jdbcType=VARCHAR},
+      </if>
+      <if test="orderNum != null">
+        order_num = #{orderNum, jdbcType=BIGINT},
+      </if>
+      <if test="description != null">
+        description = #{description, jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime, jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserid != null">
+        create_userid = #{createUserid, jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null">
+        create_username = #{createUsername, jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime, jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        update_userid = #{updateUserid, jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        update_username = #{updateUsername, jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        version = #{version, jdbcType=BIGINT},
+      </if>
+    </set>
+    where party_masses_activity_id = #{partyMassesActivityId, jdbcType=BIGINT}
+  </update>
+
+  <!--根据id删除-->
+  <delete id="deleteById" parameterType="long">
+        delete from tab_pb_party_masses_activity where id  = #{id}
+    </delete>
+
+
+  <!-- 根据id查找 -->
+  <select id="selectById" resultMap="VoResultMap" parameterType="long">
+    select <include refid="Vo_Column_List"/>
+    from tab_pb_party_masses_activity where party_masses_activity_id = #{id} and del_flag = 0
+  </select>
+
+
+  <!-- base where条件  -->
+  <sql id="Base_Where_Condition">
+    <where>
+      del_flag = 0
+      <if test="partyMassesId != null">
+        and party_masses_id = #{partyMassesId}
+      </if>
+      <if test="subject != null">
+        and subject like concat('%',#{subject},'%')
+      </if>
+      <if test="partyMassesPlaceId != null">
+        and place_id = #{partyMassesPlaceId}
+      </if>
+      <if test="time != null">
+        and ( date(start_time) &lt;= #{time} and  #{time} &lt;= date(finished_time) )
+      </if>
+    </where>
+  </sql>
+
+
+  <!--查询列表-->
+  <select id="list" resultMap="VoResultMap" parameterType="com.egovchina.partybuilding.partybuild.entity.PartyMassesActivityQueryBean">
+    select <include refid="Vo_Column_List"/>
+    from tab_pb_party_masses_activity
+    <include refid="Base_Where_Condition"/>
+  </select>
+</mapper>
