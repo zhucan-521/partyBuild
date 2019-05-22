@@ -9,6 +9,7 @@ import com.egovchina.partybuilding.partybuild.vo.OrganizationVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -132,5 +133,16 @@ public interface TabSysDeptMapper {
      * @param subOrgIds 直属组织id集合
      * @return
      */
-    boolean checkIsExistUnDirectSub(@Param("orgId")Long orgId, @Param("subOrgIds")List<Long> subOrgIds);
+    boolean checkIsExistUnDirectSub(@Param("orgId") Long orgId, @Param("subOrgIds") List<Long> subOrgIds);
+
+    /**
+     * desc: 根据主键查询组织的建立时间
+     *
+     * @param orgId 主键ID
+     * @return Date
+     * @auther FanYanGen
+     * @date 2019-05-22 21:05
+     */
+    Date getFoundedDateByOrgId(Long orgId);
+
 }
