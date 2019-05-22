@@ -54,7 +54,6 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
      */
     @Override
     public int addMsgNotice(MsgNoticeDTO msgNoticeDTO) {
-        this.judgeDirectSubordinate(msgNoticeDTO.getNoticeDeptList());
         TabPbMsgNotice tabPbMsgNotice = generateTargetCopyPropertiesAndPaddingBaseField(msgNoticeDTO, TabPbMsgNotice.class, false);
         int count = tabPbMsgNoticeMapper.insertSelective(tabPbMsgNotice);
         if (count > 0) {
@@ -211,20 +210,6 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
             noticeDept.setNoticeId(id);
             PaddingBaseFieldUtil.paddingBaseFiled(noticeDept);
             tabPbMsgNoticeDeptMapper.insertSelective(noticeDept);
-        }
-    }
-
-    /**
-     * 判断是否当前登录组织的直属下级
-     *
-     * @param noticeDeptList
-     * @return
-     */
-    private void judgeDirectSubordinate(List<TabPbMsgNoticeDept> noticeDeptList) {
-        Long orgId = UserContextHolder.getOrgId();
-        List subOrgIds= noticeDeptList.stream().map(TabPbMsgNoticeDept::getDeptId).collect(Collectors.toList());
-        if (tabSysDeptMapper.checkIsExistUnDirectSub(orgId,subOrgIds)) {
-            throw new BusinessDataIncompleteException("文件只能下达直属组织");
         }
     }
 
