@@ -15,6 +15,8 @@ public class TabPbUnitInfo {
 
     private String unitName;
 
+    private String unitMaster;
+
     private String unitCode;
 
     private Byte ifMaster = 0;
