@@ -9,12 +9,15 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * desc: 双述双评新增-数据传输对象
+ * desc: 双述双评更新-数据传输对象
  * Created by FanYanGen on 2019/4/24 16:17
  */
 @Data
-@ApiModel("双述双评新增-数据传输对象")
-public class DoubleCommentaryDTO {
+@ApiModel("双述双评更新-数据传输对象")
+public class DoubleCommentaryUpdateDTO {
+
+    @ApiModelProperty(value = "ID")
+    private Long commentaryId;
 
     @ApiModelProperty(value = "组织ID", required = true)
     @NotNull(message = "党组织不能为空")
@@ -29,7 +32,7 @@ public class DoubleCommentaryDTO {
     @NotNull(message = "上报日期不能为空")
     private Date reportDate;
 
-    @ApiModelProperty(value = "结果情况 dict", required = true)
+    @ApiModelProperty(value = "结果情况 dict")
     @NotNull(message = "结果情况不能为空")
     private Long resultSituation;
 
