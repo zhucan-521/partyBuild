@@ -44,6 +44,10 @@ public class CommentaryDetailsVO {
     @JsonSerialize(using = DictSerializer.class)
     private Long checkResult;
 
+    @ApiModelProperty(value = "结果情况")
+    @JsonSerialize(using = DictSerializer.class)
+    private Long resultSituation;
+
     @ApiModelProperty(value = "审核机构ID")
     private Long checkOrg;
 
