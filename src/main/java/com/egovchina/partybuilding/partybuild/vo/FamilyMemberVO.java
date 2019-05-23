@@ -51,7 +51,7 @@ public class FamilyMemberVO {
     private String phone;
 
     @JsonSerialize(using = DictSerializer.class)
-    @ApiModelProperty(value = "职务级别 码表值 HZZW")
+    @ApiModelProperty(value = "职务 码表值 ZC")
     private Long positive;
 
     @ApiModelProperty(value = "出生日期")
