@@ -104,7 +104,7 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
         if (tabPbDoubleCommentaryMapper.checkIsExistByPlanYear(orgId, null, planYear)) {
-            throw new BusinessDataCheckFailException(String.format("该组织%s年度双述双评总结已存在", planYear));
+            throw new BusinessDataCheckFailException(String.format("该书记%s年度双述双评总结已存在", planYear));
         }
     }
 
@@ -119,7 +119,7 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
             throw new BusinessDataCheckFailException("该数据不存在无法修改");
         }
         if (tabPbDoubleCommentaryMapper.checkIsExistByPlanYear(orgId, commentaryId, planYear)) {
-            throw new BusinessDataCheckFailException(String.format("该组织%s年度双述双评总结已存在", planYear));
+            throw new BusinessDataCheckFailException(String.format("该书记%s年度双述双评总结已存在", planYear));
         }
     }
 
