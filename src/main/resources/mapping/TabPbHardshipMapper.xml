@@ -46,6 +46,7 @@
         <result column="implementation" jdbcType="LONGVARCHAR" property="implementation"/>
         <result column="condolence_info" jdbcType="VARCHAR" property="condolenceInfo"/>
         <result column="condolence_date" jdbcType="TIMESTAMP" property="condolenceDate"/>
+        <collection property="tabPbUserTags" select="com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper.selectAllListSelective" column="user_id" />
     </resultMap>
 
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
