@@ -37,6 +37,10 @@
     <result column="start_time" property="startTime"/>
     <result column="finished_time" property="finishedTime"/>
     <result column="address" property="address"/>
+    <!--关联附件数据-->
+    <association property="attachments"
+                 select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+                 column="{hostId=party_masses_activity_id,attachmentType=attachment_type}"/>
   </resultMap>
 
   <!-- base查询字段  -->
@@ -67,6 +71,7 @@
   <!-- vo查询字段  -->
   <sql id="Vo_Column_List">
     <trim suffixOverrides=",">
+      '67' as attachment_type,
       party_masses_activity_id,
       party_masses_id,
       place_id,
