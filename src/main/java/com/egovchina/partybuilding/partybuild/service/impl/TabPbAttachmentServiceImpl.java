@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -136,8 +137,8 @@ public class TabPbAttachmentServiceImpl implements ITabPbAttachmentService {
         //筛选
         List<TabPbAttachment> pendingRemoveList = dbList.stream()
 //                .filter(tabPbAttachment -> !pendingInstanceList.contains(tabPbAttachment.getAttachmentInstance()))
-                .filter(attachment -> pendingList.stream().noneMatch(dbAttachment -> dbAttachment.getAttachmentInstance()
-                        .equals(attachment.getAttachmentInstance()) && dbAttachment.getAttachmentId().equals(attachment.getAttachmentId())))
+                .filter(attachment -> pendingList.stream().noneMatch(dbAttachment -> Objects.equals(dbAttachment.getAttachmentInstance(),
+                        attachment.getAttachmentInstance()) && Objects.equals(dbAttachment.getAttachmentId(), attachment.getAttachmentId())))
 //                .map(TabPbAttachment::getAttachmentId)
                 .collect(Collectors.toList());
 
@@ -146,10 +147,11 @@ public class TabPbAttachmentServiceImpl implements ITabPbAttachmentService {
                 .filter(tabPbAttachment -> !dbInstanceList.contains(tabPbAttachment.getAttachmentInstance()) || tabPbAttachment.getAttachmentId() == null)
                 .collect(Collectors.toList());
 
-        List<TabPbAttachment> pendingUpdateList = finalPendingList.stream().filter(attachment -> dbList.stream().anyMatch(dbAttachment -> dbAttachment.getAttachmentInstance()
-                .equals(attachment.getAttachmentInstance()) && dbAttachment.getAttachmentId().equals(attachment.getAttachmentId())
-                && (!dbAttachment.getRotate().equals(attachment.getRotate())
-                || !dbAttachment.getOrderNum().equals(attachment.getOrderNum())))).collect(Collectors.toList());
+        List<TabPbAttachment> pendingUpdateList = finalPendingList.stream().filter(attachment ->
+                dbList.stream().anyMatch(dbAttachment -> Objects.equals(dbAttachment.getAttachmentInstance(), attachment.getAttachmentInstance())
+                        && Objects.equals(dbAttachment.getAttachmentId(), attachment.getAttachmentId())
+                        && (!Objects.equals(dbAttachment.getRotate(), attachment.getRotate())
+                        || !Objects.equals(dbAttachment.getOrderNum(), attachment.getOrderNum())))).collect(Collectors.toList());
 
         if (CollectionUtil.isNotEmpty(pendingAddList)) {
             //批量新增
