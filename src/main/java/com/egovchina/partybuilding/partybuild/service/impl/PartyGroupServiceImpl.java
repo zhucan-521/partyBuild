@@ -118,13 +118,12 @@ public class PartyGroupServiceImpl implements PartyGroupService {
         Long groupId = partyGroupDTO.getGroupId();
         if (!tabSysDeptMapper.checkIsExistByOrgId(orgId)) {
             throw new BusinessDataCheckFailException("该党组织不存在");
-        } else {
-            if (partyGroupDTO.getBuildTime() == null) {
-                partyGroupDTO.setBuildTime(tabSysDeptMapper.getFoundedDateByOrgId(orgId));
-            }
         }
         if (tabPbPartyGroupMapper.checkIsExistByGroupName(orgId, partyGroupDTO.getGroupName(), groupId)) {
             throw new BusinessDataCheckFailException("该党小组名称已存在");
+        }
+        if (partyGroupDTO.getBuildTime() == null) {
+            partyGroupDTO.setBuildTime(tabSysDeptMapper.getFoundedDateByOrgId(orgId));
         }
         if (groupId != null && !tabPbPartyGroupMapper.checkIsExistByGroupId(groupId)) {
             throw new BusinessDataCheckFailException("该党小组不存在");
