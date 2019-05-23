@@ -52,6 +52,9 @@ public class NewsDetailsVO {
     @ApiModelProperty(value = "操作人所属党组织简称")
     private String operatorPartyOrganizationShortName;
 
+    @ApiModelProperty(value = "封面图")
+    private String cover;
+
     @ApiModelProperty(value = "浏览数")
     private Long watchNum;
 

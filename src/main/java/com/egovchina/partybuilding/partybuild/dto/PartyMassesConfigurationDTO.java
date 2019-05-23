@@ -1,0 +1,34 @@
+package com.egovchina.partybuilding.partybuild.dto;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+
+/**
+ * Description:
+ *
+ * @author WuYunJie
+ * @date 2019/05/20 21:37:39
+ */
+@ApiModel(value = "配置清单DTO")
+@Data
+public class PartyMassesConfigurationDTO{
+
+    @ApiModelProperty(value = "配置清单id")
+    private Long partyMassesConfigurationId;
+
+    @ApiModelProperty(value = "党群场地id",required = true)
+    @NotNull(message = "党群场地id不能为空")
+    private Long partyMassesPlaceId;
+
+    @ApiModelProperty(value = "类型 字典id")
+    private Long configurationType;
+
+    @ApiModelProperty(value = "数量")
+    private Long quantity;
+
+}

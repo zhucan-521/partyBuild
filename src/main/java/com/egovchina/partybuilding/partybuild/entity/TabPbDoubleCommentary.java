@@ -3,12 +3,14 @@ package com.egovchina.partybuilding.partybuild.entity;
 import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 import java.util.List;
 
-@ApiModel(value = "双诉双评")
 @Data
+@ApiModel(value = "双述双评")
+@Accessors(chain = true)
 public class TabPbDoubleCommentary {
 
     private Long commentaryId;
@@ -26,6 +28,8 @@ public class TabPbDoubleCommentary {
     private String commentaryContent;
 
     private Long checkResult;
+
+    private Long resultSituation;
 
     private Long checkOrg;
 

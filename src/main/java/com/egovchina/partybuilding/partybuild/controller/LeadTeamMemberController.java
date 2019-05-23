@@ -8,6 +8,7 @@ import com.egovchina.partybuilding.partybuild.entity.CommunityPartTimeMemberQuer
 import com.egovchina.partybuilding.partybuild.entity.LeadTeamMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.service.LeadTeamMemberService;
 import com.egovchina.partybuilding.partybuild.vo.CommunityPartTimeMemberVO;
+import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberListVO;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -36,8 +37,8 @@ public class LeadTeamMemberController {
     @ApiOperation(value = "班子成员列表", notes = "班子成员列表", httpMethod = "GET")
     @ApiImplicitParam(value = "班子id", name = "leadTeamId", dataType = "long", paramType = "path", required = true)
     @GetMapping("/lead-teams/{leadTeamId}/members")
-    public PageInfo<LeadTeamMemberVO> getLeadTeamMemberList(@PathVariable Long leadTeamId, Page page) {
-        List<LeadTeamMemberVO> list = leadTeamMemberService.selectLeadTeamMemberVOListByLeadTeamId(leadTeamId, page);
+    public PageInfo<LeadTeamMemberListVO> getLeadTeamMemberList(@PathVariable Long leadTeamId, Page page) {
+        List<LeadTeamMemberListVO> list = leadTeamMemberService.selectLeadTeamMemberVOListByLeadTeamId(leadTeamId, page);
         return new PageInfo<>(list);
     }
 

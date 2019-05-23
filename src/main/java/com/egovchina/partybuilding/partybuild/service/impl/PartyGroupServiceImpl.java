@@ -122,6 +122,9 @@ public class PartyGroupServiceImpl implements PartyGroupService {
         if (tabPbPartyGroupMapper.checkIsExistByGroupName(orgId, partyGroupDTO.getGroupName(), groupId)) {
             throw new BusinessDataCheckFailException("该党小组名称已存在");
         }
+        if (partyGroupDTO.getBuildTime() == null) {
+            partyGroupDTO.setBuildTime(tabSysDeptMapper.getFoundedDateByOrgId(orgId));
+        }
         if (groupId != null && !tabPbPartyGroupMapper.checkIsExistByGroupId(groupId)) {
             throw new BusinessDataCheckFailException("该党小组不存在");
         }

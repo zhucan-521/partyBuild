@@ -15,6 +15,7 @@ import com.egovchina.partybuilding.partybuild.repository.*;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.LeadTeamMemberService;
 import com.egovchina.partybuilding.partybuild.vo.CommunityPartTimeMemberVO;
+import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberListVO;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamVO;
 import com.github.pagehelper.PageHelper;
@@ -71,7 +72,7 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
     }
 
     @Override
-    public List<LeadTeamMemberVO> selectLeadTeamMemberVOListByLeadTeamId(Long leadTeamId, Page page) {
+    public List<LeadTeamMemberListVO> selectLeadTeamMemberVOListByLeadTeamId(Long leadTeamId, Page page) {
         PageHelper.startPage(page);
         return tabPbLeadTeamMemberMapper.selectTeamMemberVOListByTeamId(leadTeamId);
     }

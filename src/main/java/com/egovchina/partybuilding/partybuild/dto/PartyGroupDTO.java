@@ -43,9 +43,8 @@ public class PartyGroupDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date revokeTime;
 
-    @ApiModelProperty(value = "建立时间", required = true, dataType = "Date", example = "2019-01-01")
+    @ApiModelProperty(value = "建立时间 (如果不记得建立时间则默认为本支部成立时间)", dataType = "Date", example = "2019-01-01")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message = "党小组建立时间不能为空")
     private Date buildTime;
 
     @ApiModelProperty(value = "说明")

@@ -1,0 +1,793 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbPartyMassesParticipantMapper">
+
+    <!-- 数据库字段对象关系映射 -->
+    <resultMap id="BaseResultMap"
+        type="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesParticipant">
+        <result column="participant_id" property="participantId"/>
+        <result column="party_masses_activity_id" property="partyMassesActivityId"/>
+        <result column="user_id" property="userId"/>
+        <result column="real_name" property="realName"/>
+        <result column="notify_time" property="notifyTime"/>
+        <result column="signup_time" property="signupTime"/>
+        <result column="signin_time" property="signinTime"/>
+        <result column="signin_pwd" property="signinPwd"/>
+        <result column="absent_reason" property="absentReason"/>
+        <result column="if_orgnizer" property="ifOrgnizer"/>
+        <result column="if_moderator" property="ifModerator"/>
+        <result column="if_secretary_general" property="ifSecretaryGeneral"/>
+        <result column="if_presidium" property="ifPresidium"/>
+        <result column="if_deputy_secretary_general" property="ifDeputySecretaryGeneral"/>
+        <result column="if_sit_in" property="ifSitIn"/>
+        <result column="if_standing_committee" property="ifStandingCommittee"/>
+        <result column="if_leader" property="ifLeader"/>
+        <result column="if_link_leader" property="ifLinkLeader"/>
+        <result column="performance" property="performance"/>
+        <result column="speech" property="speech"/>
+        <result column="activitytype" property="activitytype"/>
+        <result column="org_assess" property="orgAssess"/>
+        <result column="org_assess_content" property="orgAssessContent"/>
+        <result column="in_org_id" property="inOrgId"/>
+        <result column="parent_org_assess" property="parentOrgAssess"/>
+        <result column="parent_org_assess_content" property="parentOrgAssessContent"/>
+        <result column="audit_time" property="auditTime"/>
+        <result column="audit_user" property="auditUser"/>
+        <result column="audit_org" property="auditOrg"/>
+        <result column="audit_comment" property="auditComment"/>
+        <result column="ebl_flag" property="eblFlag"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="order_num" property="orderNum"/>
+        <result column="description" property="description"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_userid" property="createUserid"/>
+        <result column="create_username" property="createUsername"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_userid" property="updateUserid"/>
+        <result column="update_username" property="updateUsername"/>
+        <result column="version" property="version"/>
+        <result column="real_type" property="realType"/>
+        <result column="group_id" property="groupId"/>
+        <result column="group_name" property="groupName"/>
+        <result column="sign_in_state" property="signInState"/>
+    </resultMap>
+
+    <!-- VO对象 -->
+    <resultMap id="VoResultMap"
+        type="com.egovchina.partybuilding.partybuild.vo.PartyMassesParticipantVO">
+        <result column="participant_id" property="participantId"/>
+        <result column="party_masses_activity_id" property="partyMassesActivityId"/>
+        <result column="user_id" property="userId"/>
+        <result column="real_name" property="realName"/>
+        <result column="notify_time" property="notifyTime"/>
+        <result column="signup_time" property="signupTime"/>
+        <result column="signin_time" property="signinTime"/>
+        <result column="signin_pwd" property="signinPwd"/>
+        <result column="absent_reason" property="absentReason"/>
+        <result column="if_orgnizer" property="ifOrgnizer"/>
+        <result column="if_moderator" property="ifModerator"/>
+        <result column="if_secretary_general" property="ifSecretaryGeneral"/>
+        <result column="if_presidium" property="ifPresidium"/>
+        <result column="if_deputy_secretary_general" property="ifDeputySecretaryGeneral"/>
+        <result column="if_sit_in" property="ifSitIn"/>
+        <result column="if_standing_committee" property="ifStandingCommittee"/>
+        <result column="if_leader" property="ifLeader"/>
+        <result column="if_link_leader" property="ifLinkLeader"/>
+        <result column="performance" property="performance"/>
+        <result column="speech" property="speech"/>
+        <result column="activitytype" property="activitytype"/>
+        <result column="org_assess" property="orgAssess"/>
+        <result column="org_assess_content" property="orgAssessContent"/>
+        <result column="in_org_id" property="inOrgId"/>
+        <result column="parent_org_assess" property="parentOrgAssess"/>
+        <result column="parent_org_assess_content" property="parentOrgAssessContent"/>
+        <result column="audit_time" property="auditTime"/>
+        <result column="audit_user" property="auditUser"/>
+        <result column="audit_org" property="auditOrg"/>
+        <result column="audit_comment" property="auditComment"/>
+        <result column="real_type" property="realType"/>
+        <result column="group_id" property="groupId"/>
+        <result column="group_name" property="groupName"/>
+        <result column="sign_in_state" property="signInState"/>
+    </resultMap>
+
+    <!-- base查询字段  -->
+    <sql id="Base_Column_List">
+        <trim suffixOverrides=",">
+            participant_id,
+            party_masses_activity_id,
+            user_id,
+            real_name,
+            notify_time,
+            signup_time,
+            signin_time,
+            signin_pwd,
+            absent_reason,
+            if_orgnizer,
+            if_moderator,
+            if_secretary_general,
+            if_presidium,
+            if_deputy_secretary_general,
+            if_sit_in,
+            if_standing_committee,
+            if_leader,
+            if_link_leader,
+            performance,
+            speech,
+            activitytype,
+            org_assess,
+            org_assess_content,
+            in_org_id,
+            parent_org_assess,
+            parent_org_assess_content,
+            audit_time,
+            audit_user,
+            audit_org,
+            audit_comment,
+            real_type,
+            group_id,
+            group_name,
+            sign_in_state,
+        </trim>
+    </sql>
+
+    <!-- vo查询字段  -->
+    <sql id="Vo_Column_List">
+        <trim suffixOverrides=",">
+            participant_id,
+            party_masses_activity_id,
+            user_id,
+            real_name,
+            notify_time,
+            signup_time,
+            signin_time,
+            signin_pwd,
+            absent_reason,
+            if_orgnizer,
+            if_moderator,
+            if_secretary_general,
+            if_presidium,
+            if_deputy_secretary_general,
+            if_sit_in,
+            if_standing_committee,
+            if_leader,
+            if_link_leader,
+            performance,
+            speech,
+            activitytype,
+            org_assess,
+            org_assess_content,
+            in_org_id,
+            parent_org_assess,
+            parent_org_assess_content,
+            audit_time,
+            audit_user,
+            audit_org,
+            audit_comment,
+            real_type,
+            group_id,
+            group_name,
+            sign_in_state,
+        </trim>
+    </sql>
+
+    <!--新增-->
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesParticipant" useGeneratedKeys="true" keyProperty="id">
+        insert into tab_pb_party_masses_participant
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="participantId != null ">
+                participant_id,
+            </if>
+            <if test="partyMassesActivityId != null ">
+                party_masses_activity_id,
+            </if>
+            <if test="userId != null ">
+                user_id,
+            </if>
+            <if test="realName != null ">
+                real_name,
+            </if>
+            <if test="notifyTime != null ">
+                notify_time,
+            </if>
+            <if test="signupTime != null ">
+                signup_time,
+            </if>
+            <if test="signinTime != null ">
+                signin_time,
+            </if>
+            <if test="signinPwd != null ">
+                signin_pwd,
+            </if>
+            <if test="absentReason != null ">
+                absent_reason,
+            </if>
+            <if test="ifOrgnizer != null ">
+                if_orgnizer,
+            </if>
+            <if test="ifModerator != null ">
+                if_moderator,
+            </if>
+            <if test="ifSecretaryGeneral != null ">
+                if_secretary_general,
+            </if>
+            <if test="ifPresidium != null ">
+                if_presidium,
+            </if>
+            <if test="ifDeputySecretaryGeneral != null ">
+                if_deputy_secretary_general,
+            </if>
+            <if test="ifSitIn != null ">
+                if_sit_in,
+            </if>
+            <if test="ifStandingCommittee != null ">
+                if_standing_committee,
+            </if>
+            <if test="ifLeader != null ">
+                if_leader,
+            </if>
+            <if test="ifLinkLeader != null ">
+                if_link_leader,
+            </if>
+            <if test="performance != null ">
+                performance,
+            </if>
+            <if test="speech != null ">
+                speech,
+            </if>
+            <if test="activitytype != null ">
+                activitytype,
+            </if>
+            <if test="orgAssess != null ">
+                org_assess,
+            </if>
+            <if test="orgAssessContent != null ">
+                org_assess_content,
+            </if>
+            <if test="inOrgId != null ">
+                in_org_id,
+            </if>
+            <if test="parentOrgAssess != null ">
+                parent_org_assess,
+            </if>
+            <if test="parentOrgAssessContent != null ">
+                parent_org_assess_content,
+            </if>
+            <if test="auditTime != null ">
+                audit_time,
+            </if>
+            <if test="auditUser != null ">
+                audit_user,
+            </if>
+            <if test="auditOrg != null ">
+                audit_org,
+            </if>
+            <if test="auditComment != null ">
+                audit_comment,
+            </if>
+            <if test="eblFlag != null ">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null ">
+                del_flag,
+            </if>
+            <if test="orderNum != null ">
+                order_num,
+            </if>
+            <if test="description != null ">
+                description,
+            </if>
+            <if test="createTime != null ">
+                create_time,
+            </if>
+            <if test="createUserid != null ">
+                create_userid,
+            </if>
+            <if test="createUsername != null ">
+                create_username,
+            </if>
+            <if test="updateTime != null ">
+                update_time,
+            </if>
+            <if test="updateUserid != null ">
+                update_userid,
+            </if>
+            <if test="updateUsername != null ">
+                update_username,
+            </if>
+            <if test="version != null ">
+                version,
+            </if>
+            <if test="realType != null ">
+                real_type,
+            </if>
+            <if test="groupId != null ">
+                group_id,
+            </if>
+            <if test="groupName != null ">
+                group_name,
+            </if>
+            <if test="signInState != null ">
+                sign_in_state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="participantId != null">
+                #{participantId, jdbcType=BIGINT},
+            </if>
+            <if test="partyMassesActivityId != null">
+                #{partyMassesActivityId, jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId, jdbcType=BIGINT},
+            </if>
+            <if test="realName != null">
+                #{realName, jdbcType=VARCHAR},
+            </if>
+            <if test="notifyTime != null">
+                #{notifyTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="signupTime != null">
+                #{signupTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="signinTime != null">
+                #{signinTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="signinPwd != null">
+                #{signinPwd, jdbcType=VARCHAR},
+            </if>
+            <if test="absentReason != null">
+                #{absentReason, jdbcType=BIGINT},
+            </if>
+            <if test="ifOrgnizer != null">
+                #{ifOrgnizer, jdbcType=TINYINT},
+            </if>
+            <if test="ifModerator != null">
+                #{ifModerator, jdbcType=TINYINT},
+            </if>
+            <if test="ifSecretaryGeneral != null">
+                #{ifSecretaryGeneral, jdbcType=TINYINT},
+            </if>
+            <if test="ifPresidium != null">
+                #{ifPresidium, jdbcType=TINYINT},
+            </if>
+            <if test="ifDeputySecretaryGeneral != null">
+                #{ifDeputySecretaryGeneral, jdbcType=TINYINT},
+            </if>
+            <if test="ifSitIn != null">
+                #{ifSitIn, jdbcType=TINYINT},
+            </if>
+            <if test="ifStandingCommittee != null">
+                #{ifStandingCommittee, jdbcType=TINYINT},
+            </if>
+            <if test="ifLeader != null">
+                #{ifLeader, jdbcType=TINYINT},
+            </if>
+            <if test="ifLinkLeader != null">
+                #{ifLinkLeader, jdbcType=TINYINT},
+            </if>
+            <if test="performance != null">
+                #{performance, jdbcType=TEXT},
+            </if>
+            <if test="speech != null">
+                #{speech, jdbcType=TEXT},
+            </if>
+            <if test="activitytype != null">
+                #{activitytype, jdbcType=BIGINT},
+            </if>
+            <if test="orgAssess != null">
+                #{orgAssess, jdbcType=BIGINT},
+            </if>
+            <if test="orgAssessContent != null">
+                #{orgAssessContent, jdbcType=TEXT},
+            </if>
+            <if test="inOrgId != null">
+                #{inOrgId, jdbcType=BIGINT},
+            </if>
+            <if test="parentOrgAssess != null">
+                #{parentOrgAssess, jdbcType=BIGINT},
+            </if>
+            <if test="parentOrgAssessContent != null">
+                #{parentOrgAssessContent, jdbcType=TEXT},
+            </if>
+            <if test="auditTime != null">
+                #{auditTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="auditUser != null">
+                #{auditUser, jdbcType=BIGINT},
+            </if>
+            <if test="auditOrg != null">
+                #{auditOrg, jdbcType=BIGINT},
+            </if>
+            <if test="auditComment != null">
+                #{auditComment, jdbcType=TEXT},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag, jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag, jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum, jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description, jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid, jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername, jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid, jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername, jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version, jdbcType=BIGINT},
+            </if>
+            <if test="realType != null">
+                #{realType, jdbcType=VARCHAR},
+            </if>
+            <if test="groupId != null">
+                #{groupId, jdbcType=BIGINT},
+            </if>
+            <if test="groupName != null">
+                #{groupName, jdbcType=VARCHAR},
+            </if>
+            <if test="signInState != null">
+                #{signInState, jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+
+    <!--根据id修改-->
+    <update id="updateById" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesParticipant">
+        update tab_pb_party_masses_participant
+        <set>
+            <if test="participantId != null">
+                participant_id = #{participantId, jdbcType=BIGINT},
+            </if>
+            <if test="partyMassesActivityId != null">
+                party_masses_activity_id = #{partyMassesActivityId, jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId, jdbcType=BIGINT},
+            </if>
+            <if test="realName != null">
+                real_name = #{realName, jdbcType=VARCHAR},
+            </if>
+            <if test="notifyTime != null">
+                notify_time = #{notifyTime, jdbcType=DATETIME},
+            </if>
+            <if test="signupTime != null">
+                signup_time = #{signupTime, jdbcType=DATETIME},
+            </if>
+            <if test="signinTime != null">
+                signin_time = #{signinTime, jdbcType=DATETIME},
+            </if>
+            <if test="signinPwd != null">
+                signin_pwd = #{signinPwd, jdbcType=VARCHAR},
+            </if>
+            <if test="absentReason != null">
+                absent_reason = #{absentReason, jdbcType=BIGINT},
+            </if>
+            <if test="ifOrgnizer != null">
+                if_orgnizer = #{ifOrgnizer, jdbcType=TINYINT},
+            </if>
+            <if test="ifModerator != null">
+                if_moderator = #{ifModerator, jdbcType=TINYINT},
+            </if>
+            <if test="ifSecretaryGeneral != null">
+                if_secretary_general = #{ifSecretaryGeneral, jdbcType=TINYINT},
+            </if>
+            <if test="ifPresidium != null">
+                if_presidium = #{ifPresidium, jdbcType=TINYINT},
+            </if>
+            <if test="ifDeputySecretaryGeneral != null">
+                if_deputy_secretary_general = #{ifDeputySecretaryGeneral, jdbcType=TINYINT},
+            </if>
+            <if test="ifSitIn != null">
+                if_sit_in = #{ifSitIn, jdbcType=TINYINT},
+            </if>
+            <if test="ifStandingCommittee != null">
+                if_standing_committee = #{ifStandingCommittee, jdbcType=TINYINT},
+            </if>
+            <if test="ifLeader != null">
+                if_leader = #{ifLeader, jdbcType=TINYINT},
+            </if>
+            <if test="ifLinkLeader != null">
+                if_link_leader = #{ifLinkLeader, jdbcType=TINYINT},
+            </if>
+            <if test="performance != null">
+                performance = #{performance, jdbcType=TEXT},
+            </if>
+            <if test="speech != null">
+                speech = #{speech, jdbcType=TEXT},
+            </if>
+            <if test="activitytype != null">
+                activitytype = #{activitytype, jdbcType=BIGINT},
+            </if>
+            <if test="orgAssess != null">
+                org_assess = #{orgAssess, jdbcType=BIGINT},
+            </if>
+            <if test="orgAssessContent != null">
+                org_assess_content = #{orgAssessContent, jdbcType=TEXT},
+            </if>
+            <if test="inOrgId != null">
+                in_org_id = #{inOrgId, jdbcType=BIGINT},
+            </if>
+            <if test="parentOrgAssess != null">
+                parent_org_assess = #{parentOrgAssess, jdbcType=BIGINT},
+            </if>
+            <if test="parentOrgAssessContent != null">
+                parent_org_assess_content = #{parentOrgAssessContent, jdbcType=TEXT},
+            </if>
+            <if test="auditTime != null">
+                audit_time = #{auditTime, jdbcType=DATETIME},
+            </if>
+            <if test="auditUser != null">
+                audit_user = #{auditUser, jdbcType=BIGINT},
+            </if>
+            <if test="auditOrg != null">
+                audit_org = #{auditOrg, jdbcType=BIGINT},
+            </if>
+            <if test="auditComment != null">
+                audit_comment = #{auditComment, jdbcType=TEXT},
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag = #{eblFlag, jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag, jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                order_num = #{orderNum, jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description, jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime, jdbcType=DATETIME},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid, jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername, jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime, jdbcType=DATETIME},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid, jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername, jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                version = #{version, jdbcType=BIGINT},
+            </if>
+            <if test="realType != null">
+                real_type = #{realType, jdbcType=VARCHAR},
+            </if>
+            <if test="groupId != null">
+                group_id = #{groupId, jdbcType=BIGINT},
+            </if>
+            <if test="groupName != null">
+                group_name = #{groupName, jdbcType=VARCHAR},
+            </if>
+            <if test="signInState != null">
+                sign_in_state = #{signInState, jdbcType=BIGINT},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+    <update id="updateParticipantCheckInTime">
+        UPDATE tab_pb_party_masses_participant
+        SET signin_time = now( )
+        WHERE
+            party_masses_activity_id = #{partyMassesActivityId}
+            AND user_id = #{userId} and del_flag = 0
+    </update>
+    <update id="updateSignIn">
+        UPDATE tab_pb_party_masses_participant
+            SET signin_time =
+            CASE WHEN signin_time IS NULL THEN
+            now( )
+            ELSE NULL END,
+            sign_in_state=
+            CASE WHEN sign_in_state IS NULL THEN
+            1
+            ELSE null END
+        WHERE party_masses_activity_id = #{partyMassesActivityId}
+            AND participant_id in
+            <foreach collection="participantIds" item="item" open="(" separator="," close=")">
+                ${item}
+            </foreach>
+    </update>
+
+    <!--根据id删除-->
+    <delete id="deleteById" parameterType="long">
+        delete from tab_pb_party_masses_participant where participant_id  = #{participantId}
+    </delete>
+
+
+    <!-- 根据id查找 -->
+	<select id="selectById" resultMap="VoResultMap" parameterType="long">
+        select <include refid="Vo_Column_List"/>
+		from tab_pb_party_masses_participant where participant_id = #{id}
+	</select>
+
+
+    <!-- base where条件  -->
+    <sql id="Base_Where_Condition">
+        <where>
+            <if test="participantId != null">
+                and participant_id = #{participantId}
+            </if>
+            <if test="partyMassesActivityId != null">
+                and party_masses_activity_id = #{partyMassesActivityId}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="realName != null">
+                and real_name = #{realName}
+            </if>
+            <if test="notifyTime != null">
+                and notify_time = #{notifyTime}
+            </if>
+            <if test="signupTime != null">
+                and signup_time = #{signupTime}
+            </if>
+            <if test="signinTime != null">
+                and signin_time = #{signinTime}
+            </if>
+            <if test="signinPwd != null">
+                and signin_pwd = #{signinPwd}
+            </if>
+            <if test="absentReason != null">
+                and absent_reason = #{absentReason}
+            </if>
+            <if test="ifOrgnizer != null">
+                and if_orgnizer = #{ifOrgnizer}
+            </if>
+            <if test="ifModerator != null">
+                and if_moderator = #{ifModerator}
+            </if>
+            <if test="ifSecretaryGeneral != null">
+                and if_secretary_general = #{ifSecretaryGeneral}
+            </if>
+            <if test="ifPresidium != null">
+                and if_presidium = #{ifPresidium}
+            </if>
+            <if test="ifDeputySecretaryGeneral != null">
+                and if_deputy_secretary_general = #{ifDeputySecretaryGeneral}
+            </if>
+            <if test="ifSitIn != null">
+                and if_sit_in = #{ifSitIn}
+            </if>
+            <if test="ifStandingCommittee != null">
+                and if_standing_committee = #{ifStandingCommittee}
+            </if>
+            <if test="ifLeader != null">
+                and if_leader = #{ifLeader}
+            </if>
+            <if test="ifLinkLeader != null">
+                and if_link_leader = #{ifLinkLeader}
+            </if>
+            <if test="performance != null">
+                and performance = #{performance}
+            </if>
+            <if test="speech != null">
+                and speech = #{speech}
+            </if>
+            <if test="activitytype != null">
+                and activitytype = #{activitytype}
+            </if>
+            <if test="orgAssess != null">
+                and org_assess = #{orgAssess}
+            </if>
+            <if test="orgAssessContent != null">
+                and org_assess_content = #{orgAssessContent}
+            </if>
+            <if test="inOrgId != null">
+                and in_org_id = #{inOrgId}
+            </if>
+            <if test="parentOrgAssess != null">
+                and parent_org_assess = #{parentOrgAssess}
+            </if>
+            <if test="parentOrgAssessContent != null">
+                and parent_org_assess_content = #{parentOrgAssessContent}
+            </if>
+            <if test="auditTime != null">
+                and audit_time = #{auditTime}
+            </if>
+            <if test="auditUser != null">
+                and audit_user = #{auditUser}
+            </if>
+            <if test="auditOrg != null">
+                and audit_org = #{auditOrg}
+            </if>
+            <if test="auditComment != null">
+                and audit_comment = #{auditComment}
+            </if>
+            <if test="realType != null">
+                and real_type = #{realType}
+            </if>
+            <if test="groupId != null">
+                and group_id = #{groupId}
+            </if>
+            <if test="groupName != null">
+                and group_name = #{groupName}
+            </if>
+            <if test="signInState != null">
+                and sign_in_state = #{signInState}
+            </if>
+        </where>
+    </sql>
+
+
+    <!--查询列表-->
+     <select id="list" resultMap="VoResultMap" parameterType="com.egovchina.partybuilding.partybuild.entity.PartyMassesParticipantQueryBean">
+        select <include refid="Vo_Column_List"/>
+        from tab_pb_party_masses_participant
+        <include refid="Base_Where_Condition"/>
+    </select>
+    <select id="selectByPbParticipant"
+            resultType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesParticipant">
+        SELECT
+            p.*
+        FROM
+            tab_pb_party_masses_activity a
+            LEFT JOIN tab_pb_party_masses_participant p ON a.party_masses_activity_id = p.party_masses_activity_id
+        WHERE
+            a.party_masses_activity_id = #{partyMassesActivityId}
+            AND p.user_id = #{userId}
+            AND a.del_flag = 0
+            AND p.del_flag = 0
+            LIMIT 1
+    </select>
+    <select id="selectByCheckInList" resultType="com.egovchina.partybuilding.partybuild.vo.SignInToListVO">
+        SELECT
+        DISTINCT
+        p.participant_id,
+        p.user_id,
+        p.real_name,
+        u.id_card_no,
+        p.signin_time,
+        p.sign_in_state,
+        d.name
+        FROM
+        tab_pb_party_masses_participant p
+        LEFT JOIN sys_user u ON p.user_id = u.user_id
+        LEFT JOIN sys_dept d ON d.dept_id =u.dept_id
+        WHERE
+        p.party_masses_activity_id = #{partyMassesActivityId}
+        AND p.del_flag = 0 and p.absent_reason = 0
+        <if test="signType != null and signType != ''">
+            <choose>
+                <when test="signType == 1">
+                    AND p.signin_time is NOT NULL
+                </when>
+                <when test="signType == 2">
+                    AND p.signin_time is null
+                </when>
+            </choose>
+        </if>
+        <if test="realName != null and realName != ''">
+            and p.real_name like CONCAT('%',#{realName},'%')
+        </if>
+    </select>
+
+</mapper>

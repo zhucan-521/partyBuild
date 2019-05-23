@@ -4,6 +4,7 @@ import com.egovchina.partybuilding.partybuild.entity.CommunityPartTimeMemberQuer
 import com.egovchina.partybuilding.partybuild.entity.LeadTeamMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember;
 import com.egovchina.partybuilding.partybuild.vo.CommunityPartTimeMemberVO;
+import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberListVO;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
 import org.springframework.stereotype.Repository;
 
@@ -41,7 +42,7 @@ public interface TabPbLeadTeamMemberMapper {
      * @param leadTeamId 班子id
      * @return
      */
-    List<LeadTeamMemberVO> selectTeamMemberVOListByTeamId(Long leadTeamId);
+    List<LeadTeamMemberListVO> selectTeamMemberVOListByTeamId(Long leadTeamId);
 
     /**
      * 根据id查询班子成员详情
