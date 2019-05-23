@@ -22,6 +22,9 @@ public class UnitInfoVO {
     @NotBlank(message = "单位名称不能为空")
     private String unitName;
 
+    @ApiModelProperty(value = "单位负责人")
+    private String unitMaster;
+
     @ApiModelProperty(value = "单位编码")
     private String unitCode;
 
