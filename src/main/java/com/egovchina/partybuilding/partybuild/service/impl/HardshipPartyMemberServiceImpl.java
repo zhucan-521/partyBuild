@@ -113,9 +113,4 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
         }
     }
 
-    @Override
-    public List<HardshipPartyVO> findHardshipPartyConsolation(Long userId) {
-        return tabPbHardshipMapper.findHardshipPartyVOByUserId(userId);
-    }
-
 }

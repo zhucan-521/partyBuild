@@ -25,6 +25,8 @@
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
         <result column="health" jdbcType="BIGINT" property="health"/>
+        <result column="condolence_info" jdbcType="VARCHAR" property="condolenceInfo"/>
+        <result column="condolence_date" jdbcType="TIMESTAMP" property="condolenceDate"/>
     </resultMap>
 
     <!-- 返回Vo数据集合 -->
@@ -42,6 +44,8 @@
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
         <result column="health" jdbcType="BIGINT" property="health"/>
         <result column="implementation" jdbcType="LONGVARCHAR" property="implementation"/>
+        <result column="condolence_info" jdbcType="VARCHAR" property="condolenceInfo"/>
+        <result column="condolence_date" jdbcType="TIMESTAMP" property="condolenceDate"/>
     </resultMap>
 
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
@@ -219,7 +223,13 @@
                 difficulty_level,
             </if>
             <if test="health != null ">
-                health
+                health,
+            </if>
+            <if test="condolenceDate != null ">
+                condolence_date,
+            </if>
+            <if test="condolenceInfo != null ">
+                condolence_info
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -284,7 +294,13 @@
                 #{difficultyLevel,jdbcType=BIGINT},
             </if>
             <if test="health != null ">
-                #{health,jdbcType=BIGINT}
+                #{health,jdbcType=BIGINT},
+            </if>
+            <if test="condolenceDate != null ">
+                #{condolenceDate},
+            </if>
+            <if test="condolenceInfo != null ">
+                #{condolenceInfo}
             </if>
         </trim>
     </insert>
@@ -345,7 +361,13 @@
                 difficulty_level= #{difficultyLevel,jdbcType=BIGINT},
             </if>
             <if test="health != null ">
-                health= #{health,jdbcType=BIGINT}
+                health= #{health,jdbcType=BIGINT},
+            </if>
+            <if test="condolenceDate != null ">
+                condolence_date= #{condolenceDate},
+            </if>
+            <if test="condolenceInfo != null ">
+                condolence_info= #{condolenceInfo}
             </if>
         </set>
         where hardship_id = #{hardshipId,jdbcType=BIGINT}
@@ -408,6 +430,8 @@
         ,u.user_id
         ,d.name as org_name
         ,h.difficulty_level
+        ,h.condolence_date
+        ,condolence_info
         from tab_pb_hardship h left join sys_user u on h.user_id = u.user_id
         left join sys_dept d on h.org_id = d.dept_id
 
@@ -451,24 +475,6 @@
       where h.hardship_Id = #{hardshipId} AND h.del_flag = 0
     </select>
 
-    <!--根据用户id查询用户困难情况-->
-    <select id="findHardshipPartyVOByUserId" parameterType="Long" resultMap="HardshipPartyResultMap">
-        select
-        implementation,
-        if_allowances,
-        if_pension
-        from
-        tab_pb_hardship
-        <where>
-            user_id=#{userId}
-        </where>
-        and
-        del_flag=0
-        ORDER BY
-        create_time
-        desc
-    </select>
-
     <!-- 根据用户ID修改用户名 -->
     <update id="updateUserNameById" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHardship">
         update sys_user set username = #{username} where user_id = #{userId}
@@ -505,5 +511,21 @@
           version = #{version,jdbcType=BIGINT}
         where user_id = #{hardshipId,jdbcType=BIGINT}
     </update>
+
+    <select id="selectPartyConsolationVOByUserId" parameterType="long"  resultType="com.egovchina.partybuilding.partybuild.vo.PartyConsolationVO">
+         select
+           (select username from sys_user where user_id=t.user_id)username,
+           t.user_id,
+           t.condolence_date as consolationTime,
+           t.condolence_info as consolationInfo
+          from
+           tab_pb_hardship t
+           where
+           t.user_id=#{userId}
+           and
+           t.del_flag=0
+           and
+           IFNULL(t.condolence_date,1)!=1
+    </select>
 
 </mapper>

@@ -3,8 +3,10 @@ package com.egovchina.partybuilding.partybuild.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * desc: 困难党员-数据传输对象
@@ -50,5 +52,12 @@ public class HardshipPartyMemberDTO {
 
     @ApiModelProperty("生活困难补充情况")
     private String implementation;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty("慰问日期")
+    private Date condolenceDate;
+
+    @ApiModelProperty("慰问情况")
+    private String condolenceInfo;
 
 }

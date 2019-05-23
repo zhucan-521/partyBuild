@@ -3,6 +3,7 @@ package com.egovchina.partybuilding.partybuild.repository;
 import com.egovchina.partybuilding.partybuild.entity.HardshipQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbHardship;
 import com.egovchina.partybuilding.partybuild.vo.HardshipPartyVO;
+import com.egovchina.partybuilding.partybuild.vo.PartyConsolationVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,10 +38,11 @@ public interface TabPbHardshipMapper {
 
     /**
      * 根据用户Id查询用户慰问情况
+     *
      * @param userId
      * @return
      */
-    List<HardshipPartyVO> findHardshipPartyVOByUserId(Long userId);
+    List<PartyConsolationVO> selectPartyConsolationVOByUserId(Long userId);
 
     /**
      * desc: 查询单条困难记录
