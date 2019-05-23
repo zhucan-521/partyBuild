@@ -56,6 +56,7 @@
         <result column="check_result" jdbcType="BIGINT" property="checkResult"/>
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
         <result column="org_short_name" jdbcType="VARCHAR" property="orgShortName"/>
+        <result column="result_situation" jdbcType="VARCHAR" property="resultSituation"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -437,7 +438,8 @@
         dc.commentary_id,
         dc.plan_year,
         dc.check_result,
-        dc.report_date
+        dc.report_date,
+        dc.result_situation
         FROM
         tab_pb_double_commentary dc
         LEFT JOIN sys_dept d ON dc.org_id = d.dept_id
@@ -461,6 +463,11 @@
         <!--所属年度-->
         <if test="planYear != null and planYear != ''">
             AND dc.plan_year = #{planYear}
+        </if>
+
+        <!-- 结果情况 -->
+        <if test="resultSituation != null">
+            AND dc.result_situation = #{resultSituation}
         </if>
 
         <!--上报日期-->

@@ -25,6 +25,9 @@ public class CommentaryQueryBean {
     @ApiModelProperty(value = "所属年度 yyyy")
     private String planYear;
 
+    @ApiModelProperty("结果情况 dict")
+    private Long resultSituation;
+
     @ApiModelProperty(value = "上报日期-开始 yyyy-MM-dd")
     private String reportStartDate;
 
