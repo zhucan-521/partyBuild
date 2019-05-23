@@ -205,6 +205,6 @@ public interface TabSysUserMapper {
      * @param hardshipId
      * @return
      */
-    int updateUserIsPoorByHardshipId(Integer isPoor, Long hardshipId);
+    int updateUserIsPoorByHardshipId(@Param("isPoor") Integer isPoor,@Param("hardshipId") Long hardshipId);
 
 }

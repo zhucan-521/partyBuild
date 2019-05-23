@@ -75,14 +75,4 @@ public interface HardshipPartyMemberService {
      **/
     PageInfo<HardshipPartyVO> findHardshipPartyVOWithConditions(HardshipQueryBean hardshipQueryBean, Page page);
 
-    /**
-     * desc: 获取困难党员慰问情况列表
-     *
-     * @param userId
-     * @return HardshipPartyVO集合
-     * @author zhucan
-     * @date 2019/5/14 14:35
-     */
-    List<HardshipPartyVO> findHardshipPartyConsolation(Long userId);
-
 }
