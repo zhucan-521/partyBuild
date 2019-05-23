@@ -2,8 +2,10 @@ package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.dto.DoubleCommentaryDTO;
+import com.egovchina.partybuilding.partybuild.dto.DoubleCommentaryUpdateDTO;
 import com.egovchina.partybuilding.partybuild.entity.CommentaryQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.DoubleCommentaryQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.DoubleCommentaryVerifyDTO;
+import com.egovchina.partybuilding.partybuild.vo.CommentaryDetailsVO;
 import com.egovchina.partybuilding.partybuild.vo.CommentaryVO;
 import com.github.pagehelper.PageInfo;
 
@@ -22,7 +24,7 @@ public interface DoubleCommentaryService {
      * @author FanYanGen
      * @date 2019/4/24 16:28
      **/
-    PageInfo<CommentaryVO> findCommentaryVOWithConditions(CommentaryQueryBean commentaryQueryBean, Page page);
+    PageInfo<CommentaryVO> findCommentaryVOListWithConditions(CommentaryQueryBean commentaryQueryBean, Page page);
 
     /**
      * desc: 新增双述双评
@@ -37,12 +39,12 @@ public interface DoubleCommentaryService {
     /**
      * desc: 更新双述双评
      *
-     * @param doubleCommentaryDTO dto
+     * @param doubleCommentaryUpdateDTO dto
      * @return int
      * @author FanYanGen
      * @date 2019/4/24 19:29
      **/
-    int updateCommentary(DoubleCommentaryDTO doubleCommentaryDTO);
+    int updateCommentary(DoubleCommentaryUpdateDTO doubleCommentaryUpdateDTO);
 
     /**
      * desc: 根据主键ID查询详情
@@ -52,7 +54,7 @@ public interface DoubleCommentaryService {
      * @author FanYanGen
      * @date 2019/4/24 19:42
      **/
-    CommentaryVO findCommentaryVOByCommentaryId(Long commentaryId);
+    CommentaryDetailsVO findCommentaryVOByCommentaryId(Long commentaryId);
 
     /**
      * desc: 根据主键ID逻辑删除数据
@@ -67,11 +69,11 @@ public interface DoubleCommentaryService {
     /**
      * desc: 双述双评审核
      *
-     * @param doubleCommentaryQueryBean querybean
+     * @param doubleCommentaryVerifyDTO querybean
      * @return int
      * @author FanYanGen
      * @date 2019/4/24 20:03
      **/
-    int verifyCommentary(DoubleCommentaryQueryBean doubleCommentaryQueryBean);
+    int verifyCommentary(DoubleCommentaryVerifyDTO doubleCommentaryVerifyDTO);
 
 }

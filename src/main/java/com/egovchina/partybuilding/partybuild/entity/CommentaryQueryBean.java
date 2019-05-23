@@ -15,12 +15,12 @@ import javax.validation.constraints.NotNull;
 @ApiModel("双述双评模块-查询条件")
 public class CommentaryQueryBean {
 
-    @ApiModelProperty("组织范围 1 查当前组织及其直属组织； 2 查当前组织及所有下级组织；其他值 查本组织")
-    private String orgRange;
-
     @ApiModelProperty(value = "组织ID", required = true)
     @NotNull(message = "组织ID不能为空")
     private Long orgId;
+
+    @ApiModelProperty("组织范围 1 查当前组织及其直属组织； 2 查当前组织及所有下级组织；其他值 查本组织")
+    private String orgRange;
 
     @ApiModelProperty(value = "所属年度 yyyy")
     private String planYear;
@@ -30,11 +30,5 @@ public class CommentaryQueryBean {
 
     @ApiModelProperty(value = "上报日期-结束 yyyy-MM-dd")
     private String reportEndDate;
-
-    @ApiModelProperty(value = "审核日期-开始 yyyy-MM-dd")
-    private String checkStartDate;
-
-    @ApiModelProperty(value = "审核日期-结束 yyyy-MM-dd")
-    private String checkEndDate;
 
 }
