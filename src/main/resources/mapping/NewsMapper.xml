@@ -66,6 +66,9 @@
         <collection property="attachments"
                     select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=news_id,attachmentType=attachment_type}"/>
+        <collection property="receives"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyNewsReceiveMapper.getReceiveInfo"
+                    column="news_id"/>
     </resultMap>
 
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
@@ -462,6 +465,19 @@
         UPDATE tab_pb_party_news
         SET top_status = #{topStatus}
         WHERE news_id = #{newsId}
+
+    </update>
+
+    <!-- 逻辑删除党务公开及所接收的党组织 -->
+    <update id="logicDeleteNewsCascadeReceiveOrg">
+
+        UPDATE tab_pb_party_news pn
+        LEFT JOIN tab_pb_party_news_receive pnr ON pn.news_id = pnr.news_id
+        SET pn.del_flag = 1, pnr.del_flag = 1,
+            pn.update_time = #{updateTime}, pnr.update_time = #{updateTime},
+            pn.update_userid = #{updateUserid}, pnr.update_userid = #{updateUserid},
+            pn.update_username = #{updateUsername},pnr.update_username = #{updateUsername}
+        WHERE pn.news_id = #{newsId}
 
     </update>
 

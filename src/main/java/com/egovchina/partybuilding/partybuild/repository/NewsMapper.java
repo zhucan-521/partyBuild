@@ -87,4 +87,14 @@ public interface NewsMapper {
      */
     int updateTopStatus(@Param("newsId") Long newsId, @Param("topStatus") Long topStatus);
 
+    /**
+     * desc: 逻辑删除党务公开及所接收的党组织
+     *
+     * @param tabPbNews 党务公开实体
+     * @return int
+     * @auther FanYanGen
+     * @date 2019-05-24 14:09
+     */
+    int logicDeleteNewsCascadeReceiveOrg(TabPbNews tabPbNews);
+
 }
