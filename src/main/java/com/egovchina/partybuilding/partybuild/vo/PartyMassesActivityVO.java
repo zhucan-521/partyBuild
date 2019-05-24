@@ -48,6 +48,9 @@ public class PartyMassesActivityVO {
     @ApiModelProperty(value = "地点")
     private String address;
 
+    @ApiModelProperty(value = "封面图")
+    private String cover;
+
     @ApiModelProperty(value = "附件")
     private List<TabPbAttachment> attachments;
 

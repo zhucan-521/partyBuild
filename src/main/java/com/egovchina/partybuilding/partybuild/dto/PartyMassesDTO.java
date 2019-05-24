@@ -48,4 +48,10 @@ public class PartyMassesDTO {
     @ApiModelProperty(value = "层级")
     private String grade;
 
+    @ApiModelProperty(value = "经度")
+    private String longitude;
+
+    @ApiModelProperty(value = "纬度")
+    private String latitude;
+
 }

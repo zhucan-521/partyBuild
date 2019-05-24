@@ -60,6 +60,16 @@ public class TabPbPartyMasses {
     private String content;
 
     /**
+     * 经度
+     */
+    private String longitude;
+
+    /**
+     * 纬度
+     */
+    private String latitude;
+
+    /**
      * 有效标记
      */
     private String eblFlag;
