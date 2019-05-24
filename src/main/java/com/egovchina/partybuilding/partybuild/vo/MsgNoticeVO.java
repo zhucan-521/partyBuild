@@ -5,15 +5,16 @@ import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
 
+@ApiModel(value = "文件通知视图")
 @Data
 public class MsgNoticeVO {
-
 
     @ApiModelProperty(value = "主键ID")
     private Long id;
@@ -41,22 +42,17 @@ public class MsgNoticeVO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date publishTime;
 
-
     @ApiModelProperty(value = "附件")
     private List<TabPbAttachment> attachments;
-
 
     @ApiModelProperty(value = "组织list")
     private List<TabPbMsgNoticeDept> noticeDeptList;
 
-
     @ApiModelProperty(value = "签收情况")
     private String signingSituation;
 
-
     @ApiModelProperty(value = "图片")
     private Long photo;
-
 
     @ApiModelProperty(value = "文档")
     private Long doc;
@@ -68,4 +64,12 @@ public class MsgNoticeVO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "结束时间", example = "yyyy-MM-dd")
     private Date endTime;
+
+    @ApiModelProperty("发布人")
+    private String createUsername;
+
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @ApiModelProperty(value = "创建时间", example = "yyyy-MM-dd")
+    private Date createTime;
+
 }
