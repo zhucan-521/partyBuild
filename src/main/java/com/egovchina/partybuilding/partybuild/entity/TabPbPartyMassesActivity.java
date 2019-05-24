@@ -50,6 +50,11 @@ public class TabPbPartyMassesActivity {
     private String address;
 
     /**
+     * 封面图
+     */
+    private String cover;
+
+    /**
      * 有效标记
      */
     private String eblFlag;

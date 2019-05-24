@@ -44,4 +44,10 @@ public class PartyMassesVO {
     @ApiModelProperty(value = "简介")
     private String content;
 
+    @ApiModelProperty(value = "经度")
+    private String longitude;
+
+    @ApiModelProperty(value = "纬度")
+    private String latitude;
+
 }
