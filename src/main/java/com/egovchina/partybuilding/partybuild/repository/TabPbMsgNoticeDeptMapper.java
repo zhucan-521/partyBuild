@@ -28,6 +28,14 @@ public interface TabPbMsgNoticeDeptMapper {
     int insertSelective(TabPbMsgNoticeDept record);
 
     /**
+     * 批量插入接受党组织
+     *
+     * @param tabPbMsgNoticeDept
+     * @return
+     */
+    int batchInsertTabPbMsgNoticeDept(List<TabPbMsgNoticeDept> tabPbMsgNoticeDept);
+
+    /**
      * 查询接受党组织集合
      *
      * @param record

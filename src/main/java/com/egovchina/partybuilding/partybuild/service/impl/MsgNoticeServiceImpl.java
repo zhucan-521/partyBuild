@@ -206,11 +206,8 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
      * @param list
      */
     private void addNoticeDeptList(List<TabPbMsgNoticeDept> list, Long id) {
-        for (TabPbMsgNoticeDept noticeDept : list) {
-            noticeDept.setNoticeId(id);
-            PaddingBaseFieldUtil.paddingBaseFiled(noticeDept);
-            tabPbMsgNoticeDeptMapper.insertSelective(noticeDept);
-        }
+        List<TabPbMsgNoticeDept> MsgNoticeDeptlist = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(list, TabPbMsgNoticeDept.class, msgNoticeDept -> msgNoticeDept.setNoticeId(id), false);
+        tabPbMsgNoticeDeptMapper.batchInsertTabPbMsgNoticeDept(MsgNoticeDeptlist);
     }
 
 }
