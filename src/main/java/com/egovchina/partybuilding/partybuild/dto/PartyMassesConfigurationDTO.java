@@ -21,9 +21,9 @@ public class PartyMassesConfigurationDTO{
     @ApiModelProperty(value = "配置清单id")
     private Long partyMassesConfigurationId;
 
-    @ApiModelProperty(value = "党群场地id",required = true)
-    @NotNull(message = "党群场地id不能为空")
-    private Long partyMassesPlaceId;
+    @ApiModelProperty(value = "党群id",required = true)
+    @NotNull(message = "党群id不能为空")
+    private Long partyMassesId;
 
     @ApiModelProperty(value = "类型 字典id")
     private Long configurationType;
