@@ -4,6 +4,7 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.dto.CommunityDTO;
 import com.egovchina.partybuilding.partybuild.dto.PartyInfoDTO;
 import com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.PartyMemberChooseQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.SysUserQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageInfo;
@@ -68,4 +69,12 @@ public interface PartyInformationService {
      * @return
      */
     UserInfoVO getUserInfoVO();
+
+    /**
+     * 根据查询实体查询党员选择vo列表
+     * @param queryBean 查询实体
+     * @param page 分页实体
+     * @return
+     */
+    List<PartyMemberChooseVO> selectPartyMemberChooseVOListByQueryBean(PartyMemberChooseQueryBean queryBean, Page page);
 }

@@ -81,6 +81,12 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         return sysUser;
     }
 
+    @Override
+    public List<PartyMemberChooseVO> selectPartyMemberChooseVOListByQueryBean(PartyMemberChooseQueryBean queryBean, Page page) {
+        PageHelper.startPage(page);
+        return tabSysUserMapper.selectPartyMemberChooseVOListByQueryBean(queryBean);
+    }
+
     /**
      * 根据社区名字模糊查找社区
      *
