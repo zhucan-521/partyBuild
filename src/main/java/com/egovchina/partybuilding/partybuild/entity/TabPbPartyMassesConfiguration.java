@@ -22,7 +22,7 @@ public class TabPbPartyMassesConfiguration {
     /**
      * 类型 字典
      */
-    private Long configurationType;
+    private String configurationType;
 
     /**
      * 数量
