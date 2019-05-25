@@ -17,7 +17,7 @@ public class TabPbPartyMassesConfiguration {
     /**
      * 党群场地id
      */
-    private Long partyMassesPlaceId;
+    private Long partyMassesId;
 
     /**
      * 类型 字典
