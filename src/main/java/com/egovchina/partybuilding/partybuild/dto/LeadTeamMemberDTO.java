@@ -19,7 +19,7 @@ import java.util.List;
 @Data
 public class LeadTeamMemberDTO {
 
-    @ApiModelProperty(value = "班子成员id", required = true)
+    @ApiModelProperty(value = "班子成员id")
     private Long memberId;
 
     @ApiModelProperty(value = "组织id", required = true)
