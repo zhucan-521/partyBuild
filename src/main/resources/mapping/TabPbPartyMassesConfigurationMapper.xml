@@ -119,7 +119,7 @@
         #{partyMassesId, jdbcType=BIGINT},
       </if>
       <if test="configurationType != null">
-        #{configurationType, jdbcType=BIGINT},
+        #{configurationType, jdbcType=VARCHAR},
       </if>
       <if test="quantity != null">
         #{quantity, jdbcType=BIGINT},
@@ -168,7 +168,7 @@
         party_masses_id = #{partyMassesId, jdbcType=BIGINT},
       </if>
       <if test="configurationType != null">
-        configuration_type = #{configurationType, jdbcType=BIGINT},
+        configuration_type = #{configurationType, jdbcType=VARCHAR},
       </if>
       <if test="quantity != null">
         quantity = #{quantity, jdbcType=BIGINT},
