@@ -66,5 +66,5 @@ public interface TabPbLeadTeamMapper {
      * @param leadTeamId 领导班子id
      * @return
      */
-    int setPreviousLeadTeamForThePast(@Param("orgId") Long orgId, @Param("orgId") Long leadTeamId);
+    int setPreviousLeadTeamForThePast(@Param("orgId") Long orgId, @Param("leadTeamId") Long leadTeamId);
 }
