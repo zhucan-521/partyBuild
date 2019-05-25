@@ -163,6 +163,7 @@
   <select id="getReceiveInfo" resultType="com.egovchina.partybuilding.partybuild.vo.NewsReceiveVO">
     SELECT
       pnr.receive_org_id AS orgId,
+      pnr.receive_org_id AS receiveOrgId,
       d.`name` AS orgName,
       d.org_short_name
     FROM
