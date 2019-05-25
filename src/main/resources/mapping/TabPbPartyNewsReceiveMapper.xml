@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbPartyNewsReceiveMapper">
+  <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbPartyNewsReceive">
+    <id column="receive_org_id" jdbcType="BIGINT" property="receiveOrgId" />
+    <result column="news_id" jdbcType="BIGINT" property="newsId" />
+    <result column="del_flag" jdbcType="BIT" property="delFlag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_userid" jdbcType="BIGINT" property="createUserid" />
+    <result column="create_username" jdbcType="VARCHAR" property="createUsername" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_userid" jdbcType="BIGINT" property="updateUserid" />
+    <result column="update_username" jdbcType="VARCHAR" property="updateUsername" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    receive_org_id, news_id, del_flag, create_time, create_userid, create_username, update_time, 
+    update_userid, update_username
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tab_pb_party_news_receive
+    where receive_org_id = #{receiveOrgId,jdbcType=BIGINT}
+  </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_party_news_receive
+    where receive_org_id = #{receiveOrgId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyNewsReceive">
+    insert into tab_pb_party_news_receive (receive_org_id, news_id, del_flag, 
+      create_time, create_userid, create_username, 
+      update_time, update_userid, update_username
+      )
+    values (#{receiveOrgId,jdbcType=BIGINT}, #{newsId,jdbcType=BIGINT}, #{delFlag,jdbcType=BIT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyNewsReceive">
+    insert into tab_pb_party_news_receive
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="receiveOrgId != null">
+        receive_org_id,
+      </if>
+      <if test="newsId != null">
+        news_id,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUserid != null">
+        create_userid,
+      </if>
+      <if test="createUsername != null">
+        create_username,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateUserid != null">
+        update_userid,
+      </if>
+      <if test="updateUsername != null">
+        update_username,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="receiveOrgId != null">
+        #{receiveOrgId,jdbcType=BIGINT},
+      </if>
+      <if test="newsId != null">
+        #{newsId,jdbcType=BIGINT},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=BIT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserid != null">
+        #{createUserid,jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null">
+        #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        #{updateUserid,jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        #{updateUsername,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyNewsReceive">
+    update tab_pb_party_news_receive
+    <set>
+      <if test="newsId != null">
+        news_id = #{newsId,jdbcType=BIGINT},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=BIT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserid != null">
+        create_userid = #{createUserid,jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null">
+        create_username = #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        update_userid = #{updateUserid,jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        update_username = #{updateUsername,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where receive_org_id = #{receiveOrgId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyNewsReceive">
+    update tab_pb_party_news_receive
+    set news_id = #{newsId,jdbcType=BIGINT},
+      del_flag = #{delFlag,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR}
+    where receive_org_id = #{receiveOrgId,jdbcType=BIGINT}
+  </update>
+
+  <!-- 批量新增 -->
+  <insert id="batchInsert">
+    insert into tab_pb_party_news_receive
+    (receive_org_id,news_id,create_time,create_userid, create_username,update_time, update_userid, update_username)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      #{item.receiveOrgId,jdbcType=BIGINT}, #{item.newsId,jdbcType=BIGINT},
+      #{item.createTime,jdbcType=TIMESTAMP},#{item.createUserid,jdbcType=BIGINT},#{item.createUsername,jdbcType=VARCHAR},
+      #{item.updateTime,jdbcType=TIMESTAMP},#{item.updateUserid,jdbcType=BIGINT},#{item.updateUsername,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+
+  <!-- 批量删除 -->
+  <delete id="batchDelete">
+    DELETE FROM tab_pb_party_news_receive WHERE news_id = #{newsId}
+  </delete>
+
+  <!-- 获得党务公开接收方信息 -->
+  <select id="getReceiveInfo" resultType="com.egovchina.partybuilding.partybuild.vo.NewsReceiveVO">
+    SELECT
+      pnr.receive_org_id AS orgId,
+      pnr.receive_org_id AS receiveOrgId,
+      d.`name` AS orgName,
+      d.org_short_name
+    FROM
+      tab_pb_party_news_receive pnr
+      INNER JOIN sys_dept d ON pnr.receive_org_id = d.dept_id
+    WHERE
+      pnr.news_id = #{newsId}
+      AND pnr.del_flag = 0
+      AND d.del_flag = '0'
+  </select>
+
+</mapper>

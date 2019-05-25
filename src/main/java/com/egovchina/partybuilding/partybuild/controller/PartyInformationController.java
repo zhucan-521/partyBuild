@@ -4,8 +4,12 @@ package com.egovchina.partybuilding.partybuild.controller;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
-import com.egovchina.partybuilding.partybuild.dto.*;
+import com.egovchina.partybuilding.partybuild.dto.CommunityDTO;
+import com.egovchina.partybuilding.partybuild.dto.DeletePartyMemberDTO;
+import com.egovchina.partybuilding.partybuild.dto.PartyInfoDTO;
+import com.egovchina.partybuilding.partybuild.dto.UpdateHistoryDTO;
 import com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.PartyMemberChooseQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.SysUserQueryBean;
 import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
 import com.egovchina.partybuilding.partybuild.service.PartyInformationService;
@@ -78,14 +82,10 @@ public class PartyInformationController {
         return extendedInfoService.selectSecretariesPartyMemberVO(id);
     }
 
-    @ApiOperation(value = "根据身份证号码或者姓名获取人员信息", notes = "根据身份证号码或者姓名获取人员信息", httpMethod = "GET")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "姓名", dataType = "String"),
-            @ApiImplicitParam(name = "idCardNo", value = "身份证号码", dataType = "String")
-    })
-    @GetMapping("/party-members/infos")
-    public PageInfo<SysUserVO> getPartyByIdCardNoOrUserName(String idCardNo, String username, Page page) {
-        return extendedInfoService.selectPartyByIdCardNoOrUserName(idCardNo, username, page);
+    @ApiOperation(value = "党员选择列表", notes = "根据条件获取党员列表", httpMethod = "GET")
+    @GetMapping("/party-members/choose")
+    public PageInfo<PartyMemberChooseVO> choosePartyMembers(PartyMemberChooseQueryBean queryBean, Page page) {
+        return new PageInfo<>(partyInformationService.selectPartyMemberChooseVOListByQueryBean(queryBean, page));
     }
 
     @ApiOperation(value = "根据id删除user信息")

@@ -9,11 +9,11 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * desc: 新闻资讯-数据传输对象
+ * desc: 党务公开-数据传输对象
  * Created by FanYanGen on 2019-05-11 16:48
  */
 @Data
-@ApiModel("新闻资讯-数据传输对象")
+@ApiModel("党务公开-数据传输对象")
 public class NewsDTO {
 
     @ApiModelProperty(value = "资讯id")
@@ -37,6 +37,10 @@ public class NewsDTO {
     @ApiModelProperty(value = "资讯内容", required = true)
     @NotNull(message = "资讯内容不能为空")
     private String content;
+
+    @ApiModelProperty(value = "接收党组织ID集合", required = true)
+    @NotNull(message = "接收党组织ID集合")
+    private List<NewsReceiveDTO> newsReceives;
 
     @ApiModelProperty(value = "附件实体集合")
     private List<TabPbAttachment> attachments;

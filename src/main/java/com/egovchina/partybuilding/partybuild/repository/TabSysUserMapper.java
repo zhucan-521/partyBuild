@@ -4,6 +4,7 @@ package com.egovchina.partybuilding.partybuild.repository;
 import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
 import com.egovchina.partybuilding.partybuild.dto.UserDeptPositiveDTO;
+import com.egovchina.partybuilding.partybuild.entity.PartyMemberChooseQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.SysUserQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import org.apache.ibatis.annotations.Param;
@@ -205,6 +206,18 @@ public interface TabSysUserMapper {
      * @param hardshipId
      * @return
      */
-    int updateUserIsPoorByHardshipId(Integer isPoor, Long hardshipId);
+    int updateUserIsPoorByHardshipId(@Param("isPoor") Integer isPoor,@Param("hardshipId") Long hardshipId);
 
+    /**
+     * 根据组织id获取
+     * @return
+     */
+    SysUser selectByOrgIdSelective();
+
+    /**
+     * 根据查询实体查询党员选择vo列表
+     * @param queryBean 查询实体
+     * @return
+     */
+    List<PartyMemberChooseVO> selectPartyMemberChooseVOListByQueryBean(PartyMemberChooseQueryBean queryBean);
 }

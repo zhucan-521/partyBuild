@@ -1,10 +1,15 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.egovchina.partybuilding.common.config.DictSerializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * desc: 困难党员-视图对象
@@ -55,5 +60,16 @@ public class HardshipPartyVO {
 
     @ApiModelProperty("组织名称")
     private String orgName;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty("慰问日期")
+    private Date condolenceDate;
+
+    @ApiModelProperty("慰问情况")
+    private String condolenceInfo;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "用户标签列表")
+    private List<UserTagVO> tabPbUserTags;
 
 }

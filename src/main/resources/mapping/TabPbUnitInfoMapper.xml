@@ -5,6 +5,7 @@
         <id column="unit_id" jdbcType="BIGINT" property="unitId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
+        <result column="unit_master" jdbcType="VARCHAR" property="unitMaster"/>
         <result column="unit_code" jdbcType="VARCHAR" property="unitCode"/>
         <result column="belong_relation" jdbcType="BIGINT" property="belongRelation"/>
         <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
@@ -83,6 +84,7 @@
         <id column="unit_id" jdbcType="BIGINT" property="unitId"/>
         <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="unit_name" jdbcType="VARCHAR" property="unitName"/>
+        <result column="unit_master" jdbcType="VARCHAR" property="unitMaster"/>
         <result column="unit_code" jdbcType="VARCHAR" property="unitCode"/>
         <result column="belong_relation" jdbcType="BIGINT" property="belongRelation"/>
         <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
@@ -149,7 +151,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        unit_id, org_id, unit_name, unit_code, belong_relation, unit_property, industry,
+        unit_id, org_id, unit_name, unit_master, unit_code, belong_relation, unit_property, industry,
         economic_type, ent_scale, ent_type, unit_address, if_create_service, if_create_volunt_team,
         if_instruction_contact, instructor_count, if_reorganization, corp_is_party_member,
         corp_as_group_secretary, corp_orgnize_status, gover_orgnize_status, city_street_type,
@@ -168,7 +170,7 @@
     </sql>
 
     <sql id="Unit_Info_VO_Column_List">
-        unit_id, org_id, unit_name, unit_code, belong_relation, unit_property, industry,
+        unit_id, org_id, unit_name, unit_master, unit_code, belong_relation, unit_property, industry,
         economic_type, ent_scale, ent_type, unit_address, if_create_service, if_create_volunt_team,
         if_instruction_contact, instructor_count, if_reorganization, corp_is_party_member,
         corp_as_group_secretary, corp_orgnize_status, gover_orgnize_status, city_street_type,
@@ -198,7 +200,7 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="unitId"
             parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo">
         insert into tab_pb_unit_info (unit_id, org_id, unit_name,
-        unit_code, belong_relation, unit_property,
+        unit_master,unit_code, belong_relation, unit_property,
         industry, economic_type, ent_scale,
         ent_type, unit_address, if_create_service,
         if_create_volunt_team, if_instruction_contact,
@@ -225,6 +227,7 @@
         unit_phone, if_legal_unit, unit_register_type, social_org_type, cause_unit_type, organ_unit_type,
         party_buiding_status,party_member_count)
         values (#{unitId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{unitName,jdbcType=VARCHAR},
+        #{unitMaster,jdbcType=VARCHAR},
         #{unitCode,jdbcType=VARCHAR}, #{belongRelation,jdbcType=BIGINT}, #{unitProperty,jdbcType=BIGINT},
         #{industry,jdbcType=BIGINT}, #{economicType,jdbcType=BIGINT}, #{entScale,jdbcType=BIGINT},
         #{entType,jdbcType=BIGINT}, #{unitAddress,jdbcType=VARCHAR}, #{ifCreateService,jdbcType=TINYINT},
@@ -266,6 +269,9 @@
             </if>
             <if test="unitName != null">
                 unit_name,
+            </if>
+            <if test="unitMaster != null " >
+                unit_master,
             </if>
             <if test="unitCode != null">
                 unit_code,
@@ -491,6 +497,9 @@
             <if test="unitName != null">
                 #{unitName,jdbcType=VARCHAR},
             </if>
+            <if test="unitMaster != null " >
+                #{unitMaster,jdbcType=VARCHAR},
+            </if>
             <if test="unitCode != null">
                 #{unitCode,jdbcType=VARCHAR},
             </if>
@@ -715,6 +724,9 @@
             <if test="unitName != null">
                 unit_name = #{unitName,jdbcType=VARCHAR},
             </if>
+            <if test="unitMaster != null" >
+                unit_master = #{unitMaster,jdbcType=VARCHAR},
+            </if>
             <if test="unitCode != null">
                 unit_code = #{unitCode,jdbcType=VARCHAR},
             </if>
@@ -935,6 +947,7 @@
     update tab_pb_unit_info
     set org_id = #{orgId,jdbcType=BIGINT},
         unit_name = #{unitName,jdbcType=VARCHAR},
+        unit_master = #{unitMaster,jdbcType=VARCHAR},
         unit_code = #{unitCode,jdbcType=VARCHAR},
         belong_relation = #{belongRelation,jdbcType=BIGINT},
         unit_property = #{unitProperty,jdbcType=BIGINT},

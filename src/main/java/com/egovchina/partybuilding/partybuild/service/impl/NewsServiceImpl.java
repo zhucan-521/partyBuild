@@ -6,7 +6,9 @@ import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.NewsDTO;
 import com.egovchina.partybuilding.partybuild.entity.NewsQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbNews;
+import com.egovchina.partybuilding.partybuild.entity.TabPbPartyNewsReceive;
 import com.egovchina.partybuilding.partybuild.repository.NewsMapper;
+import com.egovchina.partybuilding.partybuild.repository.TabPbPartyNewsReceiveMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.NewsService;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField;
 
 /**
  * desc: 新闻资讯-服务接口实现
@@ -30,6 +33,9 @@ public class NewsServiceImpl implements NewsService {
     private NewsMapper newsMapper;
 
     @Autowired
+    private TabPbPartyNewsReceiveMapper tabPbPartyNewsReceiveMapper;
+
+    @Autowired
     private TabSysDeptMapper tabSysDeptMapper;
 
     @Autowired
@@ -40,8 +46,11 @@ public class NewsServiceImpl implements NewsService {
         verifyAddOrUpdate(newsDTO, true);
         TabPbNews tabPbNews = generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, false);
         int result = newsMapper.insertSelective(tabPbNews);
+        Long newsId = tabPbNews.getNewsId();
         if (result > 0) {
-            result += updatingFiles(newsDTO, tabPbNews.getNewsId());
+            List<TabPbPartyNewsReceive> tabPbPartyNewsReceives = generateTargetListCopyPropertiesAndPaddingBaseField(newsDTO.getNewsReceives(), TabPbPartyNewsReceive.class, receive -> receive.setNewsId(newsId), false);
+            result += tabPbPartyNewsReceiveMapper.batchInsert(tabPbPartyNewsReceives);
+            result += updatingFiles(newsDTO, newsId);
         }
         return result;
     }
@@ -50,7 +59,11 @@ public class NewsServiceImpl implements NewsService {
     public int updateNews(NewsDTO newsDTO) {
         verifyAddOrUpdate(newsDTO, false);
         int result = newsMapper.updateByPrimaryKeySelective(generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, true));
+        Long newsId = newsDTO.getNewsId();
         if (result > 0) {
+            tabPbPartyNewsReceiveMapper.batchDelete(newsId);
+            List<TabPbPartyNewsReceive> tabPbPartyNewsReceives = generateTargetListCopyPropertiesAndPaddingBaseField(newsDTO.getNewsReceives(), TabPbPartyNewsReceive.class, receive -> receive.setNewsId(newsId), false);
+            result += tabPbPartyNewsReceiveMapper.batchInsert(tabPbPartyNewsReceives);
             result += updatingFiles(newsDTO, newsDTO.getNewsId());
         }
         return result;
@@ -79,9 +92,9 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public int deleteNews(Long newsId) {
         verification(newsId);
-        TabPbNews tabPbNews = new TabPbNews().setDelFlag(1).setNewsId(newsId);
+        TabPbNews tabPbNews = new TabPbNews().setNewsId(newsId);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbNews);
-        return newsMapper.updateByPrimaryKeySelective(tabPbNews);
+        return newsMapper.logicDeleteNewsCascadeReceiveOrg(tabPbNews);
     }
 
     @Override

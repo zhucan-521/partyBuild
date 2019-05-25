@@ -119,6 +119,14 @@
          </foreach>
     </delete>
 
+    <insert id="batchInsertTabPbMsgNoticeDept" parameterType="java.util.List">
+        insert into tab_pb_msg_notice_dept(notice_id,dept_id,dept_name,recevie_user_id,recevie_username, recevie_time) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.noticeId},#{item.deptId},#{item.deptName},#{item.recevieUserId},#{item.recevieUsername},#{item.recevieTime})
+        </foreach>
+    </insert>
+
+
     <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept">
         insert into tab_pb_msg_notice_dept
         <trim prefix="(" suffix=")" suffixOverrides=",">

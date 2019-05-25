@@ -1,11 +1,13 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
+import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Description:
@@ -45,5 +47,11 @@ public class PartyMassesActivityVO {
 
     @ApiModelProperty(value = "地点")
     private String address;
+
+    @ApiModelProperty(value = "封面图")
+    private String cover;
+
+    @ApiModelProperty(value = "附件")
+    private List<TabPbAttachment> attachments;
 
 }

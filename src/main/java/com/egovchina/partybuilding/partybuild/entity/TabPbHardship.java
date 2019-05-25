@@ -39,6 +39,10 @@ public class TabPbHardship {
 
     private String orgName;
 
+    private Date condolenceDate;
+
+    private String condolenceInfo;
+
     // ===============================
 
     private String eblFlag;

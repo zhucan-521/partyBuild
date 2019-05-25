@@ -5,7 +5,7 @@
   <resultMap id="BaseResultMap"
              type="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesConfiguration">
     <result column="party_masses_configuration_id" property="partyMassesConfigurationId"/>
-    <result column="party_masses_Place_id" property="partyMassesPlaceId"/>
+    <result column="party_masses_id" property="partyMassesId"/>
     <result column="configuration_type" property="configurationType"/>
     <result column="quantity" property="quantity"/>
     <result column="ebl_flag" property="eblFlag"/>
@@ -26,7 +26,7 @@
              type="com.egovchina.partybuilding.partybuild.vo.PartyMassesConfigurationVO">
     <result column="party_masses_configuration_id" property="partyMassesConfigurationId"/>
     <result column="configuration_type" property="configurationType"/>
-    <result column="party_masses_place_id" property="partyMassesPlaceId"/>
+    <result column="party_masses_id" property="partyMassesId"/>
     <result column="quantity" property="quantity"/>
   </resultMap>
 
@@ -34,7 +34,7 @@
   <sql id="Base_Column_List">
     <trim suffixOverrides=",">
       party_masses_configuration_id,
-      party_masses_Place_id,
+      party_masses_id,
       configuration_type,
       quantity,
       ebl_flag,
@@ -55,7 +55,7 @@
   <sql id="Vo_Column_List">
     <trim suffixOverrides=",">
       party_masses_configuration_id,
-      party_masses_Place_id,
+      party_masses_id,
       configuration_type,
       quantity,
     </trim>
@@ -68,8 +68,8 @@
       <if test="partyMassesConfigurationId != null ">
         party_masses_configuration_id,
       </if>
-      <if test="partyMassesPlaceId != null ">
-        party_masses_Place_id,
+      <if test="partyMassesId != null ">
+        party_masses_id,
       </if>
       <if test="configurationType != null ">
         configuration_type,
@@ -115,11 +115,11 @@
       <if test="partyMassesConfigurationId != null">
         #{partyMassesConfigurationId, jdbcType=BIGINT},
       </if>
-      <if test="partyMassesPlaceId != null">
-        #{partyMassesPlaceId, jdbcType=BIGINT},
+      <if test="partyMassesId != null">
+        #{partyMassesId, jdbcType=BIGINT},
       </if>
       <if test="configurationType != null">
-        #{configurationType, jdbcType=BIGINT},
+        #{configurationType, jdbcType=VARCHAR},
       </if>
       <if test="quantity != null">
         #{quantity, jdbcType=BIGINT},
@@ -164,11 +164,11 @@
   <update id="updateById" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesConfiguration">
     update tab_pb_party_masses_configuration
     <set>
-      <if test="partyMassesPlaceId != null">
-        party_masses_place_id = #{partyMassesPlaceId, jdbcType=BIGINT},
+      <if test="partyMassesId != null">
+        party_masses_id = #{partyMassesId, jdbcType=BIGINT},
       </if>
       <if test="configurationType != null">
-        configuration_type = #{configurationType, jdbcType=BIGINT},
+        configuration_type = #{configurationType, jdbcType=VARCHAR},
       </if>
       <if test="quantity != null">
         quantity = #{quantity, jdbcType=BIGINT},
@@ -227,8 +227,8 @@
   <sql id="Base_Where_Condition">
     <where>
       del_flag = 0
-      <if test="partyMassesPlaceId != null">
-        and party_masses_place_id = #{partyMassesPlaceId}
+      <if test="partyMassesId != null">
+        and party_masses_id = #{partyMassesId}
       </if>
       <if test="configurationType != null">
         and configuration_type = #{configurationType}

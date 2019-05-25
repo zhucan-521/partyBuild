@@ -82,12 +82,18 @@ public class PartyMassesActivityServiceImpl implements PartyMassesActivityServic
      * @author WuYunJie
      * @date 2019/05/20 21:37:39
      */
+    @Transactional
     @Override
     public int updateById(PartyMassesActivityDTO partyMassesActivityDTO) {
         TabPbPartyMassesActivity partyMassesActivity =
                 BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(
                         partyMassesActivityDTO, TabPbPartyMassesActivity.class, true);
-        return tabPbPartyMassesActivityMapper.updateById(partyMassesActivity);
+        int result = 0;
+        result += tabPbAttachmentService.intelligentOperation(
+                partyMassesActivityDTO.getAttachments(),
+                partyMassesActivity.getPartyMassesActivityId(), AttachmentType.PARTY_MASSES);
+        result += tabPbPartyMassesActivityMapper.updateById(partyMassesActivity);
+        return result;
     }
 
     /**

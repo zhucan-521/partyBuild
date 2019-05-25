@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan({"com.egovchina.partybuilding.partybuild.repository", "com.egovchina.partybuilding.partybuild.system.mapper"})
 @ComponentScan(basePackages = "com.egovchina")
 @EnableFeignClients
-@EnableScheduling //启用后会定时从consul上拉取配置
+@EnableScheduling       //启用后会定时从consul上拉取配置
 @SpringBootApplication
 public class PartybuildingApplication {
 

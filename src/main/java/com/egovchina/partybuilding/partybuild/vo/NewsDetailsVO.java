@@ -64,6 +64,9 @@ public class NewsDetailsVO {
     @ApiModelProperty(value = "排序码")
     private String orderNum;
 
+    @ApiModelProperty(value = "接收方信息")
+    private List<NewsReceiveVO> receives;
+
     @ApiModelProperty(value = "附件实体集合")
     private List<TabPbAttachment> attachments;
 
