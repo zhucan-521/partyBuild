@@ -341,11 +341,16 @@
         </if>
         AND u.ebl_flag = '1'
         and u.del_flag ='0'
+        and dd.del_flag =0
+        and dd.ebl_flag=1
         <if test="idCardNo != null and idCardNo != ''">
             AND id_card_no = #{idCardNo}
         </if>
         <if test="identityType != null and identityType != ''">
             and identity_type=#{identityType}
+        </if>
+        <if test="identityType == null ">
+            and identity_type IN ( 223, 224 )
         </if>
         <if test="registryStatus != null and registryStatus != ''">
             and find_in_set(registry_status, #{registryStatus})
@@ -1925,7 +1930,7 @@
     </select>
 
     <select id="checkIsExistByUserId" parameterType="java.lang.Long" resultType="java.lang.Boolean">
-        SELECT COUNT(1) FROM sys_user WHERE user_id = #{userId} AND del_flag = 0
+        SELECT COUNT(1) FROM sys_user WHERE user_id = #{userId} AND del_flag = 0 and ebl_flag=1
     </select>
 
     <select id="checkIsExistByIdCard" parameterType="java.lang.String" resultType="java.lang.Boolean">
