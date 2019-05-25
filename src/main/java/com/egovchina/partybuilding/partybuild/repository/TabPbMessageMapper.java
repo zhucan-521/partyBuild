@@ -113,16 +113,22 @@ public interface TabPbMessageMapper {
      * 获取某个党员在某个组织下的消息列表
      *
      * @param receiverOrgId 接收组织id
-     * @param receiverType  接受类型 0 个人 1 组织
      * @return
      */
-    List<MessageSendVO> selectOrgMessageSendVOList(@Param("receiverOrgId") Long receiverOrgId, @Param("receiverType") Long receiverType);
+    List<MessageSendVO> selectOrgMessageSendVOList(@Param("receiverOrgId") Long receiverOrgId);
 
     /**
      * 判断接收者id在数据库中是否存在
      *
      * @param list receiverId集合
      */
-    boolean checkReceiverIdIfExist(List<Long> list);
+    boolean checkReceiverUserIdIfExist(List<Long> list);
+
+    /**
+     * 判断接收组织id在数据库中是否存在
+     *
+     * @param list receiverId集合
+     */
+    boolean checkReceiverOrgIdIfExist(List<Long> list);
 
 }

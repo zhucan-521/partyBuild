@@ -26,9 +26,6 @@ public class StationNewsController {
     @Autowired
     private StationNewsService stationNewsService;
 
-    @Autowired
-    private TimedTransmissionService timedTransmissionService;
-
     @ApiOperation(value = "添加站内消息（可批量）", notes = "添加站内消息（可批量）", httpMethod = "POST")
     @PostMapping
     public ReturnEntity insertStationNews(@RequestBody @Validated @ApiParam("新增消息dto") MessageAddDTO messageAddDTO) {
@@ -37,19 +34,16 @@ public class StationNewsController {
 
     @ApiOperation(value = "党员获取发送给自己的消息列表", notes = "党员获取发送给自己的消息列表", httpMethod = "GET")
     @ApiImplicitParam(name = "receiverId", value = "接收者id", dataType = "long", paramType = "path", required = true)
-    @GetMapping("/{receiverId}")
+    @GetMapping("/{receiverId}/personal")
     public PageInfo<MessageSendVO> getMessageSendList(@ApiParam("分页参数") Page page, @PathVariable Long receiverId) {
         return new PageInfo<>(stationNewsService.getMessageSendVOList(page, receiverId));
     }
 
     @ApiOperation(value = "党员获取在自己组织下的消息列表", notes = "党员获取在自己组织下的消息列表", httpMethod = "GET")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "receiverOrgId", value = "接收者组织id", dataType = "long", paramType = "path", required = true),
-            @ApiImplicitParam(name = "receiverType", value = "接收者类型", dataType = "long", paramType = "path", required = true)
-    })
-    @GetMapping("/{receiverOrgId}/{receiverType}")
-    public PageInfo<MessageSendVO> getOrgMessageSendList(@ApiParam("分页参数") Page page, @PathVariable Long receiverOrgId, @PathVariable Long receiverType) {
-        return new PageInfo<>(stationNewsService.getOrgMessageSendList(page, receiverOrgId, receiverType));
+    @ApiImplicitParam(name = "receiverOrgId", value = "接收者组织id", dataType = "long", paramType = "path", required = true)
+    @GetMapping("/{receiverOrgId}/organization")
+    public PageInfo<MessageSendVO> getOrgMessageSendList(@ApiParam("分页参数") Page page, @PathVariable Long receiverOrgId) {
+        return new PageInfo<>(stationNewsService.getOrgMessageSendList(page, receiverOrgId));
     }
 
     @ApiOperation(value = "查看某一个消息详情", notes = "查看某一个消息详情", httpMethod = "GET")
@@ -68,9 +62,4 @@ public class StationNewsController {
         return ReturnUtil.buildReturn(stationNewsService.batchUpdateStationNews(messageUpdateDTO));
     }
 
-    @ApiOperation(value = "提醒领导班子", notes = "提醒领导班子", httpMethod = "GET")
-    @GetMapping("/remind-lead")
-    public ReturnEntity remindTheLeadershipTeam() {
-        return ReturnUtil.buildReturn(timedTransmissionService.remindTheLeadershipTeam());
-    }
 }

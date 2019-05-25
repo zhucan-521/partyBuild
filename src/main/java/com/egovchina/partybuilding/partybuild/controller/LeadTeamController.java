@@ -50,14 +50,14 @@ public class LeadTeamController {
     }
 
     @ApiOperation(value = "领导班子详情", notes = "查看单个领导班子详情", httpMethod = "GET")
-    @ApiImplicitParam(value = "班子id", name = "leadTeamId", dataType = "long", paramType = "path", required = true)
+    @ApiImplicitParam(value = "班子id", name = "orgId", dataType = "long", paramType = "path", required = true)
     @GetMapping("/{leadTeamId}")
     public LeadTeamVO getLeadTeam(@PathVariable Long leadTeamId) {
         return leadTeamService.selectLeadTeamVOById(leadTeamId);
     }
 
     @ApiOperation(value = "删除单个领导班子", notes = "删除单个领导班子-蒋安", httpMethod = "DELETE")
-    @ApiImplicitParam(value = "领导班子id", name = "leadTeamId", dataType = "long", paramType = "path", required = true)
+    @ApiImplicitParam(value = "领导班子id", name = "orgId", dataType = "long", paramType = "path", required = true)
     @DeleteMapping("/{leadTeamId}")
     public ReturnEntity deleteLeadTeam(@PathVariable Long leadTeamId) {
         return ReturnUtil.buildReturn(leadTeamService.logicDeleteLeadTeamById(leadTeamId));
