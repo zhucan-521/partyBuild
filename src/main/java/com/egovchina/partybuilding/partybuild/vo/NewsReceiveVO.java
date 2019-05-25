@@ -12,13 +12,16 @@ import lombok.Data;
 @ApiModel("党务公开接收方VO")
 public class NewsReceiveVO {
 
-    @ApiModelProperty("组织ID")
+    @ApiModelProperty("接收组织ID")
     private Long orgId;
 
-    @ApiModelProperty("组织名称")
+    @ApiModelProperty("接收组织ID")
+    private Long receiveOrgId;
+
+    @ApiModelProperty("接收组织名称")
     private String orgName;
 
-    @ApiModelProperty("组织简称")
+    @ApiModelProperty("接收组织简称")
     private String orgShortName;
 
 }
