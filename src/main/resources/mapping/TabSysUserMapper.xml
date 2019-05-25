@@ -269,6 +269,25 @@
         <result column="id_card_no" property="idCardNo"/>
         <result column="gender" property="gender"/>
     </resultMap>
+
+    <!--党员选择VO结果集-->
+    <resultMap id="PartyMemberChooseVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.PartyMemberChooseVO">
+        <id column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="realname" jdbcType="VARCHAR" property="realname"/>
+        <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
+        <result column="gender" jdbcType="BIGINT" property="gender"/>
+        <result column="birthday" jdbcType="TIMESTAMP" property="birthday"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="community_addr" jdbcType="BIGINT" property="communityAddr"/>
+        <result column="age" jdbcType="INTEGER" property="age"/>
+        <result column="identity_type" jdbcType="BIGINT" property="identityType"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <collection property="userTags"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper.selectAllListSelective"
+                    column="user_id"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
         user_id, dept_id, realname, identity_type, salt, avatar, id_card_no, used_name,
     gender, nation, registeredresidence, ancestor_place, born_place, health, familyorigin,
@@ -1914,6 +1933,59 @@
     </select>
     <select id="checkIsExistByPhone" parameterType="java.lang.String" resultType="java.lang.Boolean">
         SELECT COUNT(1) FROM sys_user WHERE phone = #{phone} AND del_flag = 0
+    </select>
+
+    <!--根据查询实体查询党员选择vo列表-->
+    <select id="selectPartyMemberChooseVOListByQueryBean"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.PartyMemberChooseQueryBean"
+            resultMap="PartyMemberChooseVOResultMap">
+        SELECT
+          u.user_id,
+          u.realname,
+          u.id_card_no,
+          u.gender,
+          u.birthday,
+          birthday2age ( DATE_FORMAT( birthday, '%Y-%m-%d' ) ) AS age,
+          u.community_addr,
+          u.phone,
+          u.identity_type,
+          d.dept_id AS org_id,
+          d.`name` AS org_name
+        FROM sys_user u
+        INNER JOIN sys_dept d ON d.dept_id = u.dept_id
+        WHERE u.del_flag = '0'
+            AND u.ebl_flag = '1'
+        <if test="realname != null and realname != ''">
+            AND u.realname like concat('%', #{realname}, '%')
+        </if>
+        <if test="idCardNo != null and idCardNo != ''">
+            AND u.id_card_no = #{idCardNo}
+        </if>
+        <if test="userTag != null and userTag != ''">
+            AND EXISTS (
+              SELECT 1 FROM tab_pb_user_tag t WHERE t.user_id = u.user_id
+                AND t.tag_type = #{userTag}
+            )
+        </if>
+        <if test="orgRange != null and orgRange != '' ">
+            <choose>
+                <when test="orgRange == 1">
+                    AND (d.dept_id = #{orgId} OR d.parent_id = #{orgId})
+                </when>
+                <when test="orgRange == 2">
+                    AND find_in_set(#{orgId}, d.full_path)
+                </when>
+            </choose>
+        </if>
+        <if test="orgRange == null or orgRange.toString() == ''">
+            AND d.dept_id = #{orgId}
+        </if>
+        <if test="excludeBinding == 1">
+            AND NOT EXISTS (
+              SELECT 1 FROM sys_account a WHERE a.sys_user_id = u.user_id AND a.del_flag = 0
+            )
+        </if>
+        ORDER BY u.realname
     </select>
 
     <update id="updateUserIsPoorByHardshipId">
