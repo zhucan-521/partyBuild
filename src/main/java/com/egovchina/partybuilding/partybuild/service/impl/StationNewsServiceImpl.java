@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,7 +45,7 @@ public class StationNewsServiceImpl implements StationNewsService {
         //给消息发送表插入数据
         int result = 0;
         TabPbMessageSend tabPbMessageSend = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(messageAddDTO, TabPbMessageSend.class, false);
-        tabPbMessageSend.setSenderId(UserContextHolder.getUserId()).setSenderName(UserContextHolder.getUserName());
+        tabPbMessageSend.setSenderId(UserContextHolder.getUserId()).setSenderName(UserContextHolder.getUserName()).setSendTime(new Date());
         result += tabPbMessageMapper.insertTabPbMessageSend(tabPbMessageSend);
 
         //获取消息接收者信息集合
@@ -52,10 +53,18 @@ public class StationNewsServiceImpl implements StationNewsService {
 
         //判断接收者id在数据库中是否存在
         List<Long> list = messageReceiveDTOList.stream().map(MessageReceiveDTO::getReceiverId).collect(Collectors.toList());
-        boolean judgement = tabPbMessageMapper.checkReceiverIdIfExist(list);
-        if (judgement) {
-            throw new BusinessDataCheckFailException("数据已存在");
+        if (messageAddDTO.getReceiverType() == 0) {
+            boolean exist = tabPbMessageMapper.checkReceiverUserIdIfExist(list);
+            if (exist) {
+                throw new BusinessDataCheckFailException("党员消息已存在");
+            }
+        } else {
+            boolean exist = tabPbMessageMapper.checkReceiverOrgIdIfExist(list);
+            if (exist) {
+                throw new BusinessDataCheckFailException("组织消息已存在");
+            }
         }
+
 
         if (CollectionUtil.isNotEmpty(messageReceiveDTOList)) {
             //给接收对象赋值
@@ -71,12 +80,12 @@ public class StationNewsServiceImpl implements StationNewsService {
                     tabPbMessageReceive.setReceiverId(messageReceiveDTO.getReceiverId())
                             .setSendId(tabPbMessageSend.getSendId())
                             .setReceiverName(sysUser.getRealname())
-                            .setReceiverType(messageReceiveDTO.getReceiverType());
+                            .setReceiverType(messageAddDTO.getReceiverType());
                 } else {
                     tabPbMessageReceive.setReceiverId(messageReceiveDTO.getReceiverId())
                             .setSendId(tabPbMessageSend.getSendId())
                             .setReceiverName(messageReceiveDTO.getReceiverName())
-                            .setReceiverType(messageReceiveDTO.getReceiverType());
+                            .setReceiverType(messageAddDTO.getReceiverType());
                 }
                 tabPbMessageReceiveList.add(tabPbMessageReceive);
             });
@@ -139,9 +148,9 @@ public class StationNewsServiceImpl implements StationNewsService {
     }
 
     @Override
-    public List<MessageSendVO> getOrgMessageSendList(Page page, Long receiverOrgId, Long receiverType) {
+    public List<MessageSendVO> getOrgMessageSendList(Page page, Long receiverOrgId) {
         PageHelper.startPage(page);
-        return tabPbMessageMapper.selectOrgMessageSendVOList(receiverOrgId, receiverType);
+        return tabPbMessageMapper.selectOrgMessageSendVOList(receiverOrgId);
     }
 
 }

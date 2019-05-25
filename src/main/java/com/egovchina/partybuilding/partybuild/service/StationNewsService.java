@@ -50,8 +50,7 @@ public interface StationNewsService {
      * 获取某个党员在某个组织下的消息列表
      * @param page  分页参数
      * @param receiverOrgId 接收组织id
-     * @param receiverType  接受类型 0 个人 1 组织
      * @return
      */
-    List<MessageSendVO> getOrgMessageSendList(Page page, Long receiverOrgId, Long receiverType);
+    List<MessageSendVO> getOrgMessageSendList(Page page, Long receiverOrgId);
 }
