@@ -405,7 +405,7 @@
     <select id="selectSecretariesPartyByPrimaryKey" parameterType="java.lang.Long"
             resultMap="BaseSecretariesPartyResultMap">
         select
-         user_id,dept_id,realname,gender,nation,phone,fix_phone,
+         user_id,dept_id,realname,gender,nation,phone,fix_phone,birthday,
         join_org_name,marital_status,ancestor_place,join_org_time
         from sys_user
         where user_id = #{userId,jdbcType=BIGINT}
