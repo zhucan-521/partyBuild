@@ -7,7 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 /**
- * desc: 党务公开收组织-数据传输对象
+ * desc: 党务公开收组织DTO
  * Created by FanYanGen on 2019-05-24 11:06
  */
 @Data

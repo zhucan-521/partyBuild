@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * desc: 党务公开-数据传输对象
+ * desc: 党务公开DTO
  * Created by FanYanGen on 2019-05-11 16:48
  */
 @Data
@@ -32,7 +32,8 @@ public class NewsDTO {
     @NotNull(message = "排序码不能为空")
     private Integer orderNum;
 
-    @ApiModelProperty(value = "封面图")
+    @ApiModelProperty(value = "封面图", required = true)
+    @NotNull(message = "封面图不能为空")
     private String cover;
 
     @ApiModelProperty(value = "资讯内容", required = true)
