@@ -31,7 +31,7 @@ public interface TabPbPositiveRegistMapper extends BaseMapper<TabPbPositiveRegis
     PositiveRegisterVO selectPositiveRegisterVOById(Long positiveRegistId);
 
     /**
-     * 检查指定党员是否已存在报道数据
+     * 检查指定党员是否已存在报到数据
      *
      * @param userId 党员id
      * @return
@@ -39,7 +39,7 @@ public interface TabPbPositiveRegistMapper extends BaseMapper<TabPbPositiveRegis
     Boolean checkPartyMemberIsExistRegister(Long userId);
 
     /**
-     * 聚合生成党员报道数据
+     * 聚合生成党员报到数据
      *
      * @param userId 党员id
      * @return

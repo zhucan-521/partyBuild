@@ -1,23 +1,17 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
 import lombok.Data;
-import lombok.experimental.Accessors;
 
 import java.util.Date;
 
-@Accessors(chain = true)
+/**
+ * Description:
+ *
+ * @author WuYunJie
+ * @date 2019/05/25 14:46:06
+ */
 @Data
-public class TabPbPartyMasses {
-
-    /**
-     * 党群id
-     */
-    private Long partyMassesId;
-
-    /**
-     * 党群名称
-     */
-    private String partyMassesName;
+public class TabPbAdministrativeDivision {
 
     /**
      * 行政区划id
@@ -30,44 +24,19 @@ public class TabPbPartyMasses {
     private String administrativeDivisionName;
 
     /**
-     * 坐标
+     * 行政区划编码
      */
-    private String coordinate;
+    private String administrativeDivisionCode;
 
     /**
-     * 电话
+     * 上级行政区划id
      */
-    private String tel;
-
-    /**
-     * 地址
-     */
-    private String address;
+    private Long parentId;
 
     /**
      * 层级
      */
-    private String grade;
-
-    /**
-     * 服务时间
-     */
-    private String serviceHours;
-
-    /**
-     * 简介
-     */
-    private String content;
-
-    /**
-     * 经度
-     */
-    private String longitude;
-
-    /**
-     * 纬度
-     */
-    private String latitude;
+    private Long level;
 
     /**
      * 有效标记

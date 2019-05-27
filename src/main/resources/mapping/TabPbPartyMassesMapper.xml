@@ -6,8 +6,8 @@
              type="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMasses">
     <result column="party_masses_id" property="partyMassesId"/>
     <result column="party_masses_name" property="partyMassesName"/>
-    <result column="org_id" property="orgId"/>
-    <result column="org_name" property="orgName"/>
+    <result column="administrative_division_id" property="administrativeDivisionId"/>
+    <result column="administrative_division_name" property="administrativeDivisionName"/>
     <result column="coordinate" property="coordinate"/>
     <result column="tel" property="tel"/>
     <result column="address" property="address"/>
@@ -34,8 +34,8 @@
              type="com.egovchina.partybuilding.partybuild.vo.PartyMassesVO">
     <result column="party_masses_id" property="partyMassesId"/>
     <result column="party_masses_name" property="partyMassesName"/>
-    <result column="org_id" property="orgId"/>
-    <result column="org_name" property="orgName"/>
+    <result column="administrative_division_id" property="administrativeDivisionId"/>
+    <result column="administrative_division_name" property="administrativeDivisionName"/>
     <result column="coordinate" property="coordinate"/>
     <result column="tel" property="tel"/>
     <result column="address" property="address"/>
@@ -51,8 +51,8 @@
     <trim suffixOverrides=",">
       party_masses_id,
       party_masses_name,
-      org_id,
-      org_name,
+      administrative_division_id,
+      administrative_division_name,
       coordinate,
       tel,
       address,
@@ -80,8 +80,8 @@
     <trim suffixOverrides=",">
       party_masses_id,
       party_masses_name,
-      org_id,
-      org_name,
+      administrative_division_id,
+      administrative_division_name,
       coordinate,
       tel,
       address,
@@ -94,7 +94,7 @@
   </sql>
 
   <!--新增-->
-  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMasses" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMasses" useGeneratedKeys="true" keyProperty="partyMassesId">
     insert into tab_pb_party_masses
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="partyMassesId != null ">
@@ -103,11 +103,11 @@
       <if test="partyMassesName != null ">
         party_masses_name,
       </if>
-      <if test="orgId != null ">
-        org_id,
+      <if test="administrativeDivisionId != null ">
+        administrative_division_id,
       </if>
-      <if test="orgName != null ">
-        org_name,
+      <if test="administrativeDivisionName != null ">
+        administrative_division_name,
       </if>
       <if test="coordinate != null ">
         coordinate,
@@ -174,11 +174,11 @@
       <if test="partyMassesName != null">
         #{partyMassesName, jdbcType=VARCHAR},
       </if>
-      <if test="orgId != null">
-        #{orgId, jdbcType=BIGINT},
+      <if test="administrativeDivisionId != null">
+        #{administrativeDivisionId, jdbcType=BIGINT},
       </if>
-      <if test="orgName != null">
-        #{orgName, jdbcType=VARCHAR},
+      <if test="administrativeDivisionName != null">
+        #{administrativeDivisionName, jdbcType=VARCHAR},
       </if>
       <if test="coordinate != null">
         #{coordinate, jdbcType=VARCHAR},
@@ -247,11 +247,11 @@
       <if test="partyMassesName != null">
         party_masses_name = #{partyMassesName, jdbcType=VARCHAR},
       </if>
-      <if test="orgId != null">
-        org_id = #{orgId, jdbcType=BIGINT},
+      <if test="administrativeDivisionId != null">
+        administrative_division_id = #{administrativeDivisionId, jdbcType=BIGINT},
       </if>
-      <if test="orgName != null">
-        org_name = #{orgName, jdbcType=VARCHAR},
+      <if test="administrativeDivisionName != null">
+        administrative_division_name = #{administrativeDivisionName, jdbcType=VARCHAR},
       </if>
       <if test="coordinate != null">
         coordinate = #{coordinate, jdbcType=VARCHAR},
@@ -334,11 +334,11 @@
       <if test="partyMassesName != null">
         and party_masses_name like concat('%',#{partyMassesName},'%')
       </if>
-      <if test="orgId != null">
-        and org_id = #{orgId}
+      <if test="administrativeDivisionId != null">
+        and administrative_division_id = #{administrativeDivisionId}
       </if>
-      <if test="orgName != null">
-        and org_name like concat('%',#{orgName},'%')
+      <if test="administrativeDivisionName != null">
+        and administrative_division_name like concat('%',#{administrativeDivisionName},'%')
       </if>
       <if test="coordinate != null">
         and coordinate = #{coordinate}
@@ -377,11 +377,11 @@
     SELECT
       p.party_masses_name AS PartyMassesName,
       p.party_masses_id AS partyMassesId,
-      d.dept_id AS id,
+      d.administrative_division_id AS id,
       d.parent_id AS parentId
     FROM
-      sys_dept d
-      INNER JOIN tab_pb_party_masses p ON d.dept_id = p.org_id
+      tab_pb_administrative_division d
+      INNER JOIN tab_pb_party_masses p ON d.administrative_division_id = p.administrative_division_id
       <if test="parentId != null">
         AND d.parent_id = #{parentId}
       </if>

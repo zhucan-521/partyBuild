@@ -9,5 +9,5 @@ public interface TimedTransmissionService {
     /**
      * 定时发送
      */
-    int remindTheLeadershipTeam();
+    void remindTheLeadershipTeam();
 }

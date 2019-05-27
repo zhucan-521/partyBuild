@@ -5,7 +5,7 @@
     <!--批量新增站内消息-->
     <insert id="batchInsertTabPbMessageSend" useGeneratedKeys="true" keyProperty="sendId" keyColumn="send_id"
             parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMessageSend">
-        INSERT INTO tab_pb_message_send ( send_org_id, send_org_name, type, title, content, send_time, del_flag,
+        INSERT INTO tab_pb_message_send (send_org_id, send_org_name, type, title, content, send_time, del_flag,
         create_time, create_userid, create_username )
         VALUES
         <foreach collection="list" item="a" separator=",">
@@ -111,6 +111,7 @@
             LEFT JOIN tab_pb_message_receive r ON s.send_id = r.send_id
         WHERE
             r.receiver_id = #{receiverId}
+            AND r.receiver_type = 0
             AND del_flag = 0
     </select>
 
@@ -136,8 +137,22 @@
         WHERE
             t.del_flag = '0'
             AND d.del_flag = '0'
+            AND t.current = 1
             AND (DATE_FORMAT( t.change_date, '%Y-%m-%d' ) = DATE_FORMAT( DATE_ADD( NOW( ), INTERVAL 6 MONTH ), '%Y-%m-%d' )
             OR DATE_FORMAT( t.change_date, '%Y-%m-%d' ) = DATE_FORMAT( DATE_ADD( NOW( ), INTERVAL 1 MONTH ), '%Y-%m-%d' ))
+            AND NOT EXISTS (
+                    SELECT
+                        1
+                    FROM
+                        tab_pb_message_receive r
+                        INNER JOIN tab_pb_message_send s ON r.send_id = s.send_id
+                    WHERE
+                        r.receiver_id =  d.dept_id
+                        AND s.del_flag = 0
+                        AND s.type = 3
+                     AND TIMESTAMPDIFF(MONTH, s.send_time,now()) != 5
+                )
+
     </select>
 
     <!--获取某个党员在某个组织下的消息列表-->
@@ -156,20 +171,35 @@
             LEFT JOIN tab_pb_message_receive r ON s.send_id = r.send_id
         WHERE
             r.receiver_id = #{receiverOrgId}
-            AND r.receiver_type = #{receiverType}
+            AND r.receiver_type = 1
             AND s.del_flag = 0
     </select>
 
     <!--判断接收者id在数据库中是否存在-->
-    <select id="checkReceiverIdIfExist" resultType="java.lang.Boolean">
+    <select id="checkReceiverUserIdIfExist" resultType="java.lang.Boolean">
         SELECT
             count( * )
         FROM
             tab_pb_message_receive
         WHERE
-            receiver_id IN
-        <foreach collection = "list" item = "a" separator=",">
-            (#{a})
+            receiver_type = 0
+            AND receiver_id IN
+        <foreach collection = "list" item = "a" open="(" separator="," close=")">
+            ${a}
+        </foreach>
+    </select>
+
+    <!--判断接收组织id在数据库中是否存在-->
+    <select id="checkReceiverOrgIdIfExist" resultType="java.lang.Boolean">
+        SELECT
+            count( * )
+        FROM
+            tab_pb_message_receive
+        WHERE
+            receive_type = 1
+            AND receiver_id IN
+        <foreach collection = "list" item = "a"  open="(" separator="," close=")">
+            ${a}
         </foreach>
     </select>
 
@@ -180,7 +210,7 @@
             ( #{sendId}, #{receiveUserId}, #{receiveUserName} )
     </insert>
 
-    <!--新增站内消息-->
+    <!--定时发送消息-->
     <insert id="insertTabPbMessageSend" useGeneratedKeys="true" keyColumn="send_id" keyProperty="sendId">
         INSERT INTO tab_pb_message_send ( sender_id, sender_name, type, title, content, send_time, del_flag, create_time, create_userid, create_username )
         VALUES

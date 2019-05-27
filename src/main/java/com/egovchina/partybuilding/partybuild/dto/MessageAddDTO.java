@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -21,20 +22,24 @@ public class MessageAddDTO {
     @ApiModelProperty(value = "发送id")
     private Long sendId;
 
-    @ApiModelProperty("消息类别")
+    @ApiModelProperty(value = "消息类别", required = true)
+    @NotNull(message = "消息类别不能为空")
     private Long type;
 
-    @ApiModelProperty("消息标题")
+    @ApiModelProperty(value = "消息标题", required = true)
+    @NotNull(message = "消息标题不能为空")
     private String title;
 
-    @ApiModelProperty("消息内容")
+    @ApiModelProperty(value = "消息内容", required = true)
+    @NotNull(message = "消息内容不能为空")
     private String content;
 
-    @ApiModelProperty(value = "发送时间", example = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date sendTime;
-
-    @ApiModelProperty(value = "接收者信息")
+    @ApiModelProperty(value = "接收者信息", required = true)
+    @NotNull(message = "接收者信息不能为空")
     private List<MessageReceiveDTO> receivers;
+
+    @ApiModelProperty(value = "接收者类型", required = true)
+    @NotNull(message = "接收者id不能为空")
+    private Long receiverType;
 
 }

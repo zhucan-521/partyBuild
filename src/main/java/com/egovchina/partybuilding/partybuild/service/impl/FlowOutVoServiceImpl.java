@@ -89,7 +89,7 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
         //流入党组织 没有流入组织id则流出到市外
         if (flowOutMemberDto.getFlowOutPlace() != null) {
             sysUser.setFlowToOrgId(flowOutMemberDto.getFlowOutPlace());
-            //插入流出表 设置状态为待报道
+            //插入流出表 设置状态为待报到
             flowOutMemberDto.setFlowOutState(CommonConstant.PENDING_REPORT);
         } else {
             //插入流出表 设置状态为已经流出
@@ -108,7 +108,7 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
         //插入流入表
         TabPbFlowIn tabPbFlowIn = new TabPbFlowIn()
                 .setFlowOutId(tabPbFlowOutInsert.getFlowOutId())
-                .setFlowInState(CommonConstant.PENDING_REPORT) //设置状态为待报道
+                .setFlowInState(CommonConstant.PENDING_REPORT) //设置状态为待报到
                 .setUserId(userId)  //设置流入人
                 .setOldPlace(flowOutMemberDto.getFlowToUnitName())  //设置原地
                 .setFlowInType(flowOutMemberDto.getFlowOutType()) //设置流出类型
@@ -209,7 +209,7 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
             }
             return flag;
         }
-        throw new BusinessDataCheckFailException("只有带报道的流动党员才可以删除");
+        throw new BusinessDataCheckFailException("只有待报到的流动党员才可以删除");
     }
 
 }
