@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -38,8 +39,7 @@ public class NewsDTO {
     @NotNull(message = "资讯内容不能为空")
     private String content;
 
-    @ApiModelProperty(value = "接收党组织ID集合", required = true)
-    @NotNull(message = "接收党组织ID集合")
+    @Valid
     private List<NewsReceiveDTO> newsReceives;
 
     @ApiModelProperty(value = "附件实体集合")
