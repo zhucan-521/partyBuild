@@ -6,7 +6,7 @@ package com.egovchina.partybuilding.partybuild.util;
  */
 public interface UserTagType {
     /**
-     * 在职党员报道
+     * 在职党员报到
      */
     Long REPORT = 59383L;
 

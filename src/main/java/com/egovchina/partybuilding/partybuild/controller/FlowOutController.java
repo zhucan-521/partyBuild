@@ -49,7 +49,7 @@ public class FlowOutController {
         return ReturnUtil.buildReturn(flowOutVoService.addFlowOutMemberDTO(flowOutMemberDTO));
     }
 
-    @ApiOperation(value = "根据flowOutId删除流出党员(只有待报道状态才可以删除)", notes = "根据flowOutId删除流出党员", httpMethod = "DELETE")
+    @ApiOperation(value = "根据flowOutId删除流出党员(只有待报到状态才可以删除)", notes = "根据flowOutId删除流出党员", httpMethod = "DELETE")
     @ApiImplicitParam(value = "流出党员主键", name = "flowOutId", required = true, paramType = "path")
     @DeleteMapping("/{flowOutId}")
     public ReturnEntity delet(@PathVariable Long flowOutId) {
