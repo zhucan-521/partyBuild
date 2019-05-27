@@ -546,18 +546,18 @@
     </select>
 
     <select id="selectCommuntiyDto" parameterType="com.egovchina.partybuilding.partybuild.dto.CommunityDTO" resultType="com.egovchina.partybuilding.partybuild.vo.CommunityVO">
-        select id ,label ,value from sys_dict
+        select administrative_division_id as id ,administrative_division_name as label ,administrative_division_code as value from tab_pb_administrative_division
         <where>
             <if test="label !=null and ''!=label">
-                and  label like CONCAT('%',#{label},'%')
+                and  administrative_division_name like CONCAT('%',#{label},'%')
             </if>
             <if test="id !=null and ''!=id">
-                and  id = #{id}
+                and  administrative_division_id = #{id}
             </if>
             <if test="value !=null and ''!=value">
-                and  value = #{value}
+                and  administrative_division_code = #{value}
             </if>
-               and  type ='XZQH'
+            and  level ='59674'
         </where>
     </select>
 
