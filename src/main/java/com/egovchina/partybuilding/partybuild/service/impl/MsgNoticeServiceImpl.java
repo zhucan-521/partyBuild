@@ -3,6 +3,7 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.util.*;
+import com.egovchina.partybuilding.partybuild.config.MsgNoticeEvent;
 import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDTO;
 import com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.MsgNoticeQueryBean;
@@ -62,9 +63,15 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
             iTabPbAttachmentService.intelligentOperation(msgNoticeDTO.getAttachments(), tabPbMsgNotice.getId(), AttachmentType.NOTICE);
             //保存接受党组织
             List<TabPbMsgNoticeDept> MsgNoticeDeptlist = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(msgNoticeDTO.getNoticeDeptList(), TabPbMsgNoticeDept.class, msgNoticeDept -> msgNoticeDept.setNoticeId(tabPbMsgNotice.getId()), false);
-            eventRelease(MsgNoticeDeptlist);
+            publisher.publishEvent(new MsgNoticeEvent(MsgNoticeDeptlist));
         }
         return count;
+    }
+
+    @Async
+    @EventListener
+    public void addNoticeDeptList(MsgNoticeEvent event) {
+        tabPbMsgNoticeDeptMapper.batchInsertTabPbMsgNoticeDept(event.getInnerSource());
     }
 
     /**
@@ -209,27 +216,6 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
     public List<MsgNoticeDeptVO> selectReceiveMsgNotice(MsgNoticeDeptQueryBean msgNoticeDeptQueryBean, Page page) {
         PageHelper.startPage(page);
         return tabPbMsgNoticeDeptMapper.selectReceiveMsgNotice(msgNoticeDeptQueryBean);
-    }
-
-    /**
-     * 保存接受党组织
-     *
-     * @param tabPbMsgNoticeDeptList
-     */
-    @EventListener
-    public void addNoticeDeptList(List<TabPbMsgNoticeDept> tabPbMsgNoticeDeptList) {
-        tabPbMsgNoticeDeptMapper.batchInsertTabPbMsgNoticeDept(tabPbMsgNoticeDeptList);
-    }
-
-    /**
-     * 事件发布
-     *
-     * @param tabPbMsgNoticeDeptList
-     */
-    @Async
-    public void eventRelease(List<TabPbMsgNoticeDept> tabPbMsgNoticeDeptList) {
-        publisher.publishEvent(tabPbMsgNoticeDeptList);
-        this.addNoticeDeptList(tabPbMsgNoticeDeptList);
     }
 
 }
