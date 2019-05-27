@@ -38,6 +38,7 @@ public class PunishmentDTO {
     private String punishOrg;
 
     @ApiModelProperty(value = "处分机构Id", required = true)
+    @NotNull(message = "党组织id不能为空")
     private Long punishOrgId;
 
     @ApiModelProperty(value = "userId", required = true)

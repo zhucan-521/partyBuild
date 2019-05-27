@@ -27,6 +27,7 @@ public class RewardsDTO {
     private String rewardsOrgnize;
 
     @ApiModelProperty(value = "奖励机构Id", required = true)
+    @NotNull(message = "党组织id不能为空")
     private Long rewardsOrgnizeId;
 
     @ApiModelProperty(value = "userId", required = true)
