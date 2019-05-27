@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbMessageMapper">
+
+    <!--批量新增站内消息-->
+    <insert id="batchInsertTabPbMessageSend" useGeneratedKeys="true" keyProperty="sendId" keyColumn="send_id"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMessageSend">
+        INSERT INTO tab_pb_message_send (send_org_id, send_org_name, type, title, content, send_time, del_flag,
+        create_time, create_userid, create_username )
+        VALUES
+        <foreach collection="list" item="a" separator=",">
+            ( #{a.sendOrgId}, #{a.sendOrgName}, #{a.type}, #{a.title}, #{a.content}, #{a.sendTime},
+            #{a.delFlag}, #{a.createTime}, #{a.createUserId}, #{a.createUsername} )
+        </foreach>
+    </insert>
+
+    <!--批量新增接收消息-->
+    <insert id="batchInsertTabPbMessageReceive" useGeneratedKeys="true" keyProperty="receiveId" keyColumn="receive_id"
+            parameterType="java.util.List">
+        INSERT INTO tab_pb_message_receive ( send_id, receiver_id, receiver_name, receiver_type )
+        VALUES
+        <foreach collection="list" item="a" separator=",">
+            ( #{a.sendId, jdbcType=BIGINT}, #{a.receiverId, jdbcType=BIGINT}, #{a.receiverName, jdbcType=VARCHAR},
+            #{a.receiverType, jdbcType=BIGINT} )
+        </foreach>
+    </insert>
+
+    <!--批量更新站内消息-->
+    <update id="batchUpdateStationNews" parameterType="java.util.List">
+        UPDATE tab_pb_message_send
+        SET
+        <foreach collection="list" item="a" separator=",">
+            send_org_id = #{a.sendOrgId},
+            send_org_name = #{a.sendOrgName},
+            type = #{a.type},
+            title = #{a.title},
+            content = #{a.content},
+            send_time = #{a.sendTime},
+            del_flag = #{a.delFlag}
+        </foreach>
+        WHERE
+        <foreach collection="list" item="a" separator=",">
+            send_id = #{a.sendId}
+        </foreach>
+        AND
+        del_flag = '0'
+    </update>
+
+    <update id="updateTabPbMessageReceive">
+      UPDATE tab_pb_message_receive
+        SET receive_user_id = #{receiveUserId},
+        receive_user_name = #{receiveUserName}
+        WHERE
+            send_id = #{sendId}
+    </update>
+
+    <!--批量修改消息接收表-->
+    <update id="batchUpdateTabPbMessageReceive">
+        <foreach collection="list" item="a" separator=";">
+            UPDATE tab_pb_message_receive
+            <set>
+                send_id = #{a.sendId},
+                receiver_id = #{a.receiverId},
+                receiver_name = #{a.receiverName},
+                receiver_type = #{a.receiverType}
+            </set>
+            WHERE
+            send_id = #{a.sendId}
+        </foreach>
+    </update>
+
+    <!--修改消息发送表实体-->
+    <update id="updateTabPbMessageSend">
+        UPDATE tab_pb_message_send
+        SET
+            sender_id = #{senderId},
+            sender_name = #{senderName},
+            type = #{type},
+            title = #{title},
+            content = #{content},
+            send_time = #{sendTime}
+        WHERE
+            send_id = #{sendId}
+        AND
+        del_flag = '0'
+    </update>
+
+    <!--查询站内消息VO-->
+    <select id="selectMessageSendVO" resultType="com.egovchina.partybuilding.partybuild.vo.MessageSendVO">
+      SELECT
+            s.send_id AS sendId,
+            s.sender_id AS senderId,
+            s.sender_name AS senderName,
+            s.type AS type,
+            s.title AS title,
+            s.content AS content,
+            s.send_time AS sendTime
+        FROM
+            tab_pb_message_send s
+        WHERE
+            s.send_id = #{sendId}
+            AND s.del_flag = 0
+    </select>
+
+    <!--获取站内消息列表-->
+    <select id="selectMessageSendVOList" resultType="com.egovchina.partybuilding.partybuild.vo.MessageSendVO">
+      SELECT
+            s.*
+        FROM
+            tab_pb_message_send s
+            LEFT JOIN tab_pb_message_receive r ON s.send_id = r.send_id
+        WHERE
+            r.receiver_id = #{receiverId}
+            AND r.receiver_type = 0
+            AND del_flag = 0
+    </select>
+
+    <!--检测消息是否存在-->
+    <select id="checkMessageSendIfExists" resultType="java.lang.Boolean">
+      SELECT
+            count( 1 )
+        FROM
+            tab_pb_message_send
+        WHERE
+            send_id = #{sendId} and del_flag = 0
+    </select>
+
+    <!--查询要到期的领导班子-->
+    <select id="queryTheLeadershipTeamThatIsDueToExpire"
+            resultType="com.egovchina.partybuilding.partybuild.vo.LeadTeamExpireVO">
+       SELECT
+            d.dept_id AS orgId,
+            d.name AS orgName
+        FROM
+            sys_dept d
+            INNER JOIN tab_pb_lead_team t ON d.dept_id = t.org_id
+        WHERE
+            t.del_flag = '0'
+            AND d.del_flag = '0'
+            AND t.current = 1
+            AND (DATE_FORMAT( t.change_date, '%Y-%m-%d' ) = DATE_FORMAT( DATE_ADD( NOW( ), INTERVAL 6 MONTH ), '%Y-%m-%d' )
+            OR DATE_FORMAT( t.change_date, '%Y-%m-%d' ) = DATE_FORMAT( DATE_ADD( NOW( ), INTERVAL 1 MONTH ), '%Y-%m-%d' ))
+            AND NOT EXISTS (
+                    SELECT
+                        1
+                    FROM
+                        tab_pb_message_receive r
+                        INNER JOIN tab_pb_message_send s ON r.send_id = s.send_id
+                    WHERE
+                        r.receiver_id =  d.dept_id
+                        AND s.del_flag = 0
+                        AND s.type = 3
+                     AND TIMESTAMPDIFF(MONTH, s.send_time,now()) != 5
+                )
+
+    </select>
+
+    <!--获取某个党员在某个组织下的消息列表-->
+    <select id="selectOrgMessageSendVOList"
+            resultType="com.egovchina.partybuilding.partybuild.vo.MessageSendVO">
+        SELECT
+            s.send_id AS sendId,
+            s.sender_id AS senderId,
+            s.sender_name AS senderName,
+            s.type AS type,
+            s.title AS title,
+            s.content AS content,
+            s.send_time AS sendTime
+        FROM
+            tab_pb_message_send s
+            LEFT JOIN tab_pb_message_receive r ON s.send_id = r.send_id
+        WHERE
+            r.receiver_id = #{receiverOrgId}
+            AND r.receiver_type = 1
+            AND s.del_flag = 0
+    </select>
+
+    <!--判断接收者id在数据库中是否存在-->
+    <select id="checkReceiverUserIdIfExist" resultType="java.lang.Boolean">
+        SELECT
+            count( * )
+        FROM
+            tab_pb_message_receive
+        WHERE
+            receiver_type = 0
+            AND receiver_id IN
+        <foreach collection = "list" item = "a" open="(" separator="," close=")">
+            ${a}
+        </foreach>
+    </select>
+
+    <!--判断接收组织id在数据库中是否存在-->
+    <select id="checkReceiverOrgIdIfExist" resultType="java.lang.Boolean">
+        SELECT
+            count( * )
+        FROM
+            tab_pb_message_receive
+        WHERE
+            receive_type = 1
+            AND receiver_id IN
+        <foreach collection = "list" item = "a"  open="(" separator="," close=")">
+            ${a}
+        </foreach>
+    </select>
+
+    <!--定时发送消息-->
+    <insert id="insertTabPbMessageReceive">
+        INSERT INTO tab_pb_message_receive ( send_id, receive_user_id, receive_user_name )
+        VALUES
+            ( #{sendId}, #{receiveUserId}, #{receiveUserName} )
+    </insert>
+
+    <!--定时发送消息-->
+    <insert id="insertTabPbMessageSend" useGeneratedKeys="true" keyColumn="send_id" keyProperty="sendId">
+        INSERT INTO tab_pb_message_send ( sender_id, sender_name, type, title, content, send_time, del_flag, create_time, create_userid, create_username )
+        VALUES
+            ( #{senderId}, #{senderName}, #{type}, #{title}, #{content}, #{sendTime}, 0, #{createTime}, #{createUserId}, #{createUsername} )
+    </insert>
+</mapper>

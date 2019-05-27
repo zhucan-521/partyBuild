@@ -209,6 +209,12 @@ public interface TabSysUserMapper {
     int updateUserIsPoorByHardshipId(@Param("isPoor") Integer isPoor,@Param("hardshipId") Long hardshipId);
 
     /**
+     * 根据组织id获取
+     * @return
+     */
+    SysUser selectByOrgIdSelective();
+
+    /**
      * 根据查询实体查询党员选择vo列表
      * @param queryBean 查询实体
      * @return

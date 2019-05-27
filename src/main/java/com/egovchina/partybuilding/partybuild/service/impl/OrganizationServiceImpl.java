@@ -332,12 +332,12 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Transactional
     @Override
     public int updateOrganizationPosition(OrganizationPositionDTO organizationPositionDTO) {
-        SysDept dbSysDept = tabSysDeptMapper.selectByPrimaryKey(organizationPositionDTO.getDeptId());
-        if (dbSysDept == null) {
+        boolean exist = tabSysDeptMapper.checkIsExistByOrgId(organizationPositionDTO.getDeptId());
+        if (!exist) {
             throw new BusinessDataNotFoundException("组织数据不存在");
         }
-        BeanUtil.copyPropertiesIgnoreNull(organizationPositionDTO, dbSysDept);
-        int judgment = tabSysDeptMapper.updateByPrimaryKeySelective(dbSysDept);
+        SysDept sysDept = generateTargetCopyPropertiesAndPaddingBaseField(organizationPositionDTO, SysDept.class, true);
+        int judgment = tabSysDeptMapper.updateByPrimaryKeySelective(sysDept);
         if (judgment > 0) {
             judgment += iTabPbAttachmentService.intelligentOperation(organizationPositionDTO.getAttachments(),
                     organizationPositionDTO.getDeptId(), AttachmentType.ORG_POSITION);
