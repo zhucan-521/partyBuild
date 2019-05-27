@@ -4,7 +4,7 @@
 
   <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist">
     <id column="positive_regist_id" jdbcType="BIGINT" property="positiveRegistId"/>
-    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
+    <result column="community_id" jdbcType="BIGINT" property="communityId" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="regist_date" jdbcType="TIMESTAMP" property="registDate"/>
     <result column="regist_comment" jdbcType="VARCHAR" property="registComment" />
@@ -37,8 +37,8 @@
     <id column="positive_regist_id" jdbcType="BIGINT" property="positiveRegistId"/>
     <result column="user_id" jdbcType="BIGINT" property="userId"/>
     <result column="realname" jdbcType="VARCHAR" property="realname"/>
-    <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
-    <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+    <result column="community_id" jdbcType="BIGINT" property="communityId"/>
+    <result column="community_name" jdbcType="VARCHAR" property="communityName"/>
     <result column="gender" jdbcType="BIGINT" property="gender"/>
     <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
     <result column="age" jdbcType="INTEGER" property="age"/>
@@ -77,8 +77,8 @@
       u.identity_type,
       u.phone,
       birthday2age ( DATE_FORMAT( u.birthday, '%Y-%m-%d' ) ) AS age,
-      pr.dept_id,
-      d.`name` AS dept_name,
+      pr.community_id,
+      ad.administrative_division_name AS community_name,
       pr.regist_date,
       pr.regist_comment,
       pr.from_orgnize_id,
@@ -90,22 +90,13 @@
       pr.revoke_date,
       CASE WHEN TIMESTAMPDIFF(SECOND, now(), pr.regist_date) > 0 THEN '1' ELSE '0' END AS can_return
     FROM tab_pb_positive_regist pr
+    INNER JOIN tab_pb_administrative_division ad ON pr.community_id = ad.administrative_division_id
     LEFT JOIN sys_user u ON u.user_id = pr.user_id
-    LEFT JOIN sys_dept d ON d.dept_id = pr.dept_id
     <where>
       pr.del_flag = 0
-      <if test="orgRange != null and orgRange != ''">
-        <choose>
-          <when test="orgRange == 1">
-            AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
-          </when>
-          <when test="orgRange == 2">
-            AND find_in_set(#{rangeDeptId}, d.full_path)
-          </when>
-        </choose>
-      </if>
-      <if test="orgRange == null or orgRange.toString() == ''">
-        AND d.dept_id = #{rangeDeptId}
+      AND ad.del_flag = 0
+      <if test="communityId != null and communityId != ''">
+        AND pr.community_id = #{communityId}
       </if>
       <if test="realname != null and realname != ''">
         and u.realname like CONCAT('%', #{realname}, '%')
@@ -122,17 +113,6 @@
     </where>
   </select>
 
-  <!--同步党员表报到字段-->
-  <update id="synchronizePartyMemberTableReportColumns">
-    UPDATE sys_user u
-    LEFT JOIN sys_dept d ON d.dept_id = #{registerDeptId}
-      SET u.report_org_id = d.dept_id,
-      u.report_org_name = d.`name`,
-      u.report_org_phone = d.contact_number,
-      u.report_org_contactor = d.contactor
-    WHERE u.user_id = #{userId}
-  </update>
-
   <!--根据id查询报到信息VO-->
   <select id="selectPositiveRegisterVOById" parameterType="java.lang.Long"
           resultMap="ContainAttachmentPositiveRegisterVOResultMap">
@@ -145,8 +125,8 @@
       u.identity_type,
       u.phone,
       birthday2age ( DATE_FORMAT( u.birthday, '%Y-%m-%d' ) ) AS age,
-      pr.dept_id,
-      d.`name` AS dept_name,
+      pr.community_id,
+      ad.administrative_division_name AS community_name,
       pr.regist_date,
       pr.regist_comment,
       pr.from_orgnize_id,
@@ -158,14 +138,14 @@
       pr.revoke_date,
       52 AS attachment_type
     FROM tab_pb_positive_regist pr
+    LEFT JOIN tab_pb_administrative_division ad ON pr.community_id = ad.administrative_division_id AND ad.del_flag = 0
     LEFT JOIN sys_user u ON u.user_id = pr.user_id
-    LEFT JOIN sys_dept d ON d.dept_id = pr.dept_id
     WHERE pr.positive_regist_id = #{positiveRegistId}
   </select>
 
   <!--检查指定党员是否以存在报到数据-->
   <select id="checkPartyMemberIsExistRegister" parameterType="java.lang.Long" resultType="java.lang.Boolean">
-    SELECT TRUE FROM tab_pb_positive_regist WHERE del_flag = 0 AND user_id = #{userId}
+    SELECT COUNT(1) FROM tab_pb_positive_regist WHERE del_flag = 0 AND user_id = #{userId}
   </select>
 
   <!--聚合生成党员报到数据-->
