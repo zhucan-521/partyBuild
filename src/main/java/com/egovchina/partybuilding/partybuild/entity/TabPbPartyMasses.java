@@ -45,11 +45,6 @@ public class TabPbPartyMasses {
     private String address;
 
     /**
-     * 层级
-     */
-    private String grade;
-
-    /**
      * 服务时间
      */
     private String serviceHours;
