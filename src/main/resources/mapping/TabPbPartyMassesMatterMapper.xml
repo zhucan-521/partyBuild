@@ -70,7 +70,7 @@
   </sql>
 
   <!--新增-->
-  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesMatter" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesMatter" useGeneratedKeys="true" keyProperty="partyMassesMatterId">
     insert into tab_pb_party_masses_matter
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="partyMassesMatterId != null ">

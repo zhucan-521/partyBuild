@@ -36,9 +36,6 @@ public class PartyMassesServiceImpl implements PartyMassesService {
     @Autowired
     private TabPbPartyMassesMapper tabPbPartyMassesMapper;
 
-    @Autowired
-    private TabSysDeptMapper tabSysDeptMapper;
-
     /**
      * Description: 新增
      *
@@ -135,9 +132,6 @@ public class PartyMassesServiceImpl implements PartyMassesService {
     }
 
     private void dataValidation(PartyMassesDTO partyMassesDTO) {
-        if (!tabSysDeptMapper.checkIsExistByOrgId(partyMassesDTO.getOrgId())) {
-            throw new BusinessDataCheckFailException("该组织不存在");
-        }
         if (tabPbPartyMassesMapper.checkIsExistPartyMassesName(
                 partyMassesDTO.getPartyMassesName(), partyMassesDTO.getPartyMassesId())) {
             throw new BusinessDataCheckFailException("党群名字已存在");

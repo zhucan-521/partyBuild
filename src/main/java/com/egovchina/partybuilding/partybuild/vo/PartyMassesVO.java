@@ -20,11 +20,11 @@ public class PartyMassesVO {
     @ApiModelProperty(value = "党群名称")
     private String partyMassesName;
 
-    @ApiModelProperty(value = "组织id")
-    private Long orgId;
+    @ApiModelProperty(value = "行政区划id")
+    private Long administrativeDivisionId;
 
-    @ApiModelProperty(value = "组织名称")
-    private String orgName;
+    @ApiModelProperty(value = "行政区划名称")
+    private String administrativeDivisionName;
 
     @ApiModelProperty(value = "坐标")
     private String coordinate;

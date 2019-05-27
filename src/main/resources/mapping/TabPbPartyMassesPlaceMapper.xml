@@ -82,7 +82,7 @@
   </sql>
 
   <!--新增-->
-  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesPlace" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesPlace" useGeneratedKeys="true" keyProperty="partyMassesPlaceId">
     insert into tab_pb_party_masses_place
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="partyMassesPlaceId != null ">
