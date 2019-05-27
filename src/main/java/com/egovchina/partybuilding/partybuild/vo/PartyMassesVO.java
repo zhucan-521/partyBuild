@@ -35,9 +35,6 @@ public class PartyMassesVO {
     @ApiModelProperty(value = "地址")
     private String address;
 
-    @ApiModelProperty(value = "层级")
-    private String grade;
-
     @ApiModelProperty(value = "服务时间")
     private String serviceHours;
 

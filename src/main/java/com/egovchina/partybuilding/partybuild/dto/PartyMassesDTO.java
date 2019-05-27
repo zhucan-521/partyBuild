@@ -45,9 +45,6 @@ public class PartyMassesDTO {
     @ApiModelProperty(value = "简介")
     private String content;
 
-    @ApiModelProperty(value = "层级")
-    private String grade;
-
     @ApiModelProperty(value = "经度")
     private String longitude;
 

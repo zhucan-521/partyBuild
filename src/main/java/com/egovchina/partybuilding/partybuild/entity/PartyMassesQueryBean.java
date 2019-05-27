@@ -30,9 +30,6 @@ public class PartyMassesQueryBean {
     @ApiModelProperty(value = "坐标")
     private String coordinate;
 
-    @ApiModelProperty(value = "层级")
-    private String grade;
-
     @ApiModelProperty(value = "服务时间")
     private String serviceHours;
 
