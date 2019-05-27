@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
-@ApiModel(value = "在职党员报道信息DTO")
+@ApiModel(value = "在职党员报到信息DTO")
 @Data
 public class PositiveRegisterDTO {
 

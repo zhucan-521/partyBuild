@@ -83,7 +83,7 @@ public class FlowInServiceImpl implements FlowInService {
             }
             return flag;
         }
-        throw new BusinessDataCheckFailException("只有带报道的流动党员才可以删除");
+        throw new BusinessDataCheckFailException("只有待报到的流动党员才可以删除");
     }
 
     /**

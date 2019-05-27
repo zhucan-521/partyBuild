@@ -54,7 +54,7 @@ public class PositiveRegisterServiceImpl implements PositiveRegisterService {
         boolean exist = Optional.ofNullable(tabPbPositiveRegistMapper.checkPartyMemberIsExistRegister(positiveRegisterDTO.getUserId()))
                 .orElse(false);
         if (exist) {
-            throw new BusinessDataCheckFailException("该党员已报道");
+            throw new BusinessDataCheckFailException("该党员已报到");
         }
 
         TabPbPositiveRegist tabPbPositiveRegist = generateTargetCopyPropertiesAndPaddingBaseField(

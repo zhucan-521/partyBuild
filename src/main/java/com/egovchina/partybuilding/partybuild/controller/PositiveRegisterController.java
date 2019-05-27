@@ -28,9 +28,9 @@ public class PositiveRegisterController {
     @Autowired
     private PositiveRegisterService positiveRegisterService;
 
-    @ApiOperation(value = "登记党员报道信息", httpMethod = "POST")
+    @ApiOperation(value = "登记党员报到信息", httpMethod = "POST")
     @PostMapping
-    public ReturnEntity insertPositiveRegister(@ApiParam("报道信息") @RequestBody @Validated PositiveRegisterDTO positiveRegisterDTO) {
+    public ReturnEntity insertPositiveRegister(@ApiParam("报到信息") @RequestBody @Validated PositiveRegisterDTO positiveRegisterDTO) {
         return ReturnUtil.buildReturn(positiveRegisterService.insertPositiveRegister(positiveRegisterDTO));
     }
 
