@@ -23,12 +23,12 @@ public class PartyMassesDTO {
     @NotNull(message = "党群名称不能为空")
     private String partyMassesName;
 
-    @ApiModelProperty(value = "组织id",required = true)
-    @NotNull(message = "组织id不能为空")
-    private Long orgId;
+    @ApiModelProperty(value = "行政区划id",required = true)
+    @NotNull(message = "行政区划id不能为空")
+    private Long administrativeDivisionId;
 
-    @ApiModelProperty(value = "组织名称")
-    private String orgName;
+    @ApiModelProperty(value = "行政区划名称")
+    private String administrativeDivisionName;
 
     @ApiModelProperty(value = "坐标")
     private String coordinate;

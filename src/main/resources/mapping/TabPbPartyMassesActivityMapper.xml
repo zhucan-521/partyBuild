@@ -94,7 +94,7 @@
   </sql>
 
   <!--新增-->
-  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesActivity" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesActivity" useGeneratedKeys="true" keyProperty="partyMassesActivityId">
     insert into tab_pb_party_masses_activity
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="partyMassesActivityId != null ">

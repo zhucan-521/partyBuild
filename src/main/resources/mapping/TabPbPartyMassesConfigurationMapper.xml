@@ -62,7 +62,7 @@
   </sql>
 
   <!--新增-->
-  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesConfiguration" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesConfiguration" useGeneratedKeys="true" keyProperty="partyMassesConfigurationId">
     insert into tab_pb_party_masses_configuration
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="partyMassesConfigurationId != null ">
