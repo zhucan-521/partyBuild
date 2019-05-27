@@ -1,7 +1,6 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
@@ -11,8 +10,8 @@ import com.egovchina.partybuilding.partybuild.dto.PositiveRegisterCancelDTO;
 import com.egovchina.partybuilding.partybuild.dto.PositiveRegisterDTO;
 import com.egovchina.partybuilding.partybuild.entity.PositiveRegisterQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPositiveRegist;
+import com.egovchina.partybuilding.partybuild.repository.TabPbAdministrativeDivisionMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPositiveRegistMapper;
-import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.PositiveRegisterService;
 import com.egovchina.partybuilding.partybuild.service.UserTagService;
@@ -25,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
@@ -37,26 +35,16 @@ public class PositiveRegisterServiceImpl implements PositiveRegisterService {
 
     @Autowired
     private UserTagService userTagService;
-
-    @Autowired
-    private TabSysDeptMapper tabSysDeptMapper;
-
     @Autowired
     private TabPbPositiveRegistMapper tabPbPositiveRegistMapper;
-
     @Autowired
     private ITabPbAttachmentService iTabPbAttachmentService;
+    @Autowired
+    private TabPbAdministrativeDivisionMapper tabPbAdministrativeDivisionMapper;
 
     @Transactional
     @Override
     public int insertPositiveRegister(PositiveRegisterDTO positiveRegisterDTO) {
-
-        boolean exist = Optional.ofNullable(tabPbPositiveRegistMapper.checkPartyMemberIsExistRegister(positiveRegisterDTO.getUserId()))
-                .orElse(false);
-        if (exist) {
-            throw new BusinessDataCheckFailException("该党员已报到");
-        }
-
         TabPbPositiveRegist tabPbPositiveRegist = generateTargetCopyPropertiesAndPaddingBaseField(
                 positiveRegisterDTO, TabPbPositiveRegist.class, false);
 
@@ -69,8 +57,6 @@ public class PositiveRegisterServiceImpl implements PositiveRegisterService {
             Long userId = tabPbPositiveRegist.getUserId();
             //添加标签
             userTagService.addUserTag(userId, UserTagType.REPORT);
-            //同步党员表字段
-            tabPbPositiveRegistMapper.synchronizePartyMemberTableReportColumns(userId, tabPbPositiveRegist.getDeptId());
             //维护附件
             iTabPbAttachmentService.intelligentOperation(positiveRegisterDTO.getAttachments(), tabPbPositiveRegist.getPositiveRegistId(), AttachmentType.POSITIVE);
         }
@@ -105,8 +91,6 @@ public class PositiveRegisterServiceImpl implements PositiveRegisterService {
             Long userId = tabPbPositiveRegist.getUserId();
             //删除标签
             userTagService.delete(userId, UserTagType.REPORT);
-            //同步党员表
-            tabPbPositiveRegistMapper.synchronizePartyMemberTableReportColumns(userId, -1L);
         }
         return judgment;
     }
@@ -127,8 +111,6 @@ public class PositiveRegisterServiceImpl implements PositiveRegisterService {
             Long userId = tabPbPositiveRegist.getUserId();
             //删除标签
             userTagService.delete(userId, UserTagType.REPORT);
-            //同步党员表
-            tabPbPositiveRegistMapper.synchronizePartyMemberTableReportColumns(userId, -1L);
         }
         return judgment;
     }
@@ -144,12 +126,9 @@ public class PositiveRegisterServiceImpl implements PositiveRegisterService {
             throw new BusinessDataNotFoundException("在职党员数据不存在");
         }
         BeanUtil.copyPropertiesIgnoreNull(generated, tabPbPositiveRegist);
-        SysDept sysDept = tabSysDeptMapper.selectAloneByPrimaryKey(tabPbPositiveRegist.getDeptId());
-        if (sysDept == null) {
-            throw new BusinessDataNotFoundException("报到党组织数据不存在");
-        }
-        if (!sysDept.ifBranch()) {
-            throw new BusinessDataCheckFailException("报到党组织非支部");
+        boolean exist = tabPbAdministrativeDivisionMapper.checkCommunityIsExist(tabPbPositiveRegist.getCommunityId());
+        if (!exist) {
+            throw new BusinessDataNotFoundException("报到社区不存在");
         }
     }
 

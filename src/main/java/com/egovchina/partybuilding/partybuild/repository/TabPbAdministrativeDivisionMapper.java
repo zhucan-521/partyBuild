@@ -65,4 +65,11 @@ public interface TabPbAdministrativeDivisionMapper {
      * @date 2019/05/25 14:46:06
      */
     List<AdministrativeDivisionVO> list(AdministrativeDivisionQueryBean administrativeDivisionQueryBean);
+
+    /**
+     * 检查社区是否存在
+     * @param communityId 社区id
+     * @return
+     */
+    Boolean checkCommunityIsExist(Long communityId);
 }

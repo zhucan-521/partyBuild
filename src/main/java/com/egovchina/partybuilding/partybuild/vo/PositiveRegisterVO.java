@@ -41,11 +41,11 @@ public class PositiveRegisterVO {
     @ApiModelProperty(value = "联系方式")
     private String phone;
 
-    @ApiModelProperty(value = "组织id")
-    private Long deptId;
+    @ApiModelProperty(value = "社区id")
+    private Long communityId;
 
-    @ApiModelProperty(value = "组织名称")
-    private String deptName;
+    @ApiModelProperty(value = "社区名称")
+    private String communityName;
 
     @ApiModelProperty(value = "报到日期 yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")

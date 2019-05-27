@@ -47,15 +47,6 @@ public interface TabPbPositiveRegistMapper extends BaseMapper<TabPbPositiveRegis
     TabPbPositiveRegist aggregateGeneratePartyMemberRegisterData(Long userId);
 
     /**
-     * 同步党员表报到列
-     *
-     * @param userId         用户id
-     * @param registerDeptId 报到组织id
-     * @return
-     */
-    int synchronizePartyMemberTableReportColumns(@Param("userId") Long userId, @Param("registerDeptId") Long registerDeptId);
-
-    /**
      * 根据id查询报到信息
      *
      * @param positiveRegistId id

@@ -17,9 +17,9 @@ public class PositiveRegisterDTO {
     @ApiModelProperty(value = "报到id")
     private Long positiveRegistId;
 
-    @ApiModelProperty(value = "组织id", required = true)
-    @NotNull(message = "组织id不能为空")
-    private Long deptId;
+    @ApiModelProperty(value = "社区id", required = true)
+    @NotNull(message = "社区id不能为空")
+    private Long communityId;
 
     @ApiModelProperty(value = "党员id", required = true)
     @NotNull(message = "党员id不能为空")
