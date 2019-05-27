@@ -65,4 +65,10 @@ public class MsgNoticeDTO {
     @ApiModelProperty(value = "结束时间", example = "yyyy-MM-dd")
     private Date endTime;
 
+    @ApiModelProperty(value = "发布人Id")
+    private Long publisherId;
+
+    @ApiModelProperty(value = "发布人姓名")
+    private String publisherName;
+
 }

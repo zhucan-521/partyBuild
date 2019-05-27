@@ -59,10 +59,11 @@ public interface MsgNoticeService {
     /**
      * 改变文件发布状态
      *
-     * @param msgNoticeDTO
+     * @param id 文件主键
+     * @param state 状态值 0.未发布、1.已发布
      * @return
      */
-    int editMsgNoticeState(MsgNoticeDTO msgNoticeDTO);
+    int editMsgNoticeState(Long id, String state);
 
     /**
      * 根据主键id签收
