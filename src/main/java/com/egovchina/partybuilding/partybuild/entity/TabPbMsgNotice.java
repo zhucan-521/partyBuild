@@ -58,4 +58,8 @@ public class TabPbMsgNotice implements Serializable{
 
     private Date endTime;
 
+    private Long publisherId;
+
+    private String publisherName;
+
 }

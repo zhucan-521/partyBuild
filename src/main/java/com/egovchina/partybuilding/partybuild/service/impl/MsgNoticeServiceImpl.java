@@ -17,6 +17,7 @@ import com.egovchina.partybuilding.partybuild.vo.MsgNoticeDeptVO;
 import com.egovchina.partybuilding.partybuild.vo.MsgNoticeVO;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,9 +44,6 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
     @Autowired
     private TabPbMsgNoticeDeptMapper tabPbMsgNoticeDeptMapper;
 
-    @Autowired
-    private TabSysDeptMapper tabSysDeptMapper;
-
     /**
      * 发布文件
      *
@@ -55,6 +53,8 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
     @Override
     public int addMsgNotice(MsgNoticeDTO msgNoticeDTO) {
         TabPbMsgNotice tabPbMsgNotice = generateTargetCopyPropertiesAndPaddingBaseField(msgNoticeDTO, TabPbMsgNotice.class, false);
+        tabPbMsgNotice.setPublisherId(UserContextHolder.getUserId());
+        tabPbMsgNotice.setPublisherName(UserContextHolder.getUserName());
         int count = tabPbMsgNoticeMapper.insertSelective(tabPbMsgNotice);
         if (count > 0) {
             iTabPbAttachmentService.intelligentOperation(msgNoticeDTO.getAttachments(), tabPbMsgNotice.getId(), AttachmentType.NOTICE);
@@ -160,15 +160,19 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
     /**
      * 改变文件发布状态
      *
-     * @param msgNoticeDTO
+     * @param id 文件主键
+     * @param state 状态值 0.未发布、1.已发布
      * @return
      */
     @Override
-    public int editMsgNoticeState(MsgNoticeDTO msgNoticeDTO) {
-        msgNoticeDTO.setPublishTime(new Date());
-        TabPbMsgNotice msgNoticeVO = new TabPbMsgNotice();
-        BeanUtil.copyPropertiesIgnoreNull(msgNoticeDTO, msgNoticeVO);
-        return tabPbMsgNoticeMapper.editState(msgNoticeVO);
+    public int editMsgNoticeState(Long id, String state) {
+        TabPbMsgNotice tabPbMsgNotice = new TabPbMsgNotice();
+        tabPbMsgNotice.setPublishTime(new Date());
+        tabPbMsgNotice.setId(id);
+        tabPbMsgNotice.setState(state);
+        tabPbMsgNotice.setPublisherName(UserContextHolder.getUserName());
+        tabPbMsgNotice.setPublisherId(UserContextHolder.getUserId());
+        return tabPbMsgNoticeMapper.editState(tabPbMsgNotice);
     }
 
     /**
@@ -181,7 +185,7 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
     public int signNotice(Long id) {
         TabPbMsgNoticeDept tabPbMsgNoticeDept = tabPbMsgNoticeDeptMapper.getTabPbMsgNoticeDeptById(id);
         tabPbMsgNoticeDept.setRecevieUsername(UserContextHolder.getUserName());
-        tabPbMsgNoticeDept.setRecevieUserId(UserContextHolder.getUserId().longValue());
+        tabPbMsgNoticeDept.setRecevieUserId(UserContextHolder.getUserId());
         tabPbMsgNoticeDept.setRecevieTime(new Date());
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbMsgNoticeDept);
         return tabPbMsgNoticeDeptMapper.updateSigning(tabPbMsgNoticeDept);

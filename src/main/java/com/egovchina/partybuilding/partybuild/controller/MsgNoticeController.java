@@ -68,10 +68,7 @@ public class MsgNoticeController {
     })
     @PutMapping("{id}/state")
     public ReturnEntity editMsgNoticeState(@PathVariable Long id, String state) {
-        MsgNoticeDTO msgNoticeDTO = new MsgNoticeDTO();
-        msgNoticeDTO.setId(id);
-        msgNoticeDTO.setState(state);
-        return ReturnUtil.buildReturn(noticeService.editMsgNoticeState(msgNoticeDTO));
+        return ReturnUtil.buildReturn(noticeService.editMsgNoticeState(id,state));
     }
 
     @ApiOperation(value = "文件签收", httpMethod = "PUT")
