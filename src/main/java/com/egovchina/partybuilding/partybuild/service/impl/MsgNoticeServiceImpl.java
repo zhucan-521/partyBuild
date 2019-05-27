@@ -53,8 +53,6 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
     @Override
     public int addMsgNotice(MsgNoticeDTO msgNoticeDTO) {
         TabPbMsgNotice tabPbMsgNotice = generateTargetCopyPropertiesAndPaddingBaseField(msgNoticeDTO, TabPbMsgNotice.class, false);
-        tabPbMsgNotice.setPublisherId(UserContextHolder.getUserId());
-        tabPbMsgNotice.setPublisherName(UserContextHolder.getUserName());
         int count = tabPbMsgNoticeMapper.insertSelective(tabPbMsgNotice);
         if (count > 0) {
             iTabPbAttachmentService.intelligentOperation(msgNoticeDTO.getAttachments(), tabPbMsgNotice.getId(), AttachmentType.NOTICE);
@@ -170,8 +168,12 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
         tabPbMsgNotice.setPublishTime(new Date());
         tabPbMsgNotice.setId(id);
         tabPbMsgNotice.setState(state);
-        tabPbMsgNotice.setPublisherName(UserContextHolder.getUserName());
-        tabPbMsgNotice.setPublisherId(UserContextHolder.getUserId());
+        if("1".equals(state)){
+            tabPbMsgNotice.setPublisherName(UserContextHolder.getUserName());
+            tabPbMsgNotice.setPublisherId(UserContextHolder.getUserId());
+        }else{
+            tabPbMsgNotice.setPublisherName("");
+        }
         return tabPbMsgNoticeMapper.editState(tabPbMsgNotice);
     }
 
