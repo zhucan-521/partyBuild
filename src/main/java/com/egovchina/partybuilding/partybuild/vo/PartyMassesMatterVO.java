@@ -1,8 +1,11 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
+import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * Description:
@@ -29,7 +32,19 @@ public class PartyMassesMatterVO {
     @ApiModelProperty(value = "服务对象 字典id")
     private Long crowd;
 
+    @ApiModelProperty(value = "联系人")
+    private String contact;
+
     @ApiModelProperty(value = "电话")
     private String tel;
+
+    @ApiModelProperty(value = "地址")
+    private String address;
+
+    @ApiModelProperty(value = "封面图")
+    private String cover;
+
+    @ApiModelProperty(value = "附件")
+    private List<TabPbAttachment> attachments;
 
 }

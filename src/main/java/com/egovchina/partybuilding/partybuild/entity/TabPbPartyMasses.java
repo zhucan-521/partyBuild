@@ -40,6 +40,11 @@ public class TabPbPartyMasses {
     private String tel;
 
     /**
+     * 联系人
+     */
+    private String contact;
+
+    /**
      * 地址
      */
     private String address;
@@ -63,6 +68,11 @@ public class TabPbPartyMasses {
      * 纬度
      */
     private String latitude;
+
+    /**
+     * 封面图
+     */
+    private String cover;
 
     /**
      * 有效标记

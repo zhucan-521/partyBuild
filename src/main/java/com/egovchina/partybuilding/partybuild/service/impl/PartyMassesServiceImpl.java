@@ -2,13 +2,14 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
+import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.partybuild.dto.PartyMassesDTO;
 import com.egovchina.partybuilding.partybuild.entity.PartyMassesQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyMasses;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPartyMassesMapper;
-import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
+import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.PartyMassesService;
 import com.egovchina.partybuilding.partybuild.vo.PartyMassesTree;
 import com.egovchina.partybuilding.partybuild.vo.PartyMassesVO;
@@ -36,6 +37,9 @@ public class PartyMassesServiceImpl implements PartyMassesService {
     @Autowired
     private TabPbPartyMassesMapper tabPbPartyMassesMapper;
 
+    @Autowired
+    private ITabPbAttachmentService tabPbAttachmentService;
+
     /**
      * Description: 新增
      *
@@ -52,7 +56,12 @@ public class PartyMassesServiceImpl implements PartyMassesService {
         TabPbPartyMasses tabPbPartyMasses =
                 BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(
                         partyMassesDTO, TabPbPartyMasses.class, false);
-        return tabPbPartyMassesMapper.insert(tabPbPartyMasses);
+        int result = 0;
+        result += tabPbPartyMassesMapper.insert(tabPbPartyMasses);
+        result += tabPbAttachmentService.intelligentOperation(
+                partyMassesDTO.getAttachments(),
+                tabPbPartyMasses.getPartyMassesId(), AttachmentType.PARTY_MASSES);
+        return result;
     }
 
     /**
@@ -68,7 +77,12 @@ public class PartyMassesServiceImpl implements PartyMassesService {
         //校验
         dataValidation(partyMassesDTO);
         TabPbPartyMasses tabPbPartyMasses = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyMassesDTO, TabPbPartyMasses.class, true);
-        return tabPbPartyMassesMapper.updateById(tabPbPartyMasses);
+        int result = 0;
+        result += tabPbAttachmentService.intelligentOperation(
+                partyMassesDTO.getAttachments(),
+                tabPbPartyMasses.getPartyMassesId(), AttachmentType.PARTY_MASSES);
+        result += tabPbPartyMassesMapper.updateById(tabPbPartyMasses);
+        return result;
     }
 
     /**
