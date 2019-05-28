@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
@@ -30,8 +31,9 @@ public class OrgChangeController {
     @Autowired
     private OrgChangeService orgChangeService;
 
-    @ApiOperation(value = "查看最新组织变动信息", notes = "查看最新组织变动信息")
+    @ApiOperation(value = "查看组织变动详情", notes = "查看组织变动详情")
     @ApiImplicitParam(name = "changeId", value = "变动id", paramType = "path", dataType = "Long", required = true)
+    @HasPermission("party_organizationAdjustment_examine")
     @GetMapping("/{changeId}")
     public OrgChangeVO getOrgChangeById(@PathVariable Long changeId) {
         return orgChangeService.selectOrgChangeById(changeId);
@@ -44,12 +46,15 @@ public class OrgChangeController {
                     "4. <font color=\"red\">组织调整(字典id=59009, value=ZZTZ, type=ZZDB)</font><br/>" +
                     "5. <font color=\"red\">其他调整(字典id=59567, value=QTTZ, type=ZZDB)</font><br/>" +
                     "6. <font color=\"red\">整建制转移(字典id=59603, value=ZJZZY, type=ZZDB)</font>")
+    @HasPermission({"party_orgInfo_recover","party_orgInfo_replay","party_orgInfo_upgrade",
+            "party_organizationAdjustment_add","party_organizationAdjustment"})
     @PostMapping
     public ReturnEntity addOrgChange(@ApiParam("组织变动信息") @RequestBody @Validated OrgChangeDTO change) {
         return ReturnUtil.buildReturn(this.orgChangeService.addOrgChange(change));
     }
 
     @ApiOperation(value = "获取组织变动信息列表")
+    @HasPermission("party_organizationAdjustment")
     @GetMapping
     public PageInfo<OrgChangeVO> getOrgChangeList(@Validated OrgChangeQueryBean orgChangeQueryBean, Page page) {
         return new PageInfo<>(this.orgChangeService.selectOrgChangeList(orgChangeQueryBean, page));

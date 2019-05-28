@@ -3,7 +3,6 @@ package com.egovchina.partybuilding.partybuild.controller;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
-import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.SpecialWorkerDTO;
 import com.egovchina.partybuilding.partybuild.entity.SpecialWorkerQueryBean;
 import com.egovchina.partybuilding.partybuild.service.SpecialWorkerService;
@@ -49,10 +48,6 @@ public class SpecialWorkerController {
     @ApiOperation(value = "条件分页查询", notes = "status为变更状态，1为在职，0为离职")
     @GetMapping
     public PageInfo<SpecialWorkerVO> getSpecialWorkerList(Page page, SpecialWorkerQueryBean specialWorkerQueryBean) {
-        Long rangeDeptId = specialWorkerQueryBean.getRangeDeptId();
-        if (rangeDeptId == null || rangeDeptId == 0) {
-            specialWorkerQueryBean.setRangeDeptId(UserContextHolder.getOrgId());
-        }
         return specialWorkerService.getSpecialWorkerList(page, specialWorkerQueryBean);
     }
 

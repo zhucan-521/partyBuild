@@ -10,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 描述:
@@ -24,6 +23,10 @@ import java.util.Map;
 public class OrgChangeDTO {
     @ApiModelProperty(value = "变动Id")
     private Long changeId;
+
+    @ApiModelProperty(value = "角色所属组织主键", required = true)
+    @NotNull(message = "角色所属组织主键不能为空")
+    private Long orgId;
 
     @ApiModelProperty(value = "组织主键", required = true)
     @NotNull(message = "组织主键不能为空")
