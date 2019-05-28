@@ -77,4 +77,6 @@ public interface PartyInformationService {
      * @return
      */
     List<PartyMemberChooseVO> selectPartyMemberChooseVOListByQueryBean(PartyMemberChooseQueryBean queryBean, Page page);
+
+    PartyMemberChooseVO choosePartyMemberVOByIdCardNo(String idCardNo);
 }

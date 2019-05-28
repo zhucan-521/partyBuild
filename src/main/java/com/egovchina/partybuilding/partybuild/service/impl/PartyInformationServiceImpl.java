@@ -568,4 +568,9 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         });
         return BeanUtil.generateTargetListAndCopyProperties(userList, PartyMemberInformationVO.class);
     }
+
+    @Override
+    public PartyMemberChooseVO choosePartyMemberVOByIdCardNo(String idCardNo) {
+        return  tabSysUserMapper.selectPartyMemberChooseVOByIdCardNo(idCardNo);
+    }
 }

@@ -59,4 +59,6 @@ public class PartyMemberChooseVO {
     @JsonSerialize(using = DictSerializer.class)
     private Long identityType;
 
+    @ApiModelProperty(value = "头像")
+    private String avatar;
 }

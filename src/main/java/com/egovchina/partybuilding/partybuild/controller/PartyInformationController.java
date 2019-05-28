@@ -142,4 +142,11 @@ public class PartyInformationController {
     public ReturnEntity updateParty(@RequestBody @Validated @ApiParam("党员基本信息") PartyInfoDTO partyInfoDTO) {
         return ReturnUtil.buildReturn(partyInformationService.updatePartyInfo(partyInfoDTO));
     }
+
+    @ApiOperation(value = "根据身份证查询党员", notes = "根据身份证查询党员", httpMethod = "GET")
+    @ApiImplicitParam(name = "idCardNo", value = "身份证", paramType = "path")
+    @GetMapping("/party-members/choose/{idCardNo}")
+    public PartyMemberChooseVO choosePartyMemberVOByIdCardNo(@PathVariable String idCardNo) {
+        return partyInformationService.choosePartyMemberVOByIdCardNo(idCardNo);
+    }
 }
