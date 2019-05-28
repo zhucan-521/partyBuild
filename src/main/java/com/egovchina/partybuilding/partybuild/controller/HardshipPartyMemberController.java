@@ -63,6 +63,7 @@ public class HardshipPartyMemberController {
 
     @ApiOperation(value = "根据用户ID查询党员困难详情", notes = "根据用户ID查询党员困难详情", httpMethod = "GET")
     @ApiImplicitParam(name = "userId", value = "用户ID", paramType = "path", required = true)
+    @HasPermission("party_difficult_detail")
     @GetMapping("/party-members/{userId}")
     public List<HardshipPartyVO> getDifficultyPartyDetailsByUserId(@PathVariable Long userId) {
         return hardshipPartyMemberService.findHardshipPartyVOByUserId(userId);
