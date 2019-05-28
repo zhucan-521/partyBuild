@@ -79,10 +79,10 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
      * @return TabPbMsgUpInfoDto
      */
     @Override
-    public MsgUpInfoVO returnUpMember(Long realDeptId) {
+    public MsgUpInfoVO returnUpMember(Long realDeptId,Long orgId) {
         //如果没有党组织则是上报组织为自已组织（没有替别的组织上报）
         if (realDeptId == null) {
-            realDeptId = UserContextHolder.getOrgId();
+            realDeptId =orgId;
         }
         TabPbMsgUpInfo tabPbMsgUpInfo = new TabPbMsgUpInfo();
         //党组织（真实上报组织）
@@ -95,7 +95,7 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
         tabPbMsgUpInfo.setUpUserId(UserContextHolder.getUserId());
         tabPbMsgUpInfo.setUpUsername(UserContextHolder.getUserName());
         //上报人组织名称
-        Long upDeptId = UserContextHolder.getOrgId();
+        Long upDeptId = orgId;
         SysDept upDept = tabSysDeptMapper.selectAloneByPrimaryKey(upDeptId);
         tabPbMsgUpInfo.setUpDeptId(upDeptId);
         tabPbMsgUpInfo.setUpDeptName(upDept.getName());
@@ -113,12 +113,7 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
      */
     @Override
     public PageInfo<MsgUpInfoVO> selectMsgUpInfoList(MsgUpInfoQueryBean msgUpInfoQueryBean, Page page) {
-        Long rangeDeptId = msgUpInfoQueryBean.getRangeDeptId();
-        if (rangeDeptId == null || rangeDeptId == 0) {
-            msgUpInfoQueryBean.setRangeDeptId(UserContextHolder.getOrgId());
-        }
         PageHelper.startPage(page);
-
         if (StringUtils.isNotEmpty(msgUpInfoQueryBean.getTitleLabel())) {
             msgUpInfoQueryBean.setLabels(Arrays.asList(msgUpInfoQueryBean.getTitleLabel().split(",")));
         }
@@ -197,8 +192,7 @@ public class MsgUpInfoSerivceImpl implements MsgUpInfoSerivce {
     @Override
     public int auditMsgUpInfo(MsgUpInfoDTO msgUpInfoDTO) {
         //审核人组织
-        msgUpInfoDTO.setAuditDeptId(UserContextHolder.getOrgId());
-        SysDept auditSysDept = tabSysDeptMapper.selectAloneByPrimaryKey(UserContextHolder.getOrgId());
+        SysDept auditSysDept = tabSysDeptMapper.selectAloneByPrimaryKey(msgUpInfoDTO.getAuditDeptId());
         msgUpInfoDTO.setAuditDeptName(auditSysDept.getName());
         //审核人姓名
         msgUpInfoDTO.setAuditUserId(UserContextHolder.getUserId());

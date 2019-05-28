@@ -36,18 +36,17 @@ public class MsgUpInfoController {
     @ApiOperation(value = "收到条件查询信息报送列表", httpMethod = "GET")
     @GetMapping("/receive")
     public PageInfo<MsgUpInfoVO> receiveMsgUpInfoList(MsgUpInfoQueryBean msgUpInfoQueryBean, Page page) {
-        Long rangeDeptId = msgUpInfoQueryBean.getRangeDeptId();
-        if (rangeDeptId == null || rangeDeptId == 0) {
-            msgUpInfoQueryBean.setRangeDeptId(UserContextHolder.getOrgId());
-        }
         return msgUpInfoSerivce.selectReceiveMsgUpInfoList(msgUpInfoQueryBean, page);
     }
 
     @ApiOperation(value = "获取信息上报人（姓名，组织名称id，接受组织名称id，接受组织专干人姓名,党组织名称）", notes = "不填返回登录人的", httpMethod = "GET")
-    @ApiImplicitParam(value = "上报组织主键", name = "realDeptId", paramType = "query")
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "上报组织主键", name = "realDeptId", paramType = "query") ,
+            @ApiImplicitParam(value = "组织id", name = "orgId", paramType = "query")
+    })
     @GetMapping("/up-member-info")
-    public MsgUpInfoVO retrnUpMember(Long realDeptId) {
-        return msgUpInfoSerivce.returnUpMember(realDeptId);
+    public MsgUpInfoVO retrnUpMember(Long realDeptId,Long orgId) {
+        return msgUpInfoSerivce.returnUpMember(realDeptId,orgId);
     }
 
     @ApiOperation(value = "根据主键查询信息详情", notes = "根据主键查询单个详情", httpMethod = "GET")
@@ -87,6 +86,7 @@ public class MsgUpInfoController {
         dbMsgUpInfo.setAuditComment(msgUpInfoAuditDTO.getAuditComment());
         MsgUpInfoDTO tabPbMsgUpInfoDto = new MsgUpInfoDTO();
         BeanUtil.copyPropertiesIgnoreNull(dbMsgUpInfo, tabPbMsgUpInfoDto);
+        tabPbMsgUpInfoDto.setAuditDeptId(msgUpInfoAuditDTO.getOrgId());
         return ReturnUtil.buildReturn(msgUpInfoSerivce.auditMsgUpInfo(tabPbMsgUpInfoDto));
     }
 
