@@ -22,7 +22,7 @@ public interface MsgUpInfoSerivce {
      *
      * @return TabPbMsgUpInfoDto
      */
-    MsgUpInfoVO returnUpMember(Long deptId);
+    MsgUpInfoVO returnUpMember(Long deptId,Long orgId);
 
     /**
      * 上报信息条件查询信息报送列表

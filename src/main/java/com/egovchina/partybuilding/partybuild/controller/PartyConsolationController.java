@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.partybuild.service.PartyConsolationService;
 import com.egovchina.partybuilding.partybuild.vo.PartyConsolationVO;
 import io.swagger.annotations.Api;
@@ -23,6 +24,7 @@ public class PartyConsolationController {
 
     @ApiOperation(value = "根据用户Id获取他慰问情况", httpMethod = "GET")
     @ApiImplicitParam(value = "用户ID", name = "userId", paramType = "path", required = true)
+    @HasPermission("party_member_detail")
     @GetMapping("/{userId}")
     public List<PartyConsolationVO> getPartyConsolationVO(@PathVariable Long userId) {
         return partyConsolationService.getPartyConsolationVO(userId);

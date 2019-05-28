@@ -18,4 +18,7 @@ public class MsgUpInfoAuditDTO {
     @ApiModelProperty(value = "审核说明")
     private String auditComment;
 
+    @ApiModelProperty(value = "审核机构")
+    private Long orgId;
+
 }
