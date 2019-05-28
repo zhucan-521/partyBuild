@@ -1,6 +1,5 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
-import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -60,10 +59,4 @@ public class OrganizationQueryBean {
     @JsonIgnore
     private List<String> domainCategorys;
 
-    public Long getRangeDeptId() {
-        if (rangeDeptId == null) {
-            return UserContextHolder.getOrgId();
-        }
-        return rangeDeptId;
-    }
 }

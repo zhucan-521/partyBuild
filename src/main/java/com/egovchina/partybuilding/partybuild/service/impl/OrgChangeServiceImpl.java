@@ -8,7 +8,6 @@ import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailExcepti
 import com.egovchina.partybuilding.common.exception.BusinessDataInvalidException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.CommonConstant;
-import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.OrgChangeDTO;
 import com.egovchina.partybuilding.partybuild.entity.OrgChangeQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.SysDict;
@@ -124,7 +123,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
     @Transactional
     @Override
     public int addOrgChange(OrgChangeDTO orgChangeDTO) {
-        if (orgChangeDTO.getDeptId().equals(UserContextHolder.getOrgId())) {
+        if (orgChangeDTO.getDeptId().equals(orgChangeDTO.getOrgId())) {
             throw new BusinessDataCheckFailException("当前组织不可调整自身组织");
         }
 

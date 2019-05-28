@@ -3,7 +3,6 @@ package com.egovchina.partybuilding.partybuild.controller;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
-import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.StreetCommitteeDTO;
 import com.egovchina.partybuilding.partybuild.dto.StreetCommitteeMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.StreetCommitteeMemberQueryBean;
@@ -45,10 +44,6 @@ public class StreetCommitteeController {
     @ApiOperation(value = "条件查询街道大公委列表")
     @GetMapping
     public PageInfo<StreetCommitteeVO> getStreetCommitteeList(StreetCommitteeQueryBean streetCommitteeQueryBean, Page page) {
-        Long rangeDeptId = streetCommitteeQueryBean.getOrgId();
-        if (rangeDeptId == null || rangeDeptId == 0) {
-            streetCommitteeQueryBean.setOrgId(UserContextHolder.getOrgId());
-        }
         return this.streetCommitteeService.getStreetCommitteeList(streetCommitteeQueryBean, page);
     }
 
