@@ -220,4 +220,6 @@ public interface TabSysUserMapper {
      * @return
      */
     List<PartyMemberChooseVO> selectPartyMemberChooseVOListByQueryBean(PartyMemberChooseQueryBean queryBean);
+
+    PartyMemberChooseVO selectPartyMemberChooseVOByIdCardNo(String idCardNo);
 }
