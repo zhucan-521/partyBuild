@@ -70,7 +70,7 @@ public class PartyMassesActivityServiceImpl implements PartyMassesActivityServic
         result += tabPbPartyMassesActivityMapper.insert(partyMassesActivity);
         result += tabPbAttachmentService.intelligentOperation(
                 partyMassesActivityDTO.getAttachments(),
-                partyMassesActivity.getPartyMassesActivityId(), AttachmentType.PARTY_MASSES);
+                partyMassesActivity.getPartyMassesActivityId(), AttachmentType.PARTY_MASSES_ACTIVITY);
         return result;
     }
 
@@ -91,7 +91,7 @@ public class PartyMassesActivityServiceImpl implements PartyMassesActivityServic
         int result = 0;
         result += tabPbAttachmentService.intelligentOperation(
                 partyMassesActivityDTO.getAttachments(),
-                partyMassesActivity.getPartyMassesActivityId(), AttachmentType.PARTY_MASSES);
+                partyMassesActivity.getPartyMassesActivityId(), AttachmentType.PARTY_MASSES_ACTIVITY);
         result += tabPbPartyMassesActivityMapper.updateById(partyMassesActivity);
         return result;
     }

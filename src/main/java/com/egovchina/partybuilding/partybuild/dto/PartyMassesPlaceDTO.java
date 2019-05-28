@@ -38,6 +38,12 @@ public class PartyMassesPlaceDTO{
     @ApiModelProperty(value = "开放时间段")
     private String openTimePeriod;
 
+    @ApiModelProperty(value = "联系人")
+    private String contact;
+
+    @ApiModelProperty(value = "电话")
+    private String tel;
+
     @ApiModelProperty(value = "场地地址")
     private String address;
 

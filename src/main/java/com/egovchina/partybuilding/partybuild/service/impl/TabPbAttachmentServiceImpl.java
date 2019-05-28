@@ -106,10 +106,6 @@ public class TabPbAttachmentServiceImpl implements ITabPbAttachmentService {
         //数据处理
         final List<TabPbAttachment> finalPendingList = pendingList.stream().filter(tabPbAttachment -> tabPbAttachment != null
                 && StringUtils.isNotEmpty(tabPbAttachment.getAttachmentInstance())).collect(Collectors.toList());
-        if (CollectionUtil.isEmpty(pendingList)) {
-            tabPbAttachmentMapper.batchLogicDeleteByHostIdAndAttType(hostId, attType);
-            return retVal;
-        }
         pendingList.forEach(tabPbAttachment -> {
             tabPbAttachment.setHostId(hostId);
             tabPbAttachment.setAttachmentFileType(getFileType(tabPbAttachment.getAttachmentInstance()));

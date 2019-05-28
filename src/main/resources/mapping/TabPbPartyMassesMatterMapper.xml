@@ -9,7 +9,10 @@
     <result column="service_type" property="serviceType"/>
     <result column="content" property="content"/>
     <result column="crowd" property="crowd"/>
+    <result column="contact" property="contact"/>
     <result column="tel" property="tel"/>
+    <result column="address" property="address"/>
+    <result column="cover" property="cover"/>
     <result column="ebl_flag" property="eblFlag"/>
     <result column="del_flag" property="delFlag"/>
     <result column="order_num" property="orderNum"/>
@@ -31,7 +34,14 @@
     <result column="service_type" property="serviceType"/>
     <result column="content" property="content"/>
     <result column="crowd" property="crowd"/>
+    <result column="contact" property="contact"/>
     <result column="tel" property="tel"/>
+    <result column="address" property="address"/>
+    <result column="cover" property="cover"/>
+    <!--关联附件数据-->
+    <collection property="attachments"
+                select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+                column="{hostId=party_masses_matter_id,attachmentType=attachment_type}"/>
   </resultMap>
 
   <!-- base查询字段  -->
@@ -42,7 +52,10 @@
       service_type,
       content,
       crowd,
+      contact,
       tel,
+      address,
+      cover,
       ebl_flag,
       del_flag,
       order_num,
@@ -60,12 +73,16 @@
   <!-- vo查询字段  -->
   <sql id="Vo_Column_List">
     <trim suffixOverrides=",">
+      '70' as attachment_type,
       party_masses_matter_id,
       party_masses_id,
       service_type,
       content,
       crowd,
+      contact,
       tel,
+      address,
+      cover,
     </trim>
   </sql>
 
@@ -88,8 +105,17 @@
       <if test="crowd != null ">
         crowd,
       </if>
+      <if test="contact != null">
+        contact,
+      </if>
       <if test="tel != null ">
         tel,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="cover != null">
+        cover,
       </if>
       <if test="eblFlag != null ">
         ebl_flag,
@@ -141,8 +167,17 @@
       <if test="crowd != null">
         #{crowd, jdbcType=BIGINT},
       </if>
-      <if test="tel != null">
+      <if test="contact != null">
+        #{contact, jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null ">
         #{tel, jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address, jdbcType=VARCHAR},
+      </if>
+      <if test="cover != null">
+        #{cover, jdbcType=VARCHAR},
       </if>
       <if test="eblFlag != null">
         #{eblFlag, jdbcType=VARCHAR},
@@ -196,8 +231,17 @@
       <if test="crowd != null">
         crowd = #{crowd, jdbcType=BIGINT},
       </if>
-      <if test="tel != null">
+      <if test="contact != null">
+        contact = #{contact, jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null ">
         tel = #{tel, jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address, jdbcType=VARCHAR},
+      </if>
+      <if test="cover != null">
+        cover = #{cover, jdbcType=VARCHAR},
       </if>
       <if test="eblFlag != null">
         ebl_flag = #{eblFlag, jdbcType=VARCHAR},

@@ -40,6 +40,16 @@ public class TabPbPartyMassesPlace {
     private String openTimePeriod;
 
     /**
+     * 电话
+     */
+    private String tel;
+
+    /**
+     * 联系人
+     */
+    private String contact;
+
+    /**
      * 场地地址
      */
     private String address;
