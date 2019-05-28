@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
@@ -28,12 +29,14 @@ public class MsgUpInfoController {
     MsgUpInfoSerivce msgUpInfoSerivce;
 
     @ApiOperation(value = "上报条件查询信息列表", httpMethod = "GET")
+    @HasPermission("party_messageSubmission")
     @GetMapping("/report")
     public PageInfo<MsgUpInfoVO> selectReportMsgUpInfoList(MsgUpInfoQueryBean msgUpInfoQueryBean, Page page) {
         return msgUpInfoSerivce.selectMsgUpInfoList(msgUpInfoQueryBean, page);
     }
 
     @ApiOperation(value = "收到条件查询信息报送列表", httpMethod = "GET")
+    @HasPermission("party_messageSubmission")
     @GetMapping("/receive")
     public PageInfo<MsgUpInfoVO> receiveMsgUpInfoList(MsgUpInfoQueryBean msgUpInfoQueryBean, Page page) {
         return msgUpInfoSerivce.selectReceiveMsgUpInfoList(msgUpInfoQueryBean, page);
@@ -44,6 +47,7 @@ public class MsgUpInfoController {
             @ApiImplicitParam(value = "上报组织主键", name = "realDeptId", paramType = "query") ,
             @ApiImplicitParam(value = "组织id", name = "orgId", paramType = "query")
     })
+    @HasPermission("party_messageSubmission")
     @GetMapping("/up-member-info")
     public MsgUpInfoVO retrnUpMember(Long realDeptId,Long orgId) {
         return msgUpInfoSerivce.returnUpMember(realDeptId,orgId);
@@ -51,12 +55,14 @@ public class MsgUpInfoController {
 
     @ApiOperation(value = "根据主键查询信息详情", notes = "根据主键查询单个详情", httpMethod = "GET")
     @ApiImplicitParam(name = "id", value = "主键", paramType = "path")
+    @HasPermission("party_messageSubmission_detail")
     @GetMapping("/{id}")
     public MsgUpInfoVO msgUpInfodetail(@PathVariable Long id) {
         return msgUpInfoSerivce.getMsgUpInfoById(id);
     }
 
     @ApiOperation(value = "添加信息", notes = "信息添加", httpMethod = "POST")
+    @HasPermission("party_messageSubmission_add")
     @PostMapping
     public ReturnEntity insertMsgUpInfo(@RequestBody @ApiParam(name = "信息") MsgUpInfoDTO msgUpInfoDTO) {
         return ReturnUtil.buildReturn(msgUpInfoSerivce.insertMsgUpInfo(msgUpInfoDTO));
@@ -64,18 +70,21 @@ public class MsgUpInfoController {
 
     @ApiOperation(value = "删除信息", notes = "根据主键删除", httpMethod = "DELETE")
     @DeleteMapping("/{id}")
+    @HasPermission("party_messageSubmission_delete")
     @ApiImplicitParam(value = "信息主键id", name = "ID", paramType = "path", required = true)
     public ReturnEntity deleteMsgUpInfo(@PathVariable Long id) {
         return ReturnUtil.buildReturn(msgUpInfoSerivce.deleteMsgUpInfo(id));
     }
 
     @ApiOperation(value = "修改信息", httpMethod = "PUT")
+    @HasPermission("party_messageSubmission_edit")
     @PutMapping
     public ReturnEntity editMsgUpInfo(@RequestBody @Validated @ApiParam(value = "信息") MsgUpInfoDTO msgUpInfoDTO) {
         return ReturnUtil.buildReturn(msgUpInfoSerivce.editMsgUpInfo(msgUpInfoDTO));
     }
 
     @ApiOperation(value = "信息审核", notes = "提供审核结果，审核说明,主键id", httpMethod = "PUT")
+    @HasPermission("party_messageSubmission")
     @PutMapping("/audit")
     public ReturnEntity auditMsgUpInfo(MsgUpInfoAuditDTO msgUpInfoAuditDTO) {
         MsgUpInfoVO dbMsgUpInfo = msgUpInfoSerivce.getMsgUpInfoById(msgUpInfoAuditDTO.getId());
