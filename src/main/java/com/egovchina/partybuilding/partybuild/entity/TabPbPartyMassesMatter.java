@@ -20,9 +20,9 @@ public class TabPbPartyMassesMatter {
     private Long partyMassesId;
 
     /**
-     * 服务类型 字典
+     * 服务名称
      */
-    private Long serviceType;
+    private String serviceName;
 
     /**
      * 内容

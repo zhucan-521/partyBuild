@@ -28,13 +28,13 @@ public class PartyMassesMatterDTO{
     @NotNull(message = "党群id不能为空")
     private Long partyMassesId;
 
-    @ApiModelProperty(value = "服务类型 字典id")
-    private Long serviceType;
+    @ApiModelProperty(value = "服务名称")
+    private String serviceName;
 
     @ApiModelProperty(value = "内容")
     private String content;
 
-    @ApiModelProperty(value = "服务对象 字典id")
+    @ApiModelProperty(value = "服务对象 字典id FWDX")
     private Long crowd;
 
     @ApiModelProperty(value = "联系人")
