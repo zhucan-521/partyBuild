@@ -48,4 +48,11 @@ public class SecretarysVO {
     @JsonSerialize(using = DictSerializer.class)
     private Long unitProperty;
 
+    @ApiModelProperty(value = "头像")
+    private String avatar;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "入党时间、预备党员时间")
+    private Date joinTime;
+
 }
