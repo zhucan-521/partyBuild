@@ -73,7 +73,7 @@ public class HardshipPartyMemberServiceImpl implements HardshipPartyMemberServic
         /**
          * (人不再困难列表里面)困难党员删除时 移除党员困难标识,并在党员表修改是否困难党员的字段
          **/
-        if (tabPbHardshipMapper.findByUserId(tabPbHardshipMapper.selectByPrimaryKey(hardshipId).getUserId()).size() <= 0) {
+        if (tabPbHardshipMapper.checkHardshipPartyByHardShipId(hardshipId) <= 0) {
             if (result > 0) {
                 result += userTagService.delete(tabPbHardshipMapper.selectByPrimaryKey(hardshipId).getUserId(), UserTagType.DIFFICULT);
                 result += tabSysUserMapper.updateUserIsPoorByHardshipId(0, hardshipId);
