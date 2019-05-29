@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
@@ -28,6 +29,7 @@ public class RewardsAndPunishmentsController {
     RewardsAndPunishmentsService rewardsAndPunishmentsService;
 
     @ApiOperation(value = "添加处分", notes = "处分新增", httpMethod = "POST")
+    @HasPermission("party_rewards_add")
     @PostMapping("/punishments")
     public ReturnEntity addPunishment(@ApiParam(value = "处分信息") @Validated @RequestBody PunishmentDTO punishmentDTO) {
         return ReturnUtil.buildReturn(rewardsAndPunishmentsService.insertPunishment(punishmentDTO));
@@ -35,12 +37,14 @@ public class RewardsAndPunishmentsController {
 
     @ApiOperation(value = "删除处分", notes = "删除处分", httpMethod = "DELETE")
     @ApiImplicitParam(value = "处分ID", name = "id", dataType = "long", paramType = "path", required = true)
+    @HasPermission("party_rewards_delete")
     @DeleteMapping("/punishments/{id}")
     public ReturnEntity deletePunishment(@PathVariable Long id) {
         return ReturnUtil.buildReturn(rewardsAndPunishmentsService.deletePunishmentById(id));
     }
 
     @ApiOperation(value = "修改处分", notes = "修改处分", httpMethod = "PUT")
+    @HasPermission("party_rewards_edit")
     @PutMapping("/punishments")
     public ReturnEntity editPunishment(@ApiParam(value = "处分信息") @Validated @RequestBody PunishmentDTO punishmentDTO) {
         return ReturnUtil.buildReturn(rewardsAndPunishmentsService.updatePunishmentById(punishmentDTO));
@@ -54,6 +58,7 @@ public class RewardsAndPunishmentsController {
     }
 
     @ApiOperation(value = "查询处分信息列表", notes = "查询处分信息", httpMethod = "GET")
+    @HasPermission("party_rewards")
     @GetMapping("/punishments/users")
     public PageInfo<PunishmentVO> selectPunishmentList(@ApiParam(value = "奖惩查询实体") RewardsAndPunishmentsQueryBean rewardsAndPunishmentsQueryBean, Page page) {
         PageHelper.startPage(page);
@@ -61,6 +66,7 @@ public class RewardsAndPunishmentsController {
     }
 
     @ApiOperation(value = "添加奖励", notes = "奖励新增", httpMethod = "POST")
+    @HasPermission("party_rewards_add")
     @PostMapping("/rewards")
     public ReturnEntity addRewards(@ApiParam(value = "奖励信息") @Validated @RequestBody RewardsDTO rewardsDTO) {
         return ReturnUtil.buildReturn(rewardsAndPunishmentsService.insertRewards(rewardsDTO));
@@ -68,12 +74,14 @@ public class RewardsAndPunishmentsController {
 
     @ApiOperation(value = "删除奖励", notes = "删除奖励")
     @ApiImplicitParam(value = "奖励id", name = "id", dataType = "long", paramType = "path", required = true)
+    @HasPermission("party_rewards_delete")
     @DeleteMapping("/rewards/{id}")
     public ReturnEntity deleteRewards(@PathVariable Long id) {
         return ReturnUtil.buildReturn(rewardsAndPunishmentsService.deleteRewardsById(id));
     }
 
     @ApiOperation(value = "修改奖励", notes = "修改奖励", httpMethod = "PUT")
+    @HasPermission("party_rewards_edit")
     @PutMapping("/rewards")
     public ReturnEntity editRewards(@ApiParam(value = "奖励信息") @Validated @RequestBody RewardsDTO rewardsDTO) {
         return ReturnUtil.buildReturn(rewardsAndPunishmentsService.updateRewardsById(rewardsDTO));
@@ -87,6 +95,7 @@ public class RewardsAndPunishmentsController {
     }
 
     @ApiOperation(value = "查询奖励信息列表", notes = "查询奖励信息", httpMethod = "GET")
+    @HasPermission("party_rewards")
     @GetMapping("/rewards/users")
     public PageInfo<RewardsVO> selectRewardsList(@ApiParam(value = "奖惩查询实体") RewardsAndPunishmentsQueryBean rewardsAndPunishmentsQueryBean, Page page) {
         PageHelper.startPage(page);

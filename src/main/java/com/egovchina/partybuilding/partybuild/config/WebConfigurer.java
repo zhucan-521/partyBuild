@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.config;
 
 import com.egovchina.partybuilding.common.config.AuthInterceptor;
+import com.egovchina.partybuilding.common.config.PermissionInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +9,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -28,7 +28,7 @@ public class WebConfigurer implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor(redisTemplate)).excludePathPatterns(getExcludePath()).order(1);
-//        registry.addInterceptor(new PermissionInterceptor()).excludePathPatterns(getExcludePath()).order(2);
+       registry.addInterceptor(new PermissionInterceptor()).excludePathPatterns(getExcludePath()).order(2);
     }
 
     /**

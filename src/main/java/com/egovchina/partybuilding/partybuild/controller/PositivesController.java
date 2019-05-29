@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
@@ -22,6 +23,7 @@ public class PositivesController {
     PositivesService positivesService;
 
     @ApiOperation(value = "添加职务", notes = "党内/行政 职务新增", httpMethod = "POST")
+    @HasPermission("party_member_edit")
     @PostMapping
     public ReturnEntity addPositives(@ApiParam(value = "职务信息") @Validated @RequestBody PositivesDTO positivesDTO) {
         return ReturnUtil.buildReturn(positivesService.insertPositives(positivesDTO));
@@ -29,12 +31,14 @@ public class PositivesController {
 
     @ApiOperation(value = "删除职务", notes = "删除职务", httpMethod = "DELETE")
     @ApiImplicitParam(value = "职务id", name = "id", dataType = "long", paramType = "path", required = true)
+    @HasPermission("party_member_edit")
     @DeleteMapping("/{id}")
     public ReturnEntity deletePositives(@PathVariable Integer id) {
         return ReturnUtil.buildReturn(positivesService.deleteById(id));
     }
 
     @ApiOperation(value = "修改职务", notes = "修改职务", httpMethod = "PUT")
+    @HasPermission("party_member_edit")
     @PutMapping
     public ReturnEntity editPositives(@ApiParam(value = "职务信息") @Validated @RequestBody PositivesDTO positivesDTO) {
         return ReturnUtil.buildReturn(positivesService.updateById(positivesDTO));
@@ -42,6 +46,7 @@ public class PositivesController {
 
     @ApiOperation(value = "通过ID查询职务信息", notes = "通过ID查询职务信息", httpMethod = "GET")
     @ApiImplicitParam(name = "id", value = "职务ID", paramType = "path", required = true)
+    @HasPermission(value = {"party_partyInformation","party_member_detail"})
     @GetMapping("/{id}")
     public PositivesVO positives(@PathVariable Integer id) {
         return positivesService.selectPositiveVOById(id);
@@ -52,6 +57,7 @@ public class PositivesController {
             @ApiImplicitParam(name = "positiveType", value = "职务类型", paramType = "query"),
             @ApiImplicitParam(name = "userId", value = "用户id", paramType = "query", required = true)
     })
+    @HasPermission(value = {"party_partyInformation","party_member_detail"})
     @GetMapping
     public PageInfo<PositivesVO> selectList(Long userId, String positiveType, Page page) {
         PageHelper.startPage(page);
