@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
@@ -31,12 +32,14 @@ public class NewsController {
     private NewsService newsService;
 
     @ApiOperation(value = "添加党建资讯", notes = "添加党建资讯", httpMethod = "POST")
+    @HasPermission(value = "party_openPartyAffairs_add")
     @PostMapping
     public ReturnEntity insertNews(@RequestBody @Validated @ApiParam("党建资讯信息") NewsDTO newsDTO) {
         return ReturnUtil.buildReturn(newsService.insertNews(newsDTO));
     }
 
     @ApiOperation(value = "更新党建资讯", notes = "更新党建资讯", httpMethod = "PUT")
+    @HasPermission(value = "party_openPartyAffairs_edit")
     @PutMapping
     public ReturnEntity updateNews(@RequestBody @Validated @ApiParam("党建资讯信息") NewsDTO newsDTO) {
         return ReturnUtil.buildReturn(newsService.updateNews(newsDTO));
@@ -44,6 +47,7 @@ public class NewsController {
 
     @ApiOperation(value = "发布党建资讯", notes = "发布党建资讯", httpMethod = "POST")
     @ApiImplicitParam(name = "newsId", value = "党建资讯ID", paramType = "path", required = true)
+    @HasPermission(value = "party_openPartyAffairs_publish")
     @PostMapping("/publications/{newsId}")
     public ReturnEntity publishNews(@PathVariable Long newsId) {
         return ReturnUtil.buildReturn(newsService.publishNews(newsId));
@@ -51,6 +55,7 @@ public class NewsController {
 
     @ApiOperation(value = "取消发布党建资讯", notes = "取消发布党建资讯", httpMethod = "POST")
     @ApiImplicitParam(name = "newsId", value = "党建资讯ID", paramType = "path", required = true)
+    @HasPermission(value = "party_openPartyAffairs_unPublish")
     @PostMapping("/recalls/{newsId}")
     public ReturnEntity obtainedNews(@PathVariable Long newsId) {
         return ReturnUtil.buildReturn(newsService.obtainedNews(newsId));
@@ -58,6 +63,7 @@ public class NewsController {
 
     @ApiOperation(value = "置顶党建资讯", notes = "置顶党建资讯", httpMethod = "POST")
     @ApiImplicitParam(name = "newsId", value = "党建资讯ID", paramType = "path", required = true)
+    @HasPermission(value = "party_openPartyAffairs_top")
     @PostMapping("/tops/{newsId}")
     public ReturnEntity toppingNews(@PathVariable Long newsId) {
         return ReturnUtil.buildReturn(newsService.topNews(newsId));
@@ -65,6 +71,7 @@ public class NewsController {
 
     @ApiOperation(value = "取消置顶党建资讯", notes = "取消置顶党建资讯", httpMethod = "POST")
     @ApiImplicitParam(name = "newsId", value = "党建资讯ID", paramType = "path", required = true)
+    @HasPermission(value = "party_openPartyAffairs_unStick")
     @PostMapping("/un-tops/{newsId}")
     public ReturnEntity unToppingNews(@PathVariable Long newsId) {
         return ReturnUtil.buildReturn(newsService.unTopNews(newsId));
@@ -72,6 +79,7 @@ public class NewsController {
 
     @ApiOperation(value = "删除党建资讯", notes = "删除党建资讯", httpMethod = "DELETE")
     @ApiImplicitParam(name = "newsId", value = "党建资讯ID", paramType = "path", required = true)
+    @HasPermission(value = "party_openPartyAffairs_del")
     @DeleteMapping("/{newsId}")
     public ReturnEntity deleteNews(@PathVariable Long newsId) {
         return ReturnUtil.buildReturn(newsService.deleteNews(newsId));
@@ -79,12 +87,14 @@ public class NewsController {
 
     @ApiOperation(value = "获取党建资讯详情", notes = "获取党建资讯详情", httpMethod = "GET")
     @ApiImplicitParam(name = "newsId", value = "党建资讯ID", paramType = "path", required = true)
+    @HasPermission(value = "party_openPartyAffairs_examine")
     @GetMapping("/{newsId}")
     public NewsDetailsVO getNewsDetails(@PathVariable Long newsId) {
         return newsService.getNewsVODetails(newsId);
     }
 
     @ApiOperation(value = "获取党建资讯列表", notes = "获取党建资讯列表", httpMethod = "GET")
+    @HasPermission(value = "party_openPartyAffairs")
     @GetMapping
     public PageInfo<NewsVO> getNewsList(@Validated NewsQueryBean newsQueryBean, Page page) {
         PageHelper.startPage(page);

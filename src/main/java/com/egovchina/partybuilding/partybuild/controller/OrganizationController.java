@@ -1,7 +1,9 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.OrgRange;
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataInvalidException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
@@ -10,7 +12,6 @@ import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.OrganizationDTO;
 import com.egovchina.partybuilding.partybuild.dto.OrganizationPositionDTO;
 import com.egovchina.partybuilding.partybuild.entity.OrganizationQueryBean;
-import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.service.OrganizationService;
 import com.egovchina.partybuilding.partybuild.vo.ContainsStatisticsOrganizationVO;
 import com.egovchina.partybuilding.partybuild.vo.OrganizationPartyBuildingWorkVO;
@@ -42,6 +43,7 @@ public class OrganizationController {
     private OrganizationService organizationService;
 
     @ApiOperation(value = "组织信息列表", notes = "组织信息列表", httpMethod = "GET")
+    @HasPermission(value = "party_tissueInfo")
     @GetMapping
     public PageInfo<OrganizationVO> getOrganizationList(OrganizationQueryBean queryBean, Page page) {
         List<OrganizationVO> list = organizationService.selectOrganizationVOWithCondition(queryBean, page);
@@ -56,6 +58,7 @@ public class OrganizationController {
     }
 
     @ApiOperation(value = "新增组织", notes = "新增组织", httpMethod = "POST")
+    @HasPermission(value = "party_orgInfo_add")
     @PostMapping
     public ReturnEntity insertOrganization(@ApiParam(value = "组织实体") @RequestBody @Validated OrganizationDTO organizationDTO) {
         orgDataVerification(organizationDTO);
@@ -63,6 +66,7 @@ public class OrganizationController {
     }
 
     @ApiOperation(value = "修改组织", notes = "修改组织", httpMethod = "PUT")
+    @HasPermission(value = "party_orgInfo_edit")
     @PutMapping
     public ReturnEntity updateOrganization(@ApiParam(value = "组织实体") @RequestBody @Validated OrganizationDTO organizationDTO) {
         orgDataVerification(organizationDTO);
@@ -71,6 +75,7 @@ public class OrganizationController {
 
     @ApiOperation(value = "组织信息详细", notes = "组织信息详细", httpMethod = "GET")
     @ApiImplicitParam(value = "组织id", name = "orgId", dataType = "long", paramType = "path", required = true)
+    @HasPermission(value = "party_orgInfo_abstract")
     @GetMapping("/{orgId}")
     public OrganizationVO getOrganization(@PathVariable("orgId") Long orgId) {
         return organizationService.selectOrganizationVOByOrgId(orgId);
@@ -78,6 +83,7 @@ public class OrganizationController {
 
     @ApiOperation(value = "组织信息删除", notes = "组织信息删除", httpMethod = "DELETE")
     @ApiImplicitParam(value = "组织id", name = "orgId", dataType = "long", paramType = "path", required = true)
+    @HasPermission(value = "party_orgInfo_delete")
     @DeleteMapping("/{orgId}")
     public ReturnEntity deleteOrganization(@PathVariable("orgId") Long orgId) {
         return ReturnUtil.buildReturn(organizationService.logicDeleteById(orgId));
