@@ -267,4 +267,14 @@
         <include refid="Base_Where_Condition"/>
     </select>
 
+    <!--检查社区是否存在-->
+    <select id="checkCommunityIsExist" resultType="java.lang.Boolean">
+        SELECT
+            COUNT( 1 )
+        FROM
+            tab_pb_administrative_division
+        WHERE administrative_division_id = #{communityId}
+            AND del_flag = 0
+    </select>
+
 </mapper>

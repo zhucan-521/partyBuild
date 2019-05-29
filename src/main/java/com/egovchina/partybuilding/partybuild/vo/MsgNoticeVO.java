@@ -65,11 +65,14 @@ public class MsgNoticeVO {
     @ApiModelProperty(value = "结束时间", example = "yyyy-MM-dd")
     private Date endTime;
 
-    @ApiModelProperty("发布人")
-    private String createUsername;
-
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "创建时间", example = "yyyy-MM-dd")
     private Date createTime;
+
+    @ApiModelProperty(value = "发布人Id")
+    private Long publisherId;
+
+    @ApiModelProperty(value = "发布人姓名")
+    private String publisherName;
 
 }

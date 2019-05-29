@@ -1,8 +1,11 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
+import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * Description:
@@ -32,11 +35,11 @@ public class PartyMassesVO {
     @ApiModelProperty(value = "电话")
     private String tel;
 
+    @ApiModelProperty(value = "联系人")
+    private String contact;
+
     @ApiModelProperty(value = "地址")
     private String address;
-
-    @ApiModelProperty(value = "层级")
-    private String grade;
 
     @ApiModelProperty(value = "服务时间")
     private String serviceHours;
@@ -49,5 +52,11 @@ public class PartyMassesVO {
 
     @ApiModelProperty(value = "纬度")
     private String latitude;
+
+    @ApiModelProperty(value = "封面图")
+    private String cover;
+
+    @ApiModelProperty(value = "附件")
+    private List<TabPbAttachment> attachments;
 
 }

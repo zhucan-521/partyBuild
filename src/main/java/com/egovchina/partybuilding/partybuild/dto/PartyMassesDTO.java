@@ -1,10 +1,12 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
+import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Description:
@@ -42,16 +44,22 @@ public class PartyMassesDTO {
     @ApiModelProperty(value = "服务时间")
     private String serviceHours;
 
+    @ApiModelProperty(value = "联系人")
+    private String contact;
+
     @ApiModelProperty(value = "简介")
     private String content;
-
-    @ApiModelProperty(value = "层级")
-    private String grade;
 
     @ApiModelProperty(value = "经度")
     private String longitude;
 
     @ApiModelProperty(value = "纬度")
     private String latitude;
+
+    @ApiModelProperty(value = "封面图")
+    private String cover;
+
+    @ApiModelProperty(value = "附件")
+    private List<TabPbAttachment> attachments;
 
 }

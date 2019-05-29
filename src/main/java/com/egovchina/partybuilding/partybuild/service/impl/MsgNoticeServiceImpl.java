@@ -3,6 +3,7 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.util.*;
+import com.egovchina.partybuilding.partybuild.config.MsgNoticeEvent;
 import com.egovchina.partybuilding.partybuild.dto.MsgNoticeDTO;
 import com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.MsgNoticeQueryBean;
@@ -10,13 +11,15 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMsgNoticeDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMsgNoticeMapper;
-import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.MsgNoticeService;
 import com.egovchina.partybuilding.partybuild.vo.MsgNoticeDeptVO;
 import com.egovchina.partybuilding.partybuild.vo.MsgNoticeVO;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,7 +47,7 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
     private TabPbMsgNoticeDeptMapper tabPbMsgNoticeDeptMapper;
 
     @Autowired
-    private TabSysDeptMapper tabSysDeptMapper;
+    private ApplicationEventPublisher publisher;
 
     /**
      * 发布文件
@@ -59,9 +62,16 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
         if (count > 0) {
             iTabPbAttachmentService.intelligentOperation(msgNoticeDTO.getAttachments(), tabPbMsgNotice.getId(), AttachmentType.NOTICE);
             //保存接受党组织
-            addNoticeDeptList(msgNoticeDTO.getNoticeDeptList(), tabPbMsgNotice.getId());
+            List<TabPbMsgNoticeDept> MsgNoticeDeptlist = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(msgNoticeDTO.getNoticeDeptList(), TabPbMsgNoticeDept.class, msgNoticeDept -> msgNoticeDept.setNoticeId(tabPbMsgNotice.getId()), false);
+            publisher.publishEvent(new MsgNoticeEvent(MsgNoticeDeptlist));
         }
         return count;
+    }
+
+    @Async
+    @EventListener
+    public void addNoticeDeptList(MsgNoticeEvent event) {
+        tabPbMsgNoticeDeptMapper.batchInsertTabPbMsgNoticeDept(event.getInnerSource());
     }
 
     /**
@@ -86,7 +96,7 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
             tabPbMsgNoticeDeptMapper.batchDeleteMsgNoticeDept(dbDeptIdList);
             //筛选出前端查询的数据的组织id
             List<TabPbMsgNoticeDept> interactionDeptList = msgNoticeDTO.getNoticeDeptList();
-            interactionDeptList.stream().forEach(item->{
+            interactionDeptList.stream().forEach(item -> {
                 item.setNoticeId(msgNoticeDTO.getId());
                 tabPbMsgNoticeDeptMapper.insertSelective(item);
             });
@@ -160,15 +170,23 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
     /**
      * 改变文件发布状态
      *
-     * @param msgNoticeDTO
+     * @param id    文件主键
+     * @param state 状态值 0.未发布、1.已发布
      * @return
      */
     @Override
-    public int editMsgNoticeState(MsgNoticeDTO msgNoticeDTO) {
-        msgNoticeDTO.setPublishTime(new Date());
-        TabPbMsgNotice msgNoticeVO = new TabPbMsgNotice();
-        BeanUtil.copyPropertiesIgnoreNull(msgNoticeDTO, msgNoticeVO);
-        return tabPbMsgNoticeMapper.editState(msgNoticeVO);
+    public int editMsgNoticeState(Long id, String state) {
+        TabPbMsgNotice tabPbMsgNotice = new TabPbMsgNotice();
+        tabPbMsgNotice.setPublishTime(new Date());
+        tabPbMsgNotice.setId(id);
+        tabPbMsgNotice.setState(state);
+        if ("1".equals(state)) {
+            tabPbMsgNotice.setPublisherName(UserContextHolder.getUserName());
+            tabPbMsgNotice.setPublisherId(UserContextHolder.getUserId());
+        } else {
+            tabPbMsgNotice.setPublisherName("");
+        }
+        return tabPbMsgNoticeMapper.editState(tabPbMsgNotice);
     }
 
     /**
@@ -181,7 +199,7 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
     public int signNotice(Long id) {
         TabPbMsgNoticeDept tabPbMsgNoticeDept = tabPbMsgNoticeDeptMapper.getTabPbMsgNoticeDeptById(id);
         tabPbMsgNoticeDept.setRecevieUsername(UserContextHolder.getUserName());
-        tabPbMsgNoticeDept.setRecevieUserId(UserContextHolder.getUserId().longValue());
+        tabPbMsgNoticeDept.setRecevieUserId(UserContextHolder.getUserId());
         tabPbMsgNoticeDept.setRecevieTime(new Date());
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbMsgNoticeDept);
         return tabPbMsgNoticeDeptMapper.updateSigning(tabPbMsgNoticeDept);
@@ -198,16 +216,6 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
     public List<MsgNoticeDeptVO> selectReceiveMsgNotice(MsgNoticeDeptQueryBean msgNoticeDeptQueryBean, Page page) {
         PageHelper.startPage(page);
         return tabPbMsgNoticeDeptMapper.selectReceiveMsgNotice(msgNoticeDeptQueryBean);
-    }
-
-    /**
-     * 保存接受党组织
-     *
-     * @param list
-     */
-    private void addNoticeDeptList(List<TabPbMsgNoticeDept> list, Long id) {
-        List<TabPbMsgNoticeDept> MsgNoticeDeptlist = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(list, TabPbMsgNoticeDept.class, msgNoticeDept -> msgNoticeDept.setNoticeId(id), false);
-        tabPbMsgNoticeDeptMapper.batchInsertTabPbMsgNoticeDept(MsgNoticeDeptlist);
     }
 
 }

@@ -35,14 +35,14 @@ public class PositiveRegisterController {
     }
 
     @ApiOperation(value = "报到信息详情", httpMethod = "GET")
-    @ApiImplicitParam(name = "positiveRegistId", value = "id", dataType = "long", paramType = "path", required = true)
+    @ApiImplicitParam(value = "报到id", name = "positiveRegistId", dataType = "long", paramType = "path", required = true)
     @GetMapping("/{positiveRegistId}")
     public PositiveRegisterVO getPositiveRegisterVO(@PathVariable Long positiveRegistId) {
         return positiveRegisterService.getPositiveRegisterVOById(positiveRegistId);
     }
 
     @ApiOperation(value = "删除登记信息", httpMethod = "DELETE")
-    @ApiImplicitParam(name = "positiveRegistId", value = "id", dataType = "long", paramType = "path", required = true)
+    @ApiImplicitParam(value = "报到id", name = "positiveRegistId", dataType = "long", paramType = "path", required = true)
     @DeleteMapping("/{positiveRegistId}")
     public ReturnEntity deletePositiveRegister(@PathVariable Long positiveRegistId) {
         return ReturnUtil.buildReturn(positiveRegisterService.logicDeletePositiveRegisterById(positiveRegistId));

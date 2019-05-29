@@ -1,12 +1,14 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.partybuild.dto.PartyMassesMatterDTO;
 import com.egovchina.partybuilding.partybuild.entity.PartyMassesMatterQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesMatter;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPartyMassesMatterMapper;
+import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.PartyMassesMatterService;
 import com.egovchina.partybuilding.partybuild.vo.PartyMassesMatterVO;
 import com.github.pagehelper.PageHelper;
@@ -30,6 +32,9 @@ public class PartyMassesMatterServiceImpl implements PartyMassesMatterService {
     @Autowired
     private TabPbPartyMassesMatterMapper tabPbPartyMassesMatterMapper;
 
+    @Autowired
+    private ITabPbAttachmentService tabPbAttachmentService;
+
     /**
      * Description: 新增
      *
@@ -42,7 +47,12 @@ public class PartyMassesMatterServiceImpl implements PartyMassesMatterService {
     public int save(PartyMassesMatterDTO partyMassesMatterDTO) {
         partyMassesMatterDTO.setPartyMassesMatterId(null);
         TabPbPartyMassesMatter tabPbPartyMassesMatter = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyMassesMatterDTO, TabPbPartyMassesMatter.class, false);
-        return tabPbPartyMassesMatterMapper.insert(tabPbPartyMassesMatter);
+        int result = 0;
+        result += tabPbPartyMassesMatterMapper.insert(tabPbPartyMassesMatter);
+        result += tabPbAttachmentService.intelligentOperation(
+                partyMassesMatterDTO.getAttachments(),
+                tabPbPartyMassesMatter.getPartyMassesMatterId(), AttachmentType.PARTY_MASSES_MATTER);
+        return result;
     }
 
     /**
@@ -56,7 +66,12 @@ public class PartyMassesMatterServiceImpl implements PartyMassesMatterService {
     @Override
     public int updateById(PartyMassesMatterDTO partyMassesMatterDTO) {
         TabPbPartyMassesMatter tabPbPartyMassesMatter = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyMassesMatterDTO, TabPbPartyMassesMatter.class, true);
-        return tabPbPartyMassesMatterMapper.updateById(tabPbPartyMassesMatter);
+        int result = 0;
+        result += tabPbAttachmentService.intelligentOperation(
+                partyMassesMatterDTO.getAttachments(),
+                tabPbPartyMassesMatter.getPartyMassesMatterId(), AttachmentType.PARTY_MASSES_MATTER);
+        result += tabPbPartyMassesMatterMapper.updateById(tabPbPartyMassesMatter);
+        return result;
     }
 
     /**

@@ -74,4 +74,11 @@ public interface TabPbHardshipMapper {
      */
     List<HardshipPartyVO> selectWithConditions(HardshipQueryBean hardshipQueryBean);
 
+    /**
+     *根据主键查询表里是否含有困难党员
+     *
+     * @param hardShipId 困难党员主键
+     * @return
+     */
+    Integer checkHardshipPartyByHardShipId(Long hardShipId);
 }

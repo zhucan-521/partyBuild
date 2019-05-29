@@ -21,9 +21,9 @@ public class TabPbPositiveRegist {
     private Long positiveRegistId;
 
     /**
-     * 组织主键
+     * 社区主键
      */
-    private Long deptId;
+    private Long communityId;
 
     /**
      * 人员Id

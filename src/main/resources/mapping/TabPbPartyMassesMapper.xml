@@ -10,12 +10,13 @@
     <result column="administrative_division_name" property="administrativeDivisionName"/>
     <result column="coordinate" property="coordinate"/>
     <result column="tel" property="tel"/>
+    <result column="contact" property="contact"/>
     <result column="address" property="address"/>
-    <result column="grade" property="grade"/>
     <result column="service_hours" property="serviceHours"/>
     <result column="content" property="content"/>
     <result column="longitude" property="longitude"/>
     <result column="latitude" property="latitude"/>
+    <result column="cover" property="cover"/>
     <result column="ebl_flag" property="eblFlag"/>
     <result column="del_flag" property="delFlag"/>
     <result column="order_num" property="orderNum"/>
@@ -38,12 +39,17 @@
     <result column="administrative_division_name" property="administrativeDivisionName"/>
     <result column="coordinate" property="coordinate"/>
     <result column="tel" property="tel"/>
+    <result column="contact" property="contact"/>
     <result column="address" property="address"/>
-    <result column="grade" property="grade"/>
     <result column="service_hours" property="serviceHours"/>
     <result column="content" property="content"/>
     <result column="longitude" property="longitude"/>
     <result column="latitude" property="latitude"/>
+    <result column="cover" property="cover"/>
+    <!--关联附件数据-->
+    <collection property="attachments"
+                select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+                column="{hostId=party_masses_id,attachmentType=attachment_type}"/>
   </resultMap>
 
   <!-- base查询字段  -->
@@ -55,12 +61,13 @@
       administrative_division_name,
       coordinate,
       tel,
+      contact,
       address,
-      grade,
       service_hours,
       content,
       longitude,
       latitude,
+      cover,
       ebl_flag,
       del_flag,
       order_num,
@@ -78,18 +85,20 @@
   <!-- vo查询字段  -->
   <sql id="Vo_Column_List">
     <trim suffixOverrides=",">
+      '69' as attachment_type,
       party_masses_id,
       party_masses_name,
       administrative_division_id,
       administrative_division_name,
       coordinate,
       tel,
+      contact,
       address,
-      grade,
       service_hours,
       content,
       longitude,
       latitude,
+      cover,
     </trim>
   </sql>
 
@@ -115,11 +124,11 @@
       <if test="tel != null ">
         tel,
       </if>
+      <if test="contact != null">
+        contact,
+      </if>
       <if test="address != null ">
         address,
-      </if>
-      <if test="grade != null ">
-        grade,
       </if>
       <if test="serviceHours != null ">
         service_hours,
@@ -132,6 +141,9 @@
       </if>
       <if test="latitude != null">
         latitude,
+      </if>
+      <if test="cover != null">
+        cover,
       </if>
       <if test="eblFlag != null ">
         ebl_flag,
@@ -186,11 +198,11 @@
       <if test="tel != null">
         #{tel, jdbcType=VARCHAR},
       </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
+      </if>
       <if test="address != null">
         #{address, jdbcType=VARCHAR},
-      </if>
-      <if test="grade != null">
-        #{grade, jdbcType=VARCHAR},
       </if>
       <if test="serviceHours != null ">
         #{serviceHours, jdbcType=VARCHAR},
@@ -203,6 +215,9 @@
       </if>
       <if test="latitude != null">
         #{latitude, jdbcType=VARCHAR},
+      </if>
+      <if test="cover != null">
+        #{cover, jdbcType=VARCHAR},
       </if>
       <if test="eblFlag != null">
         #{eblFlag, jdbcType=VARCHAR},
@@ -259,6 +274,9 @@
       <if test="tel != null">
         tel = #{tel, jdbcType=VARCHAR},
       </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
+      </if>
       <if test="address != null">
         address = #{address, jdbcType=VARCHAR},
       </if>
@@ -268,8 +286,8 @@
       <if test="latitude != null">
         latitude = #{latitude, jdbcType=VARCHAR},
       </if>
-      <if test="grade != null">
-        grade = #{grade, jdbcType=VARCHAR},
+      <if test="cover != null">
+        cover = #{cover, jdbcType=VARCHAR},
       </if>
       <if test="eblFlag != null">
         ebl_flag = #{eblFlag, jdbcType=VARCHAR},
@@ -342,9 +360,6 @@
       </if>
       <if test="coordinate != null">
         and coordinate = #{coordinate}
-      </if>
-      <if test="grade != null">
-        and grade = #{grade}
       </if>
       <if test="serviceHours != null ">
         and service_hours = #{serviceHours}
