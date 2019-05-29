@@ -70,18 +70,6 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     private final String RANGE_STATE_SUBORDINATE = "2";
 
     @Override
-    public UserInfoVO getUserInfoVO() {
-        Profile profile = UserContextHolder.currentUser();
-        UserInfoVO sysUser = new UserInfoVO();
-        sysUser.setUserId(profile.getUserId());
-        sysUser.setDeptId(profile.getDeptId());
-        sysUser.setPhone(profile.getPhone());
-        sysUser.setUsername(profile.getRealname());
-        sysUser.setManageDeptId(profile.getManageDeptId());
-        return sysUser;
-    }
-
-    @Override
     public List<PartyMemberChooseVO> selectPartyMemberChooseVOListByQueryBean(PartyMemberChooseQueryBean queryBean, Page page) {
         PageHelper.startPage(page);
         return tabSysUserMapper.selectPartyMemberChooseVOListByQueryBean(queryBean);

@@ -65,12 +65,6 @@ public interface PartyInformationService {
     PageInfo<PartyMemberInformationVO> getPartyList(SysUserQueryBean queryBean, Page page);
 
     /**
-     * 查询当前用户信息
-     * @return
-     */
-    UserInfoVO getUserInfoVO();
-
-    /**
      * 根据查询实体查询党员选择vo列表
      * @param queryBean 查询实体
      * @param page 分页实体
@@ -78,5 +72,10 @@ public interface PartyInformationService {
      */
     List<PartyMemberChooseVO> selectPartyMemberChooseVOListByQueryBean(PartyMemberChooseQueryBean queryBean, Page page);
 
+    /**
+     * 根据用户身份证查询用户信息
+     * @param idCardNo
+     * @return
+     */
     PartyMemberChooseVO choosePartyMemberVOByIdCardNo(String idCardNo);
 }
