@@ -1,10 +1,8 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
-import com.egovchina.partybuilding.common.util.UserContextHolder;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 
@@ -36,10 +34,4 @@ public class WorkPlanQueryBean {
     @ApiModelProperty("计划审核结果 dict SHJG")
     private Long checkResult;
 
-    public Long getRangeDeptId() {
-        if (this.rangeDeptId == null || this.rangeDeptId == 0) {
-            return UserContextHolder.getOrgId();
-        }
-        return rangeDeptId;
-    }
 }

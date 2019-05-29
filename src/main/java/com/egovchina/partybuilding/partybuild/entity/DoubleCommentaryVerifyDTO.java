@@ -14,6 +14,10 @@ import javax.validation.constraints.NotNull;
 @ApiModel("双述双评审核DTO")
 public class DoubleCommentaryVerifyDTO {
 
+    @ApiModelProperty(value = "审核组织ID", required = true)
+    @NotNull(message = "审核组织ID不能为空")
+    private Long orgId;
+
     @ApiModelProperty(value = "双述双评主键ID", required = true)
     @NotNull(message = "双述双评主键ID不能为空")
     private Long commentaryId;
