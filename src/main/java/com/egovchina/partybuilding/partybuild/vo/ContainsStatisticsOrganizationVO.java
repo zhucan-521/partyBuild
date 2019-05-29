@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * 组织VO 包含统计信息
  *
@@ -11,7 +13,9 @@ import lombok.Data;
  **/
 @Data
 @ApiModel("组织VO（包含统计信息）实体")
-public class ContainsStatisticsOrganizationVO extends OrganizationVO {
+public class ContainsStatisticsOrganizationVO extends OrganizationVO implements Serializable {
+
+    private static final long serialVersionUID = 330342518537589115L;
 
     @ApiModelProperty(value = "男党员数")
     private Long man;
