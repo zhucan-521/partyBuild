@@ -445,7 +445,7 @@
             <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
             <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
                 from (select dept_id as org_id from sys_dept dept
-                where dept.del_flag = 0
+                where dept.del_flag = '0'
                 <if test="orgRange == 1">
                     and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
                 </if>
@@ -481,7 +481,7 @@
             <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
             <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
                 from (select dept_id as org_id from sys_dept dept
-                where dept.del_flag = 0
+                where dept.del_flag = '0'
                 <if test="orgRange == 1">
                     and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
                 </if>
@@ -1740,7 +1740,7 @@
 
     <!--根据身份証查找user信息-->
     <select id="selectUserByIdCardNo" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select * from sys_user where id_card_no =#{idCardNo} and del_flag = 0 limit 1
+        select * from sys_user where id_card_no =#{idCardNo} and del_flag = '0' limit 1
     </select>
 
     <!--根据身份証查找identity信息-->
@@ -1815,7 +1815,7 @@
                 FROM
                     tab_pb_positives
                 WHERE
-                    del_flag = 0 UNION ALL
+                    del_flag = '0'UNION ALL
                 SELECT
                     user_id,
                     positive_id,
@@ -1823,15 +1823,15 @@
                 FROM
                     tab_pb_lead_team_member
                 WHERE
-                    del_flag = 0
+                    del_flag = '0'
                 ) AS p
                 LEFT JOIN sys_dict AS di ON p.positive_name = di.id
-                AND di.del_flag = 0
+                AND di.del_flag = '0'
             ) AS p ON users.user_id = p.user_id
-            LEFT JOIN ( SELECT d.dept_id, d.NAME FROM sys_dept AS d WHERE d.del_flag = 0 ) d ON d.dept_id = users.dept_id
+            LEFT JOIN ( SELECT d.dept_id, d.NAME FROM sys_dept AS d WHERE d.del_flag = '0' ) d ON d.dept_id = users.dept_id
         WHERE
             users.user_id = #{userId}
-            AND users.del_flag = 0
+            AND users.del_flag = '0'
             AND p.label IS NOT NULL
     </select>
 
@@ -1857,9 +1857,9 @@
         INNER JOIN sys_dept d ON d.dept_id = users.dept_id
         WHERE
          l.dept_id = #{deptId}
-        AND users.del_flag = 0
-        AND d.del_flag = 0
-        AND  l.del_flag = 0
+        AND users.del_flag = '0'
+        AND d.del_flag = '0'
+        AND  l.del_flag = '0'
     </select>
 
     <!--* 判断党员兴趣爱好是否选择 * 已经选择返回他的兴趣，未选择返回0-->
@@ -1882,7 +1882,7 @@
         select
         user_id, gender, id_card_no, dept_id AS org_id,realname as username
         from sys_user
-        where del_flag = 0
+        where del_flag = '0'
         and dept_id = #{deptId}
     </select>
 
@@ -1927,18 +1927,18 @@
     </update>
     <!--判断是否属于org的组织-->
     <select id="verification" resultType="boolean" parameterType="java.lang.Long">
-        <![CDATA[ SELECT COUNT(1) FROM sys_dept WHERE dept_id = #{orgId} AND FIND_IN_SET(#{orgId},(SELECT full_path FROM sys_dept WHERE dept_id = #{deptId} and del_flag = 0))]]>
+        <![CDATA[ SELECT COUNT(1) FROM sys_dept WHERE dept_id = #{orgId} AND FIND_IN_SET(#{orgId},(SELECT full_path FROM sys_dept WHERE dept_id = #{deptId} and del_flag = '0'))]]>
     </select>
 
     <select id="checkIsExistByUserId" parameterType="java.lang.Long" resultType="java.lang.Boolean">
-        SELECT COUNT(1) FROM sys_user WHERE user_id = #{userId} AND del_flag = 0 and ebl_flag=1
+        SELECT COUNT(1) FROM sys_user WHERE user_id = #{userId} AND del_flag = '0' and ebl_flag='1'
     </select>
 
     <select id="checkIsExistByIdCard" parameterType="java.lang.String" resultType="java.lang.Boolean">
-        SELECT COUNT(1) FROM sys_user WHERE id_card_no = #{idCard} AND del_flag = 0
+        SELECT COUNT(1) FROM sys_user WHERE id_card_no = #{idCard} AND del_flag = '0'
     </select>
     <select id="checkIsExistByPhone" parameterType="java.lang.String" resultType="java.lang.Boolean">
-        SELECT COUNT(1) FROM sys_user WHERE phone = #{phone} AND del_flag = 0
+        SELECT COUNT(1) FROM sys_user WHERE phone = #{phone} AND del_flag = '0'
     </select>
 
     <!--根据查询实体查询党员选择vo列表-->
@@ -1988,7 +1988,7 @@
         </if>
         <if test="excludeBinding == 1">
             AND NOT EXISTS (
-              SELECT 1 FROM sys_account a WHERE a.sys_user_id = u.user_id AND a.del_flag = 0
+              SELECT 1 FROM sys_account a WHERE a.sys_user_id = u.user_id AND a.del_flag = '0'
             )
         </if>
         ORDER BY u.realname
