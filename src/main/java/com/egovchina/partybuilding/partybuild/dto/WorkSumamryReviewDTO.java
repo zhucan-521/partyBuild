@@ -27,15 +27,12 @@ public class WorkSumamryReviewDTO {
     @ApiModelProperty("审核说明")
     private String summaryCheck;
 
+    @ApiModelProperty(value = "审核组织id", required = true)
+    @NotNull(message = "审核组织不能为空")
     private Long summaryCheckOrg;
 
+    @ApiModelProperty(value = "审核人", required = true)
+    @NotNull(message = "审核人不能为空")
     private Long summaryCheckUser;
 
-    public Long getSummaryCheckOrg() {
-        return UserContextHolder.getOrgId();
-    }
-
-    public Long getSummaryCheckUser() {
-        return UserContextHolder.getUserId();
-    }
 }

@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.UserTagDTO;
@@ -27,6 +28,7 @@ public class UserTagController {
     private UserTagService userTagService;
 
     @ApiOperation(value = "根据用户id和对应的用户标签id插入", notes = "根据用户id和对应的用户标签id插入(可同时为用户插入多个标记)", httpMethod = "POST")
+    @HasPermission("party_member_usertag")
     @PostMapping
     public ReturnEntity batchInsertUserTag(@ApiParam("多个党员标记") @RequestBody @Validated UserTagDTO userTagDTO) {
         return ReturnUtil.buildReturn(userTagService.batchInsertUserTagDTO(userTagDTO));

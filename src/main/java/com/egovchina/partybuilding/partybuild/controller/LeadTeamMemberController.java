@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
@@ -36,6 +37,7 @@ public class LeadTeamMemberController {
 
     @ApiOperation(value = "班子成员列表", notes = "班子成员列表", httpMethod = "GET")
     @ApiImplicitParam(value = "班子id", name = "leadTeamId", dataType = "long", paramType = "path", required = true)
+    @HasPermission("party_leadershipTeam_members")
     @GetMapping("/lead-teams/{leadTeamId}/members")
     public PageInfo<LeadTeamMemberListVO> getLeadTeamMemberList(@PathVariable Long leadTeamId, Page page) {
         List<LeadTeamMemberListVO> list = leadTeamMemberService.selectLeadTeamMemberVOListByLeadTeamId(leadTeamId, page);
@@ -43,12 +45,14 @@ public class LeadTeamMemberController {
     }
 
     @ApiOperation(value = "添加班子成员", notes = "添加班子成员", httpMethod = "POST")
+    @HasPermission("party_leadershipTeam_add")
     @PostMapping("/lead-team-members")
     public ReturnEntity insertLeadTeamMember(@ApiParam("班子成员信息") @RequestBody @Validated LeadTeamMemberDTO leadTeamMemberDTO) {
         return ReturnUtil.buildReturn(leadTeamMemberService.insertLeadTeamMember(leadTeamMemberDTO));
     }
 
     @ApiOperation(value = "修改班子成员", notes = "修改班子成员", httpMethod = "PUT")
+    @HasPermission("party_leadershipTeam_edit")
     @PutMapping("/lead-team-members")
     public ReturnEntity updateLeadTeamMember(@ApiParam(value = "班子成员信息") @RequestBody @Validated LeadTeamMemberDTO leadTeamMemberDTO) {
         return ReturnUtil.buildReturn(leadTeamMemberService.updateLeadTeamMember(leadTeamMemberDTO));
@@ -56,6 +60,7 @@ public class LeadTeamMemberController {
 
     @ApiOperation(value = "删除班子成员", notes = "删除班子成员", httpMethod = "DELETE")
     @ApiImplicitParam(value = "班子人员id", name = "memberId", dataType = "long", paramType = "path", required = true)
+    @HasPermission("party_leadershipTeam_del")
     @DeleteMapping("/lead-team-members/{memberId}")
     public ReturnEntity deleteLeadTeamMember(@PathVariable Long memberId) {
         return ReturnUtil.buildReturn(leadTeamMemberService.logicDeleteLeadTeamMemberById(memberId));
@@ -63,12 +68,14 @@ public class LeadTeamMemberController {
 
     @ApiOperation(value = "班子成员详情", notes = "查看班子成员详情", httpMethod = "GET")
     @ApiImplicitParam(value = "班子人员id", name = "memberId", dataType = "long", paramType = "path", required = true)
+    @HasPermission("party_leadershipTeam_examine")
     @GetMapping("/lead-team-members/{memberId}")
     public LeadTeamMemberVO getLeadTeamMember(@PathVariable Long memberId) {
         return leadTeamMemberService.selectLeadTeamMemberVOById(memberId);
     }
 
     @ApiOperation(value = "班子成员列表", notes = "班子成员列表", httpMethod = "GET")
+    @HasPermission("party_leadershipTeam_members")
     @GetMapping("/lead-team-members")
     public PageInfo<LeadTeamMemberVO> getLeadTeamMemberList(LeadTeamMemberQueryBean queryBean, Page page) {
         List<LeadTeamMemberVO> list = leadTeamMemberService.selectLeadTeamMemberVOListByCondition(queryBean, page);
@@ -76,6 +83,7 @@ public class LeadTeamMemberController {
     }
 
     @ApiOperation(value = "社区兼职委员列表", notes = "社区兼职委员列表", httpMethod = "GET")
+    @HasPermission("party_partTimePartyMember")
     @GetMapping("/community-part-time-members")
     public PageInfo<CommunityPartTimeMemberVO> getCommunityPartTimeMemberList(CommunityPartTimeMemberQueryBean queryBean, Page page) {
         List<CommunityPartTimeMemberVO> list = leadTeamMemberService.selectCommunityPartTimeMemberVOListByCondition(queryBean, page);
