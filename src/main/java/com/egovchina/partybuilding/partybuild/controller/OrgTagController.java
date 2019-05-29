@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.OrgTagDTO;
@@ -27,6 +28,7 @@ public class OrgTagController {
     private OrgTagService orgTagService;
 
     @ApiOperation(value = "添加组织标签", notes = "添加组织标签")
+    @HasPermission("party_orgInfo_identification")
     @PostMapping
     public ReturnEntity batchInsertOrgTag(@ApiParam("多个组织标记") @RequestBody @Validated OrgTagDTO orgTagDTO) {
         return ReturnUtil.buildReturn(orgTagService.batchInsertOrgTagDTO(orgTagDTO));

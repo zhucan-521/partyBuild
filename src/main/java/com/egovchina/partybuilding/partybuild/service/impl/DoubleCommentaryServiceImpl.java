@@ -80,7 +80,7 @@ public class DoubleCommentaryServiceImpl implements DoubleCommentaryService {
         }
         TabPbDoubleCommentary commentary = new TabPbDoubleCommentary();
         commentary.setCommentaryId(commentaryVO.getCommentaryId());
-        commentary.setCheckOrg(UserContextHolder.getOrgId());
+        commentary.setCheckOrg(doubleCommentaryVerifyDTO.getOrgId());
         commentary.setCheckUser(UserContextHolder.getUserId());
         commentary.setCheckResult(doubleCommentaryVerifyDTO.getCheckResult());
         commentary.setCheckDesc(doubleCommentaryVerifyDTO.getCheckDesc());

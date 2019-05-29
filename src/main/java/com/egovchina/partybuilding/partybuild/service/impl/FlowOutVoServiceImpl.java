@@ -48,10 +48,6 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
      */
     @Override
     public PageInfo<FlowOutMemberVO> getFlowOutVoList(FlowOutMemberQueryBean flowOutMemberQueryBean, Page page) {
-        Long rangeDeptId = flowOutMemberQueryBean.getRangeDeptId();
-        if (rangeDeptId == null || rangeDeptId == 0) {
-            flowOutMemberQueryBean.setRangeDeptId(UserContextHolder.getOrgId());
-        }
         PageHelper.startPage(page);
         List<FlowOutMemberVO> list = tabPbFlowOutMapper.selectActiveFlowOutVo(flowOutMemberQueryBean);
         return (PageInfo<FlowOutMemberVO>) new PageInfo(list);

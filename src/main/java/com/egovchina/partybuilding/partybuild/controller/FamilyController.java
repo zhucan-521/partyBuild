@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.FamilyMemberDTO;
@@ -28,6 +29,7 @@ public class FamilyController {
 
     @ApiOperation(value = "根据输入的人员id查询他的家庭成员信息", notes = "人员ID为必填", httpMethod = "GET")
     @ApiImplicitParam(name = "userId", value = "人员ID", required = true, paramType = "path")
+    @HasPermission("party_member_detail")
     @GetMapping("/members/{userId}")
     public List<FamilyMemberVO> selectFamilyMemberList(@PathVariable Long userId) {
         return familyService.selectFamilyMemberList(userId);
@@ -35,6 +37,7 @@ public class FamilyController {
 
     @ApiOperation(value = "根据家庭成员主键Id查询信息", notes = "家庭成员主键ID为必填", httpMethod = "GET")
     @ApiImplicitParam(name = "relationId", value = "家庭成员主键ID", required = true, paramType = "path")
+    @HasPermission("party_member_detail")
     @GetMapping("/{relationId}/members")
     public FamilyMemberVO getFamiyMemberByPrimaryKey(@PathVariable Long relationId) {
         return familyService.selectFamilyMemberById(relationId);
@@ -42,18 +45,21 @@ public class FamilyController {
 
     @ApiOperation(value = "根据家庭成员主键ID删除信息", notes = "家庭成员主键ID为必填", httpMethod = "DELETE")
     @ApiImplicitParam(name = "relationId", value = "家庭成员主键ID", required = true, paramType = "path")
+    @HasPermission("party_member_delete")
     @DeleteMapping("/{relationId}")
     public ReturnEntity deleteFamilyMemberByPrimaryKey(@PathVariable Long relationId) {
         return ReturnUtil.buildReturn(familyService.deleteFamilyMemberByPrimaryKey(relationId));
     }
 
     @ApiOperation(value = "保存单个家庭成员信息（userId为该家庭成员的关系党员id必填）", notes = "添加家庭成员", httpMethod = "POST")
+    @HasPermission("party_member_add")
     @PostMapping
     public ReturnEntity addFamilyMember(@RequestBody @ApiParam(value = "家庭成员对象") FamilyMemberDTO familyMemberDTO) {
         return ReturnUtil.buildReturn(familyService.addFamilyDTO(familyMemberDTO));
     }
 
     @ApiOperation(value = "修改单个家庭成员信息", notes = "家庭成员主键ID为必填", httpMethod = "PUT")
+    @HasPermission("party_member_edit")
     @PutMapping
     public ReturnEntity updateFamilyMemberById(@Validated @RequestBody @ApiParam(value = "家庭成员对象") FamilyMemberDTO familyMemberDTO) {
         return ReturnUtil.buildReturn(familyService.updateByPrimaryKeySelective(familyMemberDTO));

@@ -3,7 +3,6 @@ package com.egovchina.partybuilding.partybuild.controller;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
-import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.JointMeetDTO;
 import com.egovchina.partybuilding.partybuild.dto.JointMeetOrgDTO;
 import com.egovchina.partybuilding.partybuild.entity.JointMeetOrgQueryBean;
@@ -89,10 +88,6 @@ public class JointMeetController {
     @ApiOperation(value = "分页查询联席会成员")
     @GetMapping("/members")
     public PageInfo<JointMeetOrgVO> getJointMeetOrgList(JointMeetOrgQueryBean jointMeetOrgQueryBean, Page page) {
-        Long orgId = jointMeetOrgQueryBean.getOrgId();
-        if (orgId == null || orgId == 0) {
-            jointMeetOrgQueryBean.setOrgId(UserContextHolder.getOrgId());
-        }
         return this.jointMeetService.getJointMeetOrgList(jointMeetOrgQueryBean, page);
     }
 }

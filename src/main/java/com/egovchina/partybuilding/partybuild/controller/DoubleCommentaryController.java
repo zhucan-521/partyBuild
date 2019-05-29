@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
@@ -32,12 +33,14 @@ public class DoubleCommentaryController {
     private DoubleCommentaryService commentaryService;
 
     @ApiOperation(value = "新增双述双评", notes = "新增双述双评", httpMethod = "POST")
+    @HasPermission(value = "party_yearWork_add")
     @PostMapping
     public ReturnEntity insertCommentary(@RequestBody @Validated @ApiParam("双述双评新增信息") DoubleCommentaryDTO doubleCommentaryDTO) {
         return ReturnUtil.buildReturn(commentaryService.insertCommentary(doubleCommentaryDTO));
     }
 
     @ApiOperation(value = "更新双述双评", notes = "更新双述双评", httpMethod = "PUT")
+    @HasPermission(value = "party_yearWork_edit")
     @PutMapping
     public ReturnEntity updateCommentary(@RequestBody @Validated @ApiParam("双述双评更新信息") DoubleCommentaryUpdateDTO doubleCommentaryUpdateDTO) {
         return ReturnUtil.buildReturn(commentaryService.updateCommentary(doubleCommentaryUpdateDTO));
@@ -45,6 +48,7 @@ public class DoubleCommentaryController {
 
     @ApiOperation(value = "删除双述双评", notes = "双述双评删除", httpMethod = "DELETE")
     @ApiImplicitParam(name = "commentaryId", value = "双述双评ID", paramType = "path", required = true)
+    @HasPermission(value = "party_yearWork_del")
     @DeleteMapping("/{commentaryId}")
     public ReturnEntity deleteCommentary(@PathVariable Long commentaryId) {
         return ReturnUtil.buildReturn(commentaryService.deleteCommentary(commentaryId));
@@ -52,18 +56,21 @@ public class DoubleCommentaryController {
 
     @ApiOperation(value = "双述双评详情", notes = "双述双评详情", httpMethod = "GET")
     @ApiImplicitParam(name = "commentaryId", value = "双述双评ID", paramType = "path", required = true)
+    @HasPermission(value = "party_yearWork_examine")
     @GetMapping("/{commentaryId}")
     public CommentaryDetailsVO getCommentaryDetails(@PathVariable Long commentaryId) {
         return commentaryService.findCommentaryVOByCommentaryId(commentaryId);
     }
 
     @ApiOperation(value = "双述双评列表", notes = "双述双评列表", httpMethod = "GET")
+    @HasPermission(value = "party_yearWork")
     @GetMapping
     public PageInfo<CommentaryVO> getCommentaryList(CommentaryQueryBean commentaryQueryBean, Page page) {
         return commentaryService.findCommentaryVOListWithConditions(commentaryQueryBean, page);
     }
 
     @ApiOperation(value = "双述双评审核", notes = "双述双评审核", httpMethod = "PUT")
+    @HasPermission(value = "party_yearWork_audit")
     @PutMapping("/verify")
     public ReturnEntity doVerify(@RequestBody @Validated @ApiParam("双述双评审核信息") DoubleCommentaryVerifyDTO doubleCommentaryVerifyDTO) {
         return ReturnUtil.buildReturn(commentaryService.verifyCommentary(doubleCommentaryVerifyDTO));
