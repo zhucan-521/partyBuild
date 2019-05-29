@@ -27,13 +27,12 @@ public class WorkPlanReviewDTO {
     @ApiModelProperty("审核说明")
     private String planCheck;
 
+    @ApiModelProperty("审核组织id")
+    @NotNull(message = "审核组织不能为空")
     private Long checkOrg;
 
+    @ApiModelProperty("审核人")
     private Long checkUser;
-
-    public Long getCheckOrg() {
-        return UserContextHolder.getOrgId();
-    }
 
     public Long getCheckUser() {
         return UserContextHolder.getUserId();
