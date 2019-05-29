@@ -6,7 +6,7 @@
              type="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesMatter">
     <result column="party_masses_matter_id" property="partyMassesMatterId"/>
     <result column="party_masses_id" property="partyMassesId"/>
-    <result column="service_type" property="serviceType"/>
+    <result column="service_name" property="serviceName"/>
     <result column="content" property="content"/>
     <result column="crowd" property="crowd"/>
     <result column="contact" property="contact"/>
@@ -31,7 +31,7 @@
              type="com.egovchina.partybuilding.partybuild.vo.PartyMassesMatterVO">
     <result column="party_masses_matter_id" property="partyMassesMatterId"/>
     <result column="party_masses_id" property="partyMassesId"/>
-    <result column="service_type" property="serviceType"/>
+    <result column="service_name" property="serviceName"/>
     <result column="content" property="content"/>
     <result column="crowd" property="crowd"/>
     <result column="contact" property="contact"/>
@@ -49,7 +49,7 @@
     <trim suffixOverrides=",">
       party_masses_matter_id,
       party_masses_id,
-      service_type,
+      service_name,
       content,
       crowd,
       contact,
@@ -76,7 +76,7 @@
       '70' as attachment_type,
       party_masses_matter_id,
       party_masses_id,
-      service_type,
+      service_name,
       content,
       crowd,
       contact,
@@ -96,8 +96,8 @@
       <if test="partyMassesId != null ">
         party_masses_id,
       </if>
-      <if test="serviceType != null ">
-        service_type,
+      <if test="serviceName != null ">
+        service_name,
       </if>
       <if test="content != null ">
         content,
@@ -158,8 +158,8 @@
       <if test="partyMassesId != null">
         #{partyMassesId, jdbcType=BIGINT},
       </if>
-      <if test="serviceType != null">
-        #{serviceType, jdbcType=BIGINT},
+      <if test="serviceName != null">
+        #{serviceName, jdbcType=VARCHAR},
       </if>
       <if test="content != null">
         #{content, jdbcType=VARCHAR},
@@ -222,8 +222,8 @@
       <if test="partyMassesId != null">
         party_masses_id = #{partyMassesId, jdbcType=BIGINT},
       </if>
-      <if test="serviceType != null">
-        service_type = #{serviceType, jdbcType=BIGINT},
+      <if test="serviceName != null">
+        service_name = #{serviceName, jdbcType=VARCHAR},
       </if>
       <if test="content != null">
         content = #{content, jdbcType=VARCHAR},
@@ -300,8 +300,8 @@
       <if test="partyMassesId != null">
         and party_masses_id = #{partyMassesId}
       </if>
-      <if test="serviceType != null">
-        and service_type = #{serviceType}
+      <if test="serviceName != null">
+        and service_name like concat('%', #{serviceName} ,'%')
       </if>
       <if test="crowd != null">
         and crowd = #{crowd}
