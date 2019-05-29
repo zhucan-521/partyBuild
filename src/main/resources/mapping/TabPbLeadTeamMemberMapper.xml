@@ -59,7 +59,7 @@
         <result column="gender" jdbcType="BIGINT" property="gender"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
-        <result column="join_time" jdbcType="BIGINT" property="joinDate"/>
+        <result column="join_time" jdbcType="TIMESTAMP" property="joinDate"/>
     </resultMap>
 
     <!--VO 不包含身份证结果集-->
