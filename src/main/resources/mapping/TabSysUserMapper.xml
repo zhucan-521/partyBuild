@@ -325,7 +325,7 @@
     <!---分页查询党员信息列表-->
     <sql id="Base_users_info">
         u.user_id,realname,gender,TIMESTAMPDIFF(YEAR, birthday, CURDATE()) AS age,nation,id_card_no,join_time,join_org_time,regular_time,report_org_name,phone,identity_type,marital_status,
-        education,flow_status,IFNULL(is_llost,'0') as is_llost,IFNULL(is_poor,'0') as is_poor,IFNULL(is_taiwaner,'0') as is_taiwaner,dd.unit_id,u.dept_id,birthday,migrant,stratum,front_line,work_date,ancestor_place,registry_status,family_address,u.community_addr,
+        education,flow_status,IFNULL(is_llost,'0') as is_llost,IFNULL(is_poor,'0') as is_poor,IFNULL(is_taiwaner,'0') as is_taiwaner,u.dept_id,birthday,migrant,stratum,front_line,work_date,ancestor_place,registry_status,family_address,u.community_addr,
         job_position,u.health,u.avatar,u.fix_phone,u.positived,u.files_manage_unit,u.work_resumes,u.stratum,u.profession
     </sql>
     <!--查询部门表防止名字重复-->
@@ -342,8 +342,6 @@
         </if>
         AND u.ebl_flag = '1'
         and u.del_flag ='0'
-        and dd.del_flag ='0'
-        and dd.ebl_flag='1'
         <if test="idCardNo != null and idCardNo != ''">
             AND id_card_no = #{idCardNo}
         </if>
@@ -366,7 +364,14 @@
             and find_in_set(nation, #{nation})
         </if>
         <if test="unitProperty != null and unitProperty!=''">
-            AND find_in_set(t.unit_property , #{unitProperty})
+            AND EXISTS (
+              SELECT 1 FROM sys_dept d INNER JOIN tab_pb_unit_info ui ON d.unit_id = ui.unit_id
+                WHERE d.del_flag = '0'
+                  AND d.ebl_flag = '1'
+                 AND ui.del_flag = '0'
+                 AND find_in_set(ui.unit_property , #{unitProperty})
+                 AND u.dept_id = d.dept_id
+            )
         </if>
         <if test="ageBegin != null">
             and TIMESTAMPDIFF(YEAR,birthday,CURDATE())>= #{ageBegin}
@@ -439,7 +444,9 @@
     <select id="selectPageByMap" resultMap="UserInFo">
         select
         <include refid="Base_users_info"/>
-        ,t.unit_property,
+        ,(select ui.unit_property from tab_pb_unit_info ui where ui.del_flag = '0' AND exists (
+          select 1 from sys_dept dd where dd.del_flag = '0' and dd.dept_id = u.dept_id and dd.unit_id = ui.unit_id
+        ) limit 1) AS unit_property,
         <include refid="dept_name_result"/>
         <choose>
             <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
@@ -463,8 +470,6 @@
         ON fd.in_where_dept_id = u.flow_to_org_id
         LEFT JOIN ( SELECT dept_id AS subordinate_dept_id, NAME AS subordinate_dept_name FROM sys_dept ) sd
         ON sd.subordinate_dept_id = u.dept_id
-        left join sys_dept dd on dd.dept_id =u.dept_id
-        left join tab_pb_unit_info t on dd.unit_id = t.unit_id
         <if test="tagTypes != null and tagTypes!=''">
             left join tab_pb_user_tag tt on tt.user_id=u.user_id
         </if>
@@ -495,12 +500,6 @@
                 from sys_user u
             </otherwise>
         </choose>
-        LEFT JOIN ( SELECT dept_id AS in_where_dept_id, NAME AS in_where_dept_name FROM sys_dept ) fd
-        ON fd.in_where_dept_id = u.flow_to_org_id
-        LEFT JOIN ( SELECT dept_id AS subordinate_dept_id, NAME AS subordinate_dept_name FROM sys_dept ) sd
-        ON sd.subordinate_dept_id = u.dept_id
-        left join sys_dept dd on dd.dept_id =u.dept_id
-        left join tab_pb_unit_info t on dd.unit_id = t.unit_id
         <if test="tagTypes != null and tagTypes!='' ">
             left join tab_pb_user_tag tt on tt.user_id=u.user_id
         </if>
