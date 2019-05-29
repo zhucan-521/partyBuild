@@ -59,6 +59,7 @@
         <result column="gender" jdbcType="BIGINT" property="gender"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
+        <result column="join_time" jdbcType="TIMESTAMP" property="joinDate"/>
     </resultMap>
 
     <!--VO 不包含身份证结果集-->
@@ -418,6 +419,7 @@
         ,d.name as org_name,
         ud.name as owner_org_name,
         u.id_card_no AS id_card_no,
+        u.join_time,
         t.session_year,
         u.gender,
         tpi.unit_property,

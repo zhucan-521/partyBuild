@@ -102,4 +102,8 @@ public class LeadTeamMemberVO {
     @JsonSerialize(using = DictSerializer.class)
     private Long unitProperty;
 
+    @ApiModelProperty(value = "入党日期")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date joinDate;
+
 }
