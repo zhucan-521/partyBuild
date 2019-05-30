@@ -440,7 +440,7 @@
         <include refid="Member_Details"/>
         from sys_user u
         left join sys_dept d on d.dept_id=u.dept_id
-        inner join tab_pb_administrative_division t on t.administrative_division_id = u.community_addr
+        left join tab_pb_administrative_division t on t.administrative_division_id = u.community_addr
         where u.user_id = #{userId,jdbcType=BIGINT}
     </select>
     <!--用于列表显示-->
