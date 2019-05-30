@@ -499,11 +499,11 @@
             dc.result_situation,
             dc.check_org,
             dc.check_desc,
-            -- 用户表
-            u.realname AS check_user_name
+            -- 账户表
+            a.realname AS check_user_name
         FROM tab_pb_double_commentary dc
         LEFT JOIN sys_dept d ON dc.org_id = d.dept_id
-        LEFT JOIN sys_user u ON dc.check_user = u.user_id
+        LEFT JOIN sys_account a ON dc.check_user = a.user_id
         LEFT JOIN sys_dept d1 ON dc.check_org = d1.dept_id
         WHERE dc.del_flag = 0
         AND d.del_flag = 0
