@@ -2,18 +2,15 @@ package com.egovchina.partybuilding.partybuild.controller;
 
 import com.egovchina.partybuilding.common.entity.OrgRange;
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataInvalidException;
-import com.egovchina.partybuilding.common.util.BeanUtil;
-import com.egovchina.partybuilding.common.util.PageInfoWrapper;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.OrganizationDTO;
 import com.egovchina.partybuilding.partybuild.dto.OrganizationPositionDTO;
 import com.egovchina.partybuilding.partybuild.entity.OrganizationQueryBean;
-import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.partybuild.service.OrganizationService;
-import com.egovchina.partybuilding.partybuild.vo.ContainsStatisticsOrganizationVO;
 import com.egovchina.partybuilding.partybuild.vo.OrganizationPartyBuildingWorkVO;
 import com.egovchina.partybuilding.partybuild.vo.OrganizationPositionVO;
 import com.egovchina.partybuilding.partybuild.vo.OrganizationVO;
@@ -23,8 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * 组织API
@@ -43,15 +42,7 @@ public class OrganizationController {
     @GetMapping
     public PageInfo<OrganizationVO> getOrganizationList(OrganizationQueryBean queryBean, Page page) {
         List<OrganizationVO> list = organizationService.selectOrganizationVOWithCondition(queryBean, page);
-        List<OrganizationVO> organizationVOS = Collections.emptyList();
-        if (queryBean.getContainsStatistics()) {
-            organizationVOS = list.stream().map(organizationVO -> {
-                ContainsStatisticsOrganizationVO containsStatisticsOrganizationVO = organizationService.linkStatisticsData(organizationVO.getDeptId());
-                BeanUtil.copyPropertiesIgnoreNull(organizationVO, containsStatisticsOrganizationVO);
-                return containsStatisticsOrganizationVO;
-            }).collect(Collectors.toList());
-        }
-        return PageInfoWrapper.wrapper(list, organizationVOS);
+        return new PageInfo<>(list);
     }
 
     @ApiOperation(value = "新增组织", notes = "新增组织", httpMethod = "POST")
