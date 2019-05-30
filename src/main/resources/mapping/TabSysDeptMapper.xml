@@ -79,6 +79,7 @@
         <result column="unit_state" jdbcType="BIGINT" property="unitState"/>
         <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
         <result column="community_addr" jdbcType="BIGINT" property="communityAddr"/>
+        <result column="community_addr_name" jdbcType="VARCHAR" property="communityAddrName"/>
         <result column="founded_date" jdbcType="TIMESTAMP" property="foundedDate"/>
         <result column="founded_file_number" jdbcType="VARCHAR" property="foundedFileNumber"/>
         <result column="contact_number" jdbcType="VARCHAR" property="contactNumber"/>
@@ -730,10 +731,16 @@
         , pd.`name` as parent_name,
         u.unit_code,
         u.unit_property,
+        ad.administrative_division_name as community_addr_name,
         case when d.orgnize_property in ( 989, 992, 995, 1002, 1003, 1007, 1008) then 1 else 0 end AS is_branch
         from sys_dept d
         left join sys_dept pd on d.parent_id = pd.dept_id
+          and pd.del_flag = '0'
+          and pd.ebl_flag = '1'
         left join tab_pb_unit_info u on d.unit_id = u.unit_id
+          and u.del_flag = '0'
+        left join tab_pb_administrative_division ad on ad.administrative_division_id = d.community_addr
+          and ad.del_flag = '0'
         <where>
             d.del_flag = '0'
             <include refid="Base_WhereCase_List"/>
@@ -779,10 +786,16 @@
         , d2.name as parent_name,
         u.unit_code,
         u.unit_property,
+        ad.administrative_division_name as community_addr_name,
         case when d.orgnize_property in ( 989, 992, 995, 1002, 1003, 1007, 1008) then 1 else 0 end AS is_branch
         from sys_dept d
         left join sys_dept d2 on d.parent_id = d2.dept_id
+          and d2.del_flag = '0'
+          and d2.ebl_flag = '1'
         left join tab_pb_unit_info u on d.unit_id = u.unit_id
+          and u.del_flag = '0'
+        left join tab_pb_administrative_division ad on ad.administrative_division_id = d.community_addr
+          and ad.del_flag = '0'
         where d.dept_id = #{deptId,jdbcType=BIGINT}
     </select>
 
