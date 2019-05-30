@@ -55,6 +55,9 @@ public class PartyGroupVO {
     @ApiModelProperty(value = "该党小组成员集合")
     private List<PartyGroupMemberVO> members;
 
+    @ApiModelProperty("总人数")
+    private Long totalMembers;
+
     @ApiModelProperty(value = "文档数")
     private Integer docNum;
 

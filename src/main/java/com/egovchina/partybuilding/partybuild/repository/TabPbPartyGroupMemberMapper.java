@@ -64,4 +64,14 @@ public interface TabPbPartyGroupMemberMapper {
      **/
     List<PartyMemberBaseVO> screenPartyGroupMembers(@Param("orgId") Long orgId, @Param("groupId") Long groupId);
 
+    /**
+     * desc: 查询党小组总人数
+     *
+     * @param groupId 党组ID
+     * @return int
+     * @auther FanYanGen
+     * @date 2019-05-29 23:11
+     */
+    Long totalMembers(Long groupId);
+
 }
