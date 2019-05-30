@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
 import com.baomidou.mybatisplus.annotations.TableField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -75,4 +76,18 @@ public class SysUserQueryBean {
 
     @ApiModelProperty(value = "党员标识")
     private String tagTypes;
+
+    /**
+     * index
+     */
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private Long index;
+
+    /**
+     * limit
+     */
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private Long limit;
 }
