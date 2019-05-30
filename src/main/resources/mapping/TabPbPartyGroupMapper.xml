@@ -45,6 +45,9 @@
         <collection property="members"
                     select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyGroupMemberMapper.selectPartyGroupMembersDetailsInfoByGroupId"
                     column="group_id"/>
+        <collection property="totalMembers"
+                    select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyGroupMemberMapper.totalMembers"
+                    column="group_id"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -335,9 +338,7 @@
     </select>
 
     <!-- 查询党小组列表 -->
-    <select id="selectPartyGroupDetails"
-            parameterType="com.egovchina.partybuilding.partybuild.entity.PartyGroupQueryBean"
-            resultMap="PartyGroupVOResultMap">
+    <select id="selectPartyGroupList" parameterType="com.egovchina.partybuilding.partybuild.entity.PartyGroupQueryBean" resultMap="PartyGroupVOResultMap">
         SELECT
         -- 组织表
         sd.`name` AS org_name,
