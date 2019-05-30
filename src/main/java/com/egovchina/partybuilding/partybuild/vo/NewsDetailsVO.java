@@ -21,6 +21,12 @@ public class NewsDetailsVO {
     @ApiModelProperty(value = "发布组织名称")
     private String orgName;
 
+    @ApiModelProperty("标题")
+    private String title;
+
+    @ApiModelProperty("排序码")
+    private Long orderNum;
+
     @ApiModelProperty(value = "封面图")
     private String cover;
 

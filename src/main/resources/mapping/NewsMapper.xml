@@ -50,7 +50,8 @@
         <id column="news_id" jdbcType="BIGINT" property="newsId"/>
         <result column="cover" jdbcType="VARCHAR" property="cover"/>
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
-        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="order_num" jdbcType="VARCHAR" property="orderNum"/>
         <collection property="attachments"
                     select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
                     column="{hostId=news_id,attachmentType=attachment_type}"/>
@@ -335,6 +336,8 @@
         SELECT
             d.`name` AS org_name,
             n.news_id,
+            n.title,
+            n.order_num,
             n.cover,
             n.content,
             '65' AS attachment_type
