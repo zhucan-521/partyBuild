@@ -191,7 +191,7 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
 
-    <select id="checkWhetherPublish" parameterType="long" resultType="java.lang.Integer">
-        select COUNT(recevie_user_id) from tab_pb_msg_notice_dept t where notice_id=#{id}
+    <select id="checkWhetherPublish" parameterType="long" resultType="java.lang.Boolean">
+        select (case when (select COUNT(recevie_user_id) from tab_pb_msg_notice_dept where notice_id=#{id})>=1 then 1 else 0 end )
     </select>
 </mapper>

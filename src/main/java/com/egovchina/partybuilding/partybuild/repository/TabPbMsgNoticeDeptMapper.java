@@ -81,6 +81,6 @@ public interface TabPbMsgNoticeDeptMapper {
      * @param id 文件Id
      * @return
      */
-    Integer checkWhetherPublish(Long id);
+    boolean checkWhetherPublish(Long id);
 
 }
