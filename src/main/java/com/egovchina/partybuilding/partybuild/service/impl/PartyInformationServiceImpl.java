@@ -1,13 +1,10 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.common.entity.Profile;
 import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
-import com.egovchina.partybuilding.common.util.PageInfoWrapper;
-import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.*;
 import com.egovchina.partybuilding.partybuild.entity.*;
 import com.egovchina.partybuilding.partybuild.repository.*;
@@ -398,10 +395,20 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         if (ORG_ID.equals(deptId) && RANGE_STATE_SUBORDINATE.equals(orgRange)) {
             queryBean.setOrgRange(RANGE_STATE_LEVEL);
         }
-        PageHelper.startPage(page);
+//        PageHelper.startPage(page);
+        Long pageSize = page.getPageSize();
+        long index = (page.getPageNum() - 1) * pageSize;
+        if (index < 0) {
+            index = 0L;
+        }
+        queryBean.setIndex(index);
+        queryBean.setLimit(pageSize);
         List<SystemDetailsVO> systemDetailsVO = tabSysUserMapper.selectPageByMap(queryBean);
+        int count = tabSysUserMapper.selectPageByMapCOUNT(queryBean);
         List<PartyMemberInformationVO> partyMemberInformationVOS = calculationComplete(systemDetailsVO);
-        return PageInfoWrapper.wrapper(systemDetailsVO, partyMemberInformationVOS);
+        PageInfo<PartyMemberInformationVO> pageInfo = new PageInfo<>(partyMemberInformationVOS);
+        pageInfo.setTotal(count);
+        return pageInfo;
     }
 
     //检查id是否存在

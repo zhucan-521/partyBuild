@@ -331,7 +331,8 @@
     </sql>
     <!--查询部门表防止名字重复-->
     <sql id="dept_name_result">
-    subordinate_dept_name,in_where_dept_name
+    fd.`NAME` AS in_where_dept_name,
+	sd.`NAME` AS subordinate_dept_name
     </sql>
     <!--根据条件查询列表WhereCaseList-->
     <sql id="selectPageByMapWhereCaseList">
@@ -405,7 +406,11 @@
             and find_in_set(IFNULL(is_taiwaner,'0'), #{isTaiwaner})
         </if>
         <if test="tagTypes != null and tagTypes != ''">
-            and find_in_set( tt.tag_type , #{tagTypes})
+            and exists (
+              select 1 from tab_pb_user_tag tt
+              where tt.user_id = u.user_id
+                and find_in_set( tt.tag_type , #{tagTypes})
+            )
         </if>
     </sql>
     <!--查询书记的简单党员信息-->
@@ -447,42 +452,52 @@
     <select id="selectPageByMap" resultMap="UserInFo">
         select
         <include refid="Base_users_info"/>
-        ,(select ui.unit_property from tab_pb_unit_info ui where ui.del_flag = '0' AND exists (
-          select 1 from sys_dept dd where dd.del_flag = '0' and dd.dept_id = u.dept_id and dd.unit_id = ui.unit_id
-        ) limit 1) AS unit_property,
+        ,tt.unit_property,
         <include refid="dept_name_result"/>
-        <choose>
-            <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
-            <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
-                from (select dept_id as org_id from sys_dept dept
-                where dept.del_flag = '0'
-                <if test="orgRange == 1">
-                    and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
-                </if>
-                <if test="orgRange == 2">
-                    and find_in_set(#{deptId}, dept.full_path)
-                </if>
-                ) d
-                inner join sys_user u on u.dept_id = d.org_id
-            </when>
-            <otherwise>
-                from sys_user u
-            </otherwise>
-        </choose>
-        LEFT JOIN ( SELECT dept_id AS in_where_dept_id, NAME AS in_where_dept_name FROM sys_dept ) fd
-        ON fd.in_where_dept_id = u.flow_to_org_id
-        LEFT JOIN ( SELECT dept_id AS subordinate_dept_id, NAME AS subordinate_dept_name FROM sys_dept ) sd
-        ON sd.subordinate_dept_id = u.dept_id
-        <if test="tagTypes != null and tagTypes!=''">
-            left join tab_pb_user_tag tt on tt.user_id=u.user_id
-        </if>
-        <where>
-            <include refid="selectPageByMapWhereCaseList"/>
-        </where>
+        from sys_user u
+        inner join (
+            select u.user_id
+            <choose>
+                <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
+                <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
+                    from (select dept_id as org_id from sys_dept dept
+                    where dept.del_flag = '0'
+                      and dept.ebl_flag = '1'
+                    <if test="orgRange == 1">
+                        and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
+                    </if>
+                    <if test="orgRange == 2">
+                        and find_in_set(#{deptId}, dept.full_path)
+                    </if>
+                    ) d
+                    inner join sys_user u on u.dept_id = d.org_id
+                </when>
+                <otherwise>
+                    from sys_user u
+                </otherwise>
+            </choose>
+            <where>
+                <include refid="selectPageByMapWhereCaseList"/>
+            </where>
+            order by realname
+            limit #{index}, #{limit}
+        ) t on t.user_id = u.user_id
+        LEFT JOIN sys_dept fd ON fd.dept_id = u.flow_to_org_id
+        LEFT JOIN sys_dept sd ON sd.dept_id = u.dept_id
+        LEFT JOIN (
+            SELECT
+                ui.unit_property,
+                dd.dept_id
+            FROM sys_dept dd
+            INNER JOIN tab_pb_unit_info ui ON dd.unit_id = ui.unit_id
+            WHERE dd.del_flag = '0'
+              AND dd.ebl_flag = '1'
+              AND ui.del_flag = '0'
+        ) tt ON tt.dept_id = u.dept_id
         ORDER BY realname
     </select>
-    <!--用于复写mybatis的查询count数-->
-    <select id="selectPageByMap_COUNT" parameterType="Map" resultType="java.lang.Long">
+    <!--自定义查询count数-->
+    <select id="selectPageByMapCOUNT" resultType="java.lang.Integer">
         SELECT
         count( u.user_id )
         <choose>
@@ -490,6 +505,7 @@
             <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
                 from (select dept_id as org_id from sys_dept dept
                 where dept.del_flag = '0'
+                  and dept.ebl_flag = '1'
                 <if test="orgRange == 1">
                     and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
                 </if>
@@ -501,11 +517,9 @@
             </when>
             <otherwise>
                 from sys_user u
+                FORCE INDEX( idx_list_count )
             </otherwise>
         </choose>
-        <if test="tagTypes != null and tagTypes!='' ">
-            left join tab_pb_user_tag tt on tt.user_id=u.user_id
-        </if>
         <where>
             <include refid="selectPageByMapWhereCaseList"/>
         </where>
