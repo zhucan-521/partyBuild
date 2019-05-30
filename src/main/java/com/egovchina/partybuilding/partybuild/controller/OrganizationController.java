@@ -5,6 +5,7 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataInvalidException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
+import com.egovchina.partybuilding.common.util.PageInfoWrapper;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.OrganizationDTO;
@@ -22,10 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -45,14 +43,15 @@ public class OrganizationController {
     @GetMapping
     public PageInfo<OrganizationVO> getOrganizationList(OrganizationQueryBean queryBean, Page page) {
         List<OrganizationVO> list = organizationService.selectOrganizationVOWithCondition(queryBean, page);
+        List<OrganizationVO> organizationVOS = Collections.emptyList();
         if (queryBean.getContainsStatistics()) {
-            list = list.stream().map(organizationVO -> {
+            organizationVOS = list.stream().map(organizationVO -> {
                 ContainsStatisticsOrganizationVO containsStatisticsOrganizationVO = organizationService.linkStatisticsData(organizationVO.getDeptId());
                 BeanUtil.copyPropertiesIgnoreNull(organizationVO, containsStatisticsOrganizationVO);
                 return containsStatisticsOrganizationVO;
             }).collect(Collectors.toList());
         }
-        return new PageInfo<>(list);
+        return PageInfoWrapper.wrapper(list, organizationVOS);
     }
 
     @ApiOperation(value = "新增组织", notes = "新增组织", httpMethod = "POST")
