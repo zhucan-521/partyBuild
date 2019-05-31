@@ -29,6 +29,10 @@ public class SignInToListVO {
     @ApiModelProperty("人员姓名")
     private String realName;
 
+    @ApiModelProperty("报名时间")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date signupTime;
+
     @ApiModelProperty("签到时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date signinTime;
