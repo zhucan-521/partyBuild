@@ -98,5 +98,16 @@ public interface PartyMassesActivityService {
      * @return SignInToListVO
      */
     List<SignInToListVO> selectSignInVOListByCondition(Long partyMassesActivityId, Long signType, Page page, String realName);
+
+    /**
+     * 查询报名情况列表
+     *
+     * @param partyMassesActivityId 党群活动id
+     * @param signType              报名状态
+     * @param page                  分页
+     * @param realName              名字
+     * @return SignInToListVO
+     */
+    List<SignInToListVO> selectSignUpVOListByCondition(Long partyMassesActivityId, Long signType, Page page, String realName);
 }
 

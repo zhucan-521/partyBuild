@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbPartyMassesActivityJoinMapper">
+
+    <!-- 数据库字段对象关系映射 -->
+    <resultMap id="BaseResultMap"
+        type="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesActivityJoin">
+        <id column="id" property="id"/>
+        <result column="party_masses_activity_id" property="partyMassesActivityId"/>
+        <result column="administrative_division_id" property="administrativeDivisionId"/>
+        <result column="administrative_division_name" property="administrativeDivisionName"/>
+        <result column="del_flag" property="delFlag"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_userid" property="createUserid"/>
+        <result column="create_username" property="createUsername"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_userid" property="updateUserid"/>
+        <result column="update_username" property="updateUsername"/>
+    </resultMap>
+
+    <!-- VO对象 -->
+    <resultMap id="VoResultMap"
+        type="com.egovchina.partybuilding.partybuild.vo.PartyMassesActivityJoinVO">
+        <id column="id" property="id"/>
+        <result column="party_masses_activity_id" property="partyMassesActivityId"/>
+        <result column="administrative_division_id" property="administrativeDivisionId"/>
+        <result column="administrative_division_name" property="administrativeDivisionName"/>
+    </resultMap>
+
+    <!-- base查询字段  -->
+    <sql id="Base_Column_List">
+        <trim suffixOverrides=",">
+            id,
+            party_masses_activity_id,
+            administrative_division_id,
+            administrative_division_name,
+            del_flag,
+            create_time,
+            create_userid,
+            create_username,
+            update_time,
+            update_userid,
+            update_username,
+        </trim>
+    </sql>
+
+    <!-- vo查询字段  -->
+    <sql id="Vo_Column_List">
+        <trim suffixOverrides=",">
+            id,
+            party_masses_activity_id,
+            administrative_division_id,
+            administrative_division_name,
+        </trim>
+    </sql>
+
+    <!--新增-->
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesActivityJoin" useGeneratedKeys="true" keyProperty="id">
+        insert into tab_pb_party_masses_activity_join
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null ">
+                id,
+            </if>
+            <if test="partyMassesActivityId != null ">
+                party_masses_activity_id,
+            </if>
+            <if test="administrativeDivisionId != null ">
+                administrative_division_id,
+            </if>
+            <if test="administrativeDivisionName != null ">
+                administrative_division_name,
+            </if>
+            <if test="delFlag != null ">
+                del_flag,
+            </if>
+            <if test="createTime != null ">
+                create_time,
+            </if>
+            <if test="createUserid != null ">
+                create_userid,
+            </if>
+            <if test="createUsername != null ">
+                create_username,
+            </if>
+            <if test="updateTime != null ">
+                update_time,
+            </if>
+            <if test="updateUserid != null ">
+                update_userid,
+            </if>
+            <if test="updateUsername != null ">
+                update_username,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null">
+                #{id, jdbcType=BIGINT},
+            </if>
+            <if test="partyMassesActivityId != null">
+                #{partyMassesActivityId, jdbcType=BIGINT},
+            </if>
+            <if test="administrativeDivisionId != null">
+                #{administrativeDivisionId, jdbcType=BIGINT},
+            </if>
+            <if test="administrativeDivisionName != null">
+                #{administrativeDivisionName, jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag, jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid, jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername, jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid, jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername, jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!--根据id修改-->
+    <update id="updateById" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesActivityJoin">
+        update tab_pb_party_masses_activity_join
+        <set>
+            <if test="id != null">
+                id = #{id, jdbcType=BIGINT},
+            </if>
+            <if test="partyMassesActivityId != null">
+                party_masses_activity_id = #{partyMassesActivityId, jdbcType=BIGINT},
+            </if>
+            <if test="administrativeDivisionId != null">
+                administrative_division_id = #{administrativeDivisionId, jdbcType=BIGINT},
+            </if>
+            <if test="administrativeDivisionName != null">
+                administrative_division_name = #{administrativeDivisionName, jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag, jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                create_userid = #{createUserid, jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                create_username = #{createUsername, jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                update_userid = #{updateUserid, jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                update_username = #{updateUsername, jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <!--根据id删除-->
+    <delete id="deleteById" parameterType="long">
+        delete from tab_pb_party_masses_activity_join where id  = #{id}
+    </delete>
+
+
+    <!-- 根据id查找 -->
+	<select id="selectById" resultMap="VoResultMap" parameterType="long">
+        select <include refid="Vo_Column_List"/>
+		from tab_pb_party_masses_activity_join where id = #{id} and del_flag = '0'
+	</select>
+
+
+    <!-- base where条件  -->
+    <sql id="Base_Where_Condition">
+        <where>
+            del_flag = '0'
+          <if test="id != null">
+                and id = #{id}
+          </if>
+          <if test="partyMassesActivityId != null">
+                and party_masses_activity_id = #{partyMassesActivityId}
+          </if>
+          <if test="administrativeDivisionId != null">
+                and administrative_division_id = #{administrativeDivisionId}
+          </if>
+          <if test="administrativeDivisionName != null">
+                and administrative_division_name = #{administrativeDivisionName}
+          </if>
+        </where>
+    </sql>
+
+
+    <!--查询列表-->
+     <select id="list" resultMap="VoResultMap" parameterType="com.egovchina.partybuilding.partybuild.entity.PartyMassesActivityJoinQueryBean">
+        select <include refid="Vo_Column_List"/>
+        from tab_pb_party_masses_activity_join
+        <include refid="Base_Where_Condition"/>
+    </select>
+
+</mapper>

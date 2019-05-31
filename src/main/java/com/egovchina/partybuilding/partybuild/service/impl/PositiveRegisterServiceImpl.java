@@ -6,6 +6,7 @@ import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundExceptio
 import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.PositiveRegisterCancelDTO;
 import com.egovchina.partybuilding.partybuild.dto.PositiveRegisterDTO;
 import com.egovchina.partybuilding.partybuild.entity.PositiveRegisterQueryBean;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
@@ -32,6 +34,19 @@ import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCop
  */
 @Service("positiveRegistService")
 public class PositiveRegisterServiceImpl implements PositiveRegisterService {
+
+    /**
+     * 已报道
+     */
+    private static final byte REPORTED = 1;
+    /**
+     * 撤销
+     */
+    private static final byte CANCELED = 2;
+    /**
+     * 审核通过
+     */
+    private static final String PASS = "2";
 
     @Autowired
     private UserTagService userTagService;
@@ -49,8 +64,6 @@ public class PositiveRegisterServiceImpl implements PositiveRegisterService {
                 positiveRegisterDTO, TabPbPositiveRegist.class, false);
 
         checkRegisterPartyMemberAndRegisterOrganizationEffectivenessAndPaddingData(tabPbPositiveRegist);
-        //已报到
-        tabPbPositiveRegist.setRevokeTag(Byte.valueOf("1"));
 
         int judgment = tabPbPositiveRegistMapper.insert(tabPbPositiveRegist);
         if (judgment > 0) {
@@ -85,7 +98,7 @@ public class PositiveRegisterServiceImpl implements PositiveRegisterService {
             throw new BusinessDataCheckFailException("报到撤销时间不能小于报到时间");
         }
         TabPbPositiveRegist cancelEntity = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(positiveRegisterCancelDTO, TabPbPositiveRegist.class, true);
-        tabPbPositiveRegist.setRevokeTag(Byte.valueOf("2"));
+        tabPbPositiveRegist.setRevokeTag(CANCELED);
         int judgment = tabPbPositiveRegistMapper.updateById(cancelEntity);
         if (judgment > 0) {
             Long userId = tabPbPositiveRegist.getUserId();
@@ -130,6 +143,14 @@ public class PositiveRegisterServiceImpl implements PositiveRegisterService {
         if (!exist) {
             throw new BusinessDataNotFoundException("报到社区不存在");
         }
+        //已报到
+        tabPbPositiveRegist.setRevokeTag(REPORTED);
+        //审核人
+        tabPbPositiveRegist.setProcessMan(UserContextHolder.getUserName());
+        //审核时间
+        tabPbPositiveRegist.setProcessTime(new Date());
+        //审核结果-通过
+        tabPbPositiveRegist.setProcessResult(PASS);
     }
 
 }

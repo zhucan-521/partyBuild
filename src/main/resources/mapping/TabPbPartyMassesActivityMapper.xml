@@ -80,9 +80,8 @@
       place_id,
       ( case
       when now() &lt; start_time then 1
-      when  start_time &lt;= now() and now() &lt;= finished_time then 2
-      when finished_time &lt; now() then 3
-      else 4
+      when  start_time &lt;= now() then 2
+      else 3
       end ) as status,
       subject,
       content,
@@ -289,21 +288,21 @@
 
   <!--根据id删除-->
   <delete id="deleteById" parameterType="long">
-        delete from tab_pb_party_masses_activity where id  = #{id}
+        delete from tab_pb_party_masses_activity where party_masses_id  = #{id}
     </delete>
 
 
   <!-- 根据id查找 -->
   <select id="selectById" resultMap="VoResultMap" parameterType="long">
     select <include refid="Vo_Column_List"/>
-    from tab_pb_party_masses_activity where party_masses_activity_id = #{id} and del_flag = 0
+    from tab_pb_party_masses_activity where party_masses_activity_id = #{id} and del_flag = '0'
   </select>
 
 
   <!-- base where条件  -->
   <sql id="Base_Where_Condition">
     <where>
-      del_flag = 0
+        del_flag = '0'
       <if test="partyMassesId != null">
         and party_masses_id = #{partyMassesId}
       </if>
