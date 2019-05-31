@@ -31,7 +31,7 @@ public class PartyMassesActivityVO {
     @ApiModelProperty(value = "标题")
     private String subject;
 
-    @ApiModelProperty(value = "状态：1 报名中， 2 进行中， 3 精彩回顾， 4 未知")
+    @ApiModelProperty(value = "状态：1 报名中， 2 精彩回顾， 3 未知")
     private Long status;
 
     @ApiModelProperty(value = "内容")
