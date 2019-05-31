@@ -19,16 +19,16 @@ import java.util.List;
  * @author: WuYunJie
  * @create: 2019-05-22 15:30
  **/
-@Api(tags = "党组织-党群活动-签到-v1-吴云杰")
+@Api(tags = "党组织-党群活动-报名签到-v1-吴云杰")
 @RestController
-@RequestMapping("/v1/party-masses-sign-ins")
+@RequestMapping("/v1/party-masses-register")
 public class PartyMassesActivityInSignController {
 
     @Autowired
     private PartyMassesActivityService partyMassesActivityService;
 
     @ApiOperation(value = "签到情况列表", notes = "签到情况详情", httpMethod = "GET")
-    @GetMapping
+    @GetMapping("/sign-ins")
     public PageInfo<SignInToListVO> selectBySignInToListVO(@RequestParam @ApiParam(value = "党群活动ID", required = true) Long partyMassesActivityId,
                                                            @RequestParam(required = false) @ApiParam(value = "签到状态 1 已签到； 2 未签到") Long signType,
                                                            @RequestParam(required = false) @ApiParam(value = "名字") String realName,
@@ -37,8 +37,18 @@ public class PartyMassesActivityInSignController {
         return new PageInfo<>(list);
     }
 
+    @ApiOperation(value = "报名情况列表", notes = "报名情况详情", httpMethod = "GET")
+    @GetMapping("/sign-up")
+    public PageInfo<SignInToListVO> selectBySignUpToListVO(@RequestParam @ApiParam(value = "党群活动ID", required = true) Long partyMassesActivityId,
+                                                           @RequestParam(required = false) @ApiParam(value = "报名状态 1 已报名； 2 未报名") Long signType,
+                                                           @RequestParam(required = false) @ApiParam(value = "名字") String realName,
+                                                           Page page) {
+        List<SignInToListVO> list = partyMassesActivityService.selectSignUpVOListByCondition(partyMassesActivityId, signType, page, realName);
+        return new PageInfo<>(list);
+    }
+
     @ApiOperation(value = "签到变更", notes = "已签到会取消签到记录，未签到的会将当前时间作为签到时间", httpMethod = "PUT")
-    @PutMapping
+    @PutMapping("/change")
     public ReturnEntity updateSignIn(@RequestBody @Validated SignInDTO signInDTO) {
         return ReturnUtil.buildReturn(partyMassesActivityService.updateSignIn(signInDTO));
     }

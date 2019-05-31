@@ -4,7 +4,7 @@
 
     <!-- 数据库字段对象关系映射 -->
     <resultMap id="BaseResultMap"
-        type="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesParticipant">
+               type="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesParticipant">
         <result column="participant_id" property="participantId"/>
         <result column="party_masses_activity_id" property="partyMassesActivityId"/>
         <result column="user_id" property="userId"/>
@@ -54,7 +54,7 @@
 
     <!-- VO对象 -->
     <resultMap id="VoResultMap"
-        type="com.egovchina.partybuilding.partybuild.vo.PartyMassesParticipantVO">
+               type="com.egovchina.partybuilding.partybuild.vo.PartyMassesParticipantVO">
         <result column="participant_id" property="participantId"/>
         <result column="party_masses_activity_id" property="partyMassesActivityId"/>
         <result column="user_id" property="userId"/>
@@ -172,9 +172,10 @@
     </sql>
 
     <!--新增-->
-    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesParticipant" useGeneratedKeys="true" keyProperty="participantId">
+    <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesParticipant"
+            useGeneratedKeys="true" keyProperty="participantId">
         insert into tab_pb_party_masses_participant
-        <trim prefix="(" suffix=")" suffixOverrides="," >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="participantId != null ">
                 participant_id,
             </if>
@@ -311,7 +312,7 @@
                 sign_in_state,
             </if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="participantId != null">
                 #{participantId, jdbcType=BIGINT},
             </if>
@@ -601,19 +602,19 @@
     </update>
     <update id="updateSignIn">
         UPDATE tab_pb_party_masses_participant
-            SET signin_time =
-            CASE WHEN signin_time IS NULL THEN
-            now( )
-            ELSE NULL END,
-            sign_in_state=
-            CASE WHEN sign_in_state IS NULL THEN
-            1
-            ELSE null END
+        SET signin_time =
+        CASE WHEN signin_time IS NULL THEN
+        now( )
+        ELSE NULL END,
+        sign_in_state=
+        CASE WHEN sign_in_state IS NULL THEN
+        1
+        ELSE null END
         WHERE party_masses_activity_id = #{partyMassesActivityId}
-            AND participant_id in
-            <foreach collection="participantIds" item="item" open="(" separator="," close=")">
-                ${item}
-            </foreach>
+        AND participant_id in
+        <foreach collection="participantIds" item="item" open="(" separator="," close=")">
+            ${item}
+        </foreach>
     </update>
 
     <!--根据id删除-->
@@ -623,10 +624,11 @@
 
 
     <!-- 根据id查找 -->
-	<select id="selectById" resultMap="VoResultMap" parameterType="long">
-        select <include refid="Vo_Column_List"/>
-		from tab_pb_party_masses_participant where participant_id = #{id}
-	</select>
+    <select id="selectById" resultMap="VoResultMap" parameterType="long">
+        select
+        <include refid="Vo_Column_List"/>
+        from tab_pb_party_masses_participant where participant_id = #{id}
+    </select>
 
 
     <!-- base where条件  -->
@@ -739,8 +741,10 @@
 
 
     <!--查询列表-->
-     <select id="list" resultMap="VoResultMap" parameterType="com.egovchina.partybuilding.partybuild.entity.PartyMassesParticipantQueryBean">
-        select <include refid="Vo_Column_List"/>
+    <select id="list" resultMap="VoResultMap"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.PartyMassesParticipantQueryBean">
+        select
+        <include refid="Vo_Column_List"/>
         from tab_pb_party_masses_participant
         <include refid="Base_Where_Condition"/>
     </select>
@@ -765,6 +769,7 @@
         p.user_id,
         p.real_name,
         u.id_card_no,
+        p.signup_time,
         p.signin_time,
         p.sign_in_state,
         d.name
@@ -782,6 +787,36 @@
                 </when>
                 <when test="signType == 2">
                     AND p.signin_time is null
+                </when>
+            </choose>
+        </if>
+        <if test="realName != null and realName != ''">
+            and p.real_name like CONCAT('%',#{realName},'%')
+        </if>
+    </select>
+    <select id="selectBySignUpList" resultType="com.egovchina.partybuilding.partybuild.vo.SignInToListVO">
+        SELECT
+        DISTINCT
+        p.participant_id,
+        p.user_id,
+        p.real_name,
+        u.id_card_no,
+        p.signup_time,
+        d.name
+        FROM
+        tab_pb_party_masses_participant p
+        LEFT JOIN sys_user u ON p.user_id = u.user_id
+        LEFT JOIN sys_dept d ON d.dept_id =u.dept_id
+        WHERE
+        p.party_masses_activity_id = #{partyMassesActivityId}
+        AND p.del_flag = 0 and p.absent_reason = 0
+        <if test="signType != null and signType != ''">
+            <choose>
+                <when test="signType == 1">
+                    AND p.signup_time is NOT NULL
+                </when>
+                <when test="signType == 2">
+                    AND p.signup_time is null
                 </when>
             </choose>
         </if>
