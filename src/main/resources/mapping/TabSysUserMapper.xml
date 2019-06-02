@@ -336,80 +336,77 @@
     </sql>
     <!--根据条件查询列表WhereCaseList-->
     <sql id="selectPageByMapWhereCaseList">
+        AND u.ebl_flag = '1'
+        AND u.del_flag = '0'
         <if test="username != null">
-            AND realname like concat('%', #{username}, '%')
+            AND realname LIKE concat('%', #{username}, '%')
         </if>
         <if test="orgRange == null and deptId != null">
             AND u.dept_id = #{deptId}
         </if>
-        AND u.ebl_flag = '1'
-        and u.del_flag ='0'
         <if test="idCardNo != null and idCardNo != ''">
             AND id_card_no = #{idCardNo}
         </if>
         <if test="identityType != null and identityType != ''">
-            and identity_type=#{identityType}
-        </if>
-        <if test="identityType == null ">
-            and identity_type IN ( 223, 224 )
+            AND identity_type = #{identityType}
         </if>
         <if test="registryStatus != null and registryStatus != ''">
-            and find_in_set(registry_status, #{registryStatus})
+            AND u.registry_status IN (${registryStatus})
         </if>
         <if test="education != null and education != ''">
-            and find_in_set(education, #{education})
+            AND u.education IN (${education})
         </if>
         <if test="maritalStatus != null and maritalStatus != ''">
-            and find_in_set(marital_status, #{maritalStatus})
+            AND u.marital_status IN (${maritalStatus})
         </if>
         <if test="nation != null and nation != ''">
-            and find_in_set(nation, #{nation})
+            AND u.nation IN (${nation})
         </if>
         <if test="unitProperty != null and unitProperty!=''">
-            AND EXISTS (
-              SELECT 1 FROM sys_dept d INNER JOIN tab_pb_unit_info ui ON d.unit_id = ui.unit_id
+            AND u.dept_id IN (
+                SELECT d.dept_id
+                FROM sys_dept d
+                INNER JOIN tab_pb_unit_info ui ON d.unit_id = ui.unit_id
                 WHERE d.del_flag = '0'
-                  AND d.ebl_flag = '1'
-                 AND ui.del_flag = '0'
-                 AND find_in_set(ui.unit_property , #{unitProperty})
-                 AND u.dept_id = d.dept_id
+                    AND d.ebl_flag = '1'
+                    AND ui.del_flag = '0'
+                    AND ui.unit_property IN (${unitProperty})
             )
         </if>
         <if test="ageBegin != null">
-            and TIMESTAMPDIFF(YEAR,birthday,CURDATE())>= #{ageBegin}
+            AND TIMESTAMPDIFF(YEAR,birthday,CURDATE())>= #{ageBegin}
         </if>
         <if test="ageEnd != null">
-            and TIMESTAMPDIFF(YEAR,birthday,CURDATE())&lt;= #{ageEnd}
+            AND TIMESTAMPDIFF(YEAR,birthday,CURDATE())&lt;= #{ageEnd}
         </if>
         <if test="joinTimeBegin != null">
-            and join_time > #{joinTimeBegin}
+            AND join_time > #{joinTimeBegin}
         </if>
         <if test="joinTimeEnd != null">
-            and join_time &lt; #{joinTimeEnd}
+            AND join_time &lt; #{joinTimeEnd}
         </if>
         <if test="flowStatus != null and flowStatus == 0">
-            and flow_status = 0
+            AND flow_status = 0
         </if>
         <if test="flowStatus != null and flowStatus == 1">
-            and flow_status > 0
+            AND flow_status > 0
         </if>
         <if test="gender != null">
-            and find_in_set(gender, #{gender})
+            AND u.gender IN (${gender})
         </if>
         <if test="isPoor != null">
-            and find_in_set(IFNULL(is_poor,'0'), #{isPoor})
+            AND u.is_poor IN (${isPoor})
         </if>
         <if test="isLlost != null">
-            and find_in_set(IFNULL(is_llost,'0'), #{isLlost})
+            AND u.is_llost IN (${isLlost})
         </if>
         <if test="isTaiwaner != null">
-            and find_in_set(IFNULL(is_taiwaner,'0'), #{isTaiwaner})
+            AND u.is_taiwaner IN (${isTaiwaner})
         </if>
         <if test="tagTypes != null and tagTypes != ''">
-            and exists (
-              select 1 from tab_pb_user_tag tt
-              where tt.user_id = u.user_id
-                and find_in_set( tt.tag_type , #{tagTypes})
+            AND u.user_id IN (
+                SELECT tt.user_id FROM tab_pb_user_tag tt
+                WHERE tt.tag_type IN (${tagTypes})
             )
         </if>
     </sql>
@@ -517,13 +514,11 @@
             </when>
             <otherwise>
                 from sys_user u
-                FORCE INDEX( idx_list_count )
             </otherwise>
         </choose>
         <where>
             <include refid="selectPageByMapWhereCaseList"/>
         </where>
-        ORDER BY realname
     </select>
 
     <insert id="insertSelective" useGeneratedKeys="true" keyProperty="userId"
