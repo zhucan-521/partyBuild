@@ -230,5 +230,10 @@ public interface TabSysUserMapper {
 
     int selectPartyMemberChooseVOListCountByQueryBean(PartyMemberChooseQueryBean queryBean);
 
+    /**
+     * 根据身份证查询指定信息
+     * @param idCardNo
+     * @return
+     */
     PartyMemberChooseVO selectPartyMemberChooseVOByIdCardNo(String idCardNo);
 }
