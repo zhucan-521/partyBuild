@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
+import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
@@ -28,7 +29,11 @@ public class MessageSendVO {
     @ApiModelProperty("发送者名称")
     private String senderName;
 
+    @ApiModelProperty("消息接收者id")
+    private Long receiverId;
+
     @ApiModelProperty("消息类别")
+    @JsonSerialize(using = DictSerializer.class)
     private Long type;
 
     @ApiModelProperty("消息标题")
@@ -40,5 +45,11 @@ public class MessageSendVO {
     @ApiModelProperty("发送时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date sendTime;
+
+    @ApiModelProperty("消息接受状态，是否已读(0 未读  1 已读)")
+    private Byte receiveStatus;
+
+    @ApiModelProperty("接受类型者 0 个人 1 组织")
+    private Byte receiverType;
 
 }

@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.partybuild.entity.StationNewsQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMessageReceive;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMessageSend;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamExpireVO;
@@ -112,10 +113,10 @@ public interface TabPbMessageMapper {
     /**
      * 获取某个党员在某个组织下的消息列表
      *
-     * @param receiverOrgId 接收组织id
+     * @param stationNewsQueryBean 查询参数
      * @return
      */
-    List<MessageSendVO> selectOrgMessageSendVOList(@Param("receiverOrgId") Long receiverOrgId);
+    List<MessageSendVO> selectOrgMessageSendVOList(StationNewsQueryBean stationNewsQueryBean);
 
     /**
      * 判断接收者id在数据库中是否存在
@@ -131,4 +132,20 @@ public interface TabPbMessageMapper {
      */
     boolean checkReceiverOrgIdIfExist(List<Long> list);
 
+    /**
+     * 根据发送id和接收者id查询消息接收表实体
+     *
+     * @param sendId     发送id
+     * @param receiverId 接收者id
+     * @return
+     */
+    TabPbMessageReceive selectTabPbMessageReceiveBySendIdAndReceiverId(@Param("sendId") Long sendId, @Param("receiverId") Long receiverId);
+
+    /**
+     * 更新消息接收状态
+     *
+     * @param sendId     发送id
+     * @param receiverId 接收者id
+     */
+    void updateTabPbMessageReceiveBySendIdAndReceiverId(@Param("sendId") Long sendId, @Param("receiverId") Long receiverId);
 }

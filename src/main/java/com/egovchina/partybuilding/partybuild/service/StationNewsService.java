@@ -3,6 +3,7 @@ package com.egovchina.partybuilding.partybuild.service;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.dto.MessageAddDTO;
 import com.egovchina.partybuilding.partybuild.dto.MessageUpdateDTO;
+import com.egovchina.partybuilding.partybuild.entity.StationNewsQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.MessageSendVO;
 
 import java.util.List;
@@ -25,9 +26,10 @@ public interface StationNewsService {
      * 查看站内消息
      *
      * @param sendId 消息发送id
+     * @param receiverId 消息接收者id
      * @return
      */
-    MessageSendVO getMessageSendVO(Long sendId);
+    MessageSendVO getMessageSendVO(Long sendId, Long receiverId);
 
     /**
      * 党员获取自己能够看到的消息列表
@@ -49,8 +51,9 @@ public interface StationNewsService {
     /**
      * 获取某个党员在某个组织下的消息列表
      * @param page  分页参数
-     * @param receiverOrgId 接收组织id
+     * @param stationNewsQueryBean 查询参数
      * @return
      */
-    List<MessageSendVO> getOrgMessageSendList(Page page, Long receiverOrgId);
+    List<MessageSendVO> getOrgMessageSendList(Page page, StationNewsQueryBean stationNewsQueryBean);
+
 }
