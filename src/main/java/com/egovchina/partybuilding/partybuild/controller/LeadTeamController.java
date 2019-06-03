@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
@@ -31,6 +32,7 @@ public class LeadTeamController {
     private LeadTeamService leadTeamService;
 
     @ApiOperation(value = "领导班子列表", notes = "领导班子列表", httpMethod = "GET")
+    @HasPermission("party_leadershipTeam")
     @GetMapping
     public PageInfo<LeadTeamVO> getLeadTeamList(@Validated LeadTeamQueryBean queryBean, Page page) {
         List<LeadTeamVO> list = leadTeamService.selectLeadTeamVOByCondition(queryBean, page);
@@ -38,12 +40,14 @@ public class LeadTeamController {
     }
 
     @ApiOperation(value = "新增领导班子", notes = "新增领导班子", httpMethod = "POST")
+    @HasPermission("party_leadershipTeam_add")
     @PostMapping
     public ReturnEntity insertLeadTeam(@ApiParam(value = "班子信息") @RequestBody @Validated LeadTeamDTO leadTeamDTO) {
         return ReturnUtil.buildReturn(leadTeamService.insertLeadTeam(leadTeamDTO));
     }
 
     @ApiOperation(value = "修改领导班子", notes = "修改领导班子", httpMethod = "PUT")
+    @HasPermission("party_leadershipTeam_edit")
     @PutMapping
     public ReturnEntity updateLeadTeam(@ApiParam(value = "班子信息") @RequestBody @Validated LeadTeamDTO leadTeamDTO) {
         return ReturnUtil.buildReturn(leadTeamService.updateLeadTeam(leadTeamDTO));
@@ -51,6 +55,7 @@ public class LeadTeamController {
 
     @ApiOperation(value = "领导班子详情", notes = "查看单个领导班子详情", httpMethod = "GET")
     @ApiImplicitParam(value = "班子id", name = "leadTeamId", dataType = "long", paramType = "path", required = true)
+    @HasPermission("party_leadershipTeam_examine")
     @GetMapping("/{leadTeamId}")
     public LeadTeamVO getLeadTeam(@PathVariable Long leadTeamId) {
         return leadTeamService.selectLeadTeamVOById(leadTeamId);
@@ -58,6 +63,7 @@ public class LeadTeamController {
 
     @ApiOperation(value = "删除单个领导班子", notes = "删除单个领导班子-蒋安", httpMethod = "DELETE")
     @ApiImplicitParam(value = "领导班子id", name = "leadTeamId", dataType = "long", paramType = "path", required = true)
+    @HasPermission("party_leadershipTeam_del")
     @DeleteMapping("/{leadTeamId}")
     public ReturnEntity deleteLeadTeam(@PathVariable Long leadTeamId) {
         return ReturnUtil.buildReturn(leadTeamService.logicDeleteLeadTeamById(leadTeamId));

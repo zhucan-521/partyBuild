@@ -176,6 +176,9 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
      */
     @Override
     public int editMsgNoticeState(Long id, String state) {
+        if (tabPbMsgNoticeDeptMapper.checkWhetherPublish(id)) {
+            throw new BusinessDataIncompleteException("已经有下级签收了，无法取消发布");
+        }
         TabPbMsgNotice tabPbMsgNotice = new TabPbMsgNotice();
         tabPbMsgNotice.setPublishTime(new Date());
         tabPbMsgNotice.setId(id);

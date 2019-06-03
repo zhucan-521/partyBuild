@@ -75,4 +75,12 @@ public interface TabPbMsgNoticeDeptMapper {
      */
     List<TabPbMsgNoticeDept> getMsgNoticeDeptListByNoticeId(Long noticeId);
 
+    /**
+     * 检查文件发布是否有接受党组织签收
+     *
+     * @param id 文件Id
+     * @return
+     */
+    boolean checkWhetherPublish(Long id);
+
 }

@@ -20,9 +20,9 @@ public class TabPbPartyMassesMatter {
     private Long partyMassesId;
 
     /**
-     * 服务类型 字典
+     * 服务名称
      */
-    private Long serviceType;
+    private String serviceName;
 
     /**
      * 内容
@@ -35,9 +35,24 @@ public class TabPbPartyMassesMatter {
     private Long crowd;
 
     /**
+     * 联系人
+     */
+    private String contact;
+
+    /**
      * 电话
      */
     private String tel;
+
+    /**
+     * 地址
+     */
+    private String address;
+
+    /**
+     * 封面图
+     */
+    private String cover;
 
     /**
      * 有效标记

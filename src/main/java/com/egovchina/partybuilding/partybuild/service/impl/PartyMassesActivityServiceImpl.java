@@ -70,7 +70,7 @@ public class PartyMassesActivityServiceImpl implements PartyMassesActivityServic
         result += tabPbPartyMassesActivityMapper.insert(partyMassesActivity);
         result += tabPbAttachmentService.intelligentOperation(
                 partyMassesActivityDTO.getAttachments(),
-                partyMassesActivity.getPartyMassesActivityId(), AttachmentType.PARTY_MASSES);
+                partyMassesActivity.getPartyMassesActivityId(), AttachmentType.PARTY_MASSES_ACTIVITY);
         return result;
     }
 
@@ -91,7 +91,7 @@ public class PartyMassesActivityServiceImpl implements PartyMassesActivityServic
         int result = 0;
         result += tabPbAttachmentService.intelligentOperation(
                 partyMassesActivityDTO.getAttachments(),
-                partyMassesActivity.getPartyMassesActivityId(), AttachmentType.PARTY_MASSES);
+                partyMassesActivity.getPartyMassesActivityId(), AttachmentType.PARTY_MASSES_ACTIVITY);
         result += tabPbPartyMassesActivityMapper.updateById(partyMassesActivity);
         return result;
     }
@@ -214,6 +214,21 @@ public class PartyMassesActivityServiceImpl implements PartyMassesActivityServic
     public List<SignInToListVO> selectSignInVOListByCondition(Long partyMassesActivityId, Long signType, Page page, String realName) {
         PageHelper.startPage(page);
         return tabPbPartyMassesParticipantMapper.selectByCheckInList(partyMassesActivityId, signType, realName);
+    }
+
+    /**
+     * 查询报名情况列表
+     *
+     * @param partyMassesActivityId 党群活动id
+     * @param signType              报名状态
+     * @param page                  分页
+     * @param realName              名字
+     * @return SignInToListVO
+     */
+    @Override
+    public List<SignInToListVO> selectSignUpVOListByCondition(Long partyMassesActivityId, Long signType, Page page, String realName) {
+        PageHelper.startPage(page);
+        return tabPbPartyMassesParticipantMapper.selectBySignUpList(partyMassesActivityId, signType, realName);
     }
 }
 

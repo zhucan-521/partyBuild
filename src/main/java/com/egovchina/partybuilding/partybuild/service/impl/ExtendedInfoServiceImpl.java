@@ -10,8 +10,10 @@ import com.egovchina.partybuilding.partybuild.dto.MembershipDTO;
 import com.egovchina.partybuilding.partybuild.dto.UpdateHistoryDTO;
 import com.egovchina.partybuilding.partybuild.entity.TabPbAbroad;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList;
+import com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroupMember;
 import com.egovchina.partybuilding.partybuild.repository.TabPbAbroadMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMemberReduceListMapper;
+import com.egovchina.partybuilding.partybuild.repository.TabPbPartyGroupMemberMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
 import com.egovchina.partybuilding.partybuild.util.CommonConstant;
@@ -42,6 +44,9 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
 
     @Autowired
     private TabPbAbroadMapper tabPbAbroadMapper;
+
+    @Autowired
+    private TabPbPartyGroupMemberMapper tabPbPartyGroupMemberMapper;
 
     //停止党籍 党籍状态
     private final Long STOP_PARTY_MEMBERSHIP = 59328L;
@@ -131,6 +136,10 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
                 PaddingBaseFieldUtil.paddingBaseFiled(tabPbAbroad);
                 flag += tabPbAbroadMapper.insertSelective(tabPbAbroad);
             }
+            // 移出党小组
+            TabPbPartyGroupMember tabPbPartyGroupMember = new TabPbPartyGroupMember().setUserId(sysUser.getUserId()).setDelFlag(1);
+            PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbPartyGroupMember);
+            flag += tabPbPartyGroupMemberMapper.updateByPrimaryKeySelective(tabPbPartyGroupMember);
             //添加一条党籍
             membershipDTO.setUserId(reduce.getUserId()).setIdentityType(sysUser.getIdentityType()).setType(user.getRegistryStatus());
             flag += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);

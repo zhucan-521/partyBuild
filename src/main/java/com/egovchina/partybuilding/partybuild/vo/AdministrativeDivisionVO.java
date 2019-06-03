@@ -28,7 +28,7 @@ public class AdministrativeDivisionVO {
     @ApiModelProperty(value = "上级行政区划id")
     private Long parentId;
 
-    @ApiModelProperty(value = "层级")
+    @ApiModelProperty(value = "层级 字典码值 XZQHJB")
     @JsonSerialize(using = DictSerializer.class)
     private Long level;
 

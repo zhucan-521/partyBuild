@@ -1,13 +1,10 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.common.entity.Profile;
 import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
-import com.egovchina.partybuilding.common.util.PageInfoWrapper;
-import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.*;
 import com.egovchina.partybuilding.partybuild.entity.*;
 import com.egovchina.partybuilding.partybuild.repository.*;
@@ -70,21 +67,24 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     private final String RANGE_STATE_SUBORDINATE = "2";
 
     @Override
-    public UserInfoVO getUserInfoVO() {
-        Profile profile = UserContextHolder.currentUser();
-        UserInfoVO sysUser = new UserInfoVO();
-        sysUser.setUserId(profile.getUserId());
-        sysUser.setDeptId(profile.getDeptId());
-        sysUser.setPhone(profile.getPhone());
-        sysUser.setUsername(profile.getRealname());
-        sysUser.setManageDeptId(profile.getManageDeptId());
-        return sysUser;
-    }
-
-    @Override
-    public List<PartyMemberChooseVO> selectPartyMemberChooseVOListByQueryBean(PartyMemberChooseQueryBean queryBean, Page page) {
-        PageHelper.startPage(page);
-        return tabSysUserMapper.selectPartyMemberChooseVOListByQueryBean(queryBean);
+    public PageInfo<PartyMemberChooseVO> selectPartyMemberChooseVOListByQueryBean(PartyMemberChooseQueryBean queryBean, Page page) {
+        String orgId = String.valueOf(queryBean.getOrgId());
+        String orgRange = String.valueOf(queryBean.getOrgRange()); // 2 包含所有下级
+        if (ORG_ID.equals(orgId) && RANGE_STATE_SUBORDINATE.equals(orgRange)) {
+            queryBean.setOrgRange(RANGE_STATE_LEVEL);
+        }
+        Long pageSize = page.getPageSize();
+        long index = (page.getPageNum() - 1) * pageSize;
+        if (index < 0) {
+            index = 0L;
+        }
+        queryBean.setIndex(index);
+        queryBean.setLimit(pageSize);
+        List<PartyMemberChooseVO> partyMemberChooseVOS = tabSysUserMapper.selectPartyMemberChooseVOListByQueryBean(queryBean);
+        int count = tabSysUserMapper.selectPartyMemberChooseVOListCountByQueryBean(queryBean);
+        PageInfo<PartyMemberChooseVO> pageInfo = new PageInfo<>(partyMemberChooseVOS);
+        pageInfo.setTotal(count);
+        return pageInfo;
     }
 
     /**
@@ -410,10 +410,20 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         if (ORG_ID.equals(deptId) && RANGE_STATE_SUBORDINATE.equals(orgRange)) {
             queryBean.setOrgRange(RANGE_STATE_LEVEL);
         }
-        PageHelper.startPage(page);
+//        PageHelper.startPage(page);
+        Long pageSize = page.getPageSize();
+        long index = (page.getPageNum() - 1) * pageSize;
+        if (index < 0) {
+            index = 0L;
+        }
+        queryBean.setIndex(index);
+        queryBean.setLimit(pageSize);
         List<SystemDetailsVO> systemDetailsVO = tabSysUserMapper.selectPageByMap(queryBean);
+        int count = tabSysUserMapper.selectPageByMapCOUNT(queryBean);
         List<PartyMemberInformationVO> partyMemberInformationVOS = calculationComplete(systemDetailsVO);
-        return PageInfoWrapper.wrapper(systemDetailsVO, partyMemberInformationVOS);
+        PageInfo<PartyMemberInformationVO> pageInfo = new PageInfo<>(partyMemberInformationVOS);
+        pageInfo.setTotal(count);
+        return pageInfo;
     }
 
     //检查id是否存在

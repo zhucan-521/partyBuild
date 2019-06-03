@@ -10,6 +10,8 @@
     <result column="capacity" property="capacity"/>
     <result column="open_day" property="openDay"/>
     <result column="open_time_period" property="openTimePeriod"/>
+    <result column="tel" property="tel"/>
+    <result column="contact" property="contact"/>
     <result column="address" property="address"/>
     <result column="cover" property="cover"/>
     <result column="content" property="content"/>
@@ -35,6 +37,8 @@
     <result column="capacity" property="capacity"/>
     <result column="open_day" property="openDay"/>
     <result column="open_time_period" property="openTimePeriod"/>
+    <result column="tel" property="tel"/>
+    <result column="contact" property="contact"/>
     <result column="address" property="address"/>
     <result column="cover" property="cover"/>
     <result column="content" property="content"/>
@@ -49,6 +53,8 @@
       capacity,
       open_day,
       open_time_period,
+      tel,
+      contact,
       address,
       content,
       cover,
@@ -75,6 +81,8 @@
       capacity,
       open_day,
       open_time_period,
+      tel,
+      contact,
       address,
       cover,
       content,
@@ -102,6 +110,12 @@
       </if>
       <if test="openTimePeriod != null ">
         open_time_period,
+      </if>
+      <if test="tel != null">
+        tel,
+      </if>
+      <if test="contact != null">
+        contact,
       </if>
       <if test="address != null ">
         address,
@@ -164,6 +178,12 @@
       </if>
       <if test="openTimePeriod != null">
         #{openTimePeriod, jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        #{tel, jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        #{contact,jdbcType=VARCHAR},
       </if>
       <if test="address != null">
         #{address, jdbcType=VARCHAR},
@@ -228,6 +248,12 @@
       </if>
       <if test="openTimePeriod != null">
         open_time_period = #{openTimePeriod, jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null">
+        tel = #{tel, jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null">
+        contact = #{contact,jdbcType=VARCHAR},
       </if>
       <if test="address != null">
         address = #{address, jdbcType=VARCHAR},

@@ -66,7 +66,8 @@ public interface TabPbPartyMassesParticipantMapper {
      * @author WuYunJie
      * @date 2019/05/22 10:17:23
      */
-    List<PartyMassesParticipantVO> list(PartyMassesParticipantQueryBean tabPbPartyMassesParticipantQueryBean);
+    List<PartyMassesParticipantVO> list(
+            PartyMassesParticipantQueryBean tabPbPartyMassesParticipantQueryBean);
 
     /**
      * 判断是否在人员表中
@@ -87,7 +88,8 @@ public interface TabPbPartyMassesParticipantMapper {
      * @auther WuYunJie
      * @date 2019/5/22 16:24
      */
-    int updateParticipantCheckInTime(@Param("userId") Long userId, @Param("partyMassesActivityId") Long partyMassesActivityId);
+    int updateParticipantCheckInTime(
+            @Param("userId") Long userId, @Param("partyMassesActivityId") Long partyMassesActivityId);
 
     /**
      * 查看活动已签到人员跟未签到人的姓名
@@ -97,7 +99,9 @@ public interface TabPbPartyMassesParticipantMapper {
      * @param realName              姓名
      * @return List<SignInToListVO>
      */
-    List<SignInToListVO> selectByCheckInList(@Param("partyMassesActivityId") Long partyMassesActivityId, @Param("signType") Long signType, @Param("realName") String realName);
+    List<SignInToListVO> selectByCheckInList(
+            @Param("partyMassesActivityId") Long partyMassesActivityId,
+            @Param("signType") Long signType, @Param("realName") String realName);
 
     /**
      * 修改签到状态
@@ -106,5 +110,19 @@ public interface TabPbPartyMassesParticipantMapper {
      * @param participantIds        修改id集合
      * @return int
      */
-    int updateSignIn(@Param("partyMassesActivityId") Long partyMassesActivityId, @Param("participantIds") List<Long> participantIds);
+    int updateSignIn(
+            @Param("partyMassesActivityId") Long partyMassesActivityId,
+            @Param("participantIds") List<Long> participantIds);
+
+    /**
+     * 查看活动已报名人员跟未报名人的姓名
+     *
+     * @param partyMassesActivityId 党群活动id
+     * @param signType              报名状态
+     * @param realName              姓名
+     * @return List<SignInToListVO>
+     */
+    List<SignInToListVO> selectBySignUpList(
+            @Param("partyMassesActivityId") Long partyMassesActivityId,
+            @Param("signType") Long signType, @Param("realName") String realName);
 }

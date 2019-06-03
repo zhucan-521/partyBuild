@@ -184,8 +184,7 @@
   </update>
 
     <!-- 根据党小组ID获取该小组下所有成员详细信息 -->
-    <select id="selectPartyGroupMembersDetailsInfoByGroupId" parameterType="java.lang.Long"
-            resultMap="PartyGroupMemberVOResultMap">
+    <select id="selectPartyGroupMembersDetailsInfoByGroupId" parameterType="java.lang.Long" resultMap="PartyGroupMemberVOResultMap">
         SELECT
             gm.member_id,
             gm.user_id,
@@ -253,6 +252,11 @@
                 ( SELECT 1 FROM tab_pb_party_group_member pgm WHERE su.user_id = pgm.user_id AND pgm.del_flag = 0 )
             </otherwise>
         </choose>
+    </select>
+
+    <!-- 查询党小组总人数 -->
+    <select id="totalMembers" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM tab_pb_party_group_member WHERE group_id = #{groupId} AND del_flag = 0
     </select>
 
 </mapper>

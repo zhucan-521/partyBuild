@@ -41,9 +41,11 @@ public class SysUserVO {
     @JsonSerialize(using = DictSerializer.class)
     private Long nation;
 
-    @ApiModelProperty(value = "居住地所在社区   码表值XZQH")
-    @JsonSerialize(using = DictSerializer.class)
+    @ApiModelProperty(value = "居住地所在社区id")
     private Long communityAddr;
+
+    @ApiModelProperty(value = "居住地所在社区名字")
+    private String communityAddrName;
 
     @ApiModelProperty(value = "头像")
     private String avatar;
