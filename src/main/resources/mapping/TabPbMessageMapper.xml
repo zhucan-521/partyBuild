@@ -186,11 +186,14 @@
         WHERE
             r.receiver_id = #{receiverId}
             AND s.del_flag = 0
-            <if test="sendTime != null and sendTime != ''">
-                AND date_format(s.send_time, '%Y-%m-%d') = #{sendTime}
+            <if test="sendTimeStart != null">
+                AND date_format(s.send_time, '%Y-%m-%d') >= #{sendTimeStart}
+            </if>
+            <if test="sendTimeEnd != null">
+                AND date_format(s.send_time, '%Y-%m-%d') &lt;= #{sendTimeEnd}
             </if>
             <if test="title != null and title != ''">
-                AND s.title = #{title}
+                AND s.title LIKE CONCAT('%', #{title}, '%')
             </if>
             <if test="type != null and type != ''">
                 AND s.type = #{type}
