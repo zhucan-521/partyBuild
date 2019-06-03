@@ -2,8 +2,12 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysDept;
+import com.egovchina.partybuilding.common.exception.BusinessDataInvalidException;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
-import com.egovchina.partybuilding.common.util.*;
+import com.egovchina.partybuilding.common.util.AttachmentType;
+import com.egovchina.partybuilding.common.util.CollectionUtil;
+import com.egovchina.partybuilding.common.util.CommonConstant;
+import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.OrganizationDTO;
 import com.egovchina.partybuilding.partybuild.dto.OrganizationPositionDTO;
 import com.egovchina.partybuilding.partybuild.dto.UnitInfoDTO;
@@ -35,6 +39,7 @@ import java.util.stream.Collectors;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField;
+import static com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled;
 import static com.egovchina.partybuilding.common.util.RedisKeyConstant.ORGANIZATION_COUNT_PARTY_MAN;
 import static com.egovchina.partybuilding.common.util.RedisKeyConstant.ORGANIZATION_LIST_FOR_PARENT;
 
@@ -117,6 +122,13 @@ public class OrganizationServiceImpl implements OrganizationService {
         //维护组织表单位及 full_path
         modifyFullPathAndSubDeptIfNecessary(sysDept);
         tabSysDeptMapper.updateByPrimaryKeySelective(sysDept);
+        //维护上级为父组织
+        SysDept parentSysDept = tabSysDeptMapper.selectByPrimaryKey(sysDept.getParentId());
+        if (CommonConstant.ISNOTPARENTORG.equals(parentSysDept.getIsParent())) {
+            parentSysDept.setIsParent((byte) 1);
+            paddingUpdateRelatedBaseFiled(parentSysDept);
+            tabSysDeptMapper.updateByPrimaryKeySelective(parentSysDept);
+        }
         return judgment;
     }
 
@@ -162,7 +174,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         SysDept update = new SysDept();
         update.setDeptId(orgId);
         update.setDelFlag(CommonConstant.STATUS_DEL);
-        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(update);
+        paddingUpdateRelatedBaseFiled(update);
         int judgment = 0;
         //删除已有标签
         judgment += orgTagService.batchUpdateOrgTagByOrgId(orgId);
@@ -213,6 +225,10 @@ public class OrganizationServiceImpl implements OrganizationService {
         //编辑后不是支部就把已有标签删除
         if (!sysDept.ifBranch()) {
             judgment += orgTagService.batchUpdateOrgTagByOrgId(organizationDTO.getDeptId());
+        } else {
+            if (CommonConstant.ISPARENTORG.equals(tabSysDeptMapper.selectByPrimaryKey(organizationDTO.getDeptId()).getIsParent())) {
+                throw new BusinessDataInvalidException("该组织有下级组织，不能修改为支部");
+            }
         }
 
         modifyFullPathAndSubDeptIfNecessary(sysDept);
