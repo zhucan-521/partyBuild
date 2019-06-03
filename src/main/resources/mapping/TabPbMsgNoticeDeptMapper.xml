@@ -66,14 +66,14 @@
             parameterType="com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean"
             resultMap="BaseResultVoMap">
         select
-        d.*,
-        n.notice_title,
-        n.notice_type,
-        n.publish_time,
-        ifnull(v.img_num, 0) photo,
-        ifnull(v.doc_num, 0) doc
+            d.*,
+            n.notice_title,
+            n.notice_type,
+            n.publish_time,
+            ifnull(v.img_num, 0) photo,
+            ifnull(v.doc_num, 0) doc
         from
-        tab_pb_msg_notice_dept d
+            tab_pb_msg_notice_dept d
         LEFT JOIN tab_pb_msg_notice n on d.notice_id=n.id
         LEFT JOIN view_attachment_count v on v.host_id=d.notice_id and attachment_type='50'
         LEFT JOIN sys_dept dept on dept.dept_id=d.dept_id
@@ -97,6 +97,9 @@
         n.del_flag=0
         and
         n.state=1
+        ORDER BY
+        d.recevie_time
+        desc
     </select>
 
     <!--查询单条数据-->
