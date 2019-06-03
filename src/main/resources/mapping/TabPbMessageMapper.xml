@@ -182,9 +182,9 @@
         FROM
             tab_pb_message_send s
             LEFT JOIN tab_pb_message_receive r ON s.send_id = r.send_id
-            LEFT JOIN sys_dept d ON d.dept_id = s.sender_id
+            LEFT JOIN sys_dept d ON d.dept_id = r.receiver_id
         WHERE
-            r.receiver_id = #{receiverOrgId}
+            r.receiver_id = #{receiverId}
             AND s.del_flag = 0
             <if test="sendTime != null and sendTime != ''">
                 AND date_format(s.send_time, '%Y-%m-%d') = #{sendTime}
