@@ -70,7 +70,7 @@ public interface PartyInformationService {
      * @param page 分页实体
      * @return
      */
-    List<PartyMemberChooseVO> selectPartyMemberChooseVOListByQueryBean(PartyMemberChooseQueryBean queryBean, Page page);
+    PageInfo<PartyMemberChooseVO> selectPartyMemberChooseVOListByQueryBean(PartyMemberChooseQueryBean queryBean, Page page);
 
     /**
      * 根据用户身份证查询用户信息

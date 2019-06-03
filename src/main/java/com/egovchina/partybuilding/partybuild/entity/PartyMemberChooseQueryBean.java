@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -30,5 +31,19 @@ public class PartyMemberChooseQueryBean {
 
     @ApiModelProperty("排除已绑定账号的 1 是；0 否；默认0")
     private Byte excludeBinding = 0;
+
+    /**
+     * index
+     */
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private Long index;
+
+    /**
+     * limit
+     */
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private Long limit;
 
 }
