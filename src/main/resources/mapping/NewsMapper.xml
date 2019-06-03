@@ -49,6 +49,7 @@
     <resultMap id="NewsDetailsVOResultMap" type="com.egovchina.partybuilding.partybuild.vo.NewsDetailsVO">
         <id column="news_id" jdbcType="BIGINT" property="newsId"/>
         <result column="cover" jdbcType="VARCHAR" property="cover"/>
+        <result column="org_id" jdbcType="BIGINT" property="orgId"/>
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
         <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="order_num" jdbcType="VARCHAR" property="orderNum"/>
@@ -326,7 +327,7 @@
 
         SELECT COUNT(1)
         FROM tab_pb_party_news
-        WHERE news_id = #{newsId,jdbcType=BIGINT}
+        WHERE news_id = #{newsId,jdbcType=BIGINT} AND del_flag = 0
 
     </select>
 
@@ -335,6 +336,7 @@
 
         SELECT
             d.`name` AS org_name,
+            n.org_id,
             n.news_id,
             n.title,
             n.order_num,
