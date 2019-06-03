@@ -5,6 +5,7 @@ import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.MessageAddDTO;
 import com.egovchina.partybuilding.partybuild.dto.MessageUpdateDTO;
+import com.egovchina.partybuilding.partybuild.entity.StationNewsQueryBean;
 import com.egovchina.partybuilding.partybuild.service.StationNewsService;
 import com.egovchina.partybuilding.partybuild.service.TimedTransmissionService;
 import com.egovchina.partybuilding.partybuild.vo.MessageSendVO;
@@ -40,19 +41,19 @@ public class StationNewsController {
     }
 
     @ApiOperation(value = "党员获取在自己组织下的消息列表", notes = "党员获取在自己组织下的消息列表", httpMethod = "GET")
-    @ApiImplicitParam(name = "receiverOrgId", value = "接收者组织id", dataType = "long", paramType = "path", required = true)
-    @GetMapping("/{receiverOrgId}/organization")
-    public PageInfo<MessageSendVO> getOrgMessageSendList(@ApiParam("分页参数") Page page, @PathVariable Long receiverOrgId) {
-        return new PageInfo<>(stationNewsService.getOrgMessageSendList(page, receiverOrgId));
+    @GetMapping("/organization")
+    public PageInfo<MessageSendVO> getOrgMessageSendList(@ApiParam("分页参数") Page page, @ApiParam("查询参数") @Validated StationNewsQueryBean stationNewsQueryBean) {
+        return new PageInfo<>(stationNewsService.getOrgMessageSendList(page, stationNewsQueryBean));
     }
 
-    @ApiOperation(value = "查看某一个消息详情", notes = "查看某一个消息详情", httpMethod = "GET")
+    @ApiOperation(value = "查看某一个消息详情(同时更新消息接收状态)", notes = "查看某一个消息详情", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "sendId", value = "消息发送id", dataType = "long", paramType = "path", required = true),
+            @ApiImplicitParam(name = "receiverId", value = "消息接收者id", dataType = "long", paramType = "path", required = true)
     })
-    @GetMapping("/{sendId}/details")
-    public MessageSendVO getMessageSend(@PathVariable Long sendId) {
-        return stationNewsService.getMessageSendVO(sendId);
+    @GetMapping("/{sendId}/{receiverId}/details")
+    public MessageSendVO getMessageSend(@PathVariable Long sendId, @PathVariable Long receiverId) {
+        return stationNewsService.getMessageSendVO(sendId, receiverId);
     }
 
     @Deprecated
@@ -61,5 +62,6 @@ public class StationNewsController {
     public ReturnEntity updateStationNews(@RequestBody @Validated @ApiParam("更新参数dto") MessageUpdateDTO messageUpdateDTO) {
         return ReturnUtil.buildReturn(stationNewsService.batchUpdateStationNews(messageUpdateDTO));
     }
+
 
 }

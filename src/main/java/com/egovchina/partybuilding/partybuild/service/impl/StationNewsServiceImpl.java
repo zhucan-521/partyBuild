@@ -10,6 +10,7 @@ import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.MessageAddDTO;
 import com.egovchina.partybuilding.partybuild.dto.MessageReceiveDTO;
 import com.egovchina.partybuilding.partybuild.dto.MessageUpdateDTO;
+import com.egovchina.partybuilding.partybuild.entity.StationNewsQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMessageReceive;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMessageSend;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMessageMapper;
@@ -95,8 +96,13 @@ public class StationNewsServiceImpl implements StationNewsService {
         return result;
     }
 
+    @Transactional
     @Override
-    public MessageSendVO getMessageSendVO(Long sendId) {
+    public MessageSendVO getMessageSendVO(Long sendId, Long receiverId) {
+        TabPbMessageReceive tabPbMessageReceive = tabPbMessageMapper.selectTabPbMessageReceiveBySendIdAndReceiverId(sendId, receiverId);
+        if (tabPbMessageReceive != null) {
+            tabPbMessageMapper.updateTabPbMessageReceiveBySendIdAndReceiverId(sendId, receiverId);
+        }
         return tabPbMessageMapper.selectMessageSendVO(sendId);
     }
 
@@ -148,9 +154,9 @@ public class StationNewsServiceImpl implements StationNewsService {
     }
 
     @Override
-    public List<MessageSendVO> getOrgMessageSendList(Page page, Long receiverOrgId) {
+    public List<MessageSendVO> getOrgMessageSendList(Page page, StationNewsQueryBean stationNewsQueryBean) {
         PageHelper.startPage(page);
-        return tabPbMessageMapper.selectOrgMessageSendVOList(receiverOrgId);
+        return tabPbMessageMapper.selectOrgMessageSendVOList(stationNewsQueryBean);
     }
 
 }
