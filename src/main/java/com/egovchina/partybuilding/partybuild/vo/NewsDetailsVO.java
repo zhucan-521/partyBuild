@@ -18,6 +18,9 @@ public class NewsDetailsVO {
     @ApiModelProperty("主键ID")
     private Long newsId;
 
+    @ApiModelProperty("发布组织ID")
+    private Long orgId;
+
     @ApiModelProperty(value = "发布组织名称")
     private String orgName;
 
