@@ -228,5 +228,7 @@ public interface TabSysUserMapper {
      */
     List<PartyMemberChooseVO> selectPartyMemberChooseVOListByQueryBean(PartyMemberChooseQueryBean queryBean);
 
+    int selectPartyMemberChooseVOListCountByQueryBean(PartyMemberChooseQueryBean queryBean);
+
     PartyMemberChooseVO selectPartyMemberChooseVOByIdCardNo(String idCardNo);
 }

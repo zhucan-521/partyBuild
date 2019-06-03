@@ -67,9 +67,24 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     private final String RANGE_STATE_SUBORDINATE = "2";
 
     @Override
-    public List<PartyMemberChooseVO> selectPartyMemberChooseVOListByQueryBean(PartyMemberChooseQueryBean queryBean, Page page) {
-        PageHelper.startPage(page);
-        return tabSysUserMapper.selectPartyMemberChooseVOListByQueryBean(queryBean);
+    public PageInfo<PartyMemberChooseVO> selectPartyMemberChooseVOListByQueryBean(PartyMemberChooseQueryBean queryBean, Page page) {
+        String orgId = String.valueOf(queryBean.getOrgId());
+        String orgRange = String.valueOf(queryBean.getOrgRange()); // 2 包含所有下级
+        if (ORG_ID.equals(orgId) && RANGE_STATE_SUBORDINATE.equals(orgRange)) {
+            queryBean.setOrgRange(RANGE_STATE_LEVEL);
+        }
+        Long pageSize = page.getPageSize();
+        long index = (page.getPageNum() - 1) * pageSize;
+        if (index < 0) {
+            index = 0L;
+        }
+        queryBean.setIndex(index);
+        queryBean.setLimit(pageSize);
+        List<PartyMemberChooseVO> partyMemberChooseVOS = tabSysUserMapper.selectPartyMemberChooseVOListByQueryBean(queryBean);
+        int count = tabSysUserMapper.selectPartyMemberChooseVOListCountByQueryBean(queryBean);
+        PageInfo<PartyMemberChooseVO> pageInfo = new PageInfo<>(partyMemberChooseVOS);
+        pageInfo.setTotal(count);
+        return pageInfo;
     }
 
     /**

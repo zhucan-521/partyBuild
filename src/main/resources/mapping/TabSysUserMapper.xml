@@ -410,6 +410,30 @@
             )
         </if>
     </sql>
+
+    <!--党员选择列表WhereCase-->
+    <sql id="PartyMemberChoose_WhereCase_List">
+        u.del_flag = '0'
+        AND u.ebl_flag = '1'
+        <if test="realname != null and realname != ''">
+            AND u.realname like concat('%', #{realname}, '%')
+        </if>
+        <if test="idCardNo != null and idCardNo != ''">
+            AND u.id_card_no = #{idCardNo}
+        </if>
+        <if test="userTag != null and userTag != ''">
+            AND u.user_id IN (
+                SELECT t.user_id FROM tab_pb_user_tag t
+                WHERE t.tag_type = #{userTag}
+            )
+        </if>
+        <if test="excludeBinding == 1">
+            AND u.user_id NOT IN (
+              SELECT a.user_id FROM sys_account a
+              WHERE a.del_flag = '0'
+            )
+        </if>
+    </sql>
     <!--查询书记的简单党员信息-->
     <select id="selectSecretariesPartyByPrimaryKey" parameterType="java.lang.Long"
             resultMap="BaseSecretariesPartyResultMap">
@@ -1969,41 +1993,66 @@
           d.dept_id AS org_id,
           d.`name` AS org_name
         FROM sys_user u
-        INNER JOIN sys_dept d ON d.dept_id = u.dept_id
-        WHERE u.del_flag = '0'
-            AND u.ebl_flag = '1'
-        <if test="realname != null and realname != ''">
-            AND u.realname like concat('%', #{realname}, '%')
-        </if>
-        <if test="idCardNo != null and idCardNo != ''">
-            AND u.id_card_no = #{idCardNo}
-        </if>
-        <if test="userTag != null and userTag != ''">
-            AND EXISTS (
-              SELECT 1 FROM tab_pb_user_tag t WHERE t.user_id = u.user_id
-                AND t.tag_type = #{userTag}
-            )
-        </if>
-        <if test="orgRange != null and orgRange != '' ">
+        inner join (
+            select u.user_id
             <choose>
-                <when test="orgRange == 1">
-                    AND (d.dept_id = #{orgId} OR d.parent_id = #{orgId})
+                <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
+                <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
+                    from (select dept_id as org_id from sys_dept dept
+                    where dept.del_flag = '0'
+                    and dept.ebl_flag = '1'
+                    <if test="orgRange == 1">
+                        and (dept.dept_id = #{orgId} or dept.parent_id = #{orgId})
+                    </if>
+                    <if test="orgRange == 2">
+                        and find_in_set(#{orgId}, dept.full_path)
+                    </if>
+                    ) d
+                    inner join sys_user u on u.dept_id = d.org_id
                 </when>
-                <when test="orgRange == 2">
-                    AND find_in_set(#{orgId}, d.full_path)
-                </when>
+                <otherwise>
+                    from sys_user u
+                </otherwise>
             </choose>
-        </if>
-        <if test="orgRange == null or orgRange.toString() == ''">
-            AND d.dept_id = #{orgId}
-        </if>
-        <if test="excludeBinding == 1">
-            AND NOT EXISTS (
-              SELECT 1 FROM sys_account a WHERE a.sys_user_id = u.user_id AND a.del_flag = '0'
-            )
-        </if>
+            <where>
+                <include refid="PartyMemberChoose_WhereCase_List"/>
+            </where>
+            order by realname
+            limit #{index}, #{limit}
+        ) t on t.user_id = u.user_id
+        INNER JOIN sys_dept d ON d.dept_id = u.dept_id
+          AND d.del_flag = '0' AND d.ebl_flag = '1'
         ORDER BY u.realname
     </select>
+
+    <!--自定义选人列表COUNT语句-->
+    <select id="selectPartyMemberChooseVOListCountByQueryBean" resultType="java.lang.Integer">
+        SELECT
+        count( u.user_id )
+        <choose>
+            <!--1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）-->
+            <when test="orgRange != null and (orgRange == 1 or orgRange == 2)">
+                from (select dept_id as org_id from sys_dept dept
+                where dept.del_flag = '0'
+                and dept.ebl_flag = '1'
+                <if test="orgRange == 1">
+                    and (dept.dept_id = #{orgId} or dept.parent_id = #{orgId})
+                </if>
+                <if test="orgRange == 2">
+                    and find_in_set(#{orgId}, dept.full_path)
+                </if>
+                ) d
+                inner join sys_user u on u.dept_id = d.org_id
+            </when>
+            <otherwise>
+                from sys_user u
+            </otherwise>
+        </choose>
+        <where>
+            <include refid="PartyMemberChoose_WhereCase_List"/>
+        </where>
+    </select>
+
     <!--根据ic_card_no查询党员选择vo列表-->
     <select id="selectPartyMemberChooseVOByIdCardNo"
             parameterType="string"

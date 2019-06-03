@@ -82,7 +82,7 @@ public class PartyInformationController {
     @ApiOperation(value = "党员选择列表", notes = "根据条件获取党员列表", httpMethod = "GET")
     @GetMapping("/party-members/choose")
     public PageInfo<PartyMemberChooseVO> choosePartyMembers(PartyMemberChooseQueryBean queryBean, Page page) {
-        return new PageInfo<>(partyInformationService.selectPartyMemberChooseVOListByQueryBean(queryBean, page));
+        return partyInformationService.selectPartyMemberChooseVOListByQueryBean(queryBean, page);
     }
 
     @ApiOperation(value = "根据id删除user信息")
