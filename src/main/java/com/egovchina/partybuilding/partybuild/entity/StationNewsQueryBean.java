@@ -20,9 +20,13 @@ public class StationNewsQueryBean {
     @NotNull(message = "接收者id不能为空")
     private Long receiverId;
 
-    @ApiModelProperty(value = "发送时间", example = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private Date sendTime;
+    @ApiModelProperty(value = "发送时间-开始", example = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date sendTimeStart;
+
+    @ApiModelProperty(value = "发送时间-结束", example = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date sendTimeEnd;
 
     @ApiModelProperty("消息标题")
     private String title;
@@ -31,6 +35,7 @@ public class StationNewsQueryBean {
     private Long type;
 
     @ApiModelProperty(value = "组织id", required = true)
+    @NotNull(message = "组织id不能为空")
     private Long rangeDeptId;
 
     @ApiModelProperty("组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）")
