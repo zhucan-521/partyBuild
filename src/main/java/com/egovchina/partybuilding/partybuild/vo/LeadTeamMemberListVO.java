@@ -52,4 +52,7 @@ public class LeadTeamMemberListVO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date tenureBegin;
 
+    @ApiModelProperty("入党日期")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date joinDate;
 }

@@ -21,7 +21,8 @@
     id, notice_id, dept_id, dept_name, recevie_user_id, recevie_username, recevie_time
     </sql>
     <!--查询接受党组织集合-->
-    <select id="selectMsgNoticeDeptList" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept" resultMap="BaseResultMap">
+    <select id="selectMsgNoticeDeptList"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept" resultMap="BaseResultMap">
         SELECT
         dept.*,
         notice.notice_title,
@@ -61,39 +62,41 @@
     </select>
 
     <!--收到文件通知列表-->
-    <select id="selectReceiveMsgNotice" parameterType="com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean" resultMap="BaseResultVoMap">
-         select
-         d.*,
-         n.notice_title,
-         n.notice_type,
-         n.publish_time,
-         ifnull(v.img_num, 0) photo,
-         ifnull(v.doc_num, 0) doc
-         from
-         tab_pb_msg_notice_dept d
-         LEFT JOIN tab_pb_msg_notice n on d.notice_id=n.id
-         LEFT JOIN view_attachment_count v on v.host_id=d.notice_id and attachment_type='50'
-         LEFT JOIN sys_dept dept on dept.dept_id=d.dept_id
-         where
-         1=1
-         <if test="stateTime != null">
-           and  n.publish_time between #{stateTime}  and #{endTime}
-         </if>
+    <select id="selectReceiveMsgNotice"
+            parameterType="com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean"
+            resultMap="BaseResultVoMap">
+        select
+        d.*,
+        n.notice_title,
+        n.notice_type,
+        n.publish_time,
+        ifnull(v.img_num, 0) photo,
+        ifnull(v.doc_num, 0) doc
+        from
+        tab_pb_msg_notice_dept d
+        LEFT JOIN tab_pb_msg_notice n on d.notice_id=n.id
+        LEFT JOIN view_attachment_count v on v.host_id=d.notice_id and attachment_type='50'
+        LEFT JOIN sys_dept dept on dept.dept_id=d.dept_id
+        where
+        1=1
+        <if test="stateTime != null">
+            and n.publish_time between #{stateTime} and #{endTime}
+        </if>
         <choose>
             <when test="orgRange == 1">
-            AND (dept.dept_id = #{deptId} OR dept.parent_id = #{deptId})
+                AND (dept.dept_id = #{deptId} OR dept.parent_id = #{deptId})
             </when>
             <when test="orgRange == 2">
-             AND find_in_set(#{deptId}, dept.full_path)
+                AND find_in_set(#{deptId}, dept.full_path)
             </when>
             <otherwise>
                 AND dept.dept_id = #{deptId}
             </otherwise>
         </choose>
-         and
-         n.del_flag=0
-         and
-         n.state=1
+        and
+        n.del_flag=0
+        and
+        n.state=1
     </select>
 
     <!--查询单条数据-->
@@ -113,14 +116,15 @@
     </select>
 
     <delete id="batchDeleteMsgNoticeDept" parameterType="list">
-         delete from tab_pb_msg_notice_dept where id in
-         <foreach collection="list" item="item" open="(" separator="," close=")">
-             #{item}
-         </foreach>
+        delete from tab_pb_msg_notice_dept where id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </delete>
 
     <insert id="batchInsertTabPbMsgNoticeDept" parameterType="java.util.List">
-        insert into tab_pb_msg_notice_dept(notice_id,dept_id,dept_name,recevie_user_id,recevie_username, recevie_time) values
+        insert into tab_pb_msg_notice_dept(notice_id,dept_id,dept_name,recevie_user_id,recevie_username, recevie_time)
+        values
         <foreach collection="list" item="item" separator=",">
             (#{item.noticeId},#{item.deptId},#{item.deptName},#{item.recevieUserId},#{item.recevieUsername},#{item.recevieTime})
         </foreach>
@@ -186,4 +190,8 @@
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
+
+    <select id="checkWhetherPublish" parameterType="long" resultType="java.lang.Boolean">
+        select COUNT(recevie_user_id) from tab_pb_msg_notice_dept where notice_id=#{id}
+    </select>
 </mapper>

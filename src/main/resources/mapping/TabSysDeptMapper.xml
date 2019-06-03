@@ -79,6 +79,7 @@
         <result column="unit_state" jdbcType="BIGINT" property="unitState"/>
         <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
         <result column="community_addr" jdbcType="BIGINT" property="communityAddr"/>
+        <result column="community_addr_name" jdbcType="VARCHAR" property="communityAddrName"/>
         <result column="founded_date" jdbcType="TIMESTAMP" property="foundedDate"/>
         <result column="founded_file_number" jdbcType="VARCHAR" property="foundedFileNumber"/>
         <result column="contact_number" jdbcType="VARCHAR" property="contactNumber"/>
@@ -161,7 +162,7 @@
         <if test="domainCategory != null and '' != domainCategory">
             and
             <foreach collection="domainCategorys" open="(" item="item" separator=" or " close=")">
-                #{item} in ( select org_tag_type from tab_pb_org_tag where org_id = d.dept_id and del_flag = 0 )
+                #{item} in ( select org_tag_type from tab_pb_org_tag where org_id = d.dept_id and del_flag = '0' )
             </foreach>
         </if>
         <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
@@ -602,7 +603,7 @@
         ,
         <include refid="Blob_Column_List"/>
         from sys_dept d
-        where d.dept_id = #{deptId,jdbcType=BIGINT} and del_flag=0
+        where d.dept_id = #{deptId,jdbcType=BIGINT} and del_flag='0'
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from sys_dept d
@@ -704,7 +705,7 @@
     <select id="checkOrgNameAvailability" resultType="java.lang.Boolean">
         SELECT true
         FROM sys_dept
-        WHERE `name` = #{orgName} and del_flag = 0
+        WHERE `name` = #{orgName} and del_flag = '0'
         <if test="orgId != null and orgId != 0">
             AND dept_id != #{orgId}
         </if>
@@ -715,7 +716,7 @@
     <select id="checkOrgCodeAvailability" resultType="java.lang.Boolean">
         SELECT true
         FROM sys_dept
-        WHERE `org_code` = #{orgCode} and del_flag = 0
+        WHERE `org_code` = #{orgCode} and del_flag = '0'
         <if test="orgId != null and orgId != 0">
             AND dept_id != #{orgId}
         </if>
@@ -730,12 +731,18 @@
         , pd.`name` as parent_name,
         u.unit_code,
         u.unit_property,
+        ad.administrative_division_name as community_addr_name,
         case when d.orgnize_property in ( 989, 992, 995, 1002, 1003, 1007, 1008) then 1 else 0 end AS is_branch
         from sys_dept d
         left join sys_dept pd on d.parent_id = pd.dept_id
+          and pd.del_flag = '0'
+          and pd.ebl_flag = '1'
         left join tab_pb_unit_info u on d.unit_id = u.unit_id
+          and u.del_flag = '0'
+        left join tab_pb_administrative_division ad on ad.administrative_division_id = d.community_addr
+          and ad.del_flag = '0'
         <where>
-            d.del_flag = 0
+            d.del_flag = '0'
             <include refid="Base_WhereCase_List"/>
         </where>
         order by d.order_num
@@ -747,7 +754,7 @@
           d.dept_id,
           d.name
         from sys_dept d
-        where d.del_flag = 0 and d.name like concat('%',#{name},'%')
+        where d.del_flag = '0' and d.name like concat('%',#{name},'%')
     </select>
 
     <!--批量插入-->
@@ -779,10 +786,16 @@
         , d2.name as parent_name,
         u.unit_code,
         u.unit_property,
+        ad.administrative_division_name as community_addr_name,
         case when d.orgnize_property in ( 989, 992, 995, 1002, 1003, 1007, 1008) then 1 else 0 end AS is_branch
         from sys_dept d
         left join sys_dept d2 on d.parent_id = d2.dept_id
+          and d2.del_flag = '0'
+          and d2.ebl_flag = '1'
         left join tab_pb_unit_info u on d.unit_id = u.unit_id
+          and u.del_flag = '0'
+        left join tab_pb_administrative_division ad on ad.administrative_division_id = d.community_addr
+          and ad.del_flag = '0'
         where d.dept_id = #{deptId,jdbcType=BIGINT}
     </select>
 
@@ -793,7 +806,7 @@
 
     <!--逻辑删除-->
     <update id="logicDeleteById">
-        update sys_dept set del_flag = 1 where dept_id = #{deptId}
+        update sys_dept set del_flag = '1' where dept_id = #{deptId}
     </update>
 
     <!--根据条件查询组织阵地-->
@@ -808,11 +821,11 @@
         SELECT host_id, count( 1 ) img_annex_num
         FROM tab_pb_attachment
         WHERE attachment_type = 3  <!--3 组织阵地-->
-        AND del_flag = 0
+        AND del_flag = '0'
         GROUP BY host_id
         ) t ON d.dept_id = t.host_id
         <where>
-            d.del_flag = 0
+            d.del_flag = '0'
             <include refid="Base_WhereCase_List"/>
         </where>
         order by d.create_time
@@ -901,7 +914,7 @@
         FROM
         <choose>
             <when test="orgId != 14307">
-                ( SELECT dept_id AS org_id FROM sys_dept dept WHERE dept.del_flag = 0 AND find_in_set( #{orgId},
+                ( SELECT dept_id AS org_id FROM sys_dept dept WHERE dept.del_flag = '0' AND find_in_set( #{orgId},
                 dept.full_path ) ) d
                 INNER JOIN sys_user u ON u.dept_id = d.org_id
             </when>
@@ -909,10 +922,10 @@
                 sys_user u
             </otherwise>
         </choose>
-        LEFT JOIN tab_pb_dev_party_member dpm ON u.user_id = dpm.user_id AND dpm.del_flag = 0
+        LEFT JOIN tab_pb_dev_party_member dpm ON u.user_id = dpm.user_id AND dpm.del_flag = '0'
         LEFT JOIN tab_pb_user_tag ut ON u.user_id = ut.user_id AND ut.tag_type = 59386
-        LEFT JOIN tab_pb_unit_info ui ON u.dept_id = ui.org_id AND ui.del_flag = 0
-        WHERE u.del_flag = 0
+        LEFT JOIN tab_pb_unit_info ui ON u.dept_id = ui.org_id AND ui.del_flag = '0'
+        WHERE u.del_flag = '0'
         ) t1,
         (
         SELECT
@@ -934,8 +947,8 @@
         0 AS societyNonEntityOrg
         FROM
         sys_dept d
-        LEFT JOIN tab_pb_unit_info ui ON d.dept_id = ui.org_id AND ui.del_flag = 0
-        WHERE d.del_flag = 0 AND find_in_set( #{orgId}, d.full_path )
+        LEFT JOIN tab_pb_unit_info ui ON d.dept_id = ui.org_id AND ui.del_flag = '0'
+        WHERE d.del_flag = '0' AND find_in_set( #{orgId}, d.full_path )
         ) t2
     </select>
 
@@ -948,38 +961,38 @@
             (SELECT count( ltm.member_id )
               FROM tab_pb_lead_team lt
                 INNER JOIN tab_pb_lead_team_member ltm USING ( lead_team_id )
-              WHERE lt.current = 1 AND lt.del_flag = 0
-                AND ltm.del_flag = 0 AND d.dept_id = lt.org_id
+              WHERE lt.current = 1 AND lt.del_flag = '0'
+                AND ltm.del_flag = '0' AND d.dept_id = lt.org_id
             ) AS leadTeamMemberCount,
             (SELECT count( ltm.member_id )
               FROM tab_pb_lead_team lt
                 INNER JOIN tab_pb_lead_team_member ltm USING ( lead_team_id )
-              WHERE lt.current = 1 AND lt.del_flag = 0
-                AND ltm.del_flag = 0 AND lt.org_id = d.dept_id
+              WHERE lt.current = 1 AND lt.del_flag = '0'
+                AND ltm.del_flag = '0' AND lt.org_id = d.dept_id
                 AND NOT EXISTS (SELECT 1
                         FROM (SELECT DISTINCT ltm.user_id
                                 FROM tab_pb_lead_team lt
                                     INNER JOIN tab_pb_lead_team_member ltm USING ( lead_team_id )
-                                WHERE lt.current = 1 AND lt.del_flag = 0
-                                    AND ltm.del_flag = 0 AND lt.org_id != #{deptId}
+                                WHERE lt.current = 1 AND lt.del_flag = '0'
+                                    AND ltm.del_flag = '0' AND lt.org_id != #{deptId}
                             ) t WHERE t.user_id = ltm.user_id )
             ) AS leadTeamMemberCrossCount,
             CASE WHEN oc.org_level = 59134 THEN 1 ELSE 0 END AS ifWeaknessOrg,
             ifnull((
               SELECT CASE WHEN YEAR ( lt.change_date ) = YEAR ( now( ) ) THEN 1 ELSE 0 END
 				FROM tab_pb_lead_team lt
-				WHERE lt.org_id = d.dept_id AND lt.del_flag = 0
+				WHERE lt.org_id = d.dept_id AND lt.del_flag = '0'
 					AND lt.current = 1 LIMIT 1
             ), 0 ) AS ifChange,
             ( SELECT count( sw.special_worker_id )
               FROM tab_pb_spcial_worker sw
-              WHERE d.dept_id = sw.manage_org_id AND sw.del_flag = 0
+              WHERE d.dept_id = sw.manage_org_id AND sw.del_flag = '0'
             ) AS specialWorkerCount,
             ifnull((
               SELECT
                   CASE WHEN a.activities_id IS NOT NULL THEN 1 ELSE 0 END
               FROM tab_pb_activities a
-              WHERE d.dept_id = a.org_id AND a.del_flag = 0
+              WHERE d.dept_id = a.org_id AND a.del_flag = '0'
                   AND find_in_set( 59131, a.activities_type_ids )
                   AND YEAR ( a.create_time ) = YEAR ( now( ) ) LIMIT 1
             ), 0 ) AS ifHeldALifeMeeting,
@@ -987,23 +1000,23 @@
               SELECT
                   CASE WHEN aa.id IS NOT NULL THEN 1 ELSE 0 END
               FROM tab_pb_activities_assess aa
-              WHERE d.dept_id = aa.dept_id AND aa.del_flag = 0
+              WHERE d.dept_id = aa.dept_id AND aa.del_flag = '0'
                   AND aa.years = YEAR ( now( ) ) LIMIT 1
             ), 0 ) AS ifGetOnDemocraticReview
         FROM sys_dept d
         LEFT JOIN tab_pb_unit_info ui ON d.dept_id = ui.org_id
-        LEFT JOIN tab_pb_org_classify oc ON d.dept_id = oc.dept_id AND oc.del_flag = 0
+        LEFT JOIN tab_pb_org_classify oc ON d.dept_id = oc.dept_id AND oc.del_flag = '0'
         WHERE d.dept_id = #{deptId}
     </select>
 
     <!-- 检查数据是否存在 -->
     <select id="checkIsExistByOrgId" parameterType="java.lang.Long" resultType="boolean">
-        SELECT COUNT(1) FROM sys_dept WHERE dept_id = #{deptId} AND del_flag = 0
+        SELECT COUNT(1) FROM sys_dept WHERE dept_id = #{deptId} AND del_flag = '0'
     </select>
 
     <!--检查是否存在非直属-->
     <select id="checkIsExistUnDirectSub" resultType="java.lang.Boolean">
-        SELECT COUNT(1) FROM sys_dept WHERE del_flag = 0 AND dept_id IN
+        SELECT COUNT(1) FROM sys_dept WHERE del_flag = '0' AND dept_id IN
         <foreach collection="subOrgIds" item="item" open="(" separator="," close=")">
             ${item}
         </foreach>
@@ -1018,7 +1031,7 @@
             sys_dept
         WHERE
             dept_id = #{orgId}
-          AND del_flag = 0
+          AND del_flag = '0'
     </select>
 
 </mapper>

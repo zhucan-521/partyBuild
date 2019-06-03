@@ -103,7 +103,7 @@ public class PartyGroupServiceImpl implements PartyGroupService {
     @Override
     public PageInfo<PartyGroupVO> getPartyGroupList(PartyGroupQueryBean partyGroupQueryBean, Page page) {
         PageHelper.startPage(page);
-        return new PageInfo<>(tabPbPartyGroupMapper.selectPartyGroupDetails(partyGroupQueryBean));
+        return new PageInfo<>(tabPbPartyGroupMapper.selectPartyGroupList(partyGroupQueryBean));
     }
 
     /**

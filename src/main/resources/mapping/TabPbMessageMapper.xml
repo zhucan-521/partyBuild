@@ -85,6 +85,16 @@
         del_flag = '0'
     </update>
 
+    <!--更新消息接收状态-->
+    <update id="updateTabPbMessageReceiveBySendIdAndReceiverId">
+        UPDATE tab_pb_message_receive
+        SET receive_status = 1,
+            receive_time = now()
+        WHERE
+            send_id = #{sendId}
+            AND receiver_id = #{receiverId}
+    </update>
+
     <!--查询站内消息VO-->
     <select id="selectMessageSendVO" resultType="com.egovchina.partybuilding.partybuild.vo.MessageSendVO">
       SELECT
@@ -165,14 +175,41 @@
             s.type AS type,
             s.title AS title,
             s.content AS content,
-            s.send_time AS sendTime
+            s.send_time AS sendTime,
+            r.receive_status AS receiveStatus,
+            r.receiver_type AS receiverType,
+            r.receiver_id AS receiverId
         FROM
             tab_pb_message_send s
             LEFT JOIN tab_pb_message_receive r ON s.send_id = r.send_id
+            LEFT JOIN sys_dept d ON d.dept_id = s.sender_id
         WHERE
             r.receiver_id = #{receiverOrgId}
-            AND r.receiver_type = 1
             AND s.del_flag = 0
+            <if test="sendTime != null and sendTime != ''">
+                AND date_format(s.send_time, '%Y-%m-%d') = #{sendTime}
+            </if>
+            <if test="title != null and title != ''">
+                AND s.title = #{title}
+            </if>
+            <if test="type != null and type != ''">
+                AND s.type = #{type}
+            </if>
+            <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+            <if test="orgRange != null and orgRange != ''">
+                <choose>
+                    <when test="orgRange == 1">
+                        AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                    </when>
+                    <when test="orgRange == 2">
+                        AND find_in_set(#{rangeDeptId}, d.full_path)
+                    </when>
+                </choose>
+            </if>
+            <if test="orgRange == null or orgRange.toString() == ''">
+                AND d.dept_id = #{rangeDeptId}
+            </if>
+        ORDER BY s.send_time DESC
     </select>
 
     <!--判断接收者id在数据库中是否存在-->
@@ -201,6 +238,18 @@
         <foreach collection = "list" item = "a"  open="(" separator="," close=")">
             ${a}
         </foreach>
+    </select>
+
+    <!--根据发送id和接收者id查询消息接收表实体-->
+    <select id="selectTabPbMessageReceiveBySendIdAndReceiverId"
+            resultType="com.egovchina.partybuilding.partybuild.entity.TabPbMessageReceive">
+        SELECT
+            *
+        FROM
+            tab_pb_message_receive
+        WHERE
+            send_id = #{sendId}
+            AND receiver_id = #{receiverId}
     </select>
 
     <!--定时发送消息-->

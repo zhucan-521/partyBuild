@@ -37,9 +37,6 @@ public class PartyInformationController {
     @Autowired
     private ExtendedInfoService extendedInfoService;
 
-    @Autowired
-    private UserTagService userTagService;
-
     @ApiOperation(value = "分页查询党员信息", notes = "分页查询党员信息", httpMethod = "GET")
     @GetMapping("/party-members")
     public PageInfo<PartyMemberInformationVO> getPartyMemberList(@Validated @ApiParam("党员信息查询实体") SysUserQueryBean queryBean, Page page) {
@@ -85,7 +82,7 @@ public class PartyInformationController {
     @ApiOperation(value = "党员选择列表", notes = "根据条件获取党员列表", httpMethod = "GET")
     @GetMapping("/party-members/choose")
     public PageInfo<PartyMemberChooseVO> choosePartyMembers(PartyMemberChooseQueryBean queryBean, Page page) {
-        return new PageInfo<>(partyInformationService.selectPartyMemberChooseVOListByQueryBean(queryBean, page));
+        return partyInformationService.selectPartyMemberChooseVOListByQueryBean(queryBean, page);
     }
 
     @ApiOperation(value = "根据id删除user信息")
@@ -122,13 +119,6 @@ public class PartyInformationController {
     public PageInfo<CommunityVO> getCommunity(@ApiParam("社区模糊查询实体") CommunityDTO communityDTO, Page page) {
         PageHelper.startPage(page);
         return new PageInfo<>(partyInformationService.selectCommunityVO(communityDTO));
-    }
-
-    @Deprecated
-    @ApiOperation(value = "获取登录用户的信息")
-    @GetMapping("/login-user-infos")
-    public UserInfoVO getUserInfo() {
-        return partyInformationService.getUserInfoVO();
     }
 
     @ApiOperation(value = "补录党员信息", notes = "补录党员信息", httpMethod = "POST")

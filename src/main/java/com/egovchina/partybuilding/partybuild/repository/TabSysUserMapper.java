@@ -56,6 +56,13 @@ public interface TabSysUserMapper {
     List<SystemDetailsVO> selectPageByMap(SysUserQueryBean sysUserQueryBean);
 
     /**
+     * 党员列表总数查询
+     * @param sysUserQueryBean 查询实体
+     * @return
+     */
+    int selectPageByMapCOUNT(SysUserQueryBean sysUserQueryBean);
+
+    /**
      * 根据身份证查询人员ID
      *
      * @param IDcard
@@ -220,6 +227,8 @@ public interface TabSysUserMapper {
      * @return
      */
     List<PartyMemberChooseVO> selectPartyMemberChooseVOListByQueryBean(PartyMemberChooseQueryBean queryBean);
+
+    int selectPartyMemberChooseVOListCountByQueryBean(PartyMemberChooseQueryBean queryBean);
 
     PartyMemberChooseVO selectPartyMemberChooseVOByIdCardNo(String idCardNo);
 }

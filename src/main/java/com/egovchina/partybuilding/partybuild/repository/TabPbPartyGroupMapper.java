@@ -64,7 +64,7 @@ public interface TabPbPartyGroupMapper {
      * @author FanYanGen
      * @date 2019/4/29 16:40
      **/
-    List<PartyGroupVO> selectPartyGroupDetails(PartyGroupQueryBean partyGroupQueryBean);
+    List<PartyGroupVO> selectPartyGroupList(PartyGroupQueryBean partyGroupQueryBean);
 
     /**
      * desc: 逻辑删除党组级联成员

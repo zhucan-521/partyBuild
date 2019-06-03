@@ -103,8 +103,10 @@ public class OrganizationVO {
     private Long unitProperty;
 
     @ApiModelProperty(value = "所属社区ID")
-    @JsonSerialize(using = DictSerializer.class)
     private Long communityAddr;
+
+    @ApiModelProperty(value = "所属社区名称")
+    private String communityAddrName;
 
     @ApiModelProperty(value = "建立日期 yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")

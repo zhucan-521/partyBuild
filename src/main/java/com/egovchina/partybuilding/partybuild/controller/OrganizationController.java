@@ -6,14 +6,12 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysDept;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataInvalidException;
-import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.OrganizationDTO;
 import com.egovchina.partybuilding.partybuild.dto.OrganizationPositionDTO;
 import com.egovchina.partybuilding.partybuild.entity.OrganizationQueryBean;
 import com.egovchina.partybuilding.partybuild.service.OrganizationService;
-import com.egovchina.partybuilding.partybuild.vo.ContainsStatisticsOrganizationVO;
 import com.egovchina.partybuilding.partybuild.vo.OrganizationPartyBuildingWorkVO;
 import com.egovchina.partybuilding.partybuild.vo.OrganizationPositionVO;
 import com.egovchina.partybuilding.partybuild.vo.OrganizationVO;
@@ -27,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * 组织API
@@ -47,13 +44,6 @@ public class OrganizationController {
     @GetMapping
     public PageInfo<OrganizationVO> getOrganizationList(OrganizationQueryBean queryBean, Page page) {
         List<OrganizationVO> list = organizationService.selectOrganizationVOWithCondition(queryBean, page);
-        if (queryBean.getContainsStatistics()) {
-            list = list.stream().map(organizationVO -> {
-                ContainsStatisticsOrganizationVO containsStatisticsOrganizationVO = organizationService.linkStatisticsData(organizationVO.getDeptId());
-                BeanUtil.copyPropertiesIgnoreNull(organizationVO, containsStatisticsOrganizationVO);
-                return containsStatisticsOrganizationVO;
-            }).collect(Collectors.toList());
-        }
         return new PageInfo<>(list);
     }
 

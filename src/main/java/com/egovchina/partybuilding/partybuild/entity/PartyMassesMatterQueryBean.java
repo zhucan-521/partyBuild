@@ -21,10 +21,10 @@ public class PartyMassesMatterQueryBean {
     @ApiModelProperty(value = "党群id")
     private Long partyMassesId;
 
-    @ApiModelProperty(value = "服务类型 字典id")
-    private Long serviceType;
+    @ApiModelProperty(value = "服务名称")
+    private String serviceName;
 
-    @ApiModelProperty(value = "服务对象 字典id")
+    @ApiModelProperty(value = "服务对象 字典id FWDX")
     private Long crowd;
 
 }
