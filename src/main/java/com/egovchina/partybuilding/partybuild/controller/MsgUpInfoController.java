@@ -47,7 +47,7 @@ public class MsgUpInfoController {
             @ApiImplicitParam(value = "上报组织主键", name = "realDeptId", paramType = "query") ,
             @ApiImplicitParam(value = "组织id", name = "orgId", paramType = "query")
     })
-    @HasPermission("party_messageSubmission")
+    @HasPermission("party_fileNotice")
     @GetMapping("/up-member-info")
     public MsgUpInfoVO retrnUpMember(Long realDeptId,Long orgId) {
         return msgUpInfoSerivce.returnUpMember(realDeptId,orgId);
