@@ -37,7 +37,7 @@ public class LeadTeamMemberController {
 
     @ApiOperation(value = "班子成员列表", notes = "班子成员列表", httpMethod = "GET")
     @ApiImplicitParam(value = "班子id", name = "leadTeamId", dataType = "long", paramType = "path", required = true)
-    @HasPermission("party_leadershipTeam_members")
+    @HasPermission({"party_leadershipTeam_members", "party_leadershipTeam"})
     @GetMapping("/lead-teams/{leadTeamId}/members")
     public PageInfo<LeadTeamMemberListVO> getLeadTeamMemberList(@PathVariable Long leadTeamId, Page page) {
         List<LeadTeamMemberListVO> list = leadTeamMemberService.selectLeadTeamMemberVOListByLeadTeamId(leadTeamId, page);
