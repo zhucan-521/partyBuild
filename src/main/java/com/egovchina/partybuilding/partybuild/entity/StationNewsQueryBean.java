@@ -41,4 +41,7 @@ public class StationNewsQueryBean {
     @ApiModelProperty("组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）")
     private Long orgRange;
 
+    @ApiModelProperty("是否查看 0 未读 1 已读")
+    private Byte receiveStatus;
+
 }
