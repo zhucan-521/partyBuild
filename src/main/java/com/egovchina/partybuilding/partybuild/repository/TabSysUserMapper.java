@@ -57,6 +57,7 @@ public interface TabSysUserMapper {
 
     /**
      * 党员列表总数查询
+     *
      * @param sysUserQueryBean 查询实体
      * @return
      */
@@ -213,16 +214,19 @@ public interface TabSysUserMapper {
      * @param hardshipId
      * @return
      */
-    int updateUserIsPoorByHardshipId(@Param("isPoor") Integer isPoor,@Param("hardshipId") Long hardshipId);
+    int updateUserIsPoorByHardshipId(@Param("isPoor") Integer isPoor, @Param("hardshipId") Long hardshipId);
 
     /**
-     * 根据组织id获取
-     * @return
+     * 根据组织id获取党员集合
+     *
+     * @param orgId
+     * @return List<SysUserVO>
      */
-    SysUser selectByOrgIdSelective();
+    List<SysUserVO> selectByOrgIdSelective(Long orgId);
 
     /**
      * 根据查询实体查询党员选择vo列表
+     *
      * @param queryBean 查询实体
      * @return
      */
@@ -232,6 +236,7 @@ public interface TabSysUserMapper {
 
     /**
      * 根据身份证查询指定信息
+     *
      * @param idCardNo
      * @return
      */
