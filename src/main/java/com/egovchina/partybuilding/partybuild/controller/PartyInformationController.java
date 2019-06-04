@@ -63,6 +63,7 @@ public class PartyInformationController {
     }
 
     @ApiOperation(value = "查看单个历史党员", notes = "查看单个历史党员", httpMethod = "GET")
+    @HasPermission("TODO")
     @GetMapping("/history-members/{userId}")
     @ApiImplicitParam(name = "userId", value = "用户id", paramType = "path", required = true, dataType = "long")
     public HistoryPartyVO getPartyHistoryVO(@PathVariable Long userId) {
@@ -100,18 +101,21 @@ public class PartyInformationController {
     }
 
     @ApiOperation(value = "根据id删除历史user信息")
+    @HasPermission("TODO")
     @DeleteMapping("/history-members/{userId}")
     public ReturnEntity deleteHistoryUser(@PathVariable Long userId) {
         return ReturnUtil.buildReturn(extendedInfoService.deleteByUserId(userId));
     }
 
     @ApiOperation(value = "历史党员修改")
+    @HasPermission("TODO")
     @PutMapping("/history-members")
     public ReturnEntity upadteUser(@RequestBody @Validated @ApiParam("修改历史党员信息实体") UpdateHistoryDTO updateHistoryDTO) {
         return ReturnUtil.buildReturn(extendedInfoService.updateHistoryParty(updateHistoryDTO));
     }
 
     @ApiOperation(value = "根据id恢复党员信息")
+    @HasPermission("TODO")
     @GetMapping("/history-members/{userId}/restorations")
     @ApiImplicitParam(name = "userId", value = "用户id", paramType = "path", required = true, dataType = "long")
     public ReturnEntity restoreUser(@PathVariable Long userId) {
