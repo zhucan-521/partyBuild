@@ -63,5 +63,4 @@ public class StationNewsController {
         return ReturnUtil.buildReturn(stationNewsService.batchUpdateStationNews(messageUpdateDTO));
     }
 
-
 }

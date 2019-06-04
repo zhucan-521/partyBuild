@@ -198,6 +198,9 @@
             <if test="type != null and type != ''">
                 AND s.type = #{type}
             </if>
+            <if test="receiveStatus != null">
+                AND r.receive_status = #{receiveStatus}
+            </if>
             <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
             <if test="orgRange != null and orgRange != ''">
                 <choose>
