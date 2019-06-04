@@ -18,6 +18,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo;
 import com.egovchina.partybuilding.partybuild.repository.TabPbOrgClassifyMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbUnitInfoMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
+import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.OrgChangeService;
 import com.egovchina.partybuilding.partybuild.service.OrgTagService;
@@ -70,6 +71,9 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Autowired
     private OrgTagService orgTagService;
+
+    @Autowired
+    private TabSysUserMapper tabSysUserMapper;
 
     @Override
     public List<OrganizationVO> selectOrganizationVOWithCondition(OrganizationQueryBean queryBean, Page page) {
@@ -168,6 +172,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         orgChangeService.insertSelective(tabPbOrgnizeChange);
     }
 
+    @CacheEvict(value = ORGANIZATION_LIST_FOR_PARENT, allEntries = true)
     @Transactional
     @Override
     public int logicDeleteById(Long orgId) {
@@ -175,6 +180,13 @@ public class OrganizationServiceImpl implements OrganizationService {
         update.setDeptId(orgId);
         update.setDelFlag(CommonConstant.STATUS_DEL);
         paddingUpdateRelatedBaseFiled(update);
+        SysDept sysDept = tabSysDeptMapper.selectByPrimaryKey(orgId);
+        if (CommonConstant.ISPARENTORG.equals(sysDept.getIsParent())) {
+            throw new BusinessDataInvalidException("该组织有下级组织，删除失败");
+        }
+        if (CollectionUtil.isNotEmpty(tabSysUserMapper.selectByOrgIdSelective(orgId))) {
+            throw new BusinessDataInvalidException("该组织存在党员，删除失败");
+        }
         int judgment = 0;
         //删除已有标签
         judgment += orgTagService.batchUpdateOrgTagByOrgId(orgId);
