@@ -148,4 +148,22 @@ public interface TabPbMessageMapper {
      * @param receiverId 接收者id
      */
     void updateTabPbMessageReceiveBySendIdAndReceiverId(@Param("sendId") Long sendId, @Param("receiverId") Long receiverId);
+
+    /**
+     * 显示未提醒的信息
+     *
+     * @param receiverId 接收者id
+     * @return
+     */
+    List<MessageSendVO> selectRemindedMessageVOById(Long receiverId);
+
+    /**
+     * 更新接受状态未0
+     *
+     *
+     * @param sendIds 消息ids
+     * @param receiverId 接收者id
+     * @return
+     */
+    int updateMessageTipStatusBySendIdsAndReceiverId(@Param("sendIds") List<Long> sendIds, @Param("receiverId") Long receiverId);
 }

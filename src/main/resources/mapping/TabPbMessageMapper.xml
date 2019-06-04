@@ -95,6 +95,18 @@
             AND receiver_id = #{receiverId}
     </update>
 
+    <!--更新接受状态为0-->
+    <update id="updateMessageTipStatusBySendIdsAndReceiverId">
+        UPDATE tab_pb_message_receive mr
+        INNER JOIN tab_pb_message_send ms ON mr.send_id = ms.send_id
+        SET mr.receive_status = 0
+        WHERE ms.send_id IN
+        <foreach collection="sendIds" item="item" open="(" separator="," close=")">
+            ${item}
+        </foreach>
+          AND mr.receiver_id = #{receiverId}
+    </update>
+
     <!--查询站内消息VO-->
     <select id="selectMessageSendVO" resultType="com.egovchina.partybuilding.partybuild.vo.MessageSendVO">
       SELECT
@@ -256,6 +268,31 @@
         WHERE
             send_id = #{sendId}
             AND receiver_id = #{receiverId}
+    </select>
+
+    <!--显示未提醒的信息-->
+    <select id="selectRemindedMessageVOById" resultType="com.egovchina.partybuilding.partybuild.vo.MessageSendVO">
+      SELECT
+            s.send_id AS sendId,
+            s.sender_id AS senderId,
+            s.sender_name AS senderName,
+            s.type AS type,
+            s.title AS title,
+            s.content AS content,
+            s.send_time AS sendTime,
+            r.receive_status AS receiveStatus,
+            r.receiver_type AS receiverType,
+            r.receiver_id AS receiverId
+        FROM
+            tab_pb_message_send s
+            LEFT JOIN tab_pb_message_receive r ON s.send_id = r.send_id
+            LEFT JOIN sys_dept d ON d.dept_id = r.receiver_id
+        WHERE
+            r.receiver_id = #{receiverId}
+            AND r.receive_status IS NULL
+            AND s.del_flag = 0
+        ORDER BY
+            s.send_time DESC
     </select>
 
     <!--定时发送消息-->
