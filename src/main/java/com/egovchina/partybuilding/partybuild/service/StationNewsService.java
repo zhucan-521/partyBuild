@@ -56,4 +56,11 @@ public interface StationNewsService {
      */
     List<MessageSendVO> getOrgMessageSendList(Page page, StationNewsQueryBean stationNewsQueryBean);
 
+    /**
+     * 显示未提醒的信息
+     *
+     * @param receiverId 接收者id
+     * @return
+     */
+    List<MessageSendVO> getNotRemindedMessageVO(Long receiverId);
 }

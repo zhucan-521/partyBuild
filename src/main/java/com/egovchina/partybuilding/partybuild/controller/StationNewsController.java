@@ -7,7 +7,6 @@ import com.egovchina.partybuilding.partybuild.dto.MessageAddDTO;
 import com.egovchina.partybuilding.partybuild.dto.MessageUpdateDTO;
 import com.egovchina.partybuilding.partybuild.entity.StationNewsQueryBean;
 import com.egovchina.partybuilding.partybuild.service.StationNewsService;
-import com.egovchina.partybuilding.partybuild.service.TimedTransmissionService;
 import com.egovchina.partybuilding.partybuild.vo.MessageSendVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
@@ -54,6 +53,13 @@ public class StationNewsController {
     @GetMapping("/{sendId}/{receiverId}/details")
     public MessageSendVO getMessageSend(@PathVariable Long sendId, @PathVariable Long receiverId) {
         return stationNewsService.getMessageSendVO(sendId, receiverId);
+    }
+
+    @ApiOperation(value = "显示未提醒的信息", notes = "显示未提醒的信息", httpMethod = "GET")
+    @ApiImplicitParam(name = "receiverId", value = "接收者id", dataType = "long", paramType = "path", required = true)
+    @GetMapping("/{receiverId}/not-remind")
+    public PageInfo<MessageSendVO> getNotRemindedMessage(@PathVariable Long receiverId) {
+        return new PageInfo<>(stationNewsService.getNotRemindedMessageVO(receiverId));
     }
 
     @Deprecated
