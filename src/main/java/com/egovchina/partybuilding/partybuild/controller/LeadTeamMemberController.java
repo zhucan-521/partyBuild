@@ -75,7 +75,7 @@ public class LeadTeamMemberController {
     }
 
     @ApiOperation(value = "班子成员列表", notes = "班子成员列表", httpMethod = "GET")
-    @HasPermission("party_leadershipTeam_members")
+    @HasPermission({"party_leadershipTeam_members", "party_leadershipTeam"})
     @GetMapping("/lead-team-members")
     public PageInfo<LeadTeamMemberVO> getLeadTeamMemberList(LeadTeamMemberQueryBean queryBean, Page page) {
         List<LeadTeamMemberVO> list = leadTeamMemberService.selectLeadTeamMemberVOListByCondition(queryBean, page);
