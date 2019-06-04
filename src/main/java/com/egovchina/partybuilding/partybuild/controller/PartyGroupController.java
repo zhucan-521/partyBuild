@@ -2,7 +2,6 @@ package com.egovchina.partybuilding.partybuild.controller;
 
 import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.common.enums.PermissionMatchType;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.PartyGroupDTO;
@@ -29,14 +28,14 @@ public class PartyGroupController {
     private PartyGroupService partyGroupService;
 
     @ApiOperation(value = "新增党小组", notes = "新增党小组", httpMethod = "POST")
-    @HasPermission(value = "party_partyGroup_add", matchType = PermissionMatchType.ANY)
+    @HasPermission(value = "party_partyGroup_add")
     @PostMapping
     public ReturnEntity insertPartyGroup(@RequestBody @Validated @ApiParam("党小组信息") PartyGroupDTO partyGroupDTO) {
         return ReturnUtil.buildReturn(partyGroupService.insertPartyGroup(partyGroupDTO));
     }
 
     @ApiOperation(value = "更新党小组", notes = "更新党小组", httpMethod = "PUT")
-    @HasPermission(value = "party_partyGroup_edit", matchType = PermissionMatchType.ANY)
+    @HasPermission(value = "party_partyGroup_edit")
     @PutMapping
     public ReturnEntity updatePartyGroup(@RequestBody @Validated @ApiParam("党小组信息") PartyGroupDTO partyGroupDTO) {
         return ReturnUtil.buildReturn(partyGroupService.updatePartyGroup(partyGroupDTO));
@@ -44,7 +43,7 @@ public class PartyGroupController {
 
     @ApiOperation(value = "删除党小组", notes = "删除党小组", httpMethod = "DELETE")
     @ApiImplicitParam(name = "groupId", value = "党小组ID", paramType = "path", required = true)
-    @HasPermission(value = "party_partyGroup_del", matchType = PermissionMatchType.ANY)
+    @HasPermission(value = "party_partyGroup_del")
     @DeleteMapping("/{groupId}")
     public ReturnEntity deletePartyGroup(@PathVariable Long groupId) {
         return ReturnUtil.buildReturn(partyGroupService.deletePartyGroup(groupId));
@@ -52,7 +51,7 @@ public class PartyGroupController {
 
     @ApiOperation(value = "撤销党小组", notes = "撤销党小组", httpMethod = "DELETE")
     @ApiImplicitParam(name = "groupId", value = "党小组ID", paramType = "path", required = true)
-    @HasPermission(value = "party_partyGroup_repeal", matchType = PermissionMatchType.ANY)
+    @HasPermission(value = "party_partyGroup_repeal")
     @DeleteMapping("/annuls/{groupId}")
     public ReturnEntity revokePartyGroup(@PathVariable Long groupId) {
         return ReturnUtil.buildReturn(partyGroupService.revokePartyGroup(groupId));
@@ -60,7 +59,7 @@ public class PartyGroupController {
 
     @ApiOperation(value = "恢复党小组", notes = "恢复党小组", httpMethod = "POST")
     @ApiImplicitParam(name = "groupId", value = "党小组ID", paramType = "path", required = true)
-    @HasPermission(value = "party_partyGroup_recover", matchType = PermissionMatchType.ANY)
+    @HasPermission(value = "party_partyGroup_recover")
     @PostMapping("/resumes/{groupId}")
     public ReturnEntity recoveryRevokePartyGroup(@PathVariable Long groupId) {
         return ReturnUtil.buildReturn(partyGroupService.recoveryPartyGroup(groupId));
@@ -78,14 +77,14 @@ public class PartyGroupController {
 
     @ApiOperation(value = "获取党小组详情", notes = "获取党小组详情", httpMethod = "GET")
     @ApiImplicitParam(name = "groupId", value = "党小组ID", paramType = "path", required = true)
-    @HasPermission(value = "party_partyGroup_examine", matchType = PermissionMatchType.ANY)
+    @HasPermission(value = "party_partyGroup_examine")
     @GetMapping("/{groupId}")
     public PartyGroupVO getPartyGroupDetails(@PathVariable Long groupId) {
         return partyGroupService.getPartyGroupDetails(groupId);
     }
 
     @ApiOperation(value = "获取党小组列表", notes = "获取党小组列表", httpMethod = "GET")
-    @HasPermission(value = "party_partyGroup_examine", matchType = PermissionMatchType.ANY)
+    @HasPermission(value = "party_partyGroup")
     @GetMapping
     public PageInfo<PartyGroupVO> getPartyGroupList(@Validated PartyGroupQueryBean partyGroupQueryBean, Page page) {
         return partyGroupService.getPartyGroupList(partyGroupQueryBean, page);
