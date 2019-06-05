@@ -134,7 +134,7 @@ public interface OrganizationService {
      *
      * @param sysDept 组织
      */
-    void modifyFullPathAndSubDeptIfNecessary(SysDept sysDept);
+    void modifyFullPathInnerCodeAndSubDeptIfNecessary(SysDept sysDept);
 
     /**
      * 查询组织简单列表根据条件

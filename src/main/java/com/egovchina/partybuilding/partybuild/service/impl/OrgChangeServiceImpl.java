@@ -98,7 +98,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
         newDept.setOrgCode(tabPbOrgnizeChange.getOrgnizeCode());
         newDept.setFoundedFileNumber(tabPbOrgnizeChange.getFileNumber());
         paddingUpdateRelatedBaseFiled(newDept);
-        organizationService.modifyFullPathAndSubDeptIfNecessary(newDept);
+        organizationService.modifyFullPathInnerCodeAndSubDeptIfNecessary(newDept);
         //维护上级为父组织
         SysDept parentSysDept = tabSysDeptMapper.selectByPrimaryKey(tabPbOrgnizeChange.getNowSuperiorId());
         if (CommonConstant.ISNOTPARENTORG.equals(parentSysDept.getIsParent())) {
