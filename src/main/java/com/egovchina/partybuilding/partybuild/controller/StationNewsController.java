@@ -26,17 +26,26 @@ public class StationNewsController {
     @Autowired
     private StationNewsService stationNewsService;
 
+    @Deprecated
     @ApiOperation(value = "添加站内消息（可批量）", notes = "添加站内消息（可批量）", httpMethod = "POST")
     @PostMapping
     public ReturnEntity insertStationNews(@RequestBody @Validated @ApiParam("新增消息dto") MessageAddDTO messageAddDTO) {
         return ReturnUtil.buildReturn(stationNewsService.batchInsertStationNews(messageAddDTO));
     }
 
+    @Deprecated
     @ApiOperation(value = "党员获取发送给自己的消息列表", notes = "党员获取发送给自己的消息列表", httpMethod = "GET")
     @ApiImplicitParam(name = "receiverId", value = "接收者id", dataType = "long", paramType = "path", required = true)
     @GetMapping("/{receiverId}/personal")
     public PageInfo<MessageSendVO> getMessageSendList(@ApiParam("分页参数") Page page, @PathVariable Long receiverId) {
         return new PageInfo<>(stationNewsService.getMessageSendVOList(page, receiverId));
+    }
+
+    @Deprecated
+    @ApiOperation(value = "修改站内消息(可批量)", notes = "修改站内消息(可批量)", httpMethod = "PUT")
+    @PutMapping
+    public ReturnEntity updateStationNews(@RequestBody @Validated @ApiParam("更新参数dto") MessageUpdateDTO messageUpdateDTO) {
+        return ReturnUtil.buildReturn(stationNewsService.batchUpdateStationNews(messageUpdateDTO));
     }
 
     @ApiOperation(value = "党员获取在自己组织下的消息列表", notes = "党员获取在自己组织下的消息列表", httpMethod = "GET")
@@ -60,13 +69,6 @@ public class StationNewsController {
     @GetMapping("/{receiverId}/not-remind")
     public PageInfo<MessageSendVO> getNotRemindedMessage(@PathVariable Long receiverId) {
         return new PageInfo<>(stationNewsService.getNotRemindedMessageVO(receiverId));
-    }
-
-    @Deprecated
-    @ApiOperation(value = "修改站内消息(可批量)", notes = "修改站内消息(可批量)", httpMethod = "PUT")
-    @PutMapping
-    public ReturnEntity updateStationNews(@RequestBody @Validated @ApiParam("更新参数dto") MessageUpdateDTO messageUpdateDTO) {
-        return ReturnUtil.buildReturn(stationNewsService.batchUpdateStationNews(messageUpdateDTO));
     }
 
 }

@@ -76,6 +76,21 @@ public interface TabSysDeptMapper {
                               @Param("nowDeptId") Long nowDeptId);
 
     /**
+     * 修改下级组织的full_path及内部编码
+     * @param oldFullPath 旧的full_path
+     * @param newFullPath 新的full_path
+     * @param oldInnerCode 旧的内部编码
+     * @param newInnerCode 新的内部编码
+     * @param nowDeptId 当前操作的组织id
+     * @return
+     */
+    int updateFullPathAndInnerCodeForSubs(@Param("oldFullPath") String oldFullPath,
+                                          @Param("newFullPath") String newFullPath,
+                                          @Param("oldInnerCode") String oldInnerCode,
+                                          @Param("newInnerCode") String newInnerCode,
+                                          @Param("nowDeptId") Long nowDeptId);
+
+    /**
      * 数据里列表-map
      *
      * @param conditions
@@ -145,4 +160,10 @@ public interface TabSysDeptMapper {
      */
     Date getFoundedDateByOrgId(Long orgId);
 
+    /**
+     * 根据父id查询子层级中新的内部编码
+     * @param parentId 父id
+     * @return
+     */
+    String selectSubLevelNewInnerCodeByParentId(Long parentId);
 }
