@@ -1,6 +1,5 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -35,26 +34,8 @@ public class SysUserQueryBean {
     @ApiModelProperty(value = "学历,多个逗号隔开")
     private String education;
 
-    @ApiModelProperty(value = "是否台湾籍")
-    private String isTaiwaner;
-
-    @ApiModelProperty(value = "流动状态 码表值 LDZT")
-    private Long flowStatus;
-
-    @ApiModelProperty(value = "党籍 0无、1刚入党、2转正、3出党、4停止党籍、5死亡、6其他、 7发展中的党员")
-    private String registryStatus;
-
     @ApiModelProperty(value = "单位类型")
     private String unitProperty;
-
-    @ApiModelProperty(value = "婚姻状况,多个逗号隔开")
-    private String maritalStatus;
-
-    @ApiModelProperty(value = "是否失联,多个逗号隔开")
-    private String isLlost;
-
-    @ApiModelProperty(value = "是否困难,多个逗号隔开")
-    private String isPoor;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "入党时间、预备党员时间", example = "yyyy-MM-dd")
@@ -62,7 +43,6 @@ public class SysUserQueryBean {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "出党时间", example = "yyyy-MM-dd")
-    @TableField(exist = false)
     private Date joinTimeEnd;
 
     @ApiModelProperty(value = "开始年龄")
@@ -90,4 +70,5 @@ public class SysUserQueryBean {
     @ApiModelProperty(hidden = true)
     @JsonIgnore
     private Long limit;
+
 }

@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -418,8 +419,35 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         }
         queryBean.setIndex(index);
         queryBean.setLimit(pageSize);
-        List<SystemDetailsVO> systemDetailsVO = tabSysUserMapper.selectPageByMap(queryBean);
-        int count = tabSysUserMapper.selectPageByMapCOUNT(queryBean);
+        HashMap<String, Object> queryMap = new HashMap<String, Object>();
+        if (queryBean.getEducation() != null) {
+            queryMap.put("education", queryBean.getEducation().split(","));
+        }
+        if (queryBean.getNation() != null) {
+            queryMap.put("nation", queryBean.getNation().split(","));
+        }
+        if (queryBean.getUnitProperty() != null) {
+            queryMap.put("unitProperty", queryBean.getUnitProperty().split(","));
+        }
+        if (queryBean.getGender() != null) {
+            queryMap.put("gender", queryBean.getGender().split(","));
+        }
+        if (queryBean.getTagTypes() != null) {
+            queryMap.put("tagTypes", queryBean.getTagTypes().split(","));
+        }
+        queryMap.put("deptId", queryBean.getDeptId());
+        queryMap.put("username", queryBean.getUsername());
+        queryMap.put("identityType", queryBean.getIdentityType());
+        queryMap.put("idCardNo", queryBean.getIdCardNo());
+        queryMap.put("joinTimeBegin", queryBean.getJoinTimeBegin());
+        queryMap.put("joinTimeEnd", queryBean.getJoinTimeEnd());
+        queryMap.put("ageBegin", queryBean.getAgeBegin());
+        queryMap.put("ageEnd", queryBean.getAgeEnd());
+        queryMap.put("index", index);
+        queryMap.put("limit", pageSize);
+        queryMap.put("orgRange", queryBean.getOrgRange());
+        List<SystemDetailsVO> systemDetailsVO = tabSysUserMapper.selectPageByMap(queryMap);
+        int count = tabSysUserMapper.selectPageByMapCOUNT(queryMap);
         List<PartyMemberInformationVO> partyMemberInformationVOS = calculationComplete(systemDetailsVO);
         PageInfo<PartyMemberInformationVO> pageInfo = new PageInfo<>(partyMemberInformationVOS);
         pageInfo.setTotal(count);
@@ -581,6 +609,6 @@ public class PartyInformationServiceImpl implements PartyInformationService {
 
     @Override
     public PartyMemberChooseVO choosePartyMemberVOByIdCardNo(String idCardNo) {
-        return  tabSysUserMapper.selectPartyMemberChooseVOByIdCardNo(idCardNo);
+        return tabSysUserMapper.selectPartyMemberChooseVOByIdCardNo(idCardNo);
     }
 }
