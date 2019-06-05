@@ -163,7 +163,7 @@ public class StationNewsServiceImpl implements StationNewsService {
     @Override
     public List<MessageSendVO> getNotRemindedMessageVO(Long receiverId) {
         List<MessageSendVO> messageSendVOS = tabPbMessageMapper.selectRemindedMessageVOById(receiverId);
-        //更新接受状态未0
+        //更新接受状态为0
         List<Long> sendIds = messageSendVOS.stream().map(MessageSendVO::getSendId).collect(Collectors.toList());
         if (CollectionUtil.isNotEmpty(sendIds)) {
             tabPbMessageMapper.updateMessageTipStatusBySendIdsAndReceiverId(sendIds, receiverId);

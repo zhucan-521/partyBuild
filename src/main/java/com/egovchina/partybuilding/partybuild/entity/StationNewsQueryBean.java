@@ -16,10 +16,6 @@ import java.util.Date;
 @Data
 public class StationNewsQueryBean {
 
-    @ApiModelProperty(value = "接收者id", required = true)
-    @NotNull(message = "接收者id不能为空")
-    private Long receiverId;
-
     @ApiModelProperty(value = "发送时间-开始", example = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date sendTimeStart;
