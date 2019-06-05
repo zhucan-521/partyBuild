@@ -10,6 +10,7 @@ import com.egovchina.partybuilding.partybuild.vo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -50,18 +51,17 @@ public interface TabSysUserMapper {
     /**
      * 用于党员列表显示,获取完整度度字段查询
      *
-     * @param sysUserQueryBean
+     * @param hashMap
      * @return
      */
-    List<SystemDetailsVO> selectPageByMap(SysUserQueryBean sysUserQueryBean);
+    List<SystemDetailsVO> selectPageByMap(HashMap<String,Object> hashMap);
 
     /**
      * 党员列表总数查询
-     *
-     * @param sysUserQueryBean 查询实体
+     * @param hashMap
      * @return
      */
-    int selectPageByMapCOUNT(SysUserQueryBean sysUserQueryBean);
+    int selectPageByMapCOUNT(HashMap<String,Object> hashMap);
 
     /**
      * 根据身份证查询人员ID

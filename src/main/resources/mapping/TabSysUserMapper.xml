@@ -350,17 +350,17 @@
         <if test="identityType != null and identityType != ''">
             AND identity_type = #{identityType}
         </if>
-        <if test="registryStatus != null and registryStatus != ''">
-            AND u.registry_status IN (${registryStatus})
-        </if>
         <if test="education != null and education != ''">
-            AND u.education IN (${education})
-        </if>
-        <if test="maritalStatus != null and maritalStatus != ''">
-            AND u.marital_status IN (${maritalStatus})
+            and education in
+            <foreach item="item" index="index" collection="education" open="(" separator="," close=")">
+                ${item}
+            </foreach>
         </if>
         <if test="nation != null and nation != ''">
-            AND u.nation IN (${nation})
+            and nation in
+            <foreach item="item" index="index" collection="nation" open="(" separator="," close=")">
+                ${item}
+            </foreach>
         </if>
         <if test="unitProperty != null and unitProperty!=''">
             AND u.dept_id IN (
@@ -370,7 +370,10 @@
                 WHERE d.del_flag = '0'
                     AND d.ebl_flag = '1'
                     AND ui.del_flag = '0'
-                    AND ui.unit_property IN (${unitProperty})
+                    AND ui.unit_property IN
+                    <foreach item="item" index="index" collection="unitProperty" open="(" separator="," close=")">
+                        ${item}
+                    </foreach>
             )
         </if>
         <if test="ageBegin != null">
@@ -385,28 +388,19 @@
         <if test="joinTimeEnd != null">
             AND join_time &lt; #{joinTimeEnd}
         </if>
-        <if test="flowStatus != null and flowStatus == 0">
-            AND flow_status = 0
-        </if>
-        <if test="flowStatus != null and flowStatus == 1">
-            AND flow_status > 0
-        </if>
         <if test="gender != null">
-            AND u.gender IN (${gender})
-        </if>
-        <if test="isPoor != null">
-            AND u.is_poor IN (${isPoor})
-        </if>
-        <if test="isLlost != null">
-            AND u.is_llost IN (${isLlost})
-        </if>
-        <if test="isTaiwaner != null">
-            AND u.is_taiwaner IN (${isTaiwaner})
+            AND u.gender IN
+            <foreach item="item" index="index" collection="gender" open="(" separator="," close=")">
+                ${item}
+            </foreach>
         </if>
         <if test="tagTypes != null and tagTypes != ''">
             AND u.user_id IN (
                 SELECT tt.user_id FROM tab_pb_user_tag tt
-                WHERE tt.tag_type IN (${tagTypes})
+                WHERE tt.tag_type IN
+            <foreach item="item" index="index" collection="tagTypes" open="(" separator="," close=")">
+            ${item}
+        </foreach>
             )
         </if>
     </sql>
@@ -470,7 +464,7 @@
         where u.user_id = #{userId,jdbcType=BIGINT}
     </select>
     <!--用于列表显示-->
-    <select id="selectPageByMap" resultMap="UserInFo">
+    <select id="selectPageByMap" resultMap="UserInFo" >
         select
         <include refid="Base_users_info"/>
         ,tt.unit_property,
