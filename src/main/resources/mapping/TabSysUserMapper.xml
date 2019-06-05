@@ -482,7 +482,7 @@
                         and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
                     </if>
                     <if test="orgRange == 2">
-                        and find_in_set(#{deptId}, dept.full_path)
+                      AND dept.org_inner_code like concat((select org_inner_code from sys_dept innerd where innerd.dept_Id = #{deptId}),'%')
                     </if>
                     ) d
                     inner join sys_user u on u.dept_id = d.org_id
@@ -525,7 +525,7 @@
                     and (dept.dept_id = #{deptId} or dept.parent_id = #{deptId})
                 </if>
                 <if test="orgRange == 2">
-                    and find_in_set(#{deptId}, dept.full_path)
+                    AND dept.org_inner_code like concat((select org_inner_code from sys_dept innerd where innerd.dept_Id = #{deptId}), '%')
                 </if>
                 ) d
                 inner join sys_user u on u.dept_id = d.org_id
@@ -1999,7 +1999,7 @@
                         and (dept.dept_id = #{orgId} or dept.parent_id = #{orgId})
                     </if>
                     <if test="orgRange == 2">
-                        and find_in_set(#{orgId}, dept.full_path)
+                        AND dept.org_inner_code like concat((select org_inner_code from sys_dept innerd where innerd.dept_Id = #{orgId}), '%')
                     </if>
                     ) d
                     inner join sys_user u on u.dept_id = d.org_id
@@ -2033,7 +2033,7 @@
                     and (dept.dept_id = #{orgId} or dept.parent_id = #{orgId})
                 </if>
                 <if test="orgRange == 2">
-                    and find_in_set(#{orgId}, dept.full_path)
+                    AND dept.org_inner_code like concat((select org_inner_code from sys_dept innerd where innerd.dept_Id = #{orgId}), '%')
                 </if>
                 ) d
                 inner join sys_user u on u.dept_id = d.org_id
