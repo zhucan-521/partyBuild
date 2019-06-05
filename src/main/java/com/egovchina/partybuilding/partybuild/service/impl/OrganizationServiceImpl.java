@@ -28,6 +28,7 @@ import com.egovchina.partybuilding.partybuild.vo.OrganizationPartyBuildingWorkVO
 import com.egovchina.partybuilding.partybuild.vo.OrganizationPositionVO;
 import com.egovchina.partybuilding.partybuild.vo.OrganizationVO;
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -123,8 +124,8 @@ public class OrganizationServiceImpl implements OrganizationService {
                 tabPbUnitInfoList.forEach(tabPbUnitInfo -> insertUnitInfo(organizationDTO, tabPbUnitInfo));
             }
         }
-        //维护组织表单位及 full_path
-        modifyFullPathAndSubDeptIfNecessary(sysDept);
+        //维护组织full_path、内部编码及子级的（如有必要）
+        modifyFullPathInnerCodeAndSubDeptIfNecessary(sysDept);
         tabSysDeptMapper.updateByPrimaryKeySelective(sysDept);
         //维护上级为父组织
         SysDept parentSysDept = tabSysDeptMapper.selectByPrimaryKey(sysDept.getParentId());
@@ -243,29 +244,32 @@ public class OrganizationServiceImpl implements OrganizationService {
             }
         }
 
-        modifyFullPathAndSubDeptIfNecessary(sysDept);
+        //维护组织full_path、内部编码及子级的（如有必要）
+        modifyFullPathInnerCodeAndSubDeptIfNecessary(sysDept);
         judgment += tabSysDeptMapper.updateByPrimaryKeySelective(sysDept);
         return judgment;
     }
 
     /**
-     * 如有必要,维护 full_path 和下级组织 full_path
+     * 如有必要,维护 full_path及内部编码 和下级组织 full_path及内部编码
      *
      * @param sysDept
      */
     @Override
-    public void modifyFullPathAndSubDeptIfNecessary(SysDept sysDept) {
-        long deptId = sysDept.getDeptId();
-        long parentId = sysDept.getParentId();
+    public void modifyFullPathInnerCodeAndSubDeptIfNecessary(SysDept sysDept) {
+        Long deptId = sysDept.getDeptId();
+        Long parentId = sysDept.getParentId();
 
         boolean subIfNecessary = false;
         String oldFullPath = null;
+        String oldInnerCode = null;
         //从 db 中拿当前组织旧数据
         SysDept dbOldSysDept = tabSysDeptMapper.selectAloneByPrimaryKey(deptId);
         //上级节点有改变
         if (dbOldSysDept != null && !dbOldSysDept.getParentId().equals(sysDept.getParentId())) {
             subIfNecessary = true;
             oldFullPath = dbOldSysDept.getFullPath();
+            oldInnerCode = dbOldSysDept.getOrgInnerCode();
         }
 
         //需要维护
@@ -275,8 +279,15 @@ public class OrganizationServiceImpl implements OrganizationService {
         String newFullPath = String.format("%s,%s", dbParentDept.getFullPath(), deptId);
         sysDept.setFullPath(newFullPath);
 
-        if (subIfNecessary) {
-            tabSysDeptMapper.updateFullPathForSubs(oldFullPath, newFullPath, deptId);
+        if ((dbOldSysDept != null && StringUtils.isEmpty(dbOldSysDept.getOrgInnerCode()))
+                || subIfNecessary) {
+            //查出新上级组织子层级中新的内部编码
+            String newInnerCode = tabSysDeptMapper.selectSubLevelNewInnerCodeByParentId(parentId);
+            sysDept.setOrgInnerCode(newInnerCode);
+
+            if (StringUtils.isNotEmpty(dbOldSysDept.getOrgInnerCode())) {
+                tabSysDeptMapper.updateFullPathAndInnerCodeForSubs(oldFullPath, newFullPath, oldInnerCode, newInnerCode, deptId);
+            }
         }
     }
 
