@@ -26,7 +26,6 @@ public class StationNewsController {
     @Autowired
     private StationNewsService stationNewsService;
 
-    @Deprecated
     @ApiOperation(value = "添加站内消息（可批量）", notes = "添加站内消息（可批量）", httpMethod = "POST")
     @PostMapping
     public ReturnEntity insertStationNews(@RequestBody @Validated @ApiParam("新增消息dto") MessageAddDTO messageAddDTO) {

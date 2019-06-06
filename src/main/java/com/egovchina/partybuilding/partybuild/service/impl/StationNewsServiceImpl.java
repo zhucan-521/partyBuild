@@ -90,7 +90,7 @@ public class StationNewsServiceImpl implements StationNewsService {
                 }
                 tabPbMessageReceiveList.add(tabPbMessageReceive);
             });
-            //批量插入消息接收表
+            //定时批量插入消息接收表
             result += tabPbMessageMapper.batchInsertTabPbMessageReceive(tabPbMessageReceiveList);
         }
         return result;
