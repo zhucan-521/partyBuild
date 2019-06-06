@@ -17,7 +17,7 @@
     <!--批量新增接收消息-->
     <insert id="batchInsertTabPbMessageReceive" useGeneratedKeys="true" keyProperty="receiveId" keyColumn="receive_id"
             parameterType="java.util.List">
-        INSERT INTO tab_pb_message_receive ( send_id, receiver_id, receiver_name, receiver_type )
+        INSERT IGNORE INTO tab_pb_message_receive ( send_id, receiver_id, receiver_name, receiver_type )
         VALUES
         <foreach collection="list" item="a" separator=",">
             ( #{a.sendId, jdbcType=BIGINT}, #{a.receiverId, jdbcType=BIGINT}, #{a.receiverName, jdbcType=VARCHAR},
@@ -294,16 +294,9 @@
             s.send_time DESC
     </select>
 
-    <!--定时发送消息-->
-    <insert id="insertTabPbMessageReceive">
-        INSERT INTO tab_pb_message_receive ( send_id, receive_user_id, receive_user_name )
-        VALUES
-            ( #{sendId}, #{receiveUserId}, #{receiveUserName} )
-    </insert>
-
-    <!--定时发送消息-->
+    <!--定时向消息发送表插入数据-->
     <insert id="insertTabPbMessageSend" useGeneratedKeys="true" keyColumn="send_id" keyProperty="sendId">
-        INSERT INTO tab_pb_message_send ( sender_id, sender_name, type, title, content, send_time, del_flag, create_time, create_userid, create_username )
+        INSERT IGNORE INTO tab_pb_message_send ( sender_id, sender_name, type, title, content, send_time, del_flag, create_time, create_userid, create_username )
         VALUES
             ( #{senderId}, #{senderName}, #{type}, #{title}, #{content}, #{sendTime}, 0, #{createTime}, #{createUserId}, #{createUsername} )
     </insert>
