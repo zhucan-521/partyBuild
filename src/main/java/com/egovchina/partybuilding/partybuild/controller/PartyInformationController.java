@@ -63,7 +63,7 @@ public class PartyInformationController {
     }
 
     @ApiOperation(value = "查看单个历史党员", notes = "查看单个历史党员", httpMethod = "GET")
-    @HasPermission("TODO")
+    @HasPermission("party_partyHistory_detail")
     @GetMapping("/history-members/{userId}")
     @ApiImplicitParam(name = "userId", value = "用户id", paramType = "path", required = true, dataType = "long")
     public HistoryPartyVO getPartyHistoryVO(@PathVariable Long userId) {
