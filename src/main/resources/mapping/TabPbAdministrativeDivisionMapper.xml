@@ -245,7 +245,7 @@
                 and administrative_division_id = #{administrativeDivisionId}
             </if>
             <if test="administrativeDivisionName != null">
-                and administrative_division_name = #{administrativeDivisionName}
+                and administrative_division_name like concat('%', #{administrativeDivisionName},'%')
             </if>
             <if test="administrativeDivisionCode != null">
                 and administrative_division_code = #{administrativeDivisionCode}
