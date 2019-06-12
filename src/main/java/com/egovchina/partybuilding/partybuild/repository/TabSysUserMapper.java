@@ -200,6 +200,13 @@ public interface TabSysUserMapper {
     PartyMemberVO selectByPrimaryKeyToAll(Long userId);
 
     /**
+     * 党员名册查询概况
+     * @param userId
+     * @return
+     */
+    PartyMemberDetailVO selectDeailsByPrimaryKey(Long userId);
+
+    /**
      * 查询书记个人简单信息
      *
      * @param userId
