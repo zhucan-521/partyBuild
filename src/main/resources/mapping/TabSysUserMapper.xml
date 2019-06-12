@@ -415,6 +415,9 @@
         <if test="idCardNo != null and idCardNo != ''">
             AND u.id_card_no = #{idCardNo}
         </if>
+        <if test="orgRange == null and deptId != null">
+            AND u.dept_id = #{deptId}
+        </if>
         <if test="userTag != null and userTag != ''">
             AND u.user_id IN (
                 SELECT t.user_id FROM tab_pb_user_tag t
