@@ -41,7 +41,7 @@ public interface TabPbDeptSecretaryMapper {
      * @param userId
      * @return
      */
-    Boolean CheckSecretaryIsexistByUserId(@Param("userId") Long userId,@Param("deptId")Long deptId);
+    Boolean checkSecretaryIsexistByUserId(@Param("userId") Long userId, @Param("deptId")Long deptId);
 
     /**
      * 书记列表查询
