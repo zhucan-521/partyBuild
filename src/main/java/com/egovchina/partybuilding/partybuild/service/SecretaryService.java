@@ -18,22 +18,6 @@ import java.util.List;
 public interface SecretaryService {
 
     /**
-     * 根据userId获取书记基本信息
-     *
-     * @param userId
-     * @return
-     */
-    SecretaryInfoVO getSecretaryInfoVOByUserId(Long userId);
-
-    /**
-     * 添加书记
-     *
-     * @param secretaryMemberDTO
-     * @return
-     */
-    int insertSecretary(SecretaryMemberDTO secretaryMemberDTO);
-
-    /**
      * 修改书记
      *
      * @param secretaryMemberDTO
@@ -56,12 +40,5 @@ public interface SecretaryService {
      * @return
      */
     List<SecretarysVO> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page);
-
-    /**
-     * 删除书记家庭成员和职务以及书记本人
-     *
-     * @return
-     */
-    int deleteSecretary(Long secretaryId);
 
 }
