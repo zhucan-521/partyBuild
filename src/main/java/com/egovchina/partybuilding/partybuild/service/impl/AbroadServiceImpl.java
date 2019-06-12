@@ -65,7 +65,7 @@ public class AbroadServiceImpl implements AbroadService {
     @Override
     public int insertGoAbroad(GoAbroadDTO goAbroadDTO) {
         Long userId = goAbroadDTO.getUserId();
-        verification(goAbroadDTO.getOrgId(), userId);
+        verification(goAbroadDTO.getOrgId(), userId, true);
         TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(goAbroadDTO, TabPbAbroad.class, false);
         int result = tabPbAbroadMapper.insertSelective(tabPbAbroad);
         /**
@@ -105,7 +105,7 @@ public class AbroadServiceImpl implements AbroadService {
 
     @Override
     public int updateAbroad(AbroadDTO abroadDTO) {
-        verification(abroadDTO.getOrgId(), abroadDTO.getUserId());
+        verification(abroadDTO.getOrgId(), abroadDTO.getUserId(), false);
         TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(abroadDTO, TabPbAbroad.class, true);
         return tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
     }
@@ -113,7 +113,7 @@ public class AbroadServiceImpl implements AbroadService {
     @Override
     public int updateReturnAbroad(ReturnAbroadDTO returnAbroadDTO) {
         Long userId = returnAbroadDTO.getUserId();
-        verification(returnAbroadDTO.getOrgId(), userId);
+        verification(returnAbroadDTO.getOrgId(), userId, false);
         TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(returnAbroadDTO, TabPbAbroad.class, true);
         /**
          * 党员回国后将该党员恢复成出国前的状态
@@ -138,16 +138,17 @@ public class AbroadServiceImpl implements AbroadService {
     /**
      * desc: 数据校验提示
      *
-     * @param orgId  组织ID
-     * @param userId 用户ID
+     * @param orgId      组织ID
+     * @param userId     用户ID
+     * @param isGoAbroad 是否是出国操作
      * @author FanYanGen
      * @date 2019/4/24 21:02
      **/
-    private void verification(Long orgId, Long userId) {
+    private void verification(Long orgId, Long userId, boolean isGoAbroad) {
         if (!tabSysDeptMapper.checkIsExistByOrgId(orgId)) {
             throw new BusinessDataCheckFailException("该组织不存在");
         }
-        if (!tabSysUserMapper.checkIsExistByUserId(userId)) {
+        if (isGoAbroad && !tabSysUserMapper.checkIsExistByUserId(userId)) {
             throw new BusinessDataCheckFailException("该用户不存在");
         }
     }
