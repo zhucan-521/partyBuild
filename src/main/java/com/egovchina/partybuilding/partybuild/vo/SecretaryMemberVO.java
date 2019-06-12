@@ -20,8 +20,8 @@ public class SecretaryMemberVO {
     @ApiModelProperty(value = "用户ID")
     private Long userId;
 
-    @ApiModelProperty(value = "身份证")
-    private String idCardNo;
+    @ApiModelProperty(value = "组织Id")
+    private Long deptId;
 
     @ApiModelProperty(value = "用户名")
     private String realname;
@@ -29,9 +29,6 @@ public class SecretaryMemberVO {
     @ApiModelProperty(value = "籍贯 码表值 JG")
     @JsonSerialize(using = DictSerializer.class)
     private Long ancestorPlace;
-
-    @ApiModelProperty(value = "部门Id")
-    private Long deptId;
 
     @ApiModelProperty(value = "民族 码表值 MZ")
     @JsonSerialize(using = DictSerializer.class)
@@ -63,14 +60,8 @@ public class SecretaryMemberVO {
     @ApiModelProperty(value = "头像")
     private String avatar;
 
-    @ApiModelProperty(value = "党内职务")
-    private List<PositivesVO> positivesVOs;
-
-    @ApiModelProperty(value = "家庭成员")
-    private List<FamilyMemberVO> familys;
-
-    @ApiModelProperty(value = "职务，手动录入：如：中共长沙市委基层党建工作领导小组办公室常务副主任")
-    private String postive;
+    @ApiModelProperty(value = "手机号码")
+    private String phone;
 
     @ApiModelProperty(value = "学历学位-全日制教育")
     private String fullTimeSchooling;
@@ -90,59 +81,22 @@ public class SecretaryMemberVO {
     @ApiModelProperty(value = "熟悉专业有何专长")
     private String professionalSpecialty;
 
-    @ApiModelProperty(value = "是否委员 0是1否")
-    private Long whetherMember;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @ApiModelProperty(value = "首次进入两委班子时间", example = "yyyy-hh-dd")
+    private Date firstCommitteesDate;
 
-    @ApiModelProperty(value = "是否书记 0是1否")
-    private Long whetherSecretary;
-
-    @ApiModelProperty(value = "简历，用字符串数组保存所有时间段内取得的职称，如：[ {} , {} ]")
-    private String resume;
-
-    @ApiModelProperty(value = "近五年培训情况")
-    private String trainingSituation;
+    @ApiModelProperty(value = "现任职务")
+    private Long  newPosition;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "任现职时间")
-    private Date servingTime;
+    @ApiModelProperty(value = "任免时间", example = "yyyy-hh-dd")
+    private Date appointmentTime;
+
+    @ApiModelProperty(value = "原任职务")
+    private Long oldPosition;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "任同级实职时间", example = "yyyy-hh-dd")
-    private Date servingRealTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "任现级时间", example = "yyyy-hh-dd")
-    private Date incumbentTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "任同一班子同级实职时间")
-    private Date incumbentRealTime;
-
-    @ApiModelProperty(value = "近三年度考核情况")
-    private String assessmentSituation;
-
-    @ApiModelProperty(value = "竞争性选拨情况")
-    private String selectionSituation;
-
-    @ApiModelProperty(value = "破格提拔情况")
-    private String promotionSituation;
-
-    @ApiModelProperty(value = "军转干部情况")
-    private String armyCadresSituation;
-
-    @ApiModelProperty(value = "后备干部情况")
-    private String reserveCadresSituation;
-
-    @ApiModelProperty(value = "两代表-委员职务")
-    private String committeeDuties;
-
-    @ApiModelProperty(value = "书记奖励")
-    private List<RewardsVO> rewardsVOs;
-
-    @ApiModelProperty(value = "书记惩罚")
-    private List<PunishmentVO> punishmentVOs;
-
-    @ApiModelProperty(value = "排序码")
-    private Long orderNum;
+    @ApiModelProperty(value = "任职时间", example = "yyyy-hh-dd")
+    private Date serveTime;
 
 }
