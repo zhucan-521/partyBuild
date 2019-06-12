@@ -30,11 +30,9 @@ public class SecretaryMemberDTO {
     private Long ancestorPlace;
 
     @ApiModelProperty(value = "民族 码表值 MZ")
-    @JsonSerialize(using = DictSerializer.class)
     private Long nation;
 
     @ApiModelProperty(value = "性别 码表值 XB")
-    @JsonSerialize(using = DictSerializer.class)
     private Long gender;
 
     @ApiModelProperty(value = "出生地")
