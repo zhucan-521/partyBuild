@@ -54,6 +54,8 @@ public class SecretaryServiceImpl implements SecretaryService {
         TabPbDeptSecretary tabPbDeptSecretary=BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO,TabPbDeptSecretary.class,true);
         Long secretaryId=tabPbDeptSecretaryMapper.getSecretaryIdByUserId(secretaryMemberDTO.getUserId(),secretaryMemberDTO.getDeptId());
         tabPbDeptSecretary.setSecretaryId(secretaryId);
+        TabPbLeadTeamMember tabPbLeadTeamMember=BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO,TabPbLeadTeamMember.class,true);
+        tabPbLeadTeamMemberMapper.updateByPrimaryKeySelective(tabPbLeadTeamMember);
         return tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretary);
     }
 
