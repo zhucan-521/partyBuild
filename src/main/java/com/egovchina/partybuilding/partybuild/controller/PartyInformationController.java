@@ -155,4 +155,13 @@ public class PartyInformationController {
     public PartyMemberChooseVO choosePartyMemberVOByIdCardNo(@PathVariable String idCardNo) {
         return partyInformationService.choosePartyMemberVOByIdCardNo(idCardNo);
     }
+
+    @ApiOperation(value = "党员概况", notes = "党员概况", httpMethod = "GET")
+    @ApiImplicitParam(value = "党员id", name = "id", dataType = "long", paramType = "path", required = true)
+    @HasPermission("party_member_detail")
+    @GetMapping("/party-members/detail/{id}")
+    public PartyMemberDetailVO getPartyDetail(@PathVariable Long id) {
+        return extendedInfoService.selectPartyDetailById(id);
+    }
+
 }

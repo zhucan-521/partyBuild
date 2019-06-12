@@ -17,10 +17,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbPartyGroupMemberMa
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
 import com.egovchina.partybuilding.partybuild.util.CommonConstant;
-import com.egovchina.partybuilding.partybuild.vo.HistoryPartyVO;
-import com.egovchina.partybuilding.partybuild.vo.PartyMemberVO;
-import com.egovchina.partybuilding.partybuild.vo.SecretariesPartyMemberVO;
-import com.egovchina.partybuilding.partybuild.vo.SysUserVO;
+import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +85,11 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
 
     //党籍出党处理类型
     private final Long PARTYMEMBERSHIPTYPE = 59582L;
+
+    @Override
+    public PartyMemberDetailVO selectPartyDetailById(Long userId) {
+        return tabSysUserMapper.selectDeailsByPrimaryKey(userId);
+    }
 
     @Override
     public PartyMemberVO selectPartyMemberDetailsById(Long userId) {

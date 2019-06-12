@@ -3,10 +3,7 @@ package com.egovchina.partybuilding.partybuild.service;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.dto.DeletePartyMemberDTO;
 import com.egovchina.partybuilding.partybuild.dto.UpdateHistoryDTO;
-import com.egovchina.partybuilding.partybuild.vo.HistoryPartyVO;
-import com.egovchina.partybuilding.partybuild.vo.PartyMemberVO;
-import com.egovchina.partybuilding.partybuild.vo.SecretariesPartyMemberVO;
-import com.egovchina.partybuilding.partybuild.vo.SysUserVO;
+import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -40,6 +37,13 @@ public interface ExtendedInfoService {
      */
     PartyMemberVO selectPartyMemberDetailsById(Long userId);
 
+    /**
+     * 党员名册党员基本信息概况
+     *
+     * @param userId 党员id
+     * @return
+     */
+    PartyMemberDetailVO selectPartyDetailById(Long userId);
     /**
      * 党员失效,改变是否有效状态
      *

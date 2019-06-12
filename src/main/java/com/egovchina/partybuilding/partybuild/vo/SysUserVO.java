@@ -59,7 +59,6 @@ public class SysUserVO {
     @ApiModelProperty(value = "家庭住址")
     private String familyAddress;
 
-    @TableField(exist = false)
     @ApiModelProperty(value = "入党所在支部名称")
     private String deptName;
 
