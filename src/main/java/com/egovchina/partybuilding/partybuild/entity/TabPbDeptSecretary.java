@@ -79,4 +79,14 @@ public class TabPbDeptSecretary implements Serializable {
 
     private SysUser user;
 
+    private Date firstCommitteesDate;
+
+    private Long  newPosition;
+
+    private Date appointmentTime;
+
+    private Long oldPosition;
+
+    private Date serveTime;
+
 }

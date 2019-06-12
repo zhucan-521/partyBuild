@@ -27,27 +27,12 @@ public class SecretaryController {
     @Autowired
     SecretaryService secretaryService;
 
-    @ApiOperation(value = "根据党员userId来获取书记的信息（家庭成员、党内职务、以及基本信息（插入前用））", httpMethod = "GET")
-    @ApiImplicitParam(name = "userId", value = "用户Id", paramType = "path", required = true)
-    @HasPermission("party_leadershipTeam_examine")
-    @GetMapping("/info/{userId}")
-    public SecretaryInfoVO getSecretaryByUserId(@PathVariable Long userId) {
-        return secretaryService.getSecretaryInfoVOByUserId(userId);
-    }
-
     @ApiOperation(value = "根据书记secretaryId获取书记详情", httpMethod = "GET")
     @HasPermission("party_leadershipTeam_examine")
     @ApiImplicitParam(name = "secretaryId", value = "书记Id", paramType = "path", required = true)
     @GetMapping("/{secretaryId}")
     public SecretaryMemberVO getSecretaryVOBySecretaryId(@PathVariable Long secretaryId) {
         return secretaryService.selectSecretaryBySecretaryId(secretaryId);
-    }
-
-    @ApiOperation(value = "添加书记需要userId（手动添加书记不需要userId）", notes = "deptId", httpMethod = "POST")
-    @HasPermission("party_leadershipTeam_add")
-    @PostMapping
-    public ReturnEntity insertSecretaries(@ApiParam(value = "保存书记") @RequestBody SecretaryMemberDTO secretaryMemberDTO) {
-        return ReturnUtil.buildReturn(secretaryService.insertSecretary(secretaryMemberDTO));
     }
 
     @ApiOperation(value = "修改书记", notes = "（书记的家庭成员和职务传他们的id则是修改不传则是添加）", httpMethod = "PUT")
@@ -62,14 +47,6 @@ public class SecretaryController {
     @GetMapping
     public PageInfo<SecretarysVO> secretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
         return new PageInfo<>(secretaryService.selectSecretaryList(secretaryMemberQueryBean, page));
-    }
-
-    @ApiOperation(value = "根据传入的id删除书记", httpMethod = "DELETE")
-    @ApiImplicitParam(value = "书记id", name = "secretaryId", paramType = "path")
-    @HasPermission("party_leadershipTeam_del")
-    @DeleteMapping("/{secretaryId}")
-    public ReturnEntity deleteSecretary(@PathVariable Long secretaryId) {
-        return ReturnUtil.buildReturn(secretaryService.deleteSecretary(secretaryId));
     }
 
 }
