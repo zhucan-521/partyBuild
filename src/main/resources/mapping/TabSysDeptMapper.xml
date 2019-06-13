@@ -1055,5 +1055,7 @@
             org_inner_code DESC
             LIMIT 1
     </select>
-
+    <select id="checkOrgIsParentOrg" resultType="java.lang.Boolean">
+        select count(1) from sys_dept where del_flag = '0' and ebl_flag = '1' and parent_id = #{orgId}
+    </select>
 </mapper>

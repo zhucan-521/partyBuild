@@ -178,4 +178,12 @@ public interface OrganizationService {
      */
     OrganizationPartyBuildingWorkVO selectOrganizationPartyBuildingWorkVOByOrgId(Long deptId);
 
+    /**
+     * 维护组织是否为父级组织
+     *
+     * @param sysDept
+     * @return
+     */
+    int maintainOrgIsParentOrg(SysDept sysDept);
+
 }
