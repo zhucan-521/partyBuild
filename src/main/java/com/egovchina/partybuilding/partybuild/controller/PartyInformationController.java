@@ -46,7 +46,7 @@ public class PartyInformationController {
     }
 
     @ApiOperation(value = "党员身份核查", notes = "党员身份核查", httpMethod = "GET")
-    @HasPermission("party_partyInformation")
+    @HasPermission("party_member_inspect")
     @GetMapping("/party-members/identity-verification")
     public PageInfo<PersonnelVO> partyMemberIdentityVerification(@RequestParam @ApiParam(value = "查询值", required = true) String queryValue,
                                                                  Page page) {
@@ -54,7 +54,7 @@ public class PartyInformationController {
     }
 
     @ApiOperation(value = "党员身份核查信息反馈接口", notes = "党员身份核查信息反馈接口", httpMethod = "POST")
-    @HasPermission("party_partyInformation")
+    @HasPermission("party_member_feedback")
     @PostMapping("/party-members/identity-verification/feedbacks")
     public ReturnEntity partyMemberIdentityVerificationFeedback(@ApiParam("身份核查反馈信息") @Validated IdentityVerificationFeedbackDTO identityVerificationFeedbackDTO) {
         return ReturnUtil.buildReturn(identityVerificationFeedbackService.addIdentityVerificationFeedback(identityVerificationFeedbackDTO));
@@ -62,7 +62,7 @@ public class PartyInformationController {
 
     @ApiOperation(value = "党员身份核查信息反馈列表", notes = "党员身份核查信息反馈列表", httpMethod = "GET")
     @ApiImplicitParam(value = "党员id", name = "userId", dataType = "long", paramType = "path", required = true)
-    @HasPermission("party_partyInformation")
+    @HasPermission("party_member_detail")
     @GetMapping("/party-members/{userId}/identity-verification/feedbacks")
     public PageInfo<IdentityVerificationFeedbackVO> getPartyMemberIdentityVerificationFeedbackList(@PathVariable Long userId,
                                                                                                    Page page) {
