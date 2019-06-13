@@ -186,7 +186,6 @@ public class PartyInformationController {
         return extendedInfoService.selectPartyDetailById(id);
     }
 
-
     @ApiOperation(value = "党员历史信息图", notes = "党员历史信息图", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "orgnizeLife", value = "组织生活", dataType = "boolean", paramType = "query"),

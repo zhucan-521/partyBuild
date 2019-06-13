@@ -7,10 +7,12 @@ import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.LeadTeamMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.CommunityPartTimeMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.LeadTeamMemberQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.PartyMemberSecretaryMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.service.LeadTeamMemberService;
 import com.egovchina.partybuilding.partybuild.vo.CommunityPartTimeMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberListVO;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
+import com.egovchina.partybuilding.partybuild.vo.PartySecretarysVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -88,6 +90,13 @@ public class LeadTeamMemberController {
     public PageInfo<CommunityPartTimeMemberVO> getCommunityPartTimeMemberList(CommunityPartTimeMemberQueryBean queryBean, Page page) {
         List<CommunityPartTimeMemberVO> list = leadTeamMemberService.selectCommunityPartTimeMemberVOListByCondition(queryBean, page);
         return new PageInfo<>(list);
+    }
+
+    @ApiOperation(value = "书记列表", notes = "书记列表", httpMethod = "GET")
+    @HasPermission("party_leadershipTeam")
+    @GetMapping
+    public PageInfo<PartySecretarysVO> secretaryList(PartyMemberSecretaryMemberQueryBean partyMemberSecretaryMemberQueryBean, Page page) {
+        return new PageInfo<>(leadTeamMemberService.selectSecretaryList(partyMemberSecretaryMemberQueryBean, page));
     }
 
 }

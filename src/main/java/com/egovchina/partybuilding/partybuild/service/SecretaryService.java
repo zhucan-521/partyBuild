@@ -40,5 +40,4 @@ public interface SecretaryService {
      * @return
      */
     List<SecretarysVO> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page);
-
 }

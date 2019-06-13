@@ -4,9 +4,11 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.dto.LeadTeamMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.CommunityPartTimeMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.LeadTeamMemberQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.PartyMemberSecretaryMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.CommunityPartTimeMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberListVO;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
+import com.egovchina.partybuilding.partybuild.vo.PartySecretarysVO;
 
 import java.util.List;
 
@@ -73,4 +75,13 @@ public interface LeadTeamMemberService {
      * @return
      */
     List<CommunityPartTimeMemberVO> selectCommunityPartTimeMemberVOListByCondition(CommunityPartTimeMemberQueryBean queryBean, Page page);
+
+    /**
+     * 列表查询书记
+     *
+     * @param partyMemberSecretaryMemberQueryBean
+     * @return
+     */
+    List<PartySecretarysVO> selectSecretaryList(PartyMemberSecretaryMemberQueryBean partyMemberSecretaryMemberQueryBean, Page page);
+
 }
