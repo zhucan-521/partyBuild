@@ -27,4 +27,12 @@ public interface TabPbIdentityVerificationFeedbackMapper {
      * @return
      */
     List<IdentityVerificationFeedbackVO> selectIdentityVerificationFeedbackVOByUserId(Long userId);
+
+    /**
+     * 根据id查询身份核查反馈VO详情
+     *
+     * @param id 数据id
+     * @return
+     */
+    IdentityVerificationFeedbackVO selectIdentityVerificationFeedbackVOById(Long id);
 }
