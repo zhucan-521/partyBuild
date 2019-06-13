@@ -227,6 +227,41 @@
         <collection property="jobTitles" select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyJobTitleMapper.findAllByUserId" column="user_id"/>
         <collection property="works" select="com.egovchina.partybuilding.partybuild.repository.TabPbPartyWorkMapper.findAllByUserId" column="user_id"/>
     </resultMap>
+
+    <!--党员概况查询-->
+    <resultMap id="BaseDealsInfos" type="com.egovchina.partybuilding.partybuild.vo.PartyMemberDetailVO">
+            <result column="realname" jdbcType="VARCHAR" property="realname"/>
+            <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+            <result column="gender" jdbcType="BIGINT" property="gender"/>
+            <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
+            <result column="birthday" jdbcType="TIMESTAMP" property="birthday"/>
+            <result column="nation" jdbcType="BIGINT" property="nation"/>
+            <result column="community_addr_name" jdbcType="VARCHAR" property="communityAddrName"/>
+            <result column="phone" jdbcType="VARCHAR" property="phone"/>
+            <result column="fix_phone" jdbcType="VARCHAR" property="fixPhone"/>
+            <result column="family_address" jdbcType="VARCHAR" property="familyAddress"/>
+            <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+            <result column="positived" jdbcType="VARCHAR" property="positived"/>
+            <result column="identity_type" jdbcType="BIGINT" property="identityType"/>
+            <result column="org_addr_name" jdbcType="BIGINT" property="orgAddrName"/>
+            <result column="files_manage_unit" jdbcType="VARCHAR" property="filesManageUnit"/>
+            <result column="registry_status" jdbcType="BIGINT" property="registryStatus"/>
+            <result column="join_org_time" jdbcType="TIMESTAMP" property="joinOrgTime"/>
+            <result column="regular_time" jdbcType="TIMESTAMP" property="regularTime"/>
+            <result column="first_committees_date" jdbcType="TIMESTAMP" property="firstCommitteesDate"/>
+            <result column="professional_specialty" jdbcType="VARCHAR" property="professionalSpecialty"/>
+            <result column="professional_titles" jdbcType="VARCHAR" property="professionalTitles"/>
+            <result column="full_time_schooling" jdbcType="VARCHAR" property="fullTimeSchooling"/>
+            <result column="education" jdbcType="VARCHAR" property="education"/>
+            <result column="college_major" jdbcType="VARCHAR" property="collegeMajor"/>
+            <result column="college_major_two" jdbcType="VARCHAR" property="collegeMajorTwo"/>
+            <result column="old_position" jdbcType="BIGINT" property="oldPosition"/>
+            <result column="new_position" jdbcType="BIGINT" property="newPosition"/>
+            <result column="serve_time" jdbcType="TIMESTAMP" property="serveTime"/>
+            <result column="appointment_time" jdbcType="TIMESTAMP" property="appointmentTime"/>
+            <collection property="tabPbUserTags" select="com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper.selectAllListSelective"
+                        column="{userId=user_id}"/>
+    </resultMap>
     <!--历史党员信息-->
     <resultMap id="History_UserInfo" type="com.egovchina.partybuilding.partybuild.vo.HistoryPartyVO">
         <id column="member_reduce_id" jdbcType="BIGINT" property="memberReduceId"/>
@@ -444,8 +479,8 @@
     </select>
     <!---查询党员名册概况信息-->
     <sql id="Base_users_deals_info">
-          u.realname,u.gender,u.id_card_no,u.birthday,u.nation,u.phone,u.fix_phone,u.family_address,u.positived,
-          u.identity_type,u.files_manage_unit,u.registry_status,u.join_org_time,u.regular_time,s.first_committees_date,
+          u.realname,u.gender,u.id_card_no,u.birthday,u.nation,u.phone,u.fix_phone,u.family_address,u.positived,u.avatar,
+          u.identity_type,u.files_manage_unit,u.registry_status,u.join_org_time,u.regular_time,s.first_committees_date,u.user_id,
           s.professional_specialty,s.professional_titles,s.full_time_schooling,s.education,s.college_major,s.college_major_two,
           s.old_position,s.new_position,s.serve_time,s.appointment_time
     </sql>
@@ -473,7 +508,7 @@
         where u.user_id = #{userId,jdbcType=BIGINT}
     </select>
     <!--查询党员名册概况-->
-    <select id="selectDeailsByPrimaryKey" parameterType="java.lang.Long" resultType="com.egovchina.partybuilding.partybuild.vo.PartyMemberDetailVO">
+    <select id="selectDeailsByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseDealsInfos">
         select
         d.name as dept_name,
         d.community_addr as org_addr_name,

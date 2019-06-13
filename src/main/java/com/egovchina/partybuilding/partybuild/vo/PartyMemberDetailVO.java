@@ -8,10 +8,14 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @ApiModel("党员名册-党员概况")
 public class PartyMemberDetailVO {
+    @ApiModelProperty(value = "头像")
+    private String avatar;
+
     @ApiModelProperty(value = "用户名")
     private String realname;
 
@@ -95,15 +99,21 @@ public class PartyMemberDetailVO {
     private String collegeMajorTwo;
 
     @ApiModelProperty(value = "原任职务")
-    private String oldPosition;
+    @JsonSerialize(using = DictSerializer.class)
+    private Long oldPosition;
 
     @ApiModelProperty(value = "现任职务")
-    private String newPosition;
+    @JsonSerialize(using = DictSerializer.class)
+    private Long newPosition;
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "任职时间")
-    private String serveTime;
+    private Date serveTime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "任免时间")
-    private String appointmentTime;
+    private Date appointmentTime;
 
+    @ApiModelProperty(value = "用户标签列表")
+    private List<UserTagVO> tabPbUserTags;
 }
