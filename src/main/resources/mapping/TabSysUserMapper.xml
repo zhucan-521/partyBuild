@@ -2036,6 +2036,7 @@
           u.realname,
           u.id_card_no,
           u.gender,
+          u.avatar,
           u.birthday,
           birthday2age ( DATE_FORMAT( birthday, '%Y-%m-%d' ) ) AS age,
           u.community_addr,

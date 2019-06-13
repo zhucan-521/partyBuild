@@ -28,7 +28,7 @@ public class UserTagController {
     private UserTagService userTagService;
 
     @ApiOperation(value = "根据用户id和对应的用户标签id插入", notes = "根据用户id和对应的用户标签id插入(可同时为用户插入多个标记)", httpMethod = "POST")
-    @HasPermission("party_member_usertag")
+    @HasPermission(value={"party_member_usertag","party_partyRetired_add","party_partyRetired_delete","","party_partySoldier_add","party_partySoldier_delete","party_difficult_member_add","party_difficult_member_delete"})
     @PostMapping
     public ReturnEntity batchInsertUserTag(@ApiParam("多个党员标记") @RequestBody @Validated UserTagDTO userTagDTO) {
         return ReturnUtil.buildReturn(userTagService.batchInsertUserTagDTO(userTagDTO));

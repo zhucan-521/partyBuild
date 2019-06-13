@@ -39,7 +39,7 @@ public class PartyInformationController {
     private ExtendedInfoService extendedInfoService;
 
     @ApiOperation(value = "分页查询党员信息", notes = "分页查询党员信息", httpMethod = "GET")
-    @HasPermission(value = {"party_partyInformation","party_partySoldier","party_partyRetired"},matchType = PermissionMatchType.ANY)
+    @HasPermission(value = {"party_partyInformation","party_partySoldier","party_partyRetired","party_difficultMembers"},matchType = PermissionMatchType.ANY)
     @GetMapping("/party-members")
     public PageInfo<PartyMemberInformationVO> getPartyMemberList(@Validated @ApiParam("党员信息查询实体") SysUserQueryBean queryBean, Page page) {
         return partyInformationService.getPartyList(queryBean, page);
@@ -87,7 +87,7 @@ public class PartyInformationController {
     }
 
     @ApiOperation(value = "党员选择列表", notes = "根据条件获取党员列表", httpMethod = "GET")
-    @HasPermission("party_partyInformation")
+    @HasPermission(value={"party_partyInformation","party_partySoldier","party_partyRetired","party_difficultMembers"})
     @GetMapping("/party-members/choose")
     public PageInfo<PartyMemberChooseVO> choosePartyMembers(PartyMemberChooseQueryBean queryBean, Page page) {
         return partyInformationService.selectPartyMemberChooseVOListByQueryBean(queryBean, page);
@@ -142,7 +142,7 @@ public class PartyInformationController {
     }
 
     @ApiOperation(value = "更新党员信息", notes = "更新党员信息", httpMethod = "PUT")
-    @HasPermission(value = {"party_member_edit","party_member_usertag","party_partySoldier_add,party_partyRetired_add"},matchType = PermissionMatchType.ANY)
+    @HasPermission(value = {"party_member_edit","party_member_usertag"},matchType = PermissionMatchType.ANY)
     @PutMapping("/party-members")
     public ReturnEntity updateParty(@RequestBody @Validated @ApiParam("党员基本信息") PartyInfoDTO partyInfoDTO) {
         return ReturnUtil.buildReturn(partyInformationService.updatePartyInfo(partyInfoDTO));
