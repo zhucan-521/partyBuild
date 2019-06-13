@@ -7,17 +7,11 @@ import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundExceptio
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.LeadTeamMemberDTO;
-import com.egovchina.partybuilding.partybuild.entity.CommunityPartTimeMemberQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.LeadTeamMemberQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember;
-import com.egovchina.partybuilding.partybuild.entity.TabPbPositives;
+import com.egovchina.partybuilding.partybuild.entity.*;
 import com.egovchina.partybuilding.partybuild.repository.*;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.LeadTeamMemberService;
-import com.egovchina.partybuilding.partybuild.vo.CommunityPartTimeMemberVO;
-import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberListVO;
-import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
-import com.egovchina.partybuilding.partybuild.vo.LeadTeamVO;
+import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -101,6 +95,8 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
         TabPbLeadTeamMember tabPbLeadTeamMember =
                 generateTargetCopyPropertiesAndPaddingBaseField(leadTeamMemberDTO, TabPbLeadTeamMember.class, false);
         int judgment = tabPbLeadTeamMemberMapper.insertSelective(tabPbLeadTeamMember);
+        //修改班子成员的头像时一同修改党员表的头像
+
         if (judgment > 0) {
             tabPbLeadTeamMapper.correctTheNumberOfTeamsAccordingToTheTeamId(leadTeamMemberDTO.getLeadTeamId());
             //修改职务信息
@@ -129,6 +125,18 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
     public List<CommunityPartTimeMemberVO> selectCommunityPartTimeMemberVOListByCondition(CommunityPartTimeMemberQueryBean queryBean, Page page) {
         PageHelper.startPage(page);
         return tabPbLeadTeamMemberMapper.selectCommunityPartTimeMemberVOListByCondition(queryBean);
+    }
+
+    /**
+     * 列表查询书记
+     *
+     * @param partyMemberSecretaryMemberQueryBean
+     * @return
+     */
+    @Override
+    public List<PartySecretarysVO> selectSecretaryList(PartyMemberSecretaryMemberQueryBean partyMemberSecretaryMemberQueryBean, Page page) {
+        PageHelper.startPage(page);
+        return tabPbLeadTeamMemberMapper.selectSecretaryVOList(partyMemberSecretaryMemberQueryBean);
     }
 
     /**

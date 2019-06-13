@@ -2,10 +2,12 @@ package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.CommunityPartTimeMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.LeadTeamMemberQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.PartyMemberSecretaryMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember;
 import com.egovchina.partybuilding.partybuild.vo.CommunityPartTimeMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberListVO;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
+import com.egovchina.partybuilding.partybuild.vo.PartySecretarysVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -84,4 +86,13 @@ public interface TabPbLeadTeamMemberMapper {
      * @return
      */
     List<CommunityPartTimeMemberVO> selectCommunityPartTimeMemberVOListByCondition(CommunityPartTimeMemberQueryBean queryBean);
+
+    /**
+     * 书记列表查询
+     *
+     * @param partyMemberSecretaryMemberQueryBean
+     * @return
+     */
+    List<PartySecretarysVO> selectSecretaryVOList(PartyMemberSecretaryMemberQueryBean partyMemberSecretaryMemberQueryBean);
+
 }

@@ -52,7 +52,6 @@
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="approval_number" jdbcType="VARCHAR" property="approvalNumber"/>
         <result column="rank" jdbcType="BIGINT" property="rank"/>
-        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
         <result column="ebl_flag" jdbcType="VARCHAR" property="eblFlag"/>
         <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
         <result column="session_year" jdbcType="VARCHAR" property="sessionYear"/>
@@ -60,6 +59,7 @@
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
         <result column="join_time" jdbcType="TIMESTAMP" property="joinDate"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
     </resultMap>
 
     <!--VO 不包含身份证结果集-->
@@ -108,8 +108,8 @@
     <sql id="LeadTeamMemberVO_Column_List">
         ltm.member_id, ltm.org_id, ltm.lead_team_id, ltm.user_id, ltm.person_name, ltm.positive_id, ltm.positive_name,
         ltm.tenure_mode, ltm.tenure_begin, ltm.tenure_duration, ltm.tenure_leave, ltm.as_committee_member, ltm.as_committee_director,
-        ltm.lead_member_order, ltm.description, ltm.rank, ltm.approval_number, ltm.avatar, ltm.ebl_flag,
-        ltm.tenure_begin, ltm.rank,ltm.avatar
+        ltm.lead_member_order, ltm.description, ltm.rank, ltm.approval_number, ltm.ebl_flag,
+        ltm.tenure_begin, ltm.rank, u.avatar
      </sql>
 
     <!--CommunityPartTimeMemberVO ResultMap-->
@@ -339,9 +339,6 @@
             <if test="leadMemberOrder != null">
                 lead_member_order = #{leadMemberOrder,jdbcType=BIGINT},
             </if>
-            <if test="avatar != null">
-                avatar = #{avatar,jdbcType=VARCHAR},
-            </if>
             <if test="eblFlag != null">
                 ebl_flag = #{eblFlag,jdbcType=VARCHAR},
             </if>
@@ -408,6 +405,11 @@
         LEFT JOIN sys_user u ON ltm.user_id = u.user_id
         LEFT JOIN tab_pb_lead_team t ON ltm.lead_team_id = t.lead_team_id
         WHERE ltm.member_id = #{memberId}
+        AND ltm.del_flag = '0'
+        AND d.del_flag = '0'
+        ANd u.del_flag = '0'
+        AND t.del_flag = '0'
+
     </select>
 
     <!--根据条件查询班子成员VO列表-->
@@ -515,5 +517,61 @@
                 AND d.dept_id = #{rangeDeptId}
             </otherwise>
         </choose>
+    </select>
+
+    <!--党务书记列表职务-->
+    <resultMap id="SecretaryVosMap"  type="com.egovchina.partybuilding.partybuild.vo.PartySecretarysVO">
+        <id column="secretary_id" jdbcType="BIGINT" property="secretaryId" />
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="realname" jdbcType="VARCHAR" property="realname"/>
+        <result column="positive_start" jdbcType="TIMESTAMP" property="positiveStart"/>
+        <result column="positive_name" jdbcType="INTEGER" property="positiveName"/>
+        <result column="positive_level" jdbcType="INTEGER" property="positiveLevel"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="join_time" jdbcType="TIMESTAMP" property="joinTime"/>
+    </resultMap>
+
+    <!--列表查询书记-->
+    <select id="selectSecretaryVOList" parameterType="com.egovchina.partybuilding.partybuild.entity.PartyMemberSecretaryMemberQueryBean" resultMap="SecretaryVosMap">
+        SELECT
+        t.member_id AS secretary_id,
+        u.realname,
+        u.user_id,
+        t.positive_id AS positive_name,
+        t.tenure_begin AS positive_start,
+        t.rank AS positive_level,
+        t.avatar,
+        u.join_time,
+        ( SELECT sort FROM sys_dict WHERE id = t.positive_id ) AS positive_name_order,
+        ( SELECT sort FROM sys_dict WHERE id = t.rank ) AS positive_level_order
+        FROM
+        tab_pb_lead_team_member t
+        INNER JOIN tab_pb_lead_team tt ON tt.lead_team_id = t.lead_team_id
+        LEFT JOIN sys_user u ON u.user_id = t.user_id
+        LEFT JOIN sys_dept d ON d.dept_id = t.org_id
+        WHERE
+        t.positive_id in (251,253,254,256,257,260,261,348,349,353)
+        AND tt.current = 1
+        AND t.del_flag = '0'
+        AND d.del_flag = '0'
+        AND u.del_flag = '0'
+        <if test="realname != null and realname != ''">
+            AND u.realname like CONCAT('%',#{realname},'%')
+        </if>
+        <if test="positiveName != null and positiveName != ''">
+            AND  t.positive_id = #{positiveName}
+        </if>
+        <choose>
+            <when test="orgRange == 1">
+                AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+            </when>
+            <when test="orgRange == 2">
+                AND find_in_set(#{rangeDeptId}, d.full_path)
+            </when>
+            <otherwise>
+                AND d.dept_id = #{rangeDeptId}
+            </otherwise>
+        </choose>
+        ORDER BY  positive_name_order DESC, positive_level_order DESC
     </select>
 </mapper>
