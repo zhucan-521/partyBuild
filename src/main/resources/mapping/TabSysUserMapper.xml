@@ -506,6 +506,8 @@
         left join sys_dept d on d.dept_id=u.dept_id
         left join tab_pb_administrative_division t on t.administrative_division_id = u.community_addr
         where u.user_id = #{userId,jdbcType=BIGINT}
+        and u.ebl_flag = '1'
+        and u.del_flag = '0'
     </select>
     <!--查询党员名册概况-->
     <select id="selectDeailsByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseDealsInfos">
@@ -519,6 +521,8 @@
         left join tab_pb_administrative_division t on t.administrative_division_id = u.community_addr
         left join tab_pb_dept_secretary s on u.user_id = s.user_id
         where u.user_id = #{userId,jdbcType=BIGINT}
+        and u.ebl_flag = '1'
+        and u.del_flag = '0'
     </select>
     <!--用于列表显示-->
     <select id="selectPageByMap" resultMap="UserInFo" >

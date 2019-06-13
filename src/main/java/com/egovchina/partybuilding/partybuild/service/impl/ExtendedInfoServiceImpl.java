@@ -2,6 +2,7 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysUser;
+import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
@@ -137,6 +138,10 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
                 TabPbAbroad tabPbAbroad = new TabPbAbroad().setUserId(sysUser.getUserId()).setOrgId(sysUser.getDeptId());
                 PaddingBaseFieldUtil.paddingBaseFiled(tabPbAbroad);
                 flag += tabPbAbroadMapper.insertSelective(tabPbAbroad);
+            }
+            //判断是否为党小组组长
+            if(tabPbPartyGroupMemberMapper.isLeaderByUserId(sysUser.getUserId())){
+                throw new BusinessDataCheckFailException("请先移除该党员党小组组长的身份");
             }
             // 移出党小组
             TabPbPartyGroupMember tabPbPartyGroupMember = new TabPbPartyGroupMember().setUserId(sysUser.getUserId()).setDelFlag(1);
