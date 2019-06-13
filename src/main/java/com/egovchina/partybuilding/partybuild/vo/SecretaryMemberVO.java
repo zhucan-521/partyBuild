@@ -20,6 +20,9 @@ public class SecretaryMemberVO {
     @ApiModelProperty(value = "用户ID")
     private Long userId;
 
+    @ApiModelProperty(value = "身份证号码")
+    private String idCardNo;
+
     @ApiModelProperty(value = "组织Id")
     private Long deptId;
 
