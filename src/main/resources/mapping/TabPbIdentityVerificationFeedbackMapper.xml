@@ -10,6 +10,15 @@
     <result column="create_username" jdbcType="VARCHAR" property="createUsername" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+
+  <!--身份核查反馈VO ResultMap-->
+  <resultMap extends="BaseResultMap" id="IdentityVerificationFeedbackVODetailResultMap"
+             type="com.egovchina.partybuilding.partybuild.vo.IdentityVerificationFeedbackVO">
+    <collection property="attachments"
+                select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+                column="hostId=id,attachmentType=attachment_type"/>
+  </resultMap>
+
   <sql id="Base_Column_List">
     id, user_id, type, content, create_userid, create_username, create_time
   </sql>
@@ -127,5 +136,17 @@
     WHERE
         user_id = #{userId}
     ORDER BY create_time DESC
+  </select>
+
+  <!--根据id查询身份核查反馈VO详情-->
+  <select id="selectIdentityVerificationFeedbackVOById"
+          resultMap="IdentityVerificationFeedbackVODetailResultMap">
+    SELECT
+        ivf.*,
+        71 AS attachment_type
+    FROM
+        tab_pb_identity_verification_feedback ivf
+    WHERE
+        ivf.id = #{id}
   </select>
 </mapper>

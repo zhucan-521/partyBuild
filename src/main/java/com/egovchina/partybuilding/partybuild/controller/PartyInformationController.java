@@ -56,7 +56,7 @@ public class PartyInformationController {
     @ApiOperation(value = "党员身份核查信息反馈接口", notes = "党员身份核查信息反馈接口", httpMethod = "POST")
     @HasPermission("party_member_feedback")
     @PostMapping("/party-members/identity-verification/feedbacks")
-    public ReturnEntity partyMemberIdentityVerificationFeedback(@ApiParam("身份核查反馈信息") @Validated IdentityVerificationFeedbackDTO identityVerificationFeedbackDTO) {
+    public ReturnEntity partyMemberIdentityVerificationFeedback(@ApiParam("身份核查反馈信息") @RequestBody @Validated IdentityVerificationFeedbackDTO identityVerificationFeedbackDTO) {
         return ReturnUtil.buildReturn(identityVerificationFeedbackService.addIdentityVerificationFeedback(identityVerificationFeedbackDTO));
     }
 
@@ -67,6 +67,14 @@ public class PartyInformationController {
     public PageInfo<IdentityVerificationFeedbackVO> getPartyMemberIdentityVerificationFeedbackList(@PathVariable Long userId,
                                                                                                    Page page) {
         return new PageInfo<>(identityVerificationFeedbackService.selectIdentityVerificationFeedbackVOByUserId(userId, page));
+    }
+
+    @ApiOperation(value = "党员身份核查信息反馈详情", notes = "党员身份核查信息反馈详情", httpMethod = "GET")
+    @ApiImplicitParam(value = "数据id", name = "id", dataType = "long", paramType = "path", required = true)
+    @HasPermission("party_member_detail")
+    @GetMapping("/party-members/identity-verification/feedbacks/{id}")
+    public IdentityVerificationFeedbackVO getPartyMemberIdentityVerificationFeedbackList(@PathVariable Long id) {
+        return identityVerificationFeedbackService.selectIdentityVerificationFeedbackVOById(id);
     }
 
     @ApiOperation(value = "历史党员列表", notes = "分页查询历史党员信息", httpMethod = "GET")
