@@ -18,6 +18,138 @@
         <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
     </resultMap>
+
+    <resultMap id="HistoryInformationGraphByBasicAndOrgnizeLifeWithCommunityActivityResultMap" type="com.egovchina.partybuilding.partybuild.vo.HistoryInformationGraphVO">
+        <result column="timeline" jdbcType="VARCHAR" property="timeline"/>
+        <collection property="lines" column="timeline" ofType="com.egovchina.partybuilding.partybuild.vo.HistoryInformationVO">
+            <result column="time" jdbcType="TIMESTAMP" property="time"/>
+            <result column="label" jdbcType="VARCHAR" property="label"/>
+            <result column="sub_label" jdbcType="VARCHAR" property="subLabel"/>
+        </collection>
+    </resultMap>
+
+    <!--党员历史信息图-->
+    <select id="selectHistoryInformationGraphByBasicAndOrgnizeLifeWithCommunityActivity"
+            resultMap="HistoryInformationGraphByBasicAndOrgnizeLifeWithCommunityActivityResultMap">
+
+        SELECT
+            t.*,
+            DATE_FORMAT( t.time, '%Y-%m' ) AS timeline
+        FROM
+        (
+            SELECT
+            p.create_time AS time,
+            d.label AS label,
+            d1.label AS sub_label
+            FROM
+            tab_pb_party_membership p
+            INNER JOIN sys_user u ON p.user_id = u.user_id
+            LEFT JOIN sys_dict d ON p.identity_type = d.id AND d.`type` = 'RYLB'
+            LEFT JOIN sys_dict d1 ON p.type = d.id AND d1.`type` = 'DJCL'
+            WHERE
+                u.user_id = #{userId}
+                AND u.del_flag = '0'
+
+        <if test="orgnizeLife">
+            UNION
+            SELECT
+            a.start_time AS time,
+            a.subject AS label,
+            NULL AS sub_label
+            FROM
+            tab_pb_activities a
+            INNER JOIN tab_pb_participant tpp ON tpp.activities_id = a.activities_id
+            INNER JOIN sys_user u ON u.user_id = tpp.user_id
+            WHERE
+                u.user_id = #{userId}
+                AND a.del_flag = '0'
+                AND tpp.del_flag = '0'
+                AND u.del_flag = '0'
+        </if>
+
+          <if test="communityActivity">
+              UNION
+              SELECT
+                  a.start_time AS time,
+                  a.subject AS label,
+                  NULL AS sub_label
+              FROM
+              tab_pb_party_masses_activity a
+              INNER JOIN tab_pb_party_masses_participant tpp ON tpp.party_masses_activity_id = a.party_masses_activity_id
+              INNER JOIN sys_user u ON u.user_id = tpp.user_id
+              WHERE
+                  u.user_id = #{userId}
+                  AND a.del_flag = '0'
+                  AND tpp.del_flag = '0'
+                  AND u.del_flag = '0'
+          </if>
+        ) t
+        ORDER BY t.time DESC
+    </select>
+
+    <!--根据条件查询党员历史信息图-->
+    <select id="selectWithConditions" resultType="com.egovchina.partybuilding.partybuild.vo.HistoryInformationVO">
+            <if test="activityPeriod == '' and communityPeriod == ''">
+                SELECT
+                p.create_time AS partyDateInformation,
+                p.identity_type AS identityType,
+                p.type AS partyStatus
+                FROM
+                tab_pb_party_membership p
+                LEFT JOIN sys_user u ON p.user_id = u.user_id
+                WHERE
+                u.user_id = #{userId}
+                AND DATE_FORMAT(p.create_time, '%m') = DATE_FORMAT(#{date}, '%m')
+                AND u.del_flag = '0'
+                ORDER BY p.create_time
+            </if>
+
+            <if test="activityPeriod != '' and communityPeriod == ''">
+                ( SELECT
+                a.start_time AS activityDateInformation,
+                a.subject AS title,
+                p.create_time AS partyDateInformation
+                FROM
+                tab_pb_activities a
+                LEFT JOIN tab_pb_participant tpp ON tpp.activities_id = a.activities_id
+                LEFT JOIN sys_user u ON u.user_id = tpp.user_id
+                LEFT JOIN tab_pb_party_membership p ON p.user_id = u.user_id
+                WHERE
+                u.user_id = #{userId}
+                AND DATE_FORMAT(a.start_time, '%m') = DATE_FORMAT(#{activityPeriod}, '%m')
+                AND u.del_flag = '0'
+                AND tpp.del_flag = '0'
+                AND a.del_flag = '0'
+                ORDER BY a.start_time DESC
+                )
+            </if>
+
+            <!--<if test="activityPeriod != '' and communityPeriod != ''">-->
+                <!--UNION-->
+            <!--</if>-->
+
+            <!--<if test="communityPeriod != ''">-->
+                <!--(-->
+                <!--SELECT-->
+                    <!--a.start_time AS communityDateInformation,-->
+                    <!--a.subject AS title,-->
+                    <!--p.create_time AS partyDateInformation-->
+                <!--FROM-->
+                <!--tab_pb_party_masses_activity a-->
+                <!--LEFT JOIN tab_pb_party_masses_participant tpp ON tpp.party_masses_activity_id = a.party_masses_activity_id-->
+                <!--LEFT JOIN sys_user u ON u.user_id = tpp.user_id-->
+                <!--LEFT JOIN tab_pb_party_membership p ON p.user_id = u.user_id-->
+                <!--WHERE-->
+                <!--u.user_id = #{userId}-->
+                <!--AND DATE_FORMAT(a.start_time, '%m') = DATE_FORMAT(#{date}, '%m')-->
+                <!--AND tpp.del_flag = '0'-->
+                <!--AND u.del_flag = '0'-->
+                <!--AND a.del_flag = '0'-->
+                <!--ORDER BY a.start_time DESC-->
+                <!--)-->
+            <!--</if>-->
+    </select>
+
     <sql id="Base_Column_List">
     work_id, user_id, unit, post, front_line, stratum, start_date, end_date, del_flag, 
     create_time, create_userid, create_username, update_time, update_userid, update_username
@@ -225,6 +357,7 @@
         and del_flag=0
         order by end_date desc
     </select>
+
     <!--批量新增工作信息-->
     <insert id="batchInsert" parameterType="java.util.List">
         insert into tab_pb_party_work

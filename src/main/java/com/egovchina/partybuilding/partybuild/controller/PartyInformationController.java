@@ -164,4 +164,15 @@ public class PartyInformationController {
         return extendedInfoService.selectPartyDetailById(id);
     }
 
+
+    @ApiOperation(value = "党员历史信息图", notes = "党员历史信息图", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orgnizeLife", value = "组织生活", dataType = "boolean", paramType = "query"),
+            @ApiImplicitParam(name = "communityActivity", value = "社区活动", dataType = "boolean", paramType = "query"),
+            @ApiImplicitParam(name = "userId", value = "用户id", dataType = "long", paramType = "query", required = true)
+    })
+    @GetMapping("/party-members/history-information-graph")
+    public PageInfo<HistoryInformationGraphVO> getHistoryInformationGraph(Boolean orgnizeLife, Boolean communityActivity, Long userId) {
+        return new PageInfo<>(partyInformationService.getHistoryInformationGraph(orgnizeLife, communityActivity, userId));
+    }
 }

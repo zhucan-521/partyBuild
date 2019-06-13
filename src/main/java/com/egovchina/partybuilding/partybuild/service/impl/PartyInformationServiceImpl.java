@@ -22,6 +22,7 @@ import org.springframework.util.ObjectUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author liu tang gang
@@ -610,5 +611,10 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @Override
     public PartyMemberChooseVO choosePartyMemberVOByIdCardNo(String idCardNo) {
         return tabSysUserMapper.selectPartyMemberChooseVOByIdCardNo(idCardNo);
+    }
+
+    @Override
+    public List<HistoryInformationGraphVO> getHistoryInformationGraph(Boolean orgnizeLife, Boolean communityActivity, Long userId) {
+        return tabPbPartyWorkMapper.selectHistoryInformationGraphByBasicAndOrgnizeLifeWithCommunityActivity(orgnizeLife, communityActivity, userId);
     }
 }
