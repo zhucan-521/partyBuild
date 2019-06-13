@@ -6,14 +6,12 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.enums.PermissionMatchType;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
-import com.egovchina.partybuilding.partybuild.dto.CommunityDTO;
-import com.egovchina.partybuilding.partybuild.dto.DeletePartyMemberDTO;
-import com.egovchina.partybuilding.partybuild.dto.PartyInfoDTO;
-import com.egovchina.partybuilding.partybuild.dto.UpdateHistoryDTO;
+import com.egovchina.partybuilding.partybuild.dto.*;
 import com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.PartyMemberChooseQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.SysUserQueryBean;
 import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
+import com.egovchina.partybuilding.partybuild.service.IdentityVerificationFeedbackService;
 import com.egovchina.partybuilding.partybuild.service.PartyInformationService;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageHelper;
@@ -34,9 +32,11 @@ import org.springframework.web.bind.annotation.*;
 public class PartyInformationController {
 
     @Autowired
-    PartyInformationService partyInformationService;
+    private PartyInformationService partyInformationService;
     @Autowired
     private ExtendedInfoService extendedInfoService;
+    @Autowired
+    private IdentityVerificationFeedbackService identityVerificationFeedbackService;
 
     @ApiOperation(value = "分页查询党员信息", notes = "分页查询党员信息", httpMethod = "GET")
     @HasPermission(value = {"party_partyInformation","party_partySoldier","party_partyRetired"},matchType = PermissionMatchType.ANY)
@@ -47,12 +47,26 @@ public class PartyInformationController {
 
     @ApiOperation(value = "党员身份核查", notes = "党员身份核查", httpMethod = "GET")
     @HasPermission("party_partyInformation")
-    @GetMapping("/party-members/identities")
-    public PageInfo<PersonnelVO> getPersonnelVOList(@RequestParam(required = false) @ApiParam(value = "姓名") String username,
-                                                    @RequestParam(required = false) @ApiParam(value = "身份证") String idCardNo,
-                                                    @RequestParam(required = false) @ApiParam(value = "手机号") String phone,
-                                                    Page page) {
-        return partyInformationService.partyIdentityVerification(username, idCardNo, phone, page);
+    @GetMapping("/party-members/identity-verification")
+    public PageInfo<PersonnelVO> partyMemberIdentityVerification(@RequestParam @ApiParam(value = "查询值", required = true) String queryValue,
+                                                                 Page page) {
+        return partyInformationService.partyIdentityVerification(queryValue, page);
+    }
+
+    @ApiOperation(value = "党员身份核查信息反馈接口", notes = "党员身份核查信息反馈接口", httpMethod = "POST")
+    @HasPermission("party_partyInformation")
+    @PostMapping("/party-members/identity-verification/feedbacks")
+    public ReturnEntity partyMemberIdentityVerificationFeedback(@ApiParam("身份核查反馈信息") @Validated IdentityVerificationFeedbackDTO identityVerificationFeedbackDTO) {
+        return ReturnUtil.buildReturn(identityVerificationFeedbackService.addIdentityVerificationFeedback(identityVerificationFeedbackDTO));
+    }
+
+    @ApiOperation(value = "党员身份核查信息反馈列表", notes = "党员身份核查信息反馈列表", httpMethod = "GET")
+    @ApiImplicitParam(value = "党员id", name = "userId", dataType = "long", paramType = "path", required = true)
+    @HasPermission("party_partyInformation")
+    @GetMapping("/party-members/{userId}/identity-verification/feedbacks")
+    public PageInfo<IdentityVerificationFeedbackVO> getPartyMemberIdentityVerificationFeedbackList(@PathVariable Long userId,
+                                                                                                   Page page) {
+        return new PageInfo<>(identityVerificationFeedbackService.selectIdentityVerificationFeedbackVOByUserId(userId, page));
     }
 
     @ApiOperation(value = "历史党员列表", notes = "分页查询历史党员信息", httpMethod = "GET")
