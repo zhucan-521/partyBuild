@@ -63,7 +63,7 @@
                     AND (d.dept_id = #{deptId} OR d.parent_id = #{deptId})
                 </when>
                 <when test="orgRange == 2">
-                    AND find_in_set(#{deptId}, d.full_path)
+                    AND d.org_inner_code like concat((select org_inner_code from sys_dept innerd where innerd.dept_Id = #{deptId}), '%')
                 </when>
                 <when test="orgRange == 3">
                     AND d.dept_id = #{deptId}
@@ -102,7 +102,7 @@
                     AND (d.dept_id = #{deptId} OR d.parent_id = #{deptId})
                 </when>
                 <when test="orgRange == 2">
-                    AND find_in_set(#{deptId}, d.full_path)
+                    AND d.org_inner_code like concat((select org_inner_code from sys_dept innerd where innerd.dept_Id = #{deptId}), '%')
                 </when>
                 <when test="orgRange == 3">
                     AND d.dept_id = #{deptId}

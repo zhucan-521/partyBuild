@@ -130,9 +130,9 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                             }
                         }
                     }
-                    //计算年,未满一年 不计算
-                    age = age / 12;
                 }
+                //计算年,未满一年 不计算
+                age = age / 12;
             } else {
                 age = 0;
             }
