@@ -69,18 +69,22 @@ public class AbroadServiceImpl implements AbroadService {
         TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(goAbroadDTO, TabPbAbroad.class, false);
         int result = tabPbAbroadMapper.insertSelective(tabPbAbroad);
         /**
-         * 党员出国后将该党员移至历史党员和从党小组中删除
+         * 党员出国时 将该党员移至历史党员和从党小组中删除
          **/
-        if (result > 0) {
+        // 先判断该党员是否是组长
+        if (result > 0 && !tabPbPartyGroupMemberMapper.isLeaderByUserId(userId)) {
+            // 移出党小组
+            TabPbPartyGroupMember tabPbPartyGroupMember = new TabPbPartyGroupMember().setUserId(userId).setDelFlag(1);
+            PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbPartyGroupMember);
+            result += tabPbPartyGroupMemberMapper.updateByPrimaryKeySelective(tabPbPartyGroupMember);
+
             // 移到历史党员
             DeletePartyMemberDTO deletePartyMemberDTO = new DeletePartyMemberDTO()
                     .setUserId(userId).setOutType(OUT_TYPE).setQuitType(QUIT_TYPE)
                     .setReduceTime(tabPbAbroad.getAbroadDate()).setWhetherThisClass(false);
             result += extendedInfoService.invalidByUserId(deletePartyMemberDTO);
-            // 移出党小组
-            TabPbPartyGroupMember tabPbPartyGroupMember = new TabPbPartyGroupMember().setUserId(userId).setDelFlag(1);
-            PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbPartyGroupMember);
-            result += tabPbPartyGroupMemberMapper.updateByPrimaryKeySelective(tabPbPartyGroupMember);
+        } else {
+            throw new BusinessDataCheckFailException("请先移除该党员党小组组长的身份");
         }
         return result;
     }
