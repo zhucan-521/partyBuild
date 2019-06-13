@@ -1549,9 +1549,6 @@
             <if test="avatar != null">
                 avatar = #{avatar,jdbcType=VARCHAR},
             </if>
-            <if test="idCardNo != null">
-                id_card_no = #{idCardNo,jdbcType=VARCHAR},
-            </if>
             <if test="usedName != null">
                 used_name = #{usedName,jdbcType=VARCHAR},
             </if>
