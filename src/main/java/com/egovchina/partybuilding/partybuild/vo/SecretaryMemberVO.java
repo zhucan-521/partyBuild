@@ -20,6 +20,9 @@ public class SecretaryMemberVO {
     @ApiModelProperty(value = "用户ID")
     private Long userId;
 
+    @ApiModelProperty(value = "身份证号码")
+    private String idCardNo;
+
     @ApiModelProperty(value = "组织Id")
     private Long deptId;
 
@@ -85,14 +88,16 @@ public class SecretaryMemberVO {
     @ApiModelProperty(value = "首次进入两委班子时间", example = "yyyy-hh-dd")
     private Date firstCommitteesDate;
 
-    @ApiModelProperty(value = "现任职务")
+    @ApiModelProperty(value = "现任职务 码值 DNZW")
+    @JsonSerialize(using = DictSerializer.class)
     private Long  newPosition;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "任免时间", example = "yyyy-hh-dd")
     private Date appointmentTime;
 
-    @ApiModelProperty(value = "原任职务")
+    @ApiModelProperty(value = "原任职务 码值 DNZW")
+    @JsonSerialize(using = DictSerializer.class)
     private Long oldPosition;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")

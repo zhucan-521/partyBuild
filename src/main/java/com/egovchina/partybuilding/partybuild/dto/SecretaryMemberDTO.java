@@ -22,6 +22,9 @@ public class SecretaryMemberDTO {
     @ApiModelProperty(value = "用户ID")
     private Long userId;
 
+    @ApiModelProperty(value = "身份证号码")
+    private String idCardNo;
+
     @ApiModelProperty(value = "用户名")
     private String realname;
 

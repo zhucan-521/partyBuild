@@ -124,6 +124,8 @@ public class OrgChangeServiceImpl implements OrgChangeService {
     @Caching(evict = {
             @CacheEvict(value = ORGANIZATION_LIST_FOR_PARENT, key = "#orgChangeDTO.getNowSuperiorId()"
                     , condition = "#orgChangeDTO.changeType != 59567L"),
+            @CacheEvict(value = ORGANIZATION_LIST_FOR_PARENT, allEntries = true
+                    , condition = "#orgChangeDTO.changeType == 59007L || #orgChangeDTO.changeType == 59008L"),
             @CacheEvict(value = ORGANIZATION_LIST_FOR_PARENT, key = "#orgChangeDTO.getOldSuperiorId()"
                     , condition = "#orgChangeDTO.changeType != 59567L && #orgChangeDTO.getOldSuperiorId() != null")
     })
@@ -146,8 +148,6 @@ public class OrgChangeServiceImpl implements OrgChangeService {
         //restful 属性拷贝，填充基本字段
         TabPbOrgnizeChange tabPbOrgnizeChange = new TabPbOrgnizeChange();
         copyPropertiesIgnoreNullAndPaddingBaseField(orgChangeDTO, tabPbOrgnizeChange, true);
-        //组织正常状态
-        Long normal = 59122L;
         switch (Objects.requireNonNull(OrgChangeTypeEnum.getType(dict.getValue()))) {
             case ORG_RENAME:
                 ((OrgChangeService) AopContext.currentProxy()).orgRename(tabPbOrgnizeChange, sysDept);
@@ -158,7 +158,7 @@ public class OrgChangeServiceImpl implements OrgChangeService {
                 break;
             case ORG_RESTORE:
                 ((OrgChangeService) AopContext.currentProxy()).orgRestoreOrRevoke(
-                        tabPbOrgnizeChange, sysDept, CommonConstant.STATUS_EBL, normal);
+                        tabPbOrgnizeChange, sysDept, CommonConstant.STATUS_EBL, 59122L);//组织正常状态 59122L
                 break;
             case OTHER_CHANGE:
                 break;
@@ -222,7 +222,11 @@ public class OrgChangeServiceImpl implements OrgChangeService {
         newDept.setEblFlag(eblFlag);
         newDept.setOrgStatus(orgStatus);
         paddingUpdateRelatedBaseFiled(newDept);
-        return this.tabSysDeptMapper.updateByPrimaryKeySelective(newDept);
+        int result = 0;
+        result += tabSysDeptMapper.updateByPrimaryKeySelective(newDept);
+        //维护上级是否为父组织
+        result += organizationService.maintainOrgIsParentOrg(sysDept);
+        return result;
     }
 
     @Override

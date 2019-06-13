@@ -166,4 +166,11 @@ public interface TabSysDeptMapper {
      * @return
      */
     String selectSubLevelNewInnerCodeByParentId(Long parentId);
+
+    /**
+     * 校验该组织是否为父级组织
+     * @param orgId
+     * @return
+     */
+    Boolean checkOrgIsParentOrg(Long orgId);
 }

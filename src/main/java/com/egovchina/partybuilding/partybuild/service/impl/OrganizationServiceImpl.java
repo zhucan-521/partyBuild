@@ -101,7 +101,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         return tabSysDeptMapper.selectByPrimaryKey(deptId);
     }
 
-    @CacheEvict(value = ORGANIZATION_LIST_FOR_PARENT, key = "#organizationDTO.getParentId()")
+    @CacheEvict(value = ORGANIZATION_LIST_FOR_PARENT, allEntries = true)
     @Transactional
     @Override
     public int insertOrganization(OrganizationDTO organizationDTO) {
@@ -127,13 +127,8 @@ public class OrganizationServiceImpl implements OrganizationService {
         //维护组织full_path、内部编码及子级的（如有必要）
         modifyFullPathInnerCodeAndSubDeptIfNecessary(sysDept);
         tabSysDeptMapper.updateByPrimaryKeySelective(sysDept);
-        //维护上级为父组织
-        SysDept parentSysDept = tabSysDeptMapper.selectByPrimaryKey(sysDept.getParentId());
-        if (CommonConstant.ISNOTPARENTORG.equals(parentSysDept.getIsParent())) {
-            parentSysDept.setIsParent((byte) 1);
-            paddingUpdateRelatedBaseFiled(parentSysDept);
-            tabSysDeptMapper.updateByPrimaryKeySelective(parentSysDept);
-        }
+        //维护上级是否为父组织
+        judgment += maintainOrgIsParentOrg(sysDept);
         return judgment;
     }
 
@@ -192,6 +187,8 @@ public class OrganizationServiceImpl implements OrganizationService {
         //删除已有标签
         judgment += orgTagService.batchUpdateOrgTagByOrgId(orgId);
         judgment += tabSysDeptMapper.updateByPrimaryKeySelective(update);
+        //维护上级是否为父组织
+        judgment += maintainOrgIsParentOrg(sysDept);
         return judgment;
     }
 
@@ -335,6 +332,30 @@ public class OrganizationServiceImpl implements OrganizationService {
             organizationDTO.setUnitId(tabPbUnitInfo.getUnitId());
             organizationDTO.setUnitName(tabPbUnitInfo.getUnitName());
         }
+    }
+
+    /**
+     * 维护组织是否为父级组织
+     *
+     * @param sysDept
+     * @return
+     */
+    public int maintainOrgIsParentOrg(SysDept sysDept) {
+        SysDept parentSysDept = tabSysDeptMapper.selectByPrimaryKey(sysDept.getParentId());
+        if (tabSysDeptMapper.checkOrgIsParentOrg(sysDept.getParentId())) {
+            if (!CommonConstant.ISPARENTORG.equals(parentSysDept.getIsParent())) {
+                parentSysDept.setIsParent(CommonConstant.ISPARENTORG);
+                paddingUpdateRelatedBaseFiled(parentSysDept);
+                return tabSysDeptMapper.updateByPrimaryKeySelective(parentSysDept);
+            }
+        } else {
+            if (!CommonConstant.ISNOTPARENTORG.equals(parentSysDept.getIsParent())) {
+                parentSysDept.setIsParent(CommonConstant.ISNOTPARENTORG);
+                paddingUpdateRelatedBaseFiled(parentSysDept);
+                return tabSysDeptMapper.updateByPrimaryKeySelective(parentSysDept);
+            }
+        }
+        return 0;
     }
 
     /**
