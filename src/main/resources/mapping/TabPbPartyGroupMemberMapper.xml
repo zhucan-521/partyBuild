@@ -259,4 +259,9 @@
         SELECT COUNT(1) FROM tab_pb_party_group_member WHERE group_id = #{groupId} AND del_flag = 0
     </select>
 
+    <!-- 根据用户Id查询是否是党小组组长 -->
+    <select id="isLeaderByUserId" resultType="java.lang.Boolean">
+        SELECT COUNT(1) FROM tab_pb_party_group_member WHERE user_id = #{userId} AND is_leader = 1 AND del_flag = 0
+    </select>
+
 </mapper>

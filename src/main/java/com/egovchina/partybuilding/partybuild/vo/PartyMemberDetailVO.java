@@ -1,6 +1,5 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
-import com.baomidou.mybatisplus.annotations.TableField;
 import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -11,20 +10,14 @@ import lombok.Data;
 import java.util.Date;
 import java.util.List;
 
-@ApiModel("查看单个党员详情VO")
 @Data
-public class SysUserVO {
+@ApiModel("党员名册-党员概况")
+public class PartyMemberDetailVO {
+    @ApiModelProperty(value = "头像")
+    private String avatar;
+
     @ApiModelProperty(value = "用户名")
     private String realname;
-
-    @ApiModelProperty(value = "组织ID ,党支部Id")
-    private Long deptId;
-
-    @ApiModelProperty(value = "用户ID")
-    private Long userId;
-
-    @ApiModelProperty(value = "年龄")
-    private Integer age;
 
     @ApiModelProperty(value = "性别 码表值 XB")
     @JsonSerialize(using = DictSerializer.class)
@@ -41,14 +34,8 @@ public class SysUserVO {
     @JsonSerialize(using = DictSerializer.class)
     private Long nation;
 
-    @ApiModelProperty(value = "居住地所在社区id")
-    private Long communityAddr;
-
     @ApiModelProperty(value = "居住地所在社区名字")
     private String communityAddrName;
-
-    @ApiModelProperty(value = "头像")
-    private String avatar;
 
     @ApiModelProperty(value = "电话号码")
     private String phone;
@@ -69,8 +56,9 @@ public class SysUserVO {
     @ApiModelProperty(value = "人员类别 码表值 RYLB")
     private Long identityType;
 
-    @ApiModelProperty(value = "档案管理单位id ")
-    private Long filesManageUnitId;
+    @ApiModelProperty(value = "党组织所在社区   码表值XZQH")
+    @JsonSerialize(using = DictSerializer.class)
+    private Long orgAddrName;
 
     @ApiModelProperty(value = "档案管理单位")
     private String filesManageUnit;
@@ -80,10 +68,6 @@ public class SysUserVO {
     private Long registryStatus;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "入党时间、预备党员时间")
-    private Date joinTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     @ApiModelProperty(value = "加入党组织时间")
     private Date joinOrgTime;
 
@@ -91,46 +75,45 @@ public class SysUserVO {
     @ApiModelProperty(value = "转正时间、正式党员时间")
     private Date regularTime;
 
-    @ApiModelProperty(value = "工作简历")
-    private String workResumes;
+    //书记的信息
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @ApiModelProperty(value = "首次进入两委")
+    private Date firstCommitteesDate;
 
-    @ApiModelProperty(value = "是否困难")
-    private Byte isPoor;
+    @ApiModelProperty(value="有何特长")
+    private String professionalSpecialty;
 
-    @ApiModelProperty(value = "是否失联")
-    private Byte isLlost;
+    @ApiModelProperty(value = "专业技术职务")
+    private String professionalTitles;
 
-    @ApiModelProperty(value = "流动状态 码表值 LDZT")
+    @ApiModelProperty(value = "学历学位-全日制教育")
+    private String fullTimeSchooling;
+
+    @ApiModelProperty(value = "学历学位-在职教育")
+    private String education;
+
+    @ApiModelProperty(value = "毕业院校系及专业-全日制")
+    private String collegeMajor;
+
+    @ApiModelProperty(value = "毕业院校系及专业-在职教育")
+    private String collegeMajorTwo;
+
+    @ApiModelProperty(value = "原任职务")
     @JsonSerialize(using = DictSerializer.class)
-    private Long flowStatus;
+    private Long oldPosition;
 
-    @TableField(exist = false)
-    @ApiModelProperty(value = "用户标签列表")
-    private List<UserTagVO> tabPbUserTags;
-
-    @ApiModelProperty(value = "婚姻状况 码表值 FYZK")
+    @ApiModelProperty(value = "现任职务")
     @JsonSerialize(using = DictSerializer.class)
-    private Long maritalStatus;
-
-    @ApiModelProperty(value = "健康状况 码表值 GB4767")
-    @JsonSerialize(using = DictSerializer.class)
-    private Long health;
-
-    @ApiModelProperty(value = "籍贯 码表值 JG")
-    @JsonSerialize(using = DictSerializer.class)
-    private Long ancestorPlace;
+    private Long newPosition;
 
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    @ApiModelProperty(value = "工作时间")
-    private Date workDate;
+    @ApiModelProperty(value = "任职时间")
+    private Date serveTime;
 
-    @ApiModelProperty(value = "党组织所在社区   码表值XZQH")
-    @JsonSerialize(using = DictSerializer.class)
-    private Long orgAddrName;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @ApiModelProperty(value = "任免时间")
+    private Date appointmentTime;
 
-    @ApiModelProperty(value = "是否台湾籍")
-    private Byte isTaiwaner;
-
-    @ApiModelProperty(value = "是否农民工")
-    private Byte migrant;
+    @ApiModelProperty(value = "用户标签列表")
+    private List<UserTagVO> tabPbUserTags;
 }

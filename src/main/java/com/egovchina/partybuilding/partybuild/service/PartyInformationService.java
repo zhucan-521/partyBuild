@@ -33,14 +33,12 @@ public interface PartyInformationService {
     PageInfo<HistoryPartyVO> getPartyHistoryList(HistoricalPartyMemberQueryBean queryBean, Page page);
 
     /**
-     * 查询党员根据姓名或身份证
-     * @param username 用户名
-     * @param searchVal 身份证
-     * @param phone  手机号码
-     * @param page
+     * 查询党员根据条件
+     * @param queryValue 查询条件
+     * @param page 分页实体
      * @return
      */
-    PageInfo<PersonnelVO> partyIdentityVerification(String username, String searchVal, String phone, Page page);
+    PageInfo<PersonnelVO> partyIdentityVerification(String queryValue, Page page);
 
     /**
      * 补录党员基本信息
@@ -78,4 +76,15 @@ public interface PartyInformationService {
      * @return
      */
     PartyMemberChooseVO choosePartyMemberVOByIdCardNo(String idCardNo);
+
+    /**
+     * 党员历史信息图
+     *
+     * @param orgnizeLife       组织生活
+     * @param communityActivity 社区活动
+     * @param userId            用户id
+     * @return
+     */
+    List<HistoryInformationGraphVO> getHistoryInformationGraph(Boolean orgnizeLife, Boolean communityActivity, Long userId);
+
 }

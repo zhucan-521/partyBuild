@@ -5,7 +5,6 @@ import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
 import com.egovchina.partybuilding.partybuild.dto.UserDeptPositiveDTO;
 import com.egovchina.partybuilding.partybuild.entity.PartyMemberChooseQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.SysUserQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -149,12 +148,10 @@ public interface TabSysUserMapper {
     /**
      * 党员信息核查
      *
-     * @param username
-     * @param idCardNo
-     * @param phone
+     * @param queryValue 查询值
      * @return
      */
-    List<PersonnelVO> partyIdentityVerification(@Param("username") String username, @Param("idCardNo") String idCardNo, @Param("phone") String phone);
+    List<PersonnelVO> partyIdentityVerification(@Param("queryValue") String queryValue);
 
     /**
      * 判断是否属于此节点
@@ -198,6 +195,13 @@ public interface TabSysUserMapper {
      * @return
      */
     PartyMemberVO selectByPrimaryKeyToAll(Long userId);
+
+    /**
+     * 党员名册查询概况
+     * @param userId
+     * @return
+     */
+    PartyMemberDetailVO selectDeailsByPrimaryKey(Long userId);
 
     /**
      * 查询书记个人简单信息
