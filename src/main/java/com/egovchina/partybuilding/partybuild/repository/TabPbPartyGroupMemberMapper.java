@@ -74,4 +74,14 @@ public interface TabPbPartyGroupMemberMapper {
      */
     Long totalMembers(Long groupId);
 
+    /**
+     * desc: 根据用户Id查询是否是党小组组长
+     *
+     * @param userId 用户ID
+     * @return true or false
+     * @auther FanYanGen
+     * @date 2019-06-13 09:26
+     */
+    Boolean isLeaderByUserId(Long userId);
+
 }
