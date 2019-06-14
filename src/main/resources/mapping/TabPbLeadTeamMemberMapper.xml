@@ -57,7 +57,6 @@
         <result column="session_year" jdbcType="VARCHAR" property="sessionYear"/>
         <result column="gender" jdbcType="BIGINT" property="gender"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
-        <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
         <result column="join_time" jdbcType="TIMESTAMP" property="joinDate"/>
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
     </resultMap>
@@ -397,8 +396,8 @@
         ,d.name AS org_name, t.session_year AS session_year, u.id_card_no AS id_card_no
         FROM
         tab_pb_lead_team_member ltm
-        LEFT JOIN sys_dept d ON ltm.org_id = d.dept_id
         LEFT JOIN sys_user u ON ltm.user_id = u.user_id
+        LEFT JOIN sys_dept d ON u.dept_id = d.dept_id
         LEFT JOIN tab_pb_lead_team t ON ltm.lead_team_id = t.lead_team_id
         WHERE ltm.member_id = #{memberId}
         AND ltm.del_flag = '0' AND ltm.ebl_flag = '1'
@@ -420,16 +419,17 @@
         u.join_time,
         t.session_year,
         u.gender,
-        tpi.unit_property,
         u.phone
         FROM tab_pb_lead_team_member ltm
         LEFT JOIN sys_user u ON ltm.user_id = u.user_id
         LEFT JOIN tab_pb_lead_team t ON ltm.lead_team_id = t.lead_team_id
         LEFT JOIN sys_dept d ON t.org_id = d.dept_id
         LEFT JOIN sys_dept ud ON u.dept_id = ud.dept_id
-        LEFT JOIN tab_pb_unit_info tpi ON tpi.org_id = ltm.org_id
-        AND tpi.del_flag = '0'
-        WHERE ltm.del_flag = 0
+        WHERE d.dept_id = #{rangeDeptId}
+          AND ltm.del_flag = '0' AND ltm.ebl_flag = '1'
+          AND u.del_flag = '0' AND u.ebl_flag = '1'
+          AND d.del_flag = '0' AND d.ebl_flag = '1'
+          AND ud.del_flag = '0' AND ud.ebl_flag = '1'
         <if test="sessionYear != null and sessionYear != ''">
             AND t.session_year = #{sessionYear}
         </if>
@@ -445,21 +445,6 @@
         <if test="positiveId != null and positiveId != ''">
             AND ltm.positive_id = #{positiveId}
         </if>
-        <if test="unitProperty != null and unitProperty != ''">
-            AND find_in_set(tpi.unit_property, #{unitProperty})
-        </if>
-        <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
-        <choose>
-            <when test="orgRange == 1">
-                AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
-            </when>
-            <when test="orgRange == 2">
-                AND find_in_set(#{rangeDeptId}, d.full_path)
-            </when>
-            <otherwise>
-                AND d.dept_id = #{rangeDeptId}
-            </otherwise>
-        </choose>
     </select>
 
     <!--根据班子id逻辑删除班子成员-->
@@ -551,23 +536,7 @@
         AND t.del_flag = '0' AND t.ebl_flag = '1'
         AND d.del_flag = '0' AND d.ebl_flag = '1'
         AND u.del_flag = '0' AND u.ebl_flag = '1'
-        <if test="realname != null and realname != ''">
-            AND u.realname like CONCAT('%',#{realname},'%')
-        </if>
-        <if test="positiveName != null and positiveName != ''">
-            AND  t.positive_id = #{positiveName}
-        </if>
-        <choose>
-            <when test="orgRange == 1">
-                AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
-            </when>
-            <when test="orgRange == 2">
-                AND find_in_set(#{rangeDeptId}, d.full_path)
-            </when>
-            <otherwise>
-                AND d.dept_id = #{rangeDeptId}
-            </otherwise>
-        </choose>
+        AND d.dept_id = #{rangeDeptId}
         ORDER BY  positive_name_order DESC, positive_level_order DESC
     </select>
 </mapper>
