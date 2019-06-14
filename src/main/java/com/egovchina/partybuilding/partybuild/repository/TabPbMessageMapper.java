@@ -5,6 +5,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbMessageReceive;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMessageSend;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamExpireVO;
 import com.egovchina.partybuilding.partybuild.vo.MessageSendVO;
+import com.egovchina.partybuilding.partybuild.vo.PartyMemberBirthDayVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -158,4 +159,12 @@ public interface TabPbMessageMapper {
      * @return
      */
     int updateMessageTipStatusBySendIdsAndReceiverId(@Param("sendIds") List<Long> sendIds, @Param("receiverId") Long receiverId);
+
+    /**
+     * 获取党员生日列表
+     *
+     * @return
+     */
+    List<PartyMemberBirthDayVO> selectPartyMemberBirthDay();
+
 }
