@@ -98,10 +98,6 @@ public class LeadTeamMemberVO {
     @ApiModelProperty("联系电话")
     private String phone;
 
-    @ApiModelProperty(value = "单位类别 码表值 DWLB")
-    @JsonSerialize(using = DictSerializer.class)
-    private Long unitProperty;
-
     @ApiModelProperty(value = "入党日期")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date joinDate;

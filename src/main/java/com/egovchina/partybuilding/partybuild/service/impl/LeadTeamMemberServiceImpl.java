@@ -25,7 +25,7 @@ import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCop
 
 
 /**
- * @Author Jiang An
+ * @Author GuanYingxin
  **/
 @Service("leadTeamMemberService")
 public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
@@ -37,16 +37,10 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
     private TabSysUserMapper tabSysUserMapper;
 
     @Autowired
-    private ITabPbAttachmentService iTabPbAttachmentService;
-
-    @Autowired
     private TabPbLeadTeamMapper tabPbLeadTeamMapper;
 
     @Autowired
     private TabPbPositivesMapper tabPbPositivesMapper;
-
-    @Autowired
-    private TabSysDeptMapper tabSysDeptMapper;
 
     @Transactional
     @Override

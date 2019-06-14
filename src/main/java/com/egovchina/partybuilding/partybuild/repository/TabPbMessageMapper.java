@@ -87,14 +87,6 @@ public interface TabPbMessageMapper {
     List<LeadTeamExpireVO> queryTheLeadershipTeamThatIsDueToExpire();
 
     /**
-     * 定时发送消息
-     *
-     * @param tabPbMessageReceive 定时发送消息实体
-     * @return
-     */
-    int insertTabPbMessageReceive(TabPbMessageReceive tabPbMessageReceive);
-
-    /**
      * 批量修改消息接收表
      *
      * @param tabPbMessageReceiveList 消息接收实体

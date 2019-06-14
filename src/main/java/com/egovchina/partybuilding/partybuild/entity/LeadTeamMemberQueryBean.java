@@ -15,9 +15,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class LeadTeamMemberQueryBean {
 
-    @ApiModelProperty("列表范围 1 查当前组织及其直属组织； 2 查当前组织及所有下级组织 默认查当前")
-    private String orgRange;
-
     @ApiModelProperty("班子届数")
     private Long sessionYear;
 
@@ -36,8 +33,5 @@ public class LeadTeamMemberQueryBean {
 
     @ApiModelProperty("状态")
     private String eblFlag;
-
-    @ApiModelProperty(value = "单位类别 码表值 DWLB")
-    private String unitProperty;
 
 }
