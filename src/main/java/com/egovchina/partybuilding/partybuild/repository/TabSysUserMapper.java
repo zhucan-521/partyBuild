@@ -245,4 +245,13 @@ public interface TabSysUserMapper {
      * @return
      */
     PartyMemberChooseVO selectPartyMemberChooseVOByIdCardNo(String idCardNo);
+
+    /**
+     * 更新用户头像
+     *
+     * @param userId 用户id
+     * @param avatar 用户头像
+     */
+    int updateAvatarByUserId(@Param("userId") Long userId, @Param("avatar") String avatar);
+
 }

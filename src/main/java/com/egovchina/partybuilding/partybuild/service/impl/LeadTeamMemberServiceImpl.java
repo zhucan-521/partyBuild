@@ -13,6 +13,7 @@ import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.LeadTeamMemberService;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,10 +96,12 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
         TabPbLeadTeamMember tabPbLeadTeamMember =
                 generateTargetCopyPropertiesAndPaddingBaseField(leadTeamMemberDTO, TabPbLeadTeamMember.class, false);
         int judgment = tabPbLeadTeamMemberMapper.insertSelective(tabPbLeadTeamMember);
-        //修改班子成员的头像时一同修改党员表的头像
-
         if (judgment > 0) {
             tabPbLeadTeamMapper.correctTheNumberOfTeamsAccordingToTheTeamId(leadTeamMemberDTO.getLeadTeamId());
+            //新增班子成员的头像时一同修改党员表的头像
+            if (StringUtils.isNotEmpty(leadTeamMemberDTO.getAvatar())) {
+                judgment += tabSysUserMapper.updateAvatarByUserId(leadTeamMemberDTO.getUserId(), leadTeamMemberDTO.getAvatar());
+            }
             //修改职务信息
             modifyPosition(leadTeamMemberDTO);
         }
@@ -114,8 +117,13 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
         }
         TabPbLeadTeamMember tabPbLeadTeamMember =
                 generateTargetCopyPropertiesAndPaddingBaseField(leadTeamMemberDTO, TabPbLeadTeamMember.class, true);
+
         int judgment = tabPbLeadTeamMemberMapper.updateByPrimaryKeySelective(tabPbLeadTeamMember);
         if (judgment > 0) {
+            //更新用户头像
+            if (StringUtils.isNotEmpty(leadTeamMemberDTO.getAvatar())) {
+                judgment += tabSysUserMapper.updateAvatarByUserId(leadTeamMemberDTO.getUserId(), leadTeamMemberDTO.getAvatar());
+            }
             modifyPosition(leadTeamMemberDTO);
         }
         return judgment;

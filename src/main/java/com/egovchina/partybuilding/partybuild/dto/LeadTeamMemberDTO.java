@@ -19,7 +19,8 @@ import java.util.List;
 @Data
 public class LeadTeamMemberDTO {
 
-    @ApiModelProperty(value = "班子成员id")
+    @ApiModelProperty(value = "班子成员id", required = true)
+    @NotNull(message = "班子成员id不能为空")
     private Long memberId;
 
     @ApiModelProperty(value = "组织id", required = true)
