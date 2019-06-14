@@ -68,8 +68,8 @@ public class JointPointInfoServiceImpl implements JointPointInfoService {
      */
     @Override
     public List<LinkLeaderVO> selectUserDeptByDeptId(LinkLeaderQueryBean linkLeaderQueryBean, Page page) {
-        PageHelper.startPage(page);
         if (tabSysDeptMapper.selectByPrimaryKey(linkLeaderQueryBean.getRangeDeptId()) != null) {
+            PageHelper.startPage(page);
             return tabPbLinkLeaderMapper.selectLinkLeaderVoByDeptId(linkLeaderQueryBean);
         }
         throw new BusinessDataInvalidException("组织不存在");
