@@ -13,7 +13,7 @@ import com.egovchina.partybuilding.partybuild.vo.PartySecretarysVO;
 import java.util.List;
 
 /**
- * @Author Jiang An
+ * @Author GuanYingxin
  **/
 
 public interface LeadTeamMemberService {

@@ -2177,4 +2177,14 @@
         update sys_user set is_poor = #{isPoor} where user_Id  = (select user_Id from tab_pb_hardship where hardship_id = #{hardshipId})
     </update>
 
+    <!--更新用户头像-->
+    <update id="updateAvatarByUserId">
+        UPDATE sys_user
+            SET avatar = #{avatar}
+            WHERE
+                user_id = #{userId}
+	        AND del_flag = '0'
+	        AND ebl_flag = '1'
+    </update>
+
 </mapper>

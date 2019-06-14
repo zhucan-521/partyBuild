@@ -2,11 +2,13 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.common.util.PersonnelCategory;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMessageReceive;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMessageSend;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMessageMapper;
 import com.egovchina.partybuilding.partybuild.service.TimedTransmissionService;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamExpireVO;
+import com.egovchina.partybuilding.partybuild.vo.PartyMemberBirthDayVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -43,7 +45,8 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
             TabPbMessageSend tabPbMessageSend = new TabPbMessageSend();
             tabPbMessageSend.setSenderId(1L)
                     .setSenderName("admin")
-                    .setType(3L).setTitle("系统提示")
+                    .setType(59680L)
+                    .setTitle("系统提示")
                     .setContent("临近换届日期")
                     .setSendTime(new Date());
             PaddingBaseFieldUtil.paddingBaseFiled(tabPbMessageSend);
@@ -53,9 +56,46 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
             List<TabPbMessageReceive> tabPbMessageReceiveList = new ArrayList<>();
             leadTeamExpireVOS.forEach(r -> {
                 TabPbMessageReceive tabPbMessageReceive = new TabPbMessageReceive();
-                tabPbMessageReceive.setSendId(tabPbMessageSend.getSendId()).setReceiverId(r.getOrgId())
+                tabPbMessageReceive.setSendId(tabPbMessageSend.getSendId())
+                        .setReceiverId(r.getOrgId())
                         .setReceiverName(r.getOrgName())
-                        .setReceiverType(1L);
+                        .setReceiverType(PersonnelCategory.TO_USER);
+                tabPbMessageReceiveList.add(tabPbMessageReceive);
+            });
+            tabPbMessageMapper.batchInsertTabPbMessageReceive(tabPbMessageReceiveList);
+        }
+    }
+
+    /**
+     * 党员生日当天提醒
+     */
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * *")
+    @Override
+    public void partyMemberBirthDayRemind() {
+        log.info("Scheduled occur , Event at 定时提醒党员生日");
+        //获取党员生日列表
+        List<PartyMemberBirthDayVO> birthDayVOS = tabPbMessageMapper.selectPartyMemberBirthDay();
+        if (CollectionUtil.isNotEmpty(birthDayVOS)) {
+            //往消息发送表里面插入系统消息
+            TabPbMessageSend tabPbMessageSend = new TabPbMessageSend();
+            tabPbMessageSend.setSenderId(1L)
+                    .setSenderName("admin")
+                    .setType(59680L)
+                    .setTitle("系统提示")
+                    .setContent("生日快乐~")
+                    .setSendTime(new Date());
+            PaddingBaseFieldUtil.paddingBaseFiled(tabPbMessageSend);
+            tabPbMessageMapper.insertTabPbMessageSend(tabPbMessageSend);
+
+            //接收表插入相应数据
+            List<TabPbMessageReceive> tabPbMessageReceiveList = new ArrayList<>();
+            birthDayVOS.forEach(r -> {
+                TabPbMessageReceive tabPbMessageReceive = new TabPbMessageReceive();
+                tabPbMessageReceive.setSendId(tabPbMessageSend.getSendId())
+                        .setReceiverId(r.getUserId())
+                        .setReceiverName(r.getRealname())
+                        .setReceiverType(PersonnelCategory.TO_PARTY_MEMBER);
                 tabPbMessageReceiveList.add(tabPbMessageReceive);
             });
             tabPbMessageMapper.batchInsertTabPbMessageReceive(tabPbMessageReceiveList);

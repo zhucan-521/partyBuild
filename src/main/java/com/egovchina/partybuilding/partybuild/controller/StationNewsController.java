@@ -3,7 +3,7 @@ package com.egovchina.partybuilding.partybuild.controller;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
-import com.egovchina.partybuilding.partybuild.dto.MessageAddDTO;
+import com.egovchina.partybuilding.common.dto.MessageAddDTO;
 import com.egovchina.partybuilding.partybuild.dto.MessageUpdateDTO;
 import com.egovchina.partybuilding.partybuild.entity.StationNewsQueryBean;
 import com.egovchina.partybuilding.partybuild.service.StationNewsService;

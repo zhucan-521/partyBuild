@@ -1,7 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.partybuild.dto.MessageAddDTO;
+import com.egovchina.partybuilding.common.dto.MessageAddDTO;
 import com.egovchina.partybuilding.partybuild.dto.MessageUpdateDTO;
 import com.egovchina.partybuilding.partybuild.entity.StationNewsQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.MessageSendVO;
@@ -63,4 +63,5 @@ public interface StationNewsService {
      * @return
      */
     List<MessageSendVO> getNotRemindedMessageVO(Long receiverId);
+
 }

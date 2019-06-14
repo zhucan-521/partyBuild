@@ -7,8 +7,8 @@ import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundExceptio
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
-import com.egovchina.partybuilding.partybuild.dto.MessageAddDTO;
-import com.egovchina.partybuilding.partybuild.dto.MessageReceiveDTO;
+import com.egovchina.partybuilding.common.dto.MessageAddDTO;
+import com.egovchina.partybuilding.common.dto.MessageReceiveDTO;
 import com.egovchina.partybuilding.partybuild.dto.MessageUpdateDTO;
 import com.egovchina.partybuilding.partybuild.entity.StationNewsQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMessageReceive;

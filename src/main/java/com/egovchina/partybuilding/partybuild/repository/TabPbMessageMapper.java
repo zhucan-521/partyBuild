@@ -5,6 +5,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbMessageReceive;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMessageSend;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamExpireVO;
 import com.egovchina.partybuilding.partybuild.vo.MessageSendVO;
+import com.egovchina.partybuilding.partybuild.vo.PartyMemberBirthDayVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -87,14 +88,6 @@ public interface TabPbMessageMapper {
     List<LeadTeamExpireVO> queryTheLeadershipTeamThatIsDueToExpire();
 
     /**
-     * 定时发送消息
-     *
-     * @param tabPbMessageReceive 定时发送消息实体
-     * @return
-     */
-    int insertTabPbMessageReceive(TabPbMessageReceive tabPbMessageReceive);
-
-    /**
      * 批量修改消息接收表
      *
      * @param tabPbMessageReceiveList 消息接收实体
@@ -166,4 +159,12 @@ public interface TabPbMessageMapper {
      * @return
      */
     int updateMessageTipStatusBySendIdsAndReceiverId(@Param("sendIds") List<Long> sendIds, @Param("receiverId") Long receiverId);
+
+    /**
+     * 获取党员生日列表
+     *
+     * @return
+     */
+    List<PartyMemberBirthDayVO> selectPartyMemberBirthDay();
+
 }
