@@ -48,10 +48,10 @@
     link_ledaer_id, dept_id, user_id, link_start_date, link_finished_date, ebl_flag, 
     del_flag, order_num, description, create_time, create_userid, create_username, update_time, 
     update_userid, update_username, version
-  </sql>
+    </sql>
     <sql id="Blob_Column_List">
     comment
-  </sql>
+    </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
@@ -63,7 +63,7 @@
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from tab_pb_link_leader
     where link_ledaer_id = #{linkLedaerId,jdbcType=BIGINT}
-  </delete>
+    </delete>
     <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader">
     insert into tab_pb_link_leader (link_ledaer_id, dept_id, user_id, 
       link_start_date, link_finished_date, ebl_flag, 
@@ -77,7 +77,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
       #{version,jdbcType=BIGINT}, #{comment,jdbcType=LONGVARCHAR})
-  </insert>
+    </insert>
     <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader">
         insert into tab_pb_link_leader
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -262,7 +262,7 @@
       version = #{version,jdbcType=BIGINT},
       comment = #{comment,jdbcType=LONGVARCHAR}
     where link_ledaer_id = #{linkLedaerId,jdbcType=BIGINT}
-  </update>
+    </update>
     <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader">
     update tab_pb_link_leader
     set dept_id = #{deptId,jdbcType=BIGINT},
@@ -281,7 +281,7 @@
       update_username = #{updateUsername,jdbcType=VARCHAR},
       version = #{version,jdbcType=BIGINT}
     where link_ledaer_id = #{linkLedaerId,jdbcType=BIGINT}
-  </update>
+    </update>
 
     <select id="selectByUserIdAndDeptId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader"
             resultMap="BaseResultMap">
@@ -289,9 +289,9 @@
     where dept_id = #{deptId,jdbcType=BIGINT}
     and user_id = #{userId,jdbcType=BIGINT}
     and del_flag = 0;
-  </select>
+    </select>
 
-    <select id="selectLinkLeaderVoByDeptId" parameterType="java.lang.Long" resultMap="LinkLeaderVOResultMap">
+    <select id="selectLinkLeaderVoByDeptId" resultMap="LinkLeaderVOResultMap">
         SELECT
             l.link_ledaer_id,
             l.dept_id,
@@ -311,9 +311,9 @@
         FROM
             tab_pb_link_leader l
             LEFT JOIN sys_user u ON l.user_id = u.user_id
-            AND u.del_flag = 0
+            AND u.del_flag = '0'
             LEFT JOIN sys_dept d ON d.dept_id = l.dept_id
-            AND d.del_flag = 0
+            AND d.del_flag = '0'
             LEFT JOIN (
                 (
                 SELECT
@@ -327,16 +327,35 @@
                 FROM
                     tab_pb_participant AS pa
                     LEFT JOIN tab_pb_activities AS ac ON ac.activities_id = pa.activities_id
-                    AND pa.del_flag = 0
+                    AND pa.del_flag = '0'
                     AND pa.if_link_leader = 1
                     LEFT JOIN sys_dept AS d1 ON ac.org_id = d1.dept_id
-                    AND d1.del_flag = 0
+                    AND d1.del_flag = '0'
                 WHERE
-                    ac.del_flag = 0
+                    ac.del_flag = '0'
                 ) AS ab
             ) ON ab.user_id = l.user_id
         WHERE
-            l.dept_id = #{deptId}
-            AND l.del_flag = 0
+            l.del_flag = '0'
+            <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+            <if test="orgRange != null and orgRange != ''">
+                <choose>
+                    <when test="orgRange == 1">
+                        AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                    </when>
+                    <when test="orgRange == 2">
+                        AND find_in_set(#{rangeDeptId}, d.full_path)
+                    </when>
+                </choose>
+            </if>
+            <if test="orgRange == null or orgRange.toString() == ''">
+                AND d.dept_id = #{rangeDeptId}
+            </if>
+            <if test="name != null and name != ''">
+                AND d.name like concat ('%', #{name},'%')
+            </if>
+            <if test="realName != null and realName != ''">
+                AND u.realname like concat('%',#{realName},'%')
+            </if>
     </select>
 </mapper>

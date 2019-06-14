@@ -1,11 +1,14 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.LinkLeaderDTO;
+import com.egovchina.partybuilding.partybuild.entity.LinkLeaderQueryBean;
 import com.egovchina.partybuilding.partybuild.service.JointPointInfoService;
 import com.egovchina.partybuilding.partybuild.vo.LinkLeaderVO;
 import com.egovchina.partybuilding.partybuild.vo.UserDeptPositionVO;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -40,10 +43,10 @@ public class JointPointInfoController {
     }
 
     @ApiOperation(value = "查看联点领导列表详情", notes = "查看联点领导列表详情")
-    @ApiImplicitParam(value = "组织ID", name = "deptId", paramType = "path", required = true)
-    @GetMapping("/{deptId}")
-    public List<LinkLeaderVO> getJointPointInfoByDeptIdList(@PathVariable Long deptId) {
-        return jointPointInfoService.selectUserDeptByDeptId(deptId);
+    @GetMapping
+    public PageInfo<LinkLeaderVO> getJointPointInfoByDeptIdList(@Validated LinkLeaderQueryBean linkLeaderQueryBean, Page page) {
+        List<LinkLeaderVO> list = jointPointInfoService.selectUserDeptByDeptId(linkLeaderQueryBean, page);
+        return new PageInfo<>(list);
     }
 
     @ApiOperation(value = "删除联点领导", notes = "删除联点领导")

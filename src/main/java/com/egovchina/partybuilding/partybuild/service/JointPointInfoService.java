@@ -1,6 +1,8 @@
 package com.egovchina.partybuilding.partybuild.service;
 
+import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.dto.LinkLeaderDTO;
+import com.egovchina.partybuilding.partybuild.entity.LinkLeaderQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.LinkLeaderVO;
 import com.egovchina.partybuilding.partybuild.vo.UserDeptPositionVO;
 
@@ -27,10 +29,11 @@ public interface JointPointInfoService {
     /**
      * 查询联点领导信息
      *
-     * @param deptId 组织id
-     * @return
+     * @param linkLeaderQueryBean 查询实体
+     * @param page                分页
+     * @return List<LinkLeaderVO>
      */
-    List<LinkLeaderVO> selectUserDeptByDeptId(Long deptId);
+    List<LinkLeaderVO> selectUserDeptByDeptId(LinkLeaderQueryBean linkLeaderQueryBean, Page page);
 
     /**
      * 删除联点领导
