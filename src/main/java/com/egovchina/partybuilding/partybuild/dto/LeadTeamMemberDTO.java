@@ -1,6 +1,5 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
-import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -8,19 +7,17 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 领导班子成员DTO
  *
- * @author Zhang Fan
+ * @author GuanYingxin
  **/
 @ApiModel("领导班子成员DTO")
 @Data
 public class LeadTeamMemberDTO {
 
-    @ApiModelProperty(value = "班子成员id", required = true)
-    @NotNull(message = "班子成员id不能为空")
+    @ApiModelProperty(value = "班子成员id")
     private Long memberId;
 
     @ApiModelProperty(value = "组织id", required = true)
