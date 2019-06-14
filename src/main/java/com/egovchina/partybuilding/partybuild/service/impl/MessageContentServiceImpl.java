@@ -16,7 +16,7 @@ public class MessageContentServiceImpl implements MessageContentService {
     private TabPbMessageMapper tabPbMessageMapper;
 
     @Override
-    public String selectMessageContent() {
-        return tabPbMessageMapper.selectMessageContent();
+    public String selectMessageContent(Long id) {
+        return tabPbMessageMapper.selectMessageContent(id);
     }
 }
