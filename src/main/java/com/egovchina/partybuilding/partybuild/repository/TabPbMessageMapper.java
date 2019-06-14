@@ -167,4 +167,11 @@ public interface TabPbMessageMapper {
      */
     List<PartyMemberBirthDayVO> selectPartyMemberBirthDay();
 
+    /**
+     * 获取消息内容
+     *
+     * @return
+     */
+    String selectMessageContent();
+
 }

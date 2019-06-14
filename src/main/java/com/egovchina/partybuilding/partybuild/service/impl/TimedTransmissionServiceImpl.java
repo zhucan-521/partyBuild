@@ -6,6 +6,7 @@ import com.egovchina.partybuilding.common.util.PersonnelCategory;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMessageReceive;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMessageSend;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMessageMapper;
+import com.egovchina.partybuilding.partybuild.service.MessageContentService;
 import com.egovchina.partybuilding.partybuild.service.TimedTransmissionService;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamExpireVO;
 import com.egovchina.partybuilding.partybuild.vo.PartyMemberBirthDayVO;
@@ -30,6 +31,9 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
     @Autowired
     private TabPbMessageMapper tabPbMessageMapper;
 
+    @Autowired
+    private MessageContentService messageContentService;
+
     /**
      * 定时提醒领导班子
      */
@@ -47,7 +51,7 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
                     .setSenderName("admin")
                     .setType(59680L)
                     .setTitle("系统提示")
-                    .setContent("临近换届日期")
+                    .setContent(messageContentService.selectMessageContent())
                     .setSendTime(new Date());
             PaddingBaseFieldUtil.paddingBaseFiled(tabPbMessageSend);
             tabPbMessageMapper.insertTabPbMessageSend(tabPbMessageSend);
