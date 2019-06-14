@@ -101,7 +101,7 @@
     <!--VO List ResultMap-->
     <sql id="LeadTeamMemberListVO_Column_List">
         ltm.member_id, ltm.org_id, ltm.lead_team_id, ltm.user_id, ltm.person_name, ltm.positive_id, ltm.positive_name,
-        ltm.tenure_begin, ltm.rank,ltm.avatar
+        ltm.tenure_begin, ltm.rank,u.avatar
     </sql>
 
     <!--VO ResultMap-->
@@ -168,9 +168,6 @@
             </if>
             <if test="leadMemberOrder != null">
                 lead_member_order,
-            </if>
-            <if test="avatar != null">
-                avatar,
             </if>
             <if test="eblFlag != null">
                 ebl_flag,
@@ -254,9 +251,6 @@
             </if>
             <if test="leadMemberOrder != null">
                 #{leadMemberOrder,jdbcType=BIGINT},
-            </if>
-            <if test="avatar != null">
-                #{avatar,jdbcType=VARCHAR},
             </if>
             <if test="eblFlag != null">
                 #{eblFlag,jdbcType=VARCHAR},
@@ -391,8 +385,10 @@
         FROM tab_pb_lead_team_member ltm
         LEFT JOIN sys_dept d ON ltm.org_id = d.dept_id
         LEFT JOIN sys_user u ON u.user_id = ltm.user_id
-        WHERE ltm.lead_team_id = #{leadTeamId} AND ltm.del_flag = 0
-        ORDER BY ltm.member_id
+        WHERE ltm.lead_team_id = #{leadTeamId}
+              AND ltm.del_flag = 0 AND ltm.ebl_flag = '1'
+              AND d.del_flag = '0' AND d.ebl_flag = '1'
+              AND u.del_flag = '0' AND u.ebl_flag = '1'
     </select>
 
     <select id="selectLeadTeamMemberVOById" parameterType="java.lang.Long" resultMap="LeadTeamMemberVOResultMap">
@@ -405,9 +401,9 @@
         LEFT JOIN sys_user u ON ltm.user_id = u.user_id
         LEFT JOIN tab_pb_lead_team t ON ltm.lead_team_id = t.lead_team_id
         WHERE ltm.member_id = #{memberId}
-        AND ltm.del_flag = '0'
-        AND d.del_flag = '0'
-        ANd u.del_flag = '0'
+        AND ltm.del_flag = '0' AND ltm.ebl_flag = '1'
+        AND d.del_flag = '0' AND d.ebl_flag = '1'
+        ANd u.del_flag = '0' AND u.ebl_flag = '1'
         AND t.del_flag = '0'
 
     </select>
