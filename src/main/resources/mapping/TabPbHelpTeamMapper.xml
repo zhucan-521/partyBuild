@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbHelpTeamMapper">
+  <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbHelpTeam">
+    <id column="team_id" jdbcType="BIGINT" property="teamId" />
+    <result column="team_name" jdbcType="VARCHAR" property="teamName" />
+    <result column="org_id" jdbcType="BIGINT" property="orgId" />
+    <result column="org_name" jdbcType="VARCHAR" property="orgName" />
+    <result column="set_date" jdbcType="TIMESTAMP" property="setDate" />
+    <result column="people_numble" jdbcType="BIGINT" property="peopleNumble" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_userid" jdbcType="BIGINT" property="createUserid" />
+    <result column="create_username" jdbcType="VARCHAR" property="createUsername" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_userid" jdbcType="BIGINT" property="updateUserid" />
+    <result column="update_username" jdbcType="VARCHAR" property="updateUsername" />
+    <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
+  </resultMap>
+  <resultMap id="HelpTeamVOMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.vo.HelpTeamVO" />
+  <resultMap id="HelpTeamsVOMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.vo.HelpTeamVO" >
+    <collection property="helpTeamMemberDTOS"
+                select="com.egovchina.partybuilding.partybuild.repository.TabPbHelpTeamMemberMapper.selectHelpTeamMemberVOByTeamId"
+                column="team_id" />
+  </resultMap>
+
+
+  <sql id="Base_Column_List">
+    team_id, team_name, org_id, org_name, set_date, people_numble, create_time, create_userid, 
+    create_username, update_time, update_userid, update_username, del_flag
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tab_pb_help_team
+    where team_id = #{teamId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_help_team
+    where team_id = #{teamId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHelpTeam">
+    insert into tab_pb_help_team (team_id, team_name, org_id, 
+      org_name, set_date, people_numble, 
+      create_time, create_userid, create_username, 
+      update_time, update_userid, update_username, 
+      del_flag)
+    values (#{teamId,jdbcType=BIGINT}, #{teamName,jdbcType=VARCHAR}, #{orgId,jdbcType=BIGINT}, 
+      #{orgName,jdbcType=VARCHAR}, #{setDate,jdbcType=TIMESTAMP}, #{peopleNumble,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, 
+      #{delFlag,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="teamId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHelpTeam">
+    insert into tab_pb_help_team
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="teamId != null">
+        team_id,
+      </if>
+      <if test="teamName != null">
+        team_name,
+      </if>
+      <if test="orgId != null">
+        org_id,
+      </if>
+      <if test="orgName != null">
+        org_name,
+      </if>
+      <if test="setDate != null">
+        set_date,
+      </if>
+      <if test="peopleNumble != null">
+        people_numble,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUserid != null">
+        create_userid,
+      </if>
+      <if test="createUsername != null">
+        create_username,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateUserid != null">
+        update_userid,
+      </if>
+      <if test="updateUsername != null">
+        update_username,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="teamId != null">
+        #{teamId,jdbcType=BIGINT},
+      </if>
+      <if test="teamName != null">
+        #{teamName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=BIGINT},
+      </if>
+      <if test="orgName != null">
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="setDate != null">
+        #{setDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="peopleNumble != null">
+        #{peopleNumble,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserid != null">
+        #{createUserid,jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null">
+        #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        #{updateUserid,jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        #{updateUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHelpTeam">
+    update tab_pb_help_team
+    <set>
+      <if test="teamName != null">
+        team_name = #{teamName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null">
+        org_id = #{orgId,jdbcType=BIGINT},
+      </if>
+      <if test="orgName != null">
+        org_name = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="setDate != null">
+        set_date = #{setDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="peopleNumble != null">
+        people_numble = #{peopleNumble,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserid != null">
+        create_userid = #{createUserid,jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null">
+        create_username = #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        update_userid = #{updateUserid,jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        update_username = #{updateUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where team_id = #{teamId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHelpTeam">
+    update tab_pb_help_team
+    set team_name = #{teamName,jdbcType=VARCHAR},
+      org_id = #{orgId,jdbcType=BIGINT},
+      org_name = #{orgName,jdbcType=VARCHAR},
+      set_date = #{setDate,jdbcType=TIMESTAMP},
+      people_numble = #{peopleNumble,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=VARCHAR}
+    where team_id = #{teamId,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectiveHelpTeamVOs" parameterType="com.egovchina.partybuilding.partybuild.entity.HelpTeamQueryBean" resultMap="HelpTeamVOMap">
+    select
+    t.team_id,
+    t.team_name,
+    t.org_id,
+    t.org_name,
+    t.set_date,
+    (select count(member_id) from tab_pb_help_team_member where del_flag = 0 and team_id=t.team_id) as people_numble
+    from tab_pb_help_team t
+    LEFT Join  sys_dept dept on dept.dept_id=t.org_id
+    where
+    t.del_flag=0
+    and
+    dept.del_flag=0
+    <if test="teamName !=null and teamName!=''">
+     and t.team_name like CONCAT('%',#{teamName},'%')
+    </if>
+    <if test="setDate !=null and teamName!=''">
+     and t.set_date =#{setDate}
+    </if>
+    <if test="peopleNumble !=null and teamName!=''">
+     and t.team_name = #{peopleNumble}
+    </if>
+    <choose>
+      <when test="orgRange == 1">
+        AND (dept.dept_id = #{orgId} OR dept.parent_id = #{orgId})
+      </when>
+      <when test="orgRange == 2">
+        AND find_in_set(#{orgId}, dept.full_path)
+      </when>
+      <otherwise>
+        AND dept.dept_id = #{orgId}
+      </otherwise>
+    </choose>
+  </select>
+
+  <select id="getHelpTeamVOByTeamId"  parameterType="long" resultMap="HelpTeamsVOMap">
+    select
+     t.team_id,
+    t.team_name,
+    t.org_id,
+    t.org_name,
+    t.set_date,
+    t.people_numble,
+    (select count(member_id) from tab_pb_help_team_member where del_flag = 0 and team_id=t.team_id) as people_numble
+    from tab_pb_help_team t
+    where
+    t.del_flag=0
+    and
+    t.team_id=#{teamId}
+  </select>
+</mapper>
