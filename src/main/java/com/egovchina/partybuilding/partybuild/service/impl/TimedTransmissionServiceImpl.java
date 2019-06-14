@@ -51,7 +51,7 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
                     .setSenderName("admin")
                     .setType(59680L)
                     .setTitle("系统提示")
-                    .setContent(messageContentService.selectMessageContent())
+                    .setContent(messageContentService.selectMessageContent(59686L))
                     .setSendTime(new Date());
             PaddingBaseFieldUtil.paddingBaseFiled(tabPbMessageSend);
             tabPbMessageMapper.insertTabPbMessageSend(tabPbMessageSend);
@@ -87,7 +87,7 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
                     .setSenderName("admin")
                     .setType(59680L)
                     .setTitle("系统提示")
-                    .setContent("生日快乐~")
+                    .setContent(tabPbMessageMapper.selectMessageContent(59685L))
                     .setSendTime(new Date());
             PaddingBaseFieldUtil.paddingBaseFiled(tabPbMessageSend);
             tabPbMessageMapper.insertTabPbMessageSend(tabPbMessageSend);

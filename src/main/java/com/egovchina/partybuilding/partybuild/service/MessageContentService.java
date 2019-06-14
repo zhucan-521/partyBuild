@@ -8,7 +8,9 @@ public interface MessageContentService {
 
     /**
      * 获取消息内容
+     * @param id 字典id
+     * @return
      */
-    String selectMessageContent();
+    String selectMessageContent(Long id);
 
 }

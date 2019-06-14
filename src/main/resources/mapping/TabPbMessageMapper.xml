@@ -315,7 +315,7 @@
             ( #{senderId}, #{senderName}, #{type}, #{title}, #{content}, #{sendTime}, 0, #{createTime}, #{createUserId}, #{createUsername} )
     </insert>
 
-    <!--设置消息内容-->
+    <!--获取消息内容-->
     <select id="selectMessageContent" resultType="java.lang.String">
         SELECT
             c.item_value
@@ -323,7 +323,7 @@
             sys_configurer c
             INNER JOIN sys_dict d ON d.id = c.item_id AND d.del_flag = '0'
         WHERE
-            d.id = 59686
+            d.id = #{id}
             AND c.del_flag = '0'
             AND c.ebl_flag = '1'
     </select>
