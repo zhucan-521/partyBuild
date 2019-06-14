@@ -1,10 +1,12 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
+import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataInvalidException;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.partybuild.dto.LinkLeaderDTO;
+import com.egovchina.partybuilding.partybuild.entity.LinkLeaderQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader;
 import com.egovchina.partybuilding.partybuild.feign.LifeServiceFeignClient;
 import com.egovchina.partybuilding.partybuild.repository.TabPbLinkLeaderMapper;
@@ -13,6 +15,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.JointPointInfoService;
 import com.egovchina.partybuilding.partybuild.vo.LinkLeaderVO;
 import com.egovchina.partybuilding.partybuild.vo.UserDeptPositionVO;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,15 +60,17 @@ public class JointPointInfoServiceImpl implements JointPointInfoService {
     }
 
     /**
-     * 根据组织id 获得该组织连接领导列表
+     * 查询联点领导信息
      *
-     * @param deptId
-     * @return
+     * @param linkLeaderQueryBean 查询实体
+     * @param page                分页
+     * @return List<LinkLeaderVO>
      */
     @Override
-    public List<LinkLeaderVO> selectUserDeptByDeptId(Long deptId) {
-        if (tabSysDeptMapper.selectByPrimaryKey(deptId) != null) {
-            return tabPbLinkLeaderMapper.selectLinkLeaderVoByDeptId(deptId);
+    public List<LinkLeaderVO> selectUserDeptByDeptId(LinkLeaderQueryBean linkLeaderQueryBean, Page page) {
+        PageHelper.startPage(page);
+        if (tabSysDeptMapper.selectByPrimaryKey(linkLeaderQueryBean.getRangeDeptId()) != null) {
+            return tabPbLinkLeaderMapper.selectLinkLeaderVoByDeptId(linkLeaderQueryBean);
         }
         throw new BusinessDataInvalidException("组织不存在");
     }

@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
+import com.egovchina.partybuilding.partybuild.entity.LinkLeaderQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader;
 import com.egovchina.partybuilding.partybuild.vo.LinkLeaderVO;
 import org.springframework.stereotype.Repository;
@@ -24,5 +25,5 @@ public interface TabPbLinkLeaderMapper {
 
     List<TabPbLinkLeader> selectByUserIdAndDeptId(TabPbLinkLeader record);
 
-    List<LinkLeaderVO> selectLinkLeaderVoByDeptId(Long detpId);
+    List<LinkLeaderVO> selectLinkLeaderVoByDeptId(LinkLeaderQueryBean linkLeaderQueryBean);
 }
