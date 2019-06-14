@@ -85,7 +85,7 @@ public class LeadTeamMemberController {
     }
 
     @ApiOperation(value = "社区兼职委员列表", notes = "社区兼职委员列表", httpMethod = "GET")
-    @HasPermission("party_partTimePartyMember")
+    @HasPermission("party_areaParty")
     @GetMapping("/community-part-time-members")
     public PageInfo<CommunityPartTimeMemberVO> getCommunityPartTimeMemberList(CommunityPartTimeMemberQueryBean queryBean, Page page) {
         List<CommunityPartTimeMemberVO> list = leadTeamMemberService.selectCommunityPartTimeMemberVOListByCondition(queryBean, page);
