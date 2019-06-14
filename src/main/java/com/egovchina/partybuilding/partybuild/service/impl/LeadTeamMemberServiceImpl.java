@@ -9,7 +9,6 @@ import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.LeadTeamMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.*;
 import com.egovchina.partybuilding.partybuild.repository.*;
-import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.LeadTeamMemberService;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageHelper;
