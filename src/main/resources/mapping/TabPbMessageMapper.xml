@@ -294,6 +294,20 @@
             s.send_time DESC
     </select>
 
+    <!--获取党员生日列表-->
+    <select id="selectPartyMemberBirthDay"
+            resultType="com.egovchina.partybuilding.partybuild.vo.PartyMemberBirthDayVO">
+        SELECT
+            user_id AS userId,
+            realname
+        FROM
+            sys_user
+        WHERE
+            DATE_FORMAT( now( ), '%m-%d' ) = DATE_FORMAT( join_org_time, '%m-%d' )
+            AND del_flag = '0'
+            AND ebl_flag = '1'
+    </select>
+
     <!--定时向消息发送表插入数据-->
     <insert id="insertTabPbMessageSend" useGeneratedKeys="true" keyColumn="send_id" keyProperty="sendId">
         INSERT IGNORE INTO tab_pb_message_send ( sender_id, sender_name, type, title, content, send_time, del_flag, create_time, create_userid, create_username )

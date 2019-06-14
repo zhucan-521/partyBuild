@@ -10,4 +10,10 @@ public interface TimedTransmissionService {
      * 定时发送
      */
     void remindTheLeadershipTeam();
+
+    /**
+     * 党员生日当天提醒
+     */
+    void partyMemberBirthDayRemind();
+
 }
