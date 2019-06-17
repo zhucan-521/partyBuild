@@ -15,12 +15,18 @@
     <result column="update_userid" jdbcType="BIGINT" property="updateUserid" />
     <result column="update_username" jdbcType="VARCHAR" property="updateUsername" />
     <result column="del_flag" jdbcType="VARCHAR" property="delFlag" />
+    <result column="situation_statement" jdbcType="VARCHAR" property="situationStatement" />
+    <result column="team_leader" jdbcType="BIGINT" property="teamLeader" />
   </resultMap>
   <resultMap id="HelpTeamVOMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.vo.HelpTeamVO" />
   <resultMap id="HelpTeamsVOMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.vo.HelpTeamVO" >
     <collection property="helpTeamMemberDTOS"
                 select="com.egovchina.partybuilding.partybuild.repository.TabPbHelpTeamMemberMapper.selectHelpTeamMemberVOByTeamId"
                 column="team_id" />
+    <collection property="attachments"
+                select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+                column="{hostId=team_id,attachmentType=attachment_type}"/>
+
   </resultMap>
 
 
@@ -92,6 +98,12 @@
       <if test="delFlag != null">
         del_flag,
       </if>
+      <if test="teamLeader != null">
+        team_leader,
+      </if>
+      <if test="situationStatement != null">
+        situation_statement,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="teamId != null">
@@ -132,6 +144,12 @@
       </if>
       <if test="delFlag != null">
         #{delFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="teamLeader != null">
+        #{teamLeader},
+      </if>
+      <if test="situationStatement != null">
+        #{situationStatement},
       </if>
     </trim>
   </insert>
@@ -174,6 +192,13 @@
       <if test="delFlag != null">
         del_flag = #{delFlag,jdbcType=VARCHAR},
       </if>
+
+      <if test="teamLeader != null">
+        team_leader = #{teamLeader},
+      </if>
+      <if test="situationStatement != null">
+        situation_statement = #{situationStatement},
+      </if>
     </set>
     where team_id = #{teamId,jdbcType=BIGINT}
   </update>
@@ -194,6 +219,19 @@
     where team_id = #{teamId,jdbcType=BIGINT}
   </update>
 
+
+  <select id="selectHelpTeamMemberVO" parameterType="long" resultType="com.egovchina.partybuilding.partybuild.vo.HelpTeamMemberVO">
+    select
+      user_id as userId,
+      realname as userName
+    from
+    sys_user
+    where
+    dept_id=#{orgId}
+    and
+    ebl_flag=1
+  </select>
+
   <select id="selectiveHelpTeamVOs" parameterType="com.egovchina.partybuilding.partybuild.entity.HelpTeamQueryBean" resultMap="HelpTeamVOMap">
     select
     t.team_id,
@@ -201,6 +239,9 @@
     t.org_id,
     t.org_name,
     t.set_date,
+    t.team_leader,
+    (select realname from sys_user where user_id=t.team_leader and del_flag=0) teamLeaderName,
+    t.situation_statement,
     (select count(member_id) from tab_pb_help_team_member where del_flag = 0 and team_id=t.team_id) as people_numble
     from tab_pb_help_team t
     LEFT Join  sys_dept dept on dept.dept_id=t.org_id
@@ -232,12 +273,16 @@
 
   <select id="getHelpTeamVOByTeamId"  parameterType="long" resultMap="HelpTeamsVOMap">
     select
-     t.team_id,
+    '72' as attachment_type,
+    t.team_id,
     t.team_name,
     t.org_id,
     t.org_name,
     t.set_date,
     t.people_numble,
+    t.team_leader,
+    t.situation_statement,
+    (select realname from sys_user where user_id=t.team_leader and del_flag=0) teamLeaderName,
     (select count(member_id) from tab_pb_help_team_member where del_flag = 0 and team_id=t.team_id) as people_numble
     from tab_pb_help_team t
     where

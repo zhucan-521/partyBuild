@@ -7,6 +7,7 @@ import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.HelpTeamDTO;
 import com.egovchina.partybuilding.partybuild.entity.HelpTeamQueryBean;
 import com.egovchina.partybuilding.partybuild.service.HelpTeamService;
+import com.egovchina.partybuilding.partybuild.vo.HelpTeamMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.HelpTeamVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -16,6 +17,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Api(tags = "党组织-驻村帮扶-v1-朱灿")
@@ -62,6 +65,14 @@ public class HelpTeamController {
     @GetMapping("/{teamId}")
     public HelpTeamVO getHelpTeamVOByTeamId(@PathVariable Long teamId) {
         return helpTeamService.getHelpTeamVOByTeamId(teamId);
+    }
+
+    @ApiOperation(value = "驻村帮扶选人接口", httpMethod = "GET")
+    @ApiImplicitParam(name = "orgId", value = "组织Id", paramType = "path", required = true)
+    @HasPermission(value = "resident_assistance_work_add")
+    @GetMapping("/select_member/{orgId}")
+    public List<HelpTeamMemberVO> selectHelpTeamMemberVO(@PathVariable Long orgId) {
+        return helpTeamService.selectHelpTeamMemberVO(orgId);
     }
 
 }

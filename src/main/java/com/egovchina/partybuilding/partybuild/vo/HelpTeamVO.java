@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
+import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,6 +22,15 @@ public class HelpTeamVO {
     @ApiModelProperty(value = "党组织id")
     private Long orgId;
 
+    @ApiModelProperty(value = "队长")
+    private Long teamLeader;
+
+    @ApiModelProperty(value = "队长名字")
+    private String teamLeaderName;
+
+    @ApiModelProperty(value = "情况说明")
+    private String situationStatement;
+
     @ApiModelProperty(value = "党组织名称")
     private String orgName;
 
@@ -33,5 +43,8 @@ public class HelpTeamVO {
 
     @ApiModelProperty(value = "帮扶队伍成员集合")
     List<HelpTeamMemberVO> helpTeamMemberDTOS;
+
+    @ApiModelProperty(value = "附件集合")
+    private List<TabPbAttachment> attachments;
 
 }

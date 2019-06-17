@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
 
+import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -23,6 +24,12 @@ public class HelpTeamDTO {
     @NotNull(message = "队伍名称不能为空")
     private String teamName;
 
+    @ApiModelProperty(value = "队长")
+    private Long teamLeader;
+
+    @ApiModelProperty(value = "情况说明")
+    private String situationStatement;
+
     @ApiModelProperty(value = "党组织id", required = true)
     @NotNull(message = "党组织id不能为空")
     private Long orgId;
@@ -36,5 +43,8 @@ public class HelpTeamDTO {
 
     @ApiModelProperty(value = "帮扶队伍成员集合")
     List<HelpTeamMemberDTO> helpTeamMemberDTOS;
+
+    @ApiModelProperty(value = "附件集合")
+    private List<TabPbAttachment> attachments;
 
 }
