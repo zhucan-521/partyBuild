@@ -60,7 +60,7 @@ public class SecretaryController {
     }
 
     @ApiOperation(value = "书记列表", notes = "列表中会只显示中如果该书记有多个职务，那么只会显示他高职务", httpMethod = "GET")
-    @HasPermission("party_teamSecretaryManager")
+    @HasPermission("party_teamSecretary")
     @GetMapping
     public PageInfo<SecretarysVO> secretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
         return new PageInfo<>(secretaryService.selectSecretaryList(secretaryMemberQueryBean, page));
