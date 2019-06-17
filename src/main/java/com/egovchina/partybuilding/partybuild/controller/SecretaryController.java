@@ -51,7 +51,7 @@ public class SecretaryController {
         return ReturnUtil.buildReturn(secretaryService.updateSecretary(secretaryMemberDTO));
     }
 
-    @ApiOperation(value = "删除书记", httpMethod = "PUT")
+    @ApiOperation(value = "删除书记", httpMethod = "DELETE")
     @ApiImplicitParam(name = "specialWorkerId", value = "书记主键", required = true, paramType = "path")
     @HasPermission("party_teamSecretaryManager_delete")
     @DeleteMapping("/{secretaryId}")
@@ -59,7 +59,7 @@ public class SecretaryController {
         return ReturnUtil.buildReturn(secretaryService.removeSecretary(secretaryId));
     }
 
-    @ApiOperation(value = "书记列表", notes = "列表中会只显示中如果该书记有多个职务，那么只会显示他高职务", httpMethod = "GET")
+    @ApiOperation(value = "书记列表",  httpMethod = "GET")
     @HasPermission("party_teamSecretary")
     @GetMapping
     public PageInfo<SecretarysVO> secretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
