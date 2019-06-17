@@ -2,8 +2,8 @@ package com.egovchina.partybuilding.partybuild.service;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.dto.HelpTeamDTO;
-import com.egovchina.partybuilding.partybuild.dto.HelpTeamMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.HelpTeamQueryBean;
+import com.egovchina.partybuilding.partybuild.vo.HelpTeamMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.HelpTeamVO;
 
 import java.util.List;
@@ -17,6 +17,14 @@ public interface HelpTeamService {
      * @return
      */
     int addHelpTeam(HelpTeamDTO helpTeamDTO);
+
+    /**
+     * 选人接口
+     *
+     * @param orgId
+     * @return
+     */
+    List<HelpTeamMemberVO> selectHelpTeamMemberVO(Long orgId);
 
     /**
      * 根据主键删除

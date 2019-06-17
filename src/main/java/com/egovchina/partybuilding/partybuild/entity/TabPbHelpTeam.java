@@ -75,4 +75,14 @@ public class TabPbHelpTeam {
      */
     private String delFlag;
 
+    /**
+     * 队长
+     */
+    private Long teamLeader;
+
+    /**
+     * 说明情况
+     */
+    private String situationStatement;
+
 }

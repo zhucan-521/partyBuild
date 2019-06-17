@@ -1,17 +1,18 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
-import com.egovchina.partybuilding.common.util.BeanUtil;
-import com.egovchina.partybuilding.common.util.CommonConstant;
-import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.common.entity.TabPbAttachment;
+import com.egovchina.partybuilding.common.util.*;
 import com.egovchina.partybuilding.partybuild.dto.HelpTeamDTO;
 import com.egovchina.partybuilding.partybuild.dto.HelpTeamMemberDTO;
+import com.egovchina.partybuilding.partybuild.dto.MsgUpInfoDTO;
 import com.egovchina.partybuilding.partybuild.entity.HelpTeamQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbHelpTeam;
 import com.egovchina.partybuilding.partybuild.entity.TabPbHelpTeamMember;
 import com.egovchina.partybuilding.partybuild.repository.TabPbHelpTeamMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbHelpTeamMemberMapper;
 import com.egovchina.partybuilding.partybuild.service.HelpTeamService;
+import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.vo.HelpTeamMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.HelpTeamVO;
 import com.github.pagehelper.PageHelper;
@@ -32,6 +33,9 @@ public class HelpTeamServiceImpl implements HelpTeamService {
     @Autowired
     TabPbHelpTeamMemberMapper tabpbHelpTeamMemberMapper;
 
+    @Autowired
+    private ITabPbAttachmentService iTabPbAttachmentService;
+
     @Override
     public int addHelpTeam(HelpTeamDTO helpTeamDTO) {
         TabPbHelpTeam tabPbHelpTeam = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(helpTeamDTO, TabPbHelpTeam.class, false);
@@ -44,8 +48,14 @@ public class HelpTeamServiceImpl implements HelpTeamService {
                 PaddingBaseFieldUtil.paddingBaseFiled(item);
             });
             tabpbHelpTeamMemberMapper.batchInsert(helpTeamMemberDTOS);
+            this.modifyAttachment(helpTeamDTO.getAttachments(), teamId);
         }
         return flag;
+    }
+
+    @Override
+    public List<HelpTeamMemberVO> selectHelpTeamMemberVO(Long orgId) {
+        return tabPbHelpTeamMapper.selectHelpTeamMemberVO(orgId);
     }
 
     @Override
@@ -94,7 +104,19 @@ public class HelpTeamServiceImpl implements HelpTeamService {
                 tabPbHelpTeamMember.setDelFlag(CommonConstant.STATUS_DEL).setMemberId(item);
                 tabpbHelpTeamMemberMapper.updateByPrimaryKeySelective(tabPbHelpTeamMember);
             });
+            this.modifyAttachment(helpTeamDTO.getAttachments(), helpTeamDTO.getTeamId());
         }
         return flag;
     }
+
+    /**
+     * 附件维护
+     *
+     * @param attachments
+     * @param hostId
+     */
+    private void modifyAttachment(List<TabPbAttachment> attachments, Long hostId) {
+        iTabPbAttachmentService.intelligentOperation(attachments, hostId, AttachmentType.HELP_TEAM);
+    }
+
 }
