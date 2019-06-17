@@ -173,9 +173,6 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         int num = reduceListMapper.updateByPrimaryKeySelective(reduceList);
         //查询查询identity_type 只能查询党员状态为无效并且未被删除的
         Long identityType = tabSysUserMapper.selectUserByIdFindIdentity(userId);
-        if (identityType == null) {
-            throw new BusinessDataNotFoundException("该党员不需要恢复或者人员类别为空");
-        }
         MembershipDTO membershipDTO = new MembershipDTO();
         membershipDTO.setUserId(userId).setIdentityType(identityType).setType(OFFICIAL_PARTY_MEMBER);
         //新增党籍
@@ -258,7 +255,6 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
                 tabPbAbroad.setDelFlag(CommonConstant.STATUS_DEL);
                 PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbAbroad);
                 flag += tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
-
             }
         }
         //维护出党方式,避免其他未赋值的未修改该值
@@ -271,9 +267,6 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         flag += reduceListMapper.updateByPrimaryKeySelectiveCondition(tabPbMemberReduceList);
         //查询identity_type
         Long identityType = tabSysUserMapper.selectUserByIdFindIdentity(tabPbMemberReduceList1.getUserId());
-        if (identityType == null) {
-            throw new BusinessDataNotFoundException("该党员不需要恢复或者人员类别为空");
-        }
         membershipDTO.setUserId(tabPbMemberReduceList1.getUserId()).setIdentityType(identityType).setType(user.getRegistryStatus());
         //新增党籍
         flag += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
