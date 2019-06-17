@@ -4,17 +4,11 @@ import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
-import com.egovchina.partybuilding.partybuild.dto.AbroadDTO;
-import com.egovchina.partybuilding.partybuild.dto.DeletePartyMemberDTO;
-import com.egovchina.partybuilding.partybuild.dto.GoAbroadDTO;
-import com.egovchina.partybuilding.partybuild.dto.ReturnAbroadDTO;
+import com.egovchina.partybuilding.partybuild.dto.*;
 import com.egovchina.partybuilding.partybuild.entity.AbroadQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbAbroad;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyGroupMember;
-import com.egovchina.partybuilding.partybuild.repository.TabPbAbroadMapper;
-import com.egovchina.partybuilding.partybuild.repository.TabPbPartyGroupMemberMapper;
-import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
-import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
+import com.egovchina.partybuilding.partybuild.repository.*;
 import com.egovchina.partybuilding.partybuild.service.AbroadService;
 import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
 import com.egovchina.partybuilding.partybuild.vo.AbroadVO;
@@ -51,6 +45,9 @@ public class AbroadServiceImpl implements AbroadService {
 
     @Autowired
     private TabPbPartyGroupMemberMapper tabPbPartyGroupMemberMapper;
+
+    @Autowired
+    private TabPbMemberReduceListMapper tabPbMemberReduceListMapper;
 
     /**
      * 减少方式为停止党籍
@@ -99,10 +96,15 @@ public class AbroadServiceImpl implements AbroadService {
         return result;
     }
 
+    @Transactional
     @Override
     public int updateAbroad(AbroadDTO abroadDTO) {
         verification(abroadDTO.getOrgId(), abroadDTO.getUserId(), false);
         TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(abroadDTO, TabPbAbroad.class, true);
+        UpdateHistoryDTO deletePartyMemberDTO = new UpdateHistoryDTO()
+                .setUserId(abroadDTO.getUserId()).setOutType(OUT_TYPE).setQuitType(QUIT_TYPE)
+                .setReduceTime(tabPbAbroad.getAbroadDate()).setMemberReduceId(tabPbMemberReduceListMapper.selectMemberIdByUserId(abroadDTO.getUserId()));
+        extendedInfoService.updateHistoryParty(deletePartyMemberDTO);
         return tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
     }
 

@@ -35,6 +35,11 @@ public interface TabPbMemberReduceListMapper {
     int updateByPrimaryKeySelective(TabPbMemberReduceList record);
 
     /**
+     * 通过userId查询出国Id
+     */
+    Long selectMemberIdByUserId(Long userId);
+
+    /**
      * 用于维护修改时出党方式为空不修改
      *
      * @param record
