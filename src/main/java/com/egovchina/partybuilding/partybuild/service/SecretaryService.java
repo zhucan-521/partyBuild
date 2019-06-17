@@ -18,6 +18,22 @@ import java.util.List;
 public interface SecretaryService {
 
     /**
+     * 新增书记
+     *
+     * @param secretaryMemberDTO
+     * @return
+     */
+    int addSecretary(SecretaryMemberDTO secretaryMemberDTO);
+
+    /**
+     * 删除书记
+     *
+     * @param secretaryId
+     * @return
+     */
+    int removeSecretary(Long secretaryId);
+
+    /**
      * 修改书记
      *
      * @param secretaryMemberDTO

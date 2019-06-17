@@ -1,12 +1,11 @@
 package com.egovchina.partybuilding.partybuild.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
+@ApiModel("书记查询条件")
 public class SecretaryMemberQueryBean {
 
     @ApiModelProperty(value = "身份证")
@@ -23,12 +22,5 @@ public class SecretaryMemberQueryBean {
 
     @ApiModelProperty(value = "党内职务 dict DNZW")
     private Long positiveName;
-
-    @ApiModelProperty(value = "单位类别 码表值DWLB")
-    private String unitProperty;
-
-    @ApiModelProperty(hidden = true)
-    @JsonIgnore
-    private List<String> unitProperties;
 
 }
