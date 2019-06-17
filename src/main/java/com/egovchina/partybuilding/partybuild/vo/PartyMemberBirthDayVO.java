@@ -21,4 +21,9 @@ public class PartyMemberBirthDayVO {
      */
     private String realname;
 
+    /**
+     * 组织名称
+     */
+    private String orgName;
+
 }
