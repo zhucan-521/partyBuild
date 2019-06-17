@@ -104,4 +104,6 @@ public class FlowOutMemberVO {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date flowInDate;
 
+    @ApiModelProperty(value = "流入党组织Id")
+    private Long flowToOrgnizeId;
 }
