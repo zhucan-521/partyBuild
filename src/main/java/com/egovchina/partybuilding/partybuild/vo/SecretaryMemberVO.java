@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
+
 
 @ApiModel("书记详情显示")
 @Data
@@ -25,6 +25,9 @@ public class SecretaryMemberVO {
 
     @ApiModelProperty(value = "组织Id")
     private Long deptId;
+
+    @ApiModelProperty(value = "组织名称")
+    private String deptName;
 
     @ApiModelProperty(value = "用户名")
     private String realname;

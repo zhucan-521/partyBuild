@@ -1,22 +1,26 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
 import com.egovchina.partybuilding.common.config.DictSerializer;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
 
 @Data
+@ApiModel("书记DTO")
 public class SecretaryMemberDTO {
 
     @ApiModelProperty(value = "id主键")
+    @NotNull(message = "secretaryId主键不能为空", groups = Update.class)
     private Long secretaryId;
 
-    @ApiModelProperty(value = "组织Id")
+    @ApiModelProperty(value = "组织Id",required = true)
+    @NotNull(message = "deptId不能为空")
     private Long deptId;
 
     @ApiModelProperty(value = "用户ID")
@@ -29,7 +33,6 @@ public class SecretaryMemberDTO {
     private String realname;
 
     @ApiModelProperty(value = "籍贯 码表值 JG")
-    @JsonSerialize(using = DictSerializer.class)
     private Long ancestorPlace;
 
     @ApiModelProperty(value = "民族 码表值 MZ")
@@ -46,7 +49,7 @@ public class SecretaryMemberDTO {
     private Date birthday;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @ApiModelProperty(value = "入党时间、预备党员时间")
+    @ApiModelProperty(value = "入党时间、预备党员时间", example = "yyyy-hh-dd")
     private Date joinTime;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

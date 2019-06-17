@@ -22,6 +22,7 @@ public interface TabPbDeptSecretaryMapper {
 
     /**
      * 根据书记id获取书记信息
+     *
      * @param SecretaryId
      * @return
      */
@@ -45,6 +46,7 @@ public interface TabPbDeptSecretaryMapper {
 
     /**
      * 书记列表查询
+     *
      * @param secretaryMemberQueryBean
      * @return
      */
