@@ -89,4 +89,10 @@ public interface PartyInformationService {
      */
     List<HistoryInformationGraphVO> getHistoryInformationGraph(Page page, Boolean orgnizeLife, Boolean communityActivity, Long userId);
 
+    /**
+     * 查询党员的工作信息
+     * @param userId 党员id
+     * @return
+     */
+    List<PartyWorkVO> getParyWorkVO(Long userId);
 }

@@ -146,6 +146,11 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         return new PageInfo<>(tabSysUserMapper.partyIdentityVerification(queryValue));
     }
 
+    @Override
+    public List<PartyWorkVO> getParyWorkVO(Long userId) {
+        return tabPbPartyWorkMapper.findAllByUserId(userId);
+    }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int savePartyInfo(PartyInfoDTO partyInfoDTO) {
