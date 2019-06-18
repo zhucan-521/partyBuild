@@ -3,9 +3,8 @@ package com.egovchina.partybuilding.partybuild.repository;
 import com.egovchina.partybuilding.partybuild.entity.StationNewsQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMessageReceive;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMessageSend;
-import com.egovchina.partybuilding.partybuild.vo.LeadTeamExpireVO;
-import com.egovchina.partybuilding.partybuild.vo.MessageSendVO;
-import com.egovchina.partybuilding.partybuild.vo.PartyMemberBirthDayVO;
+import com.egovchina.partybuilding.partybuild.entity.TabPbParticipant;
+import com.egovchina.partybuilding.partybuild.vo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -41,6 +40,14 @@ public interface TabPbMessageMapper {
      * @return
      */
     MessageSendVO selectMessageSendVO(@Param("sendId") Long sendId);
+
+    /**
+     * 定时发送消息
+     *
+     * @param tabPbMessageReceive 定时发送消息实体
+     * @return
+     */
+    int insertTabPbMessageReceive(TabPbMessageReceive tabPbMessageReceive);
 
     /**
      * 批量新增接收消息
@@ -173,5 +180,38 @@ public interface TabPbMessageMapper {
      * @return
      */
     String selectMessageContent(Long id);
+
+    /**
+     * 查询前一天是否有活动存在
+     * @param
+     * @return
+     */
+    int selectIsThereAnActivity();
+
+    /**
+     * 查询前一天的活动id跟orgid
+     * @return
+     */
+    List<ActivityVO> selectByActivityVO();
+
+    /**
+     * 查询前一天活动的快照
+     * @param activitiesId
+     * @return
+     */
+    PartyOrganizeActivitiesVO selectOrganizationActivityVOById(Long activitiesId);
+
+    /**
+     * 获取活动已经存在的人
+     * @param activitiesId
+     * @return
+     */
+    List<PersonnelEntityVO> selectParticipantList(Long activitiesId);
+
+    /**
+     * 添加人员
+     * @param tabPbParticipant
+     */
+    void addPersonnel(TabPbParticipant tabPbParticipant);
 
 }

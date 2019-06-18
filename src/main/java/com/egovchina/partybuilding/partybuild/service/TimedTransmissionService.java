@@ -16,4 +16,8 @@ public interface TimedTransmissionService {
      */
     void partyMemberBirthDayRemind();
 
+    /**
+     * 定时添加人
+     */
+    void  addPeople();
 }

@@ -1,24 +1,26 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.common.util.PersonnelCategory;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMessageReceive;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMessageSend;
+import com.egovchina.partybuilding.partybuild.entity.TabPbParticipant;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMessageMapper;
 import com.egovchina.partybuilding.partybuild.service.MessageContentService;
 import com.egovchina.partybuilding.partybuild.service.TimedTransmissionService;
-import com.egovchina.partybuilding.partybuild.vo.LeadTeamExpireVO;
-import com.egovchina.partybuilding.partybuild.vo.PartyMemberBirthDayVO;
+import com.egovchina.partybuilding.partybuild.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
 /**
  * @author create by GuanYingxin on 2019/5/24 11:08
@@ -111,4 +113,72 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
         }
     }
 
+
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * * ")
+    @Override
+    public void addPeople() {
+        log.info("Scheduled occur , Event at 定时添加前一天的活动未参加的人");
+
+        //查询前一天的活动id跟组织id
+        List<ActivityVO> activityVO = tabPbMessageMapper.selectByActivityVO();
+        if (CollectionUtil.isNotEmpty(activityVO)) {
+
+            for (ActivityVO vo : activityVO) {
+                //获取活动的快照
+                PartyOrganizeActivitiesVO activitiesVO = tabPbMessageMapper.selectOrganizationActivityVOById(vo.getActivitiesId());
+                ActivityCandidateMemberVO candidateMemberVO = JSON.parseObject(activitiesVO.getCandidateMemberSnapshot(), ActivityCandidateMemberVO.class);
+                if (vo.getUserId() != null) {
+                    //获取活动已经存在的人
+                    List<PersonnelEntityVO> list = tabPbMessageMapper.selectParticipantList(vo.getActivitiesId());
+                    if (CollectionUtil.isNotEmpty(list)) {
+                        List<Long> existsUserIds = list.stream().map(PersonnelEntityVO::getUserId).collect(Collectors.toList());
+                        //处理，填充是否参加标识
+                        Set<PersonnelEntityVO> groupMembers = new HashSet<>();
+                        candidateMemberVO.getGroups().forEach(partyGroupVO -> groupMembers.addAll(partyGroupVO.getMembers()));
+                        if (CollectionUtil.isNotEmpty(candidateMemberVO.getOnFlows())) {
+                            groupMembers.addAll(candidateMemberVO.getOnFlows());
+                        }
+                        if (CollectionUtil.isNotEmpty(candidateMemberVO.getModerators())) {
+                            groupMembers.addAll(candidateMemberVO.getModerators());
+                        }
+                        for (PersonnelEntityVO personnelVO : groupMembers) {
+
+                            if (!existsUserIds.contains(personnelVO.getUserId())) {
+                                PersonnelEntityVO personnelEntityVO = new PersonnelEntityVO();
+                                personnelEntityVO.setUserId(personnelVO.getUserId());
+                                personnelEntityVO.setActivitiesId(activitiesVO.getActivitiesId());
+                                personnelEntityVO.setAbsentReason((byte) 1);
+                                personnelEntityVO.setRealName(personnelVO.getRealName());
+                                personnelEntityVO.setRealType(personnelVO.getRealType());
+                                tabPbMessageMapper.addPersonnel(generateTargetCopyPropertiesAndPaddingBaseField(personnelEntityVO, TabPbParticipant.class, false));
+                            }
+                        }
+                    }
+                }
+                if (vo.getUserId() ==null){
+                    //处理，填充是否参加标识
+                    Set<PersonnelEntityVO> groupMembers = new HashSet<>();
+                    candidateMemberVO.getGroups().forEach(partyGroupVO -> groupMembers.addAll(partyGroupVO.getMembers()));
+                    if (CollectionUtil.isNotEmpty(candidateMemberVO.getOnFlows())) {
+                        groupMembers.addAll(candidateMemberVO.getOnFlows());
+                    }
+                    if (CollectionUtil.isNotEmpty(candidateMemberVO.getModerators())) {
+                        groupMembers.addAll(candidateMemberVO.getModerators());
+                    }
+                    for (PersonnelEntityVO personnelVO : groupMembers) {
+                        PersonnelEntityVO personnelEntityVO = new PersonnelEntityVO();
+                        personnelEntityVO.setUserId(personnelVO.getUserId());
+                        personnelEntityVO.setActivitiesId(activitiesVO.getActivitiesId());
+                        personnelEntityVO.setAbsentReason((byte) 1);
+                        personnelEntityVO.setRealName(personnelVO.getRealName());
+                        personnelEntityVO.setRealType(personnelVO.getRealType());
+                        tabPbMessageMapper.addPersonnel(generateTargetCopyPropertiesAndPaddingBaseField(personnelEntityVO, TabPbParticipant.class, false));
+                    }
+                }
+
+            }
+
+        }
+    }
 }
