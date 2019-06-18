@@ -35,7 +35,7 @@
         <result column="username" jdbcType="VARCHAR" property="realName"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <collection property="activities" ofType="com.egovchina.partybuilding.partybuild.vo.ActivitiesVO">
-            <id column="positive_id" property="activitiesId"/>
+            <id column="activities_id" property="activitiesId"/>
             <result column="activities_type" property="activitiesType"/>
             <result column="subject" property="subject"/>
             <result column="start_time" property="startTime"/>

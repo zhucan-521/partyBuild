@@ -30,24 +30,11 @@ public class LinkLeaderDTO {
     @NotNull(message = "userId不能为空")
     private Long userId;
 
-    @ApiModelProperty(value = "联点开始时间", example = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date linkStartDate;
-
-    @ApiModelProperty(value = "联点结束时间", example = "yyyy-MM-dd")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date linkFinishedDate;
-
-    @ApiModelProperty(value = "排序码")
-    private Long orderNum;
-
-    @ApiModelProperty(value = "数据描述")
-    private String description;
-
     @ApiModelProperty(value = "联点说明")
     private String comment;
 
-    @ApiModelProperty(value = "连接领导姓名")
+    @ApiModelProperty(value = "连接领导姓名", required = true)
+    @NotNull(message = "连接领导姓名不能为空")
     private String realName;
 
     @ApiModelProperty(value = "组织名称")

@@ -21,4 +21,14 @@ public class LeadTeamExpireVO {
      */
     private String orgName;
 
+    /**
+     * 人员id
+     */
+    private Long userId;
+
+    /**
+     * 人员名称
+     */
+    private String realname;
+
 }
