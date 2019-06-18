@@ -355,4 +355,293 @@
             AND c.del_flag = '0'
             AND c.ebl_flag = '1'
     </select>
+
+    <insert id="addPersonnel">
+        insert into tab_pb_participant
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="activitiesId != null">
+                activities_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="realName != null">
+                real_name,
+            </if>
+            <if test="realType != null">
+                real_type,
+            </if>
+            <if test="notifyTime != null">
+                notify_time,
+            </if>
+            <if test="signupTime != null">
+                signup_time,
+            </if>
+            <if test="signinTime != null">
+                signin_time,
+            </if>
+            <if test="signinPwd != null">
+                signin_pwd,
+            </if>
+            <if test="absentReason != null">
+                absent_reason,
+            </if>
+            <if test="ifOrgnizer != null">
+                if_orgnizer,
+            </if>
+            <if test="ifModerator != null">
+                if_moderator,
+            </if>
+            <if test="ifSecretaryGeneral != null">
+                if_secretary_general,
+            </if>
+            <if test="ifPresidium != null">
+                if_presidium,
+            </if>
+            <if test="ifDeputySecretaryGeneral != null">
+                if_deputy_secretary_general,
+            </if>
+            <if test="ifSitIn != null">
+                if_sit_in,
+            </if>
+            <if test="ifStandingCommittee != null">
+                if_standing_committee,
+            </if>
+            <if test="ifLeader != null">
+                if_leader,
+            </if>
+            <if test="ifLinkLeader != null">
+                if_link_leader,
+            </if>
+            <if test="activitytype != null">
+                activitytype,
+            </if>
+            <if test="orgAssess != null">
+                org_assess,
+            </if>
+            <if test="inOrgId != null">
+                in_org_id,
+            </if>
+            <if test="parentOrgAssess != null">
+                parent_org_assess,
+            </if>
+            <if test="eblFlag != null">
+                ebl_flag,
+            </if>
+            <if test="delFlag != null">
+                del_flag,
+            </if>
+            <if test="orderNum != null">
+                order_num,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUserid != null">
+                create_userid,
+            </if>
+            <if test="createUsername != null">
+                create_username,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUserid != null">
+                update_userid,
+            </if>
+            <if test="updateUsername != null">
+                update_username,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+            <if test="performance != null">
+                performance,
+            </if>
+            <if test="speech != null">
+                speech,
+            </if>
+            <if test="orgAssessContent != null">
+                org_assess_content,
+            </if>
+            <if test="parentOrgAssessContent != null">
+                parent_org_assess_content,
+            </if>
+            <if test="signInState != null">
+                sign_in_state,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="activitiesId != null">
+                #{activitiesId,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="realName != null">
+                #{realName,jdbcType=VARCHAR},
+            </if>
+            <if test="realType != null">
+                #{realType,jdbcType=VARCHAR},
+            </if>
+            <if test="notifyTime != null">
+                #{notifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="signupTime != null">
+                #{signupTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="signinTime != null">
+                #{signinTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="signinPwd != null">
+                #{signinPwd,jdbcType=VARCHAR},
+            </if>
+            <if test="absentReason != null">
+                #{absentReason,jdbcType=BIGINT},
+            </if>
+            <if test="ifOrgnizer != null">
+                #{ifOrgnizer,jdbcType=TINYINT},
+            </if>
+            <if test="ifModerator != null">
+                #{ifModerator,jdbcType=TINYINT},
+            </if>
+            <if test="ifSecretaryGeneral != null">
+                #{ifSecretaryGeneral,jdbcType=TINYINT},
+            </if>
+            <if test="ifPresidium != null">
+                #{ifPresidium,jdbcType=TINYINT},
+            </if>
+            <if test="ifDeputySecretaryGeneral != null">
+                #{ifDeputySecretaryGeneral,jdbcType=TINYINT},
+            </if>
+            <if test="ifSitIn != null">
+                #{ifSitIn,jdbcType=TINYINT},
+            </if>
+            <if test="ifStandingCommittee != null">
+                #{ifStandingCommittee,jdbcType=TINYINT},
+            </if>
+            <if test="ifLeader != null">
+                #{ifLeader,jdbcType=TINYINT},
+            </if>
+            <if test="ifLinkLeader != null">
+                #{ifLinkLeader,jdbcType=TINYINT},
+            </if>
+            <if test="activitytype != null">
+                #{activitytype,jdbcType=VARCHAR},
+            </if>
+            <if test="orgAssess != null">
+                #{orgAssess,jdbcType=BIGINT},
+            </if>
+            <if test="inOrgId != null">
+                #{inOrgId,jdbcType=BIGINT},
+            </if>
+            <if test="parentOrgAssess != null">
+                #{parentOrgAssess,jdbcType=BIGINT},
+            </if>
+            <if test="eblFlag != null">
+                #{eblFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUserid != null">
+                #{createUserid,jdbcType=BIGINT},
+            </if>
+            <if test="createUsername != null">
+                #{createUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUserid != null">
+                #{updateUserid,jdbcType=BIGINT},
+            </if>
+            <if test="updateUsername != null">
+                #{updateUsername,jdbcType=VARCHAR},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=BIGINT},
+            </if>
+            <if test="performance != null">
+                #{performance,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="speech != null">
+                #{speech,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="orgAssessContent != null">
+                #{orgAssessContent,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="parentOrgAssessContent != null">
+                #{parentOrgAssessContent,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="signInState != null">
+                #{signInState,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectIsThereAnActivity" resultType="java.lang.Integer">
+     SELECT
+        COUNT( TRUE )
+    FROM
+        tab_pb_activities
+    WHERE
+	date( finished_time ) = date_sub( curdate( ), INTERVAL 1 DAY )
+    AND del_flag = 0
+    </select>
+
+    <select id="selectByActivityVO" resultType="com.egovchina.partybuilding.partybuild.vo.ActivityVO">
+      SELECT
+          a.activities_id,
+          p.participant_id,
+          p.absent_reason,
+          p.user_id
+        FROM
+            tab_pb_activities a
+            left join tab_pb_participant p ON a.activities_id = p.activities_id  AND p.del_flag =0
+        WHERE
+            date( a.finished_time ) = date_sub( curdate( ), INTERVAL 1 DAY )
+            AND a.del_flag = 0
+            GROUP BY a.activities_id
+    </select>
+    <select id="selectOrganizationActivityVOById"
+            resultType="com.egovchina.partybuilding.partybuild.vo.PartyOrganizeActivitiesVO">
+        SELECT
+            a.activities_id,
+            a.org_id,
+            a.candidate_member_snapshot
+        FROM
+            tab_pb_activities a
+        WHERE
+            a.activities_id = #{activitiesId}
+            AND a.del_flag =0
+    </select>
+    <select id="selectParticipantList"
+            resultType="com.egovchina.partybuilding.partybuild.vo.PersonnelEntityVO">
+
+     SELECT
+        p.participant_id,
+        p.absent_reason,
+        p.user_id
+    FROM
+        tab_pb_activities a
+        LEFT JOIN tab_pb_participant p ON a.activities_id = p.activities_id
+    WHERE
+        a.activities_id = #{activitiesId}
+        AND a.del_flag=0
+        and p.del_flag=0
+
+    </select>
 </mapper>
