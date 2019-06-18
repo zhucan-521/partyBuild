@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbHelpRecordMapper">
+  <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbHelpRecord">
+    <id column="record_id" jdbcType="BIGINT" property="recordId" />
+    <result column="org_id" jdbcType="BIGINT" property="orgId" />
+    <result column="record_date" jdbcType="TIMESTAMP" property="recordDate" />
+    <result column="record_title" jdbcType="VARCHAR" property="recordTitle" />
+    <result column="team_snapshot" jdbcType="VARCHAR" property="teamSnapshot" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_userid" jdbcType="BIGINT" property="createUserid" />
+    <result column="create_username" jdbcType="VARCHAR" property="createUsername" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_userid" jdbcType="BIGINT" property="updateUserid" />
+    <result column="update_username" jdbcType="VARCHAR" property="updateUsername" />
+    <result column="del_flag" jdbcType="BIT" property="delFlag" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.egovchina.partybuilding.partybuild.entity.TabPbHelpRecord">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <resultMap id="HelpRecordVOMap" extends="BaseResultMap" type="com.egovchina.partybuilding.partybuild.vo.HelpRecordVO">
+    <collection property="helpRecordTeams"
+                select="com.egovchina.partybuilding.partybuild.repository.TabPbHelpRecordTeamMapper.selectHelpRecordTeamByRecordId"
+                column="record_id" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    record_id, org_id, record_date, record_title, team_snapshot, create_time, create_userid, 
+    create_username, update_time, update_userid, update_username, del_flag
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tab_pb_help_record
+    where record_id = #{recordId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_help_record
+    where record_id = #{recordId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHelpRecord">
+    insert into tab_pb_help_record (record_id, org_id, record_date, 
+      record_title, team_snapshot, create_time, 
+      create_userid, create_username, update_time, 
+      update_userid, update_username, del_flag, 
+      content)
+    values (#{recordId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{recordDate,jdbcType=TIMESTAMP}, 
+      #{recordTitle,jdbcType=VARCHAR}, #{teamSnapshot,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR}, #{delFlag,jdbcType=BIT}, 
+      #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="recordId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHelpRecord">
+    insert into tab_pb_help_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="recordId != null">
+        record_id,
+      </if>
+      <if test="orgId != null">
+        org_id,
+      </if>
+      <if test="recordDate != null">
+        record_date,
+      </if>
+      <if test="recordTitle != null">
+        record_title,
+      </if>
+      <if test="teamSnapshot != null">
+        team_snapshot,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUserid != null">
+        create_userid,
+      </if>
+      <if test="createUsername != null">
+        create_username,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateUserid != null">
+        update_userid,
+      </if>
+      <if test="updateUsername != null">
+        update_username,
+      </if>
+      <if test="delFlag != null">
+        del_flag,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="recordId != null">
+        #{recordId,jdbcType=BIGINT},
+      </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=BIGINT},
+      </if>
+      <if test="recordDate != null">
+        #{recordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordTitle != null">
+        #{recordTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="teamSnapshot != null">
+        #{teamSnapshot,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserid != null">
+        #{createUserid,jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null">
+        #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        #{updateUserid,jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        #{updateUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        #{delFlag,jdbcType=BIT},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHelpRecord">
+    update tab_pb_help_record
+    <set>
+      <if test="orgId != null">
+        org_id = #{orgId,jdbcType=BIGINT},
+      </if>
+      <if test="recordDate != null">
+        record_date = #{recordDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="recordTitle != null">
+        record_title = #{recordTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="teamSnapshot != null">
+        team_snapshot = #{teamSnapshot,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUserid != null">
+        create_userid = #{createUserid,jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null">
+        create_username = #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        update_userid = #{updateUserid,jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        update_username = #{updateUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag,jdbcType=BIT},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where record_id = #{recordId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHelpRecord">
+    update tab_pb_help_record
+    set org_id = #{orgId,jdbcType=BIGINT},
+      record_date = #{recordDate,jdbcType=TIMESTAMP},
+      record_title = #{recordTitle,jdbcType=VARCHAR},
+      team_snapshot = #{teamSnapshot,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=BIT},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where record_id = #{recordId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHelpRecord">
+    update tab_pb_help_record
+    set org_id = #{orgId,jdbcType=BIGINT},
+      record_date = #{recordDate,jdbcType=TIMESTAMP},
+      record_title = #{recordTitle,jdbcType=VARCHAR},
+      team_snapshot = #{teamSnapshot,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_userid = #{createUserid,jdbcType=BIGINT},
+      create_username = #{createUsername,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_userid = #{updateUserid,jdbcType=BIGINT},
+      update_username = #{updateUsername,jdbcType=VARCHAR},
+      del_flag = #{delFlag,jdbcType=BIT}
+    where record_id = #{recordId,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectHelpRecordTeamDTO" parameterType="long" resultType="com.egovchina.partybuilding.partybuild.dto.HelpRecordTeamDTO">
+    select
+      team_id as teamId,
+      team_name as teamIdName
+    from
+      tab_pb_help_team
+    where
+      org_id=#{orgId}
+    and
+      del_flag=0
+  </select>
+
+  <select id="selectiveHelpRecordVO" parameterType="com.egovchina.partybuilding.partybuild.entity.HelpRecordQueryBean" resultMap="HelpRecordVOMap">
+     select
+      record_id,
+      org_id,
+      record_date,
+      record_title,
+      content
+     from
+      tab_pb_help_record d
+     INNER JOIN
+       sys_dept dept on dept.dept_id=d.org_id  and d.del_flag=0
+     where
+       d.del_flag=0
+     <if test="recordTitle != null and recordTitle != ''" >
+       and d.record_title like concat(%,#{recordTitle},%)
+     </if>
+    <if test="recordDateStart !=null " >
+      and d.record_date between #{recordDateStart} and  #{recordDateEnd}
+    </if>
+    <choose>
+      <when test="orgRange == 1">
+        AND (dept.dept_id = #{orgId} OR dept.parent_id = #{orgId})
+      </when>
+      <when test="orgRange == 2">
+        AND find_in_set(#{orgId}, dept.full_path)
+      </when>
+      <otherwise>
+        AND dept.dept_id = #{orgId}
+      </otherwise>
+    </choose>
+  </select>
+
+  <select id="getHelpRecordVOByRecordId" parameterType="long" resultMap="HelpRecordVOMap">
+    select
+      record_id,
+      org_id,
+      record_date,
+      record_title,
+      content
+     from
+      tab_pb_help_record
+     where
+       del_flag=0
+     and
+      record_id = #{recordId}
+  </select>
+
+
+</mapper>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbHelpRecordTeamMapper">
+  <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbHelpRecordTeam">
+    <id column="record_team_id" jdbcType="BIGINT" property="recordTeamId" />
+    <result column="record_id" jdbcType="BIGINT" property="recordId" />
+    <result column="team_id" jdbcType="BIGINT" property="teamId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    record_team_id, record_id, team_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tab_pb_help_record_team
+    where record_team_id = #{recordTeamId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tab_pb_help_record_team
+    where record_team_id = #{recordTeamId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHelpRecordTeam">
+    insert into tab_pb_help_record_team (record_team_id, record_id, team_id
+      )
+    values (#{recordTeamId,jdbcType=BIGINT}, #{recordId,jdbcType=BIGINT}, #{teamId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHelpRecordTeam">
+    insert into tab_pb_help_record_team
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="recordTeamId != null">
+        record_team_id,
+      </if>
+      <if test="recordId != null">
+        record_id,
+      </if>
+      <if test="teamId != null">
+        team_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="recordTeamId != null">
+        #{recordTeamId,jdbcType=BIGINT},
+      </if>
+      <if test="recordId != null">
+        #{recordId,jdbcType=BIGINT},
+      </if>
+      <if test="teamId != null">
+        #{teamId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHelpRecordTeam">
+    update tab_pb_help_record_team
+    <set>
+      <if test="recordId != null">
+        record_id = #{recordId,jdbcType=BIGINT},
+      </if>
+      <if test="teamId != null">
+        team_id = #{teamId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where record_team_id = #{recordTeamId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbHelpRecordTeam">
+    update tab_pb_help_record_team
+    set record_id = #{recordId,jdbcType=BIGINT},
+      team_id = #{teamId,jdbcType=BIGINT}
+    where record_team_id = #{recordTeamId,jdbcType=BIGINT}
+  </update>
+  <insert id="batchInsertTabPbHelpRecordTeam" parameterType="com.egovchina.partybuilding.partybuild.dto.HelpRecordTeamDTO">
+    insert into tab_pb_help_record_team ( record_id, team_id
+      )
+    values
+    <foreach collection="list" item="item" separator=",">
+      ( #{item.recordId}, #{item.teamId}
+      )
+    </foreach>
+  </insert>
+  <delete id="deleteByRecordId" parameterType="long">
+     delete from tab_pb_help_record_team
+     where record_id = #{recordId}
+  </delete>
+
+  <select id="selectHelpRecordTeamByRecordId" parameterType="long" resultType="com.egovchina.partybuilding.partybuild.vo.HelpRecordTeamVO">
+   select
+   r.team_id as teamId ,
+   t.team_name as teamIdName
+  from
+   tab_pb_help_record_team r
+  INNER JOIN
+   tab_pb_help_team t
+  ON
+   t.team_id = r.team_id and t.del_flag=0
+  where
+   record_id = #{recordId}
+  </select>
+
+</mapper>
