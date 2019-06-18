@@ -80,11 +80,13 @@ public interface PartyInformationService {
     /**
      * 党员历史信息图
      *
+     *
+     * @param page              分页参数
      * @param orgnizeLife       组织生活
      * @param communityActivity 社区活动
      * @param userId            用户id
      * @return
      */
-    List<HistoryInformationGraphVO> getHistoryInformationGraph(Boolean orgnizeLife, Boolean communityActivity, Long userId);
+    List<HistoryInformationGraphVO> getHistoryInformationGraph(Page page, Boolean orgnizeLife, Boolean communityActivity, Long userId);
 
 }
