@@ -11,9 +11,14 @@ import javax.validation.constraints.Pattern;
 @Data
 public class PositiveRegisterQueryBean {
 
-    @ApiModelProperty(value = "社区id", required = true)
-    @NotNull(message = "社区id不能为空")
+    @ApiModelProperty("列表范围（只针对组织有效） 1 查当前组织及其直属组织； 2 查当前组织及所有下级组织；其他 本组织")
+    private String orgRange;
+
+    @ApiModelProperty(value = "社区id")
     private Long communityId;
+
+    @ApiModelProperty(value = "组织id")
+    private Long orgId;
 
     @ApiModelProperty(value = "党员姓名")
     private String realname;

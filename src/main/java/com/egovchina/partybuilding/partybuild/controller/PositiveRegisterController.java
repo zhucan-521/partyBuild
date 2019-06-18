@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.PositiveRegisterCancelDTO;
@@ -52,6 +53,10 @@ public class PositiveRegisterController {
     @GetMapping
     public PageInfo<PositiveRegisterVO> getPositiveRegisterMemberVOList(@ApiParam("报到查询信息") @Validated PositiveRegisterQueryBean positiveRegisterQueryBean,
                                                                         Page page) {
+        if (positiveRegisterQueryBean.getOrgId() == null &&
+            positiveRegisterQueryBean.getCommunityId() == null) {
+            throw new BusinessDataCheckFailException("组织id和社区id不能同时为空");
+        }
         return new PageInfo<>(positiveRegisterService.selectPositiveRegisterVOListByCondition(positiveRegisterQueryBean, page));
     }
 
