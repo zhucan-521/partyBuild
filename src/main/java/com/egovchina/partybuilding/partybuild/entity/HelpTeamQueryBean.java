@@ -17,9 +17,13 @@ public class HelpTeamQueryBean {
     @ApiModelProperty(value = "队伍名称")
     private String teamName;
 
-    @ApiModelProperty(value = "成立日期 yyyy-MM-dd")
+    @ApiModelProperty(value = "成立日期 yyyy-MM-dd 开始")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date setDate;
+    private Date setDateStart;
+
+    @ApiModelProperty(value = "成立日期 yyyy-MM-dd 结束")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date setDateEnd;
 
     @ApiModelProperty(value = "人数")
     private Long peopleNumble;

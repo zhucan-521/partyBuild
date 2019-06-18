@@ -252,8 +252,8 @@
     <if test="teamName !=null and teamName!=''">
      and t.team_name like CONCAT('%',#{teamName},'%')
     </if>
-    <if test="setDate !=null and teamName!=''">
-     and t.set_date =#{setDate}
+    <if test="setDateStart !=null">
+     and  t.set_date between #{setDateStart} and  #{setDateEnd}
     </if>
     <if test="peopleNumble !=null and teamName!=''">
      and t.team_name = #{peopleNumble}
