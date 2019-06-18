@@ -13,10 +13,7 @@ public class StreetCommitteeQueryBean {
     @ApiModelProperty(value = "组织主键")
     private Long orgId;
 
-    @ApiModelProperty(value = "成员名称")
-    private String name;
-
-    @ApiModelProperty(value = "职位")
-    private String positiveName;
+    @ApiModelProperty(value = "年届")
+    private Long sessionYear;
 
 }
