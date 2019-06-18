@@ -7,7 +7,7 @@ package com.egovchina.partybuilding.partybuild.service;
 public interface TimedTransmissionService {
 
     /**
-     * 定时发送
+     * 领导班子换届提醒
      */
     void remindTheLeadershipTeam();
 
