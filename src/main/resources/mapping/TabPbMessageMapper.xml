@@ -157,36 +157,49 @@
             resultMap="expireLeadTeamResultMap">
        SELECT
             a.user_id,
-            a.realname,
-            o.org_id
+            a.realname
         FROM
             sys_account a
             INNER JOIN sys_account_org o ON o.account_id = a.user_id
             INNER JOIN sys_dept d ON d.dept_id = o.org_id
-            INNER JOIN tab_pb_lead_team_member m ON m.user_id = a.sys_user_id
-            LEFT JOIN tab_pb_lead_team t ON t.lead_team_id = m.lead_team_id 
         WHERE
-            a.del_flag = '0' 
-            AND m.del_flag = '0' 
-            AND t.del_flag = '0' 
-            AND o.del_flag = 0 
-            AND d.del_flag = '0' 
-            AND t.current = 1 
-            AND (
-                DATE_FORMAT( t.change_date, '%Y-%m-%d' ) = DATE_FORMAT( DATE_ADD( NOW( ), INTERVAL 6 MONTH ), '%Y-%m-%d' ) 
-                OR DATE_FORMAT( t.change_date, '%Y-%m-%d' ) = DATE_FORMAT( DATE_ADD( NOW( ), INTERVAL 1 MONTH ), '%Y-%m-%d' ) 
-            ) 
+            a.del_flag = '0'
+            AND o.del_flag = 0
+            AND d.del_flag = '0'
+            AND o.`cascade` = 1
+            AND EXISTS (
+            SELECT
+                1
+            FROM
+                (
+                SELECT
+                    d.org_inner_code
+                FROM
+                    tab_pb_lead_team t
+                    INNER JOIN sys_dept d ON t.org_id = d.dept_id
+                WHERE
+                    t.del_flag = '0'
+                    AND d.del_flag = '0'
+                    AND t.current = 1
+                    AND (
+                        DATE_FORMAT( t.change_date, '%Y-%m-%d' ) = DATE_FORMAT( DATE_ADD( NOW( ), INTERVAL 6 MONTH ), '%Y-%m-%d' )
+                        OR DATE_FORMAT( t.change_date, '%Y-%m-%d' ) = DATE_FORMAT( DATE_ADD( NOW( ), INTERVAL 1 MONTH ), '%Y-%m-%d' )
+                    )
+                ) t
+            WHERE
+                t.org_inner_code LIKE concat( d.org_inner_code, '%' )
+            )
             AND NOT EXISTS (
             SELECT
-                1 
+                1
             FROM
                 tab_pb_message_receive r
-                INNER JOIN tab_pb_message_send s ON r.send_id = s.send_id 
+                INNER JOIN tab_pb_message_send s ON r.send_id = s.send_id
             WHERE
-                r.receiver_id = a.user_id 
-                AND s.del_flag = 0 
-                AND s.type = 59680 
-            AND TIMESTAMPDIFF( MONTH, s.send_time, now( ) ) != 5 
+                r.receiver_id = a.user_id
+                AND s.del_flag = 0
+                AND s.type = 59680
+            AND TIMESTAMPDIFF( MONTH, s.send_time, now( ) ) != 5
             )
     </select>
 
