@@ -395,26 +395,14 @@
         d.name as org_name
         FROM
         tab_pb_grant_committee A
-        LEFT JOIN tab_pb_grant_committe_member B ON A.grant_committee_id = B.grant_committee_id
         INNER JOIN sys_dept d ON A.org_id = d.dept_id
-
         WHERE
         A.del_flag = '0'
-        <if test="(name != null and name != '') or (positiveName != null and positiveName !='')">
-            AND B.del_flag = '0'
-        </if>
-
         <include refid="column_dept"/>
 
-        <if test="name != null and name != ''">
-            AND B.user_id IN (SELECT user_id FROM sys_user WHERE realname LIKE CONCAT('%',#{name},'%'))
+        <if test="sessionYear != null">
+            AND A.session_year = #{sessionYear}
         </if>
-
-        <if test="positiveName != null and positiveName !=''  ">
-            AND B.positive_name = #{positiveName}
-        </if>
-        GROUP BY
-        B.grant_committee_id
     </select>
 
     <select id="selectStreetCommitteeVOById" parameterType="java.lang.Long" resultMap="StreetCommitteeVOResultMap">
