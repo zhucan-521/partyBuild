@@ -61,8 +61,8 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
             leadTeamExpireVOS.forEach(r -> {
                 TabPbMessageReceive tabPbMessageReceive = new TabPbMessageReceive();
                 tabPbMessageReceive.setSendId(tabPbMessageSend.getSendId())
-                        .setReceiverId(r.getOrgId())
-                        .setReceiverName(r.getOrgName())
+                        .setReceiverId(r.getUserId())
+                        .setReceiverName(r.getRealname())
                         .setReceiverType(PersonnelCategory.TO_USER);
                 tabPbMessageReceiveList.add(tabPbMessageReceive);
             });
@@ -83,7 +83,6 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
         if (CollectionUtil.isNotEmpty(birthDayVOS)) {
             //获取党员政治生日提醒模板
             final String messageContent = tabPbMessageMapper.selectMessageContent(59685L);
-
             List<TabPbMessageReceive> tabPbMessageReceiveList = new ArrayList<>();
             birthDayVOS.forEach(r -> {
                 //往消息发送表里面插入系统消息
