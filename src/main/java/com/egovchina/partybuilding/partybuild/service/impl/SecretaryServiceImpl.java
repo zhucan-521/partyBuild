@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
@@ -8,6 +9,7 @@ import com.egovchina.partybuilding.partybuild.dto.SecretaryMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.SecretaryMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbDeptSecretary;
 import com.egovchina.partybuilding.partybuild.repository.TabPbDeptSecretaryMapper;
+import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.SecretaryService;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretarysVO;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.rmi.CORBA.Util;
 import java.util.List;
 
 /**
@@ -27,6 +30,9 @@ public class SecretaryServiceImpl implements SecretaryService {
 
     @Autowired
     private TabPbDeptSecretaryMapper tabPbDeptSecretaryMapper;
+
+    @Autowired
+    private TabSysUserMapper tabSysUserMapper;
 
     /**
      * 新增书记
@@ -61,6 +67,11 @@ public class SecretaryServiceImpl implements SecretaryService {
      */
     @Override
     public int updateSecretary(SecretaryMemberDTO secretaryMemberDTO) {
+        SysUser sysUser=new SysUser();
+        Long userId=tabSysUserMapper.SelectUserIdByIDcard(secretaryMemberDTO.getIdCardNo());
+        BeanUtil.copyPropertiesIgnoreNull(secretaryMemberDTO,sysUser);
+        sysUser.setUserId(userId);
+        tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         TabPbDeptSecretary tabPbDeptSecretary = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO, TabPbDeptSecretary.class, true);
         return tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretary);
     }
