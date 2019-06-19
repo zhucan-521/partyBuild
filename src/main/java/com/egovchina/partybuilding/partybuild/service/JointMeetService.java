@@ -70,18 +70,27 @@ public interface JointMeetService {
     int updateJointMeetOrg(JointMeetOrgDTO jointMeetOrgDTO);
 
     /**
-     * 查询主表数据, 以列表的形式返回, 并分页
-     *
-     * @param meet
-     * @return
-     */
-    PageInfo<JointMeetVO> getJointMeetList(TabPbJointMeet meet, Page page);
-
-    /**
      * 查询关联表数据, 以列表的形式返回
      *
      * @param jointMeetQueryBean
      * @return
      */
     PageInfo<JointMeetOrgVO> getJointMeetOrgList(JointMeetOrgQueryBean jointMeetQueryBean, Page page);
+
+    /**
+     * 查询联席会成员列表
+     *
+     * @param jointMeetOrgQueryBean 查询
+     * @param page  分页
+     * @return PageInfo<JointMeetOrgVO>
+     */
+    PageInfo<JointMeetOrgVO> getJointMeetMemberList(JointMeetOrgQueryBean jointMeetOrgQueryBean, Page page);
+
+    /**
+     * 根据联席会id查询联席会
+     *
+     * @param jointMeetId 联席会id
+     * @return JointMeetVO
+     */
+    JointMeetVO getJointMeet(Long jointMeetId);
 }

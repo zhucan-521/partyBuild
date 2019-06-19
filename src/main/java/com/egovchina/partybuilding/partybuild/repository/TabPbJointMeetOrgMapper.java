@@ -28,4 +28,7 @@ public interface TabPbJointMeetOrgMapper {
     int batchInsert(List<TabPbJointMeetOrg> tabPbJointMeetOrgList);
 
     int batchUpdate(List<TabPbJointMeetOrg> tabPbJointMeetOrgList);
+
+    Boolean checkIfItCanBeDeleted(Long orgId);
+
 }
