@@ -1,6 +1,8 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.TabPbAttachment;
+import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
@@ -11,6 +13,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbHelpRecord;
 import com.egovchina.partybuilding.partybuild.repository.TabPbHelpRecordMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbHelpRecordTeamMapper;
 import com.egovchina.partybuilding.partybuild.service.HelpRecordService;
+import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.vo.HelpRecordVO;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,9 @@ public class HelpRecordServiceImpl implements HelpRecordService {
 
     @Autowired
     TabPbHelpRecordTeamMapper tabPbHelpRecordTeamMapper;
+
+    @Autowired
+    ITabPbAttachmentService iTabPbAttachmentService;
 
     /**
      * 选择队伍根据orgId
@@ -56,6 +62,8 @@ public class HelpRecordServiceImpl implements HelpRecordService {
             List<HelpRecordTeamDTO> helpRecordTeamDTOS = helpRecordDTO.getHelpRecordTeams();
             helpRecordTeamDTOS.forEach(item -> item.setRecordId(recordId));
             tabPbHelpRecordTeamMapper.batchInsertTabPbHelpRecordTeam(helpRecordTeamDTOS);
+            //添加附件
+            this.modifyAttachment(helpRecordDTO.getAttachments(),recordId);
         }
         return flag;
     }
@@ -92,6 +100,8 @@ public class HelpRecordServiceImpl implements HelpRecordService {
             List<HelpRecordTeamDTO> helpRecordTeamDTOS = helpRecordDTO.getHelpRecordTeams();
             helpRecordTeamDTOS.forEach(item -> item.setRecordId(helpRecordDTO.getRecordId()));
             tabPbHelpRecordTeamMapper.batchInsertTabPbHelpRecordTeam(helpRecordTeamDTOS);
+            //添加附件
+            this.modifyAttachment(helpRecordDTO.getAttachments(),helpRecordDTO.getRecordId());
         }
         return flag;
     }
@@ -117,6 +127,16 @@ public class HelpRecordServiceImpl implements HelpRecordService {
     @Override
     public HelpRecordVO getHelpRecordVOByRecordId(Long recordId) {
         return tabPbHelpRecordMapper.getHelpRecordVOByRecordId(recordId);
+    }
+
+    /**
+     * 附件维护
+     *
+     * @param attachments
+     * @param hostId
+     */
+    private void modifyAttachment(List<TabPbAttachment> attachments, Long hostId) {
+        iTabPbAttachmentService.intelligentOperation(attachments, hostId, AttachmentType.RECORD_TEAM);
     }
 
 }

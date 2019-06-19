@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
+import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -33,5 +34,8 @@ public class HelpRecordVO {
 
     @ApiModelProperty(value = "记录队伍")
     List<HelpRecordTeamVO> helpRecordTeams;
+
+    @ApiModelProperty(value = "附件集合")
+    private List<TabPbAttachment> attachments;
 
 }

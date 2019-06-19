@@ -22,6 +22,9 @@
     <collection property="helpRecordTeams"
                 select="com.egovchina.partybuilding.partybuild.repository.TabPbHelpRecordTeamMapper.selectHelpRecordTeamByRecordId"
                 column="record_id" />
+    <collection property="attachments"
+                select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
+                column="{hostId=record_id,attachmentType=attachment_type}"/>
   </resultMap>
   <sql id="Base_Column_List">
     record_id, org_id, record_date, record_title, team_snapshot, create_time, create_userid, 
@@ -227,6 +230,7 @@
 
   <select id="selectiveHelpRecordVO" parameterType="com.egovchina.partybuilding.partybuild.entity.HelpRecordQueryBean" resultMap="HelpRecordVOMap">
      select
+      73 as attachment_type,
       record_id,
       org_id,
       record_date,
@@ -260,6 +264,7 @@
 
   <select id="getHelpRecordVOByRecordId" parameterType="long" resultMap="HelpRecordVOMap">
     select
+      73 as attachment_type,
       record_id,
       org_id,
       (select name from sys_dept where del_flag=0 and dept_id=org_id) as orgName,
