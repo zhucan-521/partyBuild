@@ -168,9 +168,16 @@
     WHERE pr.positive_regist_id = #{positiveRegistId}
   </select>
 
-  <!--检查指定党员是否以存在报到数据-->
-  <select id="checkPartyMemberIsExistRegister" parameterType="java.lang.Long" resultType="java.lang.Boolean">
-    SELECT COUNT(1) FROM tab_pb_positive_regist WHERE del_flag = 0 AND user_id = #{userId}
+  <!--检查指定党员是否已在指定社区报到-->
+  <select id="checkPartyMemberToReportedInTheCommunity" resultType="java.lang.Boolean">
+    SELECT
+        COUNT( 1 )
+    FROM
+        tab_pb_positive_regist
+    WHERE
+        del_flag = 0
+        AND user_id = #{userId}
+        AND community_id = #{communityId}
   </select>
 
   <!--聚合生成党员报到数据-->
