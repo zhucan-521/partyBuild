@@ -61,7 +61,7 @@ public class HelpTeamController {
 
     @ApiOperation(value = "获取驻村帮扶队伍详情", httpMethod = "GET")
     @ApiImplicitParam(name = "teamId", value = "驻村帮扶队伍ID", paramType = "path", required = true)
-    @HasPermission(value = "resident_assistance_work")
+    @HasPermission(value = "resident_assistance_work_look")
     @GetMapping("/{teamId}")
     public HelpTeamVO getHelpTeamVOByTeamId(@PathVariable Long teamId) {
         return helpTeamService.getHelpTeamVOByTeamId(teamId);
