@@ -329,6 +329,7 @@
                     LEFT JOIN tab_pb_activities AS ac ON ac.activities_id = pa.activities_id
                     AND pa.del_flag = '0'
                     AND pa.if_link_leader = 1
+                    AND ac.invite_link_leader = 1
                     LEFT JOIN sys_dept AS d1 ON ac.org_id = d1.dept_id
                     AND d1.del_flag = '0'
                 WHERE
