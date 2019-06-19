@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
+import com.egovchina.partybuilding.common.entity.TabPbAttachment;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -35,5 +36,8 @@ public class HelpRecordDTO {
 
     @ApiModelProperty(value = "记录队伍")
     List<HelpRecordTeamDTO> helpRecordTeams;
+
+    @ApiModelProperty(value = "附件集合")
+    private List<TabPbAttachment> attachments;
 
 }
