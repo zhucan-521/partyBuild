@@ -107,14 +107,12 @@ public class JointPointInfoServiceImpl implements JointPointInfoService {
         if (!tabSysUserMapper.checkIsExistByUserId(linkLeaderDTO.getUserId())) {
             throw new BusinessDataCheckFailException("该用户不存在");
         }
-        if(CollectionUtil.isNotEmpty(linkLeaderDTO.getActivitiesId())){
-            //调用活动服务 修改活动信息
-            ReturnEntity returnEntity =
-                    lifeServiceFeignClient.updateLianDianLeadership(
-                            linkLeaderDTO.getActivitiesId(), linkLeaderDTO.getUserId(), linkLeaderDTO.getRealName());
-            if (returnEntity.unOkResp()) {
-                throw returnEntity.exception();
-            }
+        //调用活动服务 修改活动信息
+        ReturnEntity returnEntity =
+                lifeServiceFeignClient.updateLianDianLeadership(
+                        linkLeaderDTO.getActivitiesId(), linkLeaderDTO.getUserId(), linkLeaderDTO.getRealName());
+        if (returnEntity.unOkResp()) {
+            throw returnEntity.exception();
         }
         TabPbLinkLeader tabPbLinkLeader =
                 generateTargetAndCopyProperties(
