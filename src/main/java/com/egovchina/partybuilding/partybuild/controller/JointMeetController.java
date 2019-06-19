@@ -72,17 +72,17 @@ public class JointMeetController {
         this.jointMeetService.deleteJointMeetOrg(new TabPbJointMeetOrg().setMemberOrgId(memberOrgId));
     }
 
-    @ApiOperation(value = "查询联席会列表")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "orgId", value = "组织主键"),
-            @ApiImplicitParam(name = "orgRange", value = "范围"),
-    })
+    @ApiOperation(value = "查询联席会详情")
+    @ApiImplicitParam(name = "jointMeetId", value = "联席会id",required = true)
+    @GetMapping("/{jointMeetId}")
+    public JointMeetVO getJointMeet(@PathVariable Long jointMeetId) {
+        return jointMeetService.getJointMeet(jointMeetId);
+    }
+
+    @ApiOperation(value = "查询联席会成员列表")
     @GetMapping
-    public PageInfo<JointMeetVO> getJointMeetList(Long orgId, Long orgRange, @ApiParam Page page) {
-        var meet = new TabPbJointMeet()
-                .setOrgRange(orgRange)
-                .setOrgId(orgId);
-        return this.jointMeetService.getJointMeetList(meet, page);
+    public PageInfo<JointMeetOrgVO> getJointMeetMemberList(@Validated JointMeetOrgQueryBean jointMeetOrgQueryBean, @ApiParam Page Page) {
+        return jointMeetService.getJointMeetMemberList(jointMeetOrgQueryBean, Page);
     }
 
     @ApiOperation(value = "分页查询联席会成员")

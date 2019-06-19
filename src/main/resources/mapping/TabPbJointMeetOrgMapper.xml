@@ -287,6 +287,31 @@
         </if>
     </update>
 
+    <!--mapper不要定义这个方法-->
+    <select id="selectWithConditions" parameterType="com.egovchina.partybuilding.partybuild.entity.JointMeetOrgQueryBean"
+            resultMap="JointMeetOrgVOResultMap">
+        SELECT
+        B.member_org_id,B.joint_meet_id,B.org_id,B.join_date,
+        d.unit_id,
+        d.unit_name,
+        d.`name` AS org_name
+        FROM
+        tab_pb_joint_meet A
+        INNER JOIN tab_pb_joint_meet_org B ON A.joint_meet_id = B.joint_meet_id
+        LEFT JOIN sys_dept d ON B.org_id = d.dept_id
+        WHERE
+        B.del_flag = '0'
+        <if test="orgId != null and orgId != ''">
+            AND A.org_id = #{orgId}
+        </if>
+        <if test="unitName != null and unitName != ''">
+            AND d.unit_name LIKE concat('%',#{unitName},'%')
+        </if>
+        <if test="jointMeetId != null">
+            AND B.joint_meet_id = #{jointMeetId}
+        </if>
+    </select>
+
     <select id="selectJointMeetOrgVOList"
             parameterType="com.egovchina.partybuilding.partybuild.entity.JointMeetOrgQueryBean"
             resultMap="JointMeetOrgVOResultMap">
@@ -337,4 +362,16 @@
         from tab_pb_joint_meet A LEFT JOIN tab_pb_joint_meet_org B ON A.joint_meet_id=B.joint_meet_id
         where A.org_id = #{orgId} AND B.org_id=#{orgOrgId} AND B.del_flag=0
     </select>
+
+    <select id="checkIfItCanBeDeleted" resultType="java.lang.Boolean">
+        select
+            count(1)
+        from
+            tab_pb_activities
+        where
+            org_id = #{orgId}
+            and del_flag = '0'
+            and ( activities_type = 59147 OR FIND_IN_SET( '59147', activities_type_ids ) )
+    </select>
+
 </mapper>

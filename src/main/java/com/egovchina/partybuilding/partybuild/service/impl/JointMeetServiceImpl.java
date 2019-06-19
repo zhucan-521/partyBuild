@@ -122,16 +122,14 @@ public class JointMeetServiceImpl implements JointMeetService {
         if (isEmpty(jointMeetOrg.getMemberOrgId())) {
             throw new BusinessDataIncompleteException("memberOrgId不可为null");
         }
-        var tmp = this.tabPbJointMeetOrgMapper.selectByPrimaryKey(jointMeetOrg.getMemberOrgId());
-        if (isEmpty(tmp)) {
+        TabPbJointMeetOrg tabPbJointMeetOrg = this.tabPbJointMeetOrgMapper.selectByPrimaryKey(jointMeetOrg.getMemberOrgId());
+        if (isEmpty(tabPbJointMeetOrg)) {
             throw new BusinessDataNotFoundException("成员不存在");
         }
-//        var activity = new TabPbActivities()
-//                .setDelFlag(CommonConstant.STATUS_DEL)
-//                .setOrgId(tmp.getOrgId())
-//                .setActivitiesType(AttachmentType.JOINT_MEET);
-//        paddingUpdateRelatedBaseFiled(activity);
-//        this.tabPbActivitiesMapper.deleteByOrgIdAndActivityType(activity);
+        //校验是否能删除成员
+        if(tabPbJointMeetOrgMapper.checkIfItCanBeDeleted(tabPbJointMeetOrg.getOrgId())){
+            throw new BusinessDataNotFoundException("该单位存在联席活动，删除失败");
+        }
         this.tabPbJointMeetOrgMapper.updateByPrimaryKeySelective(jointMeetOrg.setDelFlag(CommonConstant.STATUS_DEL));
     }
 
@@ -163,14 +161,20 @@ public class JointMeetServiceImpl implements JointMeetService {
     }
 
     @Override
-    public PageInfo<JointMeetVO> getJointMeetList(TabPbJointMeet meet, Page page) {
-        PageHelper.startPage(page);
-        return new PageInfo<>(this.tabPbJointMeetMapper.selectJointMeetVOList(meet));
-    }
-
-    @Override
     public PageInfo<JointMeetOrgVO> getJointMeetOrgList(JointMeetOrgQueryBean jointMeetOrgQueryBean, Page page) {
         PageHelper.startPage(page);
         return new PageInfo<>(this.tabPbJointMeetOrgMapper.selectJointMeetOrgVOList(jointMeetOrgQueryBean));
     }
+
+    @Override
+    public PageInfo<JointMeetOrgVO> getJointMeetMemberList(JointMeetOrgQueryBean jointMeetOrgQueryBean, Page page) {
+        PageHelper.startPage(page);
+        return new PageInfo<>(this.tabPbJointMeetMapper.getJointMeetMemberList(jointMeetOrgQueryBean));
+    }
+
+    @Override
+    public JointMeetVO getJointMeet(Long jointMeetId) {
+        return tabPbJointMeetMapper.getJointMeet(jointMeetId);
+    }
+
 }

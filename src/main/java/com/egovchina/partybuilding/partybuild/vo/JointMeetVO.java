@@ -6,21 +6,26 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @ApiModel("党建联席会VO")
 public class JointMeetVO {
-    @ApiModelProperty(value = "党建联席会主键",hidden = true)
+
+    @ApiModelProperty(value = "党建联席会主键")
     private Long jointMeetId;
 
     @ApiModelProperty(value = "组织主键")
     private Long orgId;
 
-    @ApiModelProperty(value = "成立时间" )
-    @JsonFormat(pattern = "yyyy-MM-dd",timezone = "GMT+8")
+    @ApiModelProperty(value = "成立时间")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date foundedDate;
 
     @ApiModelProperty(value = "数据描述")
     private String description;
+
+    @ApiModelProperty(value = "联席会成员")
+    private List<JointMeetOrgVO> meetOrgVOList;
 
 }
