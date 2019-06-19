@@ -18,6 +18,9 @@ public class HelpRecordVO {
     @ApiModelProperty(value = "组织id")
     private Long orgId;
 
+    @ApiModelProperty(value = "组织名称")
+    private String orgName;
+
     @ApiModelProperty(value = "记录日趋 yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date recordDate;
