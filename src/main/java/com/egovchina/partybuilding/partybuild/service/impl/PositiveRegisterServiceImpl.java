@@ -134,6 +134,10 @@ public class PositiveRegisterServiceImpl implements PositiveRegisterService {
      * @param tabPbPositiveRegist 报到信息实体
      */
     private void checkRegisterPartyMemberAndRegisterOrganizationEffectivenessAndPaddingData(TabPbPositiveRegist tabPbPositiveRegist) {
+        boolean reported = tabPbPositiveRegistMapper.checkPartyMemberToReportedInTheCommunity(tabPbPositiveRegist.getUserId(), tabPbPositiveRegist.getCommunityId());
+        if (reported) {
+            throw new BusinessDataCheckFailException("该党员已在该社区报到");
+        }
         TabPbPositiveRegist generated = tabPbPositiveRegistMapper.aggregateGeneratePartyMemberRegisterData(tabPbPositiveRegist.getUserId());
         if (generated == null) {
             throw new BusinessDataNotFoundException("在职党员数据不存在");
