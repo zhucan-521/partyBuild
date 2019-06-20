@@ -41,7 +41,7 @@ public class PartyInformationController {
     private IdentityVerificationFeedbackService identityVerificationFeedbackService;
 
     @ApiOperation(value = "分页查询党员信息", notes = "分页查询党员信息", httpMethod = "GET")
-    @HasPermission(value = {"party_partyInformation","party_partySoldier","party_partyRetired","party_difficultMembers"},matchType = PermissionMatchType.ANY)
+    @HasPermission(value = {"party_partyInformation", "party_partySoldier", "party_partyRetired", "party_difficultMembers"}, matchType = PermissionMatchType.ANY)
     @GetMapping("/party-members")
     public PageInfo<PartyMemberInformationVO> getPartyMemberList(@Validated @ApiParam("党员信息查询实体") SysUserQueryBean queryBean, Page page) {
         return partyInformationService.getPartyList(queryBean, page);
@@ -111,14 +111,14 @@ public class PartyInformationController {
     }
 
     @ApiOperation(value = "党员选择列表", notes = "根据条件获取党员列表", httpMethod = "GET")
-    @HasPermission(value={"party_partyInformation","party_partySoldier","party_partyRetired","party_difficultMembers"})
+    @HasPermission(value = {"party_partyInformation", "party_partySoldier", "party_partyRetired", "party_difficultMembers"})
     @GetMapping("/party-members/choose")
     public PageInfo<PartyMemberChooseVO> choosePartyMembers(PartyMemberChooseQueryBean queryBean, Page page) {
         return partyInformationService.selectPartyMemberChooseVOListByQueryBean(queryBean, page);
     }
 
     @ApiOperation(value = "根据id删除user信息")
-    @HasPermission(value = {"party_partyHistory_add","party_member_delete"},matchType = PermissionMatchType.ANY)
+    @HasPermission(value = {"party_partyHistory_add", "party_member_delete"}, matchType = PermissionMatchType.ANY)
     @PostMapping("/history-members")
     public ReturnEntity deleteUser(@RequestBody @Validated @ApiParam("删除党员信息实体") DeletePartyMemberDTO deletePartyMemberDTO) {
         return ReturnUtil.buildReturn(extendedInfoService.invalidByUserId(deletePartyMemberDTO));
@@ -159,14 +159,14 @@ public class PartyInformationController {
     }
 
     @ApiOperation(value = "补录党员信息", notes = "补录党员信息", httpMethod = "POST")
-    @HasPermission(value = "party_member_add",matchType = PermissionMatchType.ANY)
+    @HasPermission(value = "party_member_add", matchType = PermissionMatchType.ANY)
     @PostMapping("/party-members")
     public ReturnEntity insetParty(@RequestBody @Validated @ApiParam("党员基本信息") PartyInfoDTO partyInfoDTO) {
         return ReturnUtil.buildReturn(partyInformationService.savePartyInfo(partyInfoDTO));
     }
 
     @ApiOperation(value = "更新党员信息", notes = "更新党员信息", httpMethod = "PUT")
-    @HasPermission(value = {"party_member_edit","party_member_usertag"},matchType = PermissionMatchType.ANY)
+    @HasPermission(value = {"party_member_edit", "party_member_usertag"}, matchType = PermissionMatchType.ANY)
     @PutMapping("/party-members")
     public ReturnEntity updateParty(@RequestBody @Validated @ApiParam("党员基本信息") PartyInfoDTO partyInfoDTO) {
         return ReturnUtil.buildReturn(partyInformationService.updatePartyInfo(partyInfoDTO));
@@ -202,7 +202,7 @@ public class PartyInformationController {
     @ApiOperation(value = "党员工作信息", notes = "党员工作信息", httpMethod = "GET")
     @ApiImplicitParam(value = "党员id", name = "userId", dataType = "long", paramType = "path", required = true)
     @GetMapping("/party-members/works/{userId}")
-    public PageInfo<PartyWorkVO> getPartyWorkVO(@PathVariable Long userId,@ApiParam("分页参数") Page page){
+    public PageInfo<PartyWorkVO> getPartyWorkVO(@PathVariable Long userId, @ApiParam("分页参数") Page page) {
         PageHelper.startPage(page);
         return new PageInfo<>(partyInformationService.getParyWorkVO(userId));
     }
