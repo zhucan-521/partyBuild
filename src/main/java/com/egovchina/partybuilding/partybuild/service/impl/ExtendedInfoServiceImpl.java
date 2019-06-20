@@ -140,7 +140,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
                 flag += tabPbAbroadMapper.insertSelective(tabPbAbroad);
             }
             //判断是否为党小组组长
-            if(tabPbPartyGroupMemberMapper.isLeaderByUserId(sysUser.getUserId())){
+            if (tabPbPartyGroupMemberMapper.isLeaderByUserId(sysUser.getUserId())) {
                 throw new BusinessDataCheckFailException("请先移除该党员党小组组长的身份");
             }
             // 移出党小组
@@ -246,7 +246,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         TabPbMemberReduceList tabPbMemberReduceList =
                 BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(updateHistoryDTO, TabPbMemberReduceList.class, true);
         //如果曾经为出国出境 现在不是出国出境
-        if (GOINGABROAD.equals(updateHistoryDTO.getQuitType()) && !GOINGABROAD.equals(tabPbMemberReduceList.getQuitType())) {
+        if (GOINGABROAD.equals(updateHistoryDTO.getQuitType()) && !GOINGABROAD.equals(tabPbMemberReduceList1.getQuitType())) {
             //删除出国出境信息
             Long abroadId = tabPbAbroadMapper.findAbroadIdByUserId(updateHistoryDTO.getUserId());
             if (abroadId != null) {
@@ -265,13 +265,17 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         tabPbMemberReduceList.setRealName(tabPbMemberReduceList1.getRealName());
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbMemberReduceList);
         flag += reduceListMapper.updateByPrimaryKeySelectiveCondition(tabPbMemberReduceList);
-        //查询identity_type
-        Long identityType = tabSysUserMapper.selectUserByIdFindIdentity(tabPbMemberReduceList1.getUserId());
-        membershipDTO.setUserId(tabPbMemberReduceList1.getUserId()).setIdentityType(identityType).setType(user.getRegistryStatus());
-        //新增党籍
-        flag += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
+        //如果出党方式未修改不修改党籍分别考虑null情况 防止空指针
+        if (updateHistoryDTO.getQuitType() != null) {
+            if (!updateHistoryDTO.getQuitType().equals(tabPbMemberReduceList1.getQuitType())) {
+                updatePartyMembership(tabPbMemberReduceList1.getUserId(), user.getRegistryStatus(), membershipDTO);
+            }
+        } else if (tabPbMemberReduceList1.getQuitType() != null) {
+            if (!tabPbMemberReduceList1.getQuitType().equals(updateHistoryDTO.getQuitType())) {
+                updatePartyMembership(tabPbMemberReduceList1.getUserId(), user.getRegistryStatus(), membershipDTO);
+            }
+        }
         return flag;
-
     }
 
     public void setPartyStatus(MembershipDTO membershipDTO, Long outType, SysUser user) {
@@ -296,6 +300,14 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
             //设置党籍其他处理类型
             membershipDTO.setType(OTHERTREATMENTOFPARTYMEMBERSHIP);
         }
+    }
+
+    public void updatePartyMembership(Long userId, Long registryState, MembershipDTO membershipDTO) {
+        //查询identity_type
+        Long identityType = tabSysUserMapper.selectUserByIdFindIdentity(userId);
+        membershipDTO.setUserId(userId).setIdentityType(identityType).setType(registryState);
+        //新增党籍
+        partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
     }
 
 }
