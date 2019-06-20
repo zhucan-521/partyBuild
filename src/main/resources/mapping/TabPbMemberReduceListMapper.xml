@@ -149,7 +149,7 @@
         and ebl_flag='1'
     </select>
     <select id="selectMemberIdByUserId" parameterType="java.lang.Long" resultType="java.lang.Long">
-          select  member_reduce_id from tab_pb_member_reduce_list where user_id =#{userId}  and ebl_flag='1' and del_flag='0'
+          select  member_reduce_id from tab_pb_member_reduce_list where user_id =#{userId}  and ebl_flag='1' and del_flag='0' ORDER BY update_time desc  limit 1
     </select>
 
     <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
