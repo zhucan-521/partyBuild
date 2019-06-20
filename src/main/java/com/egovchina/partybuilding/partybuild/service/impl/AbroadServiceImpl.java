@@ -101,10 +101,17 @@ public class AbroadServiceImpl implements AbroadService {
     public int updateAbroad(AbroadDTO abroadDTO) {
         verification(abroadDTO.getOrgId(), abroadDTO.getUserId(), false);
         TabPbAbroad tabPbAbroad = generateTargetCopyPropertiesAndPaddingBaseField(abroadDTO, TabPbAbroad.class, true);
-        UpdateHistoryDTO deletePartyMemberDTO = new UpdateHistoryDTO()
-                .setUserId(abroadDTO.getUserId()).setOutType(OUT_TYPE).setQuitType(QUIT_TYPE)
-                .setReduceTime(tabPbAbroad.getAbroadDate()).setMemberReduceId(tabPbMemberReduceListMapper.selectMemberIdByUserId(abroadDTO.getUserId()));
-        extendedInfoService.updateHistoryParty(deletePartyMemberDTO);
+        //查询编辑前出国信息
+        TabPbAbroad tabPbAbroadbefore = tabPbAbroadMapper.selectByPrimaryKey(abroadDTO.getAbroadId());
+        //如果出国时间改变就改变历史党员信息
+        if (tabPbAbroadbefore != null && tabPbAbroadbefore.getAbroadDate().compareTo(abroadDTO.getAbroadDate()) != 0) {
+            UpdateHistoryDTO deletePartyMemberDTO = new UpdateHistoryDTO()
+                    .setUserId(abroadDTO.getUserId()).setOutType(OUT_TYPE).setQuitType(QUIT_TYPE)
+                    .setReduceTime(tabPbAbroad.getAbroadDate()).setMemberReduceId(tabPbMemberReduceListMapper.selectMemberIdByUserId(abroadDTO.getUserId()));
+            extendedInfoService.updateHistoryParty(deletePartyMemberDTO);
+
+        }
+
         return tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
     }
 
