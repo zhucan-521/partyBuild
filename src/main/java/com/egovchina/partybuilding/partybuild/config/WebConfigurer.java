@@ -2,6 +2,7 @@ package com.egovchina.partybuilding.partybuild.config;
 
 import com.egovchina.partybuilding.common.config.AuthInterceptor;
 import com.egovchina.partybuilding.common.config.PermissionInterceptor;
+import com.egovchina.partybuilding.common.util.ExcludePathPatternBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,9 +13,9 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+
+import static com.egovchina.partybuilding.common.util.ExcludePathPattern.ofPath;
 
 /**
  * Mvc配置
@@ -25,22 +26,21 @@ public class WebConfigurer implements WebMvcConfigurer {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthInterceptor(redisTemplate, getExcludePath())).order(1);
-        registry.addInterceptor(new PermissionInterceptor()).excludePathPatterns(getExcludePath()).order(2);
+    private static final ExcludePathPatternBuilder BUILDER;
+
+    static {
+        BUILDER = ExcludePathPatternBuilder.builder()
+                .patterns(
+                        ofPath("/error"),
+                        ofPath("/actuator/**"),
+                        ofPath("/v2/api-docs/**")
+                );
     }
 
-    /**
-     * 不需要拦截的地址
-     * @return regions
-     */
-    private List<String> getExcludePath() {
-        List<String> excludeList = new ArrayList<>();
-        excludeList.add("/error");
-        excludeList.add("/actuator/**");
-        excludeList.add("/v2/api-docs/**");
-        return excludeList;
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AuthInterceptor(redisTemplate, BUILDER)).order(1);
+        registry.addInterceptor(new PermissionInterceptor(BUILDER)).order(2);
     }
 
     private CorsConfiguration addCorsConfig() {
