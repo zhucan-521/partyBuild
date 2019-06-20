@@ -248,17 +248,19 @@
             <result column="registry_status" jdbcType="BIGINT" property="registryStatus"/>
             <result column="join_org_time" jdbcType="TIMESTAMP" property="joinOrgTime"/>
             <result column="regular_time" jdbcType="TIMESTAMP" property="regularTime"/>
-            <result column="first_committees_date" jdbcType="TIMESTAMP" property="firstCommitteesDate"/>
-            <result column="professional_specialty" jdbcType="VARCHAR" property="professionalSpecialty"/>
-            <result column="professional_titles" jdbcType="VARCHAR" property="professionalTitles"/>
-            <result column="full_time_schooling" jdbcType="VARCHAR" property="fullTimeSchooling"/>
-            <result column="education" jdbcType="VARCHAR" property="education"/>
-            <result column="college_major" jdbcType="VARCHAR" property="collegeMajor"/>
-            <result column="college_major_two" jdbcType="VARCHAR" property="collegeMajorTwo"/>
-            <result column="old_position" jdbcType="BIGINT" property="oldPosition"/>
-            <result column="new_position" jdbcType="BIGINT" property="newPosition"/>
-            <result column="serve_time" jdbcType="TIMESTAMP" property="serveTime"/>
-            <result column="appointment_time" jdbcType="TIMESTAMP" property="appointmentTime"/>
+            <association property="secretarysDetails" javaType="com.egovchina.partybuilding.partybuild.vo.SecretarysDetailsVO">
+                <result column="first_committees_date" jdbcType="TIMESTAMP" property="firstCommitteesDate"/>
+                <result column="professional_specialty" jdbcType="VARCHAR" property="professionalSpecialty"/>
+                <result column="professional_titles" jdbcType="VARCHAR" property="professionalTitles"/>
+                <result column="full_time_schooling" jdbcType="VARCHAR" property="fullTimeSchooling"/>
+                <result column="education" jdbcType="VARCHAR" property="education"/>
+                <result column="college_major" jdbcType="VARCHAR" property="collegeMajor"/>
+                <result column="college_major_two" jdbcType="VARCHAR" property="collegeMajorTwo"/>
+                <result column="old_position" jdbcType="BIGINT" property="oldPosition"/>
+                <result column="new_position" jdbcType="BIGINT" property="newPosition"/>
+                <result column="serve_time" jdbcType="TIMESTAMP" property="serveTime"/>
+                <result column="appointment_time" jdbcType="TIMESTAMP" property="appointmentTime"/>
+            </association>
             <collection property="tabPbUserTags" select="com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper.selectAllListSelective"
                         column="{userId=user_id}"/>
     </resultMap>
