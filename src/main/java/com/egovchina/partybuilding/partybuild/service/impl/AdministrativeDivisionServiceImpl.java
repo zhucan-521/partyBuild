@@ -252,6 +252,8 @@ public class AdministrativeDivisionServiceImpl implements AdministrativeDivision
                     node.setId(administrativeDivisionVO.getAdministrativeDivisionId());
                     node.setParentId(administrativeDivisionVO.getParentId());
                     node.setAdministrativeDivisionName(administrativeDivisionVO.getAdministrativeDivisionName());
+                    node.setLatitude(administrativeDivisionVO.getLatitude());
+                    node.setLongitude(administrativeDivisionVO.getLongitude());
                     return node;
                 }).collect(Collectors.toList());
         return TreeUtil.build(trees, root);
