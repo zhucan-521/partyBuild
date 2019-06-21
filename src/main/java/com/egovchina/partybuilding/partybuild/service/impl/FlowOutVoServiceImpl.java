@@ -15,6 +15,8 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbFlowInMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFlowOutMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.FlowOutVoService;
+import com.egovchina.partybuilding.partybuild.service.UserTagService;
+import com.egovchina.partybuilding.partybuild.util.UserTagType;
 import com.egovchina.partybuilding.partybuild.vo.FlowOutMemberVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -39,6 +41,9 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
 
     @Autowired
     TabPbFlowInMapper tabPbFlowInMapper;
+
+    @Autowired
+    UserTagService userTagService;
 
     /**
      * 流出党员列表条件查询
@@ -72,7 +77,9 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
                     .setUsername(flowOutMemberDto.getUsername())
                     .setFlowStatus(CommonConstant.FLOW);
             PaddingBaseFieldUtil.paddingBaseFiled(sysUser);
+            //添加流动标识
             tabSysUserMapper.insertSelective(sysUser);
+            userTagService.addUserTag(sysUser.getUserId(), UserTagType.FLOW);
             sysUser = tabSysUserMapper.selectUserByIdCardNo(flowOutMemberDto.getIdCardNo());
         }
         Long userId = sysUser.getUserId();
@@ -91,6 +98,8 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
             //插入流出表 设置状态为已经流出
             flowOutMemberDto.setFlowOutState(CommonConstant.FLOWED_OUT);
             sysUser.setFlowStatus(CommonConstant.FLOW);
+            //添加流动标识
+            userTagService.addUserTag(sysUser.getUserId(), UserTagType.FLOW);
         }
         //流出党组织
         if (flowOutMemberDto.getOrgId() != null) {
@@ -195,6 +204,8 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
             SysUser sysUser = tabSysUserMapper.selectByPrimaryKey(tabPbFlowOut.getUserId());
             //用户结束流动
             sysUser.setFlowStatus(CommonConstant.END_FLOW);
+            //取消流动标识
+            userTagService.delete(sysUser.getUserId(), UserTagType.FLOW);
             flag = tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
             if (flag > 0) {
                 TabPbFlowIn tabPbFlowIn = new TabPbFlowIn();
