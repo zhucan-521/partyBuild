@@ -8,6 +8,8 @@ import com.egovchina.partybuilding.partybuild.vo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -213,5 +215,31 @@ public interface TabPbMessageMapper {
      * @param tabPbParticipant
      */
     void addPersonnel(TabPbParticipant tabPbParticipant);
+
+    /**
+     * 提醒党员参加月份活动
+     *
+     * @return
+     */
+    List<ParticipateInTheActivityVO> selectParticipateInTheActivityVOByMonth();
+
+    /**
+     * 定时提醒党员参加季度活动
+     *
+     * @return
+     */
+    List<ParticipateInTheActivityVO> selectParticipateInTheActivityVOByQuarter();
+
+    /**
+     * 提醒党员参加年度活动
+     * @return
+     */
+    List<ParticipateInTheActivityVO> selectParticipateInTheActivityVOByYear();
+
+    /**
+     * 获取消息提醒时间
+     * @return
+     */
+    String selectActivityRemindDateIfEqualNow(Long id);
 
 }
