@@ -24,6 +24,7 @@ public class SecretaryMemberDTO {
     private Long deptId;
 
     @ApiModelProperty(value = "用户ID")
+    @NotNull(message ="党员id不能为空")
     private Long userId;
 
     @ApiModelProperty(value = "身份证号码")
