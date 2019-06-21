@@ -17,6 +17,21 @@ public interface TimedTransmissionService {
     void partyMemberBirthDayRemind();
 
     /**
+     * 提醒党员参加月份活动
+     */
+    void remindToParticipateInTheActivityByMonth();
+
+    /**
+     * 提醒党员参加季度活动
+     */
+    void remindToParticipateInTheActivityByQuarter();
+
+    /**
+     * 提醒党员参加年度活动
+     */
+    void remindToParticipateInTheActivityByYear();
+
+    /**
      * 定时添加人
      */
     void  addPeople();
