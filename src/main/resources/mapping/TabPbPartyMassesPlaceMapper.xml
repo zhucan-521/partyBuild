@@ -7,6 +7,7 @@
     <result column="party_masses_place_id" property="partyMassesPlaceId"/>
     <result column="party_masses_id" property="partyMassesId"/>
     <result column="place_name" property="placeName"/>
+    <result column="devices" property="devices"/>
     <result column="capacity" property="capacity"/>
     <result column="open_day" property="openDay"/>
     <result column="open_time_period" property="openTimePeriod"/>
@@ -34,6 +35,7 @@
     <result column="party_masses_place_id" property="partyMassesPlaceId"/>
     <result column="party_masses_id" property="partyMassesId"/>
     <result column="place_name" property="placeName"/>
+    <result column="devices" property="devices"/>
     <result column="capacity" property="capacity"/>
     <result column="open_day" property="openDay"/>
     <result column="open_time_period" property="openTimePeriod"/>
@@ -50,6 +52,7 @@
       party_masses_place_id,
       party_masses_id,
       place_name,
+      devices,
       capacity,
       open_day,
       open_time_period,
@@ -78,6 +81,7 @@
       party_masses_place_id,
       party_masses_id,
       place_name,
+      devices,
       capacity,
       open_day,
       open_time_period,
@@ -101,6 +105,9 @@
       </if>
       <if test="placeName != null ">
         place_name,
+      </if>
+      <if test="devices != null ">
+        devices,
       </if>
       <if test="capacity != null ">
         capacity,
@@ -169,6 +176,9 @@
       </if>
       <if test="placeName != null">
         #{placeName, jdbcType=VARCHAR},
+      </if>
+      <if test="devices != null ">
+        #{devices, jdbcType=VARCHAR},
       </if>
       <if test="capacity != null">
         #{capacity, jdbcType=BIGINT},
@@ -239,6 +249,9 @@
       </if>
       <if test="placeName != null">
         place_name = #{placeName, jdbcType=VARCHAR},
+      </if>
+      <if test="devices != null ">
+        devices = #{devices, jdbcType=VARCHAR},
       </if>
       <if test="capacity != null">
         capacity = #{capacity, jdbcType=BIGINT},
