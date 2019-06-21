@@ -29,6 +29,9 @@ public class PartyMassesPlaceDTO{
     @NotNull(message = "场地名称不能为空")
     private String placeName;
 
+    @ApiModelProperty(value = "场地设备")
+    private String devices;
+
     @ApiModelProperty(value = "容纳人数")
     private Long capacity;
 

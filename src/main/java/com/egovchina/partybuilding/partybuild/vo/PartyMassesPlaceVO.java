@@ -23,6 +23,9 @@ public class PartyMassesPlaceVO {
     @ApiModelProperty(value = "场地名称")
     private String placeName;
 
+    @ApiModelProperty(value = "场地设备")
+    private String devices;
+
     @ApiModelProperty(value = "容纳人数")
     private Long capacity;
 

@@ -25,6 +25,11 @@ public class TabPbPartyMassesPlace {
     private String placeName;
 
     /**
+     * 场地设备
+     */
+    private String devices;
+
+    /**
      * 容纳人数
      */
     private Long capacity;
