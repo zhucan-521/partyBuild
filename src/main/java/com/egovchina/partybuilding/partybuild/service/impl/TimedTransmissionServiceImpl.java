@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.common.util.PersonnelCategory;
@@ -17,6 +18,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,6 +37,12 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
 
     @Autowired
     private MessageContentService messageContentService;
+
+    private static final Long QUAR = 59703L;
+
+    private static final Long MONTH = 59701L;
+
+    private static final Long YEAR = 59704L;
 
     /**
      * 定时提醒领导班子
@@ -112,6 +120,161 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
         }
     }
 
+    /**
+     * 提醒党员参加月度活动
+     */
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * *")
+    @Override
+    public void remindToParticipateInTheActivityByMonth() {
+        if (isScheduledDate(MONTH)) {
+            log.info("Scheduled occur , Event at 定时提醒党员参加月份活动");
+            //提醒党员参加活动列表
+            List<ParticipateInTheActivityVO> participateInTheActivityVOS = tabPbMessageMapper.selectParticipateInTheActivityVOByMonth();
+            if (CollectionUtil.isNotEmpty(participateInTheActivityVOS)) {
+                List<TabPbMessageReceive> tabPbMessageReceiveList = new ArrayList<>();
+                participateInTheActivityVOS.forEach(r -> {
+                    //获取月度消息提醒模板
+                    final String messageContent = tabPbMessageMapper.selectMessageContent(59695L);
+                    String temptContent = messageContent.replace("{{activityName}}", r.getLabel())
+                            .replace("{{realname}}", r.getRealname());
+                    //往消息发送表里面插入系统消息
+                    TabPbMessageSend tabPbMessageSend = new TabPbMessageSend();
+                    tabPbMessageSend.setSenderId(1L)
+                            .setSenderName("admin")
+                            .setType(59680L)
+                            .setTitle("系统提示")
+                            .setContent(temptContent)
+                            .setSendTime(new Date());
+                    PaddingBaseFieldUtil.paddingBaseFiled(tabPbMessageSend);
+                    tabPbMessageMapper.insertTabPbMessageSend(tabPbMessageSend);
+
+                    //接收表插入相应数据
+                    TabPbMessageReceive tabPbMessageReceive = new TabPbMessageReceive();
+                    tabPbMessageReceive.setSendId(tabPbMessageSend.getSendId())
+                            .setReceiverId(r.getUserId())
+                            .setReceiverName(r.getRealname())
+                            .setReceiverType(PersonnelCategory.TO_PARTY_MEMBER);
+                    tabPbMessageReceiveList.add(tabPbMessageReceive);
+                });
+                tabPbMessageMapper.batchInsertTabPbMessageReceive(tabPbMessageReceiveList);
+            }
+        }
+    }
+
+    /**
+     * 提醒党员参加季度活动
+     */
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * *")
+    @Override
+    public void remindToParticipateInTheActivityByQuarter() {
+
+        if (isScheduledDate(QUAR)) {
+            log.info("Scheduled occur , Event at 定时提醒党员参加季度活动");
+            //提醒党员参加活动列表
+            List<ParticipateInTheActivityVO> participateInTheActivityVOS = tabPbMessageMapper.selectParticipateInTheActivityVOByQuarter();
+            if (CollectionUtil.isNotEmpty(participateInTheActivityVOS)) {
+                List<TabPbMessageReceive> tabPbMessageReceiveList = new ArrayList<>();
+                participateInTheActivityVOS.forEach(r -> {
+                    //获取季度消息提醒模板
+                    final String messageContent = tabPbMessageMapper.selectMessageContent(59698L);
+                    String temptContent = messageContent.replace("{{activityName}}", r.getLabel())
+                            .replace("{{realname}}", r.getRealname());
+                    //往消息发送表里面插入系统消息
+                    TabPbMessageSend tabPbMessageSend = new TabPbMessageSend();
+                    tabPbMessageSend.setSenderId(1L)
+                            .setSenderName("admin")
+                            .setType(59680L)
+                            .setTitle("系统提示")
+                            .setContent(temptContent)
+                            .setSendTime(new Date());
+                    PaddingBaseFieldUtil.paddingBaseFiled(tabPbMessageSend);
+                    tabPbMessageMapper.insertTabPbMessageSend(tabPbMessageSend);
+
+                    //接收表插入相应数据
+                    TabPbMessageReceive tabPbMessageReceive = new TabPbMessageReceive();
+                    tabPbMessageReceive.setSendId(tabPbMessageSend.getSendId())
+                            .setReceiverId(r.getUserId())
+                            .setReceiverName(r.getRealname())
+                            .setReceiverType(PersonnelCategory.TO_PARTY_MEMBER);
+                    tabPbMessageReceiveList.add(tabPbMessageReceive);
+                });
+                tabPbMessageMapper.batchInsertTabPbMessageReceive(tabPbMessageReceiveList);
+            }
+        }
+    }
+
+    /**
+     * 当否是调度日期
+     *
+     * @return
+     */
+    private boolean isScheduledDate(Long itemId) {
+        LocalDate now = LocalDate.now();
+        int dayOfMonth = now.getDayOfMonth();
+        int monthOfYear = now.getMonthValue();
+        String pattern;
+
+        String itemValue = tabPbMessageMapper.selectActivityRemindDateIfEqualNow(itemId);
+        switch (itemId.intValue()) {
+            case 59703:
+                int monthOfQuar = monthOfYear % 3;
+                pattern = monthOfQuar + "," + dayOfMonth;
+                break;
+            case 59701:
+                pattern = "0," + dayOfMonth;
+                break;
+            case 59704:
+                pattern = monthOfYear + "," + dayOfMonth;
+                break;
+            default:
+                throw new BusinessDataCheckFailException("不支持的类型");
+        }
+        return pattern.equals(itemValue);
+    }
+
+    /**
+     * 提醒党员参加年度活动
+     */
+    @Transactional
+    @Scheduled(cron = "0 0 0 * * *")
+    @Override
+    public void remindToParticipateInTheActivityByYear() {
+        if (isScheduledDate(YEAR)) {
+            log.info("Scheduled occur , Event at 定时提醒党员参加年度活动");
+            //提醒党员参加活动列表
+            List<ParticipateInTheActivityVO> participateInTheActivityVOS = tabPbMessageMapper.selectParticipateInTheActivityVOByYear();
+            if (CollectionUtil.isNotEmpty(participateInTheActivityVOS)) {
+                List<TabPbMessageReceive> tabPbMessageReceiveList = new ArrayList<>();
+                participateInTheActivityVOS.forEach(r -> {
+                    //获取年度消息提醒模板
+                    final String messageContent = tabPbMessageMapper.selectMessageContent(59700L);
+                    String temptContent = messageContent.replace("{{activityName}}", r.getLabel())
+                            .replace("{{realname}}", r.getRealname());
+                    //往消息发送表里面插入系统消息
+                    TabPbMessageSend tabPbMessageSend = new TabPbMessageSend();
+                    tabPbMessageSend.setSenderId(1L)
+                            .setSenderName("admin")
+                            .setType(59680L)
+                            .setTitle("系统提示")
+                            .setContent(temptContent)
+                            .setSendTime(new Date());
+                    PaddingBaseFieldUtil.paddingBaseFiled(tabPbMessageSend);
+                    tabPbMessageMapper.insertTabPbMessageSend(tabPbMessageSend);
+
+                    //接收表插入相应数据
+                    TabPbMessageReceive tabPbMessageReceive = new TabPbMessageReceive();
+                    tabPbMessageReceive.setSendId(tabPbMessageSend.getSendId())
+                            .setReceiverId(r.getUserId())
+                            .setReceiverName(r.getRealname())
+                            .setReceiverType(PersonnelCategory.TO_PARTY_MEMBER);
+                    tabPbMessageReceiveList.add(tabPbMessageReceive);
+                });
+                tabPbMessageMapper.batchInsertTabPbMessageReceive(tabPbMessageReceiveList);
+            }
+        }
+    }
 
     @Transactional
     @Scheduled(cron = "0 0 0 * * * ")

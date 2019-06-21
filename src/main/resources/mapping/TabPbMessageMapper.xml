@@ -616,6 +616,7 @@
             AND a.del_flag = 0
             GROUP BY a.activities_id
     </select>
+
     <select id="selectOrganizationActivityVOById"
             resultType="com.egovchina.partybuilding.partybuild.vo.PartyOrganizeActivitiesVO">
         SELECT
@@ -628,6 +629,7 @@
             a.activities_id = #{activitiesId}
             AND a.del_flag =0
     </select>
+
     <select id="selectParticipantList"
             resultType="com.egovchina.partybuilding.partybuild.vo.PersonnelEntityVO">
 
@@ -644,4 +646,199 @@
         and p.del_flag=0
 
     </select>
+
+    <!--提醒党员参加月份活动-->
+    <select id="selectParticipateInTheActivityVOByMonth"
+            resultType="com.egovchina.partybuilding.partybuild.vo.ParticipateInTheActivityVO">
+        SELECT
+            u.user_id,
+            u.realname,
+            '党小组会' AS label
+        FROM
+            sys_user u
+        WHERE
+            u.user_id NOT IN (
+            SELECT
+                u.user_id
+            FROM
+                sys_user u
+                INNER JOIN tab_pb_participant p ON p.user_id = u.user_id
+                INNER JOIN tab_pb_activities a ON a.activities_id = p.activities_id
+            WHERE
+                u.del_flag = '0'
+                AND u.ebl_flag = '1'
+                AND p.del_flag = '0'
+                AND p.ebl_flag = '1'
+                AND a.del_flag = '0'
+                AND a.ebl_flag = '1' -- 	党小组
+
+                AND FIND_IN_SET( 59057, a.activities_type_ids )
+                AND YEAR ( a.start_time ) = YEAR ( now( ) )
+                AND MONTH ( a.start_time ) = MONTH ( now( ) )
+            )
+            AND u.del_flag = '0'
+            AND u.ebl_flag = '1' UNION
+        SELECT
+            u.user_id,
+            u.realname,
+            '支部委员会' AS label
+        FROM
+            sys_user u
+        WHERE
+            u.user_id NOT IN (
+            SELECT
+                u.user_id
+            FROM
+                sys_user u
+                INNER JOIN tab_pb_participant p ON p.user_id = u.user_id
+                INNER JOIN tab_pb_activities a ON a.activities_id = p.activities_id
+            WHERE
+                u.del_flag = '0'
+                AND u.ebl_flag = '1'
+                AND p.del_flag = '0'
+                AND p.ebl_flag = '1'
+                AND a.del_flag = '0'
+                AND a.ebl_flag = '1' -- 	支部委员会
+
+                AND FIND_IN_SET( 59056, a.activities_type_ids )
+                AND YEAR ( a.start_time ) = YEAR ( now( ) )
+                AND MONTH ( a.start_time ) = MONTH ( now( ) )
+            )
+            AND u.del_flag = '0'
+            AND u.ebl_flag = '1' UNION
+        SELECT
+            u.user_id,
+            u.realname,
+            '主题党日' AS label
+        FROM
+            sys_user u
+        WHERE
+            u.user_id NOT IN (
+            SELECT
+                u.user_id
+            FROM
+                sys_user u
+                INNER JOIN tab_pb_participant p ON p.user_id = u.user_id
+                INNER JOIN tab_pb_activities a ON a.activities_id = p.activities_id
+            WHERE
+                u.del_flag = '0'
+                AND u.ebl_flag = '1'
+                AND p.del_flag = '0'
+                AND p.ebl_flag = '1'
+                AND a.del_flag = '0'
+                AND a.ebl_flag = '1' -- 	主题党日
+
+                AND FIND_IN_SET( 59060, a.activities_type_ids )
+                AND YEAR ( a.start_time ) = YEAR ( now( ) )
+                AND MONTH ( a.start_time ) = MONTH ( now( ) )
+            )
+            AND u.del_flag = '0'
+            AND u.ebl_flag = '1'
+    </select>
+
+    <!--定时提醒党员参加季度活动-->
+    <select id="selectParticipateInTheActivityVOByQuarter"
+            resultType="com.egovchina.partybuilding.partybuild.vo.ParticipateInTheActivityVO">
+        SELECT
+            u.user_id,
+            u.realname,
+            '党课' AS label
+        FROM
+            sys_user u
+        WHERE
+            u.user_id NOT IN (
+            SELECT
+                u.user_id
+            FROM
+                sys_user u
+                INNER JOIN tab_pb_participant p ON p.user_id = u.user_id
+                INNER JOIN tab_pb_activities a ON a.activities_id = p.activities_id
+            WHERE
+                u.del_flag = '0'
+                AND u.ebl_flag = '1'
+                AND p.del_flag = '0'
+                AND p.ebl_flag = '1'
+                AND a.del_flag = '0'
+                AND a.ebl_flag = '1' -- 	党课
+
+                AND FIND_IN_SET( 59058, a.activities_type_ids )
+                AND YEAR ( a.start_time ) = YEAR ( now( ) )
+                AND QUARTER ( a.start_time ) = QUARTER ( now( ) )
+            )
+            AND u.del_flag = '0'
+            AND u.ebl_flag = '1' UNION
+        SELECT
+            u.user_id,
+            u.realname,
+            '支部党员大会' AS label
+        FROM
+            sys_user u
+        WHERE
+            u.user_id NOT IN (
+            SELECT
+                u.user_id
+            FROM
+                sys_user u
+                INNER JOIN tab_pb_participant p ON p.user_id = u.user_id
+                INNER JOIN tab_pb_activities a ON a.activities_id = p.activities_id
+            WHERE
+                u.del_flag = '0'
+                AND u.ebl_flag = '1'
+                AND p.del_flag = '0'
+                AND p.ebl_flag = '1'
+                AND a.del_flag = '0'
+                AND a.ebl_flag = '1' -- 	支部党员大会
+
+                AND FIND_IN_SET( 59055, a.activities_type_ids )
+                AND YEAR ( a.start_time ) = YEAR ( now( ) )
+                AND QUARTER ( a.start_time ) = QUARTER ( now( ) )
+            )
+            AND u.del_flag = '0'
+            AND u.ebl_flag = '1'
+    </select>
+
+    <!--提醒党员参加年度活动-->
+    <select id="selectParticipateInTheActivityVOByYear"
+            resultType="com.egovchina.partybuilding.partybuild.vo.ParticipateInTheActivityVO">
+          SELECT
+                u.user_id,
+                u.realname,
+                '组织生活会' AS label
+            FROM
+                sys_user u
+            WHERE
+                u.user_id NOT IN (
+                SELECT
+                    u.user_id
+                FROM
+                    sys_user u
+                    INNER JOIN tab_pb_participant p ON p.user_id = u.user_id
+                    INNER JOIN tab_pb_activities a ON a.activities_id = p.activities_id
+                WHERE
+                    u.del_flag = '0'
+                    AND u.ebl_flag = '1'
+                    AND p.del_flag = '0'
+                    AND p.ebl_flag = '1'
+                    AND a.del_flag = '0'
+                    AND a.ebl_flag = '1' -- 	组织生活会
+                    AND FIND_IN_SET( 59131, a.activities_type_ids )
+                    AND YEAR ( a.start_time ) = YEAR ( now( ) )
+                )
+                AND u.del_flag = '0'
+                AND u.ebl_flag = '1'
+    </select>
+
+    <!--获取消息提醒时间-->
+    <select id="selectActivityRemindDateIfEqualNow" resultType="java.lang.String">
+        SELECT
+            c.item_value
+        FROM
+            sys_configurer c
+            INNER JOIN sys_dict d ON d.id = c.item_id AND d.del_flag = '0'
+        WHERE
+            d.id = #{id}
+            AND c.del_flag = '0'
+            AND c.ebl_flag = '1'
+    </select>
+
 </mapper>
