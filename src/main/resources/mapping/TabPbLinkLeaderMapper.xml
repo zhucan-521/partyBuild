@@ -34,14 +34,8 @@
         <result column="comment" jdbcType="LONGVARCHAR" property="comment"/>
         <result column="username" jdbcType="VARCHAR" property="realName"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <collection property="activities" ofType="com.egovchina.partybuilding.partybuild.vo.ActivitiesVO">
-            <id column="activities_id" property="activitiesId"/>
-            <result column="activities_type" property="activitiesType"/>
-            <result column="subject" property="subject"/>
-            <result column="start_time" property="startTime"/>
-            <result column="org_id" property="orgId"/>
-            <result column="org_name" property="orgName"/>
-        </collection>
+        <collection property="positivesVOList" select="selectPositivesListByUserId" column="{userId=user_id}"/>
+        <collection property="activities" select="selectActivitiesListByUserId" column="{userId=user_id}"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -301,41 +295,13 @@
             l.description,
             l.comment,
             d.name,
-            u.realname AS username,
-            ab.activities_id,
-            ab.activities_type,
-            ab.subject,
-            ab.start_time,
-            ab.org_id,
-            ab.org_name
+            u.realname AS username
         FROM
             tab_pb_link_leader l
             LEFT JOIN sys_user u ON l.user_id = u.user_id
             AND u.del_flag = '0'
             LEFT JOIN sys_dept d ON d.dept_id = l.dept_id
             AND d.del_flag = '0'
-            LEFT JOIN (
-                (
-                SELECT
-                    ac.activities_id,
-                    ac.org_id,
-                    ac.activities_type,
-                    ac.subject,
-                    ac.start_time,
-                    d1.name AS org_name,
-                    pa.user_id
-                FROM
-                    tab_pb_participant AS pa
-                    LEFT JOIN tab_pb_activities AS ac ON ac.activities_id = pa.activities_id
-                    AND pa.del_flag = '0'
-                    AND pa.if_link_leader = 1
-                    AND ac.invite_link_leader = 1
-                    LEFT JOIN sys_dept AS d1 ON ac.org_id = d1.dept_id
-                    AND d1.del_flag = '0'
-                WHERE
-                    ac.del_flag = '0'
-                ) AS ab
-            ) ON ab.user_id = l.user_id
         WHERE
             l.del_flag = '0'
             <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
@@ -358,5 +324,49 @@
             <if test="realName != null and realName != ''">
                 AND u.realname like concat('%',#{realName},'%')
             </if>
+    </select>
+    <select id="selectPositivesListByUserId" resultType="com.egovchina.partybuilding.partybuild.vo.PositivesVO">
+        SELECT DISTINCT
+                    p.user_id,
+                    p.positive_name
+                FROM
+                    (
+                    SELECT
+                        user_id,
+                        positive_name
+                    FROM
+                        tab_pb_positives
+                    WHERE
+                        del_flag = '0'UNION ALL
+                    SELECT
+                        user_id,
+                        positive_id
+                    FROM
+                        tab_pb_lead_team_member
+                    WHERE
+                        del_flag = '0'
+                    ) AS p
+                WHERE
+                    p.user_id = #{userId}
+    </select>
+    <select id="selectActivitiesListByUserId" resultType="com.egovchina.partybuilding.partybuild.vo.ActivitiesVO">
+        SELECT
+            ac.activities_id,
+            ac.org_id,
+            ac.activities_type,
+            ac.subject,
+            ac.start_time,
+            d1.name AS org_name
+        FROM
+            tab_pb_participant AS pa
+            LEFT JOIN tab_pb_activities AS ac ON ac.activities_id = pa.activities_id
+            AND pa.del_flag = '0'
+            AND pa.if_link_leader = 1
+            AND ac.invite_link_leader = 1
+            LEFT JOIN sys_dept AS d1 ON ac.org_id = d1.dept_id
+            AND d1.del_flag = '0'
+        WHERE
+            ac.del_flag = '0'
+            and pa.user_id = #{userId}
     </select>
 </mapper>
