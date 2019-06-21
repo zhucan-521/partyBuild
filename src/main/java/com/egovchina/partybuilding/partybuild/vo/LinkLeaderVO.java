@@ -1,6 +1,8 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
+import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -50,4 +52,8 @@ public class LinkLeaderVO {
 
     @ApiModelProperty(value = "活动集合")
     private List<ActivitiesVO> activities;
+
+    @ApiModelProperty(value = "人员职务集合")
+    private List<PositivesVO> positivesVOList;
+
 }
