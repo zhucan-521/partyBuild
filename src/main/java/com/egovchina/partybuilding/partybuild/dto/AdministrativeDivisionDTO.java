@@ -29,4 +29,10 @@ public class AdministrativeDivisionDTO {
     @ApiModelProperty(value = "层级 字典码值 XZQHJB")
     private Long level;
 
+    @ApiModelProperty(value = "经度")
+    private String longitude;
+
+    @ApiModelProperty(value = "纬度")
+    private String latitude;
+
 }

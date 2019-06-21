@@ -32,4 +32,10 @@ public class AdministrativeDivisionVO {
     @JsonSerialize(using = DictSerializer.class)
     private Long level;
 
+    @ApiModelProperty(value = "经度")
+    private String longitude;
+
+    @ApiModelProperty(value = "纬度")
+    private String latitude;
+
 }

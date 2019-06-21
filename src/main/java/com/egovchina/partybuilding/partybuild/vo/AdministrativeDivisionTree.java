@@ -21,4 +21,10 @@ public class AdministrativeDivisionTree extends TreeNode {
     @ApiModelProperty(value = "行政区划名称")
     private String administrativeDivisionName;
 
+    @ApiModelProperty(value = "经度")
+    private String longitude;
+
+    @ApiModelProperty(value = "纬度")
+    private String latitude;
+
 }
