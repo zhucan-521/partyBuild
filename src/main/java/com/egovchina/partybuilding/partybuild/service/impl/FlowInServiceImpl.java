@@ -15,6 +15,8 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbFlowInMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFlowOutMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.FlowInService;
+import com.egovchina.partybuilding.partybuild.service.UserTagService;
+import com.egovchina.partybuilding.partybuild.util.UserTagType;
 import com.egovchina.partybuilding.partybuild.vo.FlowInMemberVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -42,6 +44,9 @@ public class FlowInServiceImpl implements FlowInService {
 
     @Autowired
     private TabPbFlowOutMapper tabPbFlowOutMapper;
+
+    @Autowired
+    private UserTagService userTagService;
 
     /**
      * 流入党员列表查询
@@ -73,6 +78,8 @@ public class FlowInServiceImpl implements FlowInService {
             SysUser sysUser = tabSysUserMapper.selectByPrimaryKey(tabPbFlowIn.getUserId());
             //用户结束流动
             sysUser.setFlowStatus(CommonConstant.END_FLOW);
+            //取消流动标识
+            userTagService.delete(sysUser.getUserId(), UserTagType.FLOW);
             flag = tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
             if (flag > 0) {
                 TabPbFlowOut tabPbFlowOut = new TabPbFlowOut();
@@ -116,6 +123,8 @@ public class FlowInServiceImpl implements FlowInService {
         sysUser.setFlowStatus(CommonConstant.FLOW);
         BeanUtils.copyProperties(flowInMemberDto, sysUser);
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
+        //添加流动标识
+        userTagService.addUserTag(sysUser.getUserId(), UserTagType.FLOW);
         return tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOut);
     }
 
@@ -158,6 +167,8 @@ public class FlowInServiceImpl implements FlowInService {
         //结束流动
         sysUser.setFlowStatus(CommonConstant.END_FLOW);
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
+        //取消流动标识
+        userTagService.delete(sysUser.getUserId(), UserTagType.FLOW);
         //返回
         flowInMemberDto.setFlowInState(CommonConstant.RETURNED);
         TabPbFlowIn tabPbFlowIn = generateTargetCopyPropertiesAndPaddingBaseField(flowInMemberDto, TabPbFlowIn.class, true);

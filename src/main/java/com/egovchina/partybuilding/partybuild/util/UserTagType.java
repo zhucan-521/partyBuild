@@ -19,4 +19,9 @@ public interface UserTagType {
      * 退休党员
      */
     Long RETIRED = 59385L;
+
+    /**
+     * 流动党员
+     */
+    Long FLOW=59411L;
 }
