@@ -53,6 +53,10 @@ public class PartyMassesServiceImpl implements PartyMassesService {
         partyMassesDTO.setPartyMassesId(null);
         //校验
         dataValidation(partyMassesDTO);
+        if(tabPbPartyMassesMapper.checkAdministrativeDivisionExistPartyMasses(
+                partyMassesDTO.getAdministrativeDivisionId())){
+            throw new BusinessDataCheckFailException("该行政区划下已存在党群服务中心,添加失败");
+        }
         TabPbPartyMasses tabPbPartyMasses =
                 BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(
                         partyMassesDTO, TabPbPartyMasses.class, false);

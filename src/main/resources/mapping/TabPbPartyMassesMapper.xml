@@ -421,4 +421,13 @@
       AND p.del_flag = 0
     ORDER BY d.order_num
   </select>
+  <select id="checkAdministrativeDivisionExistPartyMasses" resultType="java.lang.Boolean">
+    select
+    count(1)
+    from
+    tab_pb_party_masses
+    where
+    del_flag = 0
+    AND administrative_division_id = #{administrativeDivisionId}
+  </select>
 </mapper>

@@ -29,4 +29,7 @@ public class AdministrativeDivisionQueryBean {
     @ApiModelProperty(value = "层级 字典码值 XZQHJB")
     private Long level;
 
+    @ApiModelProperty("组织范围 1 查当前行政区划及其直属行政区划； 2 查当前行政区划及所有下级行政区划；其他值 查本行政区划")
+    private String administrativeDivisionRange = "";
+
 }

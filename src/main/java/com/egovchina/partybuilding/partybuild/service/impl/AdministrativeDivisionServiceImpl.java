@@ -233,7 +233,7 @@ public class AdministrativeDivisionServiceImpl implements AdministrativeDivision
     public List<AdministrativeDivisionTree> selectListByParentId() {
         //构建树
         return getAdministrativeDivisionTree(
-                tabPbAdministrativeDivisionMapper.list(null),0L);
+                tabPbAdministrativeDivisionMapper.selectTreeList(), 0L);
     }
 
     /**
@@ -254,6 +254,8 @@ public class AdministrativeDivisionServiceImpl implements AdministrativeDivision
                     node.setAdministrativeDivisionName(administrativeDivisionVO.getAdministrativeDivisionName());
                     node.setLatitude(administrativeDivisionVO.getLatitude());
                     node.setLongitude(administrativeDivisionVO.getLongitude());
+                    node.setPartyMassesId(administrativeDivisionVO.getPartyMassesId());
+                    node.setPartyMassesName(administrativeDivisionVO.getPartyMassesName());
                     return node;
                 }).collect(Collectors.toList());
         return TreeUtil.build(trees, root);

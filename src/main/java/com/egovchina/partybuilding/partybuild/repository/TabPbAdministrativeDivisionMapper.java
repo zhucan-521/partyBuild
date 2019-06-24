@@ -67,7 +67,17 @@ public interface TabPbAdministrativeDivisionMapper {
     List<AdministrativeDivisionVO> list(AdministrativeDivisionQueryBean administrativeDivisionQueryBean);
 
     /**
+     * 构建树列表
+     *
+     * @return List<AdministrativeDivisionVO>
+     * @auther WuYunJie
+     * @date 2019/6/24 14:33
+     */
+    List<AdministrativeDivisionVO> selectTreeList();
+
+    /**
      * 检查社区是否存在
+     *
      * @param communityId 社区id
      * @return
      */
