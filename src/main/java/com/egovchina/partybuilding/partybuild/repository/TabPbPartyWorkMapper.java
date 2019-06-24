@@ -7,7 +7,6 @@ import com.egovchina.partybuilding.partybuild.vo.PartyWorkVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 @Repository("tabPbPartyWorkMapper")
@@ -57,12 +56,13 @@ public interface TabPbPartyWorkMapper {
     /**
      * 党员历史信息图
      *
-     * @param orgnizeLife       组织生活
-     * @param communityActivity 社区活动
-     * @param userId            用户id
+     * @param orgnizeLife           组织生活
+     * @param communityActivity     社区活动
+     * @param partyMemberComment    党员评议
+     * @param userId                用户id
      * @return
      */
-    List<HistoryInformationGraphVO> selectHistoryInformationGraphByBasicAndOrgnizeLifeWithCommunityActivity(@Param("orgnizeLife") Boolean orgnizeLife, @Param("communityActivity") Boolean communityActivity, @Param("userId") Long userId);
+    List<HistoryInformationGraphVO> selectHistoryInformationGraphByBasicAndOrgnizeLifeWithCommunityActivity(@Param("orgnizeLife") Boolean orgnizeLife, @Param("communityActivity") Boolean communityActivity, @Param("partyMemberComment") Boolean partyMemberComment, @Param("userId") Long userId);
 
     /**
      * @param partyMemberPeriod 党籍时间段
