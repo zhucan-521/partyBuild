@@ -21,8 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * 党员信息
  *
@@ -192,11 +190,12 @@ public class PartyInformationController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "orgnizeLife", value = "组织生活", dataType = "boolean", paramType = "query"),
             @ApiImplicitParam(name = "communityActivity", value = "社区活动", dataType = "boolean", paramType = "query"),
+            @ApiImplicitParam(name = "partyMemberComment", value = "党员评议", dataType = "boolean", paramType = "query"),
             @ApiImplicitParam(name = "userId", value = "用户id", dataType = "long", paramType = "query", required = true)
     })
     @GetMapping("/party-members/history-information-graph")
-    public PageInfo<HistoryInformationGraphVO> getHistoryInformationGraph(@ApiParam("分页参数") Page page, Boolean orgnizeLife, Boolean communityActivity, Long userId) {
-        return new PageInfo<>(partyInformationService.getHistoryInformationGraph(page, orgnizeLife, communityActivity, userId));
+    public PageInfo<HistoryInformationGraphVO> getHistoryInformationGraph(@ApiParam("分页参数") Page page, Boolean orgnizeLife, Boolean communityActivity, Boolean partyMemberComment, Long userId) {
+        return new PageInfo<>(partyInformationService.getHistoryInformationGraph(page, orgnizeLife, communityActivity, partyMemberComment, userId));
     }
 
     @ApiOperation(value = "党员工作信息", notes = "党员工作信息", httpMethod = "GET")

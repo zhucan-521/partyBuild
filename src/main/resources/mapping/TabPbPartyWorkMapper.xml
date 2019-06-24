@@ -83,6 +83,22 @@
                   AND tpp.del_flag = '0'
                   AND u.del_flag = '0'
           </if>
+
+        <if test="partyMemberComment">
+            UNION
+            SELECT
+            a.create_time AS time,
+            d.label AS label,
+            a.years AS sub_label
+            FROM
+            tab_pb_activities_assess a
+            INNER JOIN sys_dict d ON d.id = a.assess_result
+            WHERE
+            a.user_id = #{userId}
+            AND a.del_flag = '0'
+            AND d.del_flag = '0'
+        </if>
+
         ) t
         ORDER BY t.time DESC
     </select>
