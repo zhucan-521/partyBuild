@@ -1,6 +1,8 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
+import com.egovchina.partybuilding.common.config.DictSerializer;
 import com.egovchina.partybuilding.common.entity.TabPbAttachment;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -29,9 +31,6 @@ public class PartyMassesVO {
     @ApiModelProperty(value = "行政区划名称")
     private String administrativeDivisionName;
 
-    @ApiModelProperty(value = "坐标")
-    private String coordinate;
-
     @ApiModelProperty(value = "电话")
     private String tel;
 
@@ -55,6 +54,10 @@ public class PartyMassesVO {
 
     @ApiModelProperty(value = "封面图")
     private String cover;
+
+    @ApiModelProperty(value = "行政区划层级 字典码值 XZQHJB")
+    @JsonSerialize(using = DictSerializer.class)
+    private Long level;
 
     @ApiModelProperty(value = "附件")
     private List<TabPbAttachment> attachments;
