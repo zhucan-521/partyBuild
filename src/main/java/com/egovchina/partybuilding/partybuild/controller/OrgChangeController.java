@@ -64,6 +64,7 @@ public class OrgChangeController {
             @ApiImplicitParam(name = "orgnizeLife", value = "组织生活", dataType = "boolean", paramType = "query"),
             @ApiImplicitParam(name = "orgId", value = "组织id", dataType = "long", paramType = "query", required = true)
     })
+    @HasPermission("party_orgInfo_abstract")
     @GetMapping("/orgnize-history-graph")
     public PageInfo<OrgnizeLifeGraphVO> getOrgnizeLifeGraphVO(@ApiParam("分页参数") Page page, Boolean orgnizeLife, Long orgId) {
         return new PageInfo<>(orgChangeService.getOrgnizeLifeGraphVO(page, orgnizeLife, orgId));

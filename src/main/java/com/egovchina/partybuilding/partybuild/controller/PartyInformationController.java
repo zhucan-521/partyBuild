@@ -193,6 +193,7 @@ public class PartyInformationController {
             @ApiImplicitParam(name = "partyMemberComment", value = "党员评议", dataType = "boolean", paramType = "query"),
             @ApiImplicitParam(name = "userId", value = "用户id", dataType = "long", paramType = "query", required = true)
     })
+    @HasPermission("party_member_detail")
     @GetMapping("/party-members/history-information-graph")
     public PageInfo<HistoryInformationGraphVO> getHistoryInformationGraph(@ApiParam("分页参数") Page page, Boolean orgnizeLife, Boolean communityActivity, Boolean partyMemberComment, Long userId) {
         return new PageInfo<>(partyInformationService.getHistoryInformationGraph(page, orgnizeLife, communityActivity, partyMemberComment, userId));
