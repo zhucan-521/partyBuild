@@ -50,6 +50,11 @@ public class TabPbPartyMassesMatter {
     private String address;
 
     /**
+     * 服务时间
+     */
+    private String serviceHours;
+
+    /**
      * 封面图
      */
     private String cover;

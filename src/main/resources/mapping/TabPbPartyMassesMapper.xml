@@ -88,16 +88,16 @@
       '69' as attachment_type,
       party_masses_id,
       party_masses_name,
-      administrative_division_id,
-      administrative_division_name,
+      m.administrative_division_id,
+      m.administrative_division_name,
       coordinate,
       tel,
       contact,
       address,
       service_hours,
       content,
-      longitude,
-      latitude,
+      m.longitude,
+      m.latitude,
       cover,
     </trim>
   </sql>
@@ -341,28 +341,42 @@
   <!-- 根据id查找 -->
   <select id="selectById" resultMap="VoResultMap" parameterType="long">
     select <include refid="Vo_Column_List"/>
-    from tab_pb_party_masses where party_masses_id = #{id} and del_flag = 0
+    from tab_pb_party_masses  m where m.party_masses_id = #{id} and m.del_flag = 0
   </select>
 
 
   <!-- base where条件  -->
   <sql id="Base_Where_Condition">
     <where>
-      del_flag = 0
+      m.del_flag = 0
       <if test="partyMassesName != null">
-        and party_masses_name like concat('%',#{partyMassesName},'%')
-      </if>
-      <if test="administrativeDivisionId != null">
-        and administrative_division_id = #{administrativeDivisionId}
+        and m.party_masses_name like concat('%',#{partyMassesName},'%')
       </if>
       <if test="administrativeDivisionName != null">
-        and administrative_division_name like concat('%',#{administrativeDivisionName},'%')
+        and m.administrative_division_name like concat('%',#{administrativeDivisionName},'%')
       </if>
       <if test="coordinate != null">
-        and coordinate = #{coordinate}
+        and m.coordinate = #{coordinate}
       </if>
       <if test="serviceHours != null ">
-        and service_hours = #{serviceHours}
+        and m.service_hours = #{serviceHours}
+      </if>
+      <if test="level != null">
+        and d.level = #{level}
+      </if>
+      <!--组织范围  1 当前党群（包括一级下级党群）2当前党群（包含所有下级党群） -->
+      <if test="partyMassesRange != null and partyMassesRange != ''">
+        <choose>
+          <when test="partyMassesRange == 1">
+            AND (d.administrative_division_id = #{administrativeDivisionId} OR d.parent_id = #{administrativeDivisionId})
+          </when>
+          <when test="partyMassesRange == 2">
+            AND d.administrative_division_code like concat((select inner_level from tab_pb_administrative_division innerd where innerd.administrative_division_id = #{administrativeDivisionId}), '%')
+          </when>
+        </choose>
+      </if>
+      <if test="partyMassesRange == null or partyMassesRange.toString() == ''">
+        AND d.administrative_division_id = #{administrativeDivisionId}
       </if>
     </where>
   </sql>
@@ -371,7 +385,9 @@
   <!--查询列表-->
   <select id="list" resultMap="VoResultMap" parameterType="com.egovchina.partybuilding.partybuild.entity.PartyMassesQueryBean">
     select <include refid="Vo_Column_List"/>
-    from tab_pb_party_masses
+    from tab_pb_party_masses m
+    inner join tab_pb_administrative_division d on m.administrative_division_id = d.administrative_division_id
+    and d.del_flag = '0'
     <include refid="Base_Where_Condition"/>
   </select>
 
