@@ -56,7 +56,6 @@
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="vote_status" jdbcType="LONGVARCHAR" property="voteStatus"/>
         <result column="vote_result" jdbcType="LONGVARCHAR" property="voteResult"/>
-        <result column="orgnize_master" jdbcType="VARCHAR" property="orgnizeMaster"/>
         <result column="class_num" jdbcType="INTEGER" property="classNum"/>
         <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
         <result column="img_num" jdbcType="INTEGER" property="imgNum"/>

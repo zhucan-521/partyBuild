@@ -15,9 +15,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class LeadTeamMemberQueryBean {
 
-    @ApiModelProperty("班子届数")
-    private Long sessionYear;
-
     @ApiModelProperty(value = "组织Id", required = true)
     @NotNull(message = "组织Id不能为空")
     private Long rangeDeptId;
