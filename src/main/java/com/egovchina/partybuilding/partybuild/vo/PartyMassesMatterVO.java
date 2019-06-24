@@ -25,6 +25,9 @@ public class PartyMassesMatterVO {
     @ApiModelProperty(value = "党群id")
     private Long partyMassesId;
 
+    @ApiModelProperty(value = "党群名称")
+    private String partyMassesName;
+
     @ApiModelProperty(value = "服务名称")
     private String serviceName;
 
@@ -43,6 +46,9 @@ public class PartyMassesMatterVO {
 
     @ApiModelProperty(value = "地址")
     private String address;
+
+    @ApiModelProperty(value = "服务时间")
+    private String serviceHours;
 
     @ApiModelProperty(value = "封面图")
     private String cover;

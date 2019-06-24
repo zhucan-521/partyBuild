@@ -33,4 +33,10 @@ public class PartyMassesQueryBean {
     @ApiModelProperty(value = "服务时间")
     private String serviceHours;
 
+    @ApiModelProperty(value = "层级 字典码值 XZQHJB")
+    private Long level;
+
+    @ApiModelProperty("组织范围 1 查当前党群及其直属党群； 2 查当前党群及所有下级党群；其他值 查本党群")
+    private String partyMassesRange = "";
+
 }

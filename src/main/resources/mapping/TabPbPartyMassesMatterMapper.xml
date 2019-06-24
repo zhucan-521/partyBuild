@@ -12,6 +12,7 @@
     <result column="contact" property="contact"/>
     <result column="tel" property="tel"/>
     <result column="address" property="address"/>
+    <result column="service_hours" property="serviceHours"/>
     <result column="cover" property="cover"/>
     <result column="ebl_flag" property="eblFlag"/>
     <result column="del_flag" property="delFlag"/>
@@ -31,12 +32,14 @@
              type="com.egovchina.partybuilding.partybuild.vo.PartyMassesMatterVO">
     <result column="party_masses_matter_id" property="partyMassesMatterId"/>
     <result column="party_masses_id" property="partyMassesId"/>
+    <result column="party_masses_name" property="partyMassesName"/>
     <result column="service_name" property="serviceName"/>
     <result column="content" property="content"/>
     <result column="crowd" property="crowd"/>
     <result column="contact" property="contact"/>
     <result column="tel" property="tel"/>
     <result column="address" property="address"/>
+    <result column="service_hours" property="serviceHours"/>
     <result column="cover" property="cover"/>
     <!--关联附件数据-->
     <collection property="attachments"
@@ -74,15 +77,17 @@
   <sql id="Vo_Column_List">
     <trim suffixOverrides=",">
       '70' as attachment_type,
-      party_masses_matter_id,
-      party_masses_id,
-      service_name,
-      content,
-      crowd,
-      contact,
-      tel,
-      address,
-      cover,
+      p.party_masses_matter_id,
+      p.party_masses_id,
+      ( select m.party_masses_name from tab_pb_party_masses m where m.party_masses_id = p.party_masses_id) as party_masses_name,
+      p.service_name,
+      p.content,
+      p.crowd,
+      p.contact,
+      p.tel,
+      p.address,
+      p.service_hours,
+      p.cover,
     </trim>
   </sql>
 
@@ -289,22 +294,22 @@
   <!-- 根据id查找 -->
   <select id="selectById" resultMap="VoResultMap" parameterType="long">
     select <include refid="Vo_Column_List"/>
-    from tab_pb_party_masses_matter where party_masses_matter_id = #{id} and del_flag = 0
+    from tab_pb_party_masses_matter p where p.party_masses_matter_id = #{id} and p.del_flag = 0
   </select>
 
 
   <!-- base where条件  -->
   <sql id="Base_Where_Condition">
     <where>
-      del_flag = 0
+      p.del_flag = 0
       <if test="partyMassesId != null">
-        and party_masses_id = #{partyMassesId}
+        and p.party_masses_id = #{partyMassesId}
       </if>
       <if test="serviceName != null">
-        and service_name like concat('%', #{serviceName} ,'%')
+        and p.service_name like concat('%', #{serviceName} ,'%')
       </if>
       <if test="crowd != null">
-        and crowd = #{crowd}
+        and p.crowd = #{crowd}
       </if>
     </where>
   </sql>
@@ -313,7 +318,7 @@
   <!--查询列表-->
   <select id="list" resultMap="VoResultMap" parameterType="com.egovchina.partybuilding.partybuild.entity.PartyMassesMatterQueryBean">
     select <include refid="Vo_Column_List"/>
-    from tab_pb_party_masses_matter
+    from tab_pb_party_masses_matter p
     <include refid="Base_Where_Condition"/>
   </select>
 </mapper>
