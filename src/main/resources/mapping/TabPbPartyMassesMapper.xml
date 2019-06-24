@@ -37,7 +37,6 @@
     <result column="party_masses_name" property="partyMassesName"/>
     <result column="administrative_division_id" property="administrativeDivisionId"/>
     <result column="administrative_division_name" property="administrativeDivisionName"/>
-    <result column="coordinate" property="coordinate"/>
     <result column="tel" property="tel"/>
     <result column="contact" property="contact"/>
     <result column="address" property="address"/>
@@ -46,6 +45,7 @@
     <result column="longitude" property="longitude"/>
     <result column="latitude" property="latitude"/>
     <result column="cover" property="cover"/>
+    <result column="level" property="level"/>
     <!--关联附件数据-->
     <collection property="attachments"
                 select="com.egovchina.partybuilding.partybuild.repository.TabPbAttachmentMapper.selectWithConditions"
@@ -88,9 +88,8 @@
       '69' as attachment_type,
       party_masses_id,
       party_masses_name,
-      m.administrative_division_id,
-      m.administrative_division_name,
-      coordinate,
+      d.administrative_division_id,
+      d.administrative_division_name,
       tel,
       contact,
       address,
@@ -99,6 +98,7 @@
       m.longitude,
       m.latitude,
       cover,
+      d.level,
     </trim>
   </sql>
 
@@ -341,7 +341,10 @@
   <!-- 根据id查找 -->
   <select id="selectById" resultMap="VoResultMap" parameterType="long">
     select <include refid="Vo_Column_List"/>
-    from tab_pb_party_masses  m where m.party_masses_id = #{id} and m.del_flag = 0
+    from tab_pb_party_masses m
+    inner join tab_pb_administrative_division d on m.administrative_division_id = d.administrative_division_id
+    and d.del_flag = '0'
+    where m.party_masses_id = #{id} and m.del_flag = 0
   </select>
 
 
@@ -354,9 +357,6 @@
       </if>
       <if test="administrativeDivisionName != null">
         and m.administrative_division_name like concat('%',#{administrativeDivisionName},'%')
-      </if>
-      <if test="coordinate != null">
-        and m.coordinate = #{coordinate}
       </if>
       <if test="serviceHours != null ">
         and m.service_hours = #{serviceHours}
