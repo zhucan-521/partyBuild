@@ -29,9 +29,6 @@ public class LeadTeamVO {
     @ApiModelProperty("组织名称")
     private String orgName;
 
-    @ApiModelProperty(value = "组织书记")
-    private String orgnizeMaster;
-
     @ApiModelProperty("届数")
     private Long sessionYear;
 
@@ -66,6 +63,7 @@ public class LeadTeamVO {
     private Byte current;
 
     @ApiModelProperty("当选方式 dict YHZSFDX ")
+    @JsonSerialize(using = DictSerializer.class)
     private Long electedType;
 
     @ApiModelProperty(value = "当选时间", example = "yyyy-MM-dd")
