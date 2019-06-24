@@ -53,14 +53,15 @@ public interface TabSysUserMapper {
      * @param hashMap
      * @return
      */
-    List<SystemDetailsVO> selectPageByMap(HashMap<String,Object> hashMap);
+    List<SystemDetailsVO> selectPageByMap(HashMap<String, Object> hashMap);
 
     /**
      * 党员列表总数查询
+     *
      * @param hashMap
      * @return
      */
-    int selectPageByMapCOUNT(HashMap<String,Object> hashMap);
+    int selectPageByMapCOUNT(HashMap<String, Object> hashMap);
 
     /**
      * 根据身份证查询人员ID
@@ -198,6 +199,7 @@ public interface TabSysUserMapper {
 
     /**
      * 党员名册查询概况
+     *
      * @param userId
      * @return
      */
@@ -253,5 +255,15 @@ public interface TabSysUserMapper {
      * @param avatar 用户头像
      */
     int updateAvatarByUserId(@Param("userId") Long userId, @Param("avatar") String avatar);
+
+    /**
+     * desc: 根据用户Id查询单条数据
+     *
+     * @param userId 用户ID
+     * @return sysuser
+     * @auther FanYanGen
+     * @date 2019-06-24 18:40
+     */
+    SysUser selectOneByUserId(@Param("userId") Long userId);
 
 }
