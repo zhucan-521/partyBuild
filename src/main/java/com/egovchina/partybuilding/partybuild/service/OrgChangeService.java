@@ -6,6 +6,7 @@ import com.egovchina.partybuilding.partybuild.dto.OrgChangeDTO;
 import com.egovchina.partybuilding.partybuild.entity.OrgChangeQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange;
 import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
+import com.egovchina.partybuilding.partybuild.vo.OrgnizeLifeGraphVO;
 
 import java.util.List;
 
@@ -90,4 +91,15 @@ public interface OrgChangeService {
      * @date 2019/5/11 15:48
      */
     int orgChangeSuperiorOrg(TabPbOrgnizeChange tabPbOrgnizeChange, SysDept sysDept);
+
+    /**
+     * 组织历史信息图
+     *
+     * @param page        分页参数
+     * @param orgnizeLife 组织生活复选框，默认显示组织调整
+     * @param orgId       组织id
+     * @return
+     */
+    List<OrgnizeLifeGraphVO> getOrgnizeLifeGraphVO(Page page, Boolean orgnizeLife, Long orgId);
+
 }
