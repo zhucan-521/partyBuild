@@ -21,6 +21,7 @@ import com.egovchina.partybuilding.partybuild.service.OrganizationService;
 import com.egovchina.partybuilding.partybuild.service.SysDictService;
 import com.egovchina.partybuilding.partybuild.vo.DirectPartyMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
+import com.egovchina.partybuilding.partybuild.vo.OrgnizeLifeGraphVO;
 import com.github.pagehelper.PageHelper;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -233,5 +234,11 @@ public class OrgChangeServiceImpl implements OrgChangeService {
     public List<OrgChangeVO> selectOrgChangeList(OrgChangeQueryBean orgChangeQueryBean, Page page) {
         PageHelper.startPage(page);
         return tabPbOrgnizeChangeMapper.selectOrgChangeVOList(orgChangeQueryBean);
+    }
+
+    @Override
+    public List<OrgnizeLifeGraphVO> getOrgnizeLifeGraphVO(Page page, Boolean orgnizeLife, Long orgId) {
+        PageHelper.startPage(page);
+        return tabPbOrgnizeChangeMapper.selectOrgnizeLifeGraphVO(orgnizeLife, orgId);
     }
 }

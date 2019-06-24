@@ -8,11 +8,9 @@ import com.egovchina.partybuilding.partybuild.dto.OrgChangeDTO;
 import com.egovchina.partybuilding.partybuild.entity.OrgChangeQueryBean;
 import com.egovchina.partybuilding.partybuild.service.OrgChangeService;
 import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
+import com.egovchina.partybuilding.partybuild.vo.OrgnizeLifeGraphVO;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/org-changes")
 public class OrgChangeController {
+
     @Autowired
     private OrgChangeService orgChangeService;
 
@@ -58,5 +57,15 @@ public class OrgChangeController {
     @GetMapping
     public PageInfo<OrgChangeVO> getOrgChangeList(@Validated OrgChangeQueryBean orgChangeQueryBean, Page page) {
         return new PageInfo<>(this.orgChangeService.selectOrgChangeList(orgChangeQueryBean, page));
+    }
+
+    @ApiOperation(value = "组织历史信息图", notes = "组织历史信息图", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orgnizeLife", value = "组织生活", dataType = "boolean", paramType = "query"),
+            @ApiImplicitParam(name = "orgId", value = "组织id", dataType = "long", paramType = "query", required = true)
+    })
+    @GetMapping("/orgnize-history-graph")
+    public PageInfo<OrgnizeLifeGraphVO> getOrgnizeLifeGraphVO(@ApiParam("分页参数") Page page, Boolean orgnizeLife, Long orgId) {
+        return new PageInfo<>(orgChangeService.getOrgnizeLifeGraphVO(page, orgnizeLife, orgId));
     }
 }

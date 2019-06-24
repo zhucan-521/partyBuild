@@ -3,6 +3,7 @@ package com.egovchina.partybuilding.partybuild.repository;
 import com.egovchina.partybuilding.partybuild.entity.OrgChangeQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange;
 import com.egovchina.partybuilding.partybuild.vo.OrgChangeVO;
+import com.egovchina.partybuilding.partybuild.vo.OrgnizeLifeGraphVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -46,4 +47,14 @@ public interface TabPbOrgnizeChangeMapper {
      * @return OrgChangeVO
      */
     OrgChangeVO selectOrgChangeByDeptIdOrderTime(@Param("deptId") Long deptId, @Param("changeType") Long changeType);
+
+    /**
+     * 组织历史信息图
+     *
+     * @param orgnizeLife 组织生活复选框，默认显示组织调整
+     * @param orgId       组织id
+     * @return
+     */
+    List<OrgnizeLifeGraphVO> selectOrgnizeLifeGraphVO(@Param("orgnizeLife") Boolean orgnizeLife, @Param("orgId") Long orgId);
+
 }

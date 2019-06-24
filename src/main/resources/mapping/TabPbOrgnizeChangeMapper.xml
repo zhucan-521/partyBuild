@@ -471,4 +471,54 @@
         </if>
         ) a order by change_date desc
     </select>
+
+    <!--组织历史信息Result Map-->
+    <resultMap id="OrgnizeHistoryInformationResultVO"
+               type="com.egovchina.partybuilding.partybuild.vo.OrgnizeLifeGraphVO">
+        <result column="timeline" jdbcType="VARCHAR" property="timeline"></result>
+        <collection property="lines" ofType="com.egovchina.partybuilding.partybuild.vo.OrgnizeInformationVO">
+            <result column="time" jdbcType="TIMESTAMP" property="time"/>
+            <result column="label" jdbcType="VARCHAR" property="label"/>
+            <result column="sub_label" jdbcType="VARCHAR" property="subLabel"/>
+        </collection>
+    </resultMap>
+
+    <!--组织历史信息图-->
+    <select id="selectOrgnizeLifeGraphVO"
+            resultMap="OrgnizeHistoryInformationResultVO">
+        SELECT
+            c.*,
+            DATE_FORMAT(c.time, '%Y-%m') AS timeline
+        FROM
+            (
+            SELECT
+                c.change_date AS time,
+                d.label AS label,
+                NULL AS subLabel
+            FROM
+                tab_pb_orgnize_change c
+                INNER JOIN sys_dict d ON d.id = c.change_type
+            WHERE
+                c.dept_id = #{orgId}
+                AND d.type = 'ZZBD' -- 默认组织调整
+                AND c.del_flag = '0'
+                AND c.ebl_flag = '1'
+                AND d.del_flag = '0'
+
+                <if test="orgnizeLife">
+                    UNION
+                    SELECT
+                        start_time AS time,
+                        subject AS label,
+                        NULL AS subLabel
+                    FROM
+                        tab_pb_activities
+                    WHERE
+                        org_id = #{orgId}
+                        AND del_flag = '0'
+                        AND ebl_flag = '1'
+                </if>
+            ) c
+        ORDER BY c.time DESC
+    </select>
 </mapper>
