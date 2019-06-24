@@ -80,4 +80,11 @@ public interface TabPbPartyMassesMapper {
      * @return PartyMassesTree
      */
     List<PartyMassesTree> selectListByCondition(Map<String, Object> conditions);
+
+    /**
+     * 校验行政区划下是否存在党群
+     * @param administrativeDivisionId
+     * @return
+     */
+    Boolean checkAdministrativeDivisionExistPartyMasses(Long administrativeDivisionId);
 }

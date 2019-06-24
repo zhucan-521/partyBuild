@@ -38,4 +38,10 @@ public class AdministrativeDivisionVO {
     @ApiModelProperty(value = "纬度")
     private String latitude;
 
+    @ApiModelProperty(value = "党群id")
+    private Long partyMassesId;
+
+    @ApiModelProperty(value = "党群名称")
+    private String partyMassesName;
+
 }
