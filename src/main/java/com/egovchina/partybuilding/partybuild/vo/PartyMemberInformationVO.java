@@ -17,10 +17,10 @@ import java.util.List;
 public class PartyMemberInformationVO {
 
     @ApiModelProperty(value = "用户ID")
-    private Integer userId;
+    private Long userId;
 
     @ApiModelProperty(value = "组织ID ,党支部Id")
-    private Integer deptId;
+    private Long deptId;
 
     @ApiModelProperty(value = "用户名")
     private String realname;
