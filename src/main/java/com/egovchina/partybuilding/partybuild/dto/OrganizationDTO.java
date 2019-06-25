@@ -34,7 +34,7 @@ public class OrganizationDTO {
     @NotBlank(message = "组织编码不能为空")
     private String orgCode;
 
-    @ApiModelProperty(value = "父组织ID")
+    @ApiModelProperty(value = "父组织ID",required = true)
     @NotNull(message = "父组织不能为空")
     private Long parentId;
 
