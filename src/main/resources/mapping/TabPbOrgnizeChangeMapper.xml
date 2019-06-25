@@ -506,7 +506,7 @@
                 AND d.del_flag = '0'
 
                 <if test="orgnizeLife">
-                    UNION
+                    UNION ALL
                     SELECT
                         start_time AS time,
                         subject AS label,
