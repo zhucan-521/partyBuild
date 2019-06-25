@@ -18,7 +18,6 @@ public class FlowOutMemberDTO {
     private Long flowOutId;
 
     @ApiModelProperty(value = "用户主键",required = true)
-    @NotNull(message = "用户主键不能为空")
     private Long userId;
 
     @ApiModelProperty(value = "用户姓名",required = true)
