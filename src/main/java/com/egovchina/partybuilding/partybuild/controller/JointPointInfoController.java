@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
@@ -37,12 +38,14 @@ public class JointPointInfoController {
 
     @ApiOperation(value = "跟据党员id查看联点领导信息", notes = "跟据党员id查看联点领导信息")
     @ApiImplicitParam(value = "党员id", name = "userId", paramType = "path", required = true)
+    @HasPermission("party_lianDianInformation")
     @GetMapping("/positives/{userId}")
     public UserDeptPositionVO getJointPointInfoByUserId(@PathVariable Long userId) {
         return jointPointInfoService.selectJointByUserId(userId);
     }
 
     @ApiOperation(value = "查看联点领导列表详情", notes = "查看联点领导列表详情")
+    @HasPermission("party_lianDianInformation")
     @GetMapping
     public PageInfo<LinkLeaderVO> getJointPointInfoByDeptIdList(@Validated LinkLeaderQueryBean linkLeaderQueryBean, Page page) {
         List<LinkLeaderVO> list = jointPointInfoService.selectUserDeptByDeptId(linkLeaderQueryBean, page);
@@ -51,12 +54,14 @@ public class JointPointInfoController {
 
     @ApiOperation(value = "删除联点领导", notes = "删除联点领导")
     @ApiImplicitParam(value = "组织联点领导联点主键", name = "linkLedaerId", paramType = "path", required = true)
+    @HasPermission("party_lianDianInformation")
     @DeleteMapping("/{linkLedaerId}")
     public ReturnEntity deleteJointPointInfo(@PathVariable Long linkLedaerId) {
         return ReturnUtil.buildReturn(jointPointInfoService.delJointPointInfoByLinkLedaerId(linkLedaerId));
     }
 
     @ApiOperation(value = "保存联点信息", notes = "保存联点信息")
+    @HasPermission("party_lianDianInformation")
     @PostMapping
     public ReturnEntity addJointPointInfo(@ApiParam("联点领导和联点活动信息") @RequestBody @Validated LinkLeaderDTO linkLeaderDTO) {
         return ReturnUtil.buildReturn(jointPointInfoService.saveJointPointInfo(linkLeaderDTO));

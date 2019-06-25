@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
@@ -34,12 +35,14 @@ public class PartyMassesController {
     private PartyMassesService partyMassesService;
 
     @ApiOperation(value = "添加")
+    @HasPermission("party_masses_add")
     @PostMapping
     public ReturnEntity save(@ApiParam(name = "党群DTO") @RequestBody @Validated PartyMassesDTO partyMassesDTO) {
         return ReturnUtil.buildReturn(partyMassesService.save(partyMassesDTO));
     }
 
     @ApiOperation(value = "根据id更新")
+    @HasPermission("party_masses_edit")
     @PutMapping
     public ReturnEntity update(@ApiParam(name = "党群DTO") @RequestBody @Validated PartyMassesDTO partyMassesDTO) {
         return ReturnUtil.buildReturn(partyMassesService.updateById(partyMassesDTO));
@@ -47,6 +50,7 @@ public class PartyMassesController {
 
     @ApiOperation(value = "根据id删除")
     @ApiImplicitParam(paramType = "path", name = "id", value = "要删除的id", dataType = "Long", required = true)
+    @HasPermission("party_masses_del")
     @DeleteMapping("/{id}")
     public ReturnEntity deleteById(@PathVariable("id") Long id) {
         return ReturnUtil.buildReturn(partyMassesService.deleteById(id));
@@ -54,12 +58,14 @@ public class PartyMassesController {
 
     @ApiOperation(value = "根据id查询", notes = "根据id查询")
     @ApiImplicitParam(paramType = "path", name = "id", value = "主键id", dataType = "Long", required = true)
+    @HasPermission("party_serviceCenterManagement")
     @GetMapping("/{id}")
     public PartyMassesVO findByIdPartyMasses(@PathVariable("id") Long id) {
         return partyMassesService.selectById(id);
     }
 
     @ApiOperation(value = "查询列表")
+    @HasPermission("party_serviceCenterManagement")
     @GetMapping
     public PageInfo<PartyMassesVO> selectList(@ApiParam(name = "党群查询实体") @Validated PartyMassesQueryBean partyMassesQueryBean, Page page) {
         return new PageInfo<>(partyMassesService.selectList(partyMassesQueryBean, page));
@@ -67,6 +73,7 @@ public class PartyMassesController {
 
     @ApiOperation(value = "党群列表", notes = "根据父id获取组织列表", httpMethod = "GET")
     @ApiImplicitParam(value = "父id", name = "parentId", dataType = "long", paramType = "path", required = true)
+    @HasPermission("party_serviceCenterManagement")
     @GetMapping("/parent/{parentId}")
     public List<PartyMassesTree> getPartyMassesListByOrgParentId(@PathVariable Long parentId) {
         return partyMassesService.getPartyMassesListByOrgParentId(parentId);
