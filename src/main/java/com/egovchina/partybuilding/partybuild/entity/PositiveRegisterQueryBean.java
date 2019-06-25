@@ -11,7 +11,7 @@ import javax.validation.constraints.Pattern;
 @Data
 public class PositiveRegisterQueryBean {
 
-    @ApiModelProperty("列表范围（只针对组织有效） 1 查当前组织及其直属组织； 2 查当前组织及所有下级组织；其他 本组织")
+    @ApiModelProperty("列表范围 1 查当前组织（行政区划）及其直属组织； 2 查当前组织（行政区划）及所有下级组织；其他 本组织（行政区划）")
     private String orgRange;
 
     @ApiModelProperty(value = "社区id")
