@@ -1067,4 +1067,11 @@
             AND unit_name like concat(concat('%',#{unitName,jdbcType=VARCHAR}),'%')
         </if>
     </select>
+
+    <select id="selectUnitIdByUnitName" parameterType="java.lang.String" resultType="java.lang.Long">
+        select unit_id from tab_pb_unit_info
+        where del_flag = 0
+        AND unit_name = #{unitName,jdbcType=VARCHAR}
+    </select>
+
 </mapper>

@@ -5,6 +5,8 @@ import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
+import com.egovchina.partybuilding.common.util.CollectionUtil;
+import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.*;
 import com.egovchina.partybuilding.partybuild.entity.*;
 import com.egovchina.partybuilding.partybuild.repository.*;
@@ -13,11 +15,14 @@ import com.egovchina.partybuilding.partybuild.service.UserTagService;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +32,6 @@ import java.util.List;
  */
 @Service
 public class PartyInformationServiceImpl implements PartyInformationService {
-
     public static final int COMPLETE_SEED = 4;
 
     @Autowired
@@ -56,6 +60,9 @@ public class PartyInformationServiceImpl implements PartyInformationService {
 
     @Autowired
     private PartyMembershipServiceImpl partyMembershipServiceImpl;
+
+    @Autowired
+    private TabPbUnitInfoMapper tabPbUnitInfoMapper;
 
     //长沙市组织id
     private final String ORG_ID = "14307";
@@ -617,5 +624,159 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     public List<HistoryInformationGraphVO> getHistoryInformationGraph(Page page, Boolean orgnizeLife, Boolean communityActivity, Boolean partyMemberComment, Long userId) {
         PageHelper.startPage(page);
         return tabPbPartyWorkMapper.selectHistoryInformationGraphByBasicAndOrgnizeLifeWithCommunityActivity(orgnizeLife, communityActivity, partyMemberComment, userId);
+    }
+
+    @Override
+    public void excelImportEffectiveDataToDb(List<SysUser> effectiveList) {
+        if (CollectionUtil.isNotEmpty(effectiveList)) {
+            tabSysUserMapper.batchInsert(effectiveList);
+        }
+    }
+
+    //此方法将excel中的数据转换成要操作的业务实体
+    @Override
+    public SysUser excelImportEntityConvert(String[] row) {
+        int index = 0;
+        SysUser sysUser = new SysUser();
+        String realname = row[++index];//姓名
+        String identityType = row[++index];//党员类别
+        String deptId = row[++index];//所在组织
+        String sex = row[++index];//性别
+        String age = row[++index];//出生年月
+        String nation = row[++index];//民族
+        String phone = row[++index];//联系电话
+        String filesManageUnitId = row[++index];//档案管理单位
+        String registryStatus = row[++index];//党籍状态
+        String joinOrgTime = row[++index];//加入党组织日期
+        String idCardNo = row[++index];//身份证
+        String joinTime = row[++index];//入党时间
+        try {
+            sysUser.setRealname(realname).setIdentityType(Long.parseLong(identityType.split("_")[0])).setDeptId(Long.parseLong(deptId))
+                    .setGender(Long.parseLong(sex.split("_")[0])).setBirthday(new SimpleDateFormat("yyyy-MM-dd").parse(age)).setNation(Long.parseLong(nation.split("_")[0])).setPhone(phone)
+                    .setFilesManageUnitId(Long.parseLong(filesManageUnitId)).setRegistryStatus(Long.parseLong(registryStatus.split("_")[0]))
+                    .setJoinOrgTime(new SimpleDateFormat("yyyy-MM-dd").parse(joinOrgTime)).setIdCardNo(idCardNo).setJoinTime(new SimpleDateFormat("yyyy-MM-dd").parse(joinTime));
+        } catch (ParseException e) {
+            throw new BusinessDataCheckFailException("数据转化异常");
+        }
+        PaddingBaseFieldUtil.paddingBaseFiled(sysUser);
+        return sysUser;
+    }
+
+    @Override
+    public String excelTemplateName() {
+        return "partyInfo";
+    }
+
+    @Override
+    public String excelImportPreValidate(List<SysUser> effectiveList, String[] row) {
+        boolean isExistIdCardNo = false;
+        boolean isExistPhone = false;
+        int index = 0;
+        String realname = row[++index];//姓名
+        String identityType = row[++index];//党员类别
+        String deptId = row[++index];//所在组织
+        String sex = row[++index];//性别
+        String age = row[++index];//出生年月
+        String nation = row[++index];//民族
+        String phone = row[++index];//联系电话
+        String filesManageUnitId = row[++index];//档案管理单位
+        String registryStatus = row[++index];//党籍状态
+        String joinOrgTime = row[++index];//加入党组织日期
+        String idCardNo = row[++index];//身份证
+        String joinTime = row[++index];//入党时间
+        StringBuffer error = new StringBuffer();
+
+        if (StringUtils.isEmpty(realname)) {
+            error.append("姓名不能为空 | ");
+        }
+        if (StringUtils.isEmpty(identityType)) {
+            error.append("人员类别不能为空 | ");
+        }
+        if (StringUtils.isEmpty(deptId)) {
+            error.append("组织id不能为空 | ");
+        }
+        Long reDeptId = null;
+        try {
+            reDeptId = tabSysDeptMapper.selectIdByName(deptId);
+        } catch (Exception e) {
+            error.append("该组织名称存在多个,数据异常 | ");
+        }
+        if (reDeptId == null) {
+            error.append("该组织名称无效 | ");
+        }
+        //改变excel的值
+        row[3] = reDeptId.toString();
+        if (StringUtils.isEmpty(sex)) {
+            error.append("性别不能为空 | ");
+        }
+        if (StringUtils.isEmpty(age)) {
+            error.append("出生年月不能为空 | ");
+        }
+        if (StringUtils.isEmpty(nation)) {
+            error.append("出生年月不能为空 | ");
+        }
+        if (StringUtils.isEmpty(phone)) {
+            error.append("联系电话不能为空 | ");
+        }
+        if (tabSysUserMapper.checkIsExistByPhone(phone)) {
+
+            error.append("联系电话已经存在 | ");
+        }
+        if (StringUtils.isEmpty(filesManageUnitId)) {
+            error.append("档案管理单位不能为空 |");
+        }
+        Long unit = null;
+        try {
+            unit = tabPbUnitInfoMapper.selectUnitIdByUnitName(filesManageUnitId);
+        } catch (Exception e) {
+            error.append("该单位名称存在多个,数据异常");
+        }
+        if (unit == null) {
+            error.append("该单位名称无效");
+        }
+        //改变excel的值
+        row[8] = unit.toString();
+        if (StringUtils.isEmpty(registryStatus)) {
+            error.append("党籍状态不能为空 | ");
+        }
+        if (StringUtils.isEmpty(joinOrgTime)) {
+            error.append("加入党组织时间不能为空 | ");
+        }
+        if (StringUtils.isEmpty(idCardNo)) {
+            error.append("身份证号码不能为空 | ");
+        }
+        if (tabSysUserMapper.checkIsExistByIdCard(idCardNo)) {
+            isExistIdCardNo = true;
+            error.append("身份证号码已经重复 | ");
+        }
+        if (StringUtils.isEmpty(joinTime)) {
+            error.append("入党时间不能为空 | ");
+        }
+
+        //导入数据身份证重复问题,身份证排除非空重复判断
+        if (!StringUtils.isEmpty(idCardNo)) {
+            //排除数据库重复情况 + 第一条数据
+            if (CollectionUtil.isNotEmpty(effectiveList) && !isExistIdCardNo) {
+                //用于判断提交的数据排重，每次只判断前面
+                for (int i = 0; i < effectiveList.size(); i++) {
+                    if (idCardNo.equals(effectiveList.get(i).getIdCardNo())) {
+                        error.append("导入数据中存在身份证号码重复 | ");
+                    }
+                }
+            }
+        }
+        //手机号码雷同
+        if (!StringUtils.isEmpty(phone)) {
+            //排除数据库重复情况
+            if (CollectionUtil.isNotEmpty(effectiveList) && !isExistPhone) {
+                //用于判断提交的数据排重，每次只判断前面
+                for (int i = 0; i < effectiveList.size(); i++) {
+                    if (phone.equals(effectiveList.get(i).getPhone())) {
+                        error.append("导入数据中存在电话重复 | ");
+                    }
+                }
+            }
+        }
+        return error.toString();
     }
 }
