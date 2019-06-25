@@ -92,11 +92,6 @@ public class TabPbLeadTeamMember {
     private Long leadMemberOrder;
 
     /**
-     * 头像
-     */
-    private String avatar;
-
-    /**
      * 数据描述
      */
     private String description;

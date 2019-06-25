@@ -29,7 +29,6 @@
         <result column="version" jdbcType="BIGINT" property="version"/>
         <result column="approval_number" jdbcType="VARCHAR" property="approvalNumber"/>
         <result column="rank" jdbcType="BIGINT" property="rank"/>
-        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
     </resultMap>
 
     <!--VO 结果集-->
@@ -94,7 +93,7 @@
         member_id, org_id, lead_team_id, user_id, person_name, positive_id, positive_name,
         tenure_mode, tenure_begin, tenure_duration, tenure_leave, as_committee_member, as_committee_director,
         lead_member_order, ebl_flag, del_flag, order_num, description, create_time, create_userid,
-        create_username, update_time, update_userid, update_username, version,rank, approval_number, avatar
+        create_username, update_time, update_userid, update_username, version,rank, approval_number
     </sql>
 
     <!--VO List ResultMap-->
