@@ -32,6 +32,9 @@ public class PartyMemberChooseQueryBean {
     @ApiModelProperty("排除已绑定账号的 1 是；0 否；默认0")
     private Byte excludeBinding = 0;
 
+    @ApiModelProperty("排除已在红名单的 1 是；0 否；默认0")
+    private Byte excludeRedList = 0;
+
     /**
      * index
      */

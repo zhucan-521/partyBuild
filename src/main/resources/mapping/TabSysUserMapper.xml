@@ -464,7 +464,11 @@
         <if test="excludeBinding == '1'.toString()">
             AND u.user_id NOT IN (
               SELECT a.user_id FROM sys_account a
-              WHERE a.del_flag = '0'
+            )
+        </if>
+        <if test="excludeRedList == '1'.toString()">
+            AND u.user_id NOT IN (
+              SELECT r.user_id FROM sys_red_list r
             )
         </if>
     </sql>
