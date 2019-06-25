@@ -198,6 +198,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Transactional
+    @CacheEvict(value = ORGANIZATION_LIST_FOR_PARENT, key = "#organizationDTO.getParentId()")
     @Override
     public int updateOrganization(OrganizationDTO organizationDTO) {
         int judgment = 0;

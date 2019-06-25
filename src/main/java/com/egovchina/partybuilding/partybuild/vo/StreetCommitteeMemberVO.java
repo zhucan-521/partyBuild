@@ -33,7 +33,8 @@ public class StreetCommitteeMemberVO {
     @ApiModelProperty(value = "人员姓名")
     private String personName;
 
-    @ApiModelProperty(value = "党内职务主键")
+    @ApiModelProperty(value = "党内职务主键 字典")
+    @JsonSerialize(using = DictSerializer.class)
     private Long positiveId;
 
     @ApiModelProperty(value = "党内职务名称")

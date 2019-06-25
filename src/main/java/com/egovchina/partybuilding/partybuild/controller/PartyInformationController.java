@@ -145,7 +145,7 @@ public class PartyInformationController {
     }
 
     @ApiOperation(value = "根据社区名字模糊获取社区")
-    @HasPermission("party_member_edit")
+    @HasPermission({"party_member_edit","party_orgInfo_edit","party_orgInfo_add"})
     @GetMapping("/communities")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "id", value = "id", paramType = "query"),
