@@ -65,7 +65,7 @@ public class OrganizationController {
 
     @ApiOperation(value = "组织信息详细", notes = "组织信息详细", httpMethod = "GET")
     @ApiImplicitParam(value = "组织id", name = "orgId", dataType = "long", paramType = "path", required = true)
-    @HasPermission(value = "party_orgInfo_abstract")
+    @HasPermission({"party_orgInfo_abstract", "party_partyFlow"})
     @GetMapping("/{orgId}")
     public OrganizationVO getOrganization(@PathVariable("orgId") Long orgId) {
         return organizationService.selectOrganizationVOByOrgId(orgId);
