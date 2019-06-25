@@ -78,18 +78,18 @@
   <!-- vo查询字段  -->
   <sql id="Vo_Column_List">
     <trim suffixOverrides=",">
-      party_masses_place_id,
-      party_masses_id,
-      place_name,
-      devices,
-      capacity,
-      open_day,
-      open_time_period,
-      tel,
-      contact,
-      address,
-      cover,
-      content,
+      p.party_masses_place_id,
+      p.party_masses_id,
+      p.place_name,
+      p.devices,
+      p.capacity,
+      p.open_day,
+      p.open_time_period,
+      p.tel,
+      p.contact,
+      p.address,
+      p.cover,
+      p.content,
     </trim>
   </sql>
 
@@ -323,25 +323,22 @@
   <!-- 根据id查找 -->
   <select id="selectById" resultMap="VoResultMap" parameterType="long">
     select <include refid="Vo_Column_List"/>
-    from tab_pb_party_masses_place where party_masses_place_id = #{id} and del_flag = 0
+    from tab_pb_party_masses_place p where p.party_masses_place_id = #{id} and p.del_flag = 0
   </select>
 
 
   <!-- base where条件  -->
   <sql id="Base_Where_Condition">
     <where>
-      del_flag = 0
+      p.del_flag = 0
       <if test="partyMassesId != null">
-        and party_masses_id = #{partyMassesId}
+        and p.party_masses_id = #{partyMassesId}
+      </if>
+      <if test="administrativeDivisionId != null">
+          and d.administrative_division_id = #{administrativeDivisionId}
       </if>
       <if test="placeName != null">
-        and place_name = #{placeName}
-      </if>
-      <if test="openDay != null">
-        and open_day = #{openDay}
-      </if>
-      <if test="openTimePeriod != null">
-        and open_time_period = #{openTimePeriod}
+        and p.place_name = #{placeName}
       </if>
     </where>
   </sql>
@@ -350,7 +347,11 @@
   <!--查询列表-->
   <select id="list" resultMap="VoResultMap" parameterType="com.egovchina.partybuilding.partybuild.entity.PartyMassesPlaceQueryBean">
     select <include refid="Vo_Column_List"/>
-    from tab_pb_party_masses_place
+    from tab_pb_party_masses_place p
+    inner join tab_pb_party_masses m on p.party_masses_id = m.party_masses_id
+    and m.del_flag = '0'
+    left join tab_pb_administrative_division d on m.administrative_division_id = d.administrative_division_id
+    and d.del_flag = '0'
     <include refid="Base_Where_Condition"/>
   </select>
 </mapper>

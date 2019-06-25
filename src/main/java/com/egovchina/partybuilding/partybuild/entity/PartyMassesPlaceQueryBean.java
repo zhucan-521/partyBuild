@@ -21,13 +21,10 @@ public class PartyMassesPlaceQueryBean {
     @ApiModelProperty(value = "党群id")
     private Long partyMassesId;
 
+    @ApiModelProperty(value = "行政区划id")
+    private Long administrativeDivisionId;
+
     @ApiModelProperty(value = "场地名称")
     private String placeName;
-
-    @ApiModelProperty(value = "开放日")
-    private String openDay;
-
-    @ApiModelProperty(value = "开放时间段")
-    private String openTimePeriod;
 
 }
