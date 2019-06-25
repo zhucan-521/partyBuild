@@ -230,6 +230,7 @@
 
     <!--党员概况查询-->
     <resultMap id="BaseDealsInfos" type="com.egovchina.partybuilding.partybuild.vo.PartyMemberDetailVO">
+            <id column="user_id" jdbcType="BIGINT" property="userId"/>
             <result column="realname" jdbcType="VARCHAR" property="realname"/>
             <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
             <result column="gender" jdbcType="BIGINT" property="gender"/>

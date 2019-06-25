@@ -656,7 +656,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                     .setFilesManageUnitId(Long.parseLong(filesManageUnitId)).setRegistryStatus(Long.parseLong(registryStatus.split("_")[0]))
                     .setJoinOrgTime(new SimpleDateFormat("yyyy-MM-dd").parse(joinOrgTime)).setIdCardNo(idCardNo).setJoinTime(new SimpleDateFormat("yyyy-MM-dd").parse(joinTime));
         } catch (ParseException e) {
-            throw new BusinessDataCheckFailException("数据转化异常");
+
         }
         PaddingBaseFieldUtil.paddingBaseFiled(sysUser);
         return sysUser;
@@ -704,8 +704,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         if (reDeptId == null) {
             error.append("该组织名称无效 | ");
         }
-        //改变excel的值
-        row[3] = reDeptId.toString();
+
         if (StringUtils.isEmpty(sex)) {
             error.append("性别不能为空 | ");
         }
@@ -713,7 +712,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             error.append("出生年月不能为空 | ");
         }
         if (StringUtils.isEmpty(nation)) {
-            error.append("出生年月不能为空 | ");
+            error.append("民族不能为空 | ");
         }
         if (StringUtils.isEmpty(phone)) {
             error.append("联系电话不能为空 | ");
@@ -734,8 +733,6 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         if (unit == null) {
             error.append("该单位名称无效");
         }
-        //改变excel的值
-        row[8] = unit.toString();
         if (StringUtils.isEmpty(registryStatus)) {
             error.append("党籍状态不能为空 | ");
         }
@@ -752,7 +749,57 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         if (StringUtils.isEmpty(joinTime)) {
             error.append("入党时间不能为空 | ");
         }
+        if (identityType != null) {
+            try {
+                Long.parseLong(identityType.split("_")[0]);
+            } catch (Exception e) {
+                error.append("党员类别数据转换异常");
+            }
+        }
+        if (sex != null) {
+            try {
+                Long.parseLong(sex.split("_")[0]);
+            } catch (Exception e) {
+                error.append("性别数据转换异常");
+            }
+        }
+        if (age != null) {
+            try {
+                new SimpleDateFormat("yyyy-MM-dd").parse(age);
+            } catch (Exception e) {
+                error.append("出生日期数据转换异常");
+            }
+        }
+        if (nation != null) {
+            try {
+                Long.parseLong(nation.split("_")[0]);
+            } catch (Exception e) {
+                error.append("民族数据转换异常");
+            }
+        }
 
+        if (registryStatus != null) {
+            try {
+                Long.parseLong(registryStatus.split("_")[0]);
+            } catch (Exception e) {
+                error.append("党籍状态数据转换异常");
+            }
+        }
+        if (joinOrgTime != null) {
+            try {
+                new SimpleDateFormat("yyyy-MM-dd").parse(joinOrgTime);
+            } catch (Exception e) {
+                error.append("加入党组织时间数据转换异常");
+            }
+        }
+        if (joinTime != null) {
+            try {
+                new SimpleDateFormat("yyyy-MM-dd").parse(joinTime);
+            } catch (Exception e) {
+                error.append("入党时间数据转换异常");
+            }
+
+        }
         //导入数据身份证重复问题,身份证排除非空重复判断
         if (!StringUtils.isEmpty(idCardNo)) {
             //排除数据库重复情况 + 第一条数据
@@ -777,6 +824,21 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 }
             }
         }
+        if (reDeptId != null) {
+            //无错误
+            if(error.length()<=0){
+                //改变excel的值
+                row[3] = reDeptId.toString();
+            }
+
+        }
+        if (unit != null) {
+            if(error.length()<=0){
+                //改变excel的值
+                row[8] = unit.toString();
+            }
+        }
         return error.toString();
     }
+
 }

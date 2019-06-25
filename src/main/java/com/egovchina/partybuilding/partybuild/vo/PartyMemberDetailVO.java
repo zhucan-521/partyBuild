@@ -13,6 +13,10 @@ import java.util.List;
 @Data
 @ApiModel("党员名册-党员概况")
 public class PartyMemberDetailVO {
+
+    @ApiModelProperty(value = "用户ID")
+    private Long userId;
+
     @ApiModelProperty(value = "头像")
     private String avatar;
 
