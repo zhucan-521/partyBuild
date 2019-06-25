@@ -1058,4 +1058,7 @@
     <select id="checkOrgIsParentOrg" resultType="java.lang.Boolean">
         select count(1) from sys_dept where del_flag = '0' and ebl_flag = '1' and parent_id = #{orgId}
     </select>
+    <select id="selectIdByName" resultType="java.lang.Long">
+        select dept_id from sys_dept where del_flag = '0' and ebl_flag = '1' and name = #{name}
+    </select>
 </mapper>

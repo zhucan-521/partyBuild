@@ -32,4 +32,6 @@ public interface TabPbUnitInfoMapper {
     UnitInfoVO selectUnitInfoByUnitId(Long unitId);
 
     List<UnitInfoVO> selectUnitInfoByOrgId(Long orgId);
+
+    Long selectUnitIdByUnitName(String unitName);
 }

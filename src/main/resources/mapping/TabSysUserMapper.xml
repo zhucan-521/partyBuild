@@ -574,6 +574,70 @@
         ) tt ON tt.dept_id = u.dept_id
         ORDER BY realname
     </select>
+    <!--批量新增党员信息-->
+    <insert id="batchInsert" parameterType="java.util.List">
+        insert into sys_user
+        (       dept_id,
+                realname,
+                identity_type,
+                id_card_no,
+                gender,
+                nation,
+                birthday,
+                phone,
+                join_time,
+                join_org_time,
+                create_time,
+                create_userid,
+                create_username,
+                update_time,
+                update_userid,
+                update_username,
+                registry_status,
+                files_manage_unit_id)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (
+               #{item.deptId,jdbcType=BIGINT},
+
+               #{item.realname,jdbcType=VARCHAR},
+
+               #{item.identityType,jdbcType=BIGINT},
+
+               #{item.idCardNo,jdbcType=VARCHAR},
+
+                #{item.gender,jdbcType=BIGINT},
+
+                #{item.nation,jdbcType=BIGINT},
+
+                #{item.birthday,jdbcType=TIMESTAMP},
+
+                #{item.phone,jdbcType=VARCHAR},
+
+                #{item.joinTime,jdbcType=TIMESTAMP},
+
+                #{item.joinOrgTime,jdbcType=TIMESTAMP},
+
+                #{item.createTime,jdbcType=TIMESTAMP},
+
+                #{item.createUserid,jdbcType=BIGINT},
+
+                #{item.createUsername,jdbcType=VARCHAR},
+
+                #{item.updateTime,jdbcType=TIMESTAMP},
+
+                #{item.updateUserid,jdbcType=BIGINT},
+
+                #{item.updateUsername,jdbcType=VARCHAR},
+
+                #{item.registryStatus,jdbcType=BIGINT},
+
+                #{item.filesManageUnitId,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+
     <!--自定义查询count数-->
     <select id="selectPageByMapCOUNT" resultType="java.lang.Integer">
         SELECT

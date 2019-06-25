@@ -199,7 +199,6 @@ public interface TabSysUserMapper {
 
     /**
      * 党员名册查询概况
-     *
      * @param userId
      * @return
      */
@@ -266,4 +265,10 @@ public interface TabSysUserMapper {
      */
     SysUser selectOneByUserId(@Param("userId") Long userId);
 
+    /**
+     * 批量导入党员数据
+     * @param users
+     * @return
+     */
+    int batchInsert(List<SysUser> users);
 }

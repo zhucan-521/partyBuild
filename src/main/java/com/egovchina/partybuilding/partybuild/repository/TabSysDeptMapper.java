@@ -77,11 +77,12 @@ public interface TabSysDeptMapper {
 
     /**
      * 修改下级组织的full_path及内部编码
-     * @param oldFullPath 旧的full_path
-     * @param newFullPath 新的full_path
+     *
+     * @param oldFullPath  旧的full_path
+     * @param newFullPath  新的full_path
      * @param oldInnerCode 旧的内部编码
      * @param newInnerCode 新的内部编码
-     * @param nowDeptId 当前操作的组织id
+     * @param nowDeptId    当前操作的组织id
      * @return
      */
     int updateFullPathAndInnerCodeForSubs(@Param("oldFullPath") String oldFullPath,
@@ -162,6 +163,7 @@ public interface TabSysDeptMapper {
 
     /**
      * 根据父id查询子层级中新的内部编码
+     *
      * @param parentId 父id
      * @return
      */
@@ -169,8 +171,17 @@ public interface TabSysDeptMapper {
 
     /**
      * 校验该组织是否为父级组织
+     *
      * @param orgId
      * @return
      */
     Boolean checkOrgIsParentOrg(Long orgId);
+
+    /**
+     * 通过组织名称查询组织id
+     *
+     * @param name
+     * @return
+     */
+    Long selectIdByName(String name);
 }
