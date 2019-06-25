@@ -108,7 +108,7 @@
         ltm.member_id, ltm.org_id, ltm.lead_team_id, ltm.user_id, ltm.person_name, ltm.positive_id, ltm.positive_name,
         ltm.tenure_mode, ltm.tenure_begin, ltm.tenure_duration, ltm.tenure_leave, ltm.as_committee_member, ltm.as_committee_director,
         ltm.lead_member_order, ltm.description, ltm.rank, ltm.approval_number, ltm.ebl_flag,
-        ltm.tenure_begin, ltm.rank, u.avatar
+        u.avatar
      </sql>
 
     <!--CommunityPartTimeMemberVO ResultMap-->
