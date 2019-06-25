@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -171,6 +172,22 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(reduceList);
         //更新历史党员表
         int num = reduceListMapper.updateByPrimaryKeySelective(reduceList);
+        //如果出党方式为出国出境
+        if (GOINGABROAD.equals(reduceList.getQuitType())) {
+            //设置其回国
+            TabPbAbroad tabPbAbroad = new TabPbAbroad();
+            Long abordId = tabPbAbroadMapper.findAbroadIdByUserId(userId);
+            if (abordId != null) {
+                tabPbAbroad = tabPbAbroadMapper.selectByPrimaryKey(abordId);
+                if (tabPbAbroad != null) {
+                    if (tabPbAbroad.getReturnDate() == null) {
+                        tabPbAbroad.setReturnDate(new Date());
+                        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbAbroad);
+                        tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
+                    }
+                }
+            }
+        }
         //查询查询identity_type 只能查询党员状态为无效并且未被删除的
         Long identityType = tabSysUserMapper.selectUserByIdFindIdentity(userId);
         MembershipDTO membershipDTO = new MembershipDTO();
