@@ -51,7 +51,7 @@
                 AND u.del_flag = '0'
 
         <if test="orgnizeLife">
-            UNION
+            UNION ALL
             SELECT
             a.start_time AS time,
             a.subject AS label,
@@ -68,7 +68,7 @@
         </if>
 
           <if test="communityActivity">
-              UNION
+              UNION ALL
               SELECT
                   a.start_time AS time,
                   a.subject AS label,
@@ -85,7 +85,7 @@
           </if>
 
         <if test="partyMemberComment">
-            UNION
+            UNION ALL
             SELECT
             a.create_time AS time,
             d.label AS label,
