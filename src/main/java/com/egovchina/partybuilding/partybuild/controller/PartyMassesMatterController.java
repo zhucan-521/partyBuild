@@ -29,7 +29,7 @@ public class PartyMassesMatterController {
     private PartyMassesMatterService partyMassesMatterService;
 
     @ApiOperation(value = "添加")
-    @HasPermission("party_masses_add")
+    @HasPermission("party_masses_edit")
     @PostMapping
     public ReturnEntity save(@ApiParam(name = "党群服务事项DTO") @RequestBody @Validated PartyMassesMatterDTO partyMassesMatterDTO) {
         return ReturnUtil.buildReturn(partyMassesMatterService.save(partyMassesMatterDTO));
@@ -44,7 +44,7 @@ public class PartyMassesMatterController {
 
     @ApiOperation(value = "根据id删除")
     @ApiImplicitParam(paramType = "path", name = "id", value = "要删除的id", dataType = "Long", required = true)
-    @HasPermission("party_masses_del")
+    @HasPermission("party_masses_edit")
     @DeleteMapping("/{id}")
     public ReturnEntity deleteById(@PathVariable("id") Long id) {
         return ReturnUtil.buildReturn(partyMassesMatterService.deleteById(id));
