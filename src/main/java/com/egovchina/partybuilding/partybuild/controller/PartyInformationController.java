@@ -116,7 +116,9 @@ public class PartyInformationController {
     }
 
     @ApiOperation(value = "党员选择列表", notes = "根据条件获取党员列表", httpMethod = "GET")
-    @HasPermission(value = {"party_partyInformation", "party_partySoldier", "party_partyRetired", "party_difficultMembers"})
+    @HasPermission(value = {"party_partyInformation", "party_partySoldier", "party_partyRetired", "party_difficultMembers","party_member_add","party_partyFlow",
+            "party_difficult","resident_assistance_work","party_teamSecretary","party_leadershipTeam_members", "party_leadershipTeam","party_goAbroad","party_rewards",
+    "party_partyReport","party_PrivilegeUsers","party_redList","party_partyHistory","party_partyHistory_add"})
     @GetMapping("/party-members/choose")
     public PageInfo<PartyMemberChooseVO> choosePartyMembers(PartyMemberChooseQueryBean queryBean, Page page) {
         return partyInformationService.selectPartyMemberChooseVOListByQueryBean(queryBean, page);
@@ -144,7 +146,7 @@ public class PartyInformationController {
     }
 
     @ApiOperation(value = "根据id恢复党员信息")
-    @HasPermission("TODO")
+    @HasPermission("party_partyHistory_recovery")
     @GetMapping("/history-members/{userId}/restorations")
     @ApiImplicitParam(name = "userId", value = "用户id", paramType = "path", required = true, dataType = "long")
     public ReturnEntity restoreUser(@PathVariable Long userId) {
