@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
@@ -28,12 +29,14 @@ public class PartyMassesConfigurationController {
     private PartyMassesConfigurationService partyMassesConfigurationService;
 
     @ApiOperation(value = "添加")
+    @HasPermission("party_masses_add")
     @PostMapping
     public ReturnEntity save(@ApiParam(name = "党群配置DTO") @RequestBody @Validated PartyMassesConfigurationDTO partyMassesConfigurationDTO) {
         return ReturnUtil.buildReturn(partyMassesConfigurationService.save(partyMassesConfigurationDTO));
     }
 
     @ApiOperation(value = "根据id更新")
+    @HasPermission("party_masses_edit")
     @PutMapping
     public ReturnEntity update(@ApiParam(name = "党群配置DTO") @RequestBody @Validated PartyMassesConfigurationDTO partyMassesConfigurationDTO) {
         return ReturnUtil.buildReturn(partyMassesConfigurationService.updateById(partyMassesConfigurationDTO));
@@ -41,6 +44,7 @@ public class PartyMassesConfigurationController {
 
     @ApiOperation(value = "根据id删除")
     @ApiImplicitParam(paramType = "path", name = "id", value = "要删除的id", dataType = "Long", required = true)
+    @HasPermission("party_masses_del")
     @DeleteMapping("/{id}")
     public ReturnEntity deleteById(@PathVariable("id") Long id) {
         return ReturnUtil.buildReturn(partyMassesConfigurationService.deleteById(id));
@@ -48,12 +52,14 @@ public class PartyMassesConfigurationController {
 
     @ApiOperation(value = "根据id查询", notes = "根据id查询")
     @ApiImplicitParam(paramType = "path", name = "id", value = "主键id", dataType = "Long", required = true)
+    @HasPermission({"party_serviceCenterManagement","party_masses_look"})
     @GetMapping("/{id}")
     public PartyMassesConfigurationVO findByIdPartyMassesConfiguration(@PathVariable("id") Long id) {
         return partyMassesConfigurationService.selectById(id);
     }
 
     @ApiOperation(value = "查询列表")
+    @HasPermission({"party_serviceCenterManagement","party_masses_look"})
     @GetMapping
     public PageInfo<PartyMassesConfigurationVO> selectList(@ApiParam(name = "党群配置查询实体") @Validated PartyMassesConfigurationQueryBean partyMassesConfigurationQueryBean, Page page){
         return new PageInfo<>(partyMassesConfigurationService.selectList(partyMassesConfigurationQueryBean, page));

@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
@@ -31,12 +32,14 @@ public class PartyMassesPlaceController {
     private PartyMassesPlaceService partyMassesPlaceService;
 
     @ApiOperation(value = "添加")
+    @HasPermission("party_masses_add")
     @PostMapping
     public ReturnEntity save(@ApiParam(name = "党群场地DTO") @RequestBody @Validated PartyMassesPlaceDTO partyMassesPlaceDTO) {
         return ReturnUtil.buildReturn(partyMassesPlaceService.save(partyMassesPlaceDTO));
     }
 
     @ApiOperation(value = "根据id更新")
+    @HasPermission("party_masses_edit")
     @PutMapping
     public ReturnEntity update(@ApiParam(name = "党群场地DTO") @RequestBody @Validated PartyMassesPlaceDTO partyMassesPlaceDTO) {
         return ReturnUtil.buildReturn(partyMassesPlaceService.updateById(partyMassesPlaceDTO));
@@ -44,6 +47,7 @@ public class PartyMassesPlaceController {
 
     @ApiOperation(value = "根据id删除")
     @ApiImplicitParam(paramType = "path", name = "id", value = "要删除的id", dataType = "Long", required = true)
+    @HasPermission("party_masses_del")
     @DeleteMapping("/{id}")
     public ReturnEntity deleteById(@PathVariable("id") Long id) {
         return ReturnUtil.buildReturn(partyMassesPlaceService.deleteById(id));
@@ -51,12 +55,14 @@ public class PartyMassesPlaceController {
 
     @ApiOperation(value = "根据id查询", notes = "根据id查询")
     @ApiImplicitParam(paramType = "path", name = "id", value = "主键id", dataType = "Long", required = true)
+    @HasPermission({"party_serviceCenterManagement","party_masses_look"})
     @GetMapping("/{id}")
     public PartyMassesPlaceVO findByIdPartyMassesPlace(@PathVariable("id") Long id) {
         return partyMassesPlaceService.selectById(id);
     }
 
     @ApiOperation(value = "查询列表")
+    @HasPermission({"party_serviceCenterManagement","party_masses_look"})
     @GetMapping
     public PageInfo<PartyMassesPlaceVO> selectList(@ApiParam(name = "党群场地查询实体") @Validated PartyMassesPlaceQueryBean partyMassesPlaceQueryBean, Page page) {
         return new PageInfo<>(partyMassesPlaceService.selectList(partyMassesPlaceQueryBean, page));
