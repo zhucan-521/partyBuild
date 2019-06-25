@@ -43,7 +43,12 @@ public class SecretaryServiceImpl implements SecretaryService {
     @Override
     public int addSecretary(SecretaryMemberDTO secretaryMemberDTO) {
         TabPbDeptSecretary tabPbDeptSecretary = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO, TabPbDeptSecretary.class, false);
-        return tabPbDeptSecretaryMapper.insertSelective(tabPbDeptSecretary);
+        int flag = tabPbDeptSecretaryMapper.insertSelective(tabPbDeptSecretary);
+        if (flag > 0) {
+            SysUser sysUser = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO, SysUser.class, true);
+            tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
+        }
+        return flag;
     }
 
     /**
@@ -67,9 +72,9 @@ public class SecretaryServiceImpl implements SecretaryService {
      */
     @Override
     public int updateSecretary(SecretaryMemberDTO secretaryMemberDTO) {
-        SysUser sysUser=new SysUser();
-        Long userId=tabSysUserMapper.SelectUserIdByIDcard(secretaryMemberDTO.getIdCardNo());
-        BeanUtil.copyPropertiesIgnoreNull(secretaryMemberDTO,sysUser);
+        SysUser sysUser = new SysUser();
+        Long userId = tabSysUserMapper.SelectUserIdByIDcard(secretaryMemberDTO.getIdCardNo());
+        BeanUtil.copyPropertiesIgnoreNull(secretaryMemberDTO, sysUser);
         sysUser.setUserId(userId);
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         TabPbDeptSecretary tabPbDeptSecretary = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO, TabPbDeptSecretary.class, true);
