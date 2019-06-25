@@ -468,13 +468,13 @@
                 real_name = #{realName, jdbcType=VARCHAR},
             </if>
             <if test="notifyTime != null">
-                notify_time = #{notifyTime, jdbcType=DATETIME},
+                notify_time = #{notifyTime, jdbcType=TIMESTAMP},
             </if>
             <if test="signupTime != null">
-                signup_time = #{signupTime, jdbcType=DATETIME},
+                signup_time = #{signupTime, jdbcType=TIMESTAMP},
             </if>
             <if test="signinTime != null">
-                signin_time = #{signinTime, jdbcType=DATETIME},
+                signin_time = #{signinTime, jdbcType=TIMESTAMP},
             </if>
             <if test="signinPwd != null">
                 signin_pwd = #{signinPwd, jdbcType=VARCHAR},
@@ -534,7 +534,7 @@
                 parent_org_assess_content = #{parentOrgAssessContent, jdbcType=TEXT},
             </if>
             <if test="auditTime != null">
-                audit_time = #{auditTime, jdbcType=DATETIME},
+                audit_time = #{auditTime, jdbcType=TIMESTAMP},
             </if>
             <if test="auditUser != null">
                 audit_user = #{auditUser, jdbcType=BIGINT},
@@ -558,7 +558,7 @@
                 description = #{description, jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
-                create_time = #{createTime, jdbcType=DATETIME},
+                create_time = #{createTime, jdbcType=TIMESTAMP},
             </if>
             <if test="createUserid != null">
                 create_userid = #{createUserid, jdbcType=BIGINT},
@@ -567,7 +567,7 @@
                 create_username = #{createUsername, jdbcType=VARCHAR},
             </if>
             <if test="updateTime != null">
-                update_time = #{updateTime, jdbcType=DATETIME},
+                update_time = #{updateTime, jdbcType=TIMESTAMP},
             </if>
             <if test="updateUserid != null">
                 update_userid = #{updateUserid, jdbcType=BIGINT},
@@ -591,7 +591,7 @@
                 sign_in_state = #{signInState, jdbcType=BIGINT},
             </if>
         </set>
-        where id=#{id}
+        where participant_id=#{participantId}
     </update>
     <update id="updateParticipantCheckInTime">
         UPDATE tab_pb_party_masses_participant
