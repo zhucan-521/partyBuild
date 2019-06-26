@@ -27,6 +27,7 @@ public interface TabPbFlowInMapper {
 
     /**
      * 查询流入党员列表
+     *
      * @param
      * @return
      */
@@ -34,6 +35,7 @@ public interface TabPbFlowInMapper {
 
     /**
      * 流入党员详情查询
+     *
      * @param flowInId
      * @return
      */
@@ -41,6 +43,7 @@ public interface TabPbFlowInMapper {
 
     /**
      * 根据流出外键查询流入主键
+     *
      * @param flowInId
      * @return
      */
@@ -52,8 +55,5 @@ public interface TabPbFlowInMapper {
      * @param userId
      * @return
      */
-    int  cancelSysUserFlowStaus(Long userId);
-
-
-
+    int cancelSysUserFlowStaus(Long userId);
 }
