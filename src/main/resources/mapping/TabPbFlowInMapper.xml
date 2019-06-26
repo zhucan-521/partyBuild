@@ -101,6 +101,7 @@
 		s.id_card_no,
 		s.gender,
 		s.phone,
+		s.identity_type as identityType,
 		f.lost_time,
 		f.link_status,
 		-- ( SELECT NAME FROM sys_dept WHERE dept_id = t.org_id ) AS flow_to_org_name ,
@@ -611,7 +612,7 @@
         </choose>
         AND t.del_flag = '0'
         order by
-        t.flow_in_id
+        t.update_time
         desc
     </select>
 

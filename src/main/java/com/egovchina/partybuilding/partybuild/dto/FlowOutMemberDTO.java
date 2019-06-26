@@ -58,7 +58,6 @@ public class FlowOutMemberDTO {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "流出日期", example = "yyyy-MM-dd")
-    @NotNull(message = "流出日期不能为空")
     private Date flowOutDate;
 
     @ApiModelProperty(value = "流出组织联系人")
@@ -96,5 +95,8 @@ public class FlowOutMemberDTO {
     @ApiModelProperty(value = "流入时间", example = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date flowInDate;
+
+    @ApiModelProperty(value = "人员类别 码表值 RYLB")
+    private Long identityType;
 
 }
