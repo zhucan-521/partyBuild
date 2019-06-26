@@ -121,4 +121,8 @@ public class FlowInMemberVO {
     @ApiModelProperty(value = "流入日期大于当前日期返回0，流入日期小于等于当前日期返回1")
     private Long  isEnableBack;
 
+    @ApiModelProperty(value = "人员类别 码表值 RYLB")
+    @JsonSerialize(using = DictSerializer.class)
+    private Long identityType;
+
 }

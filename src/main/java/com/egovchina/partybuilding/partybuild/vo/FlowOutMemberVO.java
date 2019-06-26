@@ -106,4 +106,9 @@ public class FlowOutMemberVO {
 
     @ApiModelProperty(value = "流入党组织Id")
     private Long flowToOrgnizeId;
+
+    @ApiModelProperty(value = "人员类别 码表值 RYLB")
+    @JsonSerialize(using = DictSerializer.class)
+    private Long identityType;
+
 }

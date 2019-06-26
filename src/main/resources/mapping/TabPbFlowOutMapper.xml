@@ -602,7 +602,7 @@
             </choose>
         </where>
         order by
-        tab_pb_flow_out.flow_out_id
+        tab_pb_flow_out.update_time
         desc
     </select>
 
