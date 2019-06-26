@@ -14,10 +14,7 @@ import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberListVO;
 import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.PartySecretarysVO;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -97,6 +94,13 @@ public class LeadTeamMemberController {
     @GetMapping("/party-secretaries")
     public PageInfo<PartySecretarysVO> secretaryList(PartyMemberSecretaryMemberQueryBean partyMemberSecretaryMemberQueryBean, Page page) {
         return new PageInfo<>(leadTeamMemberService.selectSecretaryList(partyMemberSecretaryMemberQueryBean, page));
+    }
+
+    @ApiOperation(value = "获取领导班子id", notes = "获取领导班子id", httpMethod = "GET")
+    @ApiImplicitParam(name = "orgId", value = "组织id", dataType = "long", paramType = "path", required = true)
+    @GetMapping("/lead-team-id/{orgId}")
+    public long getLeadTeamId(@PathVariable Long orgId) {
+        return leadTeamMemberService.getLeadTeamIdByCurrent(orgId);
     }
 
 }

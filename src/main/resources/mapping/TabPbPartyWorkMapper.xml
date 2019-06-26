@@ -38,17 +38,17 @@
         FROM
         (
             SELECT
-            p.create_time AS time,
-            d.label AS label,
-            d1.label AS sub_label
+                p.create_time AS time,
+                d.label AS label,
+                p.reason AS sub_label
             FROM
-            tab_pb_party_membership p
+                tab_pb_party_membership p
             INNER JOIN sys_user u ON p.user_id = u.user_id
-            LEFT JOIN sys_dict d ON p.identity_type = d.id AND d.`type` = 'RYLB'
-            LEFT JOIN sys_dict d1 ON p.type = d.id AND d1.`type` = 'DJCL'
+            LEFT JOIN sys_dict d ON p.type = d.id
+            AND d.`type` = 'DJCL'
             WHERE
-                u.user_id = #{userId}
-                AND u.del_flag = '0'
+            u.user_id = 1
+            AND u.del_flag = '0'
 
         <if test="orgnizeLife">
             UNION ALL
