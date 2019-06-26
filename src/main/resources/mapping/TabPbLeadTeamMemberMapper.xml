@@ -474,10 +474,11 @@
         u.phone
         FROM tab_pb_lead_team_member ltm
         INNER JOIN tab_pb_lead_team t
-        ON ltm.lead_team_id = t.lead_team_id AND ltm.del_flag = t.lead_team_id
+        ON ltm.lead_team_id = t.lead_team_id
         INNER JOIN sys_dept d ON t.org_id = d.dept_id
         INNER JOIN sys_user u ON ltm.user_id = u.user_id
-        WHERE ltm.del_flag = 0 AND t.current = 1
+        WHERE ltm.del_flag = '0' AND t.current = 1
+        AND ltm.as_committee_member = 1
         <if test="personName != null and personName != ''">
             AND ltm.person_name LIKE concat('%', #{personName}, '%')
         </if>
