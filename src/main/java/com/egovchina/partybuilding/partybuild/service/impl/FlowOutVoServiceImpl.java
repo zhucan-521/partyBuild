@@ -75,7 +75,8 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
                     .setGender(flowOutMemberDto.getGender())
                     .setRealname(flowOutMemberDto.getUsername())
                     .setUsername(flowOutMemberDto.getUsername())
-                    .setFlowStatus(CommonConstant.FLOW);
+                    .setFlowStatus(CommonConstant.FLOW)
+                    .setIdentityType(223L);
             PaddingBaseFieldUtil.paddingBaseFiled(sysUser);
             //添加流动标识
             tabSysUserMapper.insertSelective(sysUser);
