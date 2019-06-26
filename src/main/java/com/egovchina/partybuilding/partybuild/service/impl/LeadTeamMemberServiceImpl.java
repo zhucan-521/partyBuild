@@ -140,6 +140,11 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
         return tabPbLeadTeamMemberMapper.selectSecretaryVOList(partyMemberSecretaryMemberQueryBean);
     }
 
+    @Override
+    public long getLeadTeamIdByCurrent(Long orgId) {
+        return tabPbLeadTeamMapper.selectLeadTeamIdByOrgId(orgId);
+    }
+
     /**
      * 数据校验
      *

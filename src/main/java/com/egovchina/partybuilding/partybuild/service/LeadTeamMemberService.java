@@ -84,4 +84,12 @@ public interface LeadTeamMemberService {
      */
     List<PartySecretarysVO> selectSecretaryList(PartyMemberSecretaryMemberQueryBean partyMemberSecretaryMemberQueryBean, Page page);
 
+    /**
+     * 获取领导班子id
+     *
+     * @return
+     * @param orgId 组织id
+     */
+    long getLeadTeamIdByCurrent(Long orgId);
+
 }
