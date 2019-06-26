@@ -204,10 +204,12 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
             SysUser sysUser = tabSysUserMapper.selectByPrimaryKey(tabPbFlowOut.getUserId());
             //用户结束流动
             sysUser.setFlowStatus(CommonConstant.END_FLOW);
-            //取消流动标识
-            userTagService.delete(sysUser.getUserId(), UserTagType.FLOW);
             flag = tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
             if (flag > 0) {
+                //取消流动标识
+                userTagService.delete(sysUser.getUserId(), UserTagType.FLOW);
+                //取消用户表流入流出党组织
+                tabPbFlowInMapper.cancelSysUserFlowStaus(sysUser.getUserId());
                 TabPbFlowIn tabPbFlowIn = new TabPbFlowIn();
                 Long flowInId = tabPbFlowInMapper.getFlowOutIdByFlowInId(id);
                 tabPbFlowIn.setFlowInId(flowInId);

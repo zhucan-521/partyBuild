@@ -632,4 +632,13 @@
         select flow_in_id from tab_pb_flow_in where flow_out_id=#{flowOutId}
     </select>
 
+    <update id="cancelSysUserFlowStaus" parameterType="long">
+           update sys_user
+           set flow_to_org_id=null,flow_to_org_name=null,flow_from_org_id=null,
+           flow_from_org_name=null ,flow_from_org_contactor=null,flow_from_org_phone=null,
+           flow_to_org_contactor=null,flow_to_org_phone=null,flow_status=41209
+           where
+           user_id=#{userId}
+    </update>
+
 </mapper>

@@ -46,5 +46,14 @@ public interface TabPbFlowInMapper {
      */
     Long getFlowOutIdByFlowInId(Long flowInId);
 
+    /**
+     * 根据userId取消党员流动状态
+     *
+     * @param userId
+     * @return
+     */
+    int  cancelSysUserFlowStaus(Long userId);
+
+
 
 }

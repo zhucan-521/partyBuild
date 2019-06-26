@@ -78,10 +78,12 @@ public class FlowInServiceImpl implements FlowInService {
             SysUser sysUser = tabSysUserMapper.selectByPrimaryKey(tabPbFlowIn.getUserId());
             //用户结束流动
             sysUser.setFlowStatus(CommonConstant.END_FLOW);
-            //取消流动标识
-            userTagService.delete(sysUser.getUserId(), UserTagType.FLOW);
             flag = tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
             if (flag > 0) {
+                //取消流动标识
+                userTagService.delete(sysUser.getUserId(), UserTagType.FLOW);
+                //取消用户表流入流出党组织
+                tabPbFlowInMapper.cancelSysUserFlowStaus(sysUser.getUserId());
                 TabPbFlowOut tabPbFlowOut = new TabPbFlowOut();
                 tabPbFlowOut.setDelFlag(CommonConstant.STATUS_DEL);
                 tabPbFlowOut.setFlowOutId(tabPbFlowIn.getFlowOutId());
@@ -169,6 +171,8 @@ public class FlowInServiceImpl implements FlowInService {
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         //取消流动标识
         userTagService.delete(sysUser.getUserId(), UserTagType.FLOW);
+        //取消用户表流入流出党组织
+        tabPbFlowInMapper.cancelSysUserFlowStaus(sysUser.getUserId());
         //返回
         flowInMemberDto.setFlowInState(CommonConstant.RETURNED);
         TabPbFlowIn tabPbFlowIn = generateTargetCopyPropertiesAndPaddingBaseField(flowInMemberDto, TabPbFlowIn.class, true);
