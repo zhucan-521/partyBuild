@@ -635,9 +635,7 @@
 
     <update id="cancelSysUserFlowStaus" parameterType="long">
            update sys_user
-           set flow_to_org_id=null,flow_from_org_id=null,
-           flow_from_org_contactor=null,flow_from_org_phone=null,
-           flow_to_org_contactor=null,flow_to_org_phone=null,flow_status=41209
+           set flow_to_org_id=null,flow_from_org_id=null
            where
            user_id=#{userId}
     </update>
