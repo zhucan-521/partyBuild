@@ -141,8 +141,9 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
     }
 
     @Override
-    public long getLeadTeamIdByCurrent(Long orgId) {
-        return tabPbLeadTeamMapper.selectLeadTeamIdByOrgId(orgId);
+    public List<Long> getLeadTeamIdByCurrent(Long orgId) {
+        List<Long> list = tabPbLeadTeamMapper.selectLeadTeamIdByOrgId(orgId);
+        return list;
     }
 
     /**

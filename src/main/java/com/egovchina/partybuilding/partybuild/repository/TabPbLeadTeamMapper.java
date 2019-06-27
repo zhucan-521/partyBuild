@@ -74,6 +74,6 @@ public interface TabPbLeadTeamMapper {
      * @param orgId 组织id
      * @return
      */
-    Long selectLeadTeamIdByOrgId(Long orgId);
+    List<Long> selectLeadTeamIdByOrgId(@Param("orgId") Long orgId);
 
 }
