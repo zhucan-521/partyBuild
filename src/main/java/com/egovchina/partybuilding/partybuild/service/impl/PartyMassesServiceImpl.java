@@ -6,16 +6,18 @@ import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.partybuild.dto.PartyMassesDTO;
-import com.egovchina.partybuilding.partybuild.entity.PartyMassesQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.TabPbPartyMasses;
+import com.egovchina.partybuilding.partybuild.entity.*;
+import com.egovchina.partybuilding.partybuild.repository.TabPbPartyMassesConfigurationMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPartyMassesMapper;
-import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
-import com.egovchina.partybuilding.partybuild.service.PartyMassesService;
+import com.egovchina.partybuilding.partybuild.repository.TabPbPartyMassesMatterMapper;
+import com.egovchina.partybuilding.partybuild.repository.TabPbPartyMassesPlaceMapper;
+import com.egovchina.partybuilding.partybuild.service.*;
 import com.egovchina.partybuilding.partybuild.vo.PartyMassesTree;
 import com.egovchina.partybuilding.partybuild.vo.PartyMassesVO;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +41,15 @@ public class PartyMassesServiceImpl implements PartyMassesService {
 
     @Autowired
     private ITabPbAttachmentService tabPbAttachmentService;
+
+    @Autowired
+    private TabPbPartyMassesPlaceMapper partyMassesPlaceMapper;
+
+    @Autowired
+    private TabPbPartyMassesMatterMapper partyMassesMatterMapper;
+
+    @Autowired
+    private TabPbPartyMassesConfigurationMapper partyMassesConfigurationMapper;
 
     /**
      * Description: 新增
@@ -97,13 +108,31 @@ public class PartyMassesServiceImpl implements PartyMassesService {
      * @author WuYunJie
      * @date 2019/05/20 21:37:39
      */
+    @Transactional
     @Override
     public int deleteById(Long id) {
+        int result = 0;
         TabPbPartyMasses tabPbPartyMasses = new TabPbPartyMasses();
         tabPbPartyMasses.setPartyMassesId(id);
         tabPbPartyMasses.setDelFlag(CommonConstant.STATUS_DEL);
         paddingUpdateRelatedBaseFiled(tabPbPartyMasses);
-        return tabPbPartyMassesMapper.updateById(tabPbPartyMasses);
+        result += tabPbPartyMassesMapper.updateById(tabPbPartyMasses);
+        TabPbPartyMassesPlace tabPbPartyMassesPlace = new TabPbPartyMassesPlace();
+        tabPbPartyMassesPlace.setPartyMassesId(id);
+        tabPbPartyMassesPlace.setDelFlag(CommonConstant.STATUS_DEL);
+        paddingUpdateRelatedBaseFiled(tabPbPartyMassesPlace);
+        result += partyMassesPlaceMapper.logicDeleteByPartyMassesId(tabPbPartyMassesPlace);
+        TabPbPartyMassesMatter tabPbPartyMassesMatter = new TabPbPartyMassesMatter();
+        tabPbPartyMassesMatter.setPartyMassesId(id);
+        tabPbPartyMassesMatter.setDelFlag(CommonConstant.STATUS_DEL);
+        paddingUpdateRelatedBaseFiled(tabPbPartyMassesMatter);
+        result += partyMassesMatterMapper.logicDeleteByPartyMassesId(tabPbPartyMassesMatter);
+        TabPbPartyMassesConfiguration tabPbPartyMassesConfiguration = new TabPbPartyMassesConfiguration();
+        tabPbPartyMassesConfiguration.setPartyMassesId(id);
+        tabPbPartyMassesConfiguration.setDelFlag(CommonConstant.STATUS_DEL);
+        paddingUpdateRelatedBaseFiled(tabPbPartyMassesConfiguration);
+        result += partyMassesConfigurationMapper.logicDeleteByPartyMassesId(tabPbPartyMassesConfiguration);
+        return result;
     }
 
     /**

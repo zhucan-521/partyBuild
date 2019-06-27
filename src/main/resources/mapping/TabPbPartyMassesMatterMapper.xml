@@ -284,6 +284,27 @@
     </set>
     where party_masses_matter_id = #{partyMassesMatterId, jdbcType=BIGINT}
   </update>
+  <update id="logicDeleteByPartyMassesId">
+    update tab_pb_party_masses_matter
+    <set>
+      <if test="eblFlag != null">
+        ebl_flag = #{eblFlag, jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag, jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime, jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        update_userid = #{updateUserid, jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        update_username = #{updateUsername, jdbcType=VARCHAR},
+      </if>
+    </set>
+    where party_masses_id = #{partyMassesId, jdbcType=BIGINT}
+  </update>
 
   <!--根据id删除-->
   <delete id="deleteById" parameterType="long">

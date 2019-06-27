@@ -34,7 +34,11 @@ public class OrgTagServiceImpl implements OrgTagService {
     public int batchInsertOrgTagDTO(OrgTagDTO orgTagDTO) {
         //如果标签为空，全部删除
         if (CollectionUtil.isEmpty(orgTagDTO.getOrgTagTypes())) {
-            return batchUpdateOrgTagByOrgId(orgTagDTO.getOrgId());
+            int result = batchUpdateOrgTagByOrgId(orgTagDTO.getOrgId());
+            if (result <= 0) {
+                return 1;
+            }
+            return result;
         }
         //如果没有记录，直接新增
         List<TabPbOrgTag> dbTabPbOrgTags = tabPbOrgTagMapper.selectByOrgId(orgTagDTO.getOrgId());
