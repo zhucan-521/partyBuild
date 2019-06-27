@@ -90,6 +90,6 @@ public interface LeadTeamMemberService {
      * @return
      * @param orgId 组织id
      */
-    List<Long> getLeadTeamIdByCurrent(Long orgId);
+    Long getLeadTeamIdByCurrent(Long orgId);
 
 }
