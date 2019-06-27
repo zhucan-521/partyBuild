@@ -99,7 +99,7 @@ public class LeadTeamMemberController {
     @ApiOperation(value = "获取领导班子id", notes = "获取领导班子id", httpMethod = "GET")
     @ApiImplicitParam(name = "orgId", value = "组织id", dataType = "long", paramType = "path", required = true)
     @GetMapping("/lead-team-id/{orgId}")
-    public long getLeadTeamId(@PathVariable Long orgId) {
+    public List<Long> getLeadTeamId(@PathVariable Long orgId) {
         return leadTeamMemberService.getLeadTeamIdByCurrent(orgId);
     }
 
