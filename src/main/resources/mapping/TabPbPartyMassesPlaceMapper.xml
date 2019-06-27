@@ -343,6 +343,27 @@
     </where>
   </sql>
 
+  <update id="logicDeleteByPartyMassesId" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMassesPlace">
+    update tab_pb_party_masses_place
+    <set>
+      <if test="eblFlag != null">
+        ebl_flag = #{eblFlag, jdbcType=VARCHAR},
+      </if>
+      <if test="delFlag != null">
+        del_flag = #{delFlag, jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime, jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateUserid != null">
+        update_userid = #{updateUserid, jdbcType=BIGINT},
+      </if>
+      <if test="updateUsername != null">
+        update_username = #{updateUsername, jdbcType=VARCHAR},
+      </if>
+    </set>
+    where party_masses_id = #{partyMassesId, jdbcType=BIGINT}
+  </update>
 
   <!--查询列表-->
   <select id="list" resultMap="VoResultMap" parameterType="com.egovchina.partybuilding.partybuild.entity.PartyMassesPlaceQueryBean">

@@ -60,4 +60,12 @@ public interface TabPbPartyMassesPlaceMapper {
      */
     List<PartyMassesPlaceVO> list(PartyMassesPlaceQueryBean tabPbPartyMassesPlaceQueryBean);
 
+    /**
+     * 根据党群id批量逻辑删除
+     *
+     * @param tabPbPartyMassesPlace
+     * @return
+     */
+    int logicDeleteByPartyMassesId(TabPbPartyMassesPlace tabPbPartyMassesPlace);
+
 }

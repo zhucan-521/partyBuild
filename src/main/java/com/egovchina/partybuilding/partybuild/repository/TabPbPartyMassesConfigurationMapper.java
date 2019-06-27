@@ -58,4 +58,12 @@ public interface TabPbPartyMassesConfigurationMapper {
      * @date 2019/05/20 21:34:12
      */
     List<PartyMassesConfigurationVO> list(PartyMassesConfigurationQueryBean tabPbPartyMassesConfigurationQueryBean);
+
+    /**
+     * 根据党群id批量逻辑删除
+     *
+     * @param tabPbPartyMassesConfiguration
+     * @return
+     */
+    int logicDeleteByPartyMassesId(TabPbPartyMassesConfiguration tabPbPartyMassesConfiguration);
 }
