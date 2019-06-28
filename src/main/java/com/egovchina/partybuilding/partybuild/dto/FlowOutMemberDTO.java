@@ -17,10 +17,10 @@ public class FlowOutMemberDTO {
     @NotNull(message = "流出党员信息ID不能为空",groups = Update.class)
     private Long flowOutId;
 
-    @ApiModelProperty(value = "用户主键",required = true)
+    @ApiModelProperty(value = "用户主键")
     private Long userId;
 
-    @ApiModelProperty(value = "用户姓名",required = true)
+    @ApiModelProperty(value = "用户姓名")
     private String username;
 
     @ApiModelProperty(value = "流动证号",required = true)
@@ -33,20 +33,20 @@ public class FlowOutMemberDTO {
     @ApiModelProperty(value = "身份证号码")
     private String idCardNo;
 
-    @ApiModelProperty(value = "原职业 码表ZY",required = true)
+    @ApiModelProperty(value = "原职业 码表ZY")
     private Long outProfession;
 
-    @ApiModelProperty(value = "外出原因 码表LDYY",required = true)
+    @ApiModelProperty(value = "外出原因 码表LDYY")
     private Long flowOutReason;
 
-    @ApiModelProperty(value = "流动类型 码表LDQK",required = true)
+    @ApiModelProperty(value = "流动类型 码表LDQK")
     private Long flowOutType;
 
     @ApiModelProperty(value = "流出范围 码表WCHY",required = true)
     @NotNull(message = "流出范围不能为空")
     private Long outIndustry;
 
-    @ApiModelProperty(value = "流出组织名称",required = true)
+    @ApiModelProperty(value = "流出组织名称")
     @NotNull(message = "请选择流出组织名称")
     private String flowFromOrgName;
 
