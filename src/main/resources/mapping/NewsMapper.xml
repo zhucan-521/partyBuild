@@ -134,7 +134,7 @@
             <if test="topStatus != null">
                 top_status,
             </if>
-            <if test="cover != null">
+            <if test="cover != null and cover != ''">
                 cover,
             </if>
             <if test="delFlag != null">
@@ -190,7 +190,7 @@
             <if test="topStatus != null">
                 #{topStatus,jdbcType=BIT},
             </if>
-            <if test="cover != null">
+            <if test="cover != null and cover != ''">
                 #{cover,jdbcType=VARCHAR},
             </if>
             <if test="delFlag != null">
