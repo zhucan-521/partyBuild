@@ -230,6 +230,8 @@
     dept_id=#{orgId}
     and
     ebl_flag=1
+    and
+    del_flag=0
   </select>
 
   <select id="selectiveHelpTeamVOs" parameterType="com.egovchina.partybuilding.partybuild.entity.HelpTeamQueryBean" resultMap="HelpTeamVOMap">
