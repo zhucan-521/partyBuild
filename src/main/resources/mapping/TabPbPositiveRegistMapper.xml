@@ -88,7 +88,10 @@
       pr.revoke_tag,
       pr.revoke_tomment,
       pr.revoke_date,
-      CASE WHEN TIMESTAMPDIFF(SECOND, now(), pr.regist_date) > 0 THEN '1' ELSE '0' END AS can_return
+      CASE WHEN now( ) > pr.regist_date
+        AND pr.revoke_tag = 1 THEN
+        1 ELSE 0
+      END AS can_return <!--是否可返回-->
     FROM tab_pb_positive_regist pr
     INNER JOIN tab_pb_administrative_division ad ON pr.community_id = ad.administrative_division_id
     INNER JOIN sys_user u ON u.user_id = pr.user_id
