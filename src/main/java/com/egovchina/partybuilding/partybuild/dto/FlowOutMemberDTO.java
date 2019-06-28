@@ -46,7 +46,7 @@ public class FlowOutMemberDTO {
     @NotNull(message = "流出范围不能为空")
     private Long outIndustry;
 
-    @ApiModelProperty(value = "流出组织名称")
+    @ApiModelProperty(value = "流出组织名称",required = true)
     @NotNull(message = "请选择流出组织名称")
     private String flowFromOrgName;
 
