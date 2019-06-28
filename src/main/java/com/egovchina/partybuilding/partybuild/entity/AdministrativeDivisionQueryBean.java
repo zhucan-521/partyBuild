@@ -15,7 +15,7 @@ import lombok.Data;
 public class AdministrativeDivisionQueryBean {
 
     @ApiModelProperty(value = "行政区划id")
-    private Long administrativeDivisionId;
+    private Long administrativeDivisionId = 1L;//默认长沙市查所有下级
 
     @ApiModelProperty(value = "行政区划名称")
     private String administrativeDivisionName;
@@ -30,6 +30,6 @@ public class AdministrativeDivisionQueryBean {
     private Long level;
 
     @ApiModelProperty("组织范围 1 查当前行政区划及其直属行政区划； 2 查当前行政区划及所有下级行政区划；其他值 查本行政区划")
-    private String administrativeDivisionRange = "";
+    private String administrativeDivisionRange = "2";//默认长沙市查所有下级
 
 }
