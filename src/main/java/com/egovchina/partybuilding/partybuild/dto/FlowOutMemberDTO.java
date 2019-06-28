@@ -34,15 +34,12 @@ public class FlowOutMemberDTO {
     private String idCardNo;
 
     @ApiModelProperty(value = "原职业 码表ZY",required = true)
-    @NotNull(message = "原职业不能为空")
     private Long outProfession;
 
     @ApiModelProperty(value = "外出原因 码表LDYY",required = true)
-    @NotNull(message = "外出原因不能为空")
     private Long flowOutReason;
 
     @ApiModelProperty(value = "流动类型 码表LDQK",required = true)
-    @NotNull(message = "流动类型不能为空")
     private Long flowOutType;
 
     @ApiModelProperty(value = "流出范围 码表WCHY",required = true)
