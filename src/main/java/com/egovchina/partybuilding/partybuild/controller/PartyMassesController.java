@@ -58,14 +58,14 @@ public class PartyMassesController {
 
     @ApiOperation(value = "根据id查询", notes = "根据id查询")
     @ApiImplicitParam(paramType = "path", name = "id", value = "主键id", dataType = "Long", required = true)
-    @HasPermission("party_serviceCenterManagement")
+    @HasPermission({"party_serviceCenterManagement","party_partyMap"})
     @GetMapping("/{id}")
     public PartyMassesVO findByIdPartyMasses(@PathVariable("id") Long id) {
         return partyMassesService.selectById(id);
     }
 
     @ApiOperation(value = "查询列表")
-    @HasPermission("party_serviceCenterManagement")
+    @HasPermission({"party_serviceCenterManagement","party_partyMap"})
     @GetMapping
     public PageInfo<PartyMassesVO> selectList(@ApiParam(name = "党群查询实体") @Validated PartyMassesQueryBean partyMassesQueryBean, Page page) {
         return new PageInfo<>(partyMassesService.selectList(partyMassesQueryBean, page));
@@ -73,7 +73,7 @@ public class PartyMassesController {
 
     @ApiOperation(value = "党群列表", notes = "根据父id获取组织列表", httpMethod = "GET")
     @ApiImplicitParam(value = "父id", name = "parentId", dataType = "long", paramType = "path", required = true)
-    @HasPermission("party_serviceCenterManagement")
+    @HasPermission({"party_serviceCenterManagement","party_partyMap"})
     @GetMapping("/parent/{parentId}")
     public List<PartyMassesTree> getPartyMassesListByOrgParentId(@PathVariable Long parentId) {
         return partyMassesService.getPartyMassesListByOrgParentId(parentId);
