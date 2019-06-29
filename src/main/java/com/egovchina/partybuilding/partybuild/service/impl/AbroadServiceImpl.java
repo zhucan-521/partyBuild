@@ -106,7 +106,7 @@ public class AbroadServiceImpl implements AbroadService {
         //查询编辑前出国信息
         TabPbAbroad tabPbAbroadbefore = tabPbAbroadMapper.selectByPrimaryKey(abroadDTO.getAbroadId());
         //如果出国时间改变就改变历史党员信息
-        if (tabPbAbroadbefore != null && tabPbAbroadbefore.getAbroadDate().compareTo(abroadDTO.getAbroadDate()) != 0) {
+        if (tabPbAbroadbefore != null && tabPbAbroadbefore.getReturnDate() == null) {
             UpdateHistoryDTO deletePartyMemberDTO = new UpdateHistoryDTO()
                     .setUserId(abroadDTO.getUserId()).setOutType(OUT_TYPE).setQuitType(QUIT_TYPE)
                     .setReduceTime(tabPbAbroad.getAbroadDate()).setMemberReduceId(tabPbMemberReduceListMapper.selectMemberIdByAbroadId(abroadDTO.getAbroadId()));
