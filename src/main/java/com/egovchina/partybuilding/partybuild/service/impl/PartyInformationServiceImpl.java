@@ -380,7 +380,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             List<MembershipVO> membershipVOListByCondition = partyMembershipServiceImpl.getMembershipVOListByCondition(sys.getUserId(), new Page());
             if (membershipVOListByCondition != null && membershipVOListByCondition.size() > 0) {
                 //改变就新增党籍信息
-                if (membershipVOListByCondition.get(0).getType() != transform(sys.getRegistryStatus())) {
+                if (!membershipVOListByCondition.get(0).getType().equals(transform(sys.getRegistryStatus()))) {
                     MembershipDTO membershipDTO = new MembershipDTO();
                     //添加一条党籍
                     membershipDTO.setUserId(sys.getUserId()).setIdentityType(sys.getIdentityType()).setType(transform(sys.getRegistryStatus()));
@@ -388,7 +388,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 }
             } else {
                 //不考虑membershipVOListByCondition为null,不存在null
-                if (membershipVOListByCondition.size() == 0) {
+                if (sys.getRegistryStatus() != null) {
                     //数据库党籍没记录,直接新增党籍信息
                     MembershipDTO membershipDTO = new MembershipDTO();
                     //添加一条党籍
