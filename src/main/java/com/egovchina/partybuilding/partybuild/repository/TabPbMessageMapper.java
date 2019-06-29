@@ -1,15 +1,10 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
-import com.egovchina.partybuilding.partybuild.entity.StationNewsQueryBean;
-import com.egovchina.partybuilding.partybuild.entity.TabPbMessageReceive;
-import com.egovchina.partybuilding.partybuild.entity.TabPbMessageSend;
-import com.egovchina.partybuilding.partybuild.entity.TabPbParticipant;
+import com.egovchina.partybuilding.partybuild.entity.*;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -162,8 +157,7 @@ public interface TabPbMessageMapper {
     /**
      * 更新接受状态未0
      *
-     *
-     * @param sendIds 消息ids
+     * @param sendIds    消息ids
      * @param receiverId 接收者id
      * @return
      */
@@ -178,6 +172,7 @@ public interface TabPbMessageMapper {
 
     /**
      * 获取消息内容
+     *
      * @param id 字典id
      * @return
      */
@@ -185,6 +180,7 @@ public interface TabPbMessageMapper {
 
     /**
      * 查询前一天是否有活动存在
+     *
      * @param
      * @return
      */
@@ -192,12 +188,14 @@ public interface TabPbMessageMapper {
 
     /**
      * 查询前一天的活动id跟orgid
+     *
      * @return
      */
     List<ActivityVO> selectByActivityVO();
 
     /**
      * 查询前一天活动的快照
+     *
      * @param activitiesId
      * @return
      */
@@ -205,6 +203,7 @@ public interface TabPbMessageMapper {
 
     /**
      * 获取活动已经存在的人
+     *
      * @param activitiesId
      * @return
      */
@@ -212,9 +211,10 @@ public interface TabPbMessageMapper {
 
     /**
      * 添加人员
+     *
      * @param tabPbParticipant
      */
-    void addPersonnel(TabPbParticipant tabPbParticipant);
+    int addPersonnel(TabPbParticipant tabPbParticipant);
 
     /**
      * 提醒党员参加月份活动
@@ -232,14 +232,40 @@ public interface TabPbMessageMapper {
 
     /**
      * 提醒党员参加年度活动
+     *
      * @return
      */
     List<ParticipateInTheActivityVO> selectParticipateInTheActivityVOByYear();
 
     /**
      * 获取消息提醒时间
+     *
      * @return
      */
     String selectActivityRemindDateIfEqualNow(Long id);
+
+    /**
+     * 查询前天已完成的党群活动
+     *
+     * @param excludeJoined 是否排除参加的人
+     * @return
+     */
+    List<PartyMassesActivitySnapshotVO> selectFinishedPartyMassesActivity(@Param("excludeJoined") boolean excludeJoined);
+
+    /**
+     * 批量修改党群活动快照
+     *
+     * @param list
+     * @return
+     */
+    int batchUpdateSnapshot(List<TabPbPartyMassesActivity> list);
+
+    /**
+     * 批量新增党群活动未参与人
+     *
+     * @param tabPbPartyMassesParticipantList 党群活动未参加人
+     * @return
+     */
+    int batchInsertPartyMassesActivityParticipant(List<TabPbPartyMassesParticipant> tabPbPartyMassesParticipantList);
 
 }

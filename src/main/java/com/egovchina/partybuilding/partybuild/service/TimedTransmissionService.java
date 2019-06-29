@@ -34,5 +34,16 @@ public interface TimedTransmissionService {
     /**
      * 定时添加人
      */
-    void  addPeople();
+    int  addPeople();
+
+    /**
+     * 党群活动结束后添加参与人快照
+     */
+    int addPartyMassesActivitySnapshot();
+
+    /**
+     * 党群活动结束后添加未参与人到活动参与人表
+     */
+    int addPartyMassesActivityParticipant();
+
 }

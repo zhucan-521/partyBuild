@@ -114,4 +114,9 @@ public class TabPbPartyMassesActivity {
      */
     private String content;
 
+    /**
+     *待参与人的快照
+     */
+    private String candidateMemberSnapshot;
+
 }
