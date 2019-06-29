@@ -345,12 +345,12 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
     }
 
     /**
-     * 添加前一天党群活动所有应参与人快照
+     * 定时添加前一天党群活动所有应参与人快照
      */
     @Scheduled(cron = "0 10 0 * * *")
     @Override
     public int addPartyMassesActivitySnapshot() {
-        log.info("Scheduled occur , Event at 党群活动前一天添加参与人快照");
+        log.info("Scheduled occur , Event at 定时添加前一天党群活动所有应参与人快照");
 
         int retVal = 0;
         List<TabPbPartyMassesActivity> unJoinedParticipantList = new ArrayList<>();
@@ -371,12 +371,12 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
     }
 
     /**
-     * 定时添加前一党群活动未参加的人
+     * 定时添加前一天党群活动未参加的人
      */
     @Scheduled(cron = "0 20 0 * * *")
     @Override
     public int addPartyMassesActivityParticipant() {
-        log.info("Scheduled occur , Event at 定时添加前一天的活动未参加的人");
+        log.info("Scheduled occur , Event at 定时添加前一天党群活动未参加的人");
 
         int retVal = 0;
         List<TabPbPartyMassesParticipant> unJoinedParticipantList = new ArrayList<>();
