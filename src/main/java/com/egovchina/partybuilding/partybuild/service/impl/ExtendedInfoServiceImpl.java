@@ -81,7 +81,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
     private final Long OTHERTREATMENTOFPARTYMEMBERSHIP = 59579L;
 
     //停止党籍处理
-    private final Long STOPPARTYPROCESSING = 19583L;
+    private final Long STOPPARTYPROCESSING = 59583L;
     //党籍死亡处理类型
     private final Long PARTYDEATHTREATMENT = 59581L;
 
@@ -127,6 +127,14 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         setPartyStatus(membershipDTO, reduce.getOutType(), user);
         int flag = tabSysUserMapper.updateByPrimaryKeySelective(user);
         if (flag > 0) {
+            //如果出党方式为出国出境
+            if (reduce.getWhetherThisClass() && GOINGABROAD.equals(reduce.getQuitType())) {
+                TabPbAbroad tabPbAbroad = new TabPbAbroad().setUserId(sysUser.getUserId()).setOrgId(sysUser.getDeptId()).setAbroadDate(reduce.getReduceTime());
+                PaddingBaseFieldUtil.paddingBaseFiled(tabPbAbroad);
+                flag += tabPbAbroadMapper.insertSelective(tabPbAbroad);
+                //关联出国出境
+                reduce.setAbroadId(tabPbAbroad.getAbroadId());
+            }
             TabPbMemberReduceList tabPbMemberReduceList =
                     BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(reduce, TabPbMemberReduceList.class, false);
             //新增历史党员
@@ -134,12 +142,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
             tabPbMemberReduceList.setRealName(sysUser.getRealname());
             PaddingBaseFieldUtil.paddingBaseFiled(tabPbMemberReduceList);
             flag += reduceListMapper.insertSelective(tabPbMemberReduceList);
-            //如果出党方式为出国出境
-            if (reduce.getWhetherThisClass() && GOINGABROAD.equals(reduce.getQuitType())) {
-                TabPbAbroad tabPbAbroad = new TabPbAbroad().setUserId(sysUser.getUserId()).setOrgId(sysUser.getDeptId()).setAbroadDate(reduce.getReduceTime());
-                PaddingBaseFieldUtil.paddingBaseFiled(tabPbAbroad);
-                flag += tabPbAbroadMapper.insertSelective(tabPbAbroad);
-            }
+
             //判断是否为党小组组长
             if (tabPbPartyGroupMemberMapper.isLeaderByUserId(sysUser.getUserId())) {
                 throw new BusinessDataCheckFailException("请先移除该党员党小组组长的身份");
@@ -157,7 +160,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public int restoreUser(Long userId) {
+    public int restoreUser(Long userId, Date restoreTime) {
         //修改党员减少表
         TabPbMemberReduceList reduceList = reduceListMapper.selectByUserId(userId);
         if (reduceList == null) {
@@ -169,10 +172,13 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         }
         //设置无效状态
         reduceList.setEblFlag(CommonConstant.STATUS_NOEBL);
+        //设置恢复时间
+        reduceList.setRecoveryTime(restoreTime == null ? new Date() : restoreTime);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(reduceList);
         //更新历史党员表
         int num = reduceListMapper.updateByPrimaryKeySelective(reduceList);
         //如果出党方式为出国出境
+        String reduceReason = null;
         if (GOINGABROAD.equals(reduceList.getQuitType())) {
             //设置其回国
             TabPbAbroad tabPbAbroad = new TabPbAbroad();

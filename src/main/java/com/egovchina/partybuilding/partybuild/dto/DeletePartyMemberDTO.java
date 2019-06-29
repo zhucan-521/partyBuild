@@ -33,4 +33,6 @@ public class DeletePartyMemberDTO {
     @JsonIgnore
     private Boolean whetherThisClass = true;
 
+    @JsonIgnore
+    private Long abroadId;
 }

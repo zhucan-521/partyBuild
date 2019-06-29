@@ -6,6 +6,8 @@ import com.egovchina.partybuilding.partybuild.dto.UpdateHistoryDTO;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageInfo;
 
+import java.util.Date;
+
 /**
  * liu tang gang
  */
@@ -27,7 +29,7 @@ public interface ExtendedInfoService {
      * @param userId 党员id
      * @return
      */
-    int restoreUser(Long userId);
+    int restoreUser(Long userId, Date restoreTime);
 
     /**
      * 查询党员详细信息
@@ -44,6 +46,7 @@ public interface ExtendedInfoService {
      * @return
      */
     PartyMemberDetailVO selectPartyDetailById(Long userId);
+
     /**
      * 党员失效,改变是否有效状态
      *

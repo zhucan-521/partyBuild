@@ -110,40 +110,6 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         PageHelper.startPage(page);
         //查历史党员
         List<HistoryPartyVO> historyPartyVO = reduceListMapper.selectPartyHistoryList(queryBean);
-        PageHelper.startPage(page);
-        //用于查询以前历史党员记录
-        List<MemberReducesVO> memberReducesVO = reduceListMapper.selectInvalidPartyHistoryList(queryBean);
-        //计算党龄
-        for (int i = 0; i < historyPartyVO.size(); i++) {
-            //理论党龄 (加入党组织时间-当前减少时间 因为偏差问题返回月份)
-            Integer age = historyPartyVO.get(i).getPartyStanding();
-            if (age != null) {
-                //党龄减去以前党员减少的情况
-                if (memberReducesVO != null && memberReducesVO.size() > 0) {
-                    for (int j = 0; j < memberReducesVO.size(); j++) {
-                        if (memberReducesVO.get(j) != null && memberReducesVO.get(j).getUserId() != null) {
-                            if (memberReducesVO.get(j).getUserId().equals(historyPartyVO.get(i).getUserId())) {
-                                if (memberReducesVO.get(j).getAge() != null) {
-                                    //党龄为负数逻辑控制
-                                    if (age - memberReducesVO.get(j).getAge() <= 0) {
-                                        age = 0;
-                                        break;
-                                    } else {
-                                        age -= memberReducesVO.get(j).getAge();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                //计算年,未满一年 不计算
-                age = age / 12;
-            } else {
-                age = 0;
-            }
-            //设置真实党龄
-            historyPartyVO.get(i).setPartyStanding(age);
-        }
         return new PageInfo<>(historyPartyVO);
     }
 
@@ -406,6 +372,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 }
                 sortPartyWorkDTO(null, sys, true);
             }
+
             effected += tabSysUserMapper.updateByPrimaryKeySelectiveSpecialModification(sys);
             return effected;
         }
@@ -826,19 +793,18 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         }
         if (reDeptId != null) {
             //无错误
-            if(error.length()<=0){
+            if (error.length() <= 0) {
                 //改变excel的值
                 row[3] = reDeptId.toString();
             }
 
         }
         if (unit != null) {
-            if(error.length()<=0){
+            if (error.length() <= 0) {
                 //改变excel的值
                 row[8] = unit.toString();
             }
         }
         return error.toString();
     }
-
 }

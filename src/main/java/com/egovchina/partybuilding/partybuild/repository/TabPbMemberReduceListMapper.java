@@ -35,9 +35,9 @@ public interface TabPbMemberReduceListMapper {
     int updateByPrimaryKeySelective(TabPbMemberReduceList record);
 
     /**
-     * 通过userId查询出国Id
+     * 通过出国id查询减少党员id
      */
-    Long selectMemberIdByUserId(Long userId);
+    Long selectMemberIdByAbroadId(Long selectMemberIdByAbroadId);
 
     /**
      * 用于维护修改时出党方式为空不修改
@@ -64,18 +64,18 @@ public interface TabPbMemberReduceListMapper {
     List<HistoryPartyVO> selectPartyHistoryList(HistoricalPartyMemberQueryBean record);
 
     /**
-     * 查询以前成为历史党员的,用于算党龄
-     *
-     * @param record
-     * @return
-     */
-    List<MemberReducesVO> selectInvalidPartyHistoryList(HistoricalPartyMemberQueryBean record);
-
-    /**
      * 查看单个历史党员
      *
      * @param userId
      * @return
      */
     HistoryPartyVO selectHistoryPartyVOByUserId(Long userId);
+
+    /**
+     * 通过id查询字典值
+     *
+     * @param type
+     * @return
+     */
+    String selectDictName(Long type);
 }
