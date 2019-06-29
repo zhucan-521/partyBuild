@@ -67,4 +67,8 @@ public class  TabPbMemberReduceList {
     private String personStatus;
 
     private String orgRange;
+
+    private Long abroadId;
+
+    private Date recoveryTime;
 }

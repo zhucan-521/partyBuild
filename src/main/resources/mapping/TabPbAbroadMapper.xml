@@ -119,7 +119,7 @@
         where abroad_id = #{abroadId,jdbcType=BIGINT}
     </select>
 
-    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbAbroad">
+    <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbAbroad" useGeneratedKeys="true" keyProperty="abroadId">
         insert into tab_pb_abroad
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="orgId != null">

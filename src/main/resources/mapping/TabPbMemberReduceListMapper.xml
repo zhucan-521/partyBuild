@@ -48,12 +48,11 @@
             resultMap="com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper.History_UserInfo">
         select
         r.member_reduce_id,r.user_id,u.registry_status,u.realname,u.id_card_no,u.gender,u.nation,r.dept_id
-        ,d.name as in_where_dept_name,TIMESTAMPDIFF(month,
-        DATE_FORMAT(u.join_org_time,'%Y-%m-%d'),DATE_FORMAT(r.reduce_time,'%Y-%m-%d')) AS
+        ,d.name as in_where_dept_name,joinOrgTime2PartyAge(r.user_id) AS
         age,r.update_time,r.reduce_time,r.out_type,r.quit_type
         from tab_pb_member_reduce_list r
-        JOIN sys_user u on r.user_id = u.user_id
-        JOIN sys_dept d on r.dept_id = d.dept_id
+        left  JOIN sys_user u on r.user_id = u.user_id
+        inner JOIN sys_dept d on r.dept_id = d.dept_id
         where
         r.ebl_flag = '1'
         and r.del_flag ='0'
@@ -84,36 +83,6 @@
         </if>
         ORDER BY r.update_time DESC
     </select>
-    <!--用于查询以前成为历史党员的记录-->
-    <select id="selectInvalidPartyHistoryList"
-            parameterType="com.egovchina.partybuilding.partybuild.entity.HistoricalPartyMemberQueryBean"
-            resultType="com.egovchina.partybuilding.partybuild.vo.MemberReducesVO">
-        select
-        r.user_id,TIMESTAMPDIFF(month, DATE_FORMAT(r.reduce_time,'%Y-%m-%d') ,DATE_FORMAT(r.update_time,'%Y-%m-%d')) AS
-        age
-        from tab_pb_member_reduce_list r
-        JOIN sys_user u on r.user_id = u.user_id
-        JOIN sys_dept d on r.dept_id = d.dept_id
-        where r.ebl_flag = '0'
-        and r.del_flag ='0'
-        <if test="orgRange != null and orgRange != '' and deptId != null">
-            <choose>
-                <when test="orgRange == 1">
-                    AND (d.dept_id = #{deptId} OR d.parent_id = #{deptId})
-                </when>
-                <when test="orgRange == 2">
-                    AND d.org_inner_code like concat((select org_inner_code from sys_dept innerd where innerd.dept_Id = #{deptId}), '%')
-                </when>
-                <when test="orgRange == 3">
-                    AND d.dept_id = #{deptId}
-                </when>
-            </choose>
-        </if>
-        <if test="(orgRange == null or orgRange=='') and deptId != null ">
-            AND r.dept_id = #{deptId}
-        </if>
-        ORDER BY r.update_time DESC
-    </select>
 
     <select id="selectByUserId" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
         SELECT
@@ -138,6 +107,9 @@
         and r.del_flag ='0'
         ORDER BY r.update_time DESC LIMIT 1
     </select>
+    <select id="selectDictName" parameterType="java.lang.Long" resultType="java.lang.String">
+            select label from sys_dict where id=#{type}
+    </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>
@@ -148,8 +120,8 @@
         and del_flag='0'
         and ebl_flag='1'
     </select>
-    <select id="selectMemberIdByUserId" parameterType="java.lang.Long" resultType="java.lang.Long">
-          select  member_reduce_id from tab_pb_member_reduce_list where user_id =#{userId}  and ebl_flag='1' and del_flag='0' ORDER BY update_time desc  limit 1
+    <select id="selectMemberIdByAbroadId" parameterType="java.lang.Long" resultType="java.lang.Long">
+          select  member_reduce_id from tab_pb_member_reduce_list where abroad_id =#{abroadId}  and ebl_flag='1' and del_flag='0'
     </select>
 
     <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
@@ -236,6 +208,9 @@
             <if test="personStatus != null">
                 person_status,
             </if>
+            <if test="abroadId != null">
+                abroad_id,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="memberReduceId != null">
@@ -318,6 +293,9 @@
             </if>
             <if test="personStatus != null">
                 #{personStatus,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="abroadId != null">
+                #{abroadId,jdbcType=BIGINT},
             </if>
         </trim>
     </insert>
@@ -402,6 +380,9 @@
             </if>
             <if test="personStatus != null">
                 person_status = #{personStatus,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="recoveryTime != null" >
+                recovery_time =#{recoveryTime,jdbcType=TIMESTAMP}
             </if>
         </set>
         where member_reduce_id = #{memberReduceId,jdbcType=BIGINT}

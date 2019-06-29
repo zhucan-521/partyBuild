@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetAndCopyProperties;
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
@@ -72,7 +74,7 @@ public class AbroadServiceImpl implements AbroadService {
             // 移到历史党员
             DeletePartyMemberDTO deletePartyMemberDTO = new DeletePartyMemberDTO()
                     .setUserId(userId).setOutType(OUT_TYPE).setQuitType(QUIT_TYPE)
-                    .setReduceTime(tabPbAbroad.getAbroadDate()).setWhetherThisClass(false);
+                    .setReduceTime(tabPbAbroad.getAbroadDate()).setWhetherThisClass(false).setAbroadId(tabPbAbroad.getAbroadId());
             result += extendedInfoService.invalidByUserId(deletePartyMemberDTO);
         }
         return result;
@@ -91,7 +93,7 @@ public class AbroadServiceImpl implements AbroadService {
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbAbroad);
         int result = tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
         if (result > 0) {
-            result += recoveryIdentity(tabPbAbroadMapper.selectByPrimaryKey(abroadId).getUserId());
+            result += recoveryIdentity(tabPbAbroadMapper.selectByPrimaryKey(abroadId).getUserId(), null);
         }
         return result;
     }
@@ -107,11 +109,9 @@ public class AbroadServiceImpl implements AbroadService {
         if (tabPbAbroadbefore != null && tabPbAbroadbefore.getAbroadDate().compareTo(abroadDTO.getAbroadDate()) != 0) {
             UpdateHistoryDTO deletePartyMemberDTO = new UpdateHistoryDTO()
                     .setUserId(abroadDTO.getUserId()).setOutType(OUT_TYPE).setQuitType(QUIT_TYPE)
-                    .setReduceTime(tabPbAbroad.getAbroadDate()).setMemberReduceId(tabPbMemberReduceListMapper.selectMemberIdByUserId(abroadDTO.getUserId()));
+                    .setReduceTime(tabPbAbroad.getAbroadDate()).setMemberReduceId(tabPbMemberReduceListMapper.selectMemberIdByAbroadId(abroadDTO.getAbroadId()));
             extendedInfoService.updateHistoryParty(deletePartyMemberDTO);
-
         }
-
         return tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
     }
 
@@ -125,7 +125,7 @@ public class AbroadServiceImpl implements AbroadService {
          **/
         int result = tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
         if (result > 0) {
-            result += recoveryIdentity(userId);
+            result += recoveryIdentity(userId, returnAbroadDTO.getReturnDate());
         }
         return result;
     }
@@ -166,10 +166,10 @@ public class AbroadServiceImpl implements AbroadService {
      * @auther FanYanGen
      * @date 2019-05-15 11:12
      */
-    private int recoveryIdentity(Long userId) {
+    private int recoveryIdentity(Long userId, Date restoreTime) {
         int result = 0;
         // 从历史党员中恢复
-        result += extendedInfoService.restoreUser(userId);
+        result += extendedInfoService.restoreUser(userId, restoreTime);
         // 恢复到党小组
         TabPbPartyGroupMember tabPbPartyGroupMember = new TabPbPartyGroupMember().setUserId(userId).setDelFlag(0);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbPartyGroupMember);
