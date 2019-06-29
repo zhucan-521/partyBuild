@@ -64,6 +64,9 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @Autowired
     private TabPbUnitInfoMapper tabPbUnitInfoMapper;
 
+    @Autowired
+    ExtendedInfoServiceImpl extendedInfoServiceImpl;
+
     //长沙市组织id
     private final String ORG_ID = "14307";
 
@@ -174,8 +177,9 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 }
                 MembershipDTO membershipDTO = new MembershipDTO();
                 //添加一条党籍
-                membershipDTO.setUserId(sys.getUserId()).setIdentityType(sys.getIdentityType()).setType(sys.getRegistryStatus());
+                membershipDTO.setUserId(sys.getUserId()).setIdentityType(sys.getIdentityType()).setType(transform(sys.getRegistryStatus()));
                 effected += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
+
                 return effected;
             }
             throw new BusinessDataCheckFailException("该手机号码已存在");
@@ -372,7 +376,26 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 }
                 sortPartyWorkDTO(null, sys, true);
             }
-
+            //判断党籍是否发生改变
+            List<MembershipVO> membershipVOListByCondition = partyMembershipServiceImpl.getMembershipVOListByCondition(sys.getUserId(), new Page());
+            if (membershipVOListByCondition != null && membershipVOListByCondition.size() > 0) {
+                //改变就新增党籍信息
+                if (membershipVOListByCondition.get(0).getType() != transform(sys.getRegistryStatus())) {
+                    MembershipDTO membershipDTO = new MembershipDTO();
+                    //添加一条党籍
+                    membershipDTO.setUserId(sys.getUserId()).setIdentityType(sys.getIdentityType()).setType(transform(sys.getRegistryStatus()));
+                    effected += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
+                }
+            } else {
+                //不考虑membershipVOListByCondition为null,不存在null
+                if (membershipVOListByCondition.size() == 0) {
+                    //数据库党籍没记录,直接新增党籍信息
+                    MembershipDTO membershipDTO = new MembershipDTO();
+                    //添加一条党籍
+                    membershipDTO.setUserId(sys.getUserId()).setIdentityType(sys.getIdentityType()).setType(transform(sys.getRegistryStatus()));
+                    effected += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
+                }
+            }
             effected += tabSysUserMapper.updateByPrimaryKeySelectiveSpecialModification(sys);
             return effected;
         }
@@ -807,4 +830,39 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         }
         return error.toString();
     }
+
+    /**
+     * 党籍状态码值转化为党籍处理码值
+     *
+     * @param status
+     * @return
+     */
+    public static Long transform(Long status) {
+        Long partyProcessing = null;
+        if (status == null) {
+            throw new BusinessDataCheckFailException("党籍状态不能为空");
+        }
+        //党籍为正式或预备  党籍处理为登记 其他参照码值DJZT DJCL进行对比
+        if (status == 59325L || status == 59326L) {
+            partyProcessing = 59584L;
+        } else if (status == 59327L) {
+            partyProcessing = 59581L;
+        } else if (status == 59328L) {
+            partyProcessing = 59583L;
+        } else if (status == 59329L) {
+            partyProcessing = 59582L;
+        } else if (status == 59585L) {
+            partyProcessing = 59579L;
+        }
+        return partyProcessing;
+    }
+
+//    //如果新增党员为历史党员进行业务关联操作 TODO
+//    public void specialOperation(Long status){
+//        if(status==59327L||status==59328L||status==59329L||status==59585L){
+//            DeletePartyMemberDTO deletePartyMemberDTO =new DeletePartyMemberDTO();
+//            //extendedInfoServiceImpl.invalidByUserId()
+//        }
+//    }
+
 }
