@@ -98,7 +98,7 @@ public class PositiveRegisterServiceImpl implements PositiveRegisterService {
             throw new BusinessDataCheckFailException("报到撤销时间不能小于报到时间");
         }
         TabPbPositiveRegist cancelEntity = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(positiveRegisterCancelDTO, TabPbPositiveRegist.class, true);
-        tabPbPositiveRegist.setRevokeTag(CANCELED);
+        cancelEntity.setRevokeTag(CANCELED);
         int judgment = tabPbPositiveRegistMapper.updateById(cancelEntity);
         if (judgment > 0) {
             Long userId = tabPbPositiveRegist.getUserId();
