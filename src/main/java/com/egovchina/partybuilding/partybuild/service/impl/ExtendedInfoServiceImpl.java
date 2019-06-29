@@ -48,45 +48,49 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
     private TabPbPartyGroupMemberMapper tabPbPartyGroupMemberMapper;
 
     //停止党籍 党籍状态
-    private final Long STOP_PARTY_MEMBERSHIP = 59328L;
+    private static final Long STOP_PARTY_MEMBERSHIP = 59328L;
 
     // 停止党籍减少方式
-    private final Long STOP_PARTY_REDUCTION = 59591L;
+    private static final Long STOP_PARTY_REDUCTION = 59591L;
 
     //出党 减少方式
-    private final Long OUT_OF_THE_PARTY = 59590L;
+    private static final Long OUT_OF_THE_PARTY = 59590L;
 
     //出党 党籍状态
-    private final Long PARTY_MEMBERSHIP_STATUS = 59329L;
+    private static final Long PARTY_MEMBERSHIP_STATUS = 59329L;
 
     //死亡 减少方式
-    private final Long DEATH_REDUCTION_METHOD = 59592L;
+    private static final Long DEATH_REDUCTION_METHOD = 59592L;
 
     //死亡 党籍状态
-    private final Long DEATH_PARTY_STATUS = 59327L;
+    private static final Long DEATH_PARTY_STATUS = 59327L;
 
     //其他方式减少 党籍状态
-    private final Long OTHER_WAYS_TO_REDUCE_PARTY_STATUS = 59585L;
+    private static final Long OTHER_WAYS_TO_REDUCE_PARTY_STATUS = 59585L;
 
     //开除党籍 出党方式
-    private final Long DISMISSAL_OF_PARTY_MEMBERSHIP = 30019L;
+    private static final Long DISMISSAL_OF_PARTY_MEMBERSHIP = 30019L;
 
     //正式党员 党籍状态
-    private final Long OFFICIAL_PARTY_MEMBER = 59325L;
+    private static final Long OFFICIAL_PARTY_MEMBER = 59325L;
 
     //出党方式为出国出境
-    private final Long GOINGABROAD = 59624L;
+    private static final Long GOINGABROAD = 59624L;
 
     //党籍其他处理
-    private final Long OTHERTREATMENTOFPARTYMEMBERSHIP = 59579L;
+    private static final Long OTHERTREATMENTOFPARTYMEMBERSHIP = 59579L;
 
     //停止党籍处理
-    private final Long STOPPARTYPROCESSING = 59583L;
+    private static final Long STOPPARTYPROCESSING = 59583L;
+
     //党籍死亡处理类型
-    private final Long PARTYDEATHTREATMENT = 59581L;
+    private static final Long PARTYDEATHTREATMENT = 59581L;
 
     //党籍出党处理类型
-    private final Long PARTYMEMBERSHIPTYPE = 59582L;
+    private static final Long PARTYMEMBERSHIPTYPE = 59582L;
+
+    //党籍处理恢复
+    private static final Long REGISTRY_STATUS_RESTORE = 59580L;
 
     @Override
     public PartyMemberDetailVO selectPartyDetailById(Long userId) {
@@ -152,7 +156,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
             PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbPartyGroupMember);
             flag += tabPbPartyGroupMemberMapper.updateByPrimaryKeySelective(tabPbPartyGroupMember);
             //添加一条党籍
-            membershipDTO.setUserId(reduce.getUserId()).setIdentityType(sysUser.getIdentityType()).setType(user.getRegistryStatus());
+            membershipDTO.setUserId(reduce.getUserId()).setIdentityType(sysUser.getIdentityType());
             flag += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
         }
         return flag;
@@ -197,7 +201,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         //查询查询identity_type 只能查询党员状态为无效并且未被删除的
         Long identityType = tabSysUserMapper.selectUserByIdFindIdentity(userId);
         MembershipDTO membershipDTO = new MembershipDTO();
-        membershipDTO.setUserId(userId).setIdentityType(identityType).setType(OFFICIAL_PARTY_MEMBER);
+        membershipDTO.setUserId(userId).setIdentityType(identityType).setType(REGISTRY_STATUS_RESTORE);
         //新增党籍
         num += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
         //党员状态设置有效
@@ -291,11 +295,11 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         //如果出党方式未修改不修改党籍分别考虑null情况 防止空指针
         if (updateHistoryDTO.getQuitType() != null) {
             if (!updateHistoryDTO.getQuitType().equals(tabPbMemberReduceList1.getQuitType())) {
-                updatePartyMembership(tabPbMemberReduceList1.getUserId(), user.getRegistryStatus(), membershipDTO);
+                updatePartyMembership(tabPbMemberReduceList1.getUserId(), membershipDTO.getType(), membershipDTO);
             }
         } else if (tabPbMemberReduceList1.getQuitType() != null) {
             if (!tabPbMemberReduceList1.getQuitType().equals(updateHistoryDTO.getQuitType())) {
-                updatePartyMembership(tabPbMemberReduceList1.getUserId(), user.getRegistryStatus(), membershipDTO);
+                updatePartyMembership(tabPbMemberReduceList1.getUserId(), membershipDTO.getType(), membershipDTO);
             }
         }
         return flag;
