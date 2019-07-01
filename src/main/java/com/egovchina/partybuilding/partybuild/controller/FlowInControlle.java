@@ -27,7 +27,7 @@ public class FlowInControlle {
 
     @ApiOperation(value = "根据流入id获取流入党员DTO信息", notes = "根据流入id获取流入党员DTO信息", httpMethod = "GET")
     @ApiImplicitParam(value = "流入ID", name = "flowInId", paramType = "path", required = true)
-    @HasPermission(value = "party_partyFlow")
+    @HasPermission(value = "party_partyFlowIn_detail")
     @GetMapping("/{flowInId}")
     public FlowInMemberVO getFlowInMember(@PathVariable Long flowInId) {
         return flowInService.getFlowInMeberVoById(flowInId);
