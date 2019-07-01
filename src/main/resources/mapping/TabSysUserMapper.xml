@@ -434,13 +434,12 @@
             </foreach>
         </if>
         <if test="tagTypes != null and tagTypes != ''">
-            AND u.user_id IN (
-                SELECT tt.user_id FROM tab_pb_user_tag tt
-                WHERE tt.tag_type IN
-            <foreach item="item" index="index" collection="tagTypes" open="(" separator="," close=")">
-            ${item}
-        </foreach>
-            )
+            AND
+            <foreach item="item" index="index" collection="tagTypes" open="(" separator="and" close=")">
+                u.user_id IN(SELECT tt.user_id FROM tab_pb_user_tag tt
+              WHERE tt.tag_type = ${item})
+            </foreach>
+
         </if>
     </sql>
 
