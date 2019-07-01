@@ -399,7 +399,7 @@
         AND tpi.del_flag = '0'
         LEFT JOIN (
         SELECT user_id, lead_team_id, count( 1 ) AS class_num
-        FROM tab_pb_lead_team_member WHERE del_flag = 0 GROUP BY lead_team_id
+        FROM tab_pb_lead_team_member WHERE del_flag = 0 AND ebl_flag = '1' GROUP BY lead_team_id
         ) lt USING ( lead_team_id )
         LEFT JOIN (
         SELECT
