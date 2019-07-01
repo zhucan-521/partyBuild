@@ -161,7 +161,7 @@
         </if>
         <if test="domainCategory != null and '' != domainCategory">
             and
-            <foreach collection="domainCategorys" open="(" item="item" separator=" or " close=")">
+            <foreach collection="domainCategorys" open="(" item="item" separator=" and " close=")">
                 #{item} in ( select org_tag_type from tab_pb_org_tag where org_id = d.dept_id and del_flag = '0' )
             </foreach>
         </if>
