@@ -81,7 +81,7 @@
         <if test="quitType !=null and quitType != ''">
             AND r.quit_type = #{quitType}
         </if>
-        ORDER BY r.update_time DESC
+        ORDER BY r.reduce_time DESC
     </select>
 
     <select id="selectByUserId" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
