@@ -14,7 +14,7 @@ import java.util.Date;
 public class FlowOutMemberDTO {
 
     @ApiModelProperty(value = "流出党员信息ID")
-    @NotNull(message = "流出党员信息ID不能为空",groups = Update.class)
+    @NotNull(message = "流出党员信息ID不能为空", groups = Update.class)
     private Long flowOutId;
 
     @ApiModelProperty(value = "用户主键")
@@ -23,14 +23,15 @@ public class FlowOutMemberDTO {
     @ApiModelProperty(value = "用户姓名")
     private String username;
 
-    @ApiModelProperty(value = "流动证号",required = true)
+    @ApiModelProperty(value = "流动证号", required = true)
     @NotNull(message = "流动证号不能为空")
     private String flowToOrgnizeCode;
 
     @ApiModelProperty(value = "性别")
     private Long gender;
 
-    @ApiModelProperty(value = "身份证号码")
+    @ApiModelProperty(value = "身份证号码", required = true)
+    @NotNull(message = "身份证号码不能为空")
     private String idCardNo;
 
     @ApiModelProperty(value = "原职业 码表ZY")
@@ -42,11 +43,11 @@ public class FlowOutMemberDTO {
     @ApiModelProperty(value = "流动类型 码表LDQK")
     private Long flowOutType;
 
-    @ApiModelProperty(value = "流出范围 码表WCHY",required = true)
+    @ApiModelProperty(value = "流出范围 码表WCHY", required = true)
     @NotNull(message = "流出范围不能为空")
     private Long outIndustry;
 
-    @ApiModelProperty(value = "流出组织名称",required = true)
+    @ApiModelProperty(value = "流出组织名称", required = true)
     @NotNull(message = "请选择流出组织名称")
     private String flowFromOrgName;
 
@@ -63,7 +64,7 @@ public class FlowOutMemberDTO {
     @ApiModelProperty(value = "流出组织联系电话")
     private String flowFromOrgPhone;
 
-    @ApiModelProperty(value = "流入组织名称",required = true)
+    @ApiModelProperty(value = "流入组织名称", required = true)
     @NotNull(message = "请选择流入组织名称")
     private String flowToOrgName;
 
