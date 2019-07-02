@@ -108,7 +108,7 @@ public interface TabPbMessageMapper {
     int updateTabPbMessageSend(TabPbMessageSend tabPbMessageSend);
 
     /**
-     * 获取某个党员在某个组织下的消息列表
+     * 账号获取自己所管理组织的消息列表
      *
      * @param stationNewsQueryBean 查询参数
      * @return
@@ -149,10 +149,12 @@ public interface TabPbMessageMapper {
     /**
      * 显示未提醒的信息
      *
-     * @param receiverId 接收者id
+     * @param receiverId    接收者id
+     * @param rangeDeptId   消息触发组织id
+     * @param orgRange      组织范围
      * @return
      */
-    List<MessageSendVO> selectRemindedMessageVOById(Long receiverId);
+    List<MessageSendVO> selectRemindedMessageVOById(@Param("receiverId") Long receiverId, @Param("rangeDeptId") Long rangeDeptId, @Param("orgRange") Long orgRange);
 
     /**
      * 更新接受状态未0

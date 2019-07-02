@@ -161,8 +161,8 @@ public class StationNewsServiceImpl implements StationNewsService {
 
     @Transactional
     @Override
-    public List<MessageSendVO> getNotRemindedMessageVO(Long receiverId) {
-        List<MessageSendVO> messageSendVOS = tabPbMessageMapper.selectRemindedMessageVOById(receiverId);
+    public List<MessageSendVO> getNotRemindedMessageVO(Long receiverId, Long rangeDeptId, Long orgRange) {
+        List<MessageSendVO> messageSendVOS = tabPbMessageMapper.selectRemindedMessageVOById(receiverId, rangeDeptId, orgRange);
         //更新接受状态为0
         List<Long> sendIds = messageSendVOS.stream().map(MessageSendVO::getSendId).collect(Collectors.toList());
         if (CollectionUtil.isNotEmpty(sendIds)) {

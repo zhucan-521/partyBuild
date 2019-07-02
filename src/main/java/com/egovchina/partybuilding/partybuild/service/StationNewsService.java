@@ -1,7 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service;
 
-import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.dto.MessageAddDTO;
+import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.dto.MessageUpdateDTO;
 import com.egovchina.partybuilding.partybuild.entity.StationNewsQueryBean;
 import com.egovchina.partybuilding.partybuild.vo.MessageSendVO;
@@ -23,7 +23,7 @@ public interface StationNewsService {
     int batchInsertStationNews(MessageAddDTO messageAddDTO);
 
     /**
-     * 查看站内消息
+     * 查看某一个消息详情(同时更新消息接收状态)
      *
      * @param sendId 消息发送id
      * @param receiverId 消息接收者id
@@ -49,7 +49,7 @@ public interface StationNewsService {
     int batchUpdateStationNews(MessageUpdateDTO messageUpdateDTO);
 
     /**
-     * 获取某个党员在某个组织下的消息列表
+     * 账号获取自己所管理组织的消息列表
      * @param page  分页参数
      * @param stationNewsQueryBean 查询参数
      * @return
@@ -59,9 +59,11 @@ public interface StationNewsService {
     /**
      * 显示未提醒的信息
      *
-     * @param receiverId 接收者id
+     * @param receiverId    接收者id
+     * @param rangeDeptId   消息触发组织id
+     * @param orgRange      组织范围
      * @return
      */
-    List<MessageSendVO> getNotRemindedMessageVO(Long receiverId);
+    List<MessageSendVO> getNotRemindedMessageVO(Long receiverId, Long rangeDeptId, Long orgRange);
 
 }

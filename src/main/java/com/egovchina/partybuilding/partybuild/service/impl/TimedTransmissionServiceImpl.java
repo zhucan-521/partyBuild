@@ -62,8 +62,10 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
                     .setType(59680L)
                     .setTitle("系统提示")
                     .setContent(messageContentService.selectMessageContent(59686L))
-                    .setSendTime(new Date());
-            PaddingBaseFieldUtil.paddingBaseFiled(tabPbMessageSend);
+                    .setSendTime(new Date())
+                    .setCreateUserId(1L)
+                    .setCreateUsername("admin")
+                    .setCreateTime(new Date());
             tabPbMessageMapper.insertTabPbMessageSend(tabPbMessageSend);
 
             //批量插入接收者为将要到届的领导班子成员信息到接收表
@@ -73,7 +75,8 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
                 tabPbMessageReceive.setSendId(tabPbMessageSend.getSendId())
                         .setReceiverId(r.getUserId())
                         .setReceiverName(r.getRealname())
-                        .setReceiverType(PersonnelCategory.TO_USER);
+                        .setReceiverType(PersonnelCategory.TO_USER)
+                        .setTriggerOrgId(r.getOrgId());
                 tabPbMessageReceiveList.add(tabPbMessageReceive);
             });
             tabPbMessageMapper.batchInsertTabPbMessageReceive(tabPbMessageReceiveList);
@@ -104,8 +107,10 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
                         .setType(59680L)
                         .setTitle("系统提示")
                         .setContent(tempContent)
-                        .setSendTime(new Date());
-                PaddingBaseFieldUtil.paddingBaseFiled(tabPbMessageSend);
+                        .setSendTime(new Date())
+                        .setCreateUserId(1L)
+                        .setCreateUsername("admin")
+                        .setCreateTime(new Date());
                 tabPbMessageMapper.insertTabPbMessageSend(tabPbMessageSend);
 
                 //接收表插入相应数据
@@ -145,8 +150,10 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
                             .setType(59680L)
                             .setTitle("系统提示")
                             .setContent(temptContent)
-                            .setSendTime(new Date());
-                    PaddingBaseFieldUtil.paddingBaseFiled(tabPbMessageSend);
+                            .setSendTime(new Date())
+                            .setCreateUserId(1L)
+                            .setCreateUsername("admin")
+                            .setCreateTime(new Date());
                     tabPbMessageMapper.insertTabPbMessageSend(tabPbMessageSend);
 
                     //接收表插入相应数据
@@ -188,8 +195,10 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
                             .setType(59680L)
                             .setTitle("系统提示")
                             .setContent(temptContent)
-                            .setSendTime(new Date());
-                    PaddingBaseFieldUtil.paddingBaseFiled(tabPbMessageSend);
+                            .setSendTime(new Date())
+                            .setCreateUserId(1L)
+                            .setCreateUsername("admin")
+                            .setCreateTime(new Date());
                     tabPbMessageMapper.insertTabPbMessageSend(tabPbMessageSend);
 
                     //接收表插入相应数据
@@ -259,8 +268,10 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
                             .setType(59680L)
                             .setTitle("系统提示")
                             .setContent(temptContent)
-                            .setSendTime(new Date());
-                    PaddingBaseFieldUtil.paddingBaseFiled(tabPbMessageSend);
+                            .setSendTime(new Date())
+                            .setCreateUserId(1L)
+                            .setCreateUsername("admin")
+                            .setCreateTime(new Date());
                     tabPbMessageMapper.insertTabPbMessageSend(tabPbMessageSend);
 
                     //接收表插入相应数据
