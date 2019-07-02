@@ -576,7 +576,7 @@
         left JOIN sys_user ON tab_pb_flow_out.user_id = sys_user.user_id
         left JOIN sys_dept ON tab_pb_flow_out.org_id = sys_dept.dept_id
         <where>
-            tab_pb_flow_out.del_flag='0'
+            tab_pb_flow_out.del_flag='0'  AND sys_user.del_flag = '0'
             <if test="username!=null and ''!=username">
                 and sys_user.realname like concat('%',#{username},'%')
             </if>
