@@ -557,7 +557,7 @@
                     inner join sys_user u on u.dept_id = d.org_id
                 </when>
                 <otherwise>
-                    from sys_user u   force index(Idx_list_query)
+                    from sys_user u
                 </otherwise>
             </choose>
             <where>
@@ -2172,7 +2172,7 @@
                     inner join sys_user u on u.dept_id = d.org_id
                 </when>
                 <otherwise>
-                    from sys_user u force index(Idx_list_query)
+                    from sys_user u
                 </otherwise>
             </choose>
             <where>
