@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataInvalidException;
 import com.egovchina.partybuilding.common.util.CommonConstant;
@@ -19,6 +20,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -81,8 +83,21 @@ public class JointPointInfoServiceImpl implements JointPointInfoService {
      * @param linkLedaerId
      * @return
      */
+    @Transactional
     @Override
     public int delJointPointInfoByLinkLedaerId(Long linkLedaerId) {
+        TabPbLinkLeader dbTabPbLinkLeader = tabPbLinkLeaderMapper.selectByPrimaryKey(linkLedaerId);
+        if (ObjectUtils.isEmpty(dbTabPbLinkLeader)) {
+            throw new BusinessDataInvalidException("联点领导不存在");
+        }
+        SysUser sysUser = tabSysUserMapper.selectByPrimaryKey(dbTabPbLinkLeader.getUserId());
+        //调用活动服务 修改活动信息
+        ReturnEntity returnEntity =
+                lifeServiceFeignClient.updateLianDianLeadership(
+                        null, dbTabPbLinkLeader.getUserId(), sysUser.getRealname(), dbTabPbLinkLeader.getDeptId());
+        if (returnEntity.unOkResp()) {
+            throw returnEntity.exception();
+        }
         TabPbLinkLeader tabPbLinkLeader = new TabPbLinkLeader();
         tabPbLinkLeader.setLinkLedaerId(linkLedaerId);
         tabPbLinkLeader.setDelFlag(CommonConstant.STATUS_DEL);
