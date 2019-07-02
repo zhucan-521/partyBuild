@@ -1902,9 +1902,9 @@
         select * from sys_user where id_card_no =#{idCardNo} and del_flag = '0' limit 1
     </select>
 
-    <!--根据身份証查找identity信息-->
+    <!--根据用户id查找identity信息-->
     <select id="selectUserByIdFindIdentity" parameterType="java.lang.Long" resultType="java.lang.Long">
-        select identity_type from sys_user where user_id =#{user_id} and ebl_flag = '0' and del_flag ='0'
+        select identity_type from sys_user where user_id =#{user_id}
     </select>
 
     <!--通过用户名或者身份证查询用户信息-->

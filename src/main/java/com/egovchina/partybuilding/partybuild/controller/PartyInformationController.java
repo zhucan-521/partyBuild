@@ -147,10 +147,10 @@ public class PartyInformationController {
 
     @ApiOperation(value = "根据id恢复党员信息")
     @HasPermission("party_partyHistory_recovery")
-    @GetMapping("/history-members/{userId}/restorations")
-    @ApiImplicitParam(name = "userId", value = "用户id", paramType = "path", required = true, dataType = "long")
-    public ReturnEntity restoreUser(@PathVariable Long userId) {
-        return ReturnUtil.buildReturn(extendedInfoService.restoreUser(userId, null));
+    @GetMapping("/history-members/{reduceId}/restorations")
+    @ApiImplicitParam(name = "reduceId", value = "减少用户id", paramType = "path", required = true, dataType = "long")
+    public ReturnEntity restoreUser(@PathVariable Long reduceId) {
+        return ReturnUtil.buildReturn(extendedInfoService.restoreUser(reduceId, null));
     }
 
     @ApiOperation(value = "根据社区名字模糊获取社区")

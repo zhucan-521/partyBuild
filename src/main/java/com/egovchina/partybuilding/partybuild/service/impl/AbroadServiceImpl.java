@@ -93,7 +93,7 @@ public class AbroadServiceImpl implements AbroadService {
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbAbroad);
         int result = tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
         if (result > 0) {
-            result += recoveryIdentity(tabPbAbroadMapper.selectByPrimaryKey(abroadId).getUserId(), null);
+            result += recoveryIdentity(tabPbAbroadMapper.selectByPrimaryKey(abroadId).getUserId(), null, abroadId);
         }
         return result;
     }
@@ -125,7 +125,7 @@ public class AbroadServiceImpl implements AbroadService {
          **/
         int result = tabPbAbroadMapper.updateByPrimaryKeySelective(tabPbAbroad);
         if (result > 0) {
-            result += recoveryIdentity(userId, returnAbroadDTO.getReturnDate());
+            result += recoveryIdentity(userId, returnAbroadDTO.getReturnDate(), returnAbroadDTO.getAbroadId());
         }
         return result;
     }
@@ -166,10 +166,10 @@ public class AbroadServiceImpl implements AbroadService {
      * @auther FanYanGen
      * @date 2019-05-15 11:12
      */
-    private int recoveryIdentity(Long userId, Date restoreTime) {
+    private int recoveryIdentity(Long userId, Date restoreTime, Long abrodId) {
         int result = 0;
         // 从历史党员中恢复
-        result += extendedInfoService.restoreUser(userId, restoreTime);
+        result += extendedInfoService.restoreUser(tabPbMemberReduceListMapper.selectMemberIdByAbroadId(abrodId), restoreTime);
         // 恢复到党小组
         TabPbPartyGroupMember tabPbPartyGroupMember = new TabPbPartyGroupMember().setUserId(userId).setDelFlag(0);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbPartyGroupMember);

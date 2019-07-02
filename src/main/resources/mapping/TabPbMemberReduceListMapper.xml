@@ -27,6 +27,8 @@
         <result column="update_userid" jdbcType="BIGINT" property="updateUserid"/>
         <result column="update_username" jdbcType="VARCHAR" property="updateUsername"/>
         <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="recovery_time" jdbcType="TIMESTAMP" property="recoveryTime"/>
+        <result column="abroad_id" jdbcType="BIGINT" property="abroadId"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
                type="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
@@ -37,7 +39,7 @@
     member_reduce_id, dept_id, user_id, real_name, reduce_time, out_type, to_org_id, 
     to_org_code, to_org_name, to_org_place, reduce_reason, old_identity, quit_type, quit_reason, 
     ebl_flag, del_flag, order_num, description, create_time, create_userid, create_username, 
-    update_time, update_userid, update_username, version
+    update_time, update_userid, update_username, version,recovery_time,abroad_id
   </sql>
     <sql id="Blob_Column_List">
     comment, person_status
@@ -89,10 +91,8 @@
         <include refid="Base_Column_List"/>
         ,
         <include refid="Blob_Column_List"/>
-        FROM tab_pb_member_reduce_list WHERE user_id = #{userId,jdbcType=BIGINT}
-        and ebl_flag = '1'
+        FROM tab_pb_member_reduce_list WHERE member_reduce_id = #{userId,jdbcType=BIGINT}
         and del_flag = '0'
-        ORDER BY update_time DESC LIMIT 1
     </select>
     <select id="selectHistoryPartyVOByUserId" parameterType="java.lang.Long"
             resultMap="com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper.History_UserInfo">
@@ -118,10 +118,9 @@
         from tab_pb_member_reduce_list
         where member_reduce_id = #{memberReduceId,jdbcType=BIGINT}
         and del_flag='0'
-        and ebl_flag='1'
     </select>
     <select id="selectMemberIdByAbroadId" parameterType="java.lang.Long" resultType="java.lang.Long">
-          select  member_reduce_id from tab_pb_member_reduce_list where abroad_id =#{abroadId}  and ebl_flag='1' and del_flag='0'
+          select  member_reduce_id from tab_pb_member_reduce_list where abroad_id =#{abroadId}
     </select>
 
     <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbMemberReduceList">
