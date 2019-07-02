@@ -121,7 +121,6 @@
         <collection property="positivesVOList" ofType="com.egovchina.partybuilding.partybuild.vo.PositivesVO">
             <id column="positive_id" property="positiveId"/>
             <result column="positive_name" property="positiveName"/>
-            <result column="positive_name_dict" property="positiveNameDict"/>
         </collection>
     </resultMap>
 
@@ -1956,17 +1955,11 @@
             users.username,
             d.dept_id,
             d.NAME,
-            p.positive_name
+            p.positive_name ,
+            di.label
         FROM
             sys_user users
             LEFT JOIN (
-            SELECT DISTINCT
-                p.user_id,
-                p.positive_name,
-                p.org_id,
-                di.label
-            FROM
-                (
                 SELECT
                     user_id,
                     positive_name,
@@ -1974,7 +1967,9 @@
                 FROM
                     tab_pb_positives
                 WHERE
-                    del_flag = '0'UNION ALL
+                    del_flag = '0'
+                    AND user_id = #{userId}
+                    UNION
                 SELECT
                     user_id,
                     positive_id,
@@ -1983,15 +1978,14 @@
                     tab_pb_lead_team_member
                 WHERE
                     del_flag = '0'
-                ) AS p
-                LEFT JOIN sys_dict AS di ON p.positive_name = di.id
-                AND di.del_flag = '0'
+                    AND user_id = #{userId}
             ) AS p ON users.user_id = p.user_id
-            LEFT JOIN ( SELECT d.dept_id, d.NAME FROM sys_dept AS d WHERE d.del_flag = '0' ) d ON d.dept_id = users.dept_id
+            LEFT JOIN ( SELECT d.dept_id, d.NAME FROM sys_dept AS d WHERE d.del_flag = '0' AND d.ebl_flag = '1' ) d ON d.dept_id = users.dept_id
+            LEFT JOIN sys_dict AS di ON p.positive_name = di.id AND di.del_flag = '0'
         WHERE
-            users.user_id = #{userId}
-            AND users.del_flag = '0'
-            AND p.label IS NOT NULL
+            users.del_flag = '0'
+            AND users.ebl_flag = '1'
+            AND di.label IS NOT NULL
     </select>
 
     <resultMap id="dwRoleUserInfo" type="com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo">
