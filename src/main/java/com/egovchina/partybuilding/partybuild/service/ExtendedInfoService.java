@@ -26,10 +26,10 @@ public interface ExtendedInfoService {
     /**
      * 恢复党员 从历史党员重新恢复成党员
      *
-     * @param userId 党员id
+     * @param reduceId 党员id
      * @return
      */
-    int restoreUser(Long userId, Date restoreTime);
+    int restoreUser(Long reduceId, Date restoreTime);
 
     /**
      * 查询党员详细信息
