@@ -610,7 +610,7 @@
                 AND d.dept_id = #{rangeDeptId}
             </otherwise>
         </choose>
-        AND t.del_flag = '0'
+        AND t.del_flag = '0' AND s.del_flag = '0'
         order by
         t.update_time
         desc
