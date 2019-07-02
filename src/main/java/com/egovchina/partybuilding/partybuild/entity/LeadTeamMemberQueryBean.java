@@ -31,4 +31,7 @@ public class LeadTeamMemberQueryBean {
     @ApiModelProperty("状态")
     private String eblFlag;
 
+    @ApiModelProperty("联点组织id，添加联点领导时排除当前组织已经联点的领导")
+    private Long jointPointOrgId;
+
 }

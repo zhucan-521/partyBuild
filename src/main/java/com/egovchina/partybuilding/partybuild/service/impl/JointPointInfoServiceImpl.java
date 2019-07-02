@@ -3,7 +3,6 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataInvalidException;
-import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.partybuild.dto.LinkLeaderDTO;
@@ -110,7 +109,7 @@ public class JointPointInfoServiceImpl implements JointPointInfoService {
         //调用活动服务 修改活动信息
         ReturnEntity returnEntity =
                 lifeServiceFeignClient.updateLianDianLeadership(
-                        linkLeaderDTO.getActivitiesId(), linkLeaderDTO.getUserId(), linkLeaderDTO.getRealName());
+                        linkLeaderDTO.getActivitiesId(), linkLeaderDTO.getUserId(), linkLeaderDTO.getRealName(), linkLeaderDTO.getDeptId());
         if (returnEntity.unOkResp()) {
             throw returnEntity.exception();
         }
