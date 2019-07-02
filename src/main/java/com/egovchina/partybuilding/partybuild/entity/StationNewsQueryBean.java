@@ -16,6 +16,10 @@ import java.util.Date;
 @Data
 public class StationNewsQueryBean {
 
+    @ApiModelProperty(value = "接收者id(账号id)", required = true)
+    @NotNull(message = "接收者id不能为空")
+    private Long receiverId;
+
     @ApiModelProperty(value = "发送时间-开始", example = "yyyy-MM-dd")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date sendTimeStart;
@@ -30,14 +34,14 @@ public class StationNewsQueryBean {
     @ApiModelProperty("消息类别")
     private Long type;
 
+    @ApiModelProperty("是否查看 0 未读 1 已读")
+    private Byte receiveStatus;
+
     @ApiModelProperty(value = "组织id", required = true)
     @NotNull(message = "组织id不能为空")
     private Long rangeDeptId;
 
     @ApiModelProperty("组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织）")
     private Long orgRange;
-
-    @ApiModelProperty("是否查看 0 未读 1 已读")
-    private Byte receiveStatus;
 
 }

@@ -17,11 +17,11 @@
     <!--批量新增接收消息-->
     <insert id="batchInsertTabPbMessageReceive" useGeneratedKeys="true" keyProperty="receiveId" keyColumn="receive_id"
             parameterType="java.util.List">
-        INSERT IGNORE INTO tab_pb_message_receive ( send_id, receiver_id, receiver_name, receiver_type )
+        INSERT IGNORE INTO tab_pb_message_receive ( send_id, receiver_id, receiver_name, receiver_type, trigger_org_id )
         VALUES
         <foreach collection="list" item="a" separator=",">
             ( #{a.sendId, jdbcType=BIGINT}, #{a.receiverId, jdbcType=BIGINT}, #{a.receiverName, jdbcType=VARCHAR},
-            #{a.receiverType, jdbcType=BIGINT} )
+            #{a.receiverType, jdbcType=BIGINT} ), #{a.triggerOrgId, jdbcType=BIGINT}
         </foreach>
     </insert>
 
@@ -150,6 +150,7 @@
     <resultMap id="expireLeadTeamResultMap" type="com.egovchina.partybuilding.partybuild.vo.LeadTeamExpireVO">
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="realname" jdbcType="VARCHAR" property="realname"/>
+        <result column="org_id" jdbcType="VARCHAR" property="orgId"/>
     </resultMap>
 
     <!--查询要到期的领导班子-->
@@ -157,38 +158,33 @@
             resultMap="expireLeadTeamResultMap">
        SELECT
             a.user_id,
-            a.realname
+            a.realname,
+            t.org_id
         FROM
             sys_account a
             INNER JOIN sys_account_org o ON o.account_id = a.user_id
             INNER JOIN sys_dept d ON d.dept_id = o.org_id
+            INNER JOIN (
+            SELECT
+                d.org_inner_code,
+                t.org_id
+            FROM
+                tab_pb_lead_team t
+                INNER JOIN sys_dept d ON t.org_id = d.dept_id
+            WHERE
+                t.del_flag = '0'
+                AND d.del_flag = '0'
+                AND t.current = 1
+                AND (
+                    DATE_FORMAT( t.change_date, '%Y-%m-%d' ) = DATE_FORMAT( DATE_ADD( NOW( ), INTERVAL 6 MONTH ), '%Y-%m-%d' )
+                    OR DATE_FORMAT( t.change_date, '%Y-%m-%d' ) = DATE_FORMAT( DATE_ADD( NOW( ), INTERVAL 1 MONTH ), '%Y-%m-%d' )
+                )
+            ) t ON t.org_inner_code LIKE concat( d.org_inner_code, '%' )
         WHERE
             a.del_flag = '0'
             AND o.del_flag = 0
             AND d.del_flag = '0'
             AND o.`cascade` = 1
-            AND EXISTS (
-            SELECT
-                1
-            FROM
-                (
-                SELECT
-                    d.org_inner_code
-                FROM
-                    tab_pb_lead_team t
-                    INNER JOIN sys_dept d ON t.org_id = d.dept_id
-                WHERE
-                    t.del_flag = '0'
-                    AND d.del_flag = '0'
-                    AND t.current = 1
-                    AND (
-                        DATE_FORMAT( t.change_date, '%Y-%m-%d' ) = DATE_FORMAT( DATE_ADD( NOW( ), INTERVAL 6 MONTH ), '%Y-%m-%d' )
-                        OR DATE_FORMAT( t.change_date, '%Y-%m-%d' ) = DATE_FORMAT( DATE_ADD( NOW( ), INTERVAL 1 MONTH ), '%Y-%m-%d' )
-                    )
-                ) t
-            WHERE
-                t.org_inner_code LIKE concat( d.org_inner_code, '%' )
-            )
             AND NOT EXISTS (
             SELECT
                 1
@@ -203,7 +199,7 @@
             )
     </select>
 
-    <!--获取某个党员在某个组织下的消息列表-->
+    <!--账号获取自己所管理组织的消息列表-->
     <select id="selectOrgMessageSendVOList"
             resultType="com.egovchina.partybuilding.partybuild.vo.MessageSendVO">
         SELECT
@@ -219,10 +215,12 @@
             r.receiver_id AS receiverId
         FROM
             tab_pb_message_send s
-            LEFT JOIN tab_pb_message_receive r ON s.send_id = r.send_id
-            LEFT JOIN sys_dept d ON d.dept_id = r.receiver_id
+            INNER JOIN tab_pb_message_receive r ON s.send_id = r.send_id
+            INNER JOIN sys_dept d ON d.dept_id = r.trigger_org_id
         WHERE
             s.del_flag = 0
+            AND r.receiver_id = #{receiverId}
+            AND d.del_flag = '0'
             <if test="sendTimeStart != null">
                 AND date_format(s.send_time, '%Y-%m-%d') >= #{sendTimeStart}
             </if>
@@ -310,12 +308,27 @@
             r.receiver_id AS receiverId
         FROM
             tab_pb_message_send s
-            LEFT JOIN tab_pb_message_receive r ON s.send_id = r.send_id
-            LEFT JOIN sys_dept d ON d.dept_id = r.receiver_id
+            INNER JOIN tab_pb_message_receive r ON s.send_id = r.send_id
+            INNER JOIN sys_dept d ON d.dept_id = r.trigger_org_id
         WHERE
             r.receiver_id = #{receiverId}
             AND r.receive_status IS NULL
             AND s.del_flag = 0
+            AND d.del_flag = '0'
+            <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->
+            <if test="orgRange != null and orgRange != ''">
+                <choose>
+                    <when test="orgRange == 1">
+                        AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
+                    </when>
+                    <when test="orgRange == 2">
+                        AND find_in_set(#{rangeDeptId}, d.full_path)
+                    </when>
+                </choose>
+            </if>
+            <if test="orgRange == null or orgRange.toString() == ''">
+                AND d.dept_id = #{rangeDeptId}
+            </if>
         ORDER BY
             s.send_time DESC
     </select>

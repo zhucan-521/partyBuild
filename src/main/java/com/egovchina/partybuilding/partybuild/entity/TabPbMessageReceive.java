@@ -34,7 +34,7 @@ public class TabPbMessageReceive {
     private String receiverName;
 
     /**
-     * 消息接收状态，是否已读（0 未读   1 已读）
+     * 消息接收状态，是否已读（null代表没提醒 0 未读   1 已读）
      */
     private Short receiveStatus;
 
@@ -47,5 +47,10 @@ public class TabPbMessageReceive {
      * 接受类型者 0 个人 1 组织
      */
     private Long receiverType;
+
+    /**
+     * 触发组织id
+     */
+    private Long triggerOrgId;
 
 }

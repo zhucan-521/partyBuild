@@ -47,7 +47,7 @@ public class StationNewsController {
         return ReturnUtil.buildReturn(stationNewsService.batchUpdateStationNews(messageUpdateDTO));
     }
 
-    @ApiOperation(value = "党员获取在自己组织下的消息列表", notes = "党员获取在自己组织下的消息列表", httpMethod = "GET")
+    @ApiOperation(value = "账号获取自己所管理组织的消息列表", notes = "账号获取自己所管理组织的消息列表", httpMethod = "GET")
     @GetMapping("/organization")
     public PageInfo<MessageSendVO> getOrgMessageSendList(@ApiParam("分页参数") Page page, @ApiParam("查询参数") @Validated StationNewsQueryBean stationNewsQueryBean) {
         return new PageInfo<>(stationNewsService.getOrgMessageSendList(page, stationNewsQueryBean));
@@ -64,10 +64,14 @@ public class StationNewsController {
     }
 
     @ApiOperation(value = "显示未提醒的信息", notes = "显示未提醒的信息", httpMethod = "GET")
-    @ApiImplicitParam(name = "receiverId", value = "接收者id", dataType = "long", paramType = "path", required = true)
-    @GetMapping("/{receiverId}/not-remind")
-    public PageInfo<MessageSendVO> getNotRemindedMessage(@PathVariable Long receiverId) {
-        return new PageInfo<>(stationNewsService.getNotRemindedMessageVO(receiverId));
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "receiverId", value = "接收者id", dataType = "long", paramType = "path", required = true),
+            @ApiImplicitParam(name = "rangeDeptId", value = "组织id", dataType = "long", paramType = "path", required = true),
+            @ApiImplicitParam(name = "orgRange", value = "组织范围", dataType = "long", paramType = "query")
+    })
+    @GetMapping("/{receiverId}/{rangeDeptId}/not-remind")
+    public PageInfo<MessageSendVO> getNotRemindedMessage(@PathVariable Long receiverId, @PathVariable Long rangeDeptId, Long orgRange) {
+        return new PageInfo<>(stationNewsService.getNotRemindedMessageVO(receiverId, rangeDeptId, orgRange));
     }
 
 }
