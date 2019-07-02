@@ -859,12 +859,13 @@
             u.dept_id as inOrgId
         FROM
             tab_pb_administrative_division d
-            LEFT JOIN tab_pb_positive_regist r ON d.administrative_division_id = r.community_id AND r.del_flag = 0
+            INNER JOIN tab_pb_positive_regist r ON d.administrative_division_id = r.community_id
             INNER JOIN sys_user u ON u.user_id = r.user_id
         WHERE
             d.administrative_division_id = #{communityId}
-            AND d.del_flag = 0
-            AND u.del_flag = 0
+            AND d.del_flag = '0' AND d.ebl_flag = '1'
+            AND r.del_flag = '0' AND r.ebl_flag = '1'
+            AND u.del_flag = '0' AND u.ebl_flag = '1'
             <if test="excludeJoined != null and excludeJoined == true">
                 AND NOT EXISTS (SELECT
                 1
@@ -873,8 +874,8 @@
                 INNER JOIN tab_pb_party_masses_participant p ON a.party_masses_activity_id = p.party_masses_activity_id
                 WHERE
                 a.party_masses_activity_id = #{partyMassesActivityId}
-                AND a.del_flag = 0
-                AND p.del_flag = 0
+                AND a.del_flag = '0' AND a.ebl_flag = '1'
+                AND p.del_flag = '0' AND p.ebl_flag = '1'
                 AND p.user_id = u.user_id
                 )
             </if>
@@ -890,7 +891,7 @@
             tab_pb_party_masses_activity
         WHERE
             date(finished_time) = date_sub( curdate( ), INTERVAL 1 DAY )
-            AND del_flag = 0
+            AND del_flag = '0' and ebl_flag = '1'
     </select>
 
     <!--批量修改党群活动快照-->
