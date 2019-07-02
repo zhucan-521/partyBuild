@@ -65,13 +65,12 @@ public class StationNewsController {
 
     @ApiOperation(value = "显示未提醒的信息", notes = "显示未提醒的信息", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "receiverId", value = "接收者id", dataType = "long", paramType = "path", required = true),
             @ApiImplicitParam(name = "rangeDeptId", value = "组织id", dataType = "long", paramType = "path", required = true),
             @ApiImplicitParam(name = "orgRange", value = "组织范围", dataType = "long", paramType = "query")
     })
-    @GetMapping("/{receiverId}/{rangeDeptId}/not-remind")
-    public PageInfo<MessageSendVO> getNotRemindedMessage(@PathVariable Long receiverId, @PathVariable Long rangeDeptId, Long orgRange) {
-        return new PageInfo<>(stationNewsService.getNotRemindedMessageVO(receiverId, rangeDeptId, orgRange));
+    @GetMapping("/{rangeDeptId}/not-remind")
+    public PageInfo<MessageSendVO> getNotRemindedMessage(@PathVariable Long rangeDeptId, Long orgRange) {
+        return new PageInfo<>(stationNewsService.getNotRemindedMessageVO(rangeDeptId, orgRange));
     }
 
 }

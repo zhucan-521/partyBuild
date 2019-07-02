@@ -16,8 +16,7 @@ import java.util.Date;
 @Data
 public class StationNewsQueryBean {
 
-    @ApiModelProperty(value = "接收者id(账号id)", required = true)
-    @NotNull(message = "接收者id不能为空")
+    @ApiModelProperty(value = "接收者id(账号id)", hidden = true)
     private Long receiverId;
 
     @ApiModelProperty(value = "发送时间-开始", example = "yyyy-MM-dd")
