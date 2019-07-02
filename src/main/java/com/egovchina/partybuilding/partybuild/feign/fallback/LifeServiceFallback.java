@@ -16,7 +16,7 @@ import java.util.List;
 public class LifeServiceFallback implements LifeServiceFeignClient {
 
     @Override
-    public ReturnEntity updateLianDianLeadership(List<Long> activitiesId, Long userId, String realName) {
+    public ReturnEntity updateLianDianLeadership(List<Long> activitiesId, Long userId, String realName, Long deptId) {
         return ReturnUtil.fail();
     }
 }

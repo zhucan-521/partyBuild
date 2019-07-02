@@ -30,5 +30,6 @@ public interface LifeServiceFeignClient {
     @ResponseBody
     ReturnEntity updateLianDianLeadership(@RequestParam("activitiesId") List<Long> activitiesId,
                                           @RequestParam("userId") Long userId,
-                                          @RequestParam("realName") String realName);
+                                          @RequestParam("realName") String realName,
+                                          @RequestParam("deptId") Long deptId);
 }
