@@ -100,7 +100,7 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
             flowOutMemberDto.setFlowOutState(CommonConstant.FLOWED_OUT);
             sysUser.setFlowStatus(CommonConstant.FLOW);
             //添加流动标识
-            userTagService.addUserTag(sysUser.getUserId(), UserTagType.FLOW);
+            userTagService.addUserTag(userId, UserTagType.FLOW);
         }
         //流出党组织
         if (flowOutMemberDto.getOrgId() != null) {

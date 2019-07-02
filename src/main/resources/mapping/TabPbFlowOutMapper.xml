@@ -582,7 +582,7 @@
             </if>
             <if test="idCardNo != null and ''!=idCardNo">
                 and sys_user.id_card_no=#{idCardNo}
-        </if>
+            </if>
             <if test="flowOutState!=null and ''!=flowOutState">
                 and tab_pb_flow_out.flow_out_state =#{flowOutState}
             </if>
