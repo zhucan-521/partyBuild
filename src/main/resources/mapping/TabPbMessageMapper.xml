@@ -311,8 +311,7 @@
             INNER JOIN tab_pb_message_receive r ON s.send_id = r.send_id
             INNER JOIN sys_dept d ON d.dept_id = r.trigger_org_id
         WHERE
-            r.receiver_id = #{receiverId}
-            AND r.receive_status IS NULL
+            r.receive_status IS NULL
             AND s.del_flag = 0
             AND d.del_flag = '0'
             <!--组织范围  1 当前组织（包括一级下级组织）2当前组织（包含所有下级组织） -->

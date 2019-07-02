@@ -59,11 +59,10 @@ public interface StationNewsService {
     /**
      * 显示未提醒的信息
      *
-     * @param receiverId    接收者id
      * @param rangeDeptId   消息触发组织id
      * @param orgRange      组织范围
      * @return
      */
-    List<MessageSendVO> getNotRemindedMessageVO(Long receiverId, Long rangeDeptId, Long orgRange);
+    List<MessageSendVO> getNotRemindedMessageVO(Long rangeDeptId, Long orgRange);
 
 }

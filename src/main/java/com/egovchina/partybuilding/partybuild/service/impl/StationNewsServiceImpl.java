@@ -156,17 +156,18 @@ public class StationNewsServiceImpl implements StationNewsService {
     @Override
     public List<MessageSendVO> getOrgMessageSendList(Page page, StationNewsQueryBean stationNewsQueryBean) {
         PageHelper.startPage(page);
+        stationNewsQueryBean.setReceiverId(UserContextHolder.getUserId());
         return tabPbMessageMapper.selectOrgMessageSendVOList(stationNewsQueryBean);
     }
 
     @Transactional
     @Override
-    public List<MessageSendVO> getNotRemindedMessageVO(Long receiverId, Long rangeDeptId, Long orgRange) {
-        List<MessageSendVO> messageSendVOS = tabPbMessageMapper.selectRemindedMessageVOById(receiverId, rangeDeptId, orgRange);
+    public List<MessageSendVO> getNotRemindedMessageVO(Long rangeDeptId, Long orgRange) {
+        List<MessageSendVO> messageSendVOS = tabPbMessageMapper.selectRemindedMessageVOById(UserContextHolder.getUserId(), rangeDeptId, orgRange);
         //更新接受状态为0
         List<Long> sendIds = messageSendVOS.stream().map(MessageSendVO::getSendId).collect(Collectors.toList());
         if (CollectionUtil.isNotEmpty(sendIds)) {
-            tabPbMessageMapper.updateMessageTipStatusBySendIdsAndReceiverId(sendIds, receiverId);
+            tabPbMessageMapper.updateMessageTipStatusBySendIdsAndReceiverId(sendIds, UserContextHolder.getUserId());
         }
         return messageSendVOS;
     }
