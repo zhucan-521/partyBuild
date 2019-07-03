@@ -24,7 +24,7 @@ public interface HelpTeamService {
      * @param orgId
      * @return
      */
-    List<HelpTeamMemberVO> selectHelpTeamMemberVO(Long orgId);
+    List<HelpTeamMemberVO> selectHelpTeamMemberVO(Long orgId, Long teamId);
 
     /**
      * 根据主键删除

@@ -54,8 +54,12 @@ public class HelpTeamServiceImpl implements HelpTeamService {
     }
 
     @Override
-    public List<HelpTeamMemberVO> selectHelpTeamMemberVO(Long orgId) {
-        return tabPbHelpTeamMapper.selectHelpTeamMemberVO(orgId);
+    public List<HelpTeamMemberVO> selectHelpTeamMemberVO(Long orgId, Long teamId) {
+        List<HelpTeamMemberVO> helpTeamMemberVOs = tabPbHelpTeamMapper.selectHelpTeamMemberVO(orgId);
+        if (teamId != null) {
+            helpTeamMemberVOs.addAll(tabPbHelpTeamMapper.getHelpTeamVOByTeamId(teamId).getHelpTeamMemberDTOS());
+        }
+        return helpTeamMemberVOs;
     }
 
     @Override

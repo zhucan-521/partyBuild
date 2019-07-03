@@ -10,10 +10,7 @@ import com.egovchina.partybuilding.partybuild.service.HelpTeamService;
 import com.egovchina.partybuilding.partybuild.vo.HelpTeamMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.HelpTeamVO;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -67,12 +64,15 @@ public class HelpTeamController {
         return helpTeamService.getHelpTeamVOByTeamId(teamId);
     }
 
-    @ApiOperation(value = "驻村帮扶选人接口", httpMethod = "GET")
-    @ApiImplicitParam(name = "orgId", value = "组织Id", paramType = "path", required = true)
+    @ApiOperation(value = "驻村帮扶选人接口", notes = "编辑时候把teamId带上", httpMethod = "GET")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orgId", value = "组织主键", paramType = "path", required = true),
+            @ApiImplicitParam(name = "teamId", value = "队伍主键", paramType = "query")
+    })
     @HasPermission(value = "resident_assistance_work_add")
     @GetMapping("/select_member/{orgId}")
-    public List<HelpTeamMemberVO> selectHelpTeamMemberVO(@PathVariable Long orgId) {
-        return helpTeamService.selectHelpTeamMemberVO(orgId);
+    public List<HelpTeamMemberVO> selectHelpTeamMemberVO(@PathVariable Long orgId, Long teamId) {
+        return helpTeamService.selectHelpTeamMemberVO(orgId, teamId);
     }
 
 }
