@@ -1,9 +1,15 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
+import com.egovchina.partybuilding.common.dto.MessageAddDTO;
+import com.egovchina.partybuilding.common.dto.MessageReceiveDTO;
+import com.egovchina.partybuilding.common.enums.MessageTypeEnum;
+import com.egovchina.partybuilding.common.enums.ReceiverTypeEnum;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.NewsDTO;
+import com.egovchina.partybuilding.partybuild.dto.NewsReceiveDTO;
 import com.egovchina.partybuilding.partybuild.entity.NewsQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbNews;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyNewsReceive;
@@ -12,11 +18,14 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbPartyNewsReceiveMa
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.NewsService;
+import com.egovchina.partybuilding.partybuild.service.StationNewsService;
 import com.egovchina.partybuilding.partybuild.vo.NewsDetailsVO;
 import com.egovchina.partybuilding.partybuild.vo.NewsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
@@ -26,6 +35,7 @@ import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetLis
  * desc: 新闻资讯-服务接口实现
  * Created by FanYanGen on 2019-05-11 17:38
  */
+@Transactional(rollbackFor = Throwable.class)
 @Service("newsService")
 public class NewsServiceImpl implements NewsService {
 
@@ -41,16 +51,54 @@ public class NewsServiceImpl implements NewsService {
     @Autowired
     private ITabPbAttachmentService tabPbAttachmentService;
 
+    @Autowired
+    private StationNewsService stationNewsService;
+
     @Override
     public int insertNews(NewsDTO newsDTO) {
         verifyAddOrUpdate(newsDTO, true);
         TabPbNews tabPbNews = generateTargetCopyPropertiesAndPaddingBaseField(newsDTO, TabPbNews.class, false);
         int result = newsMapper.insertSelective(tabPbNews);
+        List<NewsReceiveDTO> newsReceives = newsDTO.getNewsReceives();
         Long newsId = tabPbNews.getNewsId();
+        List<TabPbPartyNewsReceive> tabPbPartyNewsReceives = generateTargetListCopyPropertiesAndPaddingBaseField(newsReceives, TabPbPartyNewsReceive.class, receive -> receive.setNewsId(newsId), false);
         if (result > 0) {
-            List<TabPbPartyNewsReceive> tabPbPartyNewsReceives = generateTargetListCopyPropertiesAndPaddingBaseField(newsDTO.getNewsReceives(), TabPbPartyNewsReceive.class, receive -> receive.setNewsId(newsId), false);
-            result += tabPbPartyNewsReceiveMapper.batchInsert(tabPbPartyNewsReceives);
+            /**
+             * 附件上传
+             */
             result += updatingFiles(newsDTO, newsId);
+
+            /**
+             * 批量发布到指定的接收组织
+             */
+            int i = tabPbPartyNewsReceiveMapper.batchInsert(tabPbPartyNewsReceives);
+            if (i > 0) {
+                /**
+                 * 批量发送站内消息
+                 */
+                MessageAddDTO messageAddDTO = new MessageAddDTO();
+                // 发送人ID
+                messageAddDTO.setSenderId(UserContextHolder.getUserId());
+                // 接受者类型 管理者账号 1L
+                messageAddDTO.setReceiverType(ReceiverTypeEnum.ACCOUNT.getReceiverType());
+                // 消息类别 党务公开 59681L
+                messageAddDTO.setType(MessageTypeEnum.OPEN_PARTY_AFFAIRS.getId());
+                // 消息标题
+                messageAddDTO.setTitle(newsDTO.getTitle());
+                // 消息内容
+                messageAddDTO.setContent("您有一条待查看的党务公开推送");
+                // 接受对象信息
+                List<MessageReceiveDTO> messageReceives = new ArrayList<>();
+                for (NewsReceiveDTO newsReceive : newsReceives) {
+                    MessageReceiveDTO messageReceiveDTO = new MessageReceiveDTO();
+                    messageReceiveDTO.setReceiverId(newsReceive.getReceiveOrgId());
+                    messageReceives.add(messageReceiveDTO);
+                }
+                messageAddDTO.setReceivers(messageReceives);
+
+                result += i;
+                result += stationNewsService.batchInsertStationNews(messageAddDTO);
+            }
         }
         return result;
     }
