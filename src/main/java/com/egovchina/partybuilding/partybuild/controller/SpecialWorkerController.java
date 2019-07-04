@@ -38,14 +38,14 @@ public class SpecialWorkerController {
         return ReturnUtil.buildReturn(specialWorkerService.insert(specialWorkerDto));
     }
 
-    @ApiOperation(value = "删除", notes = "传入specialWorkerId删除,未删除sys_user_role表里面的值")
+    @ApiOperation(value = "删除专干", notes = "传入specialWorkerId删除,未删除sys_user_role表里面的值")
     @ApiImplicitParam(name = "specialWorkerId", value = "专干主键", required = true, paramType = "path")
     @DeleteMapping("/{specialWorkerId}")
     public ReturnEntity deleteSpecialWorker(@PathVariable Long specialWorkerId) {
         return ReturnUtil.buildReturn(specialWorkerService.deleteBySpecialWorkerId(specialWorkerId));
     }
 
-    @ApiOperation(value = "条件分页查询", notes = "status为变更状态，1为在职，0为离职")
+    @ApiOperation(value = "条件分页查询专干", notes = "status为变更状态，1为在职，0为离职")
     @GetMapping
     public PageInfo<SpecialWorkerVO> getSpecialWorkerList(Page page, SpecialWorkerQueryBean specialWorkerQueryBean) {
         return specialWorkerService.getSpecialWorkerList(page, specialWorkerQueryBean);
@@ -57,7 +57,7 @@ public class SpecialWorkerController {
         return ReturnUtil.buildReturn(specialWorkerService.updateBySpecialWorkerId(specialWorkerDto));
     }
 
-    @ApiOperation(value = "详情查询根据id", notes = "详情查询根据id")
+    @ApiOperation(value = "根据id查询专干详情", notes = "根据id查询专干详情")
     @ApiImplicitParam(value = "专干主键", name = "specialWorkerId", paramType = "path", required = true)
     @GetMapping("/{specialWorkerId}")
     public SpecialWorkerVO getSpecialWorkerById(@PathVariable Long specialWorkerId) {

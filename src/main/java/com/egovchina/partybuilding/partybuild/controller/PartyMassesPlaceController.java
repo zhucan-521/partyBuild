@@ -31,21 +31,21 @@ public class PartyMassesPlaceController {
     @Autowired
     private PartyMassesPlaceService partyMassesPlaceService;
 
-    @ApiOperation(value = "添加")
+    @ApiOperation(value = "添加党群场地")
     @HasPermission("party_masses_edit")
     @PostMapping
     public ReturnEntity save(@ApiParam(name = "党群场地DTO") @RequestBody @Validated PartyMassesPlaceDTO partyMassesPlaceDTO) {
         return ReturnUtil.buildReturn(partyMassesPlaceService.save(partyMassesPlaceDTO));
     }
 
-    @ApiOperation(value = "根据id更新")
+    @ApiOperation(value = "根据id更新党群场地")
     @HasPermission("party_masses_edit")
     @PutMapping
     public ReturnEntity update(@ApiParam(name = "党群场地DTO") @RequestBody @Validated PartyMassesPlaceDTO partyMassesPlaceDTO) {
         return ReturnUtil.buildReturn(partyMassesPlaceService.updateById(partyMassesPlaceDTO));
     }
 
-    @ApiOperation(value = "根据id删除")
+    @ApiOperation(value = "根据id删除党群场地")
     @ApiImplicitParam(paramType = "path", name = "id", value = "要删除的id", dataType = "Long", required = true)
     @HasPermission("party_masses_edit")
     @DeleteMapping("/{id}")
@@ -53,7 +53,7 @@ public class PartyMassesPlaceController {
         return ReturnUtil.buildReturn(partyMassesPlaceService.deleteById(id));
     }
 
-    @ApiOperation(value = "根据id查询", notes = "根据id查询")
+    @ApiOperation(value = "根据id查询党群场地", notes = "根据id查询")
     @ApiImplicitParam(paramType = "path", name = "id", value = "主键id", dataType = "Long", required = true)
     @HasPermission({"party_serviceCenterManagement","party_masses_look"})
     @GetMapping("/{id}")
@@ -61,7 +61,7 @@ public class PartyMassesPlaceController {
         return partyMassesPlaceService.selectById(id);
     }
 
-    @ApiOperation(value = "查询列表")
+    @ApiOperation(value = "查询党群场地列表")
     @HasPermission({"party_serviceCenterManagement","party_masses_look"})
     @GetMapping
     public PageInfo<PartyMassesPlaceVO> selectList(@ApiParam(name = "党群场地查询实体") @Validated PartyMassesPlaceQueryBean partyMassesPlaceQueryBean, Page page) {

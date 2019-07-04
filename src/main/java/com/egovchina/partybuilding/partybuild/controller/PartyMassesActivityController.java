@@ -30,33 +30,33 @@ public class PartyMassesActivityController {
     @Autowired
     private PartyMassesActivityService partyMassesActivityService;
 
-    @ApiOperation(value = "添加")
+    @ApiOperation(value = "添加党群活动")
     @PostMapping
     public ReturnEntity save(@ApiParam(name = "党群活动DTO") @RequestBody @Validated PartyMassesActivityDTO partyMassesActivityDTO) {
         return ReturnUtil.buildReturn(partyMassesActivityService.save(partyMassesActivityDTO));
     }
 
-    @ApiOperation(value = "根据id更新")
+    @ApiOperation(value = "根据id更新党群活动")
     @PutMapping
     public ReturnEntity update(@ApiParam(name = "党群活动DTO") @RequestBody @Validated PartyMassesActivityDTO partyMassesActivityDTO) {
         return ReturnUtil.buildReturn(partyMassesActivityService.updateById(partyMassesActivityDTO));
     }
 
-    @ApiOperation(value = "根据id删除")
+    @ApiOperation(value = "根据id删除党群活动")
     @ApiImplicitParam(paramType = "path", name = "id", value = "要删除的id", dataType = "Long", required = true)
     @DeleteMapping("/{id}")
     public ReturnEntity deleteById(@PathVariable("id") Long id) {
         return ReturnUtil.buildReturn(partyMassesActivityService.deleteById(id));
     }
 
-    @ApiOperation(value = "根据id查询", notes = "根据id查询")
+    @ApiOperation(value = "根据id查询党群活动", notes = "根据id查询")
     @ApiImplicitParam(paramType = "path", name = "id", value = "主键id", dataType = "Long", required = true)
     @GetMapping("/{id}")
     public PartyMassesActivityVO findByIdPartyMassesActivity(@PathVariable("id") Long id) {
         return partyMassesActivityService.selectById(id);
     }
 
-    @ApiOperation(value = "查询列表")
+    @ApiOperation(value = "查询党群活动列表")
     @GetMapping
     public PageInfo<PartyMassesActivityVO> selectList(@ApiParam(name = "党群活动查询实体") @Validated PartyMassesActivityQueryBean partyMassesActivityQueryBean, Page page) {
         return new PageInfo<>(partyMassesActivityService.selectList(partyMassesActivityQueryBean, page));

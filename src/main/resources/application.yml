@@ -43,6 +43,9 @@ spring:
         - partybuilding
         service-name: partybuilding
         instance-id: partybuilding-${random.value}
+  data:
+    mongodb:
+      uri: mongodb://192.168.1.251:27017/test
 
 # mybatis-plus
 mybatis-plus:

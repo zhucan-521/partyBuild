@@ -34,21 +34,21 @@ public class PartyMassesController {
     @Autowired
     private PartyMassesService partyMassesService;
 
-    @ApiOperation(value = "添加")
+    @ApiOperation(value = "添加党群")
     @HasPermission("party_masses_add")
     @PostMapping
     public ReturnEntity save(@ApiParam(name = "党群DTO") @RequestBody @Validated PartyMassesDTO partyMassesDTO) {
         return ReturnUtil.buildReturn(partyMassesService.save(partyMassesDTO));
     }
 
-    @ApiOperation(value = "根据id更新")
+    @ApiOperation(value = "根据id更新党群")
     @HasPermission("party_masses_edit")
     @PutMapping
     public ReturnEntity update(@ApiParam(name = "党群DTO") @RequestBody @Validated PartyMassesDTO partyMassesDTO) {
         return ReturnUtil.buildReturn(partyMassesService.updateById(partyMassesDTO));
     }
 
-    @ApiOperation(value = "根据id删除")
+    @ApiOperation(value = "根据id删除党群")
     @ApiImplicitParam(paramType = "path", name = "id", value = "要删除的id", dataType = "Long", required = true)
     @HasPermission("party_masses_del")
     @DeleteMapping("/{id}")
@@ -56,7 +56,7 @@ public class PartyMassesController {
         return ReturnUtil.buildReturn(partyMassesService.deleteById(id));
     }
 
-    @ApiOperation(value = "根据id查询", notes = "根据id查询")
+    @ApiOperation(value = "根据id查询党群", notes = "根据id查询")
     @ApiImplicitParam(paramType = "path", name = "id", value = "主键id", dataType = "Long", required = true)
     @HasPermission({"party_serviceCenterManagement","party_partyMap"})
     @GetMapping("/{id}")
@@ -64,14 +64,14 @@ public class PartyMassesController {
         return partyMassesService.selectById(id);
     }
 
-    @ApiOperation(value = "查询列表")
+    @ApiOperation(value = "查询党群列表")
     @HasPermission({"party_serviceCenterManagement","party_partyMap"})
     @GetMapping
     public PageInfo<PartyMassesVO> selectList(@ApiParam(name = "党群查询实体") @Validated PartyMassesQueryBean partyMassesQueryBean, Page page) {
         return new PageInfo<>(partyMassesService.selectList(partyMassesQueryBean, page));
     }
 
-    @ApiOperation(value = "党群列表", notes = "根据父id获取组织列表", httpMethod = "GET")
+    @ApiOperation(value = "根据父id获取党群列表", notes = "根据父id获取党群列表", httpMethod = "GET")
     @ApiImplicitParam(value = "父id", name = "parentId", dataType = "long", paramType = "path", required = true)
     @HasPermission({"party_serviceCenterManagement","party_partyMap"})
     @GetMapping("/parent/{parentId}")
