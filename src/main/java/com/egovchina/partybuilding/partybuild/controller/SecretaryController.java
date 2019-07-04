@@ -62,7 +62,7 @@ public class SecretaryController {
     @ApiOperation(value = "书记列表",  httpMethod = "GET")
     @HasPermission("party_teamSecretary")
     @GetMapping
-    public PageInfo<SecretarysVO> secretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
+    public PageInfo<SecretaryMemberVO> secretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
         return new PageInfo<>(secretaryService.selectSecretaryList(secretaryMemberQueryBean, page));
     }
 
