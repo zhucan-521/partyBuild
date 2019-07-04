@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.config;
 
 import com.egovchina.partybuilding.common.config.AuthInterceptor;
+import com.egovchina.partybuilding.common.config.LogCollectionAspect;
 import com.egovchina.partybuilding.common.config.PermissionInterceptor;
 import com.egovchina.partybuilding.common.util.ExcludePathPatternBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,4 +59,10 @@ public class WebConfigurer implements WebMvcConfigurer {
         uccs.registerCorsConfiguration("/**", addCorsConfig());
         return new CorsFilter(uccs);
     }
+
+    @Bean
+    public LogCollectionAspect logCollectionAspect() {
+        return new LogCollectionAspect();
+    }
+
 }
