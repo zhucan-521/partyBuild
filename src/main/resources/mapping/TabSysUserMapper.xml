@@ -2258,4 +2258,25 @@
         SELECT * FROM sys_user WHERE user_id = #{userId} AND del_flag = '0' AND ebl_flag = '1'
     </select>
 
+    <!--根据消息接收者id查询账号个人信息-->
+    <select id="selectAccountByReceiverIdWithAccount"
+            resultType="com.egovchina.partybuilding.common.dto.MessageReceiveDTO">
+        <foreach collection = "receiverIds" item = "receiverId" separator=" UNION ALL ">
+            SELECT
+            t.dept_id AS triggerOrgId,
+            o.account_id AS receiverId,
+            a.realname AS receiverName
+            FROM
+            sys_account a
+            INNER JOIN sys_account_org o ON o.account_id = a.user_id
+            INNER JOIN sys_dept d ON d.dept_id = o.org_id
+            INNER JOIN ( SELECT d.dept_id, d.org_inner_code FROM sys_dept d WHERE d.dept_id = #{receiverId} AND d.del_flag = '0' ) t ON t.org_inner_code LIKE concat( d.org_inner_code, '%' )
+            WHERE
+            a.del_flag = '0'
+            AND o.del_flag = 0
+            AND o.`cascade` = 1
+            AND d.del_flag = '0'
+        </foreach>
+    </select>
+
 </mapper>
