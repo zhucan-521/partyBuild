@@ -55,5 +55,5 @@ public interface SecretaryService {
      * @param secretaryMemberQueryBean
      * @return
      */
-    List<SecretarysVO> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page);
+    List<SecretaryMemberVO> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page);
 }

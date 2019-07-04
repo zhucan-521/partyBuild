@@ -50,6 +50,15 @@ public interface TabPbDeptSecretaryMapper {
      * @param secretaryMemberQueryBean
      * @return
      */
-    List<SecretarysVO> selectSecretaryVOList(SecretaryMemberQueryBean secretaryMemberQueryBean);
+    List<SecretaryMemberVO> selectSecretaryVOList(SecretaryMemberQueryBean secretaryMemberQueryBean);
+
+    /**
+     * 根据用户主键和班子主键查询班子成员主键
+     *
+     * @param userId
+     * @param leadTeamId
+     * @return
+     */
+    Long findMemberIdByLeadTeamIdAndUserId(@Param(value = "userId") Long userId, @Param(value = "leadTeamId") Long leadTeamId);
 
 }

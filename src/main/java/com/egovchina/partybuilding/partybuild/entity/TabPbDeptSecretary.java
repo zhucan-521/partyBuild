@@ -21,9 +21,9 @@ public class TabPbDeptSecretary implements Serializable {
     private Long userId;
 
     /**
-     *组织id
+     *领导班子id
      */
-    private Long deptId;
+    private Long leadTeamId;
 
     /**
      *职务

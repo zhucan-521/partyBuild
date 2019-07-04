@@ -19,13 +19,15 @@ public class SecretaryMemberDTO {
     @NotNull(message = "secretaryId主键不能为空", groups = Update.class)
     private Long secretaryId;
 
-    @ApiModelProperty(value = "组织Id",required = true)
-    @NotNull(message = "deptId不能为空")
-    private Long deptId;
+    @ApiModelProperty(value = "领导班子主键")
+    @NotNull(message = "领导班子主键不能为空", groups = Update.class)
+    private Long leadTeamId;
 
     @ApiModelProperty(value = "用户ID")
-    @NotNull(message ="党员id不能为空")
     private Long userId;
+
+    @ApiModelProperty(value = "组织主键")
+    private Long deptId;
 
     @ApiModelProperty(value = "身份证号码")
     private String idCardNo;
@@ -90,16 +92,27 @@ public class SecretaryMemberDTO {
     private Date firstCommitteesDate;
 
     @ApiModelProperty(value = "现任职务")
-    private Long  newPosition;
+    @NotNull(message = "现任职务不能为空", groups = Update.class)
+    private Long newPosition;
+
+    @ApiModelProperty("职务级别 dict JB")
+    @JsonSerialize(using = DictSerializer.class)
+    private Long rank;
+
+    @ApiModelProperty(value = "现任职务名称")
+    private String  newPositionName;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "任免时间", example = "yyyy-hh-dd")
+    @NotNull(message = "任免时间不能为空", groups = Update.class)
     private Date appointmentTime;
 
     @ApiModelProperty(value = "原任职务")
+    @NotNull(message = "原任职务不能为空", groups = Update.class)
     private Long oldPosition;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "任职时间", example = "yyyy-hh-dd")
+    @NotNull(message = "任职时间不能为空", groups = Update.class)
     private Date serveTime;
 }

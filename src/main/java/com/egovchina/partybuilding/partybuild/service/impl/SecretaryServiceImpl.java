@@ -5,20 +5,21 @@ import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.partybuild.dto.LeadTeamMemberDTO;
 import com.egovchina.partybuilding.partybuild.dto.SecretaryMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.SecretaryMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbDeptSecretary;
+import com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember;
 import com.egovchina.partybuilding.partybuild.repository.TabPbDeptSecretaryMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
+import com.egovchina.partybuilding.partybuild.service.LeadTeamMemberService;
 import com.egovchina.partybuilding.partybuild.service.SecretaryService;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
-import com.egovchina.partybuilding.partybuild.vo.SecretarysVO;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.rmi.CORBA.Util;
 import java.util.List;
 
 /**
@@ -33,6 +34,9 @@ public class SecretaryServiceImpl implements SecretaryService {
 
     @Autowired
     private TabSysUserMapper tabSysUserMapper;
+
+    @Autowired
+    private LeadTeamMemberService leadTeamMemberService;
 
     /**
      * 新增书记
@@ -78,6 +82,17 @@ public class SecretaryServiceImpl implements SecretaryService {
         sysUser.setUserId(userId);
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         TabPbDeptSecretary tabPbDeptSecretary = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO, TabPbDeptSecretary.class, true);
+        Long memberId = tabPbDeptSecretaryMapper.findMemberIdByLeadTeamIdAndUserId(secretaryMemberDTO.getUserId(), secretaryMemberDTO.getLeadTeamId());
+        TabPbLeadTeamMember tabPbLeadTeamMember = new TabPbLeadTeamMember();
+        tabPbLeadTeamMember.setPositiveId(secretaryMemberDTO.getNewPosition());
+        tabPbLeadTeamMember.setPositiveName(secretaryMemberDTO.getNewPositionName());
+        tabPbLeadTeamMember.setTenureBegin(secretaryMemberDTO.getServeTime());
+        tabPbLeadTeamMember.setRank(secretaryMemberDTO.getRank());
+        tabPbLeadTeamMember.setMemberId(memberId);
+        tabPbLeadTeamMember.setUserId(secretaryMemberDTO.getUserId());
+        tabPbLeadTeamMember.setOrgId(secretaryMemberDTO.getDeptId());
+        LeadTeamMemberDTO leadTeamMemberDTO = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(tabPbLeadTeamMember, LeadTeamMemberDTO.class, true);
+        leadTeamMemberService.updateLeadTeamMember(leadTeamMemberDTO);
         return tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretary);
     }
 
@@ -99,7 +114,7 @@ public class SecretaryServiceImpl implements SecretaryService {
      * @return
      */
     @Override
-    public List<SecretarysVO> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
+    public List<SecretaryMemberVO> selectSecretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
         PageHelper.startPage(page);
         return tabPbDeptSecretaryMapper.selectSecretaryVOList(secretaryMemberQueryBean);
     }
