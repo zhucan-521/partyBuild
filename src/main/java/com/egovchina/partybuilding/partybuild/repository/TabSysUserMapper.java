@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
 
+import com.egovchina.partybuilding.common.dto.MessageReceiveDTO;
 import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.partybuild.dto.TransferUserDeptInfo;
 import com.egovchina.partybuilding.partybuild.dto.UserDeptPositiveDTO;
@@ -271,4 +272,13 @@ public interface TabSysUserMapper {
      * @return
      */
     int batchInsert(List<SysUser> users);
+
+    /**
+     * 根据消息接收者id查询账号个人信息
+     *
+     * @param receiverIds 接收者id集合
+     * @return
+     */
+    List<MessageReceiveDTO> selectAccountByReceiverIdWithAccount(@Param("receiverIds") List<Long> receiverIds);
+
 }

@@ -17,11 +17,11 @@
     <!--批量新增接收消息-->
     <insert id="batchInsertTabPbMessageReceive" useGeneratedKeys="true" keyProperty="receiveId" keyColumn="receive_id"
             parameterType="java.util.List">
-        INSERT IGNORE INTO tab_pb_message_receive ( send_id, receiver_id, receiver_name, receiver_type, trigger_org_id )
+        INSERT INTO tab_pb_message_receive ( send_id, receiver_id, receiver_name, receiver_type, trigger_org_id )
         VALUES
         <foreach collection="list" item="a" separator=",">
             ( #{a.sendId, jdbcType=BIGINT}, #{a.receiverId, jdbcType=BIGINT}, #{a.receiverName, jdbcType=VARCHAR},
-            #{a.receiverType, jdbcType=BIGINT} ), #{a.triggerOrgId, jdbcType=BIGINT}
+            #{a.receiverType, jdbcType=BIGINT}, #{a.triggerOrgId, jdbcType=BIGINT})
         </foreach>
     </insert>
 
@@ -274,7 +274,7 @@
         FROM
             tab_pb_message_receive
         WHERE
-            receive_type = 1
+            receiver_type = 1
             AND receiver_id IN
         <foreach collection = "list" item = "a"  open="(" separator="," close=")">
             ${a}
@@ -348,9 +348,9 @@
             AND d.del_flag = '0' AND d.ebl_flag = '1'
     </select>
 
-    <!--定时向消息发送表插入数据-->
+    <!--向消息发送表插入数据-->
     <insert id="insertTabPbMessageSend" useGeneratedKeys="true" keyColumn="send_id" keyProperty="sendId">
-        INSERT IGNORE INTO tab_pb_message_send ( sender_id, sender_name, type, title, content, send_time, del_flag, create_time, create_userid, create_username )
+        INSERT INTO tab_pb_message_send ( sender_id, sender_name, type, title, content, send_time, del_flag, create_time, create_userid, create_username )
         VALUES
             ( #{senderId}, #{senderName}, #{type}, #{title}, #{content}, #{sendTime}, 0, #{createTime}, #{createUserId}, #{createUsername} )
     </insert>

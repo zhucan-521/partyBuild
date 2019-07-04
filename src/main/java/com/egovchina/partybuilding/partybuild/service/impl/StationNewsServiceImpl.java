@@ -1,14 +1,15 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
+import com.egovchina.partybuilding.common.dto.MessageAddDTO;
+import com.egovchina.partybuilding.common.dto.MessageReceiveDTO;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysUser;
+import com.egovchina.partybuilding.common.enums.ReceiverTypeEnum;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
-import com.egovchina.partybuilding.common.dto.MessageAddDTO;
-import com.egovchina.partybuilding.common.dto.MessageReceiveDTO;
 import com.egovchina.partybuilding.partybuild.dto.MessageUpdateDTO;
 import com.egovchina.partybuilding.partybuild.entity.StationNewsQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMessageReceive;
@@ -43,56 +44,34 @@ public class StationNewsServiceImpl implements StationNewsService {
     @Transactional
     @Override
     public int batchInsertStationNews(MessageAddDTO messageAddDTO) {
-        //给消息发送表插入数据
         int result = 0;
+
+        //往消息发送表插入数据
         TabPbMessageSend tabPbMessageSend = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(messageAddDTO, TabPbMessageSend.class, false);
-        tabPbMessageSend.setSenderId(UserContextHolder.getUserId()).setSenderName(UserContextHolder.getUserName()).setSendTime(new Date());
+        tabPbMessageSend.setSenderId(UserContextHolder.getUserId())
+                .setSenderName(UserContextHolder.getUserName())
+                .setSendTime(new Date());
         result += tabPbMessageMapper.insertTabPbMessageSend(tabPbMessageSend);
 
         //获取消息接收者信息集合
         List<MessageReceiveDTO> messageReceiveDTOList = messageAddDTO.getReceivers();
 
-        //判断接收者id在数据库中是否存在
-        List<Long> list = messageReceiveDTOList.stream().map(MessageReceiveDTO::getReceiverId).collect(Collectors.toList());
-        if (messageAddDTO.getReceiverType() == 0) {
-            boolean exist = tabPbMessageMapper.checkReceiverUserIdIfExist(list);
-            if (exist) {
-                throw new BusinessDataCheckFailException("党员消息已存在");
+        //如果传入的是组织id，则查出该组织下的所有账号信息添加到消息接收表
+        if (ReceiverTypeEnum.ACCOUNT.getReceiverType().equals(messageAddDTO.getReceiverType())) {
+            //将接收者id添加到receiverIds集合当中
+            List<Long> receiverIds = new ArrayList<>();
+            for (MessageReceiveDTO messageReceiveDTO : messageReceiveDTOList) {
+                receiverIds.add(messageReceiveDTO.getReceiverId());
             }
-        } else {
-            boolean exist = tabPbMessageMapper.checkReceiverOrgIdIfExist(list);
-            if (exist) {
-                throw new BusinessDataCheckFailException("组织消息已存在");
-            }
+            messageReceiveDTOList = tabSysUserMapper.selectAccountByReceiverIdWithAccount(receiverIds);
         }
 
+        List<TabPbMessageReceive> tabPbMessageReceives = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(messageReceiveDTOList, TabPbMessageReceive.class,
+                receive -> receive.setSendId(tabPbMessageSend.getSendId())
+                        .setReceiverType(messageAddDTO.getReceiverType()), false);
 
-        if (CollectionUtil.isNotEmpty(messageReceiveDTOList)) {
-            //给接收对象赋值
-            List<TabPbMessageReceive> tabPbMessageReceiveList = new ArrayList<>();
-
-            messageReceiveDTOList.forEach(messageReceiveDTO -> {
-                TabPbMessageReceive tabPbMessageReceive = new TabPbMessageReceive();
-                if (messageReceiveDTO.getReceiverName() == null) {
-                    SysUser sysUser = tabSysUserMapper.selectByPrimaryKey(messageReceiveDTO.getReceiverId());
-                    if (sysUser == null) {
-                        throw new BusinessDataCheckFailException("接收对象不存在");
-                    }
-                    tabPbMessageReceive.setReceiverId(messageReceiveDTO.getReceiverId())
-                            .setSendId(tabPbMessageSend.getSendId())
-                            .setReceiverName(sysUser.getRealname())
-                            .setReceiverType(messageAddDTO.getReceiverType());
-                } else {
-                    tabPbMessageReceive.setReceiverId(messageReceiveDTO.getReceiverId())
-                            .setSendId(tabPbMessageSend.getSendId())
-                            .setReceiverName(messageReceiveDTO.getReceiverName())
-                            .setReceiverType(messageAddDTO.getReceiverType());
-                }
-                tabPbMessageReceiveList.add(tabPbMessageReceive);
-            });
-            //定时批量插入消息接收表
-            result += tabPbMessageMapper.batchInsertTabPbMessageReceive(tabPbMessageReceiveList);
-        }
+        //将消息批量插入消息接收表
+        result += tabPbMessageMapper.batchInsertTabPbMessageReceive(tabPbMessageReceives);
         return result;
     }
 
@@ -164,8 +143,8 @@ public class StationNewsServiceImpl implements StationNewsService {
     @Override
     public List<MessageSendVO> getNotRemindedMessageVO(Long rangeDeptId, Long orgRange) {
         List<MessageSendVO> messageSendVOS = tabPbMessageMapper.selectRemindedMessageVOById(UserContextHolder.getUserId(), rangeDeptId, orgRange);
-        //更新接受状态为0
         List<Long> sendIds = messageSendVOS.stream().map(MessageSendVO::getSendId).collect(Collectors.toList());
+        //更新接受状态为0
         if (CollectionUtil.isNotEmpty(sendIds)) {
             tabPbMessageMapper.updateMessageTipStatusBySendIdsAndReceiverId(sendIds, UserContextHolder.getUserId());
         }

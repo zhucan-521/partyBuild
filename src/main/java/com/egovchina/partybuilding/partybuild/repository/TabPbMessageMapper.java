@@ -47,9 +47,9 @@ public interface TabPbMessageMapper {
     int insertTabPbMessageReceive(TabPbMessageReceive tabPbMessageReceive);
 
     /**
-     * 批量新增接收消息
+     * 将消息批量插入消息接收表
      *
-     * @param tabPbMessageReceiveList 消息实体
+     * @param tabPbMessageReceiveList 消息实体集合
      * @return
      */
     int batchInsertTabPbMessageReceive(List<TabPbMessageReceive> tabPbMessageReceiveList);
