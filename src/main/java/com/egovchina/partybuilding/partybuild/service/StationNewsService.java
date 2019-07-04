@@ -25,11 +25,10 @@ public interface StationNewsService {
     /**
      * 查看某一个消息详情(同时更新消息接收状态)
      *
-     * @param sendId 消息发送id
-     * @param receiverId 消息接收者id
+     * @param receiveId 消息接收id
      * @return
      */
-    MessageSendVO getMessageSendVO(Long sendId, Long receiverId);
+    MessageSendVO getMessageSendVO(Long receiveId);
 
     /**
      * 党员获取自己能够看到的消息列表

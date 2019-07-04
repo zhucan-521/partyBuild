@@ -77,12 +77,13 @@ public class StationNewsServiceImpl implements StationNewsService {
 
     @Transactional
     @Override
-    public MessageSendVO getMessageSendVO(Long sendId, Long receiverId) {
-        TabPbMessageReceive tabPbMessageReceive = tabPbMessageMapper.selectTabPbMessageReceiveBySendIdAndReceiverId(sendId, receiverId);
+    public MessageSendVO getMessageSendVO(Long receiveId) {
+        TabPbMessageReceive tabPbMessageReceive = tabPbMessageMapper.selectTabPbMessageReceiveBySendIdAndReceiverId(receiveId);
         if (tabPbMessageReceive != null) {
-            tabPbMessageMapper.updateTabPbMessageReceiveBySendIdAndReceiverId(sendId, receiverId);
+            tabPbMessageMapper.updateTabPbMessageReceiveBySendIdAndReceiverId(receiveId);
+            return tabPbMessageMapper.selectMessageSendVO(tabPbMessageReceive.getSendId());
         }
-        return tabPbMessageMapper.selectMessageSendVO(sendId);
+        return null;
     }
 
     @Override

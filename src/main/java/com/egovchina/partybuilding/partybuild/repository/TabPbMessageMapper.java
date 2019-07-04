@@ -130,21 +130,19 @@ public interface TabPbMessageMapper {
     boolean checkReceiverOrgIdIfExist(List<Long> list);
 
     /**
-     * 根据发送id和接收者id查询消息接收表实体
+     * 根据接收id查询消息接收表实体
      *
-     * @param sendId     发送id
-     * @param receiverId 接收者id
+     * @param receiveId 接收id
      * @return
      */
-    TabPbMessageReceive selectTabPbMessageReceiveBySendIdAndReceiverId(@Param("sendId") Long sendId, @Param("receiverId") Long receiverId);
+    TabPbMessageReceive selectTabPbMessageReceiveBySendIdAndReceiverId(@Param("receiveId") Long receiveId);
 
     /**
      * 更新消息接收状态
      *
-     * @param sendId     发送id
-     * @param receiverId 接收者id
+     * @param receiveId 接收id
      */
-    void updateTabPbMessageReceiveBySendIdAndReceiverId(@Param("sendId") Long sendId, @Param("receiverId") Long receiverId);
+    void updateTabPbMessageReceiveBySendIdAndReceiverId(@Param("receiveId") Long receiveId);
 
     /**
      * 显示未提醒的信息

@@ -55,12 +55,11 @@ public class StationNewsController {
 
     @ApiOperation(value = "查看某一个消息详情(同时更新消息接收状态)", notes = "查看某一个消息详情", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "sendId", value = "消息发送id", dataType = "long", paramType = "path", required = true),
-            @ApiImplicitParam(name = "receiverId", value = "消息接收者id", dataType = "long", paramType = "path", required = true)
+            @ApiImplicitParam(name = "receiveId", value = "消息接收id", dataType = "long", paramType = "path", required = true)
     })
-    @GetMapping("/{sendId}/{receiverId}/details")
-    public MessageSendVO getMessageSend(@PathVariable Long sendId, @PathVariable Long receiverId) {
-        return stationNewsService.getMessageSendVO(sendId, receiverId);
+    @GetMapping("/{receiveId}/details")
+    public MessageSendVO getMessageSend(@PathVariable Long receiveId) {
+        return stationNewsService.getMessageSendVO(receiveId);
     }
 
     @ApiOperation(value = "显示未提醒的信息", notes = "显示未提醒的信息", httpMethod = "GET")
