@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  */
 @Data
 @ApiModel("党务公开接收组织-数据传输对象")
-class NewsReceiveDTO {
+public class NewsReceiveDTO {
 
     @ApiModelProperty(value = "接收方组织ID", required = true)
     @NotNull(message = "接收方组织ID不能为空")
