@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -51,5 +50,8 @@ public class MessageSendVO {
 
     @ApiModelProperty("接受类型者 0 个人 1 组织")
     private Byte receiverType;
+
+    @ApiModelProperty("消息接收主键")
+    private Long receiveId;
 
 }

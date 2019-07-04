@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -38,10 +39,12 @@ public class LeadTeamMemberDTO {
     @ApiModelProperty("人员姓名")
     private String personName;
 
-    @ApiModelProperty("党内职务主键")
+    @ApiModelProperty(value = "党内职务主键", required = true)
+    @NotNull(message = "职务id不能为空")
     private Long positiveId;
 
-    @ApiModelProperty("党内职务名称")
+    @ApiModelProperty(value = "党内职务名称", required = true)
+    @NotBlank(message = "党内职务名称不能为空")
     private String positiveName;
 
     @ApiModelProperty("任职方式")
