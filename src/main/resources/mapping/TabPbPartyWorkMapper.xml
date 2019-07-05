@@ -38,7 +38,7 @@
         FROM
         (
             SELECT
-                p.create_time AS time,
+                p.membership_time AS time,
                 d.label AS label,
                 p.reason AS sub_label
             FROM

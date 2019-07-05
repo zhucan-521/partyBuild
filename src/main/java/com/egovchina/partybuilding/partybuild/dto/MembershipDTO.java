@@ -1,8 +1,5 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
-import com.egovchina.partybuilding.common.config.DictSerializer;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -33,5 +30,9 @@ public class MembershipDTO {
 
     @ApiModelProperty(value = "处理原因")
     private String reason;
+
+    @ApiModelProperty(value = "党籍时间 yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date membershipTime;
 
 }

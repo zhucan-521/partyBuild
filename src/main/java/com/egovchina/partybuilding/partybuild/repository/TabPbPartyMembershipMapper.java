@@ -17,7 +17,7 @@ public interface TabPbPartyMembershipMapper {
     /**
      * 插入党籍信息
      *
-     * @param tabPbPartyMembership
+     * @param tabPbPartyMembership 党籍信息实体
      * @return
      */
     int insertPartyMembershipDTO(TabPbPartyMembership tabPbPartyMembership);
