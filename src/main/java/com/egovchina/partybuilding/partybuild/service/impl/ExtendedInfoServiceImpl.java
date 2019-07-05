@@ -125,8 +125,10 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
                 BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(reduce, SysUser.class, false);
         //设置无效状态
         user.setEblFlag(CommonConstant.STATUS_NOEBL);
-        //用于获取党籍处理类型
-        Long[] type = new Long[1];
+        //用于获取党籍处理类型   第一项党籍处理,第二项党籍状态,第三项出党方式
+        Long[] type = new Long[3];
+        //设置出党方式
+        type[2] = reduce.getQuitType();
         //设置用户党籍状态,党籍处理
         setPartyStatus(type, reduce.getOutType(), user);
         int flag = tabSysUserMapper.updateByPrimaryKeySelective(user);
@@ -156,7 +158,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
             PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbPartyGroupMember);
             flag += tabPbPartyGroupMemberMapper.updateByPrimaryKeySelective(tabPbPartyGroupMember);
             //添加一条党籍
-            checkIsOpeartionMeberShip(reduce.getUserId(), type[0]);
+            checkIsOpeartionMeberShip(reduce.getUserId(), type, reduce.getReduceTime());
         }
         return flag;
     }
@@ -165,7 +167,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
     @Override
     public int restoreUser(Long reduce_id, Date restoreTime) {
         //修改党员减少表
-        TabPbMemberReduceList reduceList = reduceListMapper.selectByUserId(reduce_id);
+        TabPbMemberReduceList reduceList = reduceListMapper.selectByPrimaryKey(reduce_id);
         if (reduceList == null) {
             throw new BusinessDataNotFoundException("查不到该党员减少记录");
         }
@@ -203,8 +205,19 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
                 }
             }
         }
+        //获取之前的党籍数据 ,恢复之前党籍状态信息
+        List<MembershipVO> membershipVOListByCondition = partyMembershipServiceImpl.getMembershipVOListByCondition(reduceList.getUserId(), new Page());
+        Long[] types = new Long[3];
+        //党籍处理设置恢复
+        types[0] = REGISTRY_STATUS_RESTORE;
+        try {
+            types[1] = membershipVOListByCondition.get(0).getIdentityType();
+        } catch (Exception e) {
+            //如果获取不了曾经党籍状态,默认赋值正式党员
+            types[1] = OFFICIAL_PARTY_MEMBER;
+        }
         //添加党籍记录
-        checkIsOpeartionMeberShip(reduceList.getUserId(), REGISTRY_STATUS_RESTORE);
+        checkIsOpeartionMeberShip(reduceList.getUserId(), types, restoreTime);
         //党员状态设置有效
         SysUser user = new SysUser().setUserId(reduceList.getUserId()).setRegistryStatus(OFFICIAL_PARTY_MEMBER).setEblFlag(CommonConstant.STATUS_EBL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(user);
@@ -265,8 +278,8 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
                 BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(updateHistoryDTO, SysUser.class, false);
         //设置无效状态
         user.setEblFlag(CommonConstant.STATUS_NOEBL);
-        //用于获取党籍处理类型
-        Long[] type = new Long[1];
+        //用于获取党籍处理类型   第一项党籍处理,第二项党籍状态,第三项减少方式
+        Long[] type = new Long[3];
         //设置用户党籍状态,党籍处理
         setPartyStatus(type, updateHistoryDTO.getOutType(), user);
         //更改用户党籍状态
@@ -295,7 +308,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbMemberReduceList);
         flag += reduceListMapper.updateByPrimaryKeySelectiveCondition(tabPbMemberReduceList);
         //党籍处理
-        checkIsOpeartionMeberShip(tabPbMemberReduceList1.getUserId(), type[0]);
+        checkIsOpeartionMeberShip(tabPbMemberReduceList1.getUserId(), type, updateHistoryDTO.getReduceTime());
         return flag;
     }
 
@@ -316,8 +329,9 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
             if (isCheckUser) {
                 user.setRegistryStatus(STOP_PARTY_MEMBERSHIP);
             }
-            //设置党籍停止处理类型
+            //设置党籍停止处理类型 党籍状态
             types[0] = STOPPARTYPROCESSING;
+            types[1] = STOP_PARTY_MEMBERSHIP;
             //出党
         } else if (OUT_OF_THE_PARTY.equals(outType)) {
             if (isCheckUser) {
@@ -325,6 +339,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
             }
             //设置党籍出党处理类型
             types[0] = PARTYMEMBERSHIPTYPE;
+            types[1] = PARTY_MEMBERSHIP_STATUS;
             //死亡
         } else if (DEATH_REDUCTION_METHOD.equals(outType)) {
             if (isCheckUser) {
@@ -332,6 +347,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
             }
             //设置党籍死亡处理类型
             types[0] = PARTYDEATHTREATMENT;
+            types[1] = DEATH_PARTY_STATUS;
         } else {
             //其他原因
             if (isCheckUser) {
@@ -339,6 +355,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
             }
             //设置党籍其他处理类型
             types[0] = OTHERTREATMENTOFPARTYMEMBERSHIP;
+            types[1] = OTHER_WAYS_TO_REDUCE_PARTY_STATUS;
         }
     }
 
@@ -346,12 +363,12 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
      * @param userId 用户id
      * @param type   党籍处理
      */
-    //TODO 目前需求暂未涉及修改党籍,以后需求更改
-    public void updatePartyMembership(Long userId, Long type) {
+    public void updatePartyMembership(Long userId, Long[] type, Date date) {
         //查询identity_type
         Long identityType = tabSysUserMapper.selectUserByIdFindIdentity(userId);
         MembershipDTO membershipDTO = new MembershipDTO();
-        membershipDTO.setUserId(userId).setIdentityType(identityType).setType(type);
+        //Type设置党籍状态,理由  处理时间
+        membershipDTO.setUserId(userId).setIdentityType(identityType).setType(type[1]).setReason(getReason(type)).setMembershipTime(date);
         //新增党籍
         partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
     }
@@ -362,18 +379,39 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
      * @param userId 用户id
      * @param type   党籍处理
      */
-    public void checkIsOpeartionMeberShip(Long userId, Long type) {
+    public void checkIsOpeartionMeberShip(Long userId, Long[] type, Date time) {
         //判断党籍是否发生改变
         List<MembershipVO> membershipVOListByCondition = partyMembershipServiceImpl.getMembershipVOListByCondition(userId, new Page());
         if (membershipVOListByCondition != null && membershipVOListByCondition.size() > 0) {
             //改变就新增党籍信息
             if (!membershipVOListByCondition.get(0).getType().equals(type)) {
-                updatePartyMembership(userId, type);
+                updatePartyMembership(userId, type, time);
             }
         } else {
             //该情况出现可能很小,预防数据问题
             //不考虑membershipVOListByCondition为null,不存在null
-            updatePartyMembership(userId, type);
+            updatePartyMembership(userId, type, time);
         }
+    }
+
+    /**
+     * 进行拼接党籍记录理由
+     *
+     * @param type
+     * @return
+     */
+    public String getReason(Long[] type) {
+        StringBuffer reason = new StringBuffer();
+        //获取党籍处理
+        Long reductionMethod = type[0];
+        //获取出党方式
+        Long wayOut = type[2];
+        if (reductionMethod != null) {
+            reason.append(reduceListMapper.selectDictName(type[0]));
+        }
+        if (wayOut != null) {
+            reason.append(reduceListMapper.selectDictName(type[1]));
+        }
+        return reason.toString();
     }
 }
