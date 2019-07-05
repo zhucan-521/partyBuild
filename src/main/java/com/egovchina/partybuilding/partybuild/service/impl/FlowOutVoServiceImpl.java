@@ -204,7 +204,7 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
             tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOut);
             SysUser sysUser = tabSysUserMapper.selectByPrimaryKey(tabPbFlowOut.getUserId());
             //用户结束流动
-            sysUser.setFlowStatus(CommonConstant.END_FLOW);
+            sysUser.setFlowStatus(CommonConstant.NORMAL);
             flag = tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
             if (flag > 0) {
                 //取消流动标识

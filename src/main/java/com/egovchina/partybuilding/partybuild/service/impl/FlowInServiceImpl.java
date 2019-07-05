@@ -77,7 +77,7 @@ public class FlowInServiceImpl implements FlowInService {
             tabPbFlowInMapper.updateByPrimaryKeySelective(tabPbFlowIn);
             SysUser sysUser = tabSysUserMapper.selectByPrimaryKey(tabPbFlowIn.getUserId());
             //用户结束流动
-            sysUser.setFlowStatus(CommonConstant.END_FLOW);
+            sysUser.setFlowStatus(CommonConstant.NORMAL);
             flag = tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
             if (flag > 0) {
                 //取消流动标识
@@ -167,7 +167,7 @@ public class FlowInServiceImpl implements FlowInService {
         SysUser sysUser = tabSysUserMapper.selectByPrimaryKey(flowInMemberDto.getUserId());
         BeanUtils.copyProperties(flowInMemberDto, sysUser);
         //结束流动
-        sysUser.setFlowStatus(CommonConstant.END_FLOW);
+        sysUser.setFlowStatus(CommonConstant.NORMAL);
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         //取消流动标识
         userTagService.delete(sysUser.getUserId(), UserTagType.FLOW);
