@@ -211,7 +211,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         //党籍处理设置恢复
         types[0] = REGISTRY_STATUS_RESTORE;
         try {
-            types[1] = membershipVOListByCondition.get(0).getIdentityType();
+            types[1] = membershipVOListByCondition.get(1).getType();
         } catch (Exception e) {
             //如果获取不了曾经党籍状态,默认赋值正式党员
             types[1] = OFFICIAL_PARTY_MEMBER;
@@ -410,7 +410,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
             reason.append(reduceListMapper.selectDictName(type[0]));
         }
         if (wayOut != null) {
-            reason.append(reduceListMapper.selectDictName(type[1]));
+            reason.append(reduceListMapper.selectDictName(type[2]));
         }
         return reason.toString();
     }
