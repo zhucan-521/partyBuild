@@ -1,8 +1,12 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.config.PaddingBaseField;
+import com.egovchina.partybuilding.common.dto.MessageAddDTO;
+import com.egovchina.partybuilding.common.dto.MessageReceiveDTO;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysUser;
+import com.egovchina.partybuilding.common.enums.MessageTypeEnum;
+import com.egovchina.partybuilding.common.enums.ReceiverTypeEnum;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.CommonConstant;
@@ -15,6 +19,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbFlowInMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFlowOutMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.FlowInService;
+import com.egovchina.partybuilding.partybuild.service.StationNewsService;
 import com.egovchina.partybuilding.partybuild.service.UserTagService;
 import com.egovchina.partybuilding.partybuild.util.UserTagType;
 import com.egovchina.partybuilding.partybuild.vo.FlowInMemberVO;
@@ -25,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
@@ -47,6 +53,9 @@ public class FlowInServiceImpl implements FlowInService {
 
     @Autowired
     private UserTagService userTagService;
+
+    @Autowired
+    private StationNewsService stationNewsService;
 
     /**
      * 流入党员列表查询
@@ -127,6 +136,7 @@ public class FlowInServiceImpl implements FlowInService {
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         //添加流动标识
         userTagService.addUserTag(sysUser.getUserId(), UserTagType.FLOW);
+        this.sendMessage(userId);
         return tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOut);
     }
 
@@ -195,6 +205,20 @@ public class FlowInServiceImpl implements FlowInService {
     @Override
     public FlowInMemberVO getFlowInMeberVoById(Long flowInId) {
         return tabPbFlowInMapper.selectFlowInVoByFlowId(flowInId);
+    }
+
+    /**
+     * 给流入的党员发送信息
+     *
+     * @param userId
+     */
+    public void sendMessage(Long userId) {
+        SysUser recipientUser = tabSysUserMapper.selectOneByUserId(userId);
+        MessageReceiveDTO messageReceiveDTO = new MessageReceiveDTO().setReceiverId(userId).setReceiverName(recipientUser.getRealname());
+        List<MessageReceiveDTO> messageReceiveDTOs = new ArrayList();
+        messageReceiveDTOs.add(messageReceiveDTO);
+        MessageAddDTO messageAddDTO = new MessageAddDTO().setReceiverType(ReceiverTypeEnum.PERSON.getReceiverType()).setType(MessageTypeEnum.FLOW_PARTY_MEMBER.getId()).setReceivers(messageReceiveDTOs).setTitle("流入党组织通知").setContent("你已经流入" + recipientUser.getFlowToOrgName());
+        stationNewsService.batchInsertStationNews(messageAddDTO);
     }
 
 }
