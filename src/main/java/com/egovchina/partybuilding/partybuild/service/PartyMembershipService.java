@@ -28,5 +28,4 @@ public interface PartyMembershipService {
      * @return
      */
     List<MembershipVO> getMembershipVOListByCondition(Long userId, Page page);
-
 }

@@ -24,6 +24,7 @@ import org.springframework.util.ObjectUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -175,11 +176,11 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                     });
                     effected += tabPbPartyWorkMapper.batchInsert(BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(partyInfoDTO.getWorks(), TabPbPartyWork.class, false));
                 }
-                MembershipDTO membershipDTO = new MembershipDTO();
                 //添加一条党籍
-                membershipDTO.setUserId(sys.getUserId()).setIdentityType(sys.getIdentityType()).setType(transform(sys.getRegistryStatus()));
-                effected += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
-
+                Long[] type = new Long[3];
+                type[0] = sys.getRegistryStatus();
+                type[1] = transform(sys.getRegistryStatus());
+                updatePartyMembership(sys.getUserId(), type, new Date());
                 return effected;
             }
             throw new BusinessDataCheckFailException("该手机号码已存在");
@@ -381,19 +382,20 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             if (membershipVOListByCondition != null && membershipVOListByCondition.size() > 0) {
                 //改变就新增党籍信息
                 if (!membershipVOListByCondition.get(0).getType().equals(transform(sys.getRegistryStatus()))) {
-                    MembershipDTO membershipDTO = new MembershipDTO();
                     //添加一条党籍
-                    membershipDTO.setUserId(sys.getUserId()).setIdentityType(sys.getIdentityType()).setType(transform(sys.getRegistryStatus()));
-                    effected += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
+                    Long[] type = new Long[3];
+                    type[0] = sys.getRegistryStatus();
+                    type[1] = transform(sys.getRegistryStatus());
+                    updatePartyMembership(sys.getUserId(), type, new Date());
                 }
             } else {
                 //不考虑membershipVOListByCondition为null,不存在null
                 if (sys.getRegistryStatus() != null) {
                     //数据库党籍没记录,直接新增党籍信息
-                    MembershipDTO membershipDTO = new MembershipDTO();
-                    //添加一条党籍
-                    membershipDTO.setUserId(sys.getUserId()).setIdentityType(sys.getIdentityType()).setType(transform(sys.getRegistryStatus()));
-                    effected += partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
+                    Long[] type = new Long[3];
+                    type[0] = sys.getRegistryStatus();
+                    type[1] = transform(sys.getRegistryStatus());
+                    updatePartyMembership(sys.getUserId(), type, new Date());
                 }
             }
             effected += tabSysUserMapper.updateByPrimaryKeySelectiveSpecialModification(sys);
@@ -857,12 +859,38 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         return partyProcessing;
     }
 
-//    //如果新增党员为历史党员进行业务关联操作 TODO
-//    public void specialOperation(Long status){
-//        if(status==59327L||status==59328L||status==59329L||status==59585L){
-//            DeletePartyMemberDTO deletePartyMemberDTO =new DeletePartyMemberDTO();
-//            //extendedInfoServiceImpl.invalidByUserId()
-//        }
-//    }
+    /**
+     * @param userId 用户id
+     * @param type   党籍处理
+     */
+    public void updatePartyMembership(Long userId, Long[] type, Date date) {
+        //查询identity_type
+        Long identityType = tabSysUserMapper.selectUserByIdFindIdentity(userId);
+        MembershipDTO membershipDTO = new MembershipDTO();
+        //Type设置党籍状态,理由  处理时间
+        membershipDTO.setUserId(userId).setIdentityType(identityType).setType(type[1]).setReason(getReason(type)).setMembershipTime(date);
+        //新增党籍
+        partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
+    }
 
+    /**
+     * 进行拼接党籍记录理由
+     *
+     * @param type
+     * @return
+     */
+    public String getReason(Long[] type) {
+        StringBuffer reason = new StringBuffer();
+        //获取党籍处理
+        Long reductionMethod = type[0];
+        //获取出党方式
+        Long wayOut = type[2];
+        if (reductionMethod != null) {
+            reason.append(reduceListMapper.selectDictName(type[0]));
+        }
+        if (wayOut != null) {
+            reason.append(reduceListMapper.selectDictName(type[1]));
+        }
+        return reason.toString();
+    }
 }
