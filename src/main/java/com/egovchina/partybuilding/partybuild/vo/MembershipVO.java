@@ -42,6 +42,10 @@ public class MembershipVO {
     private Date createTime;
 
     @ApiModelProperty(value = "创建人姓名")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private String createUsername;
+
+    @ApiModelProperty(value = "党籍时间 yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date membershipTime;
+
 }

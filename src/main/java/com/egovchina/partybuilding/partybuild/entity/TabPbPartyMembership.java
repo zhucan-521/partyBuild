@@ -51,4 +51,10 @@ public class TabPbPartyMembership implements Serializable {
      * 创建人姓名
      */
     private String createUsername;
+
+    /**
+     * 党籍时间
+     */
+    private Date membershipTime;
+
 }

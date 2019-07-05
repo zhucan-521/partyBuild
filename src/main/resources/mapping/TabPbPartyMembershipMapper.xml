@@ -3,14 +3,16 @@
 
 <mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbPartyMembershipMapper">
 
+    <!--插入党籍信息-->
     <insert id="insertPartyMembershipDTO"
             parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPartyMembership">
-        insert into tab_pb_party_membership (membership_id, user_id, identity_type, type, reason, create_time, create_userid, create_username)
+        insert into tab_pb_party_membership (membership_id, user_id, identity_type, type, reason, create_time, create_userid, create_username, membership_time)
         values (#{membershipId, jdbcType=BIGINT}, #{userId, jdbcType=BIGINT}, #{identityType, jdbcType=BIGINT}, #{type, jdbcType=BIGINT},
             #{reason, jdbcType=VARCHAR}, #{createTime, jdbcType=TIMESTAMP}, #{createUserid, jdbcType=BIGINT},
-            #{createUsername, jdbcType=VARCHAR})
+            #{createUsername, jdbcType=VARCHAR}, #{membershipTime, jdbcType=TIMESTAMP})
     </insert>
 
+    <!--根据用户id获取党籍列表-->
     <select id="getMembershipVOListByCondition"
             resultType="com.egovchina.partybuilding.partybuild.vo.MembershipVO" parameterType="long">
         select * from tab_pb_party_membership where user_id = #{userId} ORDER BY create_time DESC
