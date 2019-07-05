@@ -889,7 +889,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             reason.append(reduceListMapper.selectDictName(type[0]));
         }
         if (wayOut != null) {
-            reason.append(reduceListMapper.selectDictName(type[1]));
+            reason.append(reduceListMapper.selectDictName(type[2]));
         }
         return reason.toString();
     }
