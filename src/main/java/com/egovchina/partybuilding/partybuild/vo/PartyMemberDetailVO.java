@@ -20,6 +20,9 @@ public class PartyMemberDetailVO {
     @ApiModelProperty(value = "头像")
     private String avatar;
 
+    @ApiModelProperty(value = "头像2,微信端头像")
+    private String avatar2;
+
     @ApiModelProperty(value = "用户名")
     private String realname;
 

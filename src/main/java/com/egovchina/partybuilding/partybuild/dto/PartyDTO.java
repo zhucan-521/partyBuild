@@ -8,7 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
 
 /**
  * desc: 党员信息数据传输对象
@@ -21,35 +20,38 @@ public class PartyDTO {
     @ApiModelProperty(value = "用户ID")
     private Long userId;
 
-    @ApiModelProperty(value = "人员类别 码表值 RYLB",required = true)
+    @ApiModelProperty(value = "人员类别 码表值 RYLB", required = true)
     @NotNull(message = "人员类别不能为空")
     private Long identityType;
 
     @ApiModelProperty(value = "头像")
     private String avatar;
 
-    @ApiModelProperty(value = "申请人姓名",required = true)
+    @ApiModelProperty(value = "头像2 微信端头像")
+    private String avatar2;
+
+    @ApiModelProperty(value = "申请人姓名", required = true)
     @NotNull(message = "申请人姓名不能为空")
 
     private String realname;
 
-    @ApiModelProperty(value = "身份证号码",required = true)
+    @ApiModelProperty(value = "身份证号码", required = true)
     @NotNull(message = "身份证号码不能为空")
     private String idCardNo;
 
-    @ApiModelProperty(value = "性别 码表值 XB",required = true)
+    @ApiModelProperty(value = "性别 码表值 XB", required = true)
     @NotNull(message = "性别不能为空")
     private Long gender;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @ApiModelProperty(value = "出生日期",example ="yyyy-MM-dd")
+    @ApiModelProperty(value = "出生日期", example = "yyyy-MM-dd")
     private Date birthday;
 
-    @ApiModelProperty(value = "民族 码表值 MZ",required = true)
+    @ApiModelProperty(value = "民族 码表值 MZ", required = true)
     @NotNull(message = "民族不能为空")
     private Long nation;
 
-    @ApiModelProperty(value = "手机号",required = true)
+    @ApiModelProperty(value = "手机号", required = true)
     @NotNull(message = "手机号不能为空")
     private String phone;
 
@@ -60,7 +62,7 @@ public class PartyDTO {
     private String familyAddress;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @ApiModelProperty(value = "入党时间、预备党员时间",required = true,example ="yyyy-MM-dd")
+    @ApiModelProperty(value = "入党时间、预备党员时间", required = true, example = "yyyy-MM-dd")
     @NotNull(message = "加入党组织时间不能为空")
     private Date joinTime;
 
@@ -68,8 +70,8 @@ public class PartyDTO {
     @ApiModelProperty(value = "加入党组织时间", required = true, example = "yyyy-MM-dd")
     private Date joinOrgTime;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd" )
-    @ApiModelProperty(value = "转正时间、正式党员时间",required = true,example ="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @ApiModelProperty(value = "转正时间、正式党员时间", required = true, example = "yyyy-MM-dd")
     private Date regularTime;
 
     @ApiModelProperty(value = "居住地所在社区   码表值XZQH")

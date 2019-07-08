@@ -61,4 +61,7 @@ public class PartyMemberChooseVO {
 
     @ApiModelProperty(value = "头像")
     private String avatar;
+
+    @ApiModelProperty(value = "头像2,微信端头像")
+    private String avatar2;
 }
