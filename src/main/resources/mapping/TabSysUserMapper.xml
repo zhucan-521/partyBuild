@@ -195,6 +195,7 @@
             <result column="community_addr" jdbcType="BIGINT" property="communityAddr"/>
             <result column="community_addr_name" jdbcType="VARCHAR" property="communityAddrName"/>
             <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+            <result column="avatar2" jdbcType="VARCHAR" property="avatar2"/>
             <result column="phone" jdbcType="VARCHAR" property="phone"/>
             <result column="is_poor" jdbcType="TINYINT" property="isPoor"/>
             <result column="age" jdbcType="VARCHAR" property="age"/>
@@ -232,6 +233,7 @@
             <id column="user_id" jdbcType="BIGINT" property="userId"/>
             <result column="realname" jdbcType="VARCHAR" property="realname"/>
             <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+            <result column="avatar2" jdbcType="VARCHAR" property="avatar2"/>
             <result column="gender" jdbcType="BIGINT" property="gender"/>
             <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
             <result column="birthday" jdbcType="TIMESTAMP" property="birthday"/>
@@ -322,6 +324,7 @@
         <result column="identity_type" jdbcType="BIGINT" property="identityType"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="avatar2" jdbcType="VARCHAR" property="avatar2"/>
         <collection property="userTags"
                     select="com.egovchina.partybuilding.partybuild.repository.TabPbUserTagMapper.selectAllListSelective"
                     column="user_id"/>
@@ -352,7 +355,7 @@
     </sql>
     <!--查询党员详细信息-->
     <sql id="Member_Details">
-       u.user_id,u.dept_id,u.realname,u.gender,u.id_card_no,u.birthday, TIMESTAMPDIFF(YEAR, u.birthday, CURDATE()) AS age ,u.nation,u.community_addr,u.avatar,u.phone,u.fix_phone,u.family_address,
+       u.user_id,u.dept_id,u.realname,u.gender,u.id_card_no,u.birthday, TIMESTAMPDIFF(YEAR, u.birthday, CURDATE()) AS age ,u.nation,u.community_addr,u.avatar,u.avatar2,u.phone,u.fix_phone,u.family_address,
       u.join_org_name,u.join_org_id,u.positived,u.identity_type,u.files_manage_unit,u.registry_status,u.join_time,u.registry_status,u.is_poor,u.files_manage_unit_id,
       u.regular_time,u.work_resumes,u.is_llost,u.flow_status,u.marital_status,u.health,u.ancestor_place,u.work_date,u.join_org_time,u.is_taiwaner,u.migrant
     </sql>
@@ -486,7 +489,7 @@
     </select>
     <!---查询党员名册概况信息-->
     <sql id="Base_users_deals_info">
-          u.realname,u.gender,u.id_card_no,u.birthday,u.nation,u.phone,u.fix_phone,u.family_address,u.positived,u.avatar,
+          u.realname,u.gender,u.id_card_no,u.birthday,u.nation,u.phone,u.fix_phone,u.family_address,u.positived,u.avatar,u.avatar2,
           u.identity_type,u.files_manage_unit,u.registry_status,u.join_org_time,u.regular_time,s.first_committees_date,u.user_id,
           s.professional_specialty,s.professional_titles,s.full_time_schooling,s.education,s.college_major,s.college_major_two,
           s.old_position,s.new_position,s.serve_time,s.appointment_time
@@ -695,6 +698,9 @@
             </if>
             <if test="avatar != null">
                 avatar,
+            </if>
+            <if test="avatar2 != null">
+                avatar2,
             </if>
             <if test="idCardNo != null">
                 id_card_no,
@@ -988,6 +994,9 @@
             </if>
             <if test="avatar != null">
                 #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="avatar2 != null">
+                #{avatar2,jdbcType=VARCHAR},
             </if>
             <if test="idCardNo != null">
                 #{idCardNo,jdbcType=VARCHAR},
@@ -1620,6 +1629,9 @@
             <if test="avatar != null">
                 avatar = #{avatar,jdbcType=VARCHAR},
             </if>
+            <if test="avatar2 != null">
+                avatar2 = #{avatar,jdbcType=VARCHAR},
+            </if>
             <if test="usedName != null">
                 used_name = #{usedName,jdbcType=VARCHAR},
             </if>
@@ -2140,6 +2152,7 @@
           u.id_card_no,
           u.gender,
           u.avatar,
+          u.avatar2,
           u.birthday,
           birthday2age ( DATE_FORMAT( birthday, '%Y-%m-%d' ) ) AS age,
           u.community_addr,
