@@ -551,4 +551,5 @@
         AND d.dept_id = #{rangeDeptId}
         ORDER BY  positive_name_order DESC, positive_level_order DESC
     </select>
+
 </mapper>

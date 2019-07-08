@@ -119,4 +119,24 @@ public class SecretaryServiceImpl implements SecretaryService {
         return tabPbDeptSecretaryMapper.selectSecretaryVOList(secretaryMemberQueryBean);
     }
 
+    @Override
+    public TabPbDeptSecretary selectOldSecretaryInfoByUserIdAndLeadTeamId(Long userId, Long leadTeamId) {
+        return tabPbDeptSecretaryMapper.selectSecretaryByUserIdAndLeadTeamId(userId, leadTeamId);
+    }
+
+    @Override
+    public int insertTabPbDeptSecretary(TabPbDeptSecretary tabPbDeptSecretary) {
+        return tabPbDeptSecretaryMapper.insertSelective(tabPbDeptSecretary);
+    }
+
+    @Override
+    public int logicDeleteTabPbSecretary(TabPbDeptSecretary secretary) {
+        return tabPbDeptSecretaryMapper.logicDeleteTabPbSecretary(secretary);
+    }
+
+    @Override
+    public int updateTabPbDeptSecretarySelective(TabPbDeptSecretary tabPbDeptSecretary) {
+        return tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretary);
+    }
+
 }
