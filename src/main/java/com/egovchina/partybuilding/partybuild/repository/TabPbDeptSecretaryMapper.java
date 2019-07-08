@@ -3,7 +3,6 @@ package com.egovchina.partybuilding.partybuild.repository;
 import com.egovchina.partybuilding.partybuild.entity.SecretaryMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbDeptSecretary;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
-import com.egovchina.partybuilding.partybuild.vo.SecretarysVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +15,7 @@ public interface TabPbDeptSecretaryMapper {
 
     TabPbDeptSecretary selectByPrimaryKey(TabPbDeptSecretary secretary);
 
-    int updateByPrimaryKeySelective(TabPbDeptSecretary record);
+    int updateByPrimaryKeySelective(TabPbDeptSecretary secretary);
 
     int tombstone(TabPbDeptSecretary record);
 
@@ -34,7 +33,7 @@ public interface TabPbDeptSecretaryMapper {
      * @param userId
      * @return
      */
-    Long getSecretaryIdByUserId(@Param("userId") Long userId,@Param("deptId")Long deptId);
+    Long getSecretaryIdByUserId(@Param("userId") Long userId, @Param("deptId") Long deptId);
 
     /**
      * 根据用户Id判断书记是否存在
@@ -42,7 +41,7 @@ public interface TabPbDeptSecretaryMapper {
      * @param userId
      * @return
      */
-    Boolean checkSecretaryIsexistByUserId(@Param("userId") Long userId, @Param("deptId")Long deptId);
+    Boolean checkSecretaryIsexistByUserId(@Param("userId") Long userId, @Param("deptId") Long deptId);
 
     /**
      * 书记列表查询
@@ -61,4 +60,20 @@ public interface TabPbDeptSecretaryMapper {
      */
     Long findMemberIdByLeadTeamIdAndUserId(@Param(value = "userId") Long userId, @Param(value = "leadTeamId") Long leadTeamId);
 
+    /**
+     * 根据用户id和领导班子id查询书记信息
+     *
+     * @param userId     用户id
+     * @param leadTeamId 领导班子id
+     * @return
+     */
+    TabPbDeptSecretary selectSecretaryByUserIdAndLeadTeamId(@Param("userId") Long userId, @Param("leadTeamId") Long leadTeamId);
+
+    /**
+     * 逻辑删除书记信息
+     *
+     * @param secretary 书记实体
+     * @return
+     */
+    int logicDeleteTabPbSecretary(TabPbDeptSecretary secretary);
 }

@@ -8,8 +8,12 @@ import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.LeadTeamMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.*;
-import com.egovchina.partybuilding.partybuild.repository.*;
+import com.egovchina.partybuilding.partybuild.repository.TabPbLeadTeamMapper;
+import com.egovchina.partybuilding.partybuild.repository.TabPbLeadTeamMemberMapper;
+import com.egovchina.partybuilding.partybuild.repository.TabPbPositivesMapper;
+import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.LeadTeamMemberService;
+import com.egovchina.partybuilding.partybuild.service.SecretaryService;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
@@ -40,6 +45,11 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
 
     @Autowired
     private TabPbPositivesMapper tabPbPositivesMapper;
+
+    @Autowired
+    private SecretaryService secretaryService;
+
+    private static final Long IS_SECRETARY = 1L;
 
     @Transactional
     @Override
@@ -86,6 +96,7 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
     public int insertLeadTeamMember(LeadTeamMemberDTO leadTeamMemberDTO) {
         //数据验证
         dataValidation(leadTeamMemberDTO);
+
         TabPbLeadTeamMember tabPbLeadTeamMember =
                 generateTargetCopyPropertiesAndPaddingBaseField(leadTeamMemberDTO, TabPbLeadTeamMember.class, false);
         int judgment = tabPbLeadTeamMemberMapper.insertSelective(tabPbLeadTeamMember);
@@ -97,6 +108,8 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
             }
             //修改职务信息
             modifyPosition(leadTeamMemberDTO);
+            //往书记表添加信息
+            addSecretaryInfo(leadTeamMemberDTO);
         }
         return judgment;
     }
@@ -108,6 +121,10 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
         if (leadTeamMemberVO == null) {
             throw new BusinessDataNotFoundException("您要修改的班子成员信息不存在");
         }
+
+        //修改书记表信息
+        updateSecretaryInfo(leadTeamMemberDTO);
+
         TabPbLeadTeamMember tabPbLeadTeamMember =
                 generateTargetCopyPropertiesAndPaddingBaseField(leadTeamMemberDTO, TabPbLeadTeamMember.class, true);
 
@@ -195,4 +212,90 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
         tabPbPositivesMapper.insertSelective(tabPbPositives);
     }
 
+    /**
+     * 往书记表添加数据
+     *
+     * @param leadTeamMemberDTO 班子成员dto
+     */
+    private void addSecretaryInfo(LeadTeamMemberDTO leadTeamMemberDTO) {
+        //如果职务是书记，则往书记表添加一条数据
+        boolean judgement = tabPbLeadTeamMapper.checkIfSecretary(leadTeamMemberDTO.getPositiveId());
+        if (!judgement) {
+            return;
+        }
+        TabPbDeptSecretary oldSecretary = secretaryService.selectOldSecretaryInfoByUserIdAndLeadTeamId(leadTeamMemberDTO.getUserId(), leadTeamMemberDTO.getLeadTeamId());
+        TabPbDeptSecretary tabPbDeptSecretary = new TabPbDeptSecretary();
+        if (Objects.nonNull(oldSecretary)) {
+            tabPbDeptSecretary.setOldPosition(oldSecretary.getNewPosition())
+                    .setAppointmentTime(oldSecretary.getAppointmentTime());
+        } else {
+            tabPbDeptSecretary.setOldPosition(leadTeamMemberDTO.getPositiveId())
+                    .setAppointmentTime(leadTeamMemberDTO.getTenureLeave());
+        }
+        tabPbDeptSecretary.setUserId(leadTeamMemberDTO.getUserId())
+                .setLeadTeamId(leadTeamMemberDTO.getLeadTeamId())
+                .setServeTime(leadTeamMemberDTO.getTenureBegin())
+                .setWhetherMember(IS_SECRETARY)
+                .setPostive(leadTeamMemberDTO.getPositiveName())
+                .setNewPosition(leadTeamMemberDTO.getPositiveId())
+                .setWhetherMember((long) leadTeamMemberDTO.getAsCommitteeMember());
+        PaddingBaseFieldUtil.paddingBaseFiled(tabPbDeptSecretary);
+        secretaryService.insertTabPbDeptSecretary(tabPbDeptSecretary);
+    }
+
+    /**
+     * 更新书记表信息
+     *
+     * @param leadTeamMemberDTO 班子成员dto
+     */
+    private void updateSecretaryInfo(LeadTeamMemberDTO leadTeamMemberDTO) {
+        //如果该成员原来是书记但是现在不是书记了，则逻辑删除书记表信息
+        TabPbLeadTeamMember tabPbLeadTeamMember = tabPbLeadTeamMemberMapper.selectByPrimaryKey(leadTeamMemberDTO.getMemberId());
+        boolean judgementMemberIfSecretary = tabPbLeadTeamMapper.checkIfSecretary(tabPbLeadTeamMember.getPositiveId());
+        boolean judgement = tabPbLeadTeamMapper.checkIfSecretary(leadTeamMemberDTO.getPositiveId());
+        //如果现在不是书记
+        if (!judgement) {
+            //如果原来是书记
+            if (judgementMemberIfSecretary) {
+                //逻辑删除原书记信息
+                TabPbDeptSecretary originSecretary = new TabPbDeptSecretary();
+                originSecretary.setDelFlag(CommonConstant.STATUS_DEL)
+                        .setUserId(tabPbLeadTeamMember.getUserId())
+                        .setLeadTeamId(leadTeamMemberDTO.getLeadTeamId());
+                PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(originSecretary);
+                secretaryService.logicDeleteTabPbSecretary(originSecretary);
+            }
+            return;
+        }
+
+        //现在是书记并且原来也是书记的情况,则修改原来的书记信息
+        TabPbDeptSecretary oldSecretary = secretaryService.selectOldSecretaryInfoByUserIdAndLeadTeamId(leadTeamMemberDTO.getUserId(), leadTeamMemberDTO.getLeadTeamId());
+        if (oldSecretary != null) {
+            oldSecretary.setUserId(leadTeamMemberDTO.getUserId())
+                    .setLeadTeamId(leadTeamMemberDTO.getLeadTeamId())
+                    .setServeTime(leadTeamMemberDTO.getTenureBegin())
+                    .setWhetherMember(IS_SECRETARY)
+                    .setPostive(leadTeamMemberDTO.getPositiveName())
+                    .setNewPosition(leadTeamMemberDTO.getPositiveId())
+                    .setWhetherMember((long) leadTeamMemberDTO.getAsCommitteeMember())
+                    .setAppointmentTime(leadTeamMemberDTO.getTenureLeave());
+            PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(oldSecretary);
+            secretaryService.updateTabPbDeptSecretarySelective(oldSecretary);
+
+        } else {
+            //现在是书记但是原来不是书记的情况，则新增书记信息
+            TabPbDeptSecretary tabPbDeptSecretary = new TabPbDeptSecretary();
+            tabPbDeptSecretary.setUserId(leadTeamMemberDTO.getUserId())
+                    .setLeadTeamId(leadTeamMemberDTO.getLeadTeamId())
+                    .setServeTime(leadTeamMemberDTO.getTenureBegin())
+                    .setWhetherMember(IS_SECRETARY)
+                    .setPostive(leadTeamMemberDTO.getPositiveName())
+                    .setOldPosition(leadTeamMemberDTO.getPositiveId())
+                    .setNewPosition(leadTeamMemberDTO.getPositiveId())
+                    .setWhetherMember((long) leadTeamMemberDTO.getAsCommitteeMember())
+                    .setAppointmentTime(leadTeamMemberDTO.getTenureLeave());
+            PaddingBaseFieldUtil.paddingBaseFiled(tabPbDeptSecretary);
+            secretaryService.insertTabPbDeptSecretary(tabPbDeptSecretary);
+        }
+    }
 }

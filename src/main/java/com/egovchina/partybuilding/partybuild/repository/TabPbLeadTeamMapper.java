@@ -62,7 +62,7 @@ public interface TabPbLeadTeamMapper {
     /**
      * 如果当前组织传入的领导班子为当届，那么就将当前组织以前的领导班子设置为往届
      *
-     * @param orgId 组织id
+     * @param orgId      组织id
      * @param leadTeamId 领导班子id
      * @return
      */
@@ -75,4 +75,10 @@ public interface TabPbLeadTeamMapper {
      * @return
      */
     Long selectLeadTeamIdByOrgId(@Param("orgId") Long orgId);
+
+    /**
+     * 判断该成员职务是否是书记
+     */
+    Boolean checkIfSecretary(Long positiveId);
+
 }

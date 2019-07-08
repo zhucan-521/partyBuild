@@ -39,7 +39,7 @@ public class LeadTeamMemberDTO {
     @ApiModelProperty("人员姓名")
     private String personName;
 
-    @ApiModelProperty(value = "党内职务主键", required = true)
+    @ApiModelProperty(value = "党内职务主键 dict DNZW", required = true)
     @NotNull(message = "职务id不能为空")
     private Long positiveId;
 

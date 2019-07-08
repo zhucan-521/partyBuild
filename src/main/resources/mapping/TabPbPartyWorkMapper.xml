@@ -45,7 +45,7 @@
                 tab_pb_party_membership p
             INNER JOIN sys_user u ON p.user_id = u.user_id
             LEFT JOIN sys_dict d ON p.type = d.id
-            AND d.`type` = 'DJCL'
+            AND d.`type` = 'DJZT'
             WHERE
             u.user_id = #{userId}
             AND u.del_flag = '0'
