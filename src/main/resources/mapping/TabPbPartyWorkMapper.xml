@@ -22,6 +22,7 @@
     <resultMap id="HistoryInformationGraphByBasicAndOrgnizeLifeWithCommunityActivityResultMap" type="com.egovchina.partybuilding.partybuild.vo.HistoryInformationGraphVO">
         <result column="timeline" jdbcType="VARCHAR" property="timeline"/>
         <collection property="lines" column="timeline" ofType="com.egovchina.partybuilding.partybuild.vo.HistoryInformationVO">
+            <result column="id" jdbcType="BIGINT" property="id"/>
             <result column="time" jdbcType="TIMESTAMP" property="time"/>
             <result column="label" jdbcType="VARCHAR" property="label"/>
             <result column="sub_label" jdbcType="VARCHAR" property="subLabel"/>
@@ -38,6 +39,7 @@
         FROM
         (
             SELECT
+                p.membership_id AS id,
                 p.membership_time AS time,
                 d.label AS label,
                 p.reason AS sub_label
@@ -53,6 +55,7 @@
         <if test="orgnizeLife">
             UNION ALL
             SELECT
+            a.activities_id AS id,
             a.start_time AS time,
             a.subject AS label,
             NULL AS sub_label
@@ -70,6 +73,7 @@
           <if test="communityActivity">
               UNION ALL
               SELECT
+                  a.party_masses_activity_id AS id,
                   a.start_time AS time,
                   a.subject AS label,
                   NULL AS sub_label
@@ -87,6 +91,7 @@
         <if test="partyMemberComment">
             UNION ALL
             SELECT
+            a.id AS id,
             a.create_time AS time,
             d.label AS label,
             a.years AS sub_label
