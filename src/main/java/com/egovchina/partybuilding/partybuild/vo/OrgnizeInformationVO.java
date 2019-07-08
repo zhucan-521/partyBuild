@@ -1,6 +1,7 @@
 package com.egovchina.partybuilding.partybuild.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -16,6 +17,10 @@ import java.util.Date;
 @Accessors(chain = true)
 @Data
 public class OrgnizeInformationVO {
+
+    @ApiModelProperty(value = "id",hidden = true)
+    @JsonIgnore
+    private Long id;
 
     @ApiModelProperty("日期")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")

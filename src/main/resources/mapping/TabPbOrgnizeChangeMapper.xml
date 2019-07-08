@@ -475,8 +475,9 @@
     <!--组织历史信息Result Map-->
     <resultMap id="OrgnizeHistoryInformationResultVO"
                type="com.egovchina.partybuilding.partybuild.vo.OrgnizeLifeGraphVO">
-        <result column="timeline" jdbcType="VARCHAR" property="timeline"></result>
+        <result column="timeline" jdbcType="VARCHAR" property="timeline"/>
         <collection property="lines" ofType="com.egovchina.partybuilding.partybuild.vo.OrgnizeInformationVO">
+            <id column="id" jdbcType="BIGINT" property="id"/>
             <result column="time" jdbcType="TIMESTAMP" property="time"/>
             <result column="label" jdbcType="VARCHAR" property="label"/>
             <result column="sub_label" jdbcType="VARCHAR" property="subLabel"/>
@@ -492,6 +493,7 @@
         FROM
             (
             SELECT
+                c.change_id as id,
                 c.change_date AS time,
                 d.label AS label,
                 NULL AS subLabel
@@ -508,6 +510,7 @@
                 <if test="orgnizeLife">
                     UNION ALL
                     SELECT
+                        activities_id as id,
                         start_time AS time,
                         subject AS label,
                         NULL AS subLabel
