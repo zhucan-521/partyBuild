@@ -11,7 +11,7 @@
 
 	<groupId>com.egov-china.partybuilding</groupId>
 	<artifactId>partybuilding-service</artifactId>
-	<version>1.0.3.RELEASE</version>
+	<version>1.0.4.RELEASE</version>
 	<name>partybuilding-service</name>
 	<description>智慧党建党建服务（党员、党组织）</description>
 
