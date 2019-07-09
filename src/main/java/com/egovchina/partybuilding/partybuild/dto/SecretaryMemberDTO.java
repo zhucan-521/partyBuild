@@ -100,7 +100,7 @@ public class SecretaryMemberDTO {
     private Long rank;
 
     @ApiModelProperty(value = "现任职务名称")
-    private String  newPositionName;
+    private String newPositionName;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @ApiModelProperty(value = "任免时间", example = "yyyy-hh-dd")
@@ -115,4 +115,8 @@ public class SecretaryMemberDTO {
     @ApiModelProperty(value = "任职时间", example = "yyyy-hh-dd")
     @NotNull(message = "任职时间不能为空", groups = Update.class)
     private Date serveTime;
+
+    @ApiModelProperty(value = "微信公众号头像")
+    private String avatar2;
+
 }

@@ -114,4 +114,7 @@ public class SecretaryMemberVO {
     @ApiModelProperty(value = "任职时间", example = "yyyy-hh-dd")
     private Date serveTime;
 
+    @ApiModelProperty(value = "微信公众号头像")
+    private String avatar2;
+
 }
