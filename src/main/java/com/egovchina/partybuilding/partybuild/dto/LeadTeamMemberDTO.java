@@ -79,4 +79,7 @@ public class LeadTeamMemberDTO {
     @ApiModelProperty(value = "头像")
     private String avatar;
 
+    @ApiModelProperty(value = "头像2")
+    private String avatar2;
+
 }

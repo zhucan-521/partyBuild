@@ -2259,11 +2259,12 @@
     <!--更新用户头像-->
     <update id="updateAvatarByUserId">
         UPDATE sys_user
-            SET avatar = #{avatar}
-            WHERE
-                user_id = #{userId}
-	        AND del_flag = '0'
-	        AND ebl_flag = '1'
+        SET avatar2 = #{avatar2},
+        avatar = #{avatar}
+        WHERE
+            user_id = #{userId}
+            AND del_flag = '0'
+            AND ebl_flag = '1'
     </update>
 
     <!-- 根据用户Id查询单条数据 -->

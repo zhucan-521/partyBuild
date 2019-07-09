@@ -104,7 +104,7 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
             tabPbLeadTeamMapper.correctTheNumberOfTeamsAccordingToTheTeamId(leadTeamMemberDTO.getLeadTeamId());
             //新增班子成员的头像时一同修改党员表的头像
             if (StringUtils.isNotEmpty(leadTeamMemberDTO.getAvatar())) {
-                judgment += tabSysUserMapper.updateAvatarByUserId(leadTeamMemberDTO.getUserId(), leadTeamMemberDTO.getAvatar());
+                judgment += tabSysUserMapper.updateAvatarByUserId(leadTeamMemberDTO.getUserId(), leadTeamMemberDTO.getAvatar2(), leadTeamMemberDTO.getAvatar());
             }
             //修改职务信息
             modifyPosition(leadTeamMemberDTO);
@@ -132,7 +132,7 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
         if (judgment > 0) {
             //更新用户头像
             if (StringUtils.isNotEmpty(leadTeamMemberDTO.getAvatar())) {
-                judgment += tabSysUserMapper.updateAvatarByUserId(leadTeamMemberDTO.getUserId(), leadTeamMemberDTO.getAvatar());
+                judgment += tabSysUserMapper.updateAvatarByUserId(leadTeamMemberDTO.getUserId(), leadTeamMemberDTO.getAvatar2(), leadTeamMemberDTO.getAvatar());
             }
             modifyPosition(leadTeamMemberDTO);
         }

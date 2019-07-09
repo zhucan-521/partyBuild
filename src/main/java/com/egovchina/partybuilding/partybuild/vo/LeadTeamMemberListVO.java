@@ -41,6 +41,9 @@ public class LeadTeamMemberListVO {
     @ApiModelProperty("头像")
     private String avatar;
 
+    @ApiModelProperty("头像")
+    private String avatar2;
+
     @ApiModelProperty("党内职务主键")
     @JsonSerialize(using = DictSerializer.class)
     private Long positiveId;
