@@ -69,10 +69,10 @@ public class FlowOutMemberDTO {
     private String flowToOrgName;
 
     @ApiModelProperty(value = "流入组织Id")
-    private Long flowOutPlace;
+    private Long flowToOrgnizeId;
 
     @ApiModelProperty(value = "流入地址")
-    private String flowToUnitName;
+    private String flowOutPlace;
 
     @ApiModelProperty(value = "流入党支部联系方式")
     private String flowToOrgPhone;

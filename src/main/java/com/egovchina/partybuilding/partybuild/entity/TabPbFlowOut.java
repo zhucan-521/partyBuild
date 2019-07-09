@@ -16,7 +16,7 @@ public class TabPbFlowOut {
 
     private String flowToOrgnizeName;
 
-    private Long flowOutPlace;
+    private String flowOutPlace;
 
     private Date lostTime;
 

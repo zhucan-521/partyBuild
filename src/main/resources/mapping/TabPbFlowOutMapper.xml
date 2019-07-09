@@ -87,7 +87,7 @@
         <result column="flow_out_type" jdbcType="BIGINT" property="flowOutType"/>
         <result column="flow_out_range" jdbcType="BIGINT" property="flowOutRange"/>
         <result column="flow_out_reason" jdbcType="BIGINT" property="flowOutReason"/>
-        <result column="flow_out_place" jdbcType="BIGINT" property="flowOutPlace"/>
+        <result column="flow_out_place" jdbcType="VARCHAR" property="flowOutPlace"/>
         <result column="flow_to_unit_name" jdbcType="VARCHAR" property="flowToUnitName"/>
         <result column="flow_to_orgnize_name" jdbcType="VARCHAR" property="flowToOrgName"/>
         <result column="flow_to_orgnize_code" jdbcType="VARCHAR" property="flowToOrgnizeCode"/>
@@ -104,13 +104,13 @@
   </sql>
     <sql id="Base_FlowOut_List">
         tab_pb_flow_out.org_id,
-        tab_pb_flow_out.flow_out_place,
+        tab_pb_flow_out.flow_to_orgnize_id,
         tab_pb_flow_out.flow_out_id,
         sys_user.realname AS username,
         sys_user.gender,
         sys_user.id_card_no,
         -- 流入地
-        tab_pb_flow_out.flow_to_unit_name,
+        tab_pb_flow_out.flow_to_orgnize_id,
         -- 原党组织
         tab_pb_flow_out.org_id,
         (case when IFNULL(tab_pb_flow_out.org_id,1)=1  then sys_user.flow_from_org_name else (select name from  sys_dept where dept_id=tab_pb_flow_out.org_id)  end)flow_from_org_name,
@@ -122,7 +122,7 @@
         tab_pb_flow_out.flow_out_reason,
         -- 流入党组织
         -- (select name from  sys_dept where dept_id=tab_pb_flow_out.flow_out_place limit 1) flowOutOrgName ,
-           (case when  IFNULL(tab_pb_flow_out.flow_out_place,1) = 1 then sys_user.flow_to_org_name else (select name from  sys_dept where dept_id=tab_pb_flow_out.flow_out_place)  end)flow_to_org_name,
+           (case when  IFNULL(tab_pb_flow_out.flow_to_orgnize_id,1) = 1 then sys_user.flow_to_org_name else (select name from  sys_dept where dept_id=tab_pb_flow_out.flow_to_orgnize_id)  end)flow_to_org_name,
         -- sys_user.flow_to_org_name ,
         tab_pb_flow_out.flow_out_date,
         sys_user.flow_to_org_contactor,
@@ -161,7 +161,7 @@
       version ,lost_time)
     values (#{flowOutId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT},
       #{flowOutDate,jdbcType=TIMESTAMP}, #{flowOutType,jdbcType=BIGINT}, #{flowOutRange,jdbcType=BIGINT},
-      #{flowOutReason,jdbcType=BIGINT}, #{flowOutPlace,jdbcType=BIGINT}, #{flowToUnitName,jdbcType=VARCHAR},
+      #{flowOutReason,jdbcType=BIGINT}, #{flowOutPlace,jdbcType=VARCHAR}, #{flowToUnitName,jdbcType=VARCHAR},
       #{flowToOrgnizeName,jdbcType=VARCHAR}, #{flowToOrgnizeCode,jdbcType=VARCHAR}, #{flowToOrgnizeId,jdbcType=BIGINT},
       #{linkStatus,jdbcType=BIGINT}, #{contactType,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR},
       #{contactAddress,jdbcType=VARCHAR}, #{outIndustry,jdbcType=BIGINT}, #{outProfession,jdbcType=BIGINT},
@@ -303,7 +303,7 @@
                 #{flowOutReason,jdbcType=BIGINT},
             </if>
             <if test="flowOutPlace != null">
-                #{flowOutPlace,jdbcType=BIGINT},
+                #{flowOutPlace,jdbcType=VARCHAR},
             </if>
             <if test="flowToUnitName != null">
                 #{flowToUnitName,jdbcType=VARCHAR},
@@ -410,7 +410,7 @@
                 flow_out_reason = #{flowOutReason,jdbcType=BIGINT},
             </if>
             <if test="flowOutPlace != null">
-                flow_out_place = #{flowOutPlace,jdbcType=BIGINT},
+                flow_out_place = #{flowOutPlace,jdbcType=VARCHAR},
             </if>
             <if test="flowToUnitName != null">
                 flow_to_unit_name = #{flowToUnitName,jdbcType=VARCHAR},
@@ -498,7 +498,7 @@
       flow_out_type = #{flowOutType,jdbcType=BIGINT},
       flow_out_range = #{flowOutRange,jdbcType=BIGINT},
       flow_out_reason = #{flowOutReason,jdbcType=BIGINT},
-      flow_out_place = #{flowOutPlace,jdbcType=BIGINT},
+      flow_out_place = #{flowOutPlace,jdbcType=VARCHAR},
       flow_to_unit_name = #{flowToUnitName,jdbcType=VARCHAR},
       flow_to_orgnize_name = #{flowToOrgnizeName,jdbcType=VARCHAR},
       flow_to_orgnize_code = #{flowToOrgnizeCode,jdbcType=VARCHAR},
@@ -586,8 +586,8 @@
             <if test="flowOutState!=null and ''!=flowOutState">
                 and tab_pb_flow_out.flow_out_state =#{flowOutState}
             </if>
-            <if test="flowToUnitName != null and ''!=flowToUnitName">
-                and tab_pb_flow_out.flow_to_unit_name like concat('%',#{flowToUnitName},'%')
+            <if test="flowOutPlace != null and ''!=flowToUnitName">
+                and tab_pb_flow_out.flow_out_place like concat('%',#{flowOutPlace},'%')
             </if>
             <choose>
                 <when test="orgRange == 1">

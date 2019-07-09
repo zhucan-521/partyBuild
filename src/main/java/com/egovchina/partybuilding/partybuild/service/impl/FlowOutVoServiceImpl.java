@@ -6,7 +6,6 @@ import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailExcepti
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
-import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.FlowOutMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.FlowOutMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowIn;
@@ -91,8 +90,8 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
         BeanUtils.copyProperties(flowOutMemberDto, sysUser);
         flowOutMemberDto.setUserId(userId);
         //流入党组织 没有流入组织id则流出到市外
-        if (flowOutMemberDto.getFlowOutPlace() != null) {
-            sysUser.setFlowToOrgId(flowOutMemberDto.getFlowOutPlace());
+        if (flowOutMemberDto.getFlowToOrgnizeId() != null) {
+            sysUser.setFlowToOrgId(flowOutMemberDto.getFlowToOrgnizeId());
             //插入流出表 设置状态为待报到
             flowOutMemberDto.setFlowOutState(CommonConstant.PENDING_REPORT);
         } else {
@@ -110,20 +109,26 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         TabPbFlowOut tabPbFlowOutInsert = new TabPbFlowOut();
         BeanUtil.copyPropertiesIgnoreNull(flowOutMemberDto, tabPbFlowOutInsert);
+        tabPbFlowOutInsert.setFlowToOrgnizeId(flowOutMemberDto.getFlowToOrgnizeId()); //设置流入党组织Id
+        tabPbFlowOutInsert.setFlowToOrgnizeName(flowOutMemberDto.getFlowToOrgName());//设置流入党组织名称
         tabPbFlowOutMapper.insertSelective(tabPbFlowOutInsert);
         //插入流入表
         TabPbFlowIn tabPbFlowIn = new TabPbFlowIn()
                 .setFlowOutId(tabPbFlowOutInsert.getFlowOutId())
                 .setFlowInState(CommonConstant.PENDING_REPORT) //设置状态为待报到
                 .setUserId(userId)  //设置流入人
-                .setOldPlace(flowOutMemberDto.getFlowToUnitName())  //设置原地
+                .setOldPlace(flowOutMemberDto.getFlowOutPlace())  //设置原地
                 .setFlowInType(flowOutMemberDto.getFlowOutType()) //设置流出类型
                 .setFlowInRange(flowOutMemberDto.getOutIndustry()) //设置流动范围
                 .setFlowInReason(flowOutMemberDto.getFlowOutReason().toString()) //设置流动原因
-                .setOldOrgnizeCode(flowOutMemberDto.getFlowToOrgnizeCode());  //设置流动证
+                .setOldOrgnizeCode(flowOutMemberDto.getFlowToOrgnizeCode()) //设置流动证
+                .setOldOrgnizeName(flowOutMemberDto.getFlowFromOrgName()) //原党组织名称
+                .setOldOrgnizePhone(flowOutMemberDto.getFlowFromOrgPhone()) //原党组织联系电话
+                .setOldOrgnizeContactor(flowOutMemberDto.getFlowFromOrgContactor());//原党组织联系人
         //流入党组织
-        if (flowOutMemberDto.getFlowOutPlace() != null) {
-            tabPbFlowIn.setOrgId(flowOutMemberDto.getFlowOutPlace()); //设置流入组织
+        if (flowOutMemberDto.getFlowToOrgnizeId() != null) {
+            tabPbFlowIn.setOldOrgnizeId(flowOutMemberDto.getOrgId());
+            tabPbFlowIn.setOrgId(flowOutMemberDto.getFlowToOrgnizeId()); //设置流入组织
         } else {
             flowOutMemberDto.setFlowOutState(CommonConstant.FLOWED_OUT); //已经流出
         }
@@ -153,9 +158,9 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
         SysUser sysUser = tabSysUserMapper.selectUserByIdCardNo(flowOutMemberDto.getIdCardNo());
         BeanUtil.copyPropertiesIgnoreNull(flowOutMemberDto, sysUser);
         //流入党组织
-        if (flowOutMemberDto.getFlowOutPlace() != null) {
-            sysUser.setFlowToOrgId(flowOutMemberDto.getFlowOutPlace());
-            sysUser.setFlowToOrgName(tabPbFlowOutMapper.selectDeptNameByDeptId(flowOutMemberDto.getFlowOutPlace()));
+        if (flowOutMemberDto.getFlowToOrgnizeId() != null) {
+            sysUser.setFlowToOrgId(flowOutMemberDto.getFlowToOrgnizeId());
+            sysUser.setFlowToOrgName(tabPbFlowOutMapper.selectDeptNameByDeptId(flowOutMemberDto.getFlowToOrgnizeId()));
         }
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         //修改流入表
@@ -163,8 +168,8 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
                 .setFlowOutId(flowOutMemberDto.getFlowOutId())
                 .setUserId(sysUser.getUserId())
                 .setOldOrgnizeId(flowOutMemberDto.getOrgId())
-                .setOrgId(flowOutMemberDto.getFlowOutPlace())
-                .setOldPlace(flowOutMemberDto.getFlowToUnitName())
+                .setOrgId(flowOutMemberDto.getFlowToOrgnizeId())
+                .setOldPlace(flowOutMemberDto.getFlowOutPlace())
                 .setFlowInType(flowOutMemberDto.getFlowOutType())
                 .setFlowInRange(flowOutMemberDto.getOutIndustry())
                 .setFlowInReason(flowOutMemberDto.getFlowOutReason().toString())
