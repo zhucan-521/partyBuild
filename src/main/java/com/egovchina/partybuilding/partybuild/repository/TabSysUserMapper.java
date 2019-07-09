@@ -200,6 +200,7 @@ public interface TabSysUserMapper {
 
     /**
      * 党员名册查询概况
+     *
      * @param userId
      * @return
      */
@@ -251,10 +252,11 @@ public interface TabSysUserMapper {
     /**
      * 更新用户头像
      *
-     * @param userId 用户id
-     * @param avatar 用户头像
+     * @param userId  用户id
+     * @param avatar2 用户头像2
+     * @param avatar  用户头像
      */
-    int updateAvatarByUserId(@Param("userId") Long userId, @Param("avatar") String avatar);
+    int updateAvatarByUserId(@Param("userId") Long userId, @Param("avatar2") String avatar2, @Param("avatar") String avatar);
 
     /**
      * desc: 根据用户Id查询单条数据
@@ -268,6 +270,7 @@ public interface TabSysUserMapper {
 
     /**
      * 批量导入党员数据
+     *
      * @param users
      * @return
      */

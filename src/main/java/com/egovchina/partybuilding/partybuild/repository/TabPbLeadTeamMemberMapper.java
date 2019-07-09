@@ -50,7 +50,7 @@ public interface TabPbLeadTeamMemberMapper {
     /**
      * 根据id查询班子成员详情
      *
-     * @param memberId id
+     * @param memberId 班子成员id
      * @return
      */
     LeadTeamMemberVO selectLeadTeamMemberVOById(Long memberId);
