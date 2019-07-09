@@ -288,70 +288,52 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
     }
 
     @Transactional
-    @Scheduled(cron = "0 0 0 * * * ")
+    @Scheduled(cron = "0 0 0 * * *")
     @Override
     public int addPeople() {
         log.info("Scheduled occur , Event at 定时添加前一天的活动未参加的人");
-
         int retVal = 0;
         //查询前一天的活动id跟组织id
         List<ActivityVO> activityVO = tabPbMessageMapper.selectByActivityVO();
         if (CollectionUtil.isNotEmpty(activityVO)) {
-
-            for (ActivityVO vo : activityVO) {
+            for (ActivityVO activity : activityVO) {
                 //获取活动的快照
-                PartyOrganizeActivitiesVO activitiesVO = tabPbMessageMapper.selectOrganizationActivityVOById(vo.getActivitiesId());
+                PartyOrganizeActivitiesVO activitiesVO = tabPbMessageMapper.selectOrganizationActivityVOById(activity.getActivitiesId());
                 ActivityCandidateMemberVO candidateMemberVO = JSON.parseObject(activitiesVO.getCandidateMemberSnapshot(), ActivityCandidateMemberVO.class);
-                if (vo.getUserId() != null) {
+                List<PersonnelEntityVO> groupMembers = new ArrayList<>();
+                candidateMemberVO.getGroups().forEach(partyGroupVO -> groupMembers.addAll(partyGroupVO.getMembers()));
+                if (CollectionUtil.isNotEmpty(candidateMemberVO.getOnFlows())) {
+                    groupMembers.addAll(candidateMemberVO.getOnFlows());
+                }
+                List<Long> existsUserIds = new ArrayList<>();
+                if (activity.getNumberOfPeople() > 0) {
                     //获取活动已经存在的人
-                    List<PersonnelEntityVO> list = tabPbMessageMapper.selectParticipantList(vo.getActivitiesId());
+                    List<PersonnelEntityVO> list = tabPbMessageMapper.selectParticipantList(activity.getActivitiesId());
                     if (CollectionUtil.isNotEmpty(list)) {
-                        List<Long> existsUserIds = list.stream().map(PersonnelEntityVO::getUserId).collect(Collectors.toList());
-                        //处理，填充是否参加标识
-                        Set<PersonnelEntityVO> groupMembers = new HashSet<>();
-                        candidateMemberVO.getGroups().forEach(partyGroupVO -> groupMembers.addAll(partyGroupVO.getMembers()));
-                        if (CollectionUtil.isNotEmpty(candidateMemberVO.getOnFlows())) {
-                            groupMembers.addAll(candidateMemberVO.getOnFlows());
-                        }
-                        if (CollectionUtil.isNotEmpty(candidateMemberVO.getModerators())) {
-                            groupMembers.addAll(candidateMemberVO.getModerators());
-                        }
-                        for (PersonnelEntityVO personnelVO : groupMembers) {
-
-                            if (!existsUserIds.contains(personnelVO.getUserId())) {
-                                PersonnelEntityVO personnelEntityVO = new PersonnelEntityVO();
-                                personnelEntityVO.setUserId(personnelVO.getUserId());
-                                personnelEntityVO.setActivitiesId(activitiesVO.getActivitiesId());
-                                personnelEntityVO.setAbsentReason((byte) 1);
-                                personnelEntityVO.setRealName(personnelVO.getRealName());
-                                personnelEntityVO.setRealType(personnelVO.getRealType());
-                                retVal += tabPbMessageMapper.addPersonnel(generateTargetCopyPropertiesAndPaddingBaseField(personnelEntityVO, TabPbParticipant.class, false));
-                            }
-                        }
+                        existsUserIds = list.stream().map(PersonnelEntityVO::getUserId).collect(Collectors.toList());
                     }
                 }
-                if (vo.getUserId() == null) {
-                    //处理，填充是否参加标识
-                    Set<PersonnelEntityVO> groupMembers = new HashSet<>();
-                    candidateMemberVO.getGroups().forEach(partyGroupVO -> groupMembers.addAll(partyGroupVO.getMembers()));
-                    if (CollectionUtil.isNotEmpty(candidateMemberVO.getOnFlows())) {
-                        groupMembers.addAll(candidateMemberVO.getOnFlows());
-                    }
-                    if (CollectionUtil.isNotEmpty(candidateMemberVO.getModerators())) {
-                        groupMembers.addAll(candidateMemberVO.getModerators());
-                    }
-                    for (PersonnelEntityVO personnelVO : groupMembers) {
-                        PersonnelEntityVO personnelEntityVO = new PersonnelEntityVO();
-                        personnelEntityVO.setUserId(personnelVO.getUserId());
-                        personnelEntityVO.setActivitiesId(activitiesVO.getActivitiesId());
-                        personnelEntityVO.setAbsentReason((byte) 1);
-                        personnelEntityVO.setRealName(personnelVO.getRealName());
-                        personnelEntityVO.setRealType(personnelVO.getRealType());
-                        retVal += tabPbMessageMapper.addPersonnel(generateTargetCopyPropertiesAndPaddingBaseField(personnelEntityVO, TabPbParticipant.class, false));
+                //处理，填充是否参加标识
+                for (PersonnelEntityVO personnelVO : groupMembers) {
+                    if (CollectionUtil.isEmpty(existsUserIds) || !existsUserIds.contains(personnelVO.getUserId())) {
+                        TabPbParticipant tabPbParticipant = new TabPbParticipant();
+                        tabPbParticipant.setUserId(personnelVO.getUserId());
+                        tabPbParticipant.setActivitiesId(activitiesVO.getActivitiesId());
+                        tabPbParticipant.setAbsentReason((byte) 1);//未参加人员因病缺席
+                        tabPbParticipant.setRealName(personnelVO.getRealName());
+                        tabPbParticipant.setRealType(personnelVO.getRealType().toString());
+                        tabPbParticipant.setCreateUserid(1L);
+                        tabPbParticipant.setCreateUsername("admin");
+                        tabPbParticipant.setCreateTime(new Date());
+                        tabPbParticipant.setUpdateUserid(1L);
+                        tabPbParticipant.setUpdateUsername("admin");
+                        tabPbParticipant.setUpdateTime(new Date());
+                        retVal += tabPbMessageMapper.addPersonnel(tabPbParticipant);
                     }
                 }
             }
         }
+
         return retVal;
     }
 
@@ -409,7 +391,6 @@ public class TimedTransmissionServiceImpl implements TimedTransmissionService {
                         tabPbPartyMassesParticipant.setUpdateUserid(1L);
                         tabPbPartyMassesParticipant.setUpdateUsername("admin");
                         tabPbPartyMassesParticipant.setUpdateTime(new Date());
-                        PaddingBaseFieldUtil.paddingBaseFiled(tabPbPartyMassesParticipant);
                         unJoinedParticipantList.add(tabPbPartyMassesParticipant);
                     });
                 }
