@@ -19,7 +19,7 @@ public class FlowOutMemberQueryBean {
     private Long rangeDeptId;
 
     @ApiModelProperty(value = "流入地")
-    private String flowToUnitName;
+    private String flowOutPlace;
 
     @ApiModelProperty(value = "用户姓名")
     private String username;

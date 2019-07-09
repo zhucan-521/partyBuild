@@ -70,10 +70,10 @@ public class FlowOutMemberVO {
     private String flowToOrgName;
 
     @ApiModelProperty(value = "流入组织Id")
-    private Long flowOutPlace;
+    private Long flowToOrgnizeId;
 
     @ApiModelProperty(value = "流入地址")
-    private String flowToUnitName;
+    private String flowOutPlace;
 
     @ApiModelProperty(value = "流入党支部联系方式")
     private String flowToOrgPhone;
@@ -103,9 +103,6 @@ public class FlowOutMemberVO {
     @ApiModelProperty(value = "流入时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date flowInDate;
-
-    @ApiModelProperty(value = "流入党组织Id")
-    private Long flowToOrgnizeId;
 
     @ApiModelProperty(value = "人员类别 码表值 RYLB")
     @JsonSerialize(using = DictSerializer.class)

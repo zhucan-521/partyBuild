@@ -25,4 +25,7 @@ public class ActivityVO {
     @ApiModelProperty(value = "缺席原因 查询数据字典QXYY 1为因病因事缺席 2为无故缺席")
     @JsonSerialize(using = DictSerializer.class)
     private Byte absentReason;
+
+    @ApiModelProperty(value = "人数")
+    private Long numberOfPeople;
 }

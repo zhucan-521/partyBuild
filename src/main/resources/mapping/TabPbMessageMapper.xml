@@ -618,7 +618,7 @@
           a.activities_id,
           p.participant_id,
           p.absent_reason,
-          p.user_id
+          count(p.user_id)as numberOfPeople
         FROM
             tab_pb_activities a
             left join tab_pb_participant p ON a.activities_id = p.activities_id  AND p.del_flag =0
@@ -653,8 +653,8 @@
         LEFT JOIN tab_pb_participant p ON a.activities_id = p.activities_id
     WHERE
         a.activities_id = #{activitiesId}
-        AND a.del_flag=0
-        and p.del_flag=0
+        AND a.del_flag='0'
+        AND p.del_flag='0'
 
     </select>
 

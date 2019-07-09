@@ -29,8 +29,8 @@ public interface LeadTeamMemberService {
     /**
      * 根据班子ID查询班子成员列表
      *
-     * @param leadTeamId
-     * @param page
+     * @param leadTeamId 领导班子id
+     * @param page       分页参数
      * @return
      */
     List<LeadTeamMemberListVO> selectLeadTeamMemberVOListByLeadTeamId(Long leadTeamId, Page page);
@@ -70,8 +70,9 @@ public interface LeadTeamMemberService {
 
     /**
      * 根据条件查询社区兼职委员VO列表
+     *
      * @param queryBean 查询实体
-     * @param page 分页对象
+     * @param page      分页对象
      * @return
      */
     List<CommunityPartTimeMemberVO> selectCommunityPartTimeMemberVOListByCondition(CommunityPartTimeMemberQueryBean queryBean, Page page);
@@ -87,8 +88,8 @@ public interface LeadTeamMemberService {
     /**
      * 获取领导班子id
      *
-     * @return
      * @param orgId 组织id
+     * @return
      */
     Long getLeadTeamIdByCurrent(Long orgId);
 

@@ -57,6 +57,7 @@
         <result column="gender" jdbcType="BIGINT" property="gender"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="join_time" jdbcType="TIMESTAMP" property="joinDate"/>
+        <result column="avatar2" jdbcType="VARCHAR" property="avatar2"/>
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
     </resultMap>
 
@@ -72,6 +73,7 @@
         <result column="tenure_begin" jdbcType="TIMESTAMP" property="tenureBegin"/>
         <result column="rank" jdbcType="BIGINT" property="rank"/>
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="avatar2" jdbcType="VARCHAR" property="avatar2"/>
         <result column="join_time" jdbcType="TIMESTAMP" property="joinDate"/>
     </resultMap>
 
@@ -99,7 +101,7 @@
     <!--VO List ResultMap-->
     <sql id="LeadTeamMemberListVO_Column_List">
         ltm.member_id, ltm.org_id, ltm.lead_team_id, ltm.user_id, ltm.person_name, ltm.positive_id, ltm.positive_name,
-        ltm.tenure_begin, ltm.rank,u.avatar
+        ltm.tenure_begin, ltm.rank, u.avatar2, u.avatar
     </sql>
 
     <!--VO ResultMap-->
@@ -107,7 +109,7 @@
         ltm.member_id, ltm.org_id, ltm.lead_team_id, ltm.user_id, ltm.person_name, ltm.positive_id, ltm.positive_name,
         ltm.tenure_mode, ltm.tenure_begin, ltm.tenure_duration, ltm.tenure_leave, ltm.as_committee_member, ltm.as_committee_director,
         ltm.lead_member_order, ltm.description, ltm.rank, ltm.approval_number, ltm.ebl_flag,
-        u.avatar
+        u.avatar2, u.avatar
      </sql>
 
     <!--CommunityPartTimeMemberVO ResultMap-->

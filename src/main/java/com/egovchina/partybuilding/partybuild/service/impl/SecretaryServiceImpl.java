@@ -83,15 +83,16 @@ public class SecretaryServiceImpl implements SecretaryService {
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         TabPbDeptSecretary tabPbDeptSecretary = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(secretaryMemberDTO, TabPbDeptSecretary.class, true);
         Long memberId = tabPbDeptSecretaryMapper.findMemberIdByLeadTeamIdAndUserId(secretaryMemberDTO.getUserId(), secretaryMemberDTO.getLeadTeamId());
-        TabPbLeadTeamMember tabPbLeadTeamMember = new TabPbLeadTeamMember();
-        tabPbLeadTeamMember.setPositiveId(secretaryMemberDTO.getNewPosition());
-        tabPbLeadTeamMember.setPositiveName(secretaryMemberDTO.getNewPositionName());
-        tabPbLeadTeamMember.setTenureBegin(secretaryMemberDTO.getServeTime());
-        tabPbLeadTeamMember.setRank(secretaryMemberDTO.getRank());
-        tabPbLeadTeamMember.setMemberId(memberId);
-        tabPbLeadTeamMember.setUserId(secretaryMemberDTO.getUserId());
-        tabPbLeadTeamMember.setOrgId(secretaryMemberDTO.getDeptId());
-        LeadTeamMemberDTO leadTeamMemberDTO = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(tabPbLeadTeamMember, LeadTeamMemberDTO.class, true);
+        LeadTeamMemberDTO leadTeamMemberDTO = new LeadTeamMemberDTO();
+        leadTeamMemberDTO.setMemberId(memberId);
+        leadTeamMemberDTO.setPositiveId(secretaryMemberDTO.getNewPosition());
+        leadTeamMemberDTO.setPositiveName(secretaryMemberDTO.getNewPositionName());
+        leadTeamMemberDTO.setTenureBegin(secretaryMemberDTO.getServeTime());
+        leadTeamMemberDTO.setRank(secretaryMemberDTO.getRank());
+        leadTeamMemberDTO.setUserId(secretaryMemberDTO.getUserId());
+        leadTeamMemberDTO.setOrgId(secretaryMemberDTO.getDeptId());
+        leadTeamMemberDTO.setAvatar2(secretaryMemberDTO.getAvatar2());
+        leadTeamMemberDTO.setAvatar(secretaryMemberDTO.getAvatar());
         leadTeamMemberService.updateLeadTeamMember(leadTeamMemberDTO);
         return tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretary);
     }
