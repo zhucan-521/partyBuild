@@ -135,7 +135,8 @@
         tab_pb_flow_out.flow_to_orgnize_id,
         tab_pb_flow_out.flow_out_state,
         tab_pb_flow_out.return_date,
-        tab_pb_flow_out.flow_to_orgnize_code
+        tab_pb_flow_out.flow_to_orgnize_code,
+        tab_pb_flow_out.flow_out_place
     </sql>
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
@@ -586,7 +587,7 @@
             <if test="flowOutState!=null and ''!=flowOutState">
                 and tab_pb_flow_out.flow_out_state =#{flowOutState}
             </if>
-            <if test="flowOutPlace != null and ''!=flowToUnitName">
+            <if test="flowOutPlace != null and ''!=flowOutPlace">
                 and tab_pb_flow_out.flow_out_place like concat('%',#{flowOutPlace},'%')
             </if>
             <choose>
