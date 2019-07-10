@@ -1630,7 +1630,7 @@
                 avatar = #{avatar,jdbcType=VARCHAR},
             </if>
             <if test="avatar2 != null">
-                avatar2 = #{avatar,jdbcType=VARCHAR},
+                avatar2 = #{avatar2,jdbcType=VARCHAR},
             </if>
             <if test="usedName != null">
                 used_name = #{usedName,jdbcType=VARCHAR},
