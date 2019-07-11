@@ -172,7 +172,7 @@
                     AND (d.dept_id = #{rangeDeptId} OR d.parent_id = #{rangeDeptId})
                 </when>
                 <when test="orgRange == 2">
-                    AND find_in_set(#{rangeDeptId}, d.full_path)
+                    AND d.org_inner_code LIKE concat( ( SELECT org_inner_code FROM sys_dept innerd WHERE innerd.dept_id = #{rangeDeptId} ), '%' )
                 </when>
             </choose>
         </if>
@@ -745,7 +745,7 @@
             d.del_flag = '0'
             <include refid="Base_WhereCase_List"/>
         </where>
-        order by d.order_num
+        order by length(d.org_inner_code), d.order_num
     </select>
 
     <!--简单列表-map-->
