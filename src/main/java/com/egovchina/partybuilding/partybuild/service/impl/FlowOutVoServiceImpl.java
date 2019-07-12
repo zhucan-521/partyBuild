@@ -106,9 +106,9 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
             sysUser.setFlowFromOrgId(flowOutMemberDto.getOrgId());
         }
         sysUser.setUserId(userId);
+        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(sysUser);
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
-        TabPbFlowOut tabPbFlowOutInsert = new TabPbFlowOut();
-        BeanUtil.copyPropertiesIgnoreNull(flowOutMemberDto, tabPbFlowOutInsert);
+        TabPbFlowOut tabPbFlowOutInsert = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(flowOutMemberDto,TabPbFlowOut.class,false);
         tabPbFlowOutInsert.setFlowToOrgnizeId(flowOutMemberDto.getFlowToOrgnizeId()); //设置流入党组织Id
         tabPbFlowOutInsert.setFlowToOrgnizeName(flowOutMemberDto.getFlowToOrgName());//设置流入党组织名称
         tabPbFlowOutMapper.insertSelective(tabPbFlowOutInsert);
@@ -140,6 +140,7 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
             tabPbFlowIn.setFlowInDate(flowOutMemberDto.getFlowInDate());//设置流入日期
             tabPbFlowIn.setFlowInState(CommonConstant.FLOWED_IN);//已录入
         }
+        PaddingBaseFieldUtil.paddingBaseFiled(tabPbFlowIn);
         return tabPbFlowInMapper.insertSelective(tabPbFlowIn);
     }
 

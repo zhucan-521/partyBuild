@@ -110,6 +110,7 @@
         sys_user.gender,
         sys_user.id_card_no,
         -- 流入地
+        tab_pb_flow_out.return_tag,
         tab_pb_flow_out.flow_to_orgnize_id,
         -- 原党组织
         tab_pb_flow_out.org_id,
@@ -166,7 +167,7 @@
       #{flowToOrgnizeName,jdbcType=VARCHAR}, #{flowToOrgnizeCode,jdbcType=VARCHAR}, #{flowToOrgnizeId,jdbcType=BIGINT},
       #{linkStatus,jdbcType=BIGINT}, #{contactType,jdbcType=VARCHAR}, #{contactPhone,jdbcType=VARCHAR},
       #{contactAddress,jdbcType=VARCHAR}, #{outIndustry,jdbcType=BIGINT}, #{outProfession,jdbcType=BIGINT},
-      #{returnDate,jdbcType=TIMESTAMP}, #{returnTag,jdbcType=TINYINT}, #{eblFlag,jdbcType=VARCHAR},
+      #{returnDate,jdbcType=TIMESTAMP}, #{returnTag,jdbcType=VARCHAR}, #{eblFlag,jdbcType=VARCHAR},
       #{delFlag,jdbcType=VARCHAR}, #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR},
       #{updateTime,jdbcType=TIMESTAMP}, #{updateUserid,jdbcType=BIGINT}, #{updateUsername,jdbcType=VARCHAR},
@@ -340,7 +341,7 @@
                 #{returnDate,jdbcType=TIMESTAMP},
             </if>
             <if test="returnTag != null">
-                #{returnTag,jdbcType=TINYINT},
+                #{returnTag,jdbcType=VARCHAR},
             </if>
             <if test="eblFlag != null">
                 #{eblFlag,jdbcType=VARCHAR},
@@ -447,7 +448,7 @@
                 return_date = #{returnDate,jdbcType=TIMESTAMP},
             </if>
             <if test="returnTag != null">
-                return_tag = #{returnTag,jdbcType=TINYINT},
+                return_tag = #{returnTag,jdbcType=VARCHAR},
             </if>
             <if test="eblFlag != null">
                 ebl_flag = #{eblFlag,jdbcType=VARCHAR},
@@ -511,7 +512,7 @@
       out_industry = #{outIndustry,jdbcType=BIGINT},
       out_profession = #{outProfession,jdbcType=BIGINT},
       return_date = #{returnDate,jdbcType=TIMESTAMP},
-      return_tag = #{returnTag,jdbcType=TINYINT},
+      return_tag = #{returnTag,jdbcType=VARCHAR},
       ebl_flag = #{eblFlag,jdbcType=VARCHAR},
       del_flag = #{delFlag,jdbcType=VARCHAR},
       order_num = #{orderNum,jdbcType=BIGINT},

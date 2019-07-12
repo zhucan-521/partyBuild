@@ -57,6 +57,8 @@ public class FlowInServiceImpl implements FlowInService {
     @Autowired
     private StationNewsService stationNewsService;
 
+    private final Long REFUSETOACCEPT = 59713L;
+
     /**
      * 流入党员列表查询
      *
@@ -136,7 +138,7 @@ public class FlowInServiceImpl implements FlowInService {
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         //添加流动标识
         userTagService.addUserTag(sysUser.getUserId(), UserTagType.FLOW);
-        this.sendMessage(userId);
+        this.sendMessage(userId, true);
         return tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOut);
     }
 
@@ -208,17 +210,47 @@ public class FlowInServiceImpl implements FlowInService {
     }
 
     /**
-     * 给流入的党员发送信息
+     * 发送信息 true则已经接受，false则拒绝接受
      *
      * @param userId
+     * @param flag
      */
-    public void sendMessage(Long userId) {
+    public void sendMessage(Long userId, Boolean flag) {
         SysUser recipientUser = tabSysUserMapper.selectOneByUserId(userId);
         MessageReceiveDTO messageReceiveDTO = new MessageReceiveDTO().setReceiverId(userId).setReceiverName(recipientUser.getRealname());
         List<MessageReceiveDTO> messageReceiveDTOs = new ArrayList();
         messageReceiveDTOs.add(messageReceiveDTO);
-        MessageAddDTO messageAddDTO = new MessageAddDTO().setReceiverType(ReceiverTypeEnum.PERSON.getReceiverType()).setType(MessageTypeEnum.FLOW_PARTY_MEMBER.getId()).setReceivers(messageReceiveDTOs).setTitle("流入党组织通知").setContent("你已经流入" + recipientUser.getFlowToOrgName());
+        if (flag) {
+            MessageAddDTO messageAddDTO = new MessageAddDTO().setReceiverType(ReceiverTypeEnum.PERSON.getReceiverType()).setType(MessageTypeEnum.FLOW_PARTY_MEMBER.getId()).setReceivers(messageReceiveDTOs).setTitle("流入党组织通知").setContent("你已经流入" + recipientUser.getFlowToOrgName());
+            stationNewsService.batchInsertStationNews(messageAddDTO);
+            return;
+        }
+        MessageAddDTO messageAddDTO = new MessageAddDTO().setReceiverType(ReceiverTypeEnum.PERSON.getReceiverType()).setType(MessageTypeEnum.FLOW_PARTY_MEMBER.getId()).setReceivers(messageReceiveDTOs).setTitle("流入党组织通知").setContent(recipientUser.getFlowToOrgName() + "拒绝了你的流入申请");
         stationNewsService.batchInsertStationNews(messageAddDTO);
+    }
+
+    /**
+     * 拒绝接受
+     *
+     * @param flowInId
+     * @param returnTag
+     * @return
+     */
+    @Override
+    public int refuse(Long flowInId, String returnTag) {
+        TabPbFlowIn tabPbFlowIn = tabPbFlowInMapper.selectByPrimaryKey(flowInId);
+        //设置状态拒绝接受
+        tabPbFlowIn.setFlowInState(REFUSETOACCEPT);
+        tabPbFlowIn.setReturnTag(returnTag);
+        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbFlowIn);
+        tabPbFlowInMapper.updateByPrimaryKeySelective(tabPbFlowIn);
+        this.sendMessage(tabPbFlowIn.getUserId(), false);
+        TabPbFlowOut tabPbFlowOut = new TabPbFlowOut();
+        tabPbFlowOut.setFlowOutId(tabPbFlowIn.getFlowOutId());
+        tabPbFlowOut.setReturnTag(returnTag);
+        tabPbFlowOut.setFlowOutState(REFUSETOACCEPT);
+        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbFlowOut);
+        return tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOut);
     }
 
 }

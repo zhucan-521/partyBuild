@@ -59,5 +59,13 @@ public interface FlowInService {
      */
     FlowInMemberVO getFlowInMeberVoById(Long flowInId);
 
+    /**
+     * 拒绝接受
+     *
+     * @param flowInId
+     * @param returnTag
+     * @return
+     */
+    int refuse(Long flowInId, String returnTag);
 
 }

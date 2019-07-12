@@ -9,10 +9,7 @@ import com.egovchina.partybuilding.partybuild.entity.FlowInMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.service.FlowInService;
 import com.egovchina.partybuilding.partybuild.vo.FlowInMemberVO;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -70,6 +67,18 @@ public class FlowInControlle {
     public ReturnEntity updateFlowInMember(@ApiParam(value = "流入党员对象") @RequestBody @Validated FlowInMemberDTO flowInMemberDTO) {
         int flag = flowInService.updateFlowInDto(flowInMemberDTO);
         return ReturnUtil.buildReturn(flag);
+    }
+
+    @ApiOperation(value = "拒绝接收流入党员(带上flowInId)", notes = "务必带上flowInId", httpMethod = "POST")
+    @HasPermission(value = "party_partyFlowIn_accept")
+    @PostMapping("/{flowInId}/refuse-accept")
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "拒绝理由", name = "returnTag", required = true),
+            @ApiImplicitParam(value = "流入党员主键", name = "flowInId", required = true, paramType = "path")
+    })
+    public ReturnEntity refuseAcceptFlowInMember(@PathVariable Long flowInId, String returnTag) {
+        int insert = flowInService.refuse(flowInId, returnTag);
+        return ReturnUtil.buildReturn(insert);
     }
 
 }

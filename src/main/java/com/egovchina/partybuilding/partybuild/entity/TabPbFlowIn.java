@@ -53,7 +53,7 @@ public class TabPbFlowIn {
 
     private Date returnDate;
 
-    private Byte returnTag;
+    private String returnTag;
 
     private Long flowOutId;
 

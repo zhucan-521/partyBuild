@@ -97,4 +97,7 @@ public class FlowOutMemberDTO {
     @ApiModelProperty(value = "人员类别 码表值 RYLB")
     private Long identityType;
 
+    @ApiModelProperty(value = "拒绝理由")
+    private String returnTag;
+
 }

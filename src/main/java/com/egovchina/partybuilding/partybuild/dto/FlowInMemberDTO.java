@@ -3,6 +3,7 @@ package com.egovchina.partybuilding.partybuild.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
@@ -20,7 +21,7 @@ import java.util.Date;
 public class FlowInMemberDTO {
 
     @ApiModelProperty(value = "流入Id")
-    @NotNull(message = "请传入flowInId")
+    @NotNull(message = "请传入flowInId", groups = Update.class)
     private Long flowInId;
 
     @ApiModelProperty(value = "身份证号码")
@@ -116,5 +117,8 @@ public class FlowInMemberDTO {
 
     @ApiModelProperty(value = "失联情况 码表值LXQK")
     private Long linkStatus;
+
+    @ApiModelProperty(value = "拒绝理由")
+    private String returnTag;
 
 }
