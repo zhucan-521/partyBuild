@@ -97,6 +97,8 @@
 		t.flow_out_id,
 		t.return_date,
 		t.flow_in_state,
+		t.return_tag,
+		s.user_id,
 		s.realname as username,
 		s.id_card_no,
 		s.gender,
@@ -142,7 +144,7 @@
       #{flowInReason,jdbcType=VARCHAR}, #{oldPlace,jdbcType=VARCHAR}, #{oldUnitName,jdbcType=VARCHAR}, 
       #{oldOrgnizeId,jdbcType=BIGINT}, #{oldOrgnizeCode,jdbcType=VARCHAR}, #{oldOrgnizeName,jdbcType=VARCHAR}, 
       #{oldOrgnizePhone,jdbcType=VARCHAR}, #{oldOrgnizeContactor,jdbcType=VARCHAR}, #{oldContactPhone,jdbcType=VARCHAR}, 
-      #{oldUnitPostcode,jdbcType=VARCHAR}, #{returnDate,jdbcType=TIMESTAMP}, #{returnTag,jdbcType=TINYINT}, 
+      #{oldUnitPostcode,jdbcType=VARCHAR}, #{returnDate,jdbcType=TIMESTAMP}, #{returnTag,jdbcType=VARCHAR},
       #{flowOutId,jdbcType=BIGINT}, #{eblFlag,jdbcType=VARCHAR}, #{delFlag,jdbcType=VARCHAR}, 
       #{orderNum,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{createUserid,jdbcType=BIGINT}, #{createUsername,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
@@ -299,7 +301,7 @@
                 #{returnDate,jdbcType=TIMESTAMP},
             </if>
             <if test="returnTag != null">
-                #{returnTag,jdbcType=TINYINT},
+                #{returnTag,jdbcType=VARCHAR},
             </if>
             <if test="flowOutId != null">
                 #{flowOutId,jdbcType=BIGINT},
@@ -394,7 +396,7 @@
                 return_date = #{returnDate,jdbcType=TIMESTAMP},
             </if>
             <if test="returnTag != null">
-                return_tag = #{returnTag,jdbcType=TINYINT},
+                return_tag = #{returnTag,jdbcType=VARCHAR},
             </if>
             <if test="eblFlag != null">
                 ebl_flag = #{eblFlag,jdbcType=VARCHAR},
@@ -488,7 +490,7 @@
                 return_date = #{returnDate,jdbcType=TIMESTAMP},
             </if>
             <if test="returnTag != null">
-                return_tag = #{returnTag,jdbcType=TINYINT},
+                return_tag = #{returnTag,jdbcType=VARCHAR},
             </if>
             <if test="flowOutId != null">
                 flow_out_id = #{flowOutId,jdbcType=BIGINT},
@@ -556,7 +558,7 @@
       old_contact_phone = #{oldContactPhone,jdbcType=VARCHAR},
       old_unit_postcode = #{oldUnitPostcode,jdbcType=VARCHAR},
       return_date = #{returnDate,jdbcType=TIMESTAMP},
-      return_tag = #{returnTag,jdbcType=TINYINT},
+      return_tag = #{returnTag,jdbcType=VARCHAR},
       flow_out_id = #{flowOutId,jdbcType=BIGINT},
       ebl_flag = #{eblFlag,jdbcType=VARCHAR},
       del_flag = #{delFlag,jdbcType=VARCHAR},

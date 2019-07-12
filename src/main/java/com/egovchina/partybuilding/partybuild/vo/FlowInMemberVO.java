@@ -125,4 +125,7 @@ public class FlowInMemberVO {
     @JsonSerialize(using = DictSerializer.class)
     private Long identityType;
 
+    @ApiModelProperty(value = "拒绝理由")
+    private String returnTag;
+
 }

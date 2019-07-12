@@ -54,7 +54,7 @@ public class TabPbFlowOut {
 
     private Date returnDate;
 
-    private Byte returnTag;
+    private String returnTag;
 
     private String eblFlag;
 
