@@ -1,11 +1,14 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.util.BeanUtil;
+import com.egovchina.partybuilding.common.util.CollectionUtil;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.LeadTeamMemberDTO;
+import com.egovchina.partybuilding.partybuild.dto.ResumeDTO;
 import com.egovchina.partybuilding.partybuild.dto.SecretaryMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.SecretaryMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbDeptSecretary;
@@ -14,12 +17,15 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbDeptSecretaryMappe
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.LeadTeamMemberService;
 import com.egovchina.partybuilding.partybuild.service.SecretaryService;
+import com.egovchina.partybuilding.partybuild.vo.ResumeVO;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -94,6 +100,12 @@ public class SecretaryServiceImpl implements SecretaryService {
         leadTeamMemberDTO.setAvatar2(secretaryMemberDTO.getAvatar2());
         leadTeamMemberDTO.setAvatar(secretaryMemberDTO.getAvatar());
         leadTeamMemberService.updateLeadTeamMember(leadTeamMemberDTO);
+        //修改简历
+        List<ResumeDTO> resumeDTOs = secretaryMemberDTO.getResumes();
+        if (CollectionUtil.isNotEmpty(resumeDTOs)) {
+            String resumes = JSON.toJSONString(resumeDTOs);
+            tabPbDeptSecretary.setResume(resumes);
+        }
         return tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretary);
     }
 
@@ -105,7 +117,12 @@ public class SecretaryServiceImpl implements SecretaryService {
      */
     @Override
     public SecretaryMemberVO selectSecretaryBySecretaryId(Long secretaryId) {
-        return tabPbDeptSecretaryMapper.selectSecretaryVOBySecretaryId(secretaryId);
+        SecretaryMemberVO secretaryMemberVO = tabPbDeptSecretaryMapper.selectSecretaryVOBySecretaryId(secretaryId);
+        if (StringUtils.isNotEmpty(secretaryMemberVO.getResume())) {
+            List<ResumeVO> resumeVOS = JSON.parseArray(secretaryMemberVO.getResume(), ResumeVO.class);
+            secretaryMemberVO.setResumes(resumeVOS);
+        }
+        return secretaryMemberVO;
     }
 
     /**
