@@ -179,8 +179,6 @@ public class UserTagServiceImpl implements UserTagService {
      */
     private List<TabPbUserTag> generateTabPbUserTagList(UserTagDTO userTagDTO) {
         return userTagDTO.getTagTypes().stream().map(tagType -> {
-            //针对困难党员进行处理
-            maintenanceOfDifficultPartyMembers(tagType, userTagDTO);
             //返回用户标记实体
             return generateTabPbUserTag(userTagDTO.getUserId(), tagType);
         }).collect(Collectors.toList());
