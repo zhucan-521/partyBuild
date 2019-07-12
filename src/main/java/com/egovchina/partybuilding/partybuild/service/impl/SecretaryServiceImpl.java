@@ -106,6 +106,7 @@ public class SecretaryServiceImpl implements SecretaryService {
             String resumes = JSON.toJSONString(resumeDTOs);
             tabPbDeptSecretary.setResume(resumes);
         }
+        tabPbDeptSecretary.setJoinWorkerTime(secretaryMemberDTO.getWorkDate());
         return tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretary);
     }
 
