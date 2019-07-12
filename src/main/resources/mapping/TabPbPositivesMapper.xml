@@ -129,7 +129,7 @@
         <if test="userId != null">
             and user_id = #{userId}
         </if>
-
+        order by p.positive_finished desc
     </select>
     <select id="verifyDuplicateDuties" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbPositives" resultMap="ResultMapWithBLOBs">
         select
