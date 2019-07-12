@@ -91,10 +91,20 @@
       CASE WHEN now( ) > pr.regist_date
         AND pr.revoke_tag = 1 THEN
         1 ELSE 0
-      END AS can_return <!--是否可返回-->
+      END AS can_return, <!--是否可返回-->
+      2 AS expect,
+      COUNT( DISTINCT mp.participant_id) AS actual
     FROM tab_pb_positive_regist pr
     INNER JOIN tab_pb_administrative_division ad ON pr.community_id = ad.administrative_division_id
     INNER JOIN sys_user u ON u.user_id = pr.user_id
+    LEFT JOIN tab_pb_party_masses_activity ma ON ma.community_id = ad.administrative_division_id
+      AND ma.del_flag = '0'
+      AND ma.ebl_flag = '1'
+    LEFT JOIN tab_pb_party_masses_participant mp ON ma.party_masses_activity_id = mp.party_masses_activity_id
+      AND u.user_id = mp.user_id
+      AND mp.signin_time IS NOT NULL
+      AND mp.del_flag = '0'
+      AND mp.ebl_flag = '1'
     <where>
       pr.del_flag = 0
       AND ad.del_flag = 0
@@ -149,6 +159,7 @@
         AND pr.revoke_tag = #{revokeTag}
       </if>
     </where>
+    GROUP BY pr.user_id
   </select>
 
   <!--根据id查询报到信息VO-->

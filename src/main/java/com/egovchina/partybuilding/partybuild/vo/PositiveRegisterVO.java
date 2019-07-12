@@ -79,6 +79,12 @@ public class PositiveRegisterVO {
     @ApiModelProperty(value = "可返回标识")
     private Byte canReturn;
 
+    @ApiModelProperty(value = "预期活动次数")
+    private Integer expect;
+
+    @ApiModelProperty(value = "实际活动次数")
+    private Integer actual;
+
     @ApiModelProperty(value = "附件")
     private List<TabPbAttachment> attachments;
 }
