@@ -35,20 +35,20 @@ public class GoAbroadDetailsVO {
     @ApiModelProperty(value = "组织名称")
     private String orgName;
 
-    @ApiModelProperty(value = "前往国家地区 字典:CGCJ", notes = "字典CGCJ")
     @JsonSerialize(using = DictSerializer.class)
+    @ApiModelProperty(value = "前往国家地区 字典:CGCJ", notes = "字典CGCJ")
     private Long goCountry;
 
-    @ApiModelProperty(value = "出国原因 CGYY")
     @JsonSerialize(using = DictSerializer.class)
+    @ApiModelProperty(value = "出国原因 CGYY")
     private Long abroadReason;
 
-    @ApiModelProperty(value = "党籍处理方式 CLQK")
     @JsonSerialize(using = DictSerializer.class)
+    @ApiModelProperty(value = "党籍处理方式 CLQK")
     private Long registryMode;
 
-    @ApiModelProperty(value = "申请保留停止党籍时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @ApiModelProperty(value = "申请保留停止党籍时间")
     private Date registryReverseDate;
 
     @ApiModelProperty(value = "党员基本情况")
@@ -58,12 +58,16 @@ public class GoAbroadDetailsVO {
     @ApiModelProperty(value = "出国时间")
     private Date abroadDate;
 
-    @ApiModelProperty(value = "联系情况 LXQK")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @ApiModelProperty(value = "应归时间")
+    private Date planReturn;
+
     @JsonSerialize(using = DictSerializer.class)
+    @ApiModelProperty(value = "联系情况 LXQK")
     private Long linkStatus;
 
-    @ApiModelProperty(value = "出国境定居时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @ApiModelProperty(value = "出国境定居时间")
     private Date settleTime;
 
 }
