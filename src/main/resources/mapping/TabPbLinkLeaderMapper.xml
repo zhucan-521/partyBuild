@@ -377,4 +377,47 @@
             and pa.user_id = #{userId}
             and ac.org_id = #{deptId}
     </select>
+    <select id="selectLeadTeamMembersByIdCardNoOrRealName"
+            resultType="com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO">
+        SELECT
+        ltm.member_id, ltm.org_id, ltm.lead_team_id, ltm.user_id, ltm.person_name, ltm.positive_id, ltm.positive_name,
+        ltm.tenure_mode, ltm.tenure_begin, ltm.tenure_duration, ltm.tenure_leave, ltm.as_committee_member, ltm.as_committee_director,
+        ltm.lead_member_order, ltm.description, ltm.rank, ltm.approval_number, ltm.ebl_flag,
+        u.avatar2, u.avatar
+        ,d.name as org_name,
+        u.id_card_no AS id_card_no,
+        u.join_time,
+        t.session_year,
+        u.gender,
+        u.phone
+        FROM tab_pb_lead_team_member ltm
+        INNER JOIN sys_user u ON ltm.user_id = u.user_id
+        INNER JOIN tab_pb_lead_team t ON ltm.lead_team_id = t.lead_team_id
+        INNER JOIN sys_dept d ON t.org_id = d.dept_id
+        INNER JOIN sys_dict c ON c.id = ltm.positive_id
+        WHERE
+        t.current = 1 -- 当届
+        AND t.del_flag = '0' AND t.ebl_flag = '1'
+        AND ltm.del_flag = '0' AND ltm.ebl_flag = '1'
+        AND u.del_flag = '0' AND u.ebl_flag = '1'
+        AND d.del_flag = '0' AND d.ebl_flag = '1'
+        <if test="realName != null and realName != ''">
+            AND ltm.person_name = #{realName}
+        </if>
+        <if test="idCardNo != null and idCardNo != ''">
+            AND u.id_card_no = #{idCardNo}
+        </if>
+        <if test="realName == null or realName == ''">
+            <if test="idCardNo == null or idCardNo == ''">
+                AND ltm.person_name = #{realName}
+                AND u.id_card_no = #{idCardNo}
+            </if>
+        </if>
+        <if test="orgId != null and orgId != ''">
+            AND ltm.user_id not in (
+            select user_id from tab_pb_link_leader where
+            del_flag = '0' and dept_id = #{orgId} )
+        </if>
+        ORDER BY c.sort DESC
+    </select>
 </mapper>
