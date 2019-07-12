@@ -383,8 +383,8 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         //判断党籍是否发生改变
         List<MembershipVO> membershipVOListByCondition = partyMembershipServiceImpl.getMembershipVOListByCondition(userId, new Page());
         if (membershipVOListByCondition != null && membershipVOListByCondition.size() > 0) {
-            //改变就新增党籍信息
-            if (!membershipVOListByCondition.get(0).getType().equals(type)) {
+            //如果党籍状态被改变就新增党籍信息
+            if (!membershipVOListByCondition.get(0).getType().equals(type[1])) {
                 updatePartyMembership(userId, type, time);
             }
         } else {

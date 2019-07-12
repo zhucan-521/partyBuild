@@ -382,7 +382,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
             List<MembershipVO> membershipVOListByCondition = partyMembershipServiceImpl.getMembershipVOListByCondition(sys.getUserId(), new Page());
             if (membershipVOListByCondition != null && membershipVOListByCondition.size() > 0) {
                 //改变就新增党籍信息
-                if (!membershipVOListByCondition.get(0).getType().equals(transform(sys.getRegistryStatus()))) {
+                if (!membershipVOListByCondition.get(0).getType().equals(sys.getRegistryStatus())) {
                     //添加一条党籍
                     Long[] type = new Long[3];
                     type[0] = transform(sys.getRegistryStatus());
