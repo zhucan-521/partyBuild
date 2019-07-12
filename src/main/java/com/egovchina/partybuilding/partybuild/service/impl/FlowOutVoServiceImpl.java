@@ -120,7 +120,7 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
                 .setOldPlace(flowOutMemberDto.getFlowOutPlace())  //设置原地
                 .setFlowInType(flowOutMemberDto.getFlowOutType()) //设置流出类型
                 .setFlowInRange(flowOutMemberDto.getOutIndustry()) //设置流动范围
-                .setFlowInReason(flowOutMemberDto.getFlowOutReason().toString()) //设置流动原因
+                .setFlowInReason(flowOutMemberDto.getFlowOutReason()) //设置流动原因
                 .setOldOrgnizeCode(flowOutMemberDto.getFlowToOrgnizeCode()) //设置流动证
                 .setOldOrgnizeName(flowOutMemberDto.getFlowFromOrgName()) //原党组织名称
                 .setOldOrgnizePhone(flowOutMemberDto.getFlowFromOrgPhone()) //原党组织联系电话
@@ -173,7 +173,7 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
                 .setOldPlace(flowOutMemberDto.getFlowOutPlace())
                 .setFlowInType(flowOutMemberDto.getFlowOutType())
                 .setFlowInRange(flowOutMemberDto.getOutIndustry())
-                .setFlowInReason(flowOutMemberDto.getFlowOutReason().toString())
+                .setFlowInReason(flowOutMemberDto.getFlowOutReason())
                 .setOldOrgnizeCode(flowOutMemberDto.getFlowToOrgnizeCode())
                 .setLostTime(flowOutMemberDto.getLostTime());
         tabPbFlowInMapper.updateByFlowOutIdKeySelective(tabPbFlowIn);

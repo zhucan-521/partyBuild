@@ -75,7 +75,7 @@ public class FlowInMemberDTO {
     private Long flowInRange;
 
     @ApiModelProperty(value = "流入原因 码表LDYY")
-    private String flowInReason;
+    private Long flowInReason;
 
     @ApiModelProperty(value = "原所在地")
     private String oldPlace;

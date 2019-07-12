@@ -8,7 +8,7 @@
         <result column="flow_in_date" jdbcType="TIMESTAMP" property="flowInDate"/>
         <result column="flow_in_type" jdbcType="BIGINT" property="flowInType"/>
         <result column="flow_in_range" jdbcType="BIGINT" property="flowInRange"/>
-        <result column="flow_in_reason" jdbcType="VARCHAR" property="flowInReason"/>
+        <result column="flow_in_reason" jdbcType="BIGINT" property="flowInReason"/>
         <result column="old_place" jdbcType="VARCHAR" property="oldPlace"/>
         <result column="old_unit_name" jdbcType="VARCHAR" property="oldUnitName"/>
         <result column="old_orgnize_id" jdbcType="BIGINT" property="oldOrgnizeId"/>
@@ -141,7 +141,7 @@
       )
     values (#{flowInId,jdbcType=BIGINT}, #{orgId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
       #{flowInDate,jdbcType=TIMESTAMP}, #{flowInType,jdbcType=BIGINT}, #{flowInRange,jdbcType=BIGINT}, 
-      #{flowInReason,jdbcType=VARCHAR}, #{oldPlace,jdbcType=VARCHAR}, #{oldUnitName,jdbcType=VARCHAR}, 
+      #{flowInReason,jdbcType=BIGINT}, #{oldPlace,jdbcType=VARCHAR}, #{oldUnitName,jdbcType=VARCHAR},
       #{oldOrgnizeId,jdbcType=BIGINT}, #{oldOrgnizeCode,jdbcType=VARCHAR}, #{oldOrgnizeName,jdbcType=VARCHAR}, 
       #{oldOrgnizePhone,jdbcType=VARCHAR}, #{oldOrgnizeContactor,jdbcType=VARCHAR}, #{oldContactPhone,jdbcType=VARCHAR}, 
       #{oldUnitPostcode,jdbcType=VARCHAR}, #{returnDate,jdbcType=TIMESTAMP}, #{returnTag,jdbcType=VARCHAR},
@@ -268,7 +268,7 @@
                 #{flowInRange,jdbcType=BIGINT},
             </if>
             <if test="flowInReason != null">
-                #{flowInReason,jdbcType=VARCHAR},
+                #{flowInReason,jdbcType=BIGINT},
             </if>
             <if test="oldPlace != null">
                 #{oldPlace,jdbcType=VARCHAR},
@@ -363,7 +363,7 @@
                 flow_in_range = #{flowInRange,jdbcType=BIGINT},
             </if>
             <if test="flowInReason != null">
-                flow_in_reason = #{flowInReason,jdbcType=VARCHAR},
+                flow_in_reason = #{flowInReason,jdbcType=BIGINT},
             </if>
             <if test="oldPlace != null">
                 old_place = #{oldPlace,jdbcType=VARCHAR},
@@ -457,7 +457,7 @@
                 flow_in_range = #{flowInRange,jdbcType=BIGINT},
             </if>
             <if test="flowInReason != null">
-                flow_in_reason = #{flowInReason,jdbcType=VARCHAR},
+                flow_in_reason = #{flowInReason,jdbcType=BIGINT},
             </if>
             <if test="oldPlace != null">
                 old_place = #{oldPlace,jdbcType=VARCHAR},
@@ -547,7 +547,7 @@
       flow_in_date = #{flowInDate,jdbcType=TIMESTAMP},
       flow_in_type = #{flowInType,jdbcType=BIGINT},
       flow_in_range = #{flowInRange,jdbcType=BIGINT},
-      flow_in_reason = #{flowInReason,jdbcType=VARCHAR},
+      flow_in_reason = #{flowInReason,jdbcType=BIGINT},
       old_place = #{oldPlace,jdbcType=VARCHAR},
       old_unit_name = #{oldUnitName,jdbcType=VARCHAR},
       old_orgnize_id = #{oldOrgnizeId,jdbcType=BIGINT},
