@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @ApiModel("书记DTO")
@@ -118,5 +119,8 @@ public class SecretaryMemberDTO {
 
     @ApiModelProperty(value = "微信公众号头像")
     private String avatar2;
+
+    @ApiModelProperty(value = "简历", notes = "简历，用字符串数组保存所有时间段内取得的职称，如：[ {} , {} ]")
+    private List<ResumeDTO> resumes;
 
 }

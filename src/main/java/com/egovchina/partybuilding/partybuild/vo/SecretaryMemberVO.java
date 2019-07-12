@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 
 @ApiModel("书记详情显示")
@@ -16,6 +17,9 @@ public class SecretaryMemberVO {
 
     @ApiModelProperty(value = "id主键")
     private Long secretaryId;
+
+    @ApiModelProperty(value = "简历")
+    private String resume;
 
     @ApiModelProperty(value = "用户ID")
     private Long userId;
@@ -116,5 +120,8 @@ public class SecretaryMemberVO {
 
     @ApiModelProperty(value = "微信公众号头像")
     private String avatar2;
+
+    @ApiModelProperty(value = "简历", notes = "简历，用字符串数组保存所有时间段内取得的职称，如：[ {} , {} ]")
+    private List<ResumeVO> resumes;
 
 }
