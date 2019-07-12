@@ -36,14 +36,14 @@ public class JointPointInfoController {
 
     @ApiOperation(value = "跟据党员id查看联点领导信息", notes = "跟据党员id查看联点领导信息")
     @ApiImplicitParam(value = "党员id", name = "userId", paramType = "path", required = true)
-    @HasPermission("party_lianDianInformation")
+    @HasPermission("party_lianDianInformation_add")
     @GetMapping("/positives/{userId}")
     public UserDeptPositionVO getJointPointInfoByUserId(@PathVariable Long userId) {
         return jointPointInfoService.selectJointByUserId(userId);
     }
 
     @ApiOperation(value = "查看联点领导列表详情", notes = "查看联点领导列表详情")
-    @HasPermission("party_lianDianInformation")
+    @HasPermission({"party_lianDianInformation", "party_lianDianInformation_detail"})
     @GetMapping
     public PageInfo<LinkLeaderVO> getJointPointInfoByDeptIdList(@Validated LinkLeaderQueryBean linkLeaderQueryBean, Page page) {
         List<LinkLeaderVO> list = jointPointInfoService.selectUserDeptByDeptId(linkLeaderQueryBean, page);
@@ -56,7 +56,7 @@ public class JointPointInfoController {
             @ApiImplicitParam(value = "身份证", name = "idCardNo", paramType = "query", dataType = "String"),
             @ApiImplicitParam(value = "姓名", name = "realName", paramType = "query", dataType = "String")
     })
-    @HasPermission("party_lianDianInformation")
+    @HasPermission("party_lianDianInformation_add")
     @GetMapping("/lead-team-members/{orgId}")
     public PageInfo<LeadTeamMemberVO> getLeadTeamMembersByIdCardNoOrRealName(@PathVariable Long orgId, String idCardNo, String realName, Page page) {
         List<LeadTeamMemberVO> list = jointPointInfoService.getLeadTeamMembersByIdCardNoOrRealName(orgId, idCardNo, realName, page);
@@ -65,14 +65,14 @@ public class JointPointInfoController {
 
     @ApiOperation(value = "删除联点领导", notes = "删除联点领导")
     @ApiImplicitParam(value = "组织联点领导联点主键", name = "linkLedaerId", paramType = "path", required = true)
-    @HasPermission("party_lianDianInformation")
+    @HasPermission("party_lianDianInformation_del")
     @DeleteMapping("/{linkLedaerId}")
     public ReturnEntity deleteJointPointInfo(@PathVariable Long linkLedaerId) {
         return ReturnUtil.buildReturn(jointPointInfoService.delJointPointInfoByLinkLedaerId(linkLedaerId));
     }
 
     @ApiOperation(value = "保存联点信息", notes = "保存联点信息")
-    @HasPermission("party_lianDianInformation")
+    @HasPermission({"party_lianDianInformation_add", "party_lianDianInformation_edit"})
     @PostMapping
     public ReturnEntity addJointPointInfo(@ApiParam("联点领导和联点活动信息") @RequestBody @Validated LinkLeaderDTO linkLeaderDTO) {
         return ReturnUtil.buildReturn(jointPointInfoService.saveJointPointInfo(linkLeaderDTO));
