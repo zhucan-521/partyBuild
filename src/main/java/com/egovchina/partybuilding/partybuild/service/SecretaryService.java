@@ -8,6 +8,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbDeptSecretary;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author YangYingXiang on 2019/03/01
@@ -84,4 +85,11 @@ public interface SecretaryService {
      * @param tabPbDeptSecretary 书记信息实体
      */
     int updateTabPbDeptSecretarySelective(TabPbDeptSecretary tabPbDeptSecretary);
+
+    /**
+     * 根据书记主键查询导出数据
+     * @param secretaryId 书记id
+     * @return
+     */
+    Map<String, Object> selectExportDataBySecretaryId(Long secretaryId);
 }

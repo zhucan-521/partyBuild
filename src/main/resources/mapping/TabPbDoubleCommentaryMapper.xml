@@ -511,4 +511,18 @@
 
     </select>
 
+    <!--书记导出双述双评数据-->
+    <select id="selectExportDataForSecretaryByUserId" resultType="java.util.Map">
+        SELECT
+            dc.plan_year AS date,
+            d.label AS assess
+        FROM
+            tab_pb_double_commentary dc
+            INNER JOIN sys_user u ON dc.org_id = u.dept_id
+            INNER JOIN sys_dict d ON dc.result_situation = d.id
+        WHERE
+            dc.del_flag = '0'
+            AND u.user_id = #{_parameter}
+    </select>
+
 </mapper>
