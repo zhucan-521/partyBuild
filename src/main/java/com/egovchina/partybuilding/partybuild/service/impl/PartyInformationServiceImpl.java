@@ -178,8 +178,9 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 }
                 //添加一条党籍
                 Long[] type = new Long[3];
-                type[0] = sys.getRegistryStatus();
-                type[1] = transform(sys.getRegistryStatus());
+                //type 0党籍处理 1党籍状态
+                type[0] = transform(sys.getRegistryStatus());
+                type[1] = sys.getRegistryStatus();
                 updatePartyMembership(sys.getUserId(), type, new Date());
                 return effected;
             }
@@ -384,8 +385,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 if (!membershipVOListByCondition.get(0).getType().equals(transform(sys.getRegistryStatus()))) {
                     //添加一条党籍
                     Long[] type = new Long[3];
-                    type[0] = sys.getRegistryStatus();
-                    type[1] = transform(sys.getRegistryStatus());
+                    type[0] = transform(sys.getRegistryStatus());
+                    type[1] = sys.getRegistryStatus();
                     updatePartyMembership(sys.getUserId(), type, new Date());
                 }
             } else {
@@ -393,8 +394,8 @@ public class PartyInformationServiceImpl implements PartyInformationService {
                 if (sys.getRegistryStatus() != null) {
                     //数据库党籍没记录,直接新增党籍信息
                     Long[] type = new Long[3];
-                    type[0] = sys.getRegistryStatus();
-                    type[1] = transform(sys.getRegistryStatus());
+                    type[0] = transform(sys.getRegistryStatus());
+                    type[1] = sys.getRegistryStatus();
                     updatePartyMembership(sys.getUserId(), type, new Date());
                 }
             }
