@@ -34,7 +34,8 @@ public class WebConfigurer implements WebMvcConfigurer {
                 .patterns(
                         ofPath("/error"),
                         ofPath("/actuator/**"),
-                        ofPath("/v2/api-docs/**")
+                        ofPath("/v2/api-docs/**"),
+                        ofPath("/v1/party-members/template/download")
                 );
     }
 

@@ -4,8 +4,8 @@ package com.egovchina.partybuilding.partybuild.controller;
 import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.enums.PermissionMatchType;
-import com.egovchina.partybuilding.common.exception.BusinessException;
 import com.egovchina.partybuilding.common.util.ExcelUtil;
+import com.egovchina.partybuilding.common.util.FileUploadUtil;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.*;
@@ -14,11 +14,13 @@ import com.egovchina.partybuilding.partybuild.entity.PartyMemberChooseQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.SysUserQueryBean;
 import com.egovchina.partybuilding.partybuild.service.ExtendedInfoService;
 import com.egovchina.partybuilding.partybuild.service.IdentityVerificationFeedbackService;
+import com.egovchina.partybuilding.partybuild.service.ImportErrorFileService;
 import com.egovchina.partybuilding.partybuild.service.PartyInformationService;
 import com.egovchina.partybuilding.partybuild.vo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
@@ -44,6 +47,10 @@ public class PartyInformationController {
     private ExtendedInfoService extendedInfoService;
     @Autowired
     private IdentityVerificationFeedbackService identityVerificationFeedbackService;
+    @Autowired
+    private ImportErrorFileService importErrorFileService;
+
+    private final static String fileName = "错误信息";
 
     @ApiOperation(value = "分页查询党员信息", notes = "分页查询党员信息", httpMethod = "GET")
     @HasPermission(value = {"party_partyInformation", "party_partySoldier", "party_partyRetired", "party_difficultMembers"}, matchType = PermissionMatchType.ANY)
@@ -218,26 +225,42 @@ public class PartyInformationController {
 
     @ApiOperation(value = "导入党员信息数据", notes = "导入党员信息数据", httpMethod = "POST")
     @PostMapping("/party-members/import")
-    public void importExcel(@RequestPart @ApiParam(value = "要导入文件", required = true) MultipartFile file,
-                            HttpServletResponse response) {
-        try {
-            partyInformationService.excelImport(file.getInputStream());
-            //错误文件下载
-            HSSFWorkbook errorWb = ExcelUtil.IMPORT_WB_HOLDER.get();
-            if (errorWb != null) {
-                ExcelUtil.setResponseStream(response, "error.xls");
-                errorWb.write(response.getOutputStream());
+    public FileUploadResultVO importExcel(@RequestPart @ApiParam(value = "要导入文件", required = true) MultipartFile file,
+                                          HttpServletResponse response) throws IOException {
+        FileUploadResultVO fileUploadResultVO = new FileUploadResultVO();
+        partyInformationService.excelImport(file.getInputStream());
+        //错误文件下载
+        HSSFWorkbook errorWb = ExcelUtil.IMPORT_WB_HOLDER.get();
+        if (errorWb != null) {
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+                errorWb.write(os);
+                byte[] bytes = os.toByteArray();
+                String spliceFileName = fileName + "_" + file.getOriginalFilename();
+                String fileAccessUrl = FileUploadUtil.postFile(bytes, FilenameUtils.getExtension(file.getOriginalFilename()), spliceFileName);
+                //补充错误导入信息
+                ImportErrorFileDTO tabPbImportErrorFile = new ImportErrorFileDTO();
+                //类型1党员导入
+                tabPbImportErrorFile.setBusinessType((byte) 1);
+                tabPbImportErrorFile.setFilename(spliceFileName);
+                tabPbImportErrorFile.setFileAccessUrl(fileAccessUrl);
+                //添加错误导入信息
+                importErrorFileService.insertImportErrorFile(tabPbImportErrorFile);
+                fileUploadResultVO.setComplete(false);
+                fileUploadResultVO.setErrorFileAccessUrl(fileAccessUrl);
+                return fileUploadResultVO;
             }
-        } catch (IOException e) {
-            throw new BusinessException(e);
         }
+        fileUploadResultVO.setComplete(true);
+        fileUploadResultVO.setErrorFileAccessUrl(null);
+        return fileUploadResultVO;
     }
 
     @ApiOperation(value = "党员信息导入模板下载", notes = "党员信息导入模板下载", httpMethod = "GET")
-    @GetMapping("/party-members/templateDownload")
+    @GetMapping("/party-members/template/download")
     public void excelTemplateDownload(HttpServletResponse response) throws IOException {
         HSSFWorkbook wb = partyInformationService.excelTemplateStream();
-        ExcelUtil.setResponseStream(response, "partyInfo.xls");
+        ExcelUtil.setResponseStream(response, "党员导入模板.xls");
         wb.write(response.getOutputStream());
+
     }
 }
