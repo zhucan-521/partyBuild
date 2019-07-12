@@ -31,7 +31,7 @@ public class TabPbFlowIn {
 
     private Long flowInRange;
 
-    private String flowInReason;
+    private Long flowInReason;
 
     private String oldPlace;
 

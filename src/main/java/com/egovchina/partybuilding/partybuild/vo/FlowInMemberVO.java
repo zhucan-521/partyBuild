@@ -70,7 +70,7 @@ public class FlowInMemberVO {
 
     @ApiModelProperty(value = "流入原因 码表LDYY")
     @JsonSerialize(using = DictSerializer.class)
-    private String flowInReason;
+    private Long flowInReason;
 
     @ApiModelProperty(value = "原所在地")
     private String oldPlace;
