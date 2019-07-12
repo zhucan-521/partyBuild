@@ -520,4 +520,21 @@ GROUP BY
             )
         </foreach>
     </insert>
+
+
+    <!--书记导出奖励数据-->
+    <select id="selectExportDataForSecretaryByUserId" resultType="java.util.Map">
+        SELECT
+            DATE_FORMAT( r.rewards_date, '%Y-%m-%d' ) AS date,
+            d.label AS reward
+        FROM
+            tab_pb_rewards r
+            INNER JOIN sys_dict d ON r.rewards_name = d.id
+        WHERE
+            r.user_id = #{_parameter}
+            AND r.del_flag = '0'
+            AND r.ebl_flag = '1'
+        ORDER BY
+            r.rewards_date DESC
+    </select>
 </mapper>

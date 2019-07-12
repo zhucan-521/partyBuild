@@ -322,4 +322,20 @@
         </foreach>
     </insert>
 
+    <!--书记导出家庭数据数据-->
+    <select id="selectExportDataForSecretaryByUserId" parameterType="java.lang.Long" resultType="java.util.Map">
+        SELECT
+            relation_d.label AS relation,
+            f.username,
+            birthday2age ( DATE_FORMAT( f.birthday, '%Y-%m-%d' ) ) AS age,
+            pf_d.label AS policyFace,
+            positive_d.label AS positive
+        FROM
+            tab_pb_family f
+            LEFT JOIN sys_dict relation_d ON f.relation = relation_d.id
+            LEFT JOIN sys_dict pf_d ON f.policy_face = pf_d.id
+            LEFT JOIN sys_dict positive_d ON f.positive = positive_d.id
+        WHERE
+            f.user_id = ${_parameter}
+    </select>
 </mapper>

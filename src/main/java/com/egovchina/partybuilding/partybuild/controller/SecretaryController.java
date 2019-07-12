@@ -2,13 +2,14 @@ package com.egovchina.partybuilding.partybuild.controller;
 
 import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
+import com.egovchina.partybuilding.common.util.WordUtil;
 import com.egovchina.partybuilding.partybuild.dto.SecretaryMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.SecretaryMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.service.SecretaryService;
 import com.egovchina.partybuilding.partybuild.vo.SecretaryMemberVO;
-import com.egovchina.partybuilding.partybuild.vo.SecretarysVO;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -17,6 +18,13 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.URLEncoder;
+import java.util.Map;
 
 /**
  * @author zhucan
@@ -64,6 +72,24 @@ public class SecretaryController {
     @GetMapping
     public PageInfo<SecretaryMemberVO> secretaryList(SecretaryMemberQueryBean secretaryMemberQueryBean, Page page) {
         return new PageInfo<>(secretaryService.selectSecretaryList(secretaryMemberQueryBean, page));
+    }
+
+    @ApiOperation(value = "书记导出",  httpMethod = "GET")
+    @ApiImplicitParam(name = "secretaryId", value = "书记主键", paramType = "path", required = true)
+    @HasPermission("party_teamSecretary")
+    @GetMapping("/{secretaryId}/export")
+    public void secretaryExport(@PathVariable Long secretaryId, HttpServletResponse response) throws Exception {
+        Map<String, Object> exportData = secretaryService.selectExportDataBySecretaryId(secretaryId);
+        if (exportData == null) {
+            throw new BusinessDataNotFoundException("书记书记不存在");
+        }
+        ServletOutputStream outputStream = response.getOutputStream();
+        response.setContentType("application/octet-stream;charset=UTF-8");
+        response.setHeader("Content-Disposition", "attachment;filename=" +
+                URLEncoder.encode(exportData.get("realname") + "_书记简历.doc", "UTF-8"));
+        try(Writer writer = new OutputStreamWriter(outputStream)){
+            WordUtil.processTemplate("secretaryExport.ftl", exportData, writer);
+        }
     }
 
 }

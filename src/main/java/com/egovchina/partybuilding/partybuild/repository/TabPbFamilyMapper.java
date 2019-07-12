@@ -6,6 +6,8 @@ import com.egovchina.partybuilding.partybuild.vo.FamilyMemberVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface TabPbFamilyMapper extends BaseMapper<TabPbFamily> {
     int deleteByPrimaryKey(TabPbFamily family);
@@ -39,4 +41,11 @@ public interface TabPbFamilyMapper extends BaseMapper<TabPbFamily> {
      * @return
      */
     int batchInsertFamilyList(List<TabPbFamily> tabPbFamilyList);
+
+    /**
+     * 书记导出家庭数据数据
+     * @param userId 用户id
+     * @return
+     */
+    List<Map<String, Object>> selectExportDataForSecretaryByUserId(Long userId);
 }

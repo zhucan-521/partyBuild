@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface TabPbDeptSecretaryMapper {
@@ -76,4 +77,11 @@ public interface TabPbDeptSecretaryMapper {
      * @return
      */
     int logicDeleteTabPbSecretary(TabPbDeptSecretary secretary);
+
+    /**
+     * 根据书记id获取导出数据
+     * @param secretaryId 书记id
+     * @return
+     */
+    Map<String, Object> selectExportDataBySecretaryId(Long secretaryId);
 }

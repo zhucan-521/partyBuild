@@ -1,18 +1,15 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.egovchina.partybuilding.common.config.EgovChinaProperties;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysUser;
-import com.egovchina.partybuilding.common.util.BeanUtil;
-import com.egovchina.partybuilding.common.util.CollectionUtil;
-import com.egovchina.partybuilding.common.util.CommonConstant;
-import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.common.util.*;
 import com.egovchina.partybuilding.partybuild.dto.LeadTeamMemberDTO;
 import com.egovchina.partybuilding.partybuild.dto.ResumeDTO;
 import com.egovchina.partybuilding.partybuild.dto.SecretaryMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.SecretaryMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbDeptSecretary;
-import com.egovchina.partybuilding.partybuild.entity.TabPbLeadTeamMember;
 import com.egovchina.partybuilding.partybuild.repository.TabPbDeptSecretaryMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.LeadTeamMemberService;
@@ -25,8 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author zhucan
@@ -43,6 +41,9 @@ public class SecretaryServiceImpl implements SecretaryService {
 
     @Autowired
     private LeadTeamMemberService leadTeamMemberService;
+
+    @Autowired
+    private EgovChinaProperties egovChinaProperties;
 
     /**
      * 新增书记
@@ -156,6 +157,25 @@ public class SecretaryServiceImpl implements SecretaryService {
     @Override
     public int updateTabPbDeptSecretarySelective(TabPbDeptSecretary tabPbDeptSecretary) {
         return tabPbDeptSecretaryMapper.updateByPrimaryKeySelective(tabPbDeptSecretary);
+    }
+
+    @Override
+    public Map<String, Object> selectExportDataBySecretaryId(Long secretaryId) {
+        Map<String, Object> exportData = tabPbDeptSecretaryMapper.selectExportDataBySecretaryId(secretaryId);
+        if (exportData != null) {
+            try {
+                String avatar = Base64Util.getImageStr(egovChinaProperties.getFileServer().downloadPath((String) exportData.get("avatar")));
+                exportData.put("avatar", avatar);
+            } catch (Exception ignored) {
+            }
+            String resume = (String) exportData.get("resume");
+            List<Map> resumes = new ArrayList<>();
+            if (StringUtils.isNotBlank(resume)) {
+                resumes = JSON.parseArray(resume, Map.class);
+            }
+            exportData.put("resumes", resumes);
+        }
+        return exportData;
     }
 
 }
