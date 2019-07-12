@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.egovchina.partybuilding.partybuild.repository.TabPbImportErrorFileMapper">
+  <resultMap id="BaseResultMap" type="com.egovchina.partybuilding.partybuild.entity.TabPbImportErrorFile">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="business_type" jdbcType="TINYINT" property="businessType" />
+    <result column="create_userid" jdbcType="BIGINT" property="createUserid" />
+    <result column="create_username" jdbcType="VARCHAR" property="createUsername" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="filename" jdbcType="VARCHAR" property="filename" />
+    <result column="file_access_url" jdbcType="VARCHAR" property="fileAccessUrl" />
+  </resultMap>
+  <insert id="insert" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbImportErrorFile">
+    insert into tab_pb_import_error_file (id, business_type, create_userid, 
+      create_username, create_time, filename, 
+      file_access_url)
+    values (#{id,jdbcType=BIGINT}, #{businessType,jdbcType=TINYINT}, #{createUserid,jdbcType=BIGINT}, 
+      #{createUsername,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{filename,jdbcType=VARCHAR}, 
+      #{fileAccessUrl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.egovchina.partybuilding.partybuild.entity.TabPbImportErrorFile">
+    insert into tab_pb_import_error_file
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="businessType != null">
+        business_type,
+      </if>
+      <if test="createUserid != null">
+        create_userid,
+      </if>
+      <if test="createUsername != null">
+        create_username,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="filename != null">
+        filename,
+      </if>
+      <if test="fileAccessUrl != null">
+        file_access_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="businessType != null">
+        #{businessType,jdbcType=TINYINT},
+      </if>
+      <if test="createUserid != null">
+        #{createUserid,jdbcType=BIGINT},
+      </if>
+      <if test="createUsername != null">
+        #{createUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="filename != null">
+        #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="fileAccessUrl != null">
+        #{fileAccessUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

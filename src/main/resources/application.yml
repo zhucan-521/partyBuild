@@ -2,7 +2,6 @@
 # 服务端口
 server:
   port: 9300
-
 spring:
   application:
     # 应用名称
@@ -142,3 +141,8 @@ egov-china:
   datasource:
     ip: 192.168.1.251
     port: 8017
+  fileServer:
+    ip: 47.93.9.148
+    port: 9007
+    uploadPath: api/upload
+    accessPath: api/hget
