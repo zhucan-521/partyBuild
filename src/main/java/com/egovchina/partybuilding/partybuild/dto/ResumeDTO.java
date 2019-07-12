@@ -14,14 +14,13 @@ import java.util.Date;
 @ApiModel("书记简历")
 public class ResumeDTO {
 
-    @ApiModelProperty(value = "开始时间", required = true)
+    @ApiModelProperty(value = "开始时间", example = "yyyy-MM-dd", required = true)
     @NotNull(message = "开始时间不能空", groups = Update.class)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date beginDate;
+    private String beginDate;
 
-    @ApiModelProperty(value = "结束时间", required = true)
+    @ApiModelProperty(value = "结束时间", example = "yyyy-MM-dd", required = true)
     @NotNull(message = "结束时间不能为空", groups = Update.class)
-    private Date endDate;
+    private String endDate;
 
     @ApiModelProperty(value = "内容", required = true)
     @NotNull(message = "内容不能为空", groups = Update.class)
