@@ -14,6 +14,7 @@ import com.egovchina.partybuilding.partybuild.repository.TabPbLinkLeaderMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
 import com.egovchina.partybuilding.partybuild.service.JointPointInfoService;
+import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.LinkLeaderVO;
 import com.egovchina.partybuilding.partybuild.vo.UserDeptPositionVO;
 import com.github.pagehelper.PageHelper;
@@ -144,5 +145,11 @@ public class JointPointInfoServiceImpl implements JointPointInfoService {
             }
         }
         return count;
+    }
+
+    @Override
+    public List<LeadTeamMemberVO> getLeadTeamMembersByIdCardNoOrRealName(Long orgId, String idCardNo, String realName, Page page) {
+        PageHelper.startPage(page);
+        return tabPbLinkLeaderMapper.selectLeadTeamMembersByIdCardNoOrRealName(orgId, idCardNo, realName);
     }
 }

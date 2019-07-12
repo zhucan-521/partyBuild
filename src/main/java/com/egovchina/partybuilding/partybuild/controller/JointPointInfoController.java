@@ -7,13 +7,11 @@ import com.egovchina.partybuilding.common.util.ReturnUtil;
 import com.egovchina.partybuilding.partybuild.dto.LinkLeaderDTO;
 import com.egovchina.partybuilding.partybuild.entity.LinkLeaderQueryBean;
 import com.egovchina.partybuilding.partybuild.service.JointPointInfoService;
+import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.LinkLeaderVO;
 import com.egovchina.partybuilding.partybuild.vo.UserDeptPositionVO;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +47,19 @@ public class JointPointInfoController {
     @GetMapping
     public PageInfo<LinkLeaderVO> getJointPointInfoByDeptIdList(@Validated LinkLeaderQueryBean linkLeaderQueryBean, Page page) {
         List<LinkLeaderVO> list = jointPointInfoService.selectUserDeptByDeptId(linkLeaderQueryBean, page);
+        return new PageInfo<>(list);
+    }
+
+    @ApiOperation(value = "选择通过名字和身份证完全匹配选择联点领导")
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "组织id", name = "orgId", paramType = "path", dataType = "Long", required = true),
+            @ApiImplicitParam(value = "身份证", name = "idCardNo", paramType = "query", dataType = "String"),
+            @ApiImplicitParam(value = "姓名", name = "realName", paramType = "query", dataType = "String")
+    })
+    @HasPermission("party_lianDianInformation")
+    @GetMapping("/lead-team-members/{orgId}")
+    public PageInfo<LeadTeamMemberVO> getLeadTeamMembersByIdCardNoOrRealName(@PathVariable Long orgId, String idCardNo, String realName, Page page) {
+        List<LeadTeamMemberVO> list = jointPointInfoService.getLeadTeamMembersByIdCardNoOrRealName(orgId, idCardNo, realName, page);
         return new PageInfo<>(list);
     }
 

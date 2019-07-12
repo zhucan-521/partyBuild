@@ -2,7 +2,9 @@ package com.egovchina.partybuilding.partybuild.repository;
 
 import com.egovchina.partybuilding.partybuild.entity.LinkLeaderQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbLinkLeader;
+import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.LinkLeaderVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,4 +28,6 @@ public interface TabPbLinkLeaderMapper {
     List<TabPbLinkLeader> selectByUserIdAndDeptId(TabPbLinkLeader record);
 
     List<LinkLeaderVO> selectLinkLeaderVoByDeptId(LinkLeaderQueryBean linkLeaderQueryBean);
+
+    List<LeadTeamMemberVO> selectLeadTeamMembersByIdCardNoOrRealName(@Param("orgId") Long orgId, @Param("idCardNo") String idCardNo, @Param("realName") String realName);
 }

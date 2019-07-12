@@ -3,6 +3,7 @@ package com.egovchina.partybuilding.partybuild.service;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.partybuild.dto.LinkLeaderDTO;
 import com.egovchina.partybuilding.partybuild.entity.LinkLeaderQueryBean;
+import com.egovchina.partybuilding.partybuild.vo.LeadTeamMemberVO;
 import com.egovchina.partybuilding.partybuild.vo.LinkLeaderVO;
 import com.egovchina.partybuilding.partybuild.vo.UserDeptPositionVO;
 
@@ -50,4 +51,16 @@ public interface JointPointInfoService {
      * @return
      */
     int saveJointPointInfo(LinkLeaderDTO linkLeaderDTO);
+
+    /**
+     * 选择通过名字和身份证完全匹配选择联点领导
+     *
+     *
+     * @param orgId 组织id
+     * @param idCardNo 身份证
+     * @param realName 姓名
+     * @param page
+     * @return
+     */
+    List<LeadTeamMemberVO> getLeadTeamMembersByIdCardNoOrRealName(Long orgId, String idCardNo, String realName, Page page);
 }
