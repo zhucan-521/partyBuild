@@ -42,7 +42,7 @@ public class MessageSendVO {
     private String content;
 
     @ApiModelProperty("发送时间")
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date sendTime;
 
     @ApiModelProperty("消息接受状态，是否已读(null代表没提醒 0 未读  1 已读)")
