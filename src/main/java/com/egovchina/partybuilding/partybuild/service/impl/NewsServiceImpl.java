@@ -7,12 +7,14 @@ import com.egovchina.partybuilding.common.enums.ReceiverTypeEnum;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
 import com.egovchina.partybuilding.common.util.AttachmentType;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.UserContextHolder;
 import com.egovchina.partybuilding.partybuild.dto.NewsDTO;
 import com.egovchina.partybuilding.partybuild.dto.NewsReceiveDTO;
 import com.egovchina.partybuilding.partybuild.entity.NewsQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbNews;
 import com.egovchina.partybuilding.partybuild.entity.TabPbPartyNewsReceive;
+import com.egovchina.partybuilding.partybuild.feign.SysConfigFeignClient;
 import com.egovchina.partybuilding.partybuild.repository.NewsMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbPartyNewsReceiveMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
@@ -27,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField;
@@ -38,6 +41,11 @@ import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetLis
 @Transactional(rollbackFor = Throwable.class)
 @Service("newsService")
 public class NewsServiceImpl implements NewsService {
+
+    /**
+     * 党务公开 配置表itemId
+     */
+    private static final Long ITEM_ID = 59716L;
 
     @Autowired
     private NewsMapper newsMapper;
@@ -53,6 +61,9 @@ public class NewsServiceImpl implements NewsService {
 
     @Autowired
     private StationNewsService stationNewsService;
+
+    @Autowired
+    private SysConfigFeignClient sysConfigFeignClient;
 
     @Override
     public int insertNews(NewsDTO newsDTO) {
@@ -86,7 +97,14 @@ public class NewsServiceImpl implements NewsService {
                 // 消息标题
                 messageAddDTO.setTitle(newsDTO.getTitle());
                 // 消息内容
-                messageAddDTO.setContent("您有一条待查看的党务公开推送");
+                ReturnEntity returnItemValue = sysConfigFeignClient.getConfigurationValue(ITEM_ID);
+                if (returnItemValue.unOkResp()) {
+                    throw returnItemValue.exception();
+                }
+                String content = ((String) Optional.ofNullable(returnItemValue.getResultObj())
+                        .orElse("您有一条待查看的党务公开信息 请注意查看～"))
+                        .replace("{{title}}", newsDTO.getTitle());
+                messageAddDTO.setContent(content);
                 // 接受对象信息
                 List<MessageReceiveDTO> messageReceives = new ArrayList<>();
                 for (NewsReceiveDTO newsReceive : newsReceives) {
