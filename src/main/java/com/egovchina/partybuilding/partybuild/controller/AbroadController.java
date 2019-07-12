@@ -79,7 +79,7 @@ public class AbroadController {
     }
 
     @ApiOperation(value = "获取出国出境信息列表", notes = "获取出国出境信息列表", httpMethod = "GET")
-    @HasPermission(value = "party_goAbroad")
+    @HasPermission(value = "party_partyFlow")
     @GetMapping("/overseas-repatriations")
     public PageInfo<AbroadVO> getOverseaList(@Validated AbroadQueryBean abroadQueryBean, Page page) {
         return abroadService.findAbroadVOWithConditions(abroadQueryBean, page);
