@@ -1,5 +1,6 @@
 package com.egovchina.partybuilding.partybuild.controller;
 
+import com.egovchina.partybuilding.common.config.HasPermission;
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.common.util.ReturnUtil;
@@ -29,12 +30,14 @@ public class OrgClassifyController {
     private OrgClassifyService orgClassifyService;
 
     @ApiOperation(value = "新增分类定等", notes = "新增分类定等", httpMethod = "POST")
+    @HasPermission(value = "party_classificationSetEtc_add")
     @PostMapping
     public ReturnEntity insertOrgClassify(@RequestBody @Validated @ApiParam("分类定等信息") OrgClassifyDTO orgClassifyDTO) {
         return ReturnUtil.buildReturn(orgClassifyService.insertOrgClassify(orgClassifyDTO));
     }
 
     @ApiOperation(value = "更新定等计划", notes = "更新定等计划", httpMethod = "PUT")
+    @HasPermission(value = "party_classificationSetEtc_edit")
     @PutMapping
     public ReturnEntity updateOrgClassify(@RequestBody @Validated @ApiParam("分类定等信息") OrgClassifyDTO orgClassifyDTO) {
         return ReturnUtil.buildReturn(orgClassifyService.updateOrgClassify(orgClassifyDTO));
@@ -42,6 +45,7 @@ public class OrgClassifyController {
 
     @ApiOperation(value = "删除定等数据", notes = "定等数据删除", httpMethod = "DELETE")
     @ApiImplicitParam(name = "orgClassifyId", value = "定等数据ID", paramType = "path", required = true)
+    @HasPermission(value = "party_classificationSetEtc_del")
     @DeleteMapping("/{orgClassifyId}")
     public ReturnEntity deleteOrgClassify(@PathVariable Long orgClassifyId) {
         return ReturnUtil.buildReturn(orgClassifyService.deleteOrgClassify(orgClassifyId));
@@ -49,6 +53,7 @@ public class OrgClassifyController {
 
     @ApiOperation(value = "定等数据详情", notes = "定等数据详情", httpMethod = "GET")
     @ApiImplicitParam(name = "orgClassifyId", value = "定等数据ID", paramType = "path", required = true)
+    @HasPermission(value = "party_classificationSetEtc_detail")
     @GetMapping("/{orgClassifyId}")
     public OrgClassifyVO getClassifyDetails(@PathVariable Long orgClassifyId) {
         return orgClassifyService.findOrgClassifyVOByOrgClassifyId(orgClassifyId);
