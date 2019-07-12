@@ -11,10 +11,12 @@ import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailExcepti
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.common.util.ReturnEntity;
 import com.egovchina.partybuilding.partybuild.dto.FlowInMemberDTO;
 import com.egovchina.partybuilding.partybuild.entity.FlowInMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowIn;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowOut;
+import com.egovchina.partybuilding.partybuild.feign.SystemServiceFeignClient;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFlowInMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFlowOutMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
@@ -57,7 +59,14 @@ public class FlowInServiceImpl implements FlowInService {
     @Autowired
     private StationNewsService stationNewsService;
 
+    @Autowired
+    private SystemServiceFeignClient systemServiceFeignClient;
+
     private final Long REFUSETOACCEPT = 59713L;
+
+    private final Long SUCCESSFLOW = 59717L;
+
+    private final Long FALSEFLOW = 59718L;
 
     /**
      * 流入党员列表查询
@@ -221,11 +230,28 @@ public class FlowInServiceImpl implements FlowInService {
         List<MessageReceiveDTO> messageReceiveDTOs = new ArrayList();
         messageReceiveDTOs.add(messageReceiveDTO);
         if (flag) {
-            MessageAddDTO messageAddDTO = new MessageAddDTO().setReceiverType(ReceiverTypeEnum.PERSON.getReceiverType()).setType(MessageTypeEnum.FLOW_PARTY_MEMBER.getId()).setReceivers(messageReceiveDTOs).setTitle("流入党组织通知").setContent("你已经流入" + recipientUser.getFlowToOrgName());
+            MessageAddDTO messageAddDTO = new MessageAddDTO().setReceiverType(ReceiverTypeEnum.PERSON.getReceiverType()).setType(MessageTypeEnum.SYSTEM_MESSAGE.getId()).setReceivers(messageReceiveDTOs).setTitle("流入党组织通知");
+            ReturnEntity messageContent = systemServiceFeignClient.getMessageContent(SUCCESSFLOW);
+            String content = "您好，您的流动挂靠失败！请重新申请！";
+            if (messageContent != null) {
+                if (messageContent.getResultObj() != null) {
+                    content = messageContent.getResultObj()
+                            .toString().replace("{{realname}}", recipientUser.getRealname()).replace("{{orgName}}", recipientUser.getFlowToOrgName());
+                }
+            }
+            messageAddDTO.setContent(content);
             stationNewsService.batchInsertStationNews(messageAddDTO);
             return;
         }
-        MessageAddDTO messageAddDTO = new MessageAddDTO().setReceiverType(ReceiverTypeEnum.PERSON.getReceiverType()).setType(MessageTypeEnum.FLOW_PARTY_MEMBER.getId()).setReceivers(messageReceiveDTOs).setTitle("流入党组织通知").setContent(recipientUser.getFlowToOrgName() + "拒绝了你的流入申请");
+        MessageAddDTO messageAddDTO = new MessageAddDTO().setReceiverType(ReceiverTypeEnum.PERSON.getReceiverType()).setType(MessageTypeEnum.SYSTEM_MESSAGE.getId()).setReceivers(messageReceiveDTOs).setTitle("流入党组织通知");
+        ReturnEntity messageContent = systemServiceFeignClient.getMessageContent(FALSEFLOW);
+        String content = "您好，您的流动挂靠失败！请重新申请！";
+        if (messageContent != null) {
+            if (messageContent.getResultObj() != null) {
+                content = messageContent.getResultObj().toString().replace("{{realname}}", recipientUser.getRealname()).replace("{{orgName}}", recipientUser.getFlowToOrgName());
+            }
+        }
+        messageAddDTO.setContent(content);
         stationNewsService.batchInsertStationNews(messageAddDTO);
     }
 

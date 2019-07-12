@@ -37,4 +37,9 @@ public interface SystemServiceFeignClient {
     @GetMapping("/v1/roles/{roleId}/users/{userId}/exists")
     @ResponseBody
     ReturnEntity<Boolean> checkUserHasSpecifiedRole(@PathVariable("roleId") Long roleId, @PathVariable("userId") Long userId);
+
+    @ResponseBody
+    @GetMapping("/v1/configurations/{id}/get-value")
+    ReturnEntity getMessageContent(@PathVariable("id") Long id);
+
 }
