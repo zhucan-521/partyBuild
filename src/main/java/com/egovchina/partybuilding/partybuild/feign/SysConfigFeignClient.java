@@ -24,6 +24,6 @@ public interface SysConfigFeignClient {
      */
     @ResponseBody
     @GetMapping("/v1/configurations/{id}/get-value")
-    ReturnEntity getConfigurationValue(@PathVariable Long id);
+    ReturnEntity getConfigurationValue(@PathVariable("id") Long id);
 
 }
