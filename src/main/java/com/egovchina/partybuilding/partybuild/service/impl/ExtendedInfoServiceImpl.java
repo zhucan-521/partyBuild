@@ -141,13 +141,13 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
                 //关联出国出境
                 reduce.setAbroadId(tabPbAbroad.getAbroadId());
             }
-            TabPbMemberReduceList tabPbMemberReduceList =
+            TabPbMemberReduceList tabPbMemberReduce =
                     BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(reduce, TabPbMemberReduceList.class, false);
             //新增历史党员
-            tabPbMemberReduceList.setDeptId(sysUser.getDeptId());
-            tabPbMemberReduceList.setRealName(sysUser.getRealname());
-            PaddingBaseFieldUtil.paddingBaseFiled(tabPbMemberReduceList);
-            flag += reduceListMapper.insertSelective(tabPbMemberReduceList);
+            tabPbMemberReduce.setDeptId(sysUser.getDeptId());
+            tabPbMemberReduce.setRealName(sysUser.getRealname());
+            PaddingBaseFieldUtil.paddingBaseFiled(tabPbMemberReduce);
+            flag += reduceListMapper.insertSelective(tabPbMemberReduce);
 
             //判断是否为党小组组长
             if (tabPbPartyGroupMemberMapper.isLeaderByUserId(sysUser.getUserId())) {
@@ -167,33 +167,33 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
     @Override
     public int restoreUser(Long reduce_id, Date restoreTime) {
         //修改党员减少表
-        TabPbMemberReduceList reduceList = reduceListMapper.selectByPrimaryKey(reduce_id);
-        if (reduceList == null) {
+        TabPbMemberReduceList tabPbMemberReduce = reduceListMapper.selectByPrimaryKey(reduce_id);
+        if (tabPbMemberReduce == null) {
             throw new BusinessDataNotFoundException("查不到该党员减少记录");
         }
         //如果为出国出境 特别处理 针对已经回国的 不再继续操作
-        if (GOINGABROAD.equals(reduceList.getQuitType())) {
+        if (GOINGABROAD.equals(tabPbMemberReduce.getQuitType())) {
             //如果已回国直接返回,不进行恢复操作
-            if (reduceList.getRecoveryTime() != null) {
+            if (tabPbMemberReduce.getRecoveryTime() != null) {
                 return 1;
             }
         }
         //若是开除党籍无法恢复
-        if (DISMISSAL_OF_PARTY_MEMBERSHIP.equals(reduceList.getQuitType())) {
+        if (DISMISSAL_OF_PARTY_MEMBERSHIP.equals(tabPbMemberReduce.getQuitType())) {
             throw new BusinessDataNotFoundException("该党员已被开除党籍,无法恢复");
         }
         //设置无效状态
-        reduceList.setEblFlag(CommonConstant.STATUS_NOEBL);
+        tabPbMemberReduce.setEblFlag(CommonConstant.STATUS_NOEBL);
         //设置恢复时间
-        reduceList.setRecoveryTime(restoreTime == null ? new Date() : restoreTime);
-        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(reduceList);
+        tabPbMemberReduce.setRecoveryTime(restoreTime == null ? new Date() : restoreTime);
+        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbMemberReduce);
         //更新历史党员表
-        int num = reduceListMapper.updateByPrimaryKeySelective(reduceList);
+        int num = reduceListMapper.updateByPrimaryKeySelective(tabPbMemberReduce);
         //如果出党方式为出国出境
-        if (GOINGABROAD.equals(reduceList.getQuitType())) {
+        if (GOINGABROAD.equals(tabPbMemberReduce.getQuitType())) {
             //设置其回国
             TabPbAbroad tabPbAbroad = new TabPbAbroad();
-            Long abordId = reduceList.getAbroadId();
+            Long abordId = tabPbMemberReduce.getAbroadId();
             if (abordId != null) {
                 tabPbAbroad = tabPbAbroadMapper.selectByPrimaryKey(abordId);
                 if (tabPbAbroad != null) {
@@ -206,7 +206,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
             }
         }
         //获取之前的党籍数据 ,恢复之前党籍状态信息
-        List<MembershipVO> membershipVOListByCondition = partyMembershipServiceImpl.getMembershipVOListByCondition(reduceList.getUserId(), new Page());
+        List<MembershipVO> membershipVOListByCondition = partyMembershipServiceImpl.getMembershipVOListByCondition(tabPbMemberReduce.getUserId(), new Page());
         Long[] types = new Long[3];
         //党籍处理设置恢复
         types[0] = REGISTRY_STATUS_RESTORE;
@@ -217,9 +217,9 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
             types[1] = OFFICIAL_PARTY_MEMBER;
         }
         //添加党籍记录
-        checkIsOpeartionMeberShip(reduceList.getUserId(), types, reduceList.getRecoveryTime());
+        checkIsOpeartionMeberShip(tabPbMemberReduce.getUserId(), types, tabPbMemberReduce.getRecoveryTime());
         //党员状态设置有效
-        SysUser user = new SysUser().setUserId(reduceList.getUserId()).setRegistryStatus(OFFICIAL_PARTY_MEMBER).setEblFlag(CommonConstant.STATUS_EBL);
+        SysUser user = new SysUser().setUserId(tabPbMemberReduce.getUserId()).setRegistryStatus(OFFICIAL_PARTY_MEMBER).setEblFlag(CommonConstant.STATUS_EBL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(user);
         //更新党员表
         num += tabSysUserMapper.updateByPrimaryKeySelective(user);
@@ -231,16 +231,16 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
     public int deleteByUserId(Long userId) {
         int flag = 0;
         //设置有效状态,删除状态
-        TabPbMemberReduceList reduceList = reduceListMapper.selectByUserId(userId);
-        if (reduceList == null) {
+        TabPbMemberReduceList tabPbMemberReduce = reduceListMapper.selectByUserId(userId);
+        if (tabPbMemberReduce == null) {
             throw new BusinessDataNotFoundException("查不到该党员减少记录");
         }
-        reduceList.setEblFlag(CommonConstant.STATUS_NOEBL);
-        reduceList.setDelFlag(CommonConstant.STATUS_DEL);
+        tabPbMemberReduce.setEblFlag(CommonConstant.STATUS_NOEBL);
+        tabPbMemberReduce.setDelFlag(CommonConstant.STATUS_DEL);
         //基本字段维护
-        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(reduceList);
+        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbMemberReduce);
         //删除历史记录
-        flag += reduceListMapper.updateByPrimaryKeySelective(reduceList);
+        flag += reduceListMapper.updateByPrimaryKeySelective(tabPbMemberReduce);
         //TODO 暂时需求设置删除历史党员 删除出国出境 删除用户
         if (flag > 0) {
             //删除出国出境信息
@@ -270,8 +270,8 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
     @Override
     public int updateHistoryParty(UpdateHistoryDTO updateHistoryDTO) {
         //查询现在该历史党员修改之前的信息
-        TabPbMemberReduceList tabPbMemberReduceList1 = reduceListMapper.selectByPrimaryKey(updateHistoryDTO.getMemberReduceId());
-        if (tabPbMemberReduceList1 == null) {
+        TabPbMemberReduceList memberReduceOld = reduceListMapper.selectByPrimaryKey(updateHistoryDTO.getMemberReduceId());
+        if (memberReduceOld == null) {
             throw new BusinessDataNotFoundException("找不到该党员的历史记录");
         }
         SysUser user =
@@ -284,10 +284,10 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         setPartyStatus(type, updateHistoryDTO.getOutType(), user);
         //更改用户党籍状态
         int flag = tabSysUserMapper.updateByPrimaryKeySelective(user);
-        TabPbMemberReduceList tabPbMemberReduceList =
+        TabPbMemberReduceList memberReduceNew =
                 BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(updateHistoryDTO, TabPbMemberReduceList.class, true);
         //如果曾经为出国出境 现在不是出国出境
-        if (!GOINGABROAD.equals(updateHistoryDTO.getQuitType()) && GOINGABROAD.equals(tabPbMemberReduceList1.getQuitType())) {
+        if (!GOINGABROAD.equals(updateHistoryDTO.getQuitType()) && GOINGABROAD.equals(memberReduceOld.getQuitType())) {
             //删除出国出境信息
             Long abroadId = tabPbAbroadMapper.findAbroadIdByUserId(updateHistoryDTO.getUserId());
             if (abroadId != null) {
@@ -300,15 +300,15 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         }
         //维护出党方式,避免其他未赋值的未修改该值
         if (updateHistoryDTO.getQuitType() == null || "".equals(updateHistoryDTO.getQuitType())) {
-            tabPbMemberReduceList.setQuitType(null);
+            memberReduceNew.setQuitType(null);
         }
         //修改历史党员
-        tabPbMemberReduceList.setDeptId(tabPbMemberReduceList1.getDeptId());
-        tabPbMemberReduceList.setRealName(tabPbMemberReduceList1.getRealName());
-        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbMemberReduceList);
-        flag += reduceListMapper.updateByPrimaryKeySelectiveCondition(tabPbMemberReduceList);
+        memberReduceNew.setDeptId(memberReduceOld.getDeptId());
+        memberReduceNew.setRealName(memberReduceOld.getRealName());
+        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(memberReduceNew);
+        flag += reduceListMapper.updateByPrimaryKeySelectiveCondition(memberReduceNew);
         //党籍处理
-        checkIsOpeartionMeberShip(tabPbMemberReduceList1.getUserId(), type, updateHistoryDTO.getReduceTime());
+        checkIsOpeartionMeberShip(memberReduceOld.getUserId(), type, updateHistoryDTO.getReduceTime());
         return flag;
     }
 
