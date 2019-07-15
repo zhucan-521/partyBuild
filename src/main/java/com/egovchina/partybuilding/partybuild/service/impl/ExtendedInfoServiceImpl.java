@@ -217,7 +217,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
             types[1] = OFFICIAL_PARTY_MEMBER;
         }
         //添加党籍记录
-        checkIsOpeartionMeberShip(reduceList.getUserId(), types, restoreTime);
+        checkIsOpeartionMeberShip(reduceList.getUserId(), types, reduceList.getRecoveryTime());
         //党员状态设置有效
         SysUser user = new SysUser().setUserId(reduceList.getUserId()).setRegistryStatus(OFFICIAL_PARTY_MEMBER).setEblFlag(CommonConstant.STATUS_EBL);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(user);
@@ -368,7 +368,7 @@ public class ExtendedInfoServiceImpl implements ExtendedInfoService {
         Long identityType = tabSysUserMapper.selectUserByIdFindIdentity(userId);
         MembershipDTO membershipDTO = new MembershipDTO();
         //Type设置党籍状态,理由  处理时间
-        membershipDTO.setUserId(userId).setIdentityType(identityType).setType(type[1]).setReason(getReason(type)).setMembershipTime(date);
+        membershipDTO.setUserId(userId).setIdentityType(identityType).setType(type[1]).setReason(getReason(type)).setMembershipTime(date == null ? new Date() : date);
         //新增党籍
         partyMembershipServiceImpl.insertMembershipDTO(membershipDTO);
     }
