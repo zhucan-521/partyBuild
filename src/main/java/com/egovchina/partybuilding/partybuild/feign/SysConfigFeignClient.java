@@ -15,6 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public interface SysConfigFeignClient {
 
     /**
+     * 党务公开 配置表itemId
+     */
+    Long NEWS_ITEM_ID = 59716L;
+
+    /**
      * desc: 根据itemId获取
      *
      * @param id itemId
