@@ -17,6 +17,7 @@ import com.egovchina.partybuilding.partybuild.entity.FlowInMemberQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowIn;
 import com.egovchina.partybuilding.partybuild.entity.TabPbFlowOut;
 import com.egovchina.partybuilding.partybuild.feign.SystemServiceFeignClient;
+import com.egovchina.partybuilding.partybuild.feign.fallback.SystemServiceFallback;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFlowInMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbFlowOutMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysUserMapper;
@@ -34,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
@@ -62,11 +64,10 @@ public class FlowInServiceImpl implements FlowInService {
     @Autowired
     private SystemServiceFeignClient systemServiceFeignClient;
 
+    /**
+     * 审核未通过
+     */
     private final Long REFUSETOACCEPT = 59713L;
-
-    private final Long SUCCESSFLOW = 59717L;
-
-    private final Long FALSEFLOW = 59718L;
 
     /**
      * 流入党员列表查询
@@ -229,13 +230,17 @@ public class FlowInServiceImpl implements FlowInService {
         MessageReceiveDTO messageReceiveDTO = new MessageReceiveDTO().setReceiverId(userId).setReceiverName(recipientUser.getRealname());
         List<MessageReceiveDTO> messageReceiveDTOs = new ArrayList();
         messageReceiveDTOs.add(messageReceiveDTO);
+        MessageAddDTO messageAddDTO = new MessageAddDTO().setReceiverType(ReceiverTypeEnum.PERSON.getReceiverType())
+                .setType(MessageTypeEnum.SYSTEM_MESSAGE.getId()).setReceivers(messageReceiveDTOs).setTitle("流入党组织通知");
+        String content = recipientUser.getRealname() + "您好，您申请流入" + recipientUser.getFlowToOrgName() + "流动挂靠失败！请重新申请";
         if (flag) {
-            MessageAddDTO messageAddDTO = new MessageAddDTO().setReceiverType(ReceiverTypeEnum.PERSON.getReceiverType()).setType(MessageTypeEnum.SYSTEM_MESSAGE.getId()).setReceivers(messageReceiveDTOs).setTitle("流入党组织通知");
-            ReturnEntity messageContent = systemServiceFeignClient.getMessageContent(SUCCESSFLOW);
-            String content = "您好，您的流动挂靠失败！请重新申请！";
-            if (messageContent != null) {
-                if (messageContent.getResultObj() != null) {
-                    content = messageContent.getResultObj()
+            ReturnEntity returnEntity = systemServiceFeignClient.getMessageContent(SystemServiceFallback.SUCCESSFLOW);
+            if (returnEntity.unOkResp()) {
+                throw returnEntity.exception();
+            }
+            if (returnEntity != null) {
+                if (returnEntity.getResultObj() != null) {
+                    content = Optional.ofNullable(returnEntity.getResultObj()).orElse("")
                             .toString().replace("{{realname}}", recipientUser.getRealname()).replace("{{orgName}}", recipientUser.getFlowToOrgName());
                 }
             }
@@ -243,12 +248,14 @@ public class FlowInServiceImpl implements FlowInService {
             stationNewsService.batchInsertStationNews(messageAddDTO);
             return;
         }
-        MessageAddDTO messageAddDTO = new MessageAddDTO().setReceiverType(ReceiverTypeEnum.PERSON.getReceiverType()).setType(MessageTypeEnum.SYSTEM_MESSAGE.getId()).setReceivers(messageReceiveDTOs).setTitle("流入党组织通知");
-        ReturnEntity messageContent = systemServiceFeignClient.getMessageContent(FALSEFLOW);
-        String content = "您好，您的流动挂靠失败！请重新申请！";
-        if (messageContent != null) {
-            if (messageContent.getResultObj() != null) {
-                content = messageContent.getResultObj().toString().replace("{{realname}}", recipientUser.getRealname()).replace("{{orgName}}", recipientUser.getFlowToOrgName());
+        ReturnEntity returnEntity = systemServiceFeignClient.getMessageContent(SystemServiceFallback.FALSEFLOW);
+        if (returnEntity.unOkResp()) {
+            throw returnEntity.exception();
+        }
+        if (returnEntity != null) {
+            if (returnEntity.getResultObj() != null) {
+                content = Optional.ofNullable(returnEntity.getResultObj()).orElse("")
+                        .toString().replace("{{realname}}", recipientUser.getRealname()).replace("{{orgName}}", recipientUser.getFlowToOrgName());
             }
         }
         messageAddDTO.setContent(content);
