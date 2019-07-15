@@ -131,7 +131,7 @@ GROUP BY
         IFNULL(vac.doc_num,0) as doc_num,
         IFNULL(vac.img_num,0) as img_num
         from sys_dept d
-        inner join tab_pb_punishment p on p.punish_org_id =d.dept_id
+        left join tab_pb_punishment p on p.punish_org_id =d.dept_id
         left join view_attachment_count vac on p.punishment_id = vac.host_id and vac.attachment_type = 12
         left join sys_user u on p.user_id =u.user_id
         where p.del_flag = '0'
@@ -148,10 +148,10 @@ GROUP BY
             <when test="orgRange == 2">
                 AND find_in_set(#{orgId}, d.full_path)
             </when>
-            <otherwise>
-                AND d.dept_id = #{orgId}
-            </otherwise>
         </choose>
+        <if test="orgRange==null and orgId!=null">
+            AND d.dept_id = #{orgId}
+        </if>
         order by p.punish_date desc
     </select>
 
