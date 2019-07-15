@@ -81,7 +81,7 @@ public class SecretaryController {
     public void secretaryExport(@PathVariable Long secretaryId, HttpServletResponse response) throws Exception {
         Map<String, Object> exportData = secretaryService.selectExportDataBySecretaryId(secretaryId);
         if (exportData == null) {
-            throw new BusinessDataNotFoundException("书记书记不存在");
+            throw new BusinessDataNotFoundException("书记数据不存在");
         }
         ServletOutputStream outputStream = response.getOutputStream();
         response.setContentType("application/octet-stream;charset=UTF-8");

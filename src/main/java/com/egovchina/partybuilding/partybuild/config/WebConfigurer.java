@@ -50,6 +50,7 @@ public class WebConfigurer implements WebMvcConfigurer {
         corsConfiguration.setAllowedOrigins(Collections.singletonList("*"));
         corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addExposedHeader("Content-Disposition");
         corsConfiguration.addAllowedMethod("*");
         return corsConfiguration;
     }
