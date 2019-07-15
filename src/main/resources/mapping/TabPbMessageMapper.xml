@@ -624,7 +624,7 @@
             left join tab_pb_participant p ON a.activities_id = p.activities_id  AND p.del_flag =0
         WHERE
             date( a.finished_time ) = date_sub( curdate( ), INTERVAL 1 DAY )
-            AND a.del_flag = 0
+            AND a.del_flag = 0 and a.activities_type_ids !='59147'
             GROUP BY a.activities_id
     </select>
 
