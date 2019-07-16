@@ -19,7 +19,6 @@ import com.egovchina.partybuilding.partybuild.util.UserTagType;
 import com.egovchina.partybuilding.partybuild.vo.FlowOutMemberVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import lombok.var;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -108,7 +107,7 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
         sysUser.setUserId(userId);
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(sysUser);
         tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
-        TabPbFlowOut tabPbFlowOutInsert = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(flowOutMemberDto,TabPbFlowOut.class,false);
+        TabPbFlowOut tabPbFlowOutInsert = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(flowOutMemberDto, TabPbFlowOut.class, false);
         tabPbFlowOutInsert.setFlowToOrgnizeId(flowOutMemberDto.getFlowToOrgnizeId()); //设置流入党组织Id
         tabPbFlowOutInsert.setFlowToOrgnizeName(flowOutMemberDto.getFlowToOrgName());//设置流入党组织名称
         tabPbFlowOutMapper.insertSelective(tabPbFlowOutInsert);
@@ -155,32 +154,16 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
         //不让他修改流出组织
         flowOutMemberDto.setOrgId(null);
         flowOutMemberDto.setFlowFromOrgName(null);
-        //修改用户表
-        SysUser sysUser = tabSysUserMapper.selectUserByIdCardNo(flowOutMemberDto.getIdCardNo());
-        BeanUtil.copyPropertiesIgnoreNull(flowOutMemberDto, sysUser);
-        //流入党组织
-        if (flowOutMemberDto.getFlowToOrgnizeId() != null) {
-            sysUser.setFlowToOrgId(flowOutMemberDto.getFlowToOrgnizeId());
-            sysUser.setFlowToOrgName(tabPbFlowOutMapper.selectDeptNameByDeptId(flowOutMemberDto.getFlowToOrgnizeId()));
-        }
-        tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         //修改流入表
-        var tabPbFlowIn = new TabPbFlowIn()
-                .setFlowOutId(flowOutMemberDto.getFlowOutId())
-                .setUserId(sysUser.getUserId())
-                .setOldOrgnizeId(flowOutMemberDto.getOrgId())
-                .setOrgId(flowOutMemberDto.getFlowToOrgnizeId())
+        TabPbFlowIn tabPbFlowIn = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(flowOutMemberDto, TabPbFlowIn.class, true)
                 .setOldPlace(flowOutMemberDto.getFlowOutPlace())
                 .setFlowInType(flowOutMemberDto.getFlowOutType())
                 .setFlowInRange(flowOutMemberDto.getOutIndustry())
                 .setFlowInReason(flowOutMemberDto.getFlowOutReason())
-                .setOldOrgnizeCode(flowOutMemberDto.getFlowToOrgnizeCode())
-                .setLostTime(flowOutMemberDto.getLostTime());
+                .setOldOrgnizeCode(flowOutMemberDto.getFlowToOrgnizeCode());
         tabPbFlowInMapper.updateByFlowOutIdKeySelective(tabPbFlowIn);
         //修改流出表
-        TabPbFlowOut tabPbFlowOutUpdate = new TabPbFlowOut();
-        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbFlowOutUpdate);
-        BeanUtil.copyPropertiesIgnoreNull(flowOutMemberDto, tabPbFlowOutUpdate);
+        TabPbFlowOut tabPbFlowOutUpdate = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(flowOutMemberDto, TabPbFlowOut.class, true);
         return tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOutUpdate);
     }
 

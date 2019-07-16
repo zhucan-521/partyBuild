@@ -8,7 +8,6 @@ import com.egovchina.partybuilding.common.entity.SysUser;
 import com.egovchina.partybuilding.common.enums.MessageTypeEnum;
 import com.egovchina.partybuilding.common.enums.ReceiverTypeEnum;
 import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailException;
-import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.CommonConstant;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.common.util.ReturnEntity;
@@ -161,19 +160,19 @@ public class FlowInServiceImpl implements FlowInService {
     @Override
     @PaddingBaseField(updateOnly = true)
     public int updateFlowInDto(FlowInMemberDTO flowInMemberDto) {
-        //不让修改流入党组织
+        //不让修改流入党组织和流出党组织
         flowInMemberDto.setOrgId(null);
         flowInMemberDto.setFlowToOrgName(null);
-        Long userId = tabSysUserMapper.SelectUserIdByIDcard(flowInMemberDto.getIdCardNo());
-        SysUser sysUser = new SysUser();
-        sysUser.setUserId(userId);
-        BeanUtil.copyPropertiesIgnoreNull(flowInMemberDto, sysUser);
-        TabPbFlowIn tabPbFlowIn = tabPbFlowInMapper.selectByPrimaryKey(flowInMemberDto.getFlowInId());
+        //修改流出表
         TabPbFlowOut tabPbFlowOutDto = generateTargetCopyPropertiesAndPaddingBaseField(flowInMemberDto, TabPbFlowOut.class, true);
-        tabPbFlowOutDto.setFlowOutId(tabPbFlowIn.getFlowOutId());
+        tabPbFlowOutDto.setFlowOutId(flowInMemberDto.getFlowOutId());
+        tabPbFlowOutDto.setFlowOutPlace(flowInMemberDto.getOldPlace());
+        tabPbFlowOutDto.setFlowOutReason(flowInMemberDto.getFlowInReason());
+        tabPbFlowOutDto.setFlowToOrgnizeCode(flowInMemberDto.getOldOrgnizeCode());
+        tabPbFlowOutDto.setOutIndustry(flowInMemberDto.getFlowInRange());
+        tabPbFlowOutDto.setFlowOutType(flowInMemberDto.getFlowInType());
         tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOutDto);
-        //修改流入流出党组织联系人和电话
-        tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
+        //修改流入表
         TabPbFlowIn tabPbFlowInUpdate = generateTargetCopyPropertiesAndPaddingBaseField(flowInMemberDto, TabPbFlowIn.class, true);
         return tabPbFlowInMapper.updateByPrimaryKeySelective(tabPbFlowInUpdate);
     }
@@ -186,23 +185,17 @@ public class FlowInServiceImpl implements FlowInService {
      */
     @Override
     public int returnFlowInMember(FlowInMemberDTO flowInMemberDto) {
-        SysUser sysUser = tabSysUserMapper.selectByPrimaryKey(flowInMemberDto.getUserId());
-        BeanUtils.copyProperties(flowInMemberDto, sysUser);
-        //结束流动
-        sysUser.setFlowStatus(CommonConstant.NORMAL);
-        tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
+        //用户表 流动状态设置结束流动 清空流入组织联系人和电话、流出组织联系人和电话
+        tabPbFlowInMapper.cancelSysUserFlowStaus(flowInMemberDto.getUserId());
         //取消流动标识
-        userTagService.delete(sysUser.getUserId(), UserTagType.FLOW);
-        //取消用户表流入流出党组织
-        tabPbFlowInMapper.cancelSysUserFlowStaus(sysUser.getUserId());
-        //返回
+        userTagService.delete(flowInMemberDto.getUserId(), UserTagType.FLOW);
+        //流入表 设置状态为返回 填充前端传过来的字段
         flowInMemberDto.setFlowInState(CommonConstant.RETURNED);
         TabPbFlowIn tabPbFlowIn = generateTargetCopyPropertiesAndPaddingBaseField(flowInMemberDto, TabPbFlowIn.class, true);
         tabPbFlowInMapper.updateByPrimaryKeySelective(tabPbFlowIn);
+        //流出表 设置状态为返回，填充返回日期
         TabPbFlowOut tabPbFlowOut = tabPbFlowOutMapper.selectByPrimaryKey(flowInMemberDto.getFlowOutId());
-        //返回
         tabPbFlowOut.setFlowOutState(CommonConstant.RETURNED);
-        //设置返回日期
         tabPbFlowOut.setReturnDate(flowInMemberDto.getReturnDate());
         PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(tabPbFlowOut);
         return tabPbFlowOutMapper.updateByPrimaryKeySelective(tabPbFlowOut);
