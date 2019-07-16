@@ -2,12 +2,10 @@ package com.egovchina.partybuilding.partybuild.service.impl;
 
 import com.egovchina.partybuilding.common.entity.Page;
 import com.egovchina.partybuilding.common.entity.SysDept;
+import com.egovchina.partybuilding.common.enums.SystemConfigurationEnum;
 import com.egovchina.partybuilding.common.exception.BusinessDataInvalidException;
 import com.egovchina.partybuilding.common.exception.BusinessDataNotFoundException;
-import com.egovchina.partybuilding.common.util.AttachmentType;
-import com.egovchina.partybuilding.common.util.CollectionUtil;
-import com.egovchina.partybuilding.common.util.CommonConstant;
-import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
+import com.egovchina.partybuilding.common.util.*;
 import com.egovchina.partybuilding.partybuild.dto.OrganizationDTO;
 import com.egovchina.partybuilding.partybuild.dto.OrganizationPositionDTO;
 import com.egovchina.partybuilding.partybuild.dto.UnitInfoDTO;
@@ -15,6 +13,7 @@ import com.egovchina.partybuilding.partybuild.entity.OrganizationQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgClassify;
 import com.egovchina.partybuilding.partybuild.entity.TabPbOrgnizeChange;
 import com.egovchina.partybuilding.partybuild.entity.TabPbUnitInfo;
+import com.egovchina.partybuilding.partybuild.feign.SysConfigFeignClient;
 import com.egovchina.partybuilding.partybuild.repository.TabPbOrgClassifyMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbUnitInfoMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabSysDeptMapper;
@@ -76,12 +75,20 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Autowired
     private TabSysUserMapper tabSysUserMapper;
 
+    @Autowired
+    private SysConfigFeignClient sysConfigFeignClient;
+
     @Override
     public List<OrganizationVO> selectOrganizationVOWithCondition(OrganizationQueryBean queryBean, Page page) {
         PageHelper.startPage(page);
         if (queryBean.getDomainCategory() != null) {
             queryBean.setDomainCategorys(Arrays.asList(queryBean.getDomainCategory().split(",")));
         }
+        ReturnEntity returnEntity = sysConfigFeignClient.getConfigurationValue(SystemConfigurationEnum.SHOW_PARTY_GROUP.getItemId());
+        if (returnEntity.unOkResp()) {
+            throw returnEntity.exception();
+        }
+        queryBean.setShowPartyGroup(CommonConstant.STATUS_EBL.equals(Optional.ofNullable(returnEntity.getResultObj()).orElse(CommonConstant.STATUS_NOEBL)));
         List<OrganizationVO> list = tabSysDeptMapper.selectOrganizationVOWithCondition(queryBean);
         return calculationComplete(list);
     }
@@ -291,6 +298,11 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public List<HashMap<String, Object>> selectOrganizationSimpleListByCondition(Map<String, Object> conditions, Page page) {
+        ReturnEntity returnEntity = sysConfigFeignClient.getConfigurationValue(SystemConfigurationEnum.SHOW_PARTY_GROUP.getItemId());
+        if (returnEntity.unOkResp()) {
+            throw returnEntity.exception();
+        }
+        conditions.put("showPartyGroup", CommonConstant.STATUS_EBL.equals(Optional.ofNullable(returnEntity.getResultObj()).orElse(CommonConstant.STATUS_NOEBL)));
         PageHelper.startPage(page);
         return tabSysDeptMapper.selectToMapByCondition(conditions);
     }
@@ -381,6 +393,11 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public List<OrganizationPositionVO> selectOrganizationPositionVOByCondition(Map<String, Object> conditions, Page page) {
+        ReturnEntity returnEntity = sysConfigFeignClient.getConfigurationValue(SystemConfigurationEnum.SHOW_PARTY_GROUP.getItemId());
+        if (returnEntity.unOkResp()) {
+            throw returnEntity.exception();
+        }
+        conditions.put("showPartyGroup", CommonConstant.STATUS_EBL.equals(Optional.ofNullable(returnEntity.getResultObj()).orElse(CommonConstant.STATUS_NOEBL)));
         PageHelper.startPage(page);
         return tabSysDeptMapper.selectOrganizationPositionVOByCondition(conditions);
     }
