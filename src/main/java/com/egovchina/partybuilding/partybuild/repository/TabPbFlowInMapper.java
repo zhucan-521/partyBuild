@@ -1,7 +1,7 @@
 package com.egovchina.partybuilding.partybuild.repository;
 
-import com.egovchina.partybuilding.partybuild.entity.TabPbFlowIn;
 import com.egovchina.partybuilding.partybuild.entity.FlowInMemberQueryBean;
+import com.egovchina.partybuilding.partybuild.entity.TabPbFlowIn;
 import com.egovchina.partybuilding.partybuild.vo.FlowInMemberVO;
 import org.springframework.stereotype.Repository;
 
@@ -50,7 +50,7 @@ public interface TabPbFlowInMapper {
     Long getFlowOutIdByFlowInId(Long flowInId);
 
     /**
-     * 根据userId取消党员流动状态
+     * 用户表 流动状态设置结束流动 清空流入组织联系人和电话、流出组织联系人和电话
      *
      * @param userId
      * @return

@@ -57,14 +57,6 @@
         <result column="gender" jdbcType="BIGINT" property="gender"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
-        <result column="flow_to_org_name" jdbcType="VARCHAR" property="flowToOrgName"/>
-        <result column="flow_out_date" jdbcType="TIMESTAMP" property="flowOutDate"/>
-        <result column="outProfession" jdbcType="VARCHAR" property="outProfession"/>
-        <result column="flow_from_org_phone" jdbcType="VARCHAR" property="flowFromOrgPhone"/>
-        <result column="flow_from_org_contactor" jdbcType="VARCHAR" property="flowFromOrgContactor"/>
-        <result column="flow_to_org_contactor" jdbcType="VARCHAR" property="flowToOrgContactor"/>
-        <result column="flow_to_org_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
-        <result column="out_profession" jdbcType="BIGINT" property="outProfession"/>
     </resultMap>
     <sql id="Base_Column_List">
     flow_in_id, org_id, user_id, flow_in_date, flow_in_type, flow_in_range, flow_in_reason, 
@@ -74,9 +66,10 @@
     create_username, update_time, update_userid, update_username, version,flow_in_state
   </sql>
     <sql id="Base_FlowIn_List">
-        s.flow_from_org_name AS old_orgnize_name,
-        -- s.flow_to_org_name AS flow_to_org_name,
-        (case when IFNULL(t.org_id,1)=1  then  s.flow_to_org_name else (select name from  sys_dept where dept_id=t.org_id)  end)flow_to_org_name,
+        -- 流出组织名称
+        t.old_orgnize_name,
+        -- 流入组织名称
+        f.flow_to_orgnize_name as flowToOrgName,
         t.flow_in_id,
 		t.org_id,
 		t.old_orgnize_id,
@@ -89,7 +82,6 @@
 		t.old_unit_name,
 		t.old_orgnize_id,
 		t.old_orgnize_code,
-		--( SELECT NAME FROM sys_dept WHERE dept_id = t.old_orgnize_id ) AS old_orgnize_name,
 		t.old_orgnize_phone,
 		t.old_orgnize_contactor,
 		t.old_contact_phone,
@@ -106,12 +98,15 @@
 		s.identity_type as identityType,
 		f.lost_time,
 		f.link_status,
-		-- ( SELECT NAME FROM sys_dept WHERE dept_id = t.org_id ) AS flow_to_org_name ,
-		s.flow_to_org_contactor,
-        s.flow_to_org_phone,
-        s.flow_from_org_contactor,
-        s.flow_from_org_phone,
         f.flow_out_date ,
+        -- 流出组织联系人电话
+        t.old_orgnize_phone as flowFromOrgPhone,
+        -- 流出组织联系人
+        t.old_orgnize_contactor as flowFromOrgContactor,
+        -- 流入组织联系人
+        f.flow_to_orgnize_contactor as  flowToOrgContactor,
+        -- 流入组织联系人电话
+        f.flow_to_orgnize_phone as flowToOrgPhone,
         (case  when f.flow_out_date &lt;= now() then 1 else 0 end) as isEnableAccept,
         (case  when t.flow_in_date > now() then 0 else 1 end) as isEnableBack,
 		f.out_profession
@@ -631,13 +626,24 @@
         t.flow_in_id = #{flowInId,jdbcType=BIGINT}
     </select>
 
-    <select id="getFlowOutIdByFlowInId" parameterType="Long" resultType="Long">
+    <select id="getFlowOutIdByFlowInId" parameterType="long" resultType="long">
         select flow_in_id from tab_pb_flow_in where flow_out_id=#{flowOutId}
     </select>
 
+    <!--用户表 流动状态设置结束流动 清空流入组织联系人和电话、流出组织联系人和电话-->
     <update id="cancelSysUserFlowStaus" parameterType="long">
-           update sys_user
-           set flow_to_org_id=null,flow_from_org_id=null
+           update
+             sys_user
+           set
+             flow_status = 41207 ,
+             flow_to_org_id = null,
+             flow_from_org_name = null,
+             flow_from_org_id = null,
+             flow_to_org_name = null,
+             flow_from_org_contactor = null,
+             flow_from_org_phone = null,
+             flow_to_org_contactor = null,
+             flow_to_org_phone = null
            where
            user_id=#{userId}
     </update>

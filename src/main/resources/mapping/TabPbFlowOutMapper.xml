@@ -39,59 +39,10 @@
     </resultMap>
     <resultMap id="selectActiveFlowOutVoMap" extends="BaseResultMap"
                type="com.egovchina.partybuilding.partybuild.vo.FlowOutMemberVO">
-        <id column="user_id" jdbcType="BIGINT" property="userId"/>
-        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
-        <result column="username" jdbcType="VARCHAR" property="username"/>
-        <result column="old_place" jdbcType="VARCHAR" property="oldPlace"/>
-        <result column="flow_to_orgnize_contactor" jdbcType="VARCHAR" property="flowToOrgContactor"/>
-        <result column="flow_to_orgnize_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="id_card_no" jdbcType="VARCHAR" property="idCardNo"/>
         <result column="gender" jdbcType="BIGINT" property="gender"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
-        <result column="contact" jdbcType="BIGINT" property="contact"/>
-        <result column="joinelsetime" jdbcType="TIMESTAMP" property="joinelsetime"/>
-        <result column="police_office" jdbcType="VARCHAR" property="policeOffice"/>
-        <result column="retired_time" jdbcType="TIMESTAMP" property="retiredTime"/>
-        <result column="post_time" jdbcType="TIMESTAMP" property="postTime"/>
-        <result column="portrait" jdbcType="VARCHAR" property="portrait"/>
-        <result column="person_identity" jdbcType="BIGINT" property="personIdentity"/>
-        <result column="stratum" jdbcType="BIGINT" property="stratum"/>
-        <result column="front_line" jdbcType="BIGINT" property="frontLine"/>
-        <result column="qq_number" jdbcType="VARCHAR" property="qqNumber"/>
-        <result column="email" jdbcType="VARCHAR" property="email"/>
-        <result column="wx_openid" jdbcType="VARCHAR" property="wxOpenid"/>
-        <result column="qq_openid" jdbcType="VARCHAR" property="qqOpenid"/>
-        <result column="pm_code" jdbcType="VARCHAR" property="pmCode"/>
-        <result column="join_time" jdbcType="TIMESTAMP" property="joinTime"/>
-        <result column="regular_time" jdbcType="TIMESTAMP" property="regularTime"/>
-        <result column="regular_status" jdbcType="BIGINT" property="regularStatus"/>
-        <result column="develop_type" jdbcType="BIGINT" property="developType"/>
-        <result column="reference" jdbcType="VARCHAR" property="reference"/>
-        <result column="fee_ratio" jdbcType="DECIMAL" property="feeRatio"/>
-        <result column="join_after_august" jdbcType="TINYINT" property="joinAfterAugust"/>
-        <result column="is_poor" jdbcType="TINYINT" property="isPoor"/>
-        <result column="is_llost" jdbcType="TINYINT" property="isLlost"/>
-        <result column="flow_from_org_id" jdbcType="BIGINT" property="flowFromOrgId"/>
-        <result column="flow_from_org_name" jdbcType="VARCHAR" property="flowFromOrgName"/>
-        <result column="flow_from_org_contactor" jdbcType="VARCHAR" property="flowFromOrgContactor"/>
-        <result column="flow_from_org_phone" jdbcType="VARCHAR" property="flowFromOrgPhone"/>
-        <result column="flow_to_org_id" jdbcType="BIGINT" property="flowToOrgId"/>
-        <result column="flow_to_org_name" jdbcType="VARCHAR" property="flowToOrgName"/>
-        <result column="flow_to_org_contactor" jdbcType="VARCHAR" property="flowToOrgContactor"/>
-        <result column="flow_to_org_phone" jdbcType="VARCHAR" property="flowToOrgPhone"/>
-        <result column="positived" jdbcType="VARCHAR" property="positived"/>
-        <result column="join_contact_id" jdbcType="BIGINT" property="joinContactId"/>
-        <result column="contactor" jdbcType="VARCHAR" property="contactor"/>
-        <result column="flow_out_date" jdbcType="TIMESTAMP" property="flowOutDate"/>
-        <result column="lost_time" jdbcType="TIMESTAMP" property="lostTime"/>
-        <result column="flow_out_type" jdbcType="BIGINT" property="flowOutType"/>
-        <result column="flow_out_range" jdbcType="BIGINT" property="flowOutRange"/>
-        <result column="flow_out_reason" jdbcType="BIGINT" property="flowOutReason"/>
-        <result column="flow_out_place" jdbcType="VARCHAR" property="flowOutPlace"/>
-        <result column="flow_to_unit_name" jdbcType="VARCHAR" property="flowToUnitName"/>
-        <result column="flow_to_orgnize_name" jdbcType="VARCHAR" property="flowToOrgName"/>
-        <result column="flow_to_orgnize_code" jdbcType="VARCHAR" property="flowToOrgnizeCode"/>
-        <result column="flow_to_orgnize_id" jdbcType="BIGINT" property="flowToOrgnizeId"/>
     </resultMap>
 
 
@@ -112,24 +63,24 @@
         -- 流入地
         tab_pb_flow_out.return_tag,
         tab_pb_flow_out.flow_to_orgnize_id,
-        -- 原党组织
         tab_pb_flow_out.org_id,
-        (case when IFNULL(tab_pb_flow_out.org_id,1)=1  then sys_user.flow_from_org_name else (select name from  sys_dept where dept_id=tab_pb_flow_out.org_id)  end)flow_from_org_name,
-        -- (select name from  sys_dept where dept_id=tab_pb_flow_out.org_id limit 1 ) flow_to_orgnize_name,
-        -- sys_user.flow_from_org_name ,
+        -- 流出党组织名称
+        tab_pb_flow_in.old_orgnize_name as flowFromOrgName,
         tab_pb_flow_out.out_industry,
         tab_pb_flow_out.flow_out_type,
         tab_pb_flow_out.out_profession,
         tab_pb_flow_out.flow_out_reason,
-        -- 流入党组织
-        -- (select name from  sys_dept where dept_id=tab_pb_flow_out.flow_out_place limit 1) flowOutOrgName ,
-           (case when  IFNULL(tab_pb_flow_out.flow_to_orgnize_id,1) = 1 then sys_user.flow_to_org_name else (select name from  sys_dept where dept_id=tab_pb_flow_out.flow_to_orgnize_id)  end)flow_to_org_name,
-        -- sys_user.flow_to_org_name ,
+        -- 流入党组织名称
+        tab_pb_flow_out.flow_to_orgnize_name as flowToOrgName ,
         tab_pb_flow_out.flow_out_date,
-        sys_user.flow_to_org_contactor,
-        sys_user.flow_to_org_phone,
-        sys_user.flow_from_org_contactor,
-        sys_user.flow_from_org_phone,
+        -- 流出组织联系人电话
+        tab_pb_flow_in.old_orgnize_phone as flowFromOrgPhone,
+        -- 流出组织联系人
+        tab_pb_flow_in.old_orgnize_contactor as flowFromOrgContactor,
+        -- 流入组织联系人
+        tab_pb_flow_out.flow_to_orgnize_contactor ,
+        -- 流入组织联系人电话
+        tab_pb_flow_out.flow_to_orgnize_phone ,
         tab_pb_flow_out.lost_time,
         tab_pb_flow_out.link_status,
         sys_user.phone,
@@ -577,6 +528,7 @@
         tab_pb_flow_out
         left JOIN sys_user ON tab_pb_flow_out.user_id = sys_user.user_id
         left JOIN sys_dept ON tab_pb_flow_out.org_id = sys_dept.dept_id
+        Left JOIN tab_pb_flow_in on tab_pb_flow_in.flow_out_id = tab_pb_flow_out.flow_out_id
         <where>
             tab_pb_flow_out.del_flag='0'  AND sys_user.del_flag = '0'
             <if test="username!=null and ''!=username">
