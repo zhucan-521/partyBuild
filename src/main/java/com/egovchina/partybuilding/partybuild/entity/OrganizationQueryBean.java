@@ -56,4 +56,8 @@ public class OrganizationQueryBean {
     @JsonIgnore
     private List<String> domainCategorys;
 
+    @ApiModelProperty(hidden = true)
+    @JsonIgnore
+    private Boolean showPartyGroup;
+
 }
