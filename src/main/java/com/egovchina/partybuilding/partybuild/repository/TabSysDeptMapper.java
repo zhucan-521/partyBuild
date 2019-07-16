@@ -184,4 +184,12 @@ public interface TabSysDeptMapper {
      * @return
      */
     Long selectIdByName(String name);
+
+    /**
+     * 查看当前是否支部
+     *
+     * @param orgId
+     * @return
+     */
+    Boolean checkOrgIsBranch(@Param("orgId") Long orgId);
 }
