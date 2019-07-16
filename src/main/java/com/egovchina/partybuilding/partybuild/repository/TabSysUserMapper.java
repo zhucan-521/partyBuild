@@ -188,7 +188,7 @@ public interface TabSysUserMapper {
      * @param phone
      * @return
      */
-    boolean checkIsExistByPhone(String phone);
+    boolean checkIsExistByPhone(@Param("phone") String phone, @Param("userId") Long userId);
 
     /**
      * 查询附带 工作 学历信息

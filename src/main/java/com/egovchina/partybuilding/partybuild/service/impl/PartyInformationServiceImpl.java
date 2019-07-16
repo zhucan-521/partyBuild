@@ -6,6 +6,7 @@ import com.egovchina.partybuilding.common.exception.BusinessDataCheckFailExcepti
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.util.BeanUtil;
 import com.egovchina.partybuilding.common.util.CollectionUtil;
+import com.egovchina.partybuilding.common.util.IDCardLegalityCheckUtil;
 import com.egovchina.partybuilding.common.util.PaddingBaseFieldUtil;
 import com.egovchina.partybuilding.partybuild.dto.*;
 import com.egovchina.partybuilding.partybuild.entity.*;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @author liu tang gang
@@ -131,63 +133,74 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int savePartyInfo(PartyInfoDTO partyInfoDTO) {
-        if (!tabSysUserMapper.checkIsExistByIdCard(partyInfoDTO.getParty().getIdCardNo())) {
-            if (!tabSysUserMapper.checkIsExistByPhone(partyInfoDTO.getParty().getPhone())) {
-                int effected = 0;
-                SysUser sys = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyInfoDTO.getParty(), SysUser.class, false);
-                //检测组织Id
-                checkIsExist(sys);
-                if (partyInfoDTO.getEducations() != null && partyInfoDTO.getEducations().size() > 0) {
-                    //取最近的学历信息 排序
-                    sortEducationDTO(partyInfoDTO.getEducations(), sys, false);
-                }
-                if (partyInfoDTO.getJobTitles() != null && partyInfoDTO.getJobTitles().size() > 0) {
-                    //维护用户表 技术职务名称
-                    sortPartyJobTitleDTO(partyInfoDTO.getJobTitles(), sys, false);
-                }
-                if (partyInfoDTO.getWorks() != null && partyInfoDTO.getWorks().size() > 0) {
-                    //取得最近的 工作信息
-                    sortPartyWorkDTO(partyInfoDTO.getWorks(), sys, false);
-                }
-                //新增
-                effected += tabSysUserMapper.insertSelective(sys);
-                //新增或者删除标签信息
-                if (partyInfoDTO.getParty().getUserTags() != null) {
-                    this.userTagService.batchInsertUserTagDTO(partyInfoDTO.getParty().getUserTags());
-                }
-                if (partyInfoDTO.getEducations() != null && partyInfoDTO.getEducations().size() > 0) {
-                    //赋值主键
-                    partyInfoDTO.getEducations().forEach(education -> {
-                        education.setUserId(sys.getUserId());
-                    });
-                    effected += tabPbPartyEducationMapper.batchInsert(BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(partyInfoDTO.getEducations(), TabPbPartyEducation.class, false));
-                }
-                if (partyInfoDTO.getJobTitles() != null && partyInfoDTO.getJobTitles().size() > 0) {
-                    //赋值主键
-                    partyInfoDTO.getJobTitles().forEach(job -> {
-                        job.setUserId(sys.getUserId());
-                    });
-                    effected += tabPbPartyJobTitleMapper.batchInsert(BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(partyInfoDTO.getJobTitles(), TabPbPartyJobTitle.class, false));
-                }
-                if (partyInfoDTO.getWorks() != null && partyInfoDTO.getWorks().size() > 0) {
-                    //赋值主键
-                    partyInfoDTO.getWorks().forEach(work -> {
-                        work.setUserId(sys.getUserId());
-                    });
-                    effected += tabPbPartyWorkMapper.batchInsert(BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(partyInfoDTO.getWorks(), TabPbPartyWork.class, false));
-                }
-                //添加一条党籍
-                Long[] type = new Long[3];
-                //type 0党籍处理 1党籍状态
-                type[0] = transform(sys.getRegistryStatus());
-                type[1] = sys.getRegistryStatus();
-                updatePartyMembership(sys.getUserId(), type, new Date());
-                return effected;
-            }
+        //检验身份证号码是否正确
+        if (!IDCardLegalityCheckUtil.isValidatedAllIdcard(partyInfoDTO.getParty().getIdCardNo())) {
+            throw new BusinessDataCheckFailException("该身份证号码不正确");
+        }
+        //检查身份证是否重复
+        if (tabSysUserMapper.checkIsExistByIdCard(partyInfoDTO.getParty().getIdCardNo())) {
+            throw new BusinessDataCheckFailException("该身份证号码已存在");
+        }
+        //检查手机号码是否正确
+        if (!checkPhoneIsTrue(partyInfoDTO.getParty().getPhone())) {
+            throw new BusinessDataCheckFailException("该手机号码不正确");
+        }
+        //检查手机号码是否重复
+        if (tabSysUserMapper.checkIsExistByPhone(partyInfoDTO.getParty().getPhone(), null)) {
             throw new BusinessDataCheckFailException("该手机号码已存在");
         }
-        throw new BusinessDataCheckFailException("该党员已存在");
+        int effected = 0;
+        SysUser sys = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyInfoDTO.getParty(), SysUser.class, false);
+        //检测组织Id
+        checkIsExist(sys);
+        if (partyInfoDTO.getEducations() != null && partyInfoDTO.getEducations().size() > 0) {
+            //取最近的学历信息 排序
+            sortEducationDTO(partyInfoDTO.getEducations(), sys, false);
+        }
+        if (partyInfoDTO.getJobTitles() != null && partyInfoDTO.getJobTitles().size() > 0) {
+            //维护用户表 技术职务名称
+            sortPartyJobTitleDTO(partyInfoDTO.getJobTitles(), sys, false);
+        }
+        if (partyInfoDTO.getWorks() != null && partyInfoDTO.getWorks().size() > 0) {
+            //取得最近的 工作信息
+            sortPartyWorkDTO(partyInfoDTO.getWorks(), sys, false);
+        }
+        //新增
+        effected += tabSysUserMapper.insertSelective(sys);
+        //新增或者删除标签信息
+        if (partyInfoDTO.getParty().getUserTags() != null) {
+            this.userTagService.batchInsertUserTagDTO(partyInfoDTO.getParty().getUserTags());
+        }
+        if (partyInfoDTO.getEducations() != null && partyInfoDTO.getEducations().size() > 0) {
+            //赋值主键
+            partyInfoDTO.getEducations().forEach(education -> {
+                education.setUserId(sys.getUserId());
+            });
+            effected += tabPbPartyEducationMapper.batchInsert(BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(partyInfoDTO.getEducations(), TabPbPartyEducation.class, false));
+        }
+        if (partyInfoDTO.getJobTitles() != null && partyInfoDTO.getJobTitles().size() > 0) {
+            //赋值主键
+            partyInfoDTO.getJobTitles().forEach(job -> {
+                job.setUserId(sys.getUserId());
+            });
+            effected += tabPbPartyJobTitleMapper.batchInsert(BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(partyInfoDTO.getJobTitles(), TabPbPartyJobTitle.class, false));
+        }
+        if (partyInfoDTO.getWorks() != null && partyInfoDTO.getWorks().size() > 0) {
+            //赋值主键
+            partyInfoDTO.getWorks().forEach(work -> {
+                work.setUserId(sys.getUserId());
+            });
+            effected += tabPbPartyWorkMapper.batchInsert(BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(partyInfoDTO.getWorks(), TabPbPartyWork.class, false));
+        }
+        //添加一条党籍
+        Long[] type = new Long[3];
+        //type 0党籍处理 1党籍状态
+        type[0] = transform(sys.getRegistryStatus());
+        type[1] = sys.getRegistryStatus();
+        updatePartyMembership(sys.getUserId(), type, new Date());
+        return effected;
     }
+
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -196,6 +209,14 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         if (tabSysUserMapper.checkIsExistByUserId(id)) {
             int effected = 0;
             SysUser sys = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(partyInfoDTO.getParty(), SysUser.class, true);
+            //校验手机号码是否格式正确
+            if (!checkPhoneIsTrue(partyInfoDTO.getParty().getPhone())) {
+                throw new BusinessDataCheckFailException("该手机号码不正确");
+            }
+            //校验是否手机号码存在重复
+            if (tabSysUserMapper.checkIsExistByPhone(partyInfoDTO.getParty().getPhone(), id)) {
+                throw new BusinessDataCheckFailException("该手机号码已存在");
+            }
             //检测组织Id
             checkIsExist(sys);
             //新增或者删除标签信息
@@ -646,10 +667,9 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         try {
             sysUser.setRealname(realname).setIdentityType(Long.parseLong(identityType.split("_")[0])).setDeptId(Long.parseLong(deptId))
                     .setGender(Long.parseLong(sex.split("_")[0])).setBirthday(new SimpleDateFormat("yyyy-MM-dd").parse(age)).setNation(Long.parseLong(nation.split("_")[0])).setPhone(phone)
-                    .setFilesManageUnitId(Long.parseLong(filesManageUnitId)).setRegistryStatus(Long.parseLong(registryStatus.split("_")[0]))
+                    .setFilesManageUnitId(Long.parseLong(filesManageUnitId.split("_")[0])).setFilesManageUnit(filesManageUnitId.split("_")[1]).setRegistryStatus(Long.parseLong(registryStatus.split("_")[0]))
                     .setJoinOrgTime(new SimpleDateFormat("yyyy-MM-dd").parse(joinOrgTime)).setIdCardNo(idCardNo).setJoinTime(new SimpleDateFormat("yyyy-MM-dd").parse(joinTime));
         } catch (ParseException e) {
-
         }
         PaddingBaseFieldUtil.paddingBaseFiled(sysUser);
         return sysUser;
@@ -660,10 +680,9 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         return "partyInfo";
     }
 
+    //此方法将excel中的数据进行校验
     @Override
     public String excelImportPreValidate(List<SysUser> effectiveList, String[] row) {
-        boolean isExistIdCardNo = false;
-        boolean isExistPhone = false;
         int index = 0;
         String realname = row[++index];//姓名
         String identityType = row[++index];//党员类别
@@ -684,137 +703,136 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         }
         if (StringUtils.isEmpty(identityType)) {
             error.append("人员类别不能为空 | ");
-        }
-        if (StringUtils.isEmpty(deptId)) {
-            error.append("组织id不能为空 | ");
-        }
-        Long reDeptId = null;
-        try {
-            reDeptId = tabSysDeptMapper.selectIdByName(deptId);
-        } catch (Exception e) {
-            error.append("该组织名称存在多个,数据异常 | ");
-        }
-        if (reDeptId == null) {
-            error.append("该组织名称无效 | ");
-        }
-
-        if (StringUtils.isEmpty(sex)) {
-            error.append("性别不能为空 | ");
-        }
-        if (StringUtils.isEmpty(age)) {
-            error.append("出生年月不能为空 | ");
-        }
-        if (StringUtils.isEmpty(nation)) {
-            error.append("民族不能为空 | ");
-        }
-        if (StringUtils.isEmpty(phone)) {
-            error.append("联系电话不能为空 | ");
-        }
-        if (tabSysUserMapper.checkIsExistByPhone(phone)) {
-
-            error.append("联系电话已经存在 | ");
-        }
-        if (StringUtils.isEmpty(filesManageUnitId)) {
-            error.append("档案管理单位不能为空 |");
-        }
-        Long unit = null;
-        try {
-            unit = tabPbUnitInfoMapper.selectUnitIdByUnitName(filesManageUnitId);
-        } catch (Exception e) {
-            error.append("该单位名称存在多个,数据异常");
-        }
-        if (unit == null) {
-            error.append("该单位名称无效");
-        }
-        if (StringUtils.isEmpty(registryStatus)) {
-            error.append("党籍状态不能为空 | ");
-        }
-        if (StringUtils.isEmpty(joinOrgTime)) {
-            error.append("加入党组织时间不能为空 | ");
-        }
-        if (StringUtils.isEmpty(idCardNo)) {
-            error.append("身份证号码不能为空 | ");
-        }
-        if (tabSysUserMapper.checkIsExistByIdCard(idCardNo)) {
-            isExistIdCardNo = true;
-            error.append("身份证号码已经重复 | ");
-        }
-        if (StringUtils.isEmpty(joinTime)) {
-            error.append("入党时间不能为空 | ");
-        }
-        if (identityType != null) {
+        } else {
             try {
                 Long.parseLong(identityType.split("_")[0]);
             } catch (Exception e) {
-                error.append("党员类别数据转换异常");
+                error.append("党员类别数据转换异常 | ");
             }
         }
-        if (sex != null) {
+        Long reDeptId = null;
+        if (StringUtils.isEmpty(deptId)) {
+            error.append("组织id不能为空 | ");
+        } else {
+            try {
+                reDeptId = tabSysDeptMapper.selectIdByName(deptId.trim());
+                if (reDeptId == null) {
+                    error.append("该组织名称无效 | ");
+                } else {
+                    //判断当前组织是否支部
+                    if (!tabSysDeptMapper.checkOrgIsBranch(reDeptId)) {
+                        error.append("党员所在组织只能是支部,数据异常 | ");
+                    }
+                }
+            } catch (Exception e) {
+                error.append("该组织名称存在多个,数据异常 | ");
+            }
+        }
+        if (StringUtils.isEmpty(sex)) {
+            error.append("性别不能为空 | ");
+        } else {
             try {
                 Long.parseLong(sex.split("_")[0]);
             } catch (Exception e) {
-                error.append("性别数据转换异常");
+                error.append("性别数据转换异常 | ");
             }
         }
-        if (age != null) {
+        if (StringUtils.isEmpty(age)) {
+            error.append("出生年月不能为空 | ");
+        } else {
             try {
                 new SimpleDateFormat("yyyy-MM-dd").parse(age);
             } catch (Exception e) {
-                error.append("出生日期数据转换异常");
+                error.append("出生日期数据转换异常 | ");
             }
         }
-        if (nation != null) {
+        if (StringUtils.isEmpty(nation)) {
+            error.append("民族不能为空 | ");
+        } else {
             try {
                 Long.parseLong(nation.split("_")[0]);
             } catch (Exception e) {
-                error.append("民族数据转换异常");
+                error.append("民族数据转换异常 | ");
             }
         }
-
-        if (registryStatus != null) {
+        if (StringUtils.isEmpty(phone)) {
+            error.append("联系电话不能为空 | ");
+        } else {
+            if (!checkPhoneIsTrue(phone)) {
+                error.append("联系电话不匹配 | ");
+            } else {
+                if (tabSysUserMapper.checkIsExistByPhone(phone, null)) {
+                    error.append("联系电话已经存在 | ");
+                } else {
+                    if (CollectionUtil.isNotEmpty(effectiveList)) {
+                        //用于判断提交的数据排重，每次只判断前面
+                        for (int i = 0; i < effectiveList.size(); i++) {
+                            if (phone.equals(effectiveList.get(i).getPhone())) {
+                                error.append("导入数据中存在电话重复 | ");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Long unit = null;
+        if (StringUtils.isEmpty(filesManageUnitId)) {
+            error.append("档案管理单位不能为空 |");
+        } else {
+            try {
+                unit = tabPbUnitInfoMapper.selectUnitIdByUnitName(filesManageUnitId);
+                if (unit == null) {
+                    error.append("该单位名称无效 | ");
+                }
+            } catch (Exception e) {
+                error.append("该单位名称存在多个,数据异常 | ");
+            }
+        }
+        if (StringUtils.isEmpty(registryStatus)) {
+            error.append("党籍状态不能为空 | ");
+        } else {
             try {
                 Long.parseLong(registryStatus.split("_")[0]);
             } catch (Exception e) {
-                error.append("党籍状态数据转换异常");
+                error.append("党籍状态数据转换异常 | ");
             }
         }
-        if (joinOrgTime != null) {
+        if (StringUtils.isEmpty(joinOrgTime)) {
+            error.append("加入党组织时间不能为空 | ");
+        } else {
             try {
                 new SimpleDateFormat("yyyy-MM-dd").parse(joinOrgTime);
             } catch (Exception e) {
-                error.append("加入党组织时间数据转换异常");
+                error.append("加入党组织时间数据转换异常 | ");
             }
         }
-        if (joinTime != null) {
+        if (StringUtils.isEmpty(idCardNo)) {
+            error.append("身份证号码不能为空 | ");
+        } else {
+            if (!IDCardLegalityCheckUtil.isValidatedAllIdcard(idCardNo)) {
+                error.append("身份证号码不匹配 | ");
+            } else {
+                if (tabSysUserMapper.checkIsExistByIdCard(idCardNo)) {
+                    error.append("身份证号码已经重复 | ");
+                } else {
+                    if (CollectionUtil.isNotEmpty(effectiveList)) {
+                        //用于判断提交的数据排重，每次只判断前面
+                        for (int i = 0; i < effectiveList.size(); i++) {
+                            if (idCardNo.equals(effectiveList.get(i).getIdCardNo())) {
+                                error.append("导入数据中存在身份证号码重复 | ");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (StringUtils.isEmpty(joinTime)) {
+            error.append("入党时间不能为空 | ");
+        } else {
             try {
                 new SimpleDateFormat("yyyy-MM-dd").parse(joinTime);
             } catch (Exception e) {
-                error.append("入党时间数据转换异常");
-            }
-
-        }
-        //导入数据身份证重复问题,身份证排除非空重复判断
-        if (!StringUtils.isEmpty(idCardNo)) {
-            //排除数据库重复情况 + 第一条数据
-            if (CollectionUtil.isNotEmpty(effectiveList) && !isExistIdCardNo) {
-                //用于判断提交的数据排重，每次只判断前面
-                for (int i = 0; i < effectiveList.size(); i++) {
-                    if (idCardNo.equals(effectiveList.get(i).getIdCardNo())) {
-                        error.append("导入数据中存在身份证号码重复 | ");
-                    }
-                }
-            }
-        }
-        //手机号码雷同
-        if (!StringUtils.isEmpty(phone)) {
-            //排除数据库重复情况
-            if (CollectionUtil.isNotEmpty(effectiveList) && !isExistPhone) {
-                //用于判断提交的数据排重，每次只判断前面
-                for (int i = 0; i < effectiveList.size(); i++) {
-                    if (phone.equals(effectiveList.get(i).getPhone())) {
-                        error.append("导入数据中存在电话重复 | ");
-                    }
-                }
+                error.append("入党时间数据转换异常 | ");
             }
         }
         if (reDeptId != null) {
@@ -828,7 +846,7 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         if (unit != null) {
             if (error.length() <= 0) {
                 //改变excel的值
-                row[8] = unit.toString();
+                row[8] = unit.toString() + "_" + filesManageUnitId;
             }
         }
         return error.toString();
@@ -894,4 +912,15 @@ public class PartyInformationServiceImpl implements PartyInformationService {
         }
         return reason.toString();
     }
+
+    /**
+     * 校验手机号码 是否符合
+     *
+     * @param phone
+     * @return
+     */
+    public Boolean checkPhoneIsTrue(String phone) {
+        return Pattern.matches("^((13[0-9])|(14[5-9])|(15[^4])|(17[0-9])|(18[0-9])|(19[189]))\\d{8}$", phone);
+    }
+
 }

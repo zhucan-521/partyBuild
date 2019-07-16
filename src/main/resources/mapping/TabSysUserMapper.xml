@@ -602,7 +602,8 @@
                 update_userid,
                 update_username,
                 registry_status,
-                files_manage_unit_id)
+                files_manage_unit_id,
+                files_manage_unit)
         values
         <foreach collection="list" item="item" separator=",">
             (
@@ -640,7 +641,9 @@
 
                 #{item.registryStatus,jdbcType=BIGINT},
 
-                #{item.filesManageUnitId,jdbcType=VARCHAR}
+                #{item.filesManageUnitId,jdbcType=BIGINT},
+
+                #{item.filesManageUnit,jdbcType=VARCHAR}
             )
         </foreach>
     </insert>
@@ -2138,10 +2141,12 @@
     <select id="checkIsExistByIdCard" parameterType="java.lang.String" resultType="java.lang.Boolean">
         SELECT COUNT(1) FROM sys_user WHERE id_card_no = #{idCard} AND del_flag = '0'
     </select>
-    <select id="checkIsExistByPhone" parameterType="java.lang.String" resultType="java.lang.Boolean">
+    <select id="checkIsExistByPhone" resultType="java.lang.Boolean">
         SELECT COUNT(1) FROM sys_user WHERE phone = #{phone} AND del_flag = '0'
+        <if test="userId!=null and userId!=''">
+            and user_id != #{userId}
+        </if>
     </select>
-
     <!--根据查询实体查询党员选择vo列表-->
     <select id="selectPartyMemberChooseVOListByQueryBean"
             parameterType="com.egovchina.partybuilding.partybuild.entity.PartyMemberChooseQueryBean"
