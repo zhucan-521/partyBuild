@@ -160,7 +160,7 @@
         AND pr.revoke_tag = #{revokeTag}
       </if>
     </where>
-    GROUP BY pr.community_id, pr.user_id
+    GROUP BY pr.positive_regist_id, pr.community_id, pr.user_id
   </select>
 
   <!--根据id查询报到信息VO-->
