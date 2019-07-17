@@ -226,11 +226,7 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
         TabPbDeptSecretary oldSecretary = secretaryService.selectOldSecretaryInfoByUserIdAndLeadTeamId(leadTeamMemberDTO.getUserId(), leadTeamMemberDTO.getLeadTeamId());
         TabPbDeptSecretary tabPbDeptSecretary = new TabPbDeptSecretary();
         if (Objects.nonNull(oldSecretary)) {
-            tabPbDeptSecretary.setOldPosition(oldSecretary.getNewPosition())
-                    .setAppointmentTime(oldSecretary.getAppointmentTime());
-        } else {
-            tabPbDeptSecretary.setOldPosition(leadTeamMemberDTO.getPositiveId())
-                    .setAppointmentTime(leadTeamMemberDTO.getTenureLeave());
+            tabPbDeptSecretary.setOldPosition(oldSecretary.getNewPosition());
         }
         tabPbDeptSecretary.setUserId(leadTeamMemberDTO.getUserId())
                 .setLeadTeamId(leadTeamMemberDTO.getLeadTeamId())
@@ -238,6 +234,7 @@ public class LeadTeamMemberServiceImpl implements LeadTeamMemberService {
                 .setWhetherMember(IS_SECRETARY)
                 .setPostive(leadTeamMemberDTO.getPositiveName())
                 .setNewPosition(leadTeamMemberDTO.getPositiveId())
+                .setAppointmentTime(leadTeamMemberDTO.getTenureLeave())
                 .setWhetherMember((long) leadTeamMemberDTO.getAsCommitteeMember());
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbDeptSecretary);
         secretaryService.insertTabPbDeptSecretary(tabPbDeptSecretary);
