@@ -452,8 +452,16 @@
         WHERE l.del_flag = 0 AND lead_team_id = #{leadTeamId}
     </select>
 
-    <select id="chechLeadTeamIsExist" resultType="java.lang.Boolean" parameterType="long">
-        select true from tab_pb_lead_team where session_year = #{sessionYear} and org_id = #{orgId} and del_flag = '0' limit 1
+    <select id="checkCurrentLeadTeamIfExist" resultType="java.lang.Boolean" parameterType="long">
+        SELECT
+            count( * )
+        FROM
+            tab_pb_lead_team
+        WHERE
+            org_id = #{orgId}
+            AND current = 1
+            AND del_flag = '0'
+            AND ebl_flag = '1'
     </select>
 
     <!--获取领导班子id-->

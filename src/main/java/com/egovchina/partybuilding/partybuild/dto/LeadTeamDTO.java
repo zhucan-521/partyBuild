@@ -1,13 +1,13 @@
 package com.egovchina.partybuilding.partybuild.dto;
 
 import com.egovchina.partybuilding.common.entity.TabPbAttachment;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -90,5 +90,35 @@ public class LeadTeamDTO {
 
     @ApiModelProperty(value = "附件")
     private List<TabPbAttachment> attachments;
+
+    /**
+     * 是否当届
+     *
+     * @return
+     */
+    public boolean ifCurr() {
+        Calendar toComp = Calendar.getInstance();
+        toComp.setTime(this.electedTime);
+        toComp.set(Calendar.HOUR_OF_DAY, 0);
+        toComp.set(Calendar.MINUTE, 0);
+        toComp.set(Calendar.SECOND, 0);
+        toComp.set(Calendar.MILLISECOND, 0);
+        toComp.getTime();
+        Calendar now = Calendar.getInstance();
+        now.set(Calendar.HOUR_OF_DAY, 0);
+        now.set(Calendar.MINUTE, 0);
+        now.set(Calendar.SECOND, 0);
+        now.set(Calendar.MILLISECOND, 0);
+        now.getTime();
+        Calendar endComp = Calendar.getInstance();
+        endComp.setTime(this.electedTime);
+        endComp.set(Calendar.HOUR_OF_DAY, 0);
+        endComp.set(Calendar.MINUTE, 0);
+        endComp.set(Calendar.SECOND, 0);
+        endComp.set(Calendar.MILLISECOND, 0);
+        endComp.getTime();
+        endComp.add(Calendar.YEAR, this.duringYear.intValue());
+        return now.after(toComp) && now.before(endComp);
+    }
 
 }
