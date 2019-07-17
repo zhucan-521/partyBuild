@@ -635,9 +635,10 @@ public class PartyInformationServiceImpl implements PartyInformationService {
     }
 
     @Override
-    public List<HistoryInformationGraphVO> getHistoryInformationGraph(Page page, Boolean orgnizeLife, Boolean communityActivity, Boolean partyMemberComment, Long userId) {
+    public List<HistoryInformationGraphVO> getHistoryInformationGraph(Page page, Boolean orgnizeLife, Boolean communityActivity, Boolean partyMemberComment, Boolean partyMemberShip, Long userId) {
         PageHelper.startPage(page);
-        return tabPbPartyWorkMapper.selectHistoryInformationGraphByBasicAndOrgnizeLifeWithCommunityActivity(orgnizeLife, communityActivity, partyMemberComment, userId);
+        List<HistoryInformationGraphVO> list = tabPbPartyWorkMapper.selectHistoryInformationGraphByBasicAndOrgnizeLifeWithCommunityActivity(orgnizeLife, communityActivity, partyMemberComment, partyMemberShip, userId);
+        return list;
     }
 
     @Override

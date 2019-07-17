@@ -39,18 +39,27 @@
         FROM
         (
             SELECT
-                p.membership_id AS id,
-                p.membership_time AS time,
-                d.label AS label,
-                p.reason AS sub_label
-            FROM
-                tab_pb_party_membership p
-            INNER JOIN sys_user u ON p.user_id = u.user_id
-            LEFT JOIN sys_dict d ON p.type = d.id
-            AND d.`type` = 'DJZT'
-            WHERE
-            u.user_id = #{userId}
-            AND u.del_flag = '0'
+                NULL AS id,
+                NULL AS time,
+                NULL AS label,
+                NULL AS sub_label
+
+          <if test="partyMemberShip">
+              UNION ALL
+              SELECT
+              p.membership_id AS id,
+              p.membership_time AS time,
+              d.label AS label,
+              p.reason AS sub_label
+              FROM
+              tab_pb_party_membership p
+              INNER JOIN sys_user u ON p.user_id = u.user_id
+              LEFT JOIN sys_dict d ON p.type = d.id
+              AND d.`type` = 'DJZT'
+              WHERE
+              u.user_id = #{userId}
+              AND u.del_flag = '0'
+          </if>
 
         <if test="orgnizeLife">
             UNION ALL
@@ -105,6 +114,7 @@
         </if>
 
         ) t
+        WHERE t.id IS NOT NULL
         ORDER BY t.time DESC
     </select>
 
