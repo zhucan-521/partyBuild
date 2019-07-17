@@ -110,4 +110,7 @@ public class LeadTeamVO {
     @JsonSerialize(using = DictSerializer.class)
     private Long unitProperty;
 
+    @ApiModelProperty(value = "班子届数")
+    private String classSession;
+
 }
