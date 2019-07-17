@@ -70,8 +70,10 @@ public class StationNewsServiceImpl implements StationNewsService {
                 receive -> receive.setSendId(tabPbMessageSend.getSendId())
                         .setReceiverType(messageAddDTO.getReceiverType()), false);
 
-        //将消息批量插入消息接收表
-        result += tabPbMessageMapper.batchInsertTabPbMessageReceive(tabPbMessageReceives);
+        if (CollectionUtil.isNotEmpty(tabPbMessageReceives)) {
+            //将消息批量插入消息接收表
+            result += tabPbMessageMapper.batchInsertTabPbMessageReceive(tabPbMessageReceives);
+        }
         return result;
     }
 
