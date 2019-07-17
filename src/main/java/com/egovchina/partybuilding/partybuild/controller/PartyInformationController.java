@@ -217,6 +217,7 @@ public class PartyInformationController {
 
     @ApiOperation(value = "党员工作信息", notes = "党员工作信息", httpMethod = "GET")
     @ApiImplicitParam(value = "党员id", name = "userId", dataType = "long", paramType = "path", required = true)
+    @HasPermission("party_member_detail")
     @GetMapping("/party-members/works/{userId}")
     public PageInfo<PartyWorkVO> getPartyWorkVO(@PathVariable Long userId, @ApiParam("分页参数") Page page) {
         PageHelper.startPage(page);
@@ -224,6 +225,7 @@ public class PartyInformationController {
     }
 
     @ApiOperation(value = "导入党员信息数据", notes = "导入党员信息数据", httpMethod = "POST")
+    @HasPermission("party_member_import")
     @PostMapping("/party-members/import")
     public FileUploadResultVO importExcel(@RequestPart @ApiParam(value = "要导入文件", required = true) MultipartFile file,
                                           HttpServletResponse response) throws IOException {
@@ -256,6 +258,7 @@ public class PartyInformationController {
     }
 
     @ApiOperation(value = "党员信息导入模板下载", notes = "党员信息导入模板下载", httpMethod = "GET")
+    @HasPermission("party_member_import")
     @GetMapping("/party-members/template/download")
     public void excelTemplateDownload(HttpServletResponse response) throws IOException {
         HSSFWorkbook wb = partyInformationService.excelTemplateStream();
