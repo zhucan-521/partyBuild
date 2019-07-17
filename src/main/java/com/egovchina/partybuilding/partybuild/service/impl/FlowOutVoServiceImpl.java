@@ -19,13 +19,11 @@ import com.egovchina.partybuilding.partybuild.util.UserTagType;
 import com.egovchina.partybuilding.partybuild.vo.FlowOutMemberVO;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -64,10 +62,9 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
      */
     @Override
     public int addFlowOutMemberDTO(FlowOutMemberDTO flowOutMemberDto) {
-        //修改用户表信息
+        //填充用户表 流入/流出（党组织名称、id字段和组织联系人、电话）8个字段  如果市外则直接添加该党员
         SysUser sysUser = tabSysUserMapper.selectUserByIdCardNo(flowOutMemberDto.getIdCardNo());
         if (sysUser == null) {
-            //外市流动党员登记
             sysUser = new SysUser()
                     .setIdCardNo(flowOutMemberDto.getIdCardNo())
                     .setGender(flowOutMemberDto.getGender())
@@ -76,42 +73,33 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
                     .setFlowStatus(CommonConstant.FLOW)
                     .setIdentityType(flowOutMemberDto.getIdentityType());
             PaddingBaseFieldUtil.paddingBaseFiled(sysUser);
-            //添加流动标识
             tabSysUserMapper.insertSelective(sysUser);
-            userTagService.addUserTag(sysUser.getUserId(), UserTagType.FLOW);
             sysUser = tabSysUserMapper.selectUserByIdCardNo(flowOutMemberDto.getIdCardNo());
         }
         Long userId = sysUser.getUserId();
-        Boolean exists = Optional.ofNullable(tabPbFlowOutMapper.checkTabPbFlowOutExistsByUserId(userId)).orElse(false);
-        if (exists) {
+        SysUser sysUserUpdate = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(flowOutMemberDto, SysUser.class, true);
+        sysUserUpdate.setUserId(userId);
+        sysUserUpdate.setFlowFromOrgId(flowOutMemberDto.getOrgId());
+        sysUserUpdate.setFlowToOrgId(flowOutMemberDto.getFlowToOrgnizeId());
+        tabSysUserMapper.updateByPrimaryKeySelective(sysUserUpdate);
+        // 校验 （处于待报到、已流出、已流入的人无法再次流出）
+        if (tabPbFlowOutMapper.checkTabPbFlowOutExistsByUserId(userId)) {
             throw new BusinessDataCheckFailException("该党员已经处于流出状态，无法继续流出");
         }
-        BeanUtils.copyProperties(flowOutMemberDto, sysUser);
+        //填充流出表 流动状态（如果是流出市外流动状态为已经流出否则为待报到）
         flowOutMemberDto.setUserId(userId);
-        //流入党组织 没有流入组织id则流出到市外
-        if (flowOutMemberDto.getFlowToOrgnizeId() != null) {
-            sysUser.setFlowToOrgId(flowOutMemberDto.getFlowToOrgnizeId());
-            //插入流出表 设置状态为待报到
-            flowOutMemberDto.setFlowOutState(CommonConstant.PENDING_REPORT);
-        } else {
-            //插入流出表 设置状态为已经流出
+        if (flowOutMemberDto.getFlowToOrgnizeId() == null) {
             flowOutMemberDto.setFlowOutState(CommonConstant.FLOWED_OUT);
             sysUser.setFlowStatus(CommonConstant.FLOW);
             //添加流动标识
             userTagService.addUserTag(userId, UserTagType.FLOW);
+        } else {
+            flowOutMemberDto.setFlowOutState(CommonConstant.PENDING_REPORT);
         }
-        //流出党组织
-        if (flowOutMemberDto.getOrgId() != null) {
-            sysUser.setFlowFromOrgId(flowOutMemberDto.getOrgId());
-        }
-        sysUser.setUserId(userId);
-        PaddingBaseFieldUtil.paddingUpdateRelatedBaseFiled(sysUser);
-        tabSysUserMapper.updateByPrimaryKeySelective(sysUser);
         TabPbFlowOut tabPbFlowOutInsert = BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField(flowOutMemberDto, TabPbFlowOut.class, false);
-        tabPbFlowOutInsert.setFlowToOrgnizeId(flowOutMemberDto.getFlowToOrgnizeId()); //设置流入党组织Id
         tabPbFlowOutInsert.setFlowToOrgnizeName(flowOutMemberDto.getFlowToOrgName());//设置流入党组织名称
         tabPbFlowOutMapper.insertSelective(tabPbFlowOutInsert);
-        //插入流入表
+        //插入流入表 流动状态（如果是手动登记则为已流入）
         TabPbFlowIn tabPbFlowIn = new TabPbFlowIn()
                 .setFlowOutId(tabPbFlowOutInsert.getFlowOutId())
                 .setFlowInState(CommonConstant.PENDING_REPORT) //设置状态为待报到
@@ -123,21 +111,27 @@ public class FlowOutVoServiceImpl implements FlowOutVoService {
                 .setOldOrgnizeCode(flowOutMemberDto.getFlowToOrgnizeCode()) //设置流动证
                 .setOldOrgnizeName(flowOutMemberDto.getFlowFromOrgName()) //原党组织名称
                 .setOldOrgnizePhone(flowOutMemberDto.getFlowFromOrgPhone()) //原党组织联系电话
-                .setOldOrgnizeContactor(flowOutMemberDto.getFlowFromOrgContactor());//原党组织联系人
+                .setOldOrgnizeContactor(flowOutMemberDto.getFlowFromOrgContactor())//原党组织联系人
+                .setLostTime(flowOutMemberDto.getLostTime()) //失去联系时间
+                .setLinkStatus(flowOutMemberDto.getLinkStatus()); //失联情况
         //流入党组织
-        if (flowOutMemberDto.getFlowToOrgnizeId() != null) {
-            tabPbFlowIn.setOldOrgnizeId(flowOutMemberDto.getOrgId());
-            tabPbFlowIn.setOrgId(flowOutMemberDto.getFlowToOrgnizeId()); //设置流入组织
-        } else {
+        if (flowOutMemberDto.getFlowToOrgnizeId() == null) {
             flowOutMemberDto.setFlowOutState(CommonConstant.FLOWED_OUT); //已经流出
+            userTagService.addUserTag(userId, UserTagType.FLOW); //添加流出标识
+        } else {
+            tabPbFlowIn.setOldOrgnizeId(flowOutMemberDto.getOrgId());
+            tabPbFlowIn.setOrgId(flowOutMemberDto.getFlowToOrgnizeId());
         }
         //流出党组织
         if (flowOutMemberDto.getOrgId() != null) {
             tabPbFlowIn.setOldOrgnizeId(flowOutMemberDto.getOrgId());//设置原党组织
         }
-        if (flowOutMemberDto.getFlowInDate() != null) {  //如果有录入日期则为手动录入
-            tabPbFlowIn.setFlowInDate(flowOutMemberDto.getFlowInDate());//设置流入日期
-            tabPbFlowIn.setFlowInState(CommonConstant.FLOWED_IN);//已录入
+        //如果有录入日期则为手动录入
+        if (flowOutMemberDto.getFlowInDate() != null) {
+            //设置流入日期
+            tabPbFlowIn.setFlowInDate(flowOutMemberDto.getFlowInDate());
+            //已录入
+            tabPbFlowIn.setFlowInState(CommonConstant.FLOWED_IN);
         }
         PaddingBaseFieldUtil.paddingBaseFiled(tabPbFlowIn);
         return tabPbFlowInMapper.insertSelective(tabPbFlowIn);

@@ -242,6 +242,12 @@
             <if test="flowInState != null">
                 flow_in_state,
             </if>
+            <if test="lostTime != null">
+                lost_time,
+            </if>
+            <if test="linkStatus != null">
+                link_status,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="flowInId != null">
@@ -336,6 +342,12 @@
             </if>
             <if test="flowInState != null">
                 #{flowInState,jdbcType=BIGINT},
+            </if>
+            <if test="lostTime != null">
+                #{lostTime},
+            </if>
+            <if test="linkStatus != null">
+                #{linkStatus},
             </if>
         </trim>
     </insert>

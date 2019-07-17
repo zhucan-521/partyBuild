@@ -562,13 +562,14 @@
 
 
     <!--根据id查询单个流出党员Vo详情-->
-    <select id="findFlowOutVoById" parameterType="Long" resultMap="selectActiveFlowOutVoMap">
+    <select id="findFlowOutVoById" parameterType="long" resultMap="selectActiveFlowOutVoMap">
         SELECT
         <include refid="Base_FlowOut_List" />
         FROM
         tab_pb_flow_out
         left JOIN sys_user ON tab_pb_flow_out.user_id = sys_user.user_id
         left JOIN sys_dept ON tab_pb_flow_out.org_id = sys_dept.dept_id
+        Left JOIN tab_pb_flow_in on tab_pb_flow_in.flow_out_id = tab_pb_flow_out.flow_out_id
         <where>
             tab_pb_flow_out.del_flag='0'
             <if test="_parameter!=null and ''!=_parameter">
@@ -578,7 +579,7 @@
     </select>
 
     <!--查询待报到流动党员是否在流动-->
-    <select id="checkTabPbFlowOutExistsByUserId" resultType="java.lang.Boolean">
-        select  true from tab_pb_flow_out where user_id=#{userId} and flow_out_state in (59413 ,59414 ,59415) and del_flag=0
+    <select id="checkTabPbFlowOutExistsByUserId" resultType="boolean">
+        select  COUNT(flow_out_id) from tab_pb_flow_out where user_id=#{userId} and flow_out_state in (59413 ,59414 ,59415) and del_flag=0
     </select>
 </mapper>
