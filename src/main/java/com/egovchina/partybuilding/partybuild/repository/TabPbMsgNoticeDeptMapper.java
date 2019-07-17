@@ -5,6 +5,7 @@ import com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept;
 import com.egovchina.partybuilding.partybuild.vo.MsgNoticeDeptVO;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -82,5 +83,13 @@ public interface TabPbMsgNoticeDeptMapper {
      * @return
      */
     boolean checkWhetherPublish(Long id);
+
+    /**
+     * 根据接受党组织的noticeId获取发布党组织名称 ,和标题
+     *
+     * @param noticeId
+     * @return
+     */
+    HashMap<String, Object> getPublishNameAndTitleByNoticId(Long noticeId);
 
 }
