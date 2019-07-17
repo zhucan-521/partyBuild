@@ -93,10 +93,11 @@ public interface PartyInformationService extends IBaseExcelImport<SysUser> {
      * @param orgnizeLife        组织生活
      * @param communityActivity  社区活动
      * @param partyMemberComment 党员评议
+     * @param partyMemberShip    党籍信息
      * @param userId             用户id
      * @return
      */
-    List<HistoryInformationGraphVO> getHistoryInformationGraph(Page page, Boolean orgnizeLife, Boolean communityActivity, Boolean partyMemberComment, Long userId);
+    List<HistoryInformationGraphVO> getHistoryInformationGraph(Page page, Boolean orgnizeLife, Boolean communityActivity, Boolean partyMemberComment, Boolean partyMemberShip, Long userId);
 
     /**
      * 查询党员的工作信息
