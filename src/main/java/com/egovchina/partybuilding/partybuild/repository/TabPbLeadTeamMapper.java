@@ -53,11 +53,10 @@ public interface TabPbLeadTeamMapper {
     /**
      * 判断新增的领导班子在数据库中是否已经存在
      *
-     * @param sessionYear
-     * @param orgId
+     * @param orgId 组织id
      * @return
      */
-    Boolean chechLeadTeamIsExist(Long sessionYear, Long orgId);
+    Boolean checkCurrentLeadTeamIfExist(Long orgId);
 
     /**
      * 如果当前组织传入的领导班子为当届，那么就将当前组织以前的领导班子设置为往届

@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
 
@@ -71,12 +70,14 @@ public class LeadTeamServiceImpl implements LeadTeamService {
     @Override
     public int insertLeadTeam(LeadTeamDTO leadTeamDTO) {
         //判断新增的领导班子在数据库中是否已经存在,如果存在则不能新增
-        boolean result = Optional.ofNullable(tabPbLeadTeamMapper.chechLeadTeamIsExist(leadTeamDTO.getSessionYear(), leadTeamDTO.getOrgId())).orElse(false);
+        boolean result = tabPbLeadTeamMapper.checkCurrentLeadTeamIfExist(leadTeamDTO.getOrgId());
         if (result) {
-            throw new BusinessDataInvalidException(String.format("该领导班子在%d届中已经存在了", leadTeamDTO.getSessionYear()));
+            throw new BusinessDataInvalidException("该组织已存在当届领导班子");
         }
+
         TabPbLeadTeam tabPbLeadTeam =
                 generateTargetCopyPropertiesAndPaddingBaseField(leadTeamDTO, TabPbLeadTeam.class, false);
+        tabPbLeadTeam.setCurrent(leadTeamDTO.ifCurr() ? CommonConstant.OK : CommonConstant.NOT);
         int judgment = tabPbLeadTeamMapper.insertSelective(tabPbLeadTeam);
         return setCurrentAndAttachment(leadTeamDTO, tabPbLeadTeam, judgment);
     }
