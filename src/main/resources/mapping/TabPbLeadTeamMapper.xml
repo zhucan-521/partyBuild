@@ -62,6 +62,7 @@
         <result column="doc_num" jdbcType="INTEGER" property="docNum"/>
         <result column="expiration_date" jdbcType="TIMESTAMP" property="expirationDate"/>
         <result column="unit_property" jdbcType="BIGINT" property="unitProperty"/>
+        <result column="classSession" jdbcType="VARCHAR" property="classSession"/>
     </resultMap>
     <!--包含附件LeadTeamVO ResultMap-->
     <resultMap extends="LeadTeamVOResultMap" id="ContainsAttachmentLeadTeamVOResultMap"
@@ -389,38 +390,17 @@
         tpi.unit_property,
         DATE_ADD(l.elected_time,INTERVAL l.during_year YEAR ) AS expiration_date,
         d.orgnize_master,
-        ifnull( lt.class_num, 0 ) AS class_num,
-        ifnull( t.img_num, 0 ) AS img_num,
-        ifnull( t.doc_num, 0 ) AS doc_num
+        CASE
+        WHEN l.current = 1 THEN
+            CONCAT('当届','(',YEAR(l.elected_time),'-',YEAR(l.elected_time)+l.during_year,')')
+        ELSE
+            CONCAT('往届','(',YEAR(l.elected_time),'-',YEAR(l.elected_time)+l.during_year,')')
+        END AS classSession
         FROM
         tab_pb_lead_team l
         LEFT JOIN sys_dept d ON l.org_id = d.dept_id
         LEFT JOIN tab_pb_unit_info tpi ON tpi.unit_id = d.unit_id
         AND tpi.del_flag = '0'
-        LEFT JOIN (
-        SELECT m.user_id, m.lead_team_id, count( 1 ) AS class_num
-        FROM tab_pb_lead_team_member m
-        INNER JOIN sys_user u ON u.user_id = m.user_id
-        WHERE
-            m.del_flag = '0'
-            AND m.ebl_flag = '1'
-            AND u.del_flag = '0'
-            AND u.ebl_flag = '1'
-        GROUP BY
-            m.lead_team_id
-        ) lt USING ( lead_team_id )
-        LEFT JOIN (
-        SELECT
-        host_id,
-        sum( CASE attachment_file_type WHEN 58992 THEN 1 ELSE 0 END ) AS img_num,
-        sum( CASE attachment_file_type WHEN 58993 THEN 1 ELSE 0 END ) AS doc_num
-        FROM
-        tab_pb_attachment a
-        WHERE
-        a.del_flag = 0 AND attachment_type = 2
-        GROUP BY
-        a.host_id
-        ) t ON t.host_id = l.lead_team_id
         WHERE l.del_flag = 0
         <if test="sessionYear != null and sessionYear != ''">
             AND l.session_year = #{sessionYear}
@@ -455,15 +435,21 @@
 
     <!--根据id查询班子详情-->
     <select id="selectLeadTeamVOById" parameterType="java.lang.Long" resultMap="ContainsAttachmentLeadTeamVOResultMap">
-        select
+        SELECT
         <include refid="LeadTeamVO_Column_List"/>
         ,
         <include refid="Blob_Column_List"/>
-        , 2 as attachment_type,
-        d.NAME AS org_name
-        from tab_pb_lead_team l
-        left join sys_dept d on l.org_id = d.dept_id
-        where l.del_flag = 0 and lead_team_id = #{leadTeamId}
+        , 2 AS attachment_type,
+        d.NAME AS org_name,
+        CASE
+        WHEN l.current = 1 THEN
+            CONCAT('当届','(',YEAR(l.elected_time),'-',YEAR(l.elected_time)+l.during_year,')')
+        ELSE
+            CONCAT('往届','(',YEAR(l.elected_time),'-',YEAR(l.elected_time)+l.during_year,')')
+        END AS classSession
+        FROM tab_pb_lead_team l
+        LEFT JOIN sys_dept d ON l.org_id = d.dept_id
+        WHERE l.del_flag = 0 AND lead_team_id = #{leadTeamId}
     </select>
 
     <select id="chechLeadTeamIsExist" resultType="java.lang.Boolean" parameterType="long">
