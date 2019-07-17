@@ -1,6 +1,10 @@
 package com.egovchina.partybuilding.partybuild.service.impl;
 
+import com.egovchina.partybuilding.common.dto.MessageAddDTO;
+import com.egovchina.partybuilding.common.dto.MessageReceiveDTO;
 import com.egovchina.partybuilding.common.entity.Page;
+import com.egovchina.partybuilding.common.enums.MessageTypeEnum;
+import com.egovchina.partybuilding.common.enums.ReceiverTypeEnum;
 import com.egovchina.partybuilding.common.exception.BusinessDataIncompleteException;
 import com.egovchina.partybuilding.common.util.*;
 import com.egovchina.partybuilding.partybuild.config.MsgNoticeEvent;
@@ -9,10 +13,13 @@ import com.egovchina.partybuilding.partybuild.entity.MsgNoticeDeptQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.MsgNoticeQueryBean;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgNotice;
 import com.egovchina.partybuilding.partybuild.entity.TabPbMsgNoticeDept;
+import com.egovchina.partybuilding.partybuild.feign.SystemServiceFeignClient;
+import com.egovchina.partybuilding.partybuild.feign.fallback.SystemServiceFallback;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMsgNoticeDeptMapper;
 import com.egovchina.partybuilding.partybuild.repository.TabPbMsgNoticeMapper;
 import com.egovchina.partybuilding.partybuild.service.ITabPbAttachmentService;
 import com.egovchina.partybuilding.partybuild.service.MsgNoticeService;
+import com.egovchina.partybuilding.partybuild.service.StationNewsService;
 import com.egovchina.partybuilding.partybuild.vo.MsgNoticeDeptVO;
 import com.egovchina.partybuilding.partybuild.vo.MsgNoticeVO;
 import com.github.pagehelper.PageHelper;
@@ -23,9 +30,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.egovchina.partybuilding.common.util.BeanUtil.generateTargetCopyPropertiesAndPaddingBaseField;
@@ -49,6 +54,12 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
     @Autowired
     private ApplicationEventPublisher publisher;
 
+    @Autowired
+    private StationNewsService stationNewsService;
+
+    @Autowired
+    private SystemServiceFeignClient systemServiceFeignClient;
+
     /**
      * 发布文件
      *
@@ -64,6 +75,8 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
             //保存接受党组织
             List<TabPbMsgNoticeDept> MsgNoticeDeptlist = BeanUtil.generateTargetListCopyPropertiesAndPaddingBaseField(msgNoticeDTO.getNoticeDeptList(), TabPbMsgNoticeDept.class, msgNoticeDept -> msgNoticeDept.setNoticeId(tabPbMsgNotice.getId()), false);
             publisher.publishEvent(new MsgNoticeEvent(MsgNoticeDeptlist));
+            //发送消息
+            this.publishMessage(MsgNoticeDeptlist);
         }
         return count;
     }
@@ -72,6 +85,43 @@ public class MsgNoticeServiceImpl implements MsgNoticeService {
     @EventListener
     public void addNoticeDeptList(MsgNoticeEvent event) {
         tabPbMsgNoticeDeptMapper.batchInsertTabPbMsgNoticeDept(event.getInnerSource());
+    }
+
+    /**
+     * //提醒接收党组织有文件通知消息
+     *
+     * @param MsgNoticeDeptlist
+     */
+    public void publishMessage(List<TabPbMsgNoticeDept> MsgNoticeDeptlist) {
+        long noticeId = MsgNoticeDeptlist.get(0).getNoticeId();
+        HashMap<String, Object> hashMap = tabPbMsgNoticeDeptMapper.getPublishNameAndTitleByNoticId(noticeId);
+        //发送通知党组织名称
+        String publishOrgName = hashMap.get("deptName").toString();
+        //发布的文件通知标题
+        String titile = hashMap.get("noticeTitle").toString();
+        List<MessageReceiveDTO> MessageReceiveDTOList = new ArrayList<>();
+        MsgNoticeDeptlist.forEach(item -> {
+            MessageReceiveDTO messageReceiveDTO = new MessageReceiveDTO().setTriggerOrgId(item.getDeptId()).setReceiverId(item.getDeptId());
+            MessageReceiveDTOList.add(messageReceiveDTO);
+        });
+        MessageAddDTO messageAddDTO = new MessageAddDTO();
+        messageAddDTO.setTitle("文件通知消息");
+        messageAddDTO.setReceiverType(ReceiverTypeEnum.ACCOUNT.getReceiverType());
+        messageAddDTO.setType(MessageTypeEnum.SYSTEM_MESSAGE.getId());
+        messageAddDTO.setReceivers(MessageReceiveDTOList);
+        ReturnEntity returnEntity = systemServiceFeignClient.getMessageContent(SystemServiceFallback.DOCUMENTNOTIF);
+        String content = "{{pushOrgId}}组织发送了一条{{title}}通知，请及时查看！";
+        if (returnEntity.unOkResp()) {
+            throw returnEntity.exception();
+        }
+        if (returnEntity != null) {
+            if (returnEntity.getResultObj() != null) {
+                content = Optional.ofNullable(returnEntity.getResultObj()).orElse("")
+                        .toString().replace("{{pushOrgId}}", publishOrgName).replace("{{title}}", titile);
+            }
+        }
+        messageAddDTO.setContent(content);
+        stationNewsService.batchInsertStationNews(messageAddDTO);
     }
 
     /**

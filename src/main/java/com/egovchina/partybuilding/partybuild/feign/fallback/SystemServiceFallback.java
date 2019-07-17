@@ -23,6 +23,11 @@ public class SystemServiceFallback implements SystemServiceFeignClient {
      */
     public static final Long FALSEFLOW = 59718L;
 
+    /**
+     * 文件通知文案
+     */
+    public static final Long DOCUMENTNOTIF = 59720L;
+
     @Override
     public ReturnEntity insertUserRole(Long roleId, Long userId) {
         return ReturnUtil.fail();
@@ -39,6 +44,8 @@ public class SystemServiceFallback implements SystemServiceFeignClient {
             ReturnUtil.success("{{realname}}你好，你在{{orgName}}的流动党员挂靠申请审核通过了！恭喜你！！");
         } else if (FALSEFLOW.equals(id)) {
             ReturnUtil.success("{{realname}}你好，你在{{orgName}}的流动党员挂靠申请审核不通过，建议寻找对应组织负责人了解详细信息！");
+        } else if (DOCUMENTNOTIF.equals(id)) {
+            ReturnUtil.success("{{pushOrgId}}组织发送了一条{{title}}通知，请注意及时查看!");
         }
         return ReturnUtil.success();
     }

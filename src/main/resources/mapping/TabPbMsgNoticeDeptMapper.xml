@@ -197,4 +197,10 @@
     <select id="checkWhetherPublish" parameterType="long" resultType="java.lang.Boolean">
         select COUNT(recevie_user_id) from tab_pb_msg_notice_dept where notice_id=#{id}
     </select>
+
+    <select id="getPublishNameAndTitleByNoticId" parameterType="long" resultType="java.util.HashMap">
+        select dept_name as deptName,notice_title as noticeTitle from tab_pb_msg_notice where id = #{noticeId}
+    </select>
+
+
 </mapper>
